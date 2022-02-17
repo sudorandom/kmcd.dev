@@ -1,0 +1,32 @@
+name: build-docs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 17.x
+
+      - name: Install cuttlebelle
+        run: npm install cuttlebelle -g
+
+      - name: Build docs
+        run: cuttlebelle
+        
+      - name: Deploy docs
+        run: ./scripts/deploy.sh
+        
+      
