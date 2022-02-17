@@ -28,5 +28,3 @@ jobs:
         
       - name: Deploy docs
         run: ./scripts/deploy.sh
-        
-      
