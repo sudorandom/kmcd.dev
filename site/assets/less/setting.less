@@ -1,0 +1,70 @@
+﻿/* Setting */
+
+/* Colors */
+@bg: #fff;
+@default-color: #363636;
+@extra-color: #999;
+@dark-color: #141414;
+@light-color: #DDD;
+@white-color: #FFF;
+@active-color: #f26b38;
+@extra-active-color: #ede574;
+@error-color: red;
+
+/* Fonts */
+@default-font: 'Roboto Mono';
+@icons-font: 'Ionicons';
+
+/* Fonts Size */
+@large-size: 15px;
+@default-size: 13px;
+@small-size: 12px;
+@extra-small-size: 11px;
+@title-size: 68px;
+@subtitle-size: 15px;
+@h1-size: 26px;
+@h2-size: 23px;
+@h3-size: 20px;
+@h4-size: 18px;
+@h5-size: 16px;
+@h6-size: 14px;
+
+/* Letter-Spacing */
+@default-letter-spacing: 0;
+@extra-letter-spacing: 0.04em;
+
+/* Line Height */
+@line-height: 23px;
+
+/* Forms */
+@form-border: 1px solid @light-color;
+@form-border-hover: 1px solid @active-color;
+
+/* Params */
+.border-radius(@radius) {
+	border-radius: @radius;
+	-moz-border-radius: @radius;
+	-webkit-border-radius: @radius;
+	-khtml-border-radius: @radius;
+}
+
+.transition(@param){
+	transition: @param;
+	-moz-transition: @param;
+	-webkit-transition: @param;
+	-o-transition: @param;
+}
+
+.transform(@param) {
+	transform: @param;
+	-webkit-transform: @param;
+	-moz-transform: @param;
+	-o-transform: @param;
+}
+
+.box-shadow(@param){
+	box-shadow: @param;
+	-moz-box-shadow: @param;
+	-webkit-box-shadow: @param;
+	-khtml-box-shadow: @param;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "sudorandom.com",
+  "version": "1.0.0",
+  "description": "",
+  "cuttlebelle": {
+    "site": {
+      "markdownRenderer": "code/markdown.js"
+    }
+  }
+}

@@ -1,0 +1,271 @@
+/**
+*	Glitche - CV/Resume/Portfolio Template (HTML)
+*	Version: 1.3
+*	Author: beshleyua
+*	Author URL: http://themeforest.net/user/beshleyua
+*	Copyright © Cvio by beshleyua. All Rights Reserved.
+**/
+
+/* TABLE OF CONTENTS
+	1. Template Dark
+*/
+
+/* 1. Template Dark */
+
+input:focus,
+textarea:focus,
+button:focus {
+	color: #f0f0f0;
+}
+
+input:focus::-webkit-input-placeholder,
+textarea:focus::-webkit-input-placeholder {
+	color: #f0f0f0;
+}
+
+input:focus:-moz-placeholder,
+textarea:focus:-moz-placeholder {
+	color: #f0f0f0;
+}
+
+input:focus::-moz-placeholder,
+textarea:focus::-moz-placeholder {
+	color: #f0f0f0;
+}
+
+input:focus:-ms-input-placeholder,
+textarea:focus:-ms-input-placeholder {
+	color: #f0f0f0;
+}
+
+body, .container .line {
+	background: #26262d;
+}
+
+table th, 
+table td {
+	border-color: #28282f;
+}
+
+table, 
+table th, 
+table td {
+	background: none;
+}
+
+table th, 
+table td {
+	border-width: 1px;
+}
+
+body, 
+td, 
+blockquote,
+.skills ul li .progress .percentage .percent,
+.category {
+	color: #a2a2a6;
+}
+
+input,
+textarea,
+button,
+a, 
+.section .content .title .title_inner, 
+.resume-items .resume-item .name, 
+.service-items .service-item .name, 
+.section.works .filters label, 
+.single-post-text input[type="submit"], 
+.post-comments .post-comment .desc .name, 
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6,
+.mfp-close-btn-in .mfp-close,
+.section.started .started-content .h-title,
+.content-sidebar h2.widget-title,
+.post-comments .post-comment .desc span.comment-reply a,
+.post-comments .post-comment .desc span.comment-reply,
+table th,
+p strong,
+footer .soc a .ion,
+a.btn,
+.btn,
+.skills ul li .name,
+.box-items .box-item .desc .name,
+.popup-box .desc h4 {
+	color: #f0f0f0;
+}
+
+.container, 
+.section:before, 
+.footer, 
+header, 
+.started-content .glitch-effect:before, 
+.started-content .glitch-effect:after, 
+.started-content .glitch-effect-white:before, 
+.started-content .glitch-effect-white:after, 
+header.fixed, 
+header.opened, 
+.footer.fixed,
+.popup-box, 
+.preloader,
+.skills.circles .progress:after,
+footer,
+header {
+	background: #31313a;
+}
+
+.background-enabled .started-content .glitch-effect:before, 
+.background-enabled .started-content .glitch-effect:after {
+    background: transparent;
+}
+
+.glitch-effect:before, .glitch-effect:after, .glitch-effect-white:before, .glitch-effect-white:after {
+	background: transparent;
+}
+
+.mfp-close-btn-in .mfp-close {
+	background: #31313a!important;
+	color: #fff!important;
+}
+
+.section .content .title .title_inner, 
+.box-items .box-item .category, 
+.comment-info span.comment-reply, 
+.content-sidebar span.screen-reader-text span, 
+.content-sidebar h2.widget-title span, 
+.popup-box .category {
+	box-shadow: inset 0 -6px 0px #666666;
+	-moz-box-shadow: inset 0 -6px 0px #666666;
+	-webkit-box-shadow: inset 0 -6px 0px #666666;
+	-khtml-box-shadow: inset 0 -6px 0px #666666;
+}
+
+.skills ul li .progress,
+mark, 
+ins,
+.skills.dotted ul li .progress .dg span, 
+.skills.dotted ul li .progress .da span,
+.skills.circles .progress {
+	background: #666666;
+}
+
+.content-sidebar {
+	background: #31313a;
+}
+
+.content-sidebar .close,
+.post-comments ul.children {
+	background: #3b3b42;
+}
+
+.content-sidebar .close:before, 
+.content-sidebar .close:after,
+.sidebar_btn span, 
+.sidebar_btn span:before, 
+.sidebar_btn span:after,
+.header .head-top .menu-btn span,
+.header .head-top .menu-btn:before, 
+.header .head-top .menu-btn:after,
+header .head-top .menu-btn span,
+header .head-top .menu-btn:before,
+header .head-top .menu-btn:after {
+	background: #f0f0f0;
+}
+
+.search-form input.search-submit {
+	filter: brightness(0) invert(1);
+}
+
+.content-sidebar .widget ul li,
+.content-sidebar .widget ul li:last-child,
+.search-form input.search-field,
+.content-sidebar h2.widget-title,
+hr,
+.post-comments .post-comment,
+input, 
+textarea, 
+button {
+	border-color: #666666;
+}
+
+.navigation.post-navigation .nav-links a:hover {
+	color: #dddddd;
+}
+
+.sticky, 
+pre {
+	background-color: #3a3b44;
+}
+
+header .head-top .top-menu-nav .sub-menu, 
+header .head-top .top-menu-nav .children {
+	background: #3e3f48;
+}
+
+header .head-top .top-menu-nav .sub-menu:before, 
+header .head-top .top-menu-nav .children:before {
+	border-bottom-color: #3e3f48;
+}
+
+header .head-top .top-menu-nav .sub-menu li .sub-menu:before, 
+header .head-top .top-menu-nav .children li .children:before {
+	border-right-color: #3e3f48;
+}
+
+header .head-top .top-menu-nav .sub-menu li, 
+header .head-top .top-menu-nav .children li {
+	border-bottom-color: #666666;
+}
+
+header .head-top .top-menu-nav .sub-menu li a, 
+header .head-top .top-menu-nav .children li a {
+	color: #a2a2a6;
+}
+
+header .head-top .top-menu-nav .sub-menu li:hover a, 
+header .head-top .top-menu-nav .children li:hover a {
+	color: #f0f0f0;
+}
+
+.post-comments ul.children ul.children {
+	background: none;
+}
+
+@media (max-width: 840px) {
+	header .head-top .top-menu-nav .sub-menu li .sub-menu, 
+	header .head-top .top-menu-nav .children li .children {
+		background: #4a4b54;
+	}
+
+	header .head-top .top-menu-nav .sub-menu li .sub-menu:before, 
+	header .head-top .top-menu-nav .children li .children:before {
+		border-bottom-color: #4a4b54;
+	}
+}
+
+.background-enabled header .head-top .top-menu-nav .sub-menu li a {
+	color: #a2a2a6;
+}
+
+.background-enabled header .head-top .top-menu-nav .sub-menu li a:hover {
+	color: #a2a2a6;
+	text-decoration: underline;
+}
+
+.started-content .glitch-effect:before, .started-content .glitch-effect:after, .started-content .glitch-effect-white:before, .started-content .glitch-effect-white:after {
+	background: transparent;
+}
+.background-enabled .footer.fixed .soc a .ion {
+	color: #dedede;
+}
+
+header .logo a {
+	color: #f0f0f0;
+}
+
+.mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close {
+	background: none!important;
+}

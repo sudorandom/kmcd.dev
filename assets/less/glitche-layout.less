@@ -1,0 +1,2045 @@
+﻿/* Import Settings */
+@import url('setting.less');
+
+/**
+*	Glitche - CV/Resume/Portfolio Template (HTML)
+*	Version: 1.3
+*	Author: beshleyua
+*	Author URL: http://themeforest.net/user/beshleyua
+*	Copyright © Cvio by beshleyua. All Rights Reserved.
+**/
+
+/* TABLE OF CONTENTS
+	1. Header
+	2. Section
+	3. Started
+	4. About
+	5. Resume
+	6. Skills
+	7. Service
+	8. Portfolio
+	9. Box Items
+	10. Contacts
+	11. Blog
+	12. Footer
+	13. Popups
+*/
+
+/* 1. Header */
+header {
+	position: fixed;
+	left: 0;
+	top: 30px;
+	width: 100%;
+	z-index: 100;
+	text-align: right;
+	background: @bg;
+	opacity: 1;
+	visibility: visible;
+	.transition(all 0.6s ease 0s);
+	&.active {
+		opacity: 1!important;
+		visibility: visible!important;
+		.menu-btn {
+			&:before {
+				opacity: 0;
+			}
+			&:after {
+				bottom: 9px!important;
+				.transform(rotate(-45deg));
+			}
+			span {
+				.transform(rotate(45deg));
+			}
+		}
+		.head-top {
+			.top-menu {
+				position: fixed;
+				top: 100px;
+				left: 50%;
+				margin-left: -100px;
+				width: 200px;
+				height: auto;
+				text-align: center;
+				opacity: 1!important;
+				visibility: visible!important;
+				ul {
+					li {
+						display: block;
+						margin: 30px 0;
+					}
+				}
+			}
+		}
+	}
+	@media (max-width: 840px) {
+		top: 15px;
+	}
+	.head-top {
+		padding: 30px 65px 15px 65px;
+		.menu-btn {
+			position: relative;
+			margin: 0 auto;
+			width: 26px;
+			height: 20px;
+			&:before, &:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 2px;
+				background: @dark-color;
+				.transition(all 0.3s ease 0s);
+			}
+			&:after {
+				top: auto;
+				bottom: 0;
+			}
+			span {
+				position: absolute;
+				top: 50%;
+				left: 0;
+				width: 100%;
+				height: 2px;
+				background: @dark-color;
+				margin-top: -1px;
+				.transition(all 0.3s ease 0s);
+			}
+			&:hover {
+				&:before, &:after, span {
+					background: @active-color;
+				}
+			}
+			@media (max-width: 840px) {
+				display: block;
+			}
+		}
+		.top-menu {
+			@media (max-width: 840px) {
+				opacity: 0;
+				visibility: hidden;
+				height: 0px;
+				.transition(opacity 0.3s ease 0.5s);
+			}
+			ul {
+				li {
+					margin-left: 50px;
+					display: inline-block;
+					vertical-align: top;
+					.transition(color 0.3s ease 0s);
+					a {
+						display: block;
+						margin-top: 12px;
+						&.btn {
+							margin-top: 0;
+						}
+					}
+					&.active {
+						a {
+							color: @active-color;
+						}
+						.btn {
+							color: @bg;
+							background: @active-color;
+							border: 1px solid @active-color;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/* 2. Section */
+.section {
+	position: relative;
+	padding: 0 80px 150px 80px;
+	z-index: 97;
+	opacity: 1;
+	visibility: visible;
+	.transition(all 0.6s ease 0s);
+	@media (max-width: 960px) {
+		padding: 0 40px 120px 40px;
+	}
+	@media (max-width: 480px) {
+		padding: 0 20px 120px 20px;
+	}
+	.content {
+		position: relative;
+		.title {
+			position: relative;
+			margin-bottom: 40px;
+			@media (max-width: 400px) {
+				text-align: center;
+			}
+			.title_inner {
+				display: inline-block;
+				vertical-align: middle;
+				text-align: center;
+				position: relative;
+				line-height: 18px;
+				font-size: @default-size;
+				color: @dark-color;
+				text-transform: uppercase;
+				letter-spacing: @extra-letter-spacing;
+				.transition(all 0.3s ease 0s);
+				.box-shadow(inset 0 -6px 0px @extra-active-color);
+			}
+		}
+	}
+}
+
+/* 3. Started */
+.section.started {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	.started-content {
+		display: inline-block;
+		vertical-align: middle;
+		text-align: center;
+		position: relative;
+		.h-title {
+			font-size: @title-size;
+			font-family: @default-font;
+			color: @dark-color;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: @extra-letter-spacing;
+			margin: 10px 0 5px 0;
+			@media (max-width: 1060px) {
+				&.blog_title {
+					font-size: 48px;
+				}
+			}
+			@media (max-width: 840px) {
+				font-size: 52px;
+				padding: 0 20px;
+				&.blog_title {
+					font-size: 40px;
+				}
+			}
+			@media (max-width: 580px) {
+				span {
+					display: block;
+				}
+			}
+			@media (max-width: 480px) {
+				font-size: 42px;
+				&.blog_title {
+					font-size: 26px;
+				}
+			}
+		}
+		.h-subtitle {
+			font-size: @default-size;
+		}
+		.typed-subtitle, .typed-bread {
+			font-size: @default-size;
+		}
+	}
+	.mouse_btn {
+		font-size: 24px;
+		color: @active-color;
+		text-align: center;
+		position: absolute;
+		width: 20px;
+		height: 40px;
+		left: 50%;
+		bottom: 80px;
+		margin-left: -10px;
+		.ion {
+			position: relative;
+			top: 0px;
+			animation: mouse-anim 1s ease-out 0s infinite;
+		}
+	}
+ }
+
+/* 4. About */
+.section.about {
+	@media (max-width: 400px) {
+		text-align: center;
+	}
+	.image {
+		float: left;
+		img {
+			width: 100px;
+			height: 100px;
+			.border-radius(100px);
+		}
+		@media (max-width: 600px) {
+			img {
+				width: 80px;
+				height: 80px;
+				.border-radius(80px);
+			}
+		}
+		@media (max-width: 400px) {
+			float: none;
+			text-align: center;
+			img {
+				width: 100px;
+				height: 100px;
+				.border-radius(100px);
+			}
+		}
+	}
+	.desc {
+		margin-left: 130px;
+		@media (max-width: 600px) {
+			margin-left: 100px;
+		}
+		@media (max-width: 400px) {
+			margin-left: 0;
+		}
+	}
+}
+
+.info-list {
+	margin-bottom: 42px;
+	ul {
+		li {
+			display: inline-block;
+			vertical-align: top;
+			width: 32%;
+			margin: 12px 0 0 0;
+			@media (max-width: 840px) {
+				width: 48%;
+			}
+			@media (max-width: 580px) {
+				width: 100%;
+			}
+			strong {
+				font-weight: 400;
+				color: @active-color;
+			}
+		}
+	}
+}
+
+/* 5. Resume */
+@media (max-width: 840px) {
+	.section.resume {
+		.cols {
+			.col.col-md {
+				&:first-child {
+					margin-bottom: 120px;
+				}
+			}
+		}
+	}
+}
+
+.resume-items {
+	.resume-item {
+		position: relative;
+		padding: 0 30px 60px 30px;
+		@media (max-width: 840px) {
+			padding-right: 0px;
+		}
+		&:before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1px;
+			height: 100%;
+			background: @active-color;
+		}
+		&:first-child {
+			padding-top: 0;
+		}
+		&:last-child {
+			padding-bottom: 0;
+			margin-top: -1px;
+			&:before {
+				display: none;
+			}
+		}
+		.date {
+			position: relative;
+			top: -10px;
+			margin: 0 0 5px 0;
+			display: inline-block;
+			padding: 0 5px;
+			height: 20px;
+			line-height: 18px;
+			font-weight: 500;
+			font-size: @extra-small-size;
+			color: @active-color;
+			border: 1px solid @active-color;
+			&:before {
+				content: '';
+				width: 29px;
+				height: 1px;
+				position: absolute;
+				left: -30px;
+				top: 9px;
+				background: @active-color;
+			}
+		}
+		.name {
+			font-weight: 500;
+			color: @dark-color;
+			margin: 0 0 15px 0;
+		}
+		p {
+			margin: 0;
+		}
+	}
+}
+
+/* 6. Skills */
+.skills {
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		li {
+			padding: 5px 0 30px 0;
+			.name {
+				font-size: @default-size;
+				color: @default-color;
+				font-weight: 400;
+				position: relative;
+				margin: 0 0 9px 0;
+			}
+			.progress {
+				display: block;
+				height: 3px;
+				position: relative;
+				width: 100%;
+				background: @light-color;
+				.percentage {
+					left: 0;
+					top: 0;
+					position: absolute;
+					height: 3px;
+					width: 0%;
+					background: @active-color;
+					.transition(all 0.3s ease 0s);
+					.percent {
+						position: absolute;
+						top: -27px;
+						right: 0;
+						font-size: @default-size;
+						color: @default-color;
+						font-weight: 400;
+					}
+				}
+			}
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+}
+
+/* 7. Service */
+.section.service {
+	@media (max-width: 400px) {
+		text-align: center;
+	}
+}
+
+.section.service, .section.contacts {
+	.title {
+		margin-bottom: 0;
+	}
+}
+
+.service-items {
+	.service-item {
+		display: inline-block;
+		vertical-align: top;
+		width: 28%;
+		margin: 50px 4% 0 0;
+		text-align: left;
+		@media (max-width: 840px) {
+			width: 45%;
+		}
+		@media (max-width: 580px) {
+			width: 100%;
+			margin-right: 0;
+		}
+		@media (max-width: 400px) {
+			text-align: center;
+		}
+		.icon {
+			float: left;
+			width: 36px;
+			text-align: center;
+			font-size: 30px;
+			color: @active-color;
+			@media (max-width: 400px) {
+				float: none;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.ion {
+				display:block;
+			}
+		}
+		.name {
+			font-weight: 500;
+			font-size: @default-size;
+			color: @dark-color;
+			margin: 6px 0 0 46px;
+			@media (max-width: 400px) {
+				margin: 0 0 0 2px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+		}
+		p {
+			margin-bottom: 0;
+		}
+	}
+}
+
+/* 8. Portfolio */
+.section.works {
+	.filters {
+		margin-bottom: 30px;
+		input {
+			display: none;
+		}
+		label {
+			display: inline-block;
+			vertical-align: top;
+			margin-right: 25px;
+			font-size: @default-size;
+			color: @default-color;
+			cursor: pointer;
+			position: relative;
+			padding-bottom: 0;
+			&.glitch-effect {
+				color: @active-color;
+			}
+			@media (max-width: 580px) {
+				padding-bottom: 15px;
+			}
+		}
+		@media (max-width: 580px) {
+			margin-bottom: 10px;
+		}
+	}
+}
+
+/* 9. Box Items */
+.box-items {
+	position: relative;
+	overflow: hidden;
+	margin-left: -3%;
+	@media (max-width: 580px) {
+		margin-left: 0;
+	}
+	.box-item {
+		width: 30.33333%;
+		margin: 0 0 3% 3%;
+		position: relative;
+		overflow: hidden;
+		text-align: center;
+		@media (max-width: 840px) {
+			width: 47%;
+		}
+		@media (max-width: 580px) {
+			width: 100%;
+			margin: 0 0 3% 0;
+		}
+		&:hover {
+			.image {
+				.info {
+					opacity: 0.94;
+					.transform(scale(1,1));
+				}
+			}
+			.desc {
+				.name {
+					color: @active-color;
+				}
+			}
+		}
+		.image {
+			position: relative;
+			a {
+				display: block;
+				font-size: 0;
+				img {
+					width: 100%;
+					height: auto;
+					position: relative;
+					top: 0;
+				}
+			}
+			.info {
+				text-align: center;
+				width: 100%;
+				height: 100%;
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				opacity: 0;
+				padding: 18px;
+				.transition(all 0.3s ease 0s);
+				.transform(scale(0.5,0.5));
+				.centrize {
+					background: @active-color;
+				}
+				.ion {
+					color: @white-color;
+					font-size: 38px;
+					display: inline-block;
+					.transition(all 0.1s ease-in 0.4s);
+					font-weight: normal;
+				}
+			}
+		}
+		.desc {
+			position: relative;
+			padding: 15px 45px 5px 45px;
+			@media (max-width: 1000px) {
+				padding: 15px 15px 5px 15px;
+			}
+			.name {
+				height: 40px;
+				display: block;
+				color: @default-color;
+				font-size: @default-size;
+				font-weight: 700;
+				text-transform: uppercase;
+				.transition(all 0.3s ease 0s);
+			}
+		}
+	}
+}
+
+.date {
+	margin: 0 0 10px 0;
+	display: inline-block;
+	padding: 0 5px;
+	height: 20px;
+	line-height: 18px;
+	font-weight: 500;
+	font-size: @extra-small-size;
+	color: @active-color;
+	border: 1px solid @active-color;
+}
+
+.category {
+	margin: 0 0 10px 0;
+	display: inline-block;
+	font-size: @extra-small-size;
+	color: @default-color;
+	text-transform: uppercase;
+	letter-spacing: @extra-letter-spacing;
+	.box-shadow(inset 0 -6px 0px @extra-active-color);
+}
+
+/* 10. Contacts */
+.section.contacts {
+	@media (max-width: 400px) {
+		text-align: center;
+	}
+	.service-items {
+ 		.service-item {
+			p {
+				margin-top: 20px;
+			}
+		}
+	}
+	.contact_form {
+		margin-top: 30px;
+	}
+	.alert-success {
+		display: none;
+		p {
+			margin: 60px 0 30px 0;
+			font-size: @large-size;
+		}
+	}
+}
+
+/* 11. Blog */
+.single-post-text {
+	img {
+		max-width: 100%;
+	}
+}
+
+.post-comments {
+	margin-top: 60px;
+	.post-comment {
+		padding: 20px 0;
+		border-top: 1px solid @light-color;
+		&:first-child {
+			padding-top: 0;
+			border-top: none;
+		}
+		.image {
+			float: left;
+			width: 80px;
+			height: 80px;
+			img {
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.desc {
+			margin-left: 100px;
+			.name {
+				font-size: @default-size;
+				color: @dark-color;
+				text-transform: uppercase;
+				font-weight: 500;
+				padding: 5px 0 0 0;
+				margin: 0 0 10px 0;
+			}
+			p {
+				margin: 0;
+			}
+		}
+	}
+	.form-comment {
+		.title {
+			margin: 30px 0 15px 0;
+		}
+	}
+}
+
+/* 12. Footer */
+footer {
+	position: fixed;
+	bottom: 25px;
+	left: 0;
+	padding: 15px 60px 30px 60px;
+	width: 100%;
+	background: @bg;
+	z-index: 100;
+	opacity: 1;
+	visibility: visible;
+	.transition(all 0.6s ease 0s);
+	@media (max-width: 840px) {
+		bottom: 15px;
+	}
+	.soc {
+		float: right;
+		a {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 12px;
+			.ion {
+				font-size: 17px;
+				color: @default-color;
+				.transition(all 0.3s ease 0s);
+			}
+			&:hover {
+				.ion {
+					color: @active-color;
+				}
+			}
+		}
+		@media (max-width: 840px) {
+			float: none;
+			text-align: center;
+			a {
+				margin: 0 6px;
+			}
+		}
+	}
+	.copy {
+		float: left;
+		padding-top: 2px;
+		font-size: 11px;
+		color: @extra-color;
+		@media (max-width: 840px) {
+			display: none;
+		}
+	}
+}
+
+/* 13. Popups */
+.popup-box {
+	margin: 30px auto;
+	width: 520px;
+	background: @white-color;
+	position: relative;
+	padding: 10px;
+	@media (max-width: 580px) {
+		width: 440px;
+	}
+	@media (max-width: 480px) {
+		width: 320px;
+	}
+	.image {
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+	.desc {
+		padding: 30px 20px;
+		h4 {
+			display: block;
+			color: @default-color;
+			font-size: @large-size + 2;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: @extra-letter-spacing;
+			margin: 0 0 15px 0;
+			line-height: normal;
+		}
+		p {
+			margin-top: 15px;
+		}
+	}
+}
+
+.mfp-fade.mfp-bg {
+	opacity: 0;
+	.transition(all 0.15s ease-out);
+}
+
+/* overlay animate in */
+.mfp-fade.mfp-bg.mfp-ready {
+	opacity: 0.8;
+}
+
+/* overlay animate out */
+.mfp-fade.mfp-bg.mfp-removing {
+	opacity: 0;
+}
+
+/* content at start */
+.mfp-fade.mfp-wrap .mfp-content {
+	opacity: 0;
+	.transition(all 0.15s ease-out);
+}
+
+/* content animate it */
+.mfp-fade.mfp-wrap.mfp-ready .mfp-content {
+	opacity: 1;
+}
+
+/* content animate out */
+.mfp-fade.mfp-wrap.mfp-removing .mfp-content {
+	opacity: 0;
+}
+
+.mfp-close {
+	width: 54px!important;
+	height: 54px!important;
+	background: @white-color!important;
+	line-height: 54px!important;
+	opacity: 1!important;
+	font-weight: 300;
+	color: @white-color;
+	font-size: 24px;
+	font-family: 'Verdana'!important;
+}
+
+
+
+/*
+  New Styles
+*/
+
+.box-items .box-item .image .info .ion {
+  font-size: 28px;
+}
+
+.skills.dotted ul li .progress .da span {
+  background: #f26b38!important;
+}
+
+.section.works .filters .btn-group {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.mfp-image-holder .mfp-close, .mfp-iframe-holder .mfp-close {
+  background: none!important;
+  top: -10px;
+}
+
+a.btn, .btn {
+  transition: background 0.3s ease 0s;
+  -moz-transition: background 0.3s ease 0s;
+  -webkit-transition: background 0.3s ease 0s;
+  -o-transition: background 0.3s ease 0s;
+}
+
+/* 6. Skills */
+.skills ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0;
+}
+
+.skills.circles ul {
+  margin: -30px 0 0 0;
+}
+
+.skills.list ul {
+  margin: 0 -30px;
+}
+
+.skills.dotted ul {
+  margin-left: -30px;
+  margin-right: -30px;
+}
+
+.skills ul li {
+  position: relative;
+  padding: 0 0 30px 0;
+}
+
+.skills.dotted ul li {
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 50%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.skills.circles ul li {
+  margin-top: 30px;
+  padding-bottom: 40px;
+  display: inline-block;
+  vertical-align: top;
+  width: 20%;
+}
+
+.skills.list ul li {
+  padding-top: 0;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+}
+
+.skills ul li:last-child {
+  padding-bottom: 0;
+}
+
+.skills.circles ul li:last-child {
+  padding-bottom: 40px;
+}
+
+.skills ul li:after {
+  display: none;
+}
+
+.skills ul li .name {
+  font-size: 13px;
+  font-weight: 400;
+  position: relative;
+  margin: 0 0 9px 0;
+}
+
+.skills.circles ul li .name {
+  position: absolute;
+  top: 115px;
+  left: 0;
+  width: 90px;
+  text-align: center;
+}
+
+.skills.list ul li .name {
+  padding-left: 23px;
+  position: relative;
+}
+
+.skills.list ul li .name:before {
+  content: "\f121";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  display: inline-block;
+  font-family: "Ionicons";
+  color: #f26b38;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.skills ul li .progress {
+  display: block;
+  height: 3px;
+  position: relative;
+  width: 100%;
+  background: #dddddd;
+}
+
+.skills.dotted ul li .progress {
+  height: 14px;
+  background: transparent!important;
+}
+
+.skills.list ul li .progress {
+  display: none;
+}
+
+.skills ul li .progress .percentage {
+  left: 0;
+  top: 0;
+  position: absolute;
+  height: 3px;
+  width: 0%;
+  background: #f26b38;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+}
+
+.skills ul li .progress .percentage .percent {
+  position: absolute;
+  top: -27px;
+  right: 0;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.skills.dotted ul li .progress .percentage {
+  position: relative;
+  overflow: hidden;
+  top: 0;
+  height: 14px;
+  background: transparent!important;
+  z-index: 2;
+}
+
+.skills.dotted ul li .progress .dg,
+.skills.dotted ul li .progress .da {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 14px;
+}
+
+.skills.dotted ul li .progress .da {
+  top: 0;
+}
+
+.skills.dotted ul li .progress .dg span,
+.skills.dotted ul li .progress .da span {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: #dddddd;
+  -webkit-border-radius: 14px;
+  border-radius: 14px;
+}
+
+.skills.dotted ul li .progress .da span {
+  background: #f26b38;
+}
+
+.skills.circles .progress.p51 .slice, 
+.skills.circles .progress.p52 .slice, 
+.skills.circles .progress.p53 .slice, 
+.skills.circles .progress.p54 .slice, 
+.skills.circles .progress.p55 .slice, 
+.skills.circles .progress.p56 .slice, 
+.skills.circles .progress.p57 .slice, 
+.skills.circles .progress.p58 .slice, 
+.skills.circles .progress.p59 .slice, 
+.skills.circles .progress.p60 .slice, 
+.skills.circles .progress.p61 .slice, 
+.skills.circles .progress.p62 .slice, 
+.skills.circles .progress.p63 .slice, 
+.skills.circles .progress.p64 .slice, 
+.skills.circles .progress.p65 .slice, 
+.skills.circles .progress.p66 .slice, 
+.skills.circles .progress.p67 .slice, 
+.skills.circles .progress.p68 .slice, 
+.skills.circles .progress.p69 .slice, 
+.skills.circles .progress.p70 .slice, 
+.skills.circles .progress.p71 .slice, 
+.skills.circles .progress.p72 .slice, 
+.skills.circles .progress.p73 .slice, 
+.skills.circles .progress.p74 .slice, 
+.skills.circles .progress.p75 .slice, 
+.skills.circles .progress.p76 .slice, 
+.skills.circles .progress.p77 .slice, 
+.skills.circles .progress.p78 .slice, 
+.skills.circles .progress.p79 .slice, 
+.skills.circles .progress.p80 .slice, 
+.skills.circles .progress.p81 .slice, 
+.skills.circles .progress.p82 .slice, 
+.skills.circles .progress.p83 .slice, 
+.skills.circles .progress.p84 .slice, 
+.skills.circles .progress.p85 .slice, 
+.skills.circles .progress.p86 .slice, 
+.skills.circles .progress.p87 .slice, 
+.skills.circles .progress.p88 .slice, 
+.skills.circles .progress.p89 .slice, 
+.skills.circles .progress.p90 .slice, 
+.skills.circles .progress.p91 .slice, 
+.skills.circles .progress.p92 .slice, 
+.skills.circles .progress.p93 .slice, 
+.skills.circles .progress.p94 .slice, 
+.skills.circles .progress.p95 .slice, 
+.skills.circles .progress.p96 .slice, 
+.skills.circles .progress.p97 .slice, 
+.skills.circles .progress.p98 .slice, 
+.skills.circles .progress.p99 .slice, 
+.skills.circles .progress.p100 .slice {
+  clip: rect(auto, auto, auto, auto);
+}
+
+.skills.circles .progress .bar, 
+.skills.circles .progress.p51 .fill, 
+.skills.circles .progress.p52 .fill, 
+.skills.circles .progress.p53 .fill, 
+.skills.circles .progress.p54 .fill, 
+.skills.circles .progress.p55 .fill, 
+.skills.circles .progress.p56 .fill, 
+.skills.circles .progress.p57 .fill, 
+.skills.circles .progress.p58 .fill, 
+.skills.circles .progress.p59 .fill, 
+.skills.circles .progress.p60 .fill, 
+.skills.circles .progress.p61 .fill, 
+.skills.circles .progress.p62 .fill, 
+.skills.circles .progress.p63 .fill, 
+.skills.circles .progress.p64 .fill, 
+.skills.circles .progress.p65 .fill, 
+.skills.circles .progress.p66 .fill, 
+.skills.circles .progress.p67 .fill, 
+.skills.circles .progress.p68 .fill, 
+.skills.circles .progress.p69 .fill, 
+.skills.circles .progress.p70 .fill, 
+.skills.circles .progress.p71 .fill, 
+.skills.circles .progress.p72 .fill, 
+.skills.circles .progress.p73 .fill, 
+.skills.circles .progress.p74 .fill, 
+.skills.circles .progress.p75 .fill, 
+.skills.circles .progress.p76 .fill, 
+.skills.circles .progress.p77 .fill, 
+.skills.circles .progress.p78 .fill, 
+.skills.circles .progress.p79 .fill, 
+.skills.circles .progress.p80 .fill, 
+.skills.circles .progress.p81 .fill, 
+.skills.circles .progress.p82 .fill, 
+.skills.circles .progress.p83 .fill, 
+.skills.circles .progress.p84 .fill, 
+.skills.circles .progress.p85 .fill, 
+.skills.circles .progress.p86 .fill, 
+.skills.circles .progress.p87 .fill, 
+.skills.circles .progress.p88 .fill, 
+.skills.circles .progress.p89 .fill, 
+.skills.circles .progress.p90 .fill, 
+.skills.circles .progress.p91 .fill, 
+.skills.circles .progress.p92 .fill, 
+.skills.circles .progress.p93 .fill, 
+.skills.circles .progress.p94 .fill, 
+.skills.circles .progress.p95 .fill, 
+.skills.circles .progress.p96 .fill, 
+.skills.circles .progress.p97 .fill, 
+.skills.circles .progress.p98 .fill, 
+.skills.circles .progress.p99 .fill, 
+.skills.circles .progress.p100 .fill {
+  position: absolute;
+  width: 0.82em;
+  height: 0.82em;
+  clip: rect(0em, 0.5em, 1em, 0em);
+  border: 0.09em solid #f26b38;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.skills.circles .progress.p51 .bar:after, 
+.skills.circles .progress.p51 .fill, 
+.skills.circles .progress.p52 .bar:after, 
+.skills.circles .progress.p52 .fill, 
+.skills.circles .progress.p53 .bar:after, 
+.skills.circles .progress.p53 .fill, 
+.skills.circles .progress.p54 .bar:after, 
+.skills.circles .progress.p54 .fill, 
+.skills.circles .progress.p55 .bar:after, 
+.skills.circles .progress.p55 .fill, 
+.skills.circles .progress.p56 .bar:after, 
+.skills.circles .progress.p56 .fill, 
+.skills.circles .progress.p57 .bar:after, 
+.skills.circles .progress.p57 .fill, 
+.skills.circles .progress.p58 .bar:after, 
+.skills.circles .progress.p58 .fill, 
+.skills.circles .progress.p59 .bar:after, 
+.skills.circles .progress.p59 .fill, 
+.skills.circles .progress.p60 .bar:after, 
+.skills.circles .progress.p60 .fill, 
+.skills.circles .progress.p61 .bar:after, 
+.skills.circles .progress.p61 .fill, 
+.skills.circles .progress.p62 .bar:after, 
+.skills.circles .progress.p62 .fill, 
+.skills.circles .progress.p63 .bar:after, 
+.skills.circles .progress.p63 .fill, 
+.skills.circles .progress.p64 .bar:after, 
+.skills.circles .progress.p64 .fill, 
+.skills.circles .progress.p65 .bar:after, 
+.skills.circles .progress.p65 .fill, 
+.skills.circles .progress.p66 .bar:after, 
+.skills.circles .progress.p66 .fill, 
+.skills.circles .progress.p67 .bar:after, 
+.skills.circles .progress.p67 .fill, 
+.skills.circles .progress.p68 .bar:after, 
+.skills.circles .progress.p68 .fill, 
+.skills.circles .progress.p69 .bar:after, 
+.skills.circles .progress.p69 .fill, 
+.skills.circles .progress.p70 .bar:after, 
+.skills.circles .progress.p70 .fill, 
+.skills.circles .progress.p71 .bar:after, 
+.skills.circles .progress.p71 .fill, 
+.skills.circles .progress.p72 .bar:after, 
+.skills.circles .progress.p72 .fill, 
+.skills.circles .progress.p73 .bar:after, 
+.skills.circles .progress.p73 .fill, 
+.skills.circles .progress.p74 .bar:after, 
+.skills.circles .progress.p74 .fill, 
+.skills.circles .progress.p75 .bar:after, 
+.skills.circles .progress.p75 .fill, 
+.skills.circles .progress.p76 .bar:after, 
+.skills.circles .progress.p76 .fill, 
+.skills.circles .progress.p77 .bar:after, 
+.skills.circles .progress.p77 .fill, 
+.skills.circles .progress.p78 .bar:after, 
+.skills.circles .progress.p78 .fill, 
+.skills.circles .progress.p79 .bar:after, 
+.skills.circles .progress.p79 .fill, 
+.skills.circles .progress.p80 .bar:after, 
+.skills.circles .progress.p80 .fill, 
+.skills.circles .progress.p81 .bar:after, 
+.skills.circles .progress.p81 .fill, 
+.skills.circles .progress.p82 .bar:after, 
+.skills.circles .progress.p82 .fill, 
+.skills.circles .progress.p83 .bar:after, 
+.skills.circles .progress.p83 .fill, 
+.skills.circles .progress.p84 .bar:after, 
+.skills.circles .progress.p84 .fill, 
+.skills.circles .progress.p85 .bar:after, 
+.skills.circles .progress.p85 .fill, 
+.skills.circles .progress.p86 .bar:after, 
+.skills.circles .progress.p86 .fill, 
+.skills.circles .progress.p87 .bar:after, 
+.skills.circles .progress.p87 .fill, 
+.skills.circles .progress.p88 .bar:after, 
+.skills.circles .progress.p88 .fill, 
+.skills.circles .progress.p89 .bar:after, 
+.skills.circles .progress.p89 .fill, 
+.skills.circles .progress.p90 .bar:after, 
+.skills.circles .progress.p90 .fill, 
+.skills.circles .progress.p91 .bar:after, 
+.skills.circles .progress.p91 .fill, 
+.skills.circles .progress.p92 .bar:after, 
+.skills.circles .progress.p92 .fill, 
+.skills.circles .progress.p93 .bar:after, 
+.skills.circles .progress.p93 .fill, 
+.skills.circles .progress.p94 .bar:after, 
+.skills.circles .progress.p94 .fill, 
+.skills.circles .progress.p95 .bar:after, 
+.skills.circles .progress.p95 .fill, 
+.skills.circles .progress.p96 .bar:after, 
+.skills.circles .progress.p96 .fill, 
+.skills.circles .progress.p97 .bar:after, 
+.skills.circles .progress.p97 .fill, 
+.skills.circles .progress.p98 .bar:after, 
+.skills.circles .progress.p98 .fill, 
+.skills.circles .progress.p99 .bar:after, 
+.skills.circles .progress.p99 .fill, 
+.skills.circles .progress.p100 .bar:after, 
+.skills.circles .progress.p100 .fill {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.skills.circles .progress {
+  margin: 0;
+  position: relative;
+  font-size: 90px;
+  width: 90px;
+  height: 90px;
+  border-radius: 90px;
+  background: #dddddd;
+}
+
+.skills.circles .progress *, .skills.circles .progress *:before, .skills.circles .progress *:after {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.skills.circles .progress span {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 90px;
+  font-size: 17px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.skills.circles .progress:after {
+  position: absolute;
+  top: 0.09em;
+  left: 0.09em;
+  display: block;
+  content: " ";
+  border-radius: 50%;
+  background-color: #ffffff;
+  width: 0.82em;
+  height: 0.82em;
+}
+
+.skills.circles ul li .progress .percentage {
+  display: none;
+}
+
+.skills.circles .progress .slice {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  clip: rect(0em, 1em, 1em, 0.5em);
+}
+
+.skills.circles .progress.p1 .bar {
+  -moz-transform: rotate(3.6deg);
+  -ms-transform: rotate(3.6deg);
+  -webkit-transform: rotate(3.6deg);
+  transform: rotate(3.6deg);
+}
+
+.skills.circles .progress.p2 .bar {
+  -moz-transform: rotate(7.2deg);
+  -ms-transform: rotate(7.2deg);
+  -webkit-transform: rotate(7.2deg);
+  transform: rotate(7.2deg);
+}
+
+.skills.circles .progress.p3 .bar {
+  -moz-transform: rotate(10.8deg);
+  -ms-transform: rotate(10.8deg);
+  -webkit-transform: rotate(10.8deg);
+  transform: rotate(10.8deg);
+}
+
+.skills.circles .progress.p4 .bar {
+  -moz-transform: rotate(14.4deg);
+  -ms-transform: rotate(14.4deg);
+  -webkit-transform: rotate(14.4deg);
+  transform: rotate(14.4deg);
+}
+
+.skills.circles .progress.p5 .bar {
+  -moz-transform: rotate(18deg);
+  -ms-transform: rotate(18deg);
+  -webkit-transform: rotate(18deg);
+  transform: rotate(18deg);
+}
+
+.skills.circles .progress.p6 .bar {
+  -moz-transform: rotate(21.6deg);
+  -ms-transform: rotate(21.6deg);
+  -webkit-transform: rotate(21.6deg);
+  transform: rotate(21.6deg);
+}
+
+.skills.circles .progress.p7 .bar {
+  -moz-transform: rotate(25.2deg);
+  -ms-transform: rotate(25.2deg);
+  -webkit-transform: rotate(25.2deg);
+  transform: rotate(25.2deg);
+}
+
+.skills.circles .progress.p8 .bar {
+  -moz-transform: rotate(28.8deg);
+  -ms-transform: rotate(28.8deg);
+  -webkit-transform: rotate(28.8deg);
+  transform: rotate(28.8deg);
+}
+
+.skills.circles .progress.p9 .bar {
+  -moz-transform: rotate(32.4deg);
+  -ms-transform: rotate(32.4deg);
+  -webkit-transform: rotate(32.4deg);
+  transform: rotate(32.4deg);
+}
+
+.skills.circles .progress.p10 .bar {
+  -moz-transform: rotate(36deg);
+  -ms-transform: rotate(36deg);
+  -webkit-transform: rotate(36deg);
+  transform: rotate(36deg);
+}
+
+.skills.circles .progress.p11 .bar {
+  -moz-transform: rotate(39.6deg);
+  -ms-transform: rotate(39.6deg);
+  -webkit-transform: rotate(39.6deg);
+  transform: rotate(39.6deg);
+}
+
+.skills.circles .progress.p12 .bar {
+  -moz-transform: rotate(43.2deg);
+  -ms-transform: rotate(43.2deg);
+  -webkit-transform: rotate(43.2deg);
+  transform: rotate(43.2deg);
+}
+
+.skills.circles .progress.p13 .bar {
+  -moz-transform: rotate(46.8deg);
+  -ms-transform: rotate(46.8deg);
+  -webkit-transform: rotate(46.8deg);
+  transform: rotate(46.8deg);
+}
+
+.skills.circles .progress.p14 .bar {
+  -moz-transform: rotate(50.4deg);
+  -ms-transform: rotate(50.4deg);
+  -webkit-transform: rotate(50.4deg);
+  transform: rotate(50.4deg);
+}
+
+.skills.circles .progress.p15 .bar {
+  -moz-transform: rotate(54deg);
+  -ms-transform: rotate(54deg);
+  -webkit-transform: rotate(54deg);
+  transform: rotate(54deg);
+}
+
+.skills.circles .progress.p16 .bar {
+  -moz-transform: rotate(57.6deg);
+  -ms-transform: rotate(57.6deg);
+  -webkit-transform: rotate(57.6deg);
+  transform: rotate(57.6deg);
+}
+
+.skills.circles .progress.p17 .bar {
+  -moz-transform: rotate(61.2deg);
+  -ms-transform: rotate(61.2deg);
+  -webkit-transform: rotate(61.2deg);
+  transform: rotate(61.2deg);
+}
+
+.skills.circles .progress.p18 .bar {
+  -moz-transform: rotate(64.8deg);
+  -ms-transform: rotate(64.8deg);
+  -webkit-transform: rotate(64.8deg);
+  transform: rotate(64.8deg);
+}
+
+.skills.circles .progress.p19 .bar {
+  -moz-transform: rotate(68.4deg);
+  -ms-transform: rotate(68.4deg);
+  -webkit-transform: rotate(68.4deg);
+  transform: rotate(68.4deg);
+}
+
+.skills.circles .progress.p20 .bar {
+  -moz-transform: rotate(72deg);
+  -ms-transform: rotate(72deg);
+  -webkit-transform: rotate(72deg);
+  transform: rotate(72deg);
+}
+
+.skills.circles .progress.p21 .bar {
+  -moz-transform: rotate(75.6deg);
+  -ms-transform: rotate(75.6deg);
+  -webkit-transform: rotate(75.6deg);
+  transform: rotate(75.6deg);
+}
+
+.skills.circles .progress.p22 .bar {
+  -moz-transform: rotate(79.2deg);
+  -ms-transform: rotate(79.2deg);
+  -webkit-transform: rotate(79.2deg);
+  transform: rotate(79.2deg);
+}
+
+.skills.circles .progress.p23 .bar {
+  -moz-transform: rotate(82.8deg);
+  -ms-transform: rotate(82.8deg);
+  -webkit-transform: rotate(82.8deg);
+  transform: rotate(82.8deg);
+}
+
+.skills.circles .progress.p24 .bar {
+  -moz-transform: rotate(86.4deg);
+  -ms-transform: rotate(86.4deg);
+  -webkit-transform: rotate(86.4deg);
+  transform: rotate(86.4deg);
+}
+
+.skills.circles .progress.p25 .bar {
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.skills.circles .progress.p26 .bar {
+  -moz-transform: rotate(93.6deg);
+  -ms-transform: rotate(93.6deg);
+  -webkit-transform: rotate(93.6deg);
+  transform: rotate(93.6deg);
+}
+
+.skills.circles .progress.p27 .bar {
+  -moz-transform: rotate(97.2deg);
+  -ms-transform: rotate(97.2deg);
+  -webkit-transform: rotate(97.2deg);
+  transform: rotate(97.2deg);
+}
+
+.skills.circles .progress.p28 .bar {
+  -moz-transform: rotate(100.8deg);
+  -ms-transform: rotate(100.8deg);
+  -webkit-transform: rotate(100.8deg);
+  transform: rotate(100.8deg);
+}
+
+.skills.circles .progress.p29 .bar {
+  -moz-transform: rotate(104.4deg);
+  -ms-transform: rotate(104.4deg);
+  -webkit-transform: rotate(104.4deg);
+  transform: rotate(104.4deg);
+}
+
+.skills.circles .progress.p30 .bar {
+  -moz-transform: rotate(108deg);
+  -ms-transform: rotate(108deg);
+  -webkit-transform: rotate(108deg);
+  transform: rotate(108deg);
+}
+
+.skills.circles .progress.p31 .bar {
+  -moz-transform: rotate(111.6deg);
+  -ms-transform: rotate(111.6deg);
+  -webkit-transform: rotate(111.6deg);
+  transform: rotate(111.6deg);
+}
+
+.skills.circles .progress.p32 .bar {
+  -moz-transform: rotate(115.2deg);
+  -ms-transform: rotate(115.2deg);
+  -webkit-transform: rotate(115.2deg);
+  transform: rotate(115.2deg);
+}
+
+.skills.circles .progress.p33 .bar {
+  -moz-transform: rotate(118.8deg);
+  -ms-transform: rotate(118.8deg);
+  -webkit-transform: rotate(118.8deg);
+  transform: rotate(118.8deg);
+}
+
+.skills.circles .progress.p34 .bar {
+  -moz-transform: rotate(122.4deg);
+  -ms-transform: rotate(122.4deg);
+  -webkit-transform: rotate(122.4deg);
+  transform: rotate(122.4deg);
+}
+
+.skills.circles .progress.p35 .bar {
+  -moz-transform: rotate(126deg);
+  -ms-transform: rotate(126deg);
+  -webkit-transform: rotate(126deg);
+  transform: rotate(126deg);
+}
+
+.skills.circles .progress.p36 .bar {
+  -moz-transform: rotate(129.6deg);
+  -ms-transform: rotate(129.6deg);
+  -webkit-transform: rotate(129.6deg);
+  transform: rotate(129.6deg);
+}
+
+.skills.circles .progress.p37 .bar {
+  -moz-transform: rotate(133.2deg);
+  -ms-transform: rotate(133.2deg);
+  -webkit-transform: rotate(133.2deg);
+  transform: rotate(133.2deg);
+}
+
+.skills.circles .progress.p38 .bar {
+  -moz-transform: rotate(136.8deg);
+  -ms-transform: rotate(136.8deg);
+  -webkit-transform: rotate(136.8deg);
+  transform: rotate(136.8deg);
+}
+
+.skills.circles .progress.p39 .bar {
+  -moz-transform: rotate(140.4deg);
+  -ms-transform: rotate(140.4deg);
+  -webkit-transform: rotate(140.4deg);
+  transform: rotate(140.4deg);
+}
+
+.skills.circles .progress.p40 .bar {
+  -moz-transform: rotate(144deg);
+  -ms-transform: rotate(144deg);
+  -webkit-transform: rotate(144deg);
+  transform: rotate(144deg);
+}
+
+.skills.circles .progress.p41 .bar {
+  -moz-transform: rotate(147.6deg);
+  -ms-transform: rotate(147.6deg);
+  -webkit-transform: rotate(147.6deg);
+  transform: rotate(147.6deg);
+}
+
+.skills.circles .progress.p42 .bar {
+  -moz-transform: rotate(151.2deg);
+  -ms-transform: rotate(151.2deg);
+  -webkit-transform: rotate(151.2deg);
+  transform: rotate(151.2deg);
+}
+
+.skills.circles .progress.p43 .bar {
+  -moz-transform: rotate(154.8deg);
+  -ms-transform: rotate(154.8deg);
+  -webkit-transform: rotate(154.8deg);
+  transform: rotate(154.8deg);
+}
+
+.skills.circles .progress.p44 .bar {
+  -moz-transform: rotate(158.4deg);
+  -ms-transform: rotate(158.4deg);
+  -webkit-transform: rotate(158.4deg);
+  transform: rotate(158.4deg);
+}
+
+.skills.circles .progress.p45 .bar {
+  -moz-transform: rotate(162deg);
+  -ms-transform: rotate(162deg);
+  -webkit-transform: rotate(162deg);
+  transform: rotate(162deg);
+}
+
+.skills.circles .progress.p46 .bar {
+  -moz-transform: rotate(165.6deg);
+  -ms-transform: rotate(165.6deg);
+  -webkit-transform: rotate(165.6deg);
+  transform: rotate(165.6deg);
+}
+
+.skills.circles .progress.p47 .bar {
+  -moz-transform: rotate(169.2deg);
+  -ms-transform: rotate(169.2deg);
+  -webkit-transform: rotate(169.2deg);
+  transform: rotate(169.2deg);
+}
+
+.skills.circles .progress.p48 .bar {
+  -moz-transform: rotate(172.8deg);
+  -ms-transform: rotate(172.8deg);
+  -webkit-transform: rotate(172.8deg);
+  transform: rotate(172.8deg);
+}
+
+.skills.circles .progress.p49 .bar {
+  -moz-transform: rotate(176.4deg);
+  -ms-transform: rotate(176.4deg);
+  -webkit-transform: rotate(176.4deg);
+  transform: rotate(176.4deg);
+}
+
+.skills.circles .progress.p50 .bar {
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.skills.circles .progress.p51 .bar {
+  -moz-transform: rotate(183.6deg);
+  -ms-transform: rotate(183.6deg);
+  -webkit-transform: rotate(183.6deg);
+  transform: rotate(183.6deg);
+}
+
+.skills.circles .progress.p52 .bar {
+  -moz-transform: rotate(187.2deg);
+  -ms-transform: rotate(187.2deg);
+  -webkit-transform: rotate(187.2deg);
+  transform: rotate(187.2deg);
+}
+
+.skills.circles .progress.p53 .bar {
+  -moz-transform: rotate(190.8deg);
+  -ms-transform: rotate(190.8deg);
+  -webkit-transform: rotate(190.8deg);
+  transform: rotate(190.8deg);
+}
+
+.skills.circles .progress.p54 .bar {
+  -moz-transform: rotate(194.4deg);
+  -ms-transform: rotate(194.4deg);
+  -webkit-transform: rotate(194.4deg);
+  transform: rotate(194.4deg);
+}
+
+.skills.circles .progress.p55 .bar {
+  -moz-transform: rotate(198deg);
+  -ms-transform: rotate(198deg);
+  -webkit-transform: rotate(198deg);
+  transform: rotate(198deg);
+}
+
+.skills.circles .progress.p56 .bar {
+  -moz-transform: rotate(201.6deg);
+  -ms-transform: rotate(201.6deg);
+  -webkit-transform: rotate(201.6deg);
+  transform: rotate(201.6deg);
+}
+
+.skills.circles .progress.p57 .bar {
+  -moz-transform: rotate(205.2deg);
+  -ms-transform: rotate(205.2deg);
+  -webkit-transform: rotate(205.2deg);
+  transform: rotate(205.2deg);
+}
+
+.skills.circles .progress.p58 .bar {
+  -moz-transform: rotate(208.8deg);
+  -ms-transform: rotate(208.8deg);
+  -webkit-transform: rotate(208.8deg);
+  transform: rotate(208.8deg);
+}
+
+.skills.circles .progress.p59 .bar {
+  -moz-transform: rotate(212.4deg);
+  -ms-transform: rotate(212.4deg);
+  -webkit-transform: rotate(212.4deg);
+  transform: rotate(212.4deg);
+}
+
+.skills.circles .progress.p60 .bar {
+  -moz-transform: rotate(216deg);
+  -ms-transform: rotate(216deg);
+  -webkit-transform: rotate(216deg);
+  transform: rotate(216deg);
+}
+
+.skills.circles .progress.p61 .bar {
+  -moz-transform: rotate(219.6deg);
+  -ms-transform: rotate(219.6deg);
+  -webkit-transform: rotate(219.6deg);
+  transform: rotate(219.6deg);
+}
+
+.skills.circles .progress.p62 .bar {
+  -moz-transform: rotate(223.2deg);
+  -ms-transform: rotate(223.2deg);
+  -webkit-transform: rotate(223.2deg);
+  transform: rotate(223.2deg);
+}
+
+.skills.circles .progress.p63 .bar {
+  -moz-transform: rotate(226.8deg);
+  -ms-transform: rotate(226.8deg);
+  -webkit-transform: rotate(226.8deg);
+  transform: rotate(226.8deg);
+}
+
+.skills.circles .progress.p64 .bar {
+  -moz-transform: rotate(230.4deg);
+  -ms-transform: rotate(230.4deg);
+  -webkit-transform: rotate(230.4deg);
+  transform: rotate(230.4deg);
+}
+
+.skills.circles .progress.p65 .bar {
+  -moz-transform: rotate(234deg);
+  -ms-transform: rotate(234deg);
+  -webkit-transform: rotate(234deg);
+  transform: rotate(234deg);
+}
+
+.skills.circles .progress.p66 .bar {
+  -moz-transform: rotate(237.6deg);
+  -ms-transform: rotate(237.6deg);
+  -webkit-transform: rotate(237.6deg);
+  transform: rotate(237.6deg);
+}
+
+.skills.circles .progress.p67 .bar {
+  -moz-transform: rotate(241.2deg);
+  -ms-transform: rotate(241.2deg);
+  -webkit-transform: rotate(241.2deg);
+  transform: rotate(241.2deg);
+}
+
+.skills.circles .progress.p68 .bar {
+  -moz-transform: rotate(244.8deg);
+  -ms-transform: rotate(244.8deg);
+  -webkit-transform: rotate(244.8deg);
+  transform: rotate(244.8deg);
+}
+
+.skills.circles .progress.p69 .bar {
+  -moz-transform: rotate(248.4deg);
+  -ms-transform: rotate(248.4deg);
+  -webkit-transform: rotate(248.4deg);
+  transform: rotate(248.4deg);
+}
+
+.skills.circles .progress.p70 .bar {
+  -moz-transform: rotate(252deg);
+  -ms-transform: rotate(252deg);
+  -webkit-transform: rotate(252deg);
+  transform: rotate(252deg);
+}
+
+.skills.circles .progress.p71 .bar {
+  -moz-transform: rotate(255.6deg);
+  -ms-transform: rotate(255.6deg);
+  -webkit-transform: rotate(255.6deg);
+  transform: rotate(255.6deg);
+}
+
+.skills.circles .progress.p72 .bar {
+  -moz-transform: rotate(259.2deg);
+  -ms-transform: rotate(259.2deg);
+  -webkit-transform: rotate(259.2deg);
+  transform: rotate(259.2deg);
+}
+
+.skills.circles .progress.p73 .bar {
+  -moz-transform: rotate(262.8deg);
+  -ms-transform: rotate(262.8deg);
+  -webkit-transform: rotate(262.8deg);
+  transform: rotate(262.8deg);
+}
+
+.skills.circles .progress.p74 .bar {
+  -moz-transform: rotate(266.4deg);
+  -ms-transform: rotate(266.4deg);
+  -webkit-transform: rotate(266.4deg);
+  transform: rotate(266.4deg);
+}
+
+.skills.circles .progress.p75 .bar {
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+.skills.circles .progress.p76 .bar {
+  -moz-transform: rotate(273.6deg);
+  -ms-transform: rotate(273.6deg);
+  -webkit-transform: rotate(273.6deg);
+  transform: rotate(273.6deg);
+}
+
+.skills.circles .progress.p77 .bar {
+  -moz-transform: rotate(277.2deg);
+  -ms-transform: rotate(277.2deg);
+  -webkit-transform: rotate(277.2deg);
+  transform: rotate(277.2deg);
+}
+
+.skills.circles .progress.p78 .bar {
+  -moz-transform: rotate(280.8deg);
+  -ms-transform: rotate(280.8deg);
+  -webkit-transform: rotate(280.8deg);
+  transform: rotate(280.8deg);
+}
+
+.skills.circles .progress.p79 .bar {
+  -moz-transform: rotate(284.4deg);
+  -ms-transform: rotate(284.4deg);
+  -webkit-transform: rotate(284.4deg);
+  transform: rotate(284.4deg);
+}
+
+.skills.circles .progress.p80 .bar {
+  -moz-transform: rotate(288deg);
+  -ms-transform: rotate(288deg);
+  -webkit-transform: rotate(288deg);
+  transform: rotate(288deg);
+}
+
+.skills.circles .progress.p81 .bar {
+  -moz-transform: rotate(291.6deg);
+  -ms-transform: rotate(291.6deg);
+  -webkit-transform: rotate(291.6deg);
+  transform: rotate(291.6deg);
+}
+
+.skills.circles .progress.p82 .bar {
+  -moz-transform: rotate(295.2deg);
+  -ms-transform: rotate(295.2deg);
+  -webkit-transform: rotate(295.2deg);
+  transform: rotate(295.2deg);
+}
+
+.skills.circles .progress.p83 .bar {
+  -moz-transform: rotate(298.8deg);
+  -ms-transform: rotate(298.8deg);
+  -webkit-transform: rotate(298.8deg);
+  transform: rotate(298.8deg);
+}
+
+.skills.circles .progress.p84 .bar {
+  -moz-transform: rotate(302.4deg);
+  -ms-transform: rotate(302.4deg);
+  -webkit-transform: rotate(302.4deg);
+  transform: rotate(302.4deg);
+}
+
+.skills.circles .progress.p85 .bar {
+  -moz-transform: rotate(306deg);
+  -ms-transform: rotate(306deg);
+  -webkit-transform: rotate(306deg);
+  transform: rotate(306deg);
+}
+
+.skills.circles .progress.p86 .bar {
+  -moz-transform: rotate(309.6deg);
+  -ms-transform: rotate(309.6deg);
+  -webkit-transform: rotate(309.6deg);
+  transform: rotate(309.6deg);
+}
+
+.skills.circles .progress.p87 .bar {
+  -moz-transform: rotate(313.2deg);
+  -ms-transform: rotate(313.2deg);
+  -webkit-transform: rotate(313.2deg);
+  transform: rotate(313.2deg);
+}
+
+.skills.circles .progress.p88 .bar {
+  -moz-transform: rotate(316.8deg);
+  -ms-transform: rotate(316.8deg);
+  -webkit-transform: rotate(316.8deg);
+  transform: rotate(316.8deg);
+}
+
+.skills.circles .progress.p89 .bar {
+  -moz-transform: rotate(320.4deg);
+  -ms-transform: rotate(320.4deg);
+  -webkit-transform: rotate(320.4deg);
+  transform: rotate(320.4deg);
+}
+
+.skills.circles .progress.p90 .bar {
+  -moz-transform: rotate(324deg);
+  -ms-transform: rotate(324deg);
+  -webkit-transform: rotate(324deg);
+  transform: rotate(324deg);
+}
+
+.skills.circles .progress.p91 .bar {
+  -moz-transform: rotate(327.6deg);
+  -ms-transform: rotate(327.6deg);
+  -webkit-transform: rotate(327.6deg);
+  transform: rotate(327.6deg);
+}
+
+.skills.circles .progress.p92 .bar {
+  -moz-transform: rotate(331.2deg);
+  -ms-transform: rotate(331.2deg);
+  -webkit-transform: rotate(331.2deg);
+  transform: rotate(331.2deg);
+}
+
+.skills.circles .progress.p93 .bar {
+  -moz-transform: rotate(334.8deg);
+  -ms-transform: rotate(334.8deg);
+  -webkit-transform: rotate(334.8deg);
+  transform: rotate(334.8deg);
+}
+
+.skills.circles .progress.p94 .bar {
+  -moz-transform: rotate(338.4deg);
+  -ms-transform: rotate(338.4deg);
+  -webkit-transform: rotate(338.4deg);
+  transform: rotate(338.4deg);
+}
+
+.skills.circles .progress.p95 .bar {
+  -moz-transform: rotate(342deg);
+  -ms-transform: rotate(342deg);
+  -webkit-transform: rotate(342deg);
+  transform: rotate(342deg);
+}
+
+.skills.circles .progress.p96 .bar {
+  -moz-transform: rotate(345.6deg);
+  -ms-transform: rotate(345.6deg);
+  -webkit-transform: rotate(345.6deg);
+  transform: rotate(345.6deg);
+}
+
+.skills.circles .progress.p97 .bar {
+  -moz-transform: rotate(349.2deg);
+  -ms-transform: rotate(349.2deg);
+  -webkit-transform: rotate(349.2deg);
+  transform: rotate(349.2deg);
+}
+
+.skills.circles .progress.p98 .bar {
+  -moz-transform: rotate(352.8deg);
+  -ms-transform: rotate(352.8deg);
+  -webkit-transform: rotate(352.8deg);
+  transform: rotate(352.8deg);
+}
+
+.skills.circles .progress.p99 .bar {
+  -moz-transform: rotate(356.4deg);
+  -ms-transform: rotate(356.4deg);
+  -webkit-transform: rotate(356.4deg);
+  transform: rotate(356.4deg);
+}
+
+.skills.circles .progress.p100 .bar {
+  -moz-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+@media (max-width: 840px) {
+  .skills.circles ul li {
+    width: 25%;
+  }
+}
+
+@media (max-width: 580px) {
+  .skills.dotted ul li {
+    width: 100%;
+    display: block;
+  }
+  .skills.circles ul li {
+    width: 33.333%;
+  }
+  .skills.list ul li {
+    display: block;
+    width: 100%;
+  }
+}

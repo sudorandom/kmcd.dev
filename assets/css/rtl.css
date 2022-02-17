@@ -1,0 +1,540 @@
+/**
+*	Glitche - CV/Resume/Portfolio Template (HTML)
+*	Version: 1.3
+*	Author: beshleyua
+*	Author URL: http://themeforest.net/user/beshleyua
+*	Copyright © Cvio by beshleyua. All Rights Reserved.
+**/
+
+/* RTL */
+
+body {
+	direction: rtl;
+	unicode-bidi: embed;
+}
+
+/* 1. Basic */
+html {
+	margin-left: 0!important;
+	margin-right: 0!important;
+}
+
+/* 3. Columns */
+.cols .col.col-sm {
+	float: right;
+}
+
+.cols .col.col-lg {
+	float: right;
+}
+
+.cols .col.col-md {
+	float: right;
+}
+
+/* 6. Buttons */
+.bts-list .btn {
+	margin-right: auto;
+	margin-left: 20px;
+}
+
+.bts-list .btn:last-child {
+	margin-right: auto;
+	margin-left: 0px;
+}
+
+/* 8. Forms */
+
+button {
+	text-align: right;
+}
+
+/* 9. Lists */
+ul {
+	padding-right: 0px;
+}
+
+ol {
+	padding-right: 0px;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+	margin-right: 15px;
+}
+
+/* 11. Tables */
+th {
+	text-align: right;
+}
+
+dd {
+	margin-right: 30px;
+}
+
+/* 1. header */
+header {
+	left: auto;
+	right: 0;
+	text-align: left;
+}
+
+header .top-menu-nav {
+	text-align: right;
+}
+
+header .head-top .top-menu ul li {
+	margin-left: 0;
+	margin-right: 50px;
+}
+
+header .head-top .top-menu-nav .sub-menu, header .head-top .top-menu-nav .children {
+	left: auto;
+	right: 0;
+	text-align: right;
+}
+
+header .head-top .top-menu-nav .sub-menu:before, header .head-top .top-menu-nav .children:before {
+	left: auto;
+	right: 10px;
+}
+
+header .head-top .top-menu-nav .sub-menu li, header .head-top .top-menu-nav .children li {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+header .head-top .top-menu-nav .sub-menu li .sub-menu, header .head-top .top-menu-nav .children li .children {
+	left: auto;
+	right: 100%;
+}
+
+header .head-top .top-menu-nav .sub-menu li .sub-menu:before, header .head-top .top-menu-nav .children li .children:before {
+	left: auto;
+	right: -12px;
+}
+
+header .logo {
+	float: right;
+}
+
+/* header active */
+@media (max-width: 840px) {
+	header .top-menu-nav {
+		text-align: center;
+	}
+	header .head-top .top-menu {
+		float: right;
+		text-align: center;
+	}
+	header .head-top .top-menu-nav .sub-menu, header .head-top .top-menu-nav .children {
+		left: auto;
+		right: 0;
+		text-align: center;
+	}
+	header.active .head-top .top-menu-nav .sub-menu:before, header.active .head-top .top-menu-nav .children:before {
+		margin-left: auto;
+		margin-right: -6px;
+		left: auto;
+		right: 50%;
+	}
+	header .head-top .top-menu-nav .sub-menu li, header .head-top .top-menu-nav .children li {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	header .head-top .top-menu-nav .sub-menu li .sub-menu, header .head-top .top-menu-nav .children li .children {
+		left: auto;
+		right: 0;
+	}
+	header .head-top .top-menu-nav .sub-menu li .sub-menu:before, header .head-top .top-menu-nav .children li .children:before {
+		left: auto;
+		right: 50%;
+	}
+	header .head-top .menu-btn {
+		float: left;
+	}
+}
+
+/* 4. About */
+.section.about .image {
+	float: right;
+}
+
+.section.about .desc {
+	margin-left: 0;
+	margin-right: 130px;
+}
+
+@media (max-width: 600px) {
+	.section.about .desc {
+		margin-left: 0;
+		margin-right: 100px;
+	}
+	.section.about .image {
+		float: none;
+	}
+}
+
+@media (max-width: 400px) {
+	.section.about .desc {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+}
+
+/* 5. Resume */
+@media (max-width: 840px) {
+	.resume-items .resume-item {
+		padding-right: 30px;
+		padding-left: 0;
+	}
+}
+
+.resume-items .resume-item:before {
+	left: auto;
+	right: 0;
+}
+
+.resume-items .resume-item .date:before {
+	left: auto;
+	right: -30px;
+}
+
+/* 6. Skills */
+.skills ul li .progress .percentage {
+	left: auto;
+	right: 0;
+	top: 0;
+}
+
+.skills ul li .progress .percentage .percent {
+	right: auto;
+	left: 0;
+}
+
+/* 7. Service */
+.service-items .service-item {
+	margin: 50px 0 0 4%;
+	text-align: right;
+}
+
+@media (max-width: 580px) {
+	.service-items .service-item {
+		margin-left: 0;
+	}
+}
+
+@media (max-width: 400px) {
+	.service-items .service-item {
+		text-align: center;
+	}
+}
+
+.service-items .service-item .icon {
+	float: right;
+}
+
+@media (max-width: 400px) {
+	.service-items .service-item .icon {
+		float: none;
+	}
+}
+
+.service-items .service-item .name {
+	margin: 6px 46px 0 0;
+}
+
+@media (max-width: 400px) {
+	.service-items .service-item .name {
+		margin: 0 2px 0 0;
+	}
+}
+
+/* 8. Portfolio */
+.section.works .filters label {
+	margin-right: auto;
+	margin-left: 25px;
+}
+
+/* 9. Box Items */
+
+.box-items .box-item .category-name {
+	margin-right: auto;
+	margin-left: 8px;
+}
+
+.box-items .box-item .category-name:last-child {
+	margin-left: 0px;
+}
+
+/* 11. Blog */
+.started-content .date {
+	margin: 0 10px 10px 0;
+}
+
+blockquote {
+	padding: 0 20px 0 0;
+	border-left: none;
+	border-right: 2px solid #f26b38;
+}
+
+.single-post-text ul > li, .single-post-text ol > li, .comment-text ul > li, .comment-text ol > li {
+	padding: 0 18px 0 0;
+}
+
+.single-post-text ul > li:before, .comment-text ul > li:before {
+	left: auto;
+	right: 0;
+}
+
+.post-comments .post-comment .image {
+	float: right;
+}
+
+.post-comments .post-comment .desc {
+	margin-left: 0;
+	margin-right: 100px;
+}
+
+.post-comment.pingback .desc {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.post-text-bottom > span {
+	margin-right: auto;
+	margin-left: 20px;
+}
+
+.post-text-bottom .tags-links a, .post-text-bottom .tags-links span {
+	margin: 0 0 10px 10px;
+}
+
+.post-comments ul.children {
+	padding: 20px 100px 0 20px;
+}
+
+.post-comments ul.children ul.children {
+	padding: 20px 40px 0 0;
+}
+
+.comment-info span.comment-reply {
+	right: auto;
+	left: 0;
+}
+
+.comment-respond .title_inner small {
+	left: auto;
+	right: 120%;
+}
+
+@media (max-width: 1160px) {
+	.post-comments .post-comment .desc {
+		margin-left: auto;
+		margin-right: 80px;
+	}
+	.post-comments .post-comment.pingback .desc {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.post-comments ul.children {
+		padding: 20px 80px 0 20px;
+	}
+	.post-comments ul.children ul.children {
+		padding: 20px 20px 0 0;
+	}
+	.post-comments ul.children ul.children ul.children ul.children {
+		padding: 20px 10px 0 0;
+	}
+}
+
+@media (max-width: 840px) {
+	.post-comments ul.children {
+		padding: 20px 20px 0 20px;
+	}
+	.post-comments ul.children ul.children {
+		padding: 20px 20px 0 0;
+	}
+	.post-comments ul.children ul.children ul.children {
+		padding: 20px 20px 0 0;
+	}
+	.post-comments ul.children ul.children ul.children ul.children {
+		padding: 20px 10px 0 0;
+	}
+}
+
+@media (max-width: 480px) {
+	.section .content .comment-respond .title.comment-reply-title {
+		text-align: right;
+	}
+	.post-comments ul.children {
+		padding: 15px 15px 15px 15px;
+	}
+	.post-comments ul.children ul.children {
+		padding: 15px 10px 0 0;
+	}
+	.post-comments ul.children ul.children ul.children {
+		padding: 15px 5px 0 0;
+	}
+	.post-comments ul.children ul.children ul.children ul.children {
+		padding: 15px 5px 0 0;
+	}
+	.post-comments .post-comment .desc {
+		margin-left: auto;
+		margin-right: 55px;
+	}
+	.post-comments .post-comment.pingback .desc {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+/* 12. Footer */
+
+footer .soc {
+	float: left;
+}
+
+footer .soc a {
+	margin-left: 0;
+	margin-right: 12px;
+}
+
+@media (max-width: 840px) {
+	footer .soc {
+		float: none;
+	}
+	footer .soc a {
+		margin: 0 6px;
+	}
+
+}
+
+footer .copy {
+	float: right;
+}
+
+.content-sidebar {
+	right: auto;
+	left: -368px;
+}
+
+.content-sidebar.active {
+	right: auto;
+	left: 0;
+}
+
+.content-sidebar .widget ul ul {
+	margin-right: 0;
+}
+
+.content-sidebar .widget ul ul ul {
+	margin-right: 5px;
+	padding-left: 0;
+}
+
+.search-form input.search-field {
+	padding: 0 15px 0 50px;
+}
+
+.search-form input.search-submit {
+	margin-right: auto;
+	margin-left: 12px;
+	float: left;
+}
+
+.content-sidebar h2.widget-title span {
+	left: auto;
+	right: -5px;
+}
+
+.content-sidebar .close {
+	left: auto;
+	right: -68px;
+}
+
+.sidebar_btn {
+	margin-left: 0;
+	margin-right: 20px;
+}
+
+.navigation.post-navigation .nav-links .nav-previous a {
+	float: right;
+	padding-left: 0;
+	padding-right: 34px;
+}
+
+.navigation.post-navigation .nav-links .nav-previous a:before, .navigation.post-navigation .nav-links .nav-next a:after {
+	left: auto;
+	right: 0;
+	-webkit-transform: scaleX(1);
+	transform: scaleX(1);
+}
+
+.navigation.post-navigation .nav-links .nav-next a {
+	float: left;
+	padding-right: 0;
+	padding-left: 34px;
+}
+
+.navigation.post-navigation .nav-links .nav-next a:after {
+	left: 0;
+	right: auto;
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+}
+
+@media (max-width: 840px) {
+	.sidebar_btn {
+		margin-right: auto;
+		right: auto;
+		left: 0;
+	}
+}
+
+div.wpcf7 {
+	direction: rtl;
+}
+
+header .head-top .top-menu ul li.menu-item-has-children > a:after {
+	margin-right: 5px;
+	margin-left: 0;
+}
+
+.section.started.layout-creative .started-content, .section.started.layout-post-creative .started-content {
+	text-align: right;
+}
+
+.skills.list ul li .name {
+	padding-left: 0;
+	padding-right: 23px;
+}
+
+.skills.list ul li .name:before {
+	left: auto;
+	right: 0;
+}
+
+.skills.dotted ul li .progress .dg, .skills.dotted ul li .progress .da {
+	left: auto;
+	right: 0;
+}
+
+.skills.circles ul li .name {
+	left: auto;
+	right: 0;
+}
+
+.details-col {
+	padding-left: 0;
+	padding-right: 30px;
+}
+
+.single-post-text .details-list li {
+	padding-right: 0;
+}
+
+/* 13. Popups */
+.popup-box {
+	text-align: right;
+}
