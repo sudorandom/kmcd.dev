@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: 17.x
 
-      - name: Install cuttlebelle
-        run: npm install cuttlebelle -g
+      # - name: Install cuttlebelle
+      #   run: npm install cuttlebelle -g
 
-      - name: Build docs
-        run: cuttlebelle
+      # - name: Build docs
+      #   run: cuttlebelle
 
       - name: Configure git
         run: |
