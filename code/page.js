@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Header from './Header';
+import ResumeHeader from './ResumeHeader';
+
 
 /**
  * The page layout component
  */
-const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _nav }) => (
+const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _parents, _nav, _globalProp }) => (
 	<html lang="en">
 	<head>
 	    <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -52,7 +55,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _nav
 					<div className="top-menu">
 						<ul>
 						{
-							Object.keys(_nav)
+							Object.keys(_nav["index"])
 								.map(
 									(page, i) =>(
 										<li key={i} className={ page == _ID ? 'active' : null }><a href={_pages[page]._url} className="lnk">{_pages[page].title}</a></li>
@@ -65,20 +68,10 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _nav
 			</header>
 
 			<div className="wrapper">
-				<div className="section started">
-					<div className="centrize full-width">
-						<div className="vertical-center">
-							<div className="started-content">
-								<div className="h-title glitch-effect" data-text={ title }>{ title }</div>
-								<div className="h-subtitle typing-bread">
-									<p>sudorandom</p>
-								</div>
-								<span className="typed-bread"></span>
-							</div>
-						</div>
-					</div>
-					<a href="#" className="mouse_btn"><span className="ion ion-mouse"></span></a>
-				</div>
+				{_ID == 'cv'
+			        ? <ResumeHeader title={title} />
+			        : <Header title={title} _parents={_parents} _pages={_pages} _globalProp={_globalProp} />
+			      }
 				<div className="section works">
 					<div className="content">
 						{ main }
