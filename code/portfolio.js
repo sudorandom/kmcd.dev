@@ -24,7 +24,7 @@ const Portfolio = ({ _relativeURL, _ID, _nav, _pages }) => (
 							</label>
 						</div>
 						<div className="btn-group">
-							<label data-text="Visualization">
+							<label data-text="Data Visualization">
 								<input type="radio" name="fl_radio" value=".f-data-visualization" />Data Visualization
 							</label>
 						</div>
