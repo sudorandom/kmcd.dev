@@ -190,7 +190,7 @@ header .head-top .top-menu ul li.active .btn {
 /* 2. Section */
 .section {
   position: relative;
-  padding: 0 80px 150px 80px;
+  padding: 0 60px 80px 60px;
   z-index: 97;
   opacity: 1;
   visibility: visible;
