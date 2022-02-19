@@ -44,6 +44,10 @@ const CV = ({ _body, _relativeURL, _ID, name, description, job, citizenship, res
 					<div className="resume-item active">
 						<div className="date">2021 - present</div>
 						<div className="name">Software Engineer - Vital Beats</div>
+						<ul className="resume-sub-item">
+							<li>I worked on the Vital Beats platform, which assists in treating patients with implanted heart devices.</li>
+							<li>Technology includes Elixir, Python, PostgreSQL, Kubernetes, RabbitMQ, data science tooling in python (numpy, pandas, matplotlib, etc.), terraform and AWS.</li>
+						</ul>
 					</div>
 					<div className="resume-item active">
 						<div className="date">2016 - 2021</div>
