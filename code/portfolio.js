@@ -36,7 +36,7 @@ const Portfolio = ({ _relativeURL, _ID, _nav, _pages }) => (
 							.map((id, i) => _pages[id])
 							.map(
 								(page, i) =>(
-									<div key={i} className={`box-item f-${page.project_type}`}>
+									<div key={i} className={`box-item ${page.categories.map((cat) => "f-"+cat).join(" ")}`}>
 										<div className="image">
 											<a href={page._url}>
 												<img src={_relativeURL( page.thumbnail, _ID )} alt="" />
