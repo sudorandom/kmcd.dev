@@ -4,7 +4,7 @@
   "description": "",
   "cuttlebelle": {
     "site": {
-      "markdownRenderer": "code/markdown.js",
+      "markdownRenderer": "markdown.js",
       "globalProp": {"sitename": "sudorandom"}
     }
   }

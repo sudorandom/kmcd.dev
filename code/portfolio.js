@@ -32,8 +32,8 @@ const Portfolio = ({ _relativeURL, _ID, _nav, _pages }) => (
 				</div>
 				<div className="box-items portfolio-items">
 					{
-						Object.keys(_nav[_ID]["index"])
-							.map((id, i) => _pages["index/"+id])
+						Object.keys(_nav["index"]["portfolio"])
+							.map((id, i) => _pages[id])
 							.map(
 								(page, i) =>(
 									<div key={i} className={`box-item f-${page.project_type}`}>

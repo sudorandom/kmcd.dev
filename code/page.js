@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Header from './Header';
-import ResumeHeader from './ResumeHeader';
+import Header from './partials/Header';
+import ResumeHeader from './partials/ResumeHeader';
+import IndexHeader from './partials/IndexHeader';
 
 
 /**
@@ -34,7 +35,10 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/template-colors/green.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/template-dark/dark.css`, _ID )} />
-		<link rel="shortcut icon" href={_relativeURL( `/assets/images/favicons/favicon.ico`, _ID )} />
+		<link rel="apple-touch-icon" sizes="180x180" href={_relativeURL( `/assets/images/favicons/apple-touch-icon.png`, _ID )} />
+		<link rel="icon" type="image/png" sizes="32x32" href={_relativeURL( `/assets/images/favicons/favicon-32x32.png`, _ID )} />
+		<link rel="icon" type="image/png" sizes="16x16" href={_relativeURL( `/assets/images/favicons/favicon-16x16.png`, _ID )} />
+		<link rel="manifest" href={_relativeURL( `/assets/images/favicons/site.webmanifest`, _ID )} />
 	</head>
 	<body>
 		<div className="preloader">
@@ -49,42 +53,22 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		</div>
 		
 		<div className="container bg">
-			<header>
-				<div className="head-top">
-					<a href="#" className="menu-btn"><span></span></a>
-					<div className="top-menu">
-						<ul>
-						{
-							Object.keys(_nav["index"])
-								.map(
-									(page, i) =>(
-										<li key={i} className={ page == _ID ? 'active' : null }><a href={_pages[page]._url} className="lnk">{_pages[page].title}</a></li>
-									)
-								)
-						}
-						</ul>
-					</div>
+			{_ID == 'index' ? <IndexHeader title={title} _parents={_parents} _ID={_ID} _pages={_pages} _nav={_nav} _globalProp={_globalProp} />
+		        : _ID == 'cv' ? <ResumeHeader title={title} _ID={_ID} _pages={_pages} _nav={_nav} />
+		        : <Header title={title} _parents={_parents} _ID={_ID} _pages={_pages} _nav={_nav} _globalProp={_globalProp} />
+		      }
+		    {_ID != 'index' ? <div className="section works">
+				<div className="content">
+					{ main }
 				</div>
-			</header>
-
-			<div className="wrapper">
-				{_ID == 'cv'
-			        ? <ResumeHeader title={title} />
-			        : <Header title={title} _parents={_parents} _pages={_pages} _globalProp={_globalProp} />
-			      }
-				<div className="section works">
-					<div className="content">
-						{ main }
-					</div>
-				</div>
-			</div>
+			</div>: null}
 
 			{
 				script != undefined
 					? ( <script src={ _relativeURL( `/assets/js/${ script }.js`, _ID ) } /> )
 					: null
 			}
-			
+
 			<footer>
 				<div className="soc">
 					<a target="_blank" href="https://twitter.com/sudorandom"><span className="ion ion-social-twitter"></span></a>
@@ -93,7 +77,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 				<div className="copy">© 2022 Kevin McDonald. All rights reserved.</div>
 				<div className="clr"></div>
 			</footer>
-			
+
 			<div className="line top"></div>
 			<div className="line bottom"></div>
 			<div className="line left"></div>

@@ -1,3 +1,2 @@
 ---
-layout: portfolio
 ---

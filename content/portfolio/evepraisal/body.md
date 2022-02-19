@@ -37,7 +37,7 @@ After a few hours of scanning the cargo of every ship in sight I realized that m
 
 That’s where something clicked in my mind and over the next 3 hours I made a web-based tool that completely solved the ambiguity of this entire process and changed ganking into a legitimate economically-driven career that boasts cost/benefit analysis similar to (yet more exciting than) most of the other more reputable careers in Eve Online. That’s a big claim, but I don’t think I am far off.
 
-## Let me explain…
+## How it works
 
 When you cargo scan a potential target’s cargo hold, you get a list of all its contents. Up until recently, all you could do was look at the list and that was basically it. However, CCP recently added the ability to copy/paste from many different places in the Eve Online UI including the cargo scan result window. Cool, I thought. I could have users to give me a list of all the items in the potential target’s hanger. Now I just needed a way to calculate the prices. Eve Online has an amazing developer community. There were (and are) existing websites that had daily database dumps of aggregate pricing data for every market item in the game. I downloaded one of the database dumps and used that data as my price reference. After that it was a matter of making a small website where people could give it cargo scan results and it would give back a reasonably accurate guess of the cargo’s value in less than a second. These estimates could be much better than what a human could do manually in the same time.
 
