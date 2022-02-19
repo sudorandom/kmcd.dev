@@ -1,6 +1,4 @@
 ---
-project_type: gaming
-thumbnail: /assets/images/works/evepraisal/thumbnail.png
 ---
 
 # Basic Details

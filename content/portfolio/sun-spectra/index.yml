@@ -1,4 +1,5 @@
 title: sun-spectra-image.svg
-
+project_type: art
+thumbnail: /assets/images/works/sun-spectra/thumbnail.png
 main:
   - body.md

@@ -1,6 +1,4 @@
 ---
-project_type: art
-thumbnail: /assets/images/works/sun-spectra/thumbnail.png
 ---
 
 # Basic Details
