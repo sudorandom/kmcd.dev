@@ -1,11 +1,28 @@
 {
-  "name": "sudorandom.com",
+  "name": "sudorandom.dev",
   "version": "1.0.0",
   "description": "",
   "cuttlebelle": {
     "site": {
       "markdownRenderer": "markdown.js",
-      "globalProp": {"sitename": "sudorandom"}
+      "globalProp": {
+        "sitename": "sudorandom"
+      }
     }
-  }
+  },
+  "scripts": {
+    "docs": "cuttlebelle docs",
+    "build:site": "cuttlebelle",
+    "build:js": "",
+    "build:css": "",
+    "build": "npm run build:site",
+    "watch:js": "",
+    "watch:css": "",
+    "watch:site": "cuttlebelle watch -n",
+    "watch": "npm run build && npm run watch:js | npm run watch:css | npm run watch:site"
+  },
+  "devDependencies": {
+    "onchange": "^3.3.0"
+  },
+  "dependencies": {}
 }

@@ -82,9 +82,8 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 			<div className="line bottom"></div>
 			<div className="line left"></div>
 			<div className="line right"></div>
-			
 		</div>
-		
+
 	    <script src={_relativeURL( `/assets/js/jquery.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/jquery.validate.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/typed.js`, _ID )}></script>

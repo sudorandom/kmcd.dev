@@ -91,7 +91,7 @@ const CV = ({ _body, _relativeURL, _ID, name, description, job, citizenship, res
 		<div className="section skills">
 			<div className="content">
 				<div className="title">
-					<div className="title_inner">Coding Skills</div>
+					<div className="title_inner">Programming Languages</div>
 				</div>
 				<div className="skills circles">
 					<ul>
