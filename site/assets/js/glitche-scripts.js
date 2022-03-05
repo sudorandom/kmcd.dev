@@ -228,14 +228,7 @@ $(function () {
 	/*
 		Image popup
 	*/
-	$('.has-popup-image').magnificPopup({
-		type: 'image',
-		closeOnContentClick: true,
-		mainClass: 'mfp-fade',
-		image: {
-			verticalFit: true
-		}
-	});
+	$(".has-popup-image").jqPhotoSwipe({})
 	
 	/*
 		Video popup

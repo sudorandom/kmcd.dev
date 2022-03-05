@@ -13,7 +13,7 @@
   "scripts": {
     "docs": "cuttlebelle docs",
     "build:site": "cuttlebelle",
-    "build:js": "cp node_modules/@svgdotjs/svg.js/dist/svg.js node_modules/@svgdotjs/svg.panzoom.js/dist/svg.panzoom.js assets/js/",
+    "build:js": "",
     "build:css": "",
     "build": "npm run build:js && npm run build:site",
     "watch:js": "",
@@ -25,7 +25,5 @@
     "onchange": "^3.3.0"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.1.2",
-    "@svgdotjs/svg.panzoom.js": "^2.1.2"
   }
 }
