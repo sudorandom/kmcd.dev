@@ -12,7 +12,7 @@ const ResumeHeader = ({ title, headerText, _ID, _pages, _nav }) => (
 	<Fragment>
 		<Nav _ID={_ID} _pages={_pages} _nav={_nav} />
 		<div className="wrapper">
-			<div className="section started">
+			<div className="section started smallheader">
 				<div className="centrize full-width">
 					<div className="vertical-center">
 						<div className="started-content">
@@ -26,7 +26,6 @@ const ResumeHeader = ({ title, headerText, _ID, _pages, _nav }) => (
 						</div>
 					</div>
 				</div>
-				<a href="#" className="mouse_btn"><span className="ion ion-mouse"></span></a>
 			</div>
 		</div>
 	</Fragment>

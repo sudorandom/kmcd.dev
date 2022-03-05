@@ -23,10 +23,9 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/glitche-basic.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/glitche-layout.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/ionicons.css`, _ID )} />
-		<link rel="stylesheet" href={_relativeURL( `/assets/css/magnific-popup.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/animate.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/site.css`, _ID )} />
-
+		
 		{
 			stylesheet != undefined
 				? ( <link rel="stylesheet" href={ _relativeURL( `/assets/css/${ stylesheet }.css`, _ID ) } /> )
@@ -39,6 +38,10 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		<link rel="icon" type="image/png" sizes="32x32" href={_relativeURL( `/assets/images/favicons/favicon-32x32.png`, _ID )} />
 		<link rel="icon" type="image/png" sizes="16x16" href={_relativeURL( `/assets/images/favicons/favicon-16x16.png`, _ID )} />
 		<link rel="manifest" href={_relativeURL( `/assets/images/favicons/site.webmanifest`, _ID )} />
+
+		<noscript>
+			<link rel="stylesheet" href={_relativeURL( `/assets/css/noscript.css`, _ID )} />
+		</noscript>
 	</head>
 	<body>
 		<div className="preloader">
@@ -87,10 +90,12 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 	    <script src={_relativeURL( `/assets/js/jquery.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/jquery.validate.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/typed.js`, _ID )}></script>
-	    <script src={_relativeURL( `/assets/js/magnific-popup.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/imagesloaded.pkgd.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/isotope.pkgd.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/glitche-scripts.js`, _ID )}></script>
+	    <script src={_relativeURL( `/assets/js/svg.js`, _ID )}></script>
+		<script src={_relativeURL( `/assets/js/svg.panzoom.js`, _ID )}></script>
+
 	</body>
 	</html>
 );

@@ -106,9 +106,9 @@ const CV = ({ _body, _relativeURL, _ID, name, description, job, citizenship, res
 						</li>
 						<li> 
 							<div className="name">Elixir</div>
-							<div className="progress p75">
-								<div className="percentage" style={{ width: "75%" }}>
-									<span className="percent">75%</span>
+							<div className="progress p70">
+								<div className="percentage" style={{ width: "70%" }}>
+									<span className="percent">70%</span>
 								</div>
 								<span>75%</span>
 							</div>

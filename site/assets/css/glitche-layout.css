@@ -24,7 +24,7 @@
 
 /* 1. Header */
 header {
-  position: fixed;
+  /*position: fixed;*/
   left: 0;
   top: 30px;
   width: 100%;
@@ -250,6 +250,7 @@ header .head-top .top-menu ul li.active .btn {
   -khtml-box-shadow: inset 0 -6px 0px #ede574;
 }
 
+
 /* 3. Started */
 .section.started {
   text-align: center;
@@ -270,7 +271,7 @@ header .head-top .top-menu ul li.active .btn {
   font-family: 'Roboto Mono';
   color: #141414;
   font-weight: 700;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   letter-spacing: 0.04em;
   margin: 10px 0 5px 0;
 }
@@ -337,6 +338,11 @@ header .head-top .top-menu ul li.active .btn {
   position: relative;
   top: 0px;
   animation: mouse-anim 1s ease-out 0s infinite;
+}
+
+.section.started.smallheader {
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
 
 /* 4. About */
@@ -921,7 +927,7 @@ header .head-top .top-menu ul li.active .btn {
 
 /* 12. Footer */
 footer {
-  position: fixed;
+  /*position: fixed;*/
   bottom: 25px;
   left: 0;
   padding: 15px 60px 30px 60px;

@@ -1,0 +1,11 @@
+body header,
+body footer,
+body .section {
+	opacity: 100%;
+	visibility: visible;
+}
+
+.preloader {
+	visibility: hidden;
+	opacity: 0;
+}

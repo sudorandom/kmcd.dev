@@ -14,24 +14,24 @@ Here are the resulting images.
 ## geo-mercator.svg
 ![Cable map using the mercator projection](../../assets/images/works/submarine-cable-map/geo-mercator.svg "geo-mercator.svg")
 <p align=center>
-	<a href="../../assets/images/works/submarine-cable-map/geo-mercator.svg" target="_blank">Open the SVG for full resolution</a>
+	<a href="../../assets/images/works/submarine-cable-map/geo-mercator.svg" target="_blank">click here for full resolution</a>
 </p>
 
 ## geo-conic-conformal.svg
 
 ![Cable map using the conic coformal projection](../../assets/images/works/submarine-cable-map/geo-conic-conformal.svg "geo-conic-conformal.svg")
 <p align=center>
-	<a href="../../assets/images/works/submarine-cable-map/geo-conic-conformal.svg" target="_blank">Open the SVG for full resolution</a>
+	<a href="../../assets/images/works/submarine-cable-map/geo-conic-conformal.svg" target="_blank">click here for full resolution</a>
 </p>
 
 ## geo-conic-equal-area.svg
 ![Cable map using the Geo Conic Equal Area projection](../../assets/images/works/submarine-cable-map/geo-conic-equal-area.svg "geo-conic-equal-area.svg")
 <p align=center>
-	<a href="../../assets/images/works/submarine-cable-map/geo-conic-equal-area.svg" target="_blank">Open the SVG for full resolution</a>
+	<a href="../../assets/images/works/submarine-cable-map/geo-conic-equal-area.svg" target="_blank">click here for full resolution</a>
 </p>
 
 ## geo-natural-earth-1.svg
 ![Cable map using the Geo Natural Earth projection](../../assets/images/works/submarine-cable-map/geo-natural-earth-1.svg" "geo-natural-earth-1")
 <p align=center>
-	<a href="../../assets/images/works/submarine-cable-map/geo-natural-earth-1.svg" target="_blank">Open the SVG for full resolution</a>
+	<a href="../../assets/images/works/submarine-cable-map/geo-natural-earth-1.svg" target="_blank">click here for full resolution</a>
 </p>

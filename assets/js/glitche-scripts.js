@@ -14,7 +14,7 @@ $(function () {
 	/* Set full height in blocks */
 	var width = $(window).width();
 	var height = $(window).height();
-	$('.section.started').css({'height': height-60});
+	$('.section.fullheight').css({'height': height-180});
 	
 	/* Typed preload text */
 	$('.typed-load').typed({
@@ -301,7 +301,7 @@ $(function () {
 		var width = $(window).width();
 		var height = $(window).height();
 		
-		$('.section.started').css({'height': height-60});
+		$('.section.fullheight').css({'height': height-180});
 
 		/* Dotted Skills Line On Resize Window */
 		var skills_dotted = $('.skills-list.dotted .progress');
@@ -312,7 +312,7 @@ $(function () {
 	});
 	
 	if(width < 840) {
-		$('.section.started').css({'height': height-30});
+		$('.section.fullheight').css({'height': height-30});
 	}
 
 	/* One Page Menu Nav */
