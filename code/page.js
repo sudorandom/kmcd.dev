@@ -26,8 +26,8 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/animate.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/site.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/magnific-popup.css`, _ID )} />
-		<link rel="stylesheet" href={_relativeURL( `/assets/js/photoswipe/photoswipe.css`, _ID )} />
-		<link rel="stylesheet" href={_relativeURL( `/assets/js/photoswipe/default-skin/default-skin.css`, _ID )} />
+		<link rel="stylesheet" href={_relativeURL( `/assets/js/jqphotoswipe/photoswipe.css`, _ID )} />
+		<link rel="stylesheet" href={_relativeURL( `/assets/js/jqphotoswipe/default-skin/default-skin.css`, _ID )} />
 		
 		{
 			stylesheet != undefined
@@ -96,9 +96,9 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 	    <script src={_relativeURL( `/assets/js/imagesloaded.pkgd.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/isotope.pkgd.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/glitche-scripts.js`, _ID )}></script>
-	    <script src={_relativeURL( `/assets/js/photoswipe/photoswipe.min.js`, _ID )}></script>
-	    <script src={_relativeURL( `/assets/js/photoswipe/photoswipe-ui-default.min.js`, _ID )}></script>
-	    <script src={_relativeURL( `/assets/js/photoswipe/jqPhotoSwipe.min.js`, _ID )}></script>
+	    <script src={_relativeURL( `/assets/js/jqphotoswipe/photoswipe.min.js`, _ID )}></script>
+	    <script src={_relativeURL( `/assets/js/jqphotoswipe/photoswipe-ui-default.min.js`, _ID )}></script>
+	    <script src={_relativeURL( `/assets/js/jqphotoswipe/jqPhotoSwipe.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/magnific-popup.js`, _ID )}></script>
 
 	</body>
