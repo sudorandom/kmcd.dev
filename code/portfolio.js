@@ -7,10 +7,13 @@ import React, { Fragment } from 'react';
  *
  * @disable-docs
  */
-const Portfolio = ({ _relativeURL, _ID, _nav, _pages }) => (
+const Portfolio = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 	<Fragment>
 		<div className="section works">
 			<div className="content">
+				<p>
+					{ preface }
+				</p>
 				<div className="filter-menu">
 					<div className="filters">
 						<div className="btn-group">

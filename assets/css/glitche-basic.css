@@ -794,3 +794,6 @@ blockquote {
 
 }
 
+.pswp__button:focus, .pswp__button:hover {
+	border: 0;
+}
