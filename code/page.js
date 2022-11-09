@@ -16,7 +16,6 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		<title>sudorandom - { title }</title>
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
-		
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 		
 		<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,100,300italic,300,100italic,400italic,500,500italic,700,700italic&amp;subset=latin,cyrillic' rel='stylesheet' />
@@ -100,7 +99,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 	    <script src={_relativeURL( `/assets/js/jqphotoswipe/photoswipe-ui-default.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/jqphotoswipe/jqPhotoSwipe.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/magnific-popup.js`, _ID )}></script>
-
+	    <a rel="me" href="https://infosec.exchange/@sudorandom"></a>
 	</body>
 	</html>
 );
