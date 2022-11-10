@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Header from './partials/Header';
-import ResumeHeader from './partials/ResumeHeader';
-import IndexHeader from './partials/IndexHeader';
+import Header from './partials/header';
+import ResumeHeader from './partials/resumeheader';
+import IndexHeader from './partials/indexheader';
 
 
 /**
