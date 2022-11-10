@@ -22,8 +22,6 @@
     "watch": "npm run build && npm run watch:js | npm run watch:css | npm run watch:site"
   },
   "devDependencies": {
-    "onchange": "^3.3.0"
-  },
-  "dependencies": {
+    "onchange": "^7.1.0"
   }
 }
