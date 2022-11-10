@@ -1,5 +1,5 @@
 ---
-layout: CV
+layout: cv
 name: Kevin McDonald
 job: Senior Software Engineer
 citizenship: USA
