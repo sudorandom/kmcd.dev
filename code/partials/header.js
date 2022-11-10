@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
-import Nav from './Nav';
+import Nav from './nav';
 
 /**
  * The Header component
