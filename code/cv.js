@@ -42,8 +42,16 @@ const CV = ({ _body, _relativeURL, _ID, name, description, job, citizenship, res
 				</div>
 				<div className="resume-items">
 					<div className="resume-item active">
-						<div className="date">2021 - present</div>
-						<div className="name">Software Engineer - Vital Beats</div>
+						<div className="date">2023 - present</div>
+						<div className="name">Senior Software Engineer - SYBO</div>
+						<ul className="resume-sub-item">
+							<li>Working on backend game services.</li>
+							<li>Go, gRPC, kubernetes, terraform, helm, Google Cloud (GCP).</li>
+						</ul>
+					</div>
+					<div className="resume-item active">
+						<div className="date">2021 - 2022</div>
+						<div className="name">Senior Software Engineer - Vital Beats</div>
 						<ul className="resume-sub-item">
 							<li>I worked on the Vital Beats platform, which assists in treating patients with implanted heart devices.</li>
 							<li>Technology includes Elixir, Python, PostgreSQL, Kubernetes, RabbitMQ, data science tooling in python (numpy, pandas, matplotlib, etc.), terraform and AWS.</li>
