@@ -3,11 +3,11 @@ import React, { Fragment } from 'react';
 
 
 /**
- * The Portfolio component
+ * The Blog component
  *
  * @disable-docs
  */
-const Portfolio = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
+const Blog = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 	<Fragment>
 		<div className="section works">
 			<div className="content">
@@ -33,13 +33,22 @@ const Portfolio = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 						</div>
 					</div>
 				</div>
-				<div className="box-items portfolio-items">
+				<div className="box-items blog-items">
 					{
-						Object.keys(_nav["index"]["portfolio"])
-							.map((id, i) => _pages[id])
+						Object.keys(_nav["index"]["blog"])
+							.map((id, i) => _pages[id]).sort(function(a, b) {
+								if (a.date > b.date) {
+									return -1
+								} else if (a.date > b.date) {
+									return 1
+								} else {
+									return 0
+								}
+							})
 							.map(
 								(page, i) =>(
 									<div key={i} className={`box-item ${page.categories.map((cat) => "f-"+cat).join(" ")}`}>
+										{i}
 										<div className="image">
 											<a href={page._url}>
 												<img src={_relativeURL( page.thumbnail, _ID )} alt="" />
@@ -53,6 +62,7 @@ const Portfolio = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 											</a>
 										</div>
 										<div className="desc">
+											<div className="date">{page.date}</div>
 											<a href={page._url} className="name has-popup-link">{page.title}</a>
 										</div>
 									</div>
@@ -66,13 +76,13 @@ const Portfolio = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 	</Fragment>
 );
 
-Portfolio.propTypes = {
+Blog.propTypes = {
 	/**
 	 * _body: (test)(12)
 	 */
 	_body: PropTypes.node.isRequired,
 };
 
-Portfolio.defaultProps = {};
+Blog.defaultProps = {};
 
-export default Portfolio;
+export default Blog;

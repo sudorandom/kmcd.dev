@@ -182,7 +182,7 @@ $(function () {
 	});
 	
 	/*
-		Initialize portfolio items
+		Initialize blog items
 	*/
 	var $container = $('.section.works .box-items');
 	$container.imagesLoaded(function() {

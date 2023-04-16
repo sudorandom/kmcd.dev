@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "onchange": "^7.1.0"
+  },
+  "dependencies": {
+    "cuttlebelle": "^1.0.0-alpha.79"
   }
 }

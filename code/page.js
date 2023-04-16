@@ -13,7 +13,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 	<html lang="en">
 	<head>
 	    <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>sudorandom - { title }</title>
+		<title>{`sudorandom - ` + title }</title>
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
