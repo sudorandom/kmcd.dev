@@ -21,7 +21,6 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 		<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,100,300italic,300,100italic,400italic,500,500italic,700,700italic&amp;subset=latin,cyrillic' rel='stylesheet' />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/glitche-basic.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/glitche-layout.css`, _ID )} />
-		<link rel="stylesheet" href={_relativeURL( `/assets/css/ionicons.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/animate.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/site.css`, _ID )} />
 		<link rel="stylesheet" href={_relativeURL( `/assets/css/magnific-popup.css`, _ID )} />
@@ -76,8 +75,9 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 
 			<footer>
 				<div className="soc">
-					<a target="_blank" href="https://twitter.com/sudorandom"><span className="ion ion-social-twitter"></span></a>
-					<a target="_blank" href="https://github.com/sudorandom"><span className="ion ion-social-github"></span></a>
+					<a target="_blank" href="https://infosec.exchange/@sudorandom"><ion-icon name="logo-mastodon"></ion-icon></a>
+					<a target="_blank" href="https://twitter.com/sudorandom"><ion-icon name="logo-twitter"></ion-icon></a>
+					<a target="_blank" href="https://github.com/sudorandom"><ion-icon name="logo-github"></ion-icon></a>
 				</div>
 				<div className="copy">© 2022 Kevin McDonald. All rights reserved.</div>
 				<div className="clr"></div>
@@ -100,6 +100,8 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID, _pages, _par
 	    <script src={_relativeURL( `/assets/js/jqphotoswipe/jqPhotoSwipe.min.js`, _ID )}></script>
 	    <script src={_relativeURL( `/assets/js/magnific-popup.js`, _ID )}></script>
 	    <a rel="me" href="https://infosec.exchange/@sudorandom"></a>
+		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	</body>
 	</html>
 );
