@@ -48,7 +48,6 @@ const Blog = ({ preface, _relativeURL, _ID, _nav, _pages }) => (
 							.map(
 								(page, i) =>(
 									<div key={i} className={`box-item ${page.categories.map((cat) => "f-"+cat).join(" ")}`}>
-										{i}
 										<div className="image">
 											<a href={page._url}>
 												<img src={_relativeURL( page.thumbnail, _ID )} alt="" />
