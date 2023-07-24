@@ -20,11 +20,13 @@ We all know the light that we get from the sun is white, meaning it contains abo
 -------
 ## The sun's spectra (visible light)
 ![Spectra of the sun in visible spectrum](visible.svg "The Sun")
+[Click here to see the full resolution](visible.svg)
 
 ## The sun's spectra (full spectrum)
 I also made a version that shows the NON visible spectrum. I can't use pretty colors for this because we literally don't have colors to map this part of the spectrum to. So I used greyscale (a gradient from black to white) to denote the intensity of this kind of light emited from the sun. The image looks blurry but that's an artifact of how precise the data is.
 
 ![Spectra of the sun in all spectrums](non-visible.svg "The Sun")
+[Click here to see the full resolution](non-visible.svg)
 
 
 ## The sun's spectra (annotated)
@@ -32,3 +34,4 @@ I also made a version that shows the NON visible spectrum. I can't use pretty co
 I also made a version that has text which describes what you're seeing.
 
 ![Spectra of the sun, annotated](annotated.svg "The Sun")
+[Click here to see the full resolution](annotated.svg)
