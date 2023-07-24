@@ -1,0 +1,11 @@
+.post.on-list {
+    background: rgba(0, 0, 0, .3);
+}
+
+.bg {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: auto auto;
+    background-repeat: no-repeat;
+}

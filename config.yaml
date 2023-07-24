@@ -1,0 +1,73 @@
+baseURL: 'https://sudorandom.dev/'
+languageCode: 'en'
+theme: "hello-friend-4s3ti"
+author: 
+  name: "sudorandom"
+title: 'sudorandom.dev'
+copyright: "All Rights Reserved"
+IsMultiLingual: true
+defaultContentLanguage: en
+
+staticDir: 
+ - "static"
+
+params:
+  homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
+  defaultTheme: "dark"
+  EnableThemeToggle: false
+  gitUrl: "https://github.com/sudorandom/sudorandom.dev"
+  EnableSharingButtons: true
+  EnableGlobalLanguageMenu: false
+  customCSS: ["/style.css"]
+  backgroundImage: "/background.svg"
+  backgroundEffects: true
+  showPosts: true
+  tags: true
+  contentTypeName: post
+# hideReadMore: true
+  ReadMoreText: true
+# ReadMore: "foo"
+# socialIcons: true
+# homeTitle: "Title"
+# homeSubtitle: "Subtitle"
+  fontAwesome:
+    KitURL: "https://kit.fontawesome.com/0ed5cec925.js"
+  ShowReadingTime: true
+  LastModDisplay: true
+  logo:
+    logoText: "sudorandom.dev"
+    logoCursorColor: "#ffffff"
+  social:
+    - name: "github"
+      url: "https://github.com/sudorandom"
+    - name: "mastodon"
+      url: "https://infosec.exchange/@sudorandom"
+    - name: "twitter"
+      url: "https://twitter.com/sudorandom/"
+    - name: "linkedin"
+      url: "https://www.linkedin.com/in/sudorandom/"
+
+  footer:
+    showVersion: true
+    socialIcons: true
+    author: true
+    rss: true
+    trademark: true
+    copyright: true
+#   topText:  ["Footer Top text"]
+    bottomText: [
+      # "Powered by <a href=\"http://gohugo.io\">Hugo</a>", 
+      # "with <a href=\"#\">Hello-friend-4s3ti</a>",
+    ]
+
+taxonomies:
+  tag: "tags"
+  category: "categories"
+
+
+menu:
+  main:
+    - identifier: "posts"
+      name: "Posts"
+      url: "/posts"
+      weight: 1

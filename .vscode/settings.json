@@ -1,0 +1,55 @@
+{
+    "frontMatter.taxonomy.contentTypes": [
+        {
+            "name": "default",
+            "pageBundle": false,
+            "fields": [
+                {
+                    "title": "categories",
+                    "name": "categories",
+                    "type": "categories"
+                },
+                {
+                    "title": "date",
+                    "name": "date",
+                    "type": "datetime"
+                },
+                {
+                    "title": "description",
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "title": "featured",
+                    "name": "featured",
+                    "type": "string"
+                },
+                {
+                    "title": "featuredalt",
+                    "name": "featuredalt",
+                    "type": "string"
+                },
+                {
+                    "title": "featuredpath",
+                    "name": "featuredpath",
+                    "type": "string"
+                },
+                {
+                    "title": "linktitle",
+                    "name": "linktitle",
+                    "type": "string"
+                },
+                {
+                    "title": "title",
+                    "name": "title",
+                    "type": "string"
+                },
+                {
+                    "title": "type",
+                    "name": "type",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
