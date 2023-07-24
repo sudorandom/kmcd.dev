@@ -19,7 +19,7 @@ params:
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
   customCSS: ["/style.css"]
-  backgroundImage: "/background.svg"
+  backgroundImage: "/background.png"
   backgroundEffects: true
   showPosts: true
   tags: true
