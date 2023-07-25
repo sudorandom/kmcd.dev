@@ -11,6 +11,7 @@ slug = "the-power-plant-01"
 type = "post"
 +++
 
+```
 Date: 2029-03-26
 
 Location: Red Mist, Texas
@@ -18,6 +19,7 @@ Location: Red Mist, Texas
 Author: Kevin Anderson
 
 Journal Entry #1
+```
 
 Today was my first day on the job, and I could hardly contain my excitement as I arrived at the site of the most extraordinary nuclear power plant ever built. The Red Mist Nuclear Power Facility, as it was officially known, had already made waves across the world. The energy it generated was on an unprecedented scale, dwarfing all previous power plants and forever altering the landscape of the energy market.
 
@@ -33,4 +35,6 @@ I did manage to have a meeting with one of the higher level engineers though. He
 
 It's obvious that this team has a passion for their work so it makes sense that they want to protect it. But the look on her face...
 
+```
 End of Journal Entry #1.
+```
