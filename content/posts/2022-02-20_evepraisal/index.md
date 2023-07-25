@@ -1,7 +1,7 @@
 +++
 categories = ["gaming"]
 date = "2022-02-20"
-description = "Evepraisal"
+description = "Evepraisal - An Eve Online price estimation tool"
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
@@ -60,9 +60,3 @@ The website slowly evolved into what is now known as Evepraisal. I added support
 I am still waiting for the day that CCP makes a suitable replacement to my tool, but until then I’ll still be slowly improving on the tool that’s become a ganker’s best friend and a scammer’s worst nightmare.
 
 ![Screenshot of evepraisal.com homepage](screenshot_index.png "Evepraisal")
-
-## Update: Shutting Evepraisal down
-
-Recently, CCP has banned the IP address that I currently use to gather market data from Eve Online's ESI API. I started to work towards mitigating the issue by contacting support, but I stopped to think for a second about just... not. This may not surprise most people based on how nothing really changed with the website for years, but I haven't played Eve Online for several years now. As such, I've been mostly doing extremely rare maintenance on the tool. I have enough monitoring that usually I am alerted when something breaks (that's how I even know that CCP banned my IP from ESI) and I spend some time fixing it and then I move on with my life. However, I've become more and more out-of-touch with the game. It appears to be changing and it just feels weird running a tool for a game I don't have installed anywhere... for years...
-
-**So I've decided to just pull the plug.** Thank you to everyone who has supported this project over the years. Eve Online has been a great game for many people for many years. I am happy to have had my role, however small, in shaping the game.

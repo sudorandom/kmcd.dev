@@ -12,6 +12,7 @@ staticDir:
  - "static"
 
 params:
+  Subtitle: "Exploring random things with a bored software engineer"
   homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
   defaultTheme: "dark"
   EnableThemeToggle: false
