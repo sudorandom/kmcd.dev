@@ -20,7 +20,7 @@ params:
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
   customCSS: ["/style.css"]
-  backgroundImage: "/background.png"
+  backgroundImage: "/background.webp"
   backgroundEffects: true
   showPosts: true
   tags: true
