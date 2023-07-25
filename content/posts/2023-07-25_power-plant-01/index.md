@@ -1,7 +1,7 @@
 +++
 categories = ["short-story", "power-plant"]
 date = "2023-07-25"
-description = "A safety inspector settles into his new job at an incredibly advanced Nuclear facility."
+description = "A safety inspector settles into his new job at an incredibly advanced nuclear facility."
 featured = ""
 featuredalt = ""
 featuredpath = "date"
