@@ -68,7 +68,11 @@ taxonomies:
 
 menu:
   main:
-    - identifier: "posts"
-      name: "Posts"
-      url: "/posts"
+    - identifier: "cv"
+      name: "CV"
+      url: "https://cv.sudorandom.dev"
       weight: 1
+    - identifier: "posts"
+      name: "Archive"
+      url: "/posts"
+      weight: 2
