@@ -17,7 +17,6 @@ params:
   ReadOtherPosts: "Read some other posts"
   defaultTheme: "dark"
   EnableThemeToggle: false
-  ReadOtherPosts: true
   gitUrl: "https://github.com/sudorandom/sudorandom.dev"
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
