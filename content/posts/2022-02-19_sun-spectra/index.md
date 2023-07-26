@@ -8,7 +8,7 @@ featuredpath = "date"
 linktitle = ""
 title = "sun-spectra-image.svg"
 slug = "sun-spectra-image.svg"
-type = "post"
+type = "posts"
 +++
 
 # Basic Details

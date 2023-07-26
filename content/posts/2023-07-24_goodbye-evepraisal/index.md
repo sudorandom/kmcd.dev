@@ -8,7 +8,7 @@ featuredpath = "date"
 linktitle = ""
 title = "Goodbye Evepraisal"
 slug = "goodbye-evepraisal"
-type = "post"
+type = "posts"
 +++
 
 [Evepraisal](/posts/evepraisal.com/) has been a really fun project for me. I think it has made a real impact with how Eve Online is played for many players. However, the time has come to shut it down.

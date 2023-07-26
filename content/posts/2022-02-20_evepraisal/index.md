@@ -8,7 +8,7 @@ featuredpath = "date"
 linktitle = ""
 title = "evepraisal.com"
 slug = "evepraisal.com"
-type = "post"
+type = "posts"
 +++
 
 # Basic Details

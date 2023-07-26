@@ -1,14 +1,15 @@
 +++
-categories = ["short-story", "power-plant"]
+categories = ["short-story", "the-power-plant"]
 date = "2023-07-25"
-description = "A safety inspector settles into his new job at an incredibly advanced nuclear facility."
+description = "Through his journal, Kevin Anderson recounts his commencement at a groundbreaking futuristic power plant—a marvel that has already transformed the world. However, as he delves deeper into the heart of this technological wonder, unsettling discoveries emerge, revealing that humanity might be wagering with forces beyond their comprehension."
+cover = "/posts/the-power-plant-01/cover-power-plant-01.png"
 featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "The Power Plant 01"
+title = "Short Story: The Power Plant 01"
 slug = "the-power-plant-01"
-type = "post"
+type = "posts"
 +++
 
 ```
@@ -38,3 +39,5 @@ It's obvious that this team has a passion for their work so it makes sense that 
 ```
 End of Journal Entry #1.
 ```
+
+> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](http://localhost:57449/categories/the-power-plant/). Thank you for reading!

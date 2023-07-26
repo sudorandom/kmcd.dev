@@ -14,6 +14,7 @@ staticDir:
 params:
   Subtitle: "Exploring random things with a bored software engineer"
   homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
+  ReadOtherPosts: "Read some other posts"
   defaultTheme: "dark"
   EnableThemeToggle: false
   gitUrl: "https://github.com/sudorandom/sudorandom.dev"
@@ -24,7 +25,7 @@ params:
   backgroundEffects: true
   showPosts: true
   tags: true
-  contentTypeName: post
+  contentTypeName: posts
 # hideReadMore: true
   ReadMoreText: true
 # ReadMore: "foo"
