@@ -16,6 +16,7 @@ params:
   homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
   defaultTheme: "dark"
   EnableThemeToggle: false
+  ReadOtherPosts: true
   gitUrl: "https://github.com/sudorandom/sudorandom.dev"
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
