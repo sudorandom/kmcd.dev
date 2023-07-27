@@ -40,4 +40,4 @@ It's obvious that this team has a passion for their work so it makes sense that 
 End of Journal Entry #1.
 ```
 
-> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](/categories/the-power-plant/). This story is also published to [wattpad](https://www.wattpad.com/myworks/347737911-the-power-plant), so you can also follow it there as well. Thank you for reading!
+> You reached the end of this part. [Continue to part 2.](/posts/the-power-plant-01/)
