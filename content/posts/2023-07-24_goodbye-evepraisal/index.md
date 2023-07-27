@@ -24,5 +24,6 @@ If you are looking for alternatives, you may want to try one of these alternativ
 - [Eve Tycoon](https://evetycoon.com/appraisal)
 - [Fuzzwork](https://market.fuzzwork.co.uk/appraisal/)
 - [Janice](https://janice.e-351.com/)
+- [EVE Workbench](https://www.eveworkbench.com/tools/appraisal)
 
 o7, fly safe
