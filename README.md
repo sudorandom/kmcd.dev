@@ -10,3 +10,10 @@ Just build the site:
 ```
 hugo --minify
 ```
+
+### PDF Export
+If you want to export a page as a PDF, this is the process:
+```
+cat content/posts/2023-07-31_power-plant-02/index.md | python3 strip_frontmatter.py | pandoc -o output.pdf --pdf-engine=xelatex
+```
+This is useful when sharing a page that isn't yet ready to publish.
