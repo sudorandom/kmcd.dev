@@ -1,0 +1,117 @@
+{{ define "main" }}
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <i class="fa-solid fa-clock"></i>
+        {{ i18n "readingTime" .Page.ReadingTime }}
+        <i class="fa-solid fa-clipboard"></i>
+        {{ i18n "wordCount" .Page.WordCount }}
+        {{ if .IsTranslated }}
+          {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
+              | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
+          {{ end}}
+        {{ end }}
+      </p>
+      <p>
+        <i class="fa-solid fa-calendar-days"></i>
+        {{ if .Site.Params.dateformNumTime }}
+          {{ dateFormat .Site.Params.dateformNumTime .Date.Local }}
+        {{ else }}
+          {{ dateFormat "2006-01-02 15:04" .Date.Local }}
+        {{ end }}
+
+        {{ if .Lastmod }} 
+          {{ if not (eq .Lastmod .Date )}}
+            {{ if .Site.Params.dateformNumTime }}
+              ({{ i18n "lastModified" }}: {{ dateFormat .Site.Params.dateformNumTime .Lastmod.Local }})
+            {{ else }} 
+              ({{ i18n "lastModified" }}: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </p>
+      <p>
+      {{ partial "tags.html" .Params.tags }}
+      {{ partial "categories.html" . }}
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+      </h1>
+
+      {{ with .Params.Description }}
+        <div class="post-excerpt">{{ . }}</div>
+      {{ end }}
+
+      {{ if .Params.Cover }}
+        <figure class="post-cover">
+          <img src="{{ .Params.Cover | absURL }}" alt="{{ .Title }}" />
+          
+          {{ if .Params.CoverCaption }}
+            <figcaption class="center">{{ .Params.CoverCaption | markdownify }}</figcaption>
+          {{ end }}
+        </figure>
+      {{ end }}
+
+      {{- if .Params.toc }}
+        <hr />
+        <aside id="toc">
+          <div class="toc-title">{{ i18n "tableOfContents" }}</div>
+          {{ .TableOfContents }}
+        </aside>
+        <hr />
+      {{- end }}
+
+      {{ if .Params.Audio }}
+        <div class="post-audio">
+          <audio controls>
+            <source src="{{ .Params.Audio }}">
+          </audio>
+        </div>
+      {{ end }}
+
+      <div class="post-content">
+        {{ .Content }}
+      </div>
+    </article>
+      <hr />
+    <div class="post-info">
+      {{ partial "pagination-single.html" . }}
+    </div>
+
+    {{- if .Site.Params.EnableSharingButtons }}
+      <div class="sharing-buttons">
+        {{ partial "sharing-buttons.html" . }}
+      </div>
+    {{- end }}
+
+
+    {{ if .Site.DisqusShortname }}
+      {{ if not (eq .Params.Comments "false") }}
+        <div id="comments">
+          {{ template "_internal/disqus.html" . }}
+        </div>
+      {{ end }}
+    {{ end }}
+
+    {{ if .Site.Params.Commento.Url }}
+      <script defer src={{ .Site.Params.Commento.Url }}></script>
+      <div id="commento"></div>
+    {{ end }}
+
+  </main>
+
+  {{ if .Page.Store.Get "hasMermaid" }}
+    <script type="module" defer>
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark'
+      });
+    </script>
+  {{ end }}
+  
+{{ end }}
