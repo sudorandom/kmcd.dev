@@ -5,8 +5,9 @@ author:
   name: "sudorandom"
 title: 'sudorandom.dev'
 copyright: "All Rights Reserved"
-IsMultiLingual: true
+IsMultiLingual: false
 defaultContentLanguage: en
+enableGitInfo: true
 
 staticDir: 
  - "static"
@@ -69,11 +70,15 @@ taxonomies:
 
 menu:
   main:
+    - identifier: "portfolio"
+      name: "Portfolio"
+      url: "portfolio"
+      weight: 1
     - identifier: "cv"
       name: "CV"
       url: "https://cv.sudorandom.dev"
-      weight: 1
+      weight: 2
     - identifier: "posts"
       name: "Archive"
       url: "/posts"
-      weight: 2
+      weight: 3

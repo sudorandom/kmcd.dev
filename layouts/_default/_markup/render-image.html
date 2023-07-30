@@ -1,0 +1,3 @@
+<p class="md__image">
+    <a class="spotlight" href="{{ .Destination | safeURL }}"><img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" {{ with .Title }} title="{{ . }}"{{ end }} /></a>
+</p>

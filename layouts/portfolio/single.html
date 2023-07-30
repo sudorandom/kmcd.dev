@@ -1,0 +1,63 @@
+{{ define "main" }}
+    <main class="post">
+
+        <article>
+            <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h2>
+            <div id="macy-container">
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/morning-copenhagen-commute/thumbnail.webp" data-description="A video I made of my work commute, backed by lofi music." data-button="More info" data-button-href="/posts/morning-copenhagen-commute/">
+                        <img src="/posts/morning-copenhagen-commute/thumbnail.webp">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/sun-spectra-image-v2.svg/visible.svg" data-description="I revisit the sun's spectrum. Here's a different view on the sun's spectrum and the gaps that exists. This image shows only the visible spectrum. I think this is beautiful." data-button="More info" data-button-href="/posts/sun-spectra-image-v2.svg">
+                        <img src="/posts/sun-spectra-image-v2.svg/visible.svg">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/sun-spectra-image-v2.svg/non-visible.svg" data-description="I revisit the sun's spectrum. Here's a different view on the sun's spectrum and the gaps that exists. This image shows the full spectrum of emissions from the sun." data-button="More info" data-button-href="/posts/sun-spectra-image-v2.svg">
+                        <img src="/posts/sun-spectra-image-v2.svg/non-visible.svg">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/submarine-cable-map.svg/geo-mercator.svg" data-description="The internet is connected by physical cables. And some of those cables lay at the bottom of our largest oceans. I used some open datasets to generate a map of these cables." data-button="More info" data-button-href="/posts/submarine-cable-map.svg">
+                        <img src="/posts/submarine-cable-map.svg/geo-mercator.svg">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/evepraisal.com/screenshot_index.png" data-description="I made a massively popular website for Eve online. It has been shut down recently." data-button="More info" data-button-href="/posts/evepraisal.com">
+                        <img src="/posts/evepraisal.com/screenshot_index.png">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/sun-spectra-image.svg/non-visible.svg" data-description="The sun's spectrum can be split into wavelengths (colors) of light, but there are some missing colors. There are holes in the rainbow! This visualization shows the gaps and dim spots. The grayscale sections our frequencies that humans cannot see." data-button="More info" data-button-href="/posts/sun-spectra-image.svg">
+                        <img src="/posts/sun-spectra-image.svg/non-visible.svg">
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <a class="spotlight" href="/posts/sun-spectra-image.svg/visible.svg" data-description="The sun's spectrum can be split into wavelengths (colors) of light, but there are some missing colors. There are holes in the rainbow! This visualization shows the gaps and dim spots." data-button="More info" data-button-href="/posts/sun-spectra-image.svg">
+                        <img src="/posts/sun-spectra-image.svg/visible.svg">
+                    </a>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+<script>
+    var macy = Macy({
+    container: '#macy-container',
+    trueOrder: false,
+    waitForImages: false,
+    margin: 4,
+    columns: 3
+});
+</script>
+{{ end }}

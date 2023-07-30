@@ -32,7 +32,7 @@ They are as follows:
 - The first remarkable revelation was the development of new carbon capture techniques. The reactor's energy surplus enabled the capture and storage of vast amounts of carbon dioxide, contributing significantly to the fight against climate change.
 - Another awe-inspiring application was the field of desalinization. With the abundant energy available, purifying seawater had become a feasible and sustainable solution to address the global water crisis.
 - The surplus power also opened up new possibilities in computing. Larger supercomputers were being constructed to harness the immense energy and processing capabilities, advancing scientific research and computational capabilities exponentially.
-- Intriguingly, there were mentions of synthesized new types of matter, but the colleagues were hesitant to elaborate further. It appeared that the research in this area was not yet published, hinting at revolutionary discoveries yet to be revealed.
+- Intriguingly, there were mentions of synthesized new types of matter were only theorized before, but the colleagues were hesitant to elaborate further. It appeared that the research in this area was not yet published, hinting at revolutionary discoveries yet to be revealed.
 
 As the day progressed, my supervisor, David Bennett, provided a description of how the power plant worked. To my surprise, it seemed to follow the conventional principles of a nuclear power plant: a nuclear reaction boiled water, creating steam to turn turbines and generate electricity. However, the devil was in the details, and everyone remained evasive about the specifics of the "reaction" itself.
 
