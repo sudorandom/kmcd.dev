@@ -1,7 +1,7 @@
 <script src="https://rawcdn.githack.com/nextapps-de/spotlight/0.7.8/dist/spotlight.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 {{ if .Page.Store.Get "hasMermaid" }}
-  <script type="module">
+  <script type="module" defer>
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
     mermaid.initialize({
       startOnLoad: true,
