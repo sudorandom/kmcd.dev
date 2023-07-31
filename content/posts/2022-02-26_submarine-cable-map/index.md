@@ -1,5 +1,5 @@
 +++
-categories = ["data-visualization"]
+categories = ["data-visualization", "project"]
 date = "2022-02-26"
 description = "Visualizing the light that comes from our closet star, the sun."
 featured = "thumbnail.png"
