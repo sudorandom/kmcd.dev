@@ -7,7 +7,7 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "SwFTP - SFTP/FTP Server For Openstack Swift"
+title = "SwFTP: SFTP/FTP Server For Openstack Swift"
 slug = "swftp"
 type = "posts"
 +++

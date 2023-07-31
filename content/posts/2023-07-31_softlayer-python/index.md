@@ -7,7 +7,7 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "softlayer-python - language bindings/CLI for a cloud company"
+title = "softlayer-python: language bindings/CLI for a cloud company"
 slug = "softlayer-python"
 type = "posts"
 +++
