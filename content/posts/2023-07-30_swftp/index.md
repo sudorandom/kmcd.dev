@@ -18,7 +18,9 @@ After testing out a few different ideas I ended up deciding on the SFTP protocol
 
 ```mermaid
 graph LR
-    user((User)) -- SFTP --> swftp((SwFTP))
+    cyberduck((Cyberduck)) -- SFTP --> swftp((SwFTP))
+    filezilla((FileZilla)) -- SFTP --> swftp((SwFTP))
+    client((SFTP/FTP Client)) -- SFTP or FTP --> swftp((SwFTP))
     swftp((SwFTP)) -- HTTPS --> swift((Swift))
 ```
 

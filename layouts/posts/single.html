@@ -108,14 +108,9 @@
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({
             startOnLoad: false,
-            theme: 'dark',
-            logLevel: 'trace'
+            theme: 'dark'
         });
         mermaid.run()
-        console.log("mermaid started");
-        document.querySelectorAll('.mermaid').forEach(function(el) {
-            console.log(el);
-        });
     </script>
   {{ end }}
 {{ end }}
