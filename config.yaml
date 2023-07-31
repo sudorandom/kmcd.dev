@@ -36,7 +36,7 @@ params:
   fontAwesome:
     KitURL: "https://kit.fontawesome.com/0ed5cec925.js"
   ShowReadingTime: true
-  LastModDisplay: true
+  LastModDisplay: false
   logo:
     logoText: "sudorandom.dev"
     logoCursorColor: "#ffffff"
