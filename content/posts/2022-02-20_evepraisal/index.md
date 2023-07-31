@@ -6,7 +6,7 @@ featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "evepraisal.com"
+title = "evepraisal.com: A price estimation tool for Eve Online"
 slug = "evepraisal.com"
 type = "posts"
 +++
