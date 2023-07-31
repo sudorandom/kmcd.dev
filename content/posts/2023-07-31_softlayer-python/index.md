@@ -139,3 +139,7 @@ curl -u $SL_USER:$SL_APIKEY -X GET -H "Accept: */*" -H "Accept-Encoding: gzip, d
 ```
 
 In summary, this was an incredibly successful side project. What started as a small script for internal use turned into a swiss army knife that was a completely new way to access all products that SoftLayer offered. Personally, I learned so much about maintaining an open source project, about chosing reliably libraries to build on, about code quality/style, and so much more.
+
+References:
+- Github: https://github.com/softlayer/softlayer-python
+- Documentation: https://softlayer-python.readthedocs.io/en/latest/
