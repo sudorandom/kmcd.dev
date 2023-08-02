@@ -15,7 +15,7 @@ type = "posts"
 
 {{< figure src="geo-mercator.png" link="geo-mercator.svg" title="Map of the Internet" alt="Map of the Internet" attrlink="geo-mercator.svg">}}
 
-I recently expanded on my [Internet map visualization](/posts/submarine-cable-map.svg/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The more red (and bigger) the dot, the more bandwidth the internet exchange supports.
+I recently expanded on my [Internet map visualization](/posts/submarine-cable-map.svg/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The brighter/greener/bigger the dot, the more bandwidth the internet exchange supports.
 
 **[Click here for full resolution image (warning, it's big)](geo-mercator.svg)**
 
