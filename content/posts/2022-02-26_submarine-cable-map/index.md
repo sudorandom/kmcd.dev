@@ -1,12 +1,12 @@
 +++
-categories = ["data-visualization", "project"]
+categories = ["project", "data-visualization", "internet", "networking"]
 date = "2022-02-26"
 description = "Visualizing the light that comes from our closet star, the sun."
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "submarine-cable-map.svg"
+title = "Visualizing the Internet"
 slug = "submarine-cable-map.svg"
 type = "posts"
 +++

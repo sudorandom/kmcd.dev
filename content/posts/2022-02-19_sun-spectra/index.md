@@ -6,7 +6,7 @@ featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "sun-spectra-image.svg"
+title = "Visualizing the spectrum of the sun"
 slug = "sun-spectra-image.svg"
 type = "posts"
 +++
