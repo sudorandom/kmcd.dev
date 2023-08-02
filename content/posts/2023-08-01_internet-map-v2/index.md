@@ -71,7 +71,7 @@ First, this is where I got the data from:
 
 - [PeeringDB](https://peeringdb.com) - PeeringDB is a user-driven database that offers information about network interconnection facilities and peering arrangements, supporting network administrators in optimizing Internet connectivity.
 - [Simple Maps](https://simplemaps.com/data/world-cities) - I used this dataset to geolocate all internet exchanges in PeeringDB using the city and country fields.
-- [Submarine Cable Map](submarinecablemap.com/) - TeleGeography maintains a database of all major submarine fiber optic cables and their status.
+- [Submarine Cable Map](https://submarinecablemap.com/) - TeleGeography maintains a database of all major submarine fiber optic cables and their status.
 
 Next, these are the different tools/languages that I used:
 
@@ -129,7 +129,9 @@ So far I'm pretty happy with the results of this little project. If I were to wo
 
 The part that is missing still is the terrestrial fiber links. There's not good public data on those for a number of reasons, but you can be assured that there is significant backbone fiber optic cables buried nearby almost every major highway and rail line in the US. So imagine lines that nearly mimic the US road system and you'll have an idea of what that map would look like. That may actually be the next step for this map since it's a bit hard to understand that we only have undersea cables.
 
+References:
 - Github: https://github.com/sudorandom/submarine-cable-map
 - PeeringDB: https://www.peeringdb.com/
 - Simple Maps (Geolocation Database): https://simplemaps.com/data/world-cities
+- Submarine Cable Map: https://submarinecablemap.com
  
