@@ -3,6 +3,7 @@ categories = ["python", "project"]
 date = "2023-07-30"
 description = "Describing an old project of mine from 2014; an SFTP/FTP interface over an object storage API."
 cover = "/posts/swftp/cover.jpg"
+images = ["/posts/swftp/cover.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"

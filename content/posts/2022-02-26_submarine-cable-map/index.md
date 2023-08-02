@@ -2,6 +2,7 @@
 categories = ["project", "data-visualization", "internet", "networking"]
 date = "2022-02-26"
 description = "Visualizing the light that comes from our closet star, the sun."
+images = ["/posts/submarine-cable-map.svg/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"

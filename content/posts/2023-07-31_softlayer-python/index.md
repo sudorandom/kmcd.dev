@@ -3,6 +3,7 @@ categories = ["python", "project"]
 date = "2023-07-31"
 description = "I wrote and maintained language bindings for a large cloud company. Join me as I reflect back on that experience."
 cover = "/posts/softlayer-python/cover.jpg"
+images = ["/posts/softlayer-python/cover.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"

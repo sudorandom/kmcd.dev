@@ -3,6 +3,7 @@ categories = ["short-story", "the-power-plant"]
 date = "2023-07-27"
 description = "Kevin Anderson settles into his new job and learns about the incredible advancements being made. Excited to be a part of history, he is filled with questions about how this is all possible, but the answers he gets only lead to more questions. Will he ever know the truth?"
 cover = "/posts/the-power-plant-02/cover-power-plant-02.jpg"
+images = ["/posts/the-power-plant-02/cover-power-plant-02.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"

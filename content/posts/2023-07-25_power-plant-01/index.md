@@ -3,6 +3,7 @@ categories = ["short-story", "the-power-plant"]
 date = "2023-07-25"
 description = "Through his journal, Kevin Anderson recounts his commencement at a groundbreaking futuristic power plant—a marvel that has already transformed the world. However, as he delves deeper into the heart of this technological wonder, unsettling discoveries emerge, revealing that humanity might be wagering with forces beyond their comprehension."
 cover = "/posts/the-power-plant-01/cover-power-plant-01.png"
+images = ["/posts/the-power-plant-01/cover-power-plant-01.png"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"

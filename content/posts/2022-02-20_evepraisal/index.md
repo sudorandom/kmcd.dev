@@ -2,6 +2,7 @@
 categories = ["gaming", "project"]
 date = "2022-02-20"
 description = "Evepraisal - An Eve Online price estimation tool"
+images = ["/posts/evepraisal.com/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
