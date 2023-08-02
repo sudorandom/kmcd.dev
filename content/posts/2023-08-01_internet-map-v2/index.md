@@ -80,6 +80,7 @@ Next, I'll list out the different tools/languages that I used:
     - [d3-node](https://www.npmjs.com/package/d3-node) - library that helps with running d3 inside of a nodejs environment
     - [d3-geo](https://www.npmjs.com/package/d3-geo) - library that handles translating coordinates for different map projections. I know it's controversial now, but the earth isn't flat. So to make a flat image you have to pick how you are going to translate the globe coordinates onto a map. Despite its flaws, I used the [mercator projection](https://en.wikipedia.org/wiki/Mercator_projection) because it is by far the most popular map projection.
 - [The Go Programming Language](https://golang.org) - This is my current working language, so it's what I used to integrate with the PeeringDB API and do some data processing/validation.
+  - [PeeringDB](https://github.com/gmazoyer/peeringdb) - A library for talking to the PeeringDB API.
 
 The pipeline looks like this:
 ```mermaid
