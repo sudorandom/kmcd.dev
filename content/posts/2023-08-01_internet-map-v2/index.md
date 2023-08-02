@@ -67,13 +67,13 @@ However, it's important to note that not all routers or nodes in a traceroute wi
 Because of all of this, we can see the path that is taken when connecting to a server, which I think is really cool. With my example I can know that it takes around 15.5 milliseconds for my network traffic to reach the Netherlands and I can tell that Apple is peering directly in this facility. You can verify this fact by looking at [PeeringDB](https://www.peeringdb.com/ix/2031). Essentially, if you want `apple.com` to load faster for your users who are near(ish) to Amsterdam, you may want to run some fiber optic cable to this internet exchange.
 
 ## How it's made
-First, let me explain where I got this data.
+First, this is where I got the data from:
 
 - [PeeringDB](https://peeringdb.com) - PeeringDB is a user-driven database that offers information about network interconnection facilities and peering arrangements, supporting network administrators in optimizing Internet connectivity.
 - [Simple Maps](https://simplemaps.com/data/world-cities) - I used this dataset to geolocate all internet exchanges in PeeringDB using the city and country fields.
 - [Submarine Cable Map](submarinecablemap.com/) - TeleGeography maintains a database of all major submarine fiber optic cables and their status.
 
-Next, I'll list out the different tools/languages that I used:
+Next, these are the different tools/languages that I used:
 
 - [Javascript (nodejs)](https://nodejs.org)
   - [D3](https://d3js.org/) - D3.js is a powerful JavaScript library for data visualization that allows developers to create interactive and dynamic charts, graphs, and other visual representations on the web using HTML, SVG, and CSS.
