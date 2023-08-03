@@ -111,7 +111,7 @@ Here are my favorites:
 ## Observations from the map
 Now here's the pretty part. Here are close-ups of different parts of the map with some general observations.
 
-{{< figure src="geo-mercator-na.png" title="North America" alt="North America" caption="The internet exchanges in North American look how I'd imagine them. There's more and higher bandwidth internet exchanges on the eastern side of the US and a good amount along the west coast. However, there are some very important internet exchanges in Colorado. It likely serves as a good halveway point between east and west to transition traffic to different backbone providers." >}}
+{{< figure src="geo-mercator-na.png" title="North America" alt="North America" caption="The internet exchanges in North American look how I'd imagine them. There's more and higher bandwidth internet exchanges on the eastern side of the US and a good amount along the west coast. However, there are some very important internet exchanges in Colorado. It likely serves as a good halfway point between east and west to transition traffic to different backbone providers." >}}
 
 {{< figure src="geo-mercator-eu.png" title="Europe" alt="Europe" caption="After seeing the map from North America it's rather surprising to see how dense European internet exchanges are. There's almost too much to comment on here but I will say that it's interesting how important Amsterdam, Frankfurt, and London are." >}}
 
