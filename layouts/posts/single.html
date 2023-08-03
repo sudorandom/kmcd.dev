@@ -15,10 +15,10 @@
       </p>
       <p>
         <i class="fa-solid fa-calendar-days"></i>
-        {{ if .Site.Params.dateformNumTime }}
-          {{ dateFormat .Site.Params.dateformNumTime .Date.Local }}
+        {{ if .Site.Params.dateformNum }}
+          {{ dateFormat .Site.Params.dateformNum .Date.Local }}
         {{ else }}
-          {{ dateFormat "2006-01-02 15:04" .Date.Local }}
+          {{ dateFormat "2006-01-02" .Date.Local }}
         {{ end }}
 
         {{ if .Lastmod }} 
