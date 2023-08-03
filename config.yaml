@@ -78,7 +78,11 @@ menu:
       name: "CV"
       url: "https://cv.sudorandom.dev"
       weight: 2
+    - identifier: "shop"
+      name: "Shop"
+      url: "shop"
+      weight: 3
     - identifier: "posts"
       name: "Archive"
       url: "/posts"
-      weight: 3
+      weight: 4

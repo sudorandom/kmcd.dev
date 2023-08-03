@@ -1,7 +1,7 @@
 +++
 categories = ["project", "data-visualization", "internet", "networking"]
 date = "2023-08-01"
-description = "Adding a new layer to world map of the Internet"
+description = "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
 cover = ""
 images = ["posts/internet-map-v2/geo-mercator-na.png"]
 featured = ""
