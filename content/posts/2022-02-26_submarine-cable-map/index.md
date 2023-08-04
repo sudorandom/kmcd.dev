@@ -1,13 +1,13 @@
 +++
 categories = ["project", "data-visualization", "internet", "networking"]
 date = "2022-02-26"
-description = "Visualizing the light that comes from our closet star, the sun."
+description = "I drew a pretty map that shows the underwater cables that carry our data around the world."
 images = ["/posts/submarine-cable-map.svg/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "Visualizing the Internet"
+title = "Visualizing the Internet (Part 1)"
 slug = "submarine-cable-map.svg"
 type = "posts"
 +++
