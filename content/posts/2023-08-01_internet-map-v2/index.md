@@ -133,6 +133,8 @@ The part that is missing still is the terrestrial fiber links. There's not good 
 I'll leave you with this last image, the same map **but without country borders**. I think this one looks amazing:
 {{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg">}}
 
+**[Click here for full resolution image (warning, it's big)](nocountrylines_geo-mercator.svg)**
+
 References:
 - Github: https://github.com/sudorandom/submarine-cable-map
 - PeeringDB: https://www.peeringdb.com/
