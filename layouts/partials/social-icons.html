@@ -1,0 +1,7 @@
+{{ range . -}}
+    {{ if .icon }}
+        <li><a href="{{ .url }}" class="icon {{ .icon }}" target="_blank" rel="me" title="{{ .name | humanize }}"></a></li>
+    {{ else }}
+        <li><a href="{{ .url }}" class="icon fa-brands fa-{{ .name }}" target="_blank" rel="me" title="{{ .name | humanize }}"></a></li>
+    {{ end }}
+{{- end -}}
