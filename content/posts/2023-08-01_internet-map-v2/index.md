@@ -61,7 +61,9 @@ The columns in the output represent the following information:
 
 **Identifying Exchange Location using Reverse IP Lookup:**
 
-In the `traceroute` output, you can sometimes infer the location of an internet exchange based on the names of the intermediate routers. Many internet exchanges are named explicitly to indicate their location. For example, in the provided `traceroute`, the router with the name `apple-1.equinix-am1.nl-ix.net` suggests that it is associated with Equinix Amsterdam (AM1), which is a prominent internet exchange in Amsterdam, Netherlands.
+In the `traceroute` output, you can sometimes infer the location of an internet exchange based on the names of the intermediate routers. Many internet exchanges are named explicitly to indicate their location. For example, in the provided `traceroute`, the router with the name `apple-1.equinix-am1.nl-ix.net` suggests that it is associated with the [Equinix Amsterdam (AM1) data center](https://www.equinix.com/data-centers/europe-colocation/netherlands-colocation/amsterdam-data-centers/am1) connected through the [NL-IX](https://www.nl-ix.net/locations/amsterdam/) internet exchange. So my request was probably handled inside of `Luttenbergweg 4, Amsterdam, Netherlands` or... this building:
+
+![Equinix Amsterdam (AM1)](equinix-am1.png)
 
 However, it's important to note that not all routers or nodes in a traceroute will have such descriptive names. Some routers might be labeled with IP addresses or generic names that do not reveal their location. In such cases, it becomes more challenging to pinpoint the exact location of an internet exchange solely based on the traceroute output. Additionally, the reverse IP lookup method depends on the accuracy and up-to-date information in the IP address registries, and some routers might not be accurately represented.
 
