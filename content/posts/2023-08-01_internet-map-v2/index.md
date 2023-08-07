@@ -14,11 +14,17 @@ type = "posts"
 +++
 
 
-{{< figure src="geo-mercator-small.png" link="geo-mercator.svg" title="Map of the Internet" alt="Map of the Internet" attrlink="geo-mercator.svg">}}
-
+## The Internet map
 I recently expanded on my [Internet map visualization](/posts/submarine-cable-map.svg/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The brighter/greener/bigger the dot, the more bandwidth the internet exchange supports.
 
+{{< figure src="geo-mercator-small.png" link="geo-mercator.svg" alt="Map of the Internet" attrlink="geo-mercator.svg">}}
+
+And here is the same map **but without country borders**. I think this one looks beautiful:
+{{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg">}}
+
 **[Click here for full resolution image (warning, it's big)](geo-mercator.svg)**
+
+**[Click here for full resolution image (no borders) (warning, this one is also big)](nocountrylines_geo-mercator.svg)**
 
 ## What's an internet exchange?
 **Internet Exchange:**
@@ -132,11 +138,6 @@ Here are my favorites:
 So far I'm pretty happy with the results of this little project. If I were to work more on this I would want there to be an actual heatmap instead of just drawing dots. I have attempted to do this but it was taking too long to figure out how to properly do it specifically with the node-d3 library. Also, there's probably a lot of data validation that I could do... but I do feel like it's not my job to fix this database so I'm probably not going to do that for the sake of a small side project.
 
 The part that is missing still is the terrestrial fiber links. There's not good public data on those for a number of reasons, but you can be assured that there is significant backbone fiber optic cables buried nearby almost every major highway and rail line in the US. So imagine lines that nearly mimic the US road system and you'll have an idea of what that map would look like. That may actually be the next step for this map since it's a bit hard to understand that we only have undersea cables.
-
-I'll leave you with this last image, the same map **but without country borders**. I think this one looks amazing:
-{{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg">}}
-
-**[Click here for full resolution image (warning, it's big)](nocountrylines_geo-mercator.svg)**
 
 References:
 - Github: https://github.com/sudorandom/submarine-cable-map
