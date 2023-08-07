@@ -9,3 +9,24 @@
     background-size: auto auto;
     background-repeat: no-repeat;
 }
+
+#reading-progress {
+    position: fixed;
+    width: 100%;
+    height: 5px;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+}
+
+#reading-progress-fill {
+    height: 5px;
+    width: 0;
+}
+
+#reading-progress-fill {
+    -webkit-transition: width 100ms ease;
+    -o-transition: width 100ms ease;
+    transition: width 100ms ease;
+    background-color: #eee;
+}
