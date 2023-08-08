@@ -8,8 +8,11 @@ featuredalt = ""
 featuredpath = "date"
 linktitle = ""
 title = "Visualizing the Internet (Part 1)"
-slug = "submarine-cable-map.svg"
+slug = "internet-map-v1"
 type = "posts"
+alias = [
+  "/posts/submarine-cable-map.svg",
+]
 +++
 
 # Basic Details
