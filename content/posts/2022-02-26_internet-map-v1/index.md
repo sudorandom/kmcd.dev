@@ -10,7 +10,7 @@ linktitle = ""
 title = "Visualizing the Internet (Part 1)"
 slug = "internet-map-v1"
 type = "posts"
-alias = [
+aliases = [
   "/posts/submarine-cable-map.svg",
 ]
 +++
