@@ -1,5 +1,6 @@
 .post.on-list {
     background: rgba(27, 28, 29);
+    cursor: pointer;
 }
 
 .bg {
