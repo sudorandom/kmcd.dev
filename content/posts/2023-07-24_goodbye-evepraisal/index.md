@@ -17,9 +17,9 @@ Recently, CCP has banned the IP address that I currently use to gather market da
 
 **So I've decided to just pull the plug.** I'm sorry that advertisements may have been annoying but it essentially only made enough money to keep the site running. Thank you to everyone who has supported this project over the years. Eve Online has been a great game for many people for many years. I am happy to have had my role, however small, in shaping the game.
 
-The source code for Evepraisal is open to all to use and modify. You can find it at [github.com/evepraisal/go-evepraisal](https://github.com/evepraisal/go-evepraisal).
+The source code for Evepraisal is open to all to use and modify. You can find it at [github.com/evepraisal/go-evepraisal](https://github.com/evepraisal/go-evepraisal). Also see my [other post about Evepraisal](/posts/evepraisal.com/) for more information about how Evepraisal was made and what made it special.
 
-If you are looking for alternatives, you may want to try one of these alternatives (I'll add to this list if they're sent to me and look legit enough):
+If you are looking for alternatives, you may want to try one of these alternatives:
 
 - [Eve Tycoon](https://evetycoon.com/appraisal)
 - [Fuzzwork](https://market.fuzzwork.co.uk/appraisal/)
