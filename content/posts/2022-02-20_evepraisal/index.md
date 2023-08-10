@@ -20,7 +20,7 @@ Evepraisal is a web-based bulk price estimation tool for the game Eve Online. It
 
 ------------
 
-# How it was created
+## How it was created
 
 This is a story about how I came to create [evepraisal.com](https://evepraisal.com), a popular tool for Eve Online that is commonly used to price check cargo scans, contracts, EFT fittings, assets, and more. If none of that means anything to you that's totally fine! I barely know, too.
 

@@ -1,0 +1,8 @@
+{{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "1600x1000" }}
+<img src="{{ $image.RelPermalink }}"
+        {{- if or (.Get "alt") (.Get "caption") }}
+        alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
+        {{- end -}}
+        {{- with .Get "width" }} width="{{ . }}"{{ end -}}
+        {{- with .Get "height" }} height="{{ . }}"{{ end -}}
+        {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}/>

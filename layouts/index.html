@@ -26,7 +26,7 @@
                 <div class="posts">
                 {{ range $paginator.Pages }}
                 <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                    <h1 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+                    <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h2>
                     <div class="post-meta">
                     {{ if .Date }}
                         <span class="post-date">

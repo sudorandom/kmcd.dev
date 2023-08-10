@@ -13,7 +13,7 @@ staticDir:
  - "static"
 
 params:
-  Subtitle: "Exploring random things with a bored software engineer"
+  Subtitle: ""
   homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
   ReadOtherPosts: "Read some other posts"
   defaultTheme: "dark"
@@ -25,7 +25,7 @@ params:
   backgroundImage: "/transparent_geo-mercator-small.webp"
   backgroundEffects: true
   showPosts: true
-  tags: true
+  tags: false
   contentTypeName: posts
 # hideReadMore: true
   ReadMoreText: true
@@ -64,15 +64,13 @@ params:
     ]
 
 taxonomies:
-  tag: "tags"
   category: "categories"
-
 
 menu:
   main:
     - identifier: "portfolio"
       name: "Portfolio"
-      url: "portfolio"
+      url: "/portfolio/"
       weight: 1
     - identifier: "cv"
       name: "CV"
@@ -80,9 +78,9 @@ menu:
       weight: 2
     - identifier: "shop"
       name: "Shop"
-      url: "shop"
+      url: "/shop/"
       weight: 3
     - identifier: "posts"
       name: "Archive"
-      url: "/posts"
+      url: "/posts/"
       weight: 4

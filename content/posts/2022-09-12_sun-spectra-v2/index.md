@@ -12,7 +12,7 @@ slug = "sun-spectra-image-v2.svg"
 type = "posts"
 +++
 
-# Basic Details
+## Basic Details
 You may know about my [previous sun spectra project](/blog/sun-spectra/) where I created a visualization of the sun's observed electromagnetic spectrum. Well, this is the same thing but I made some different decisions on how to visualize it this time and I think it turned out beautifully. I thought it looked so great that you can get it on [Displate](https://displate.com/displate/5622874)!
 
 [Github](https://github.com/sudorandom/sun-fingerprint) | [All output images](https://github.com/sudorandom/sun-fingerprint/tree/main/output) | [Displate](https://displate.com/displate/5622874)

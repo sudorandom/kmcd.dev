@@ -12,7 +12,7 @@ slug = "sun-spectra-image.svg"
 type = "posts"
 +++
 
-# Basic Details
+## Basic Details
 
 We all know the light that we get from the sun is white, meaning it contains about the same amount of every single color. If it had more green than other colors then the sun would give off green light. That's awesome. Except... it's not really true. There are certain colors that the sun does NOT give us. There are essentially holes in every rainbow. And the images below show exactly where those holes are.
 
