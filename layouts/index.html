@@ -9,7 +9,9 @@
 {{ define "main" }}
     <main aria-role="main">
         <div>
-            <h1>{{ .Site.Params.homeTitle }}</h1>
+            {{ if .Site.Params.homeTitle }}
+                <h1>{{ .Site.Params.homeTitle }}</h1>
+            {{ end }}
             {{ partial "subtitle.html" . }}
         <!-- Start Posts -->
         {{ if .Site.Params.showPosts }}
