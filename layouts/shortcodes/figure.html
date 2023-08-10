@@ -5,7 +5,7 @@
         <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight">
     {{- end -}}
 
-    {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "1600x1000" }}
+    {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "2000x1600" }}
     <img src="{{ $image.RelPermalink }}"
          {{- if or (.Get "alt") (.Get "caption") }}
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
