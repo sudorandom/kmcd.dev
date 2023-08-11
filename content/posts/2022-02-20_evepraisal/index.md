@@ -12,7 +12,7 @@ slug = "evepraisal.com"
 type = "posts"
 +++
 
-# Basic Details
+## Basic Details
 
 Evepraisal is a web-based bulk price estimation tool for the game Eve Online. It has gained wide use and has a fairly high amount of traffic for such a simple utility. Almost anyone who plays the game has used it.
 
