@@ -1,1 +1,1 @@
-*[Did you mean Pseudorandom?](/pseudorandom)*
+*[Did you mean Pseudorandom?](/pseudorandom/)*
