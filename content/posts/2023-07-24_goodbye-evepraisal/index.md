@@ -1,5 +1,5 @@
 +++
-categories = ["gaming", "update", "project"]
+categories = ["gaming", "project"]
 date = "2023-07-24"
 description = "Saying goodbye to an amazing long running project."
 featured = ""
