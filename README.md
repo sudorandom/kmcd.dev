@@ -11,6 +11,11 @@ Just build the site:
 hugo --minify
 ```
 
+To show drafts/future posts:
+```
+hugo server --buildDrafts --buildFuture --minify
+```
+
 ### PDF Export
 If you want to export a page as a PDF, this is the process:
 ```
