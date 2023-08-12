@@ -10,6 +10,9 @@ linktitle = ""
 title = "Visualizing the spectrum of the sun (Part 2)"
 slug = "sun-spectra-image-v2.svg"
 type = "posts"
+aliases = [
+    "portfolio/sun-spectra-v2/",
+]
 +++
 
 ## Basic Details

@@ -12,6 +12,7 @@ slug = "internet-map-v1"
 type = "posts"
 aliases = [
   "/posts/submarine-cable-map.svg",
+  "/portfolio/submarine-cable-map",
 ]
 +++
 

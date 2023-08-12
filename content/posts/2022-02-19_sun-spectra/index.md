@@ -10,6 +10,9 @@ title = "Visualizing the spectrum of the sun"
 images = ["/posts/sun-spectra-image.svg/thumbnail.png"]
 slug = "sun-spectra-image.svg"
 type = "posts"
+aliases = [
+    "portfolio/sun-spectra-v1/",
+]
 +++
 
 ## Basic Details
