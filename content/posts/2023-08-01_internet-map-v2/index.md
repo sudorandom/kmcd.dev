@@ -8,7 +8,7 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "Visualizing the Internet (part 2)"
+title = "Visualizing the Internet (2023)"
 slug = "internet-map-v2"
 type = "posts"
 +++
