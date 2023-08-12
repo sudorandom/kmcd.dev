@@ -1,7 +1,7 @@
 +++
 categories = ["gaming", "project"]
 date = "2023-07-24"
-description = "Saying goodbye to an amazing long running project."
+description = "Saying goodbye to an amazing long running project; evepraisal price checking utility for the MMORPG game Eve Online"
 featured = ""
 featuredalt = ""
 featuredpath = "date"

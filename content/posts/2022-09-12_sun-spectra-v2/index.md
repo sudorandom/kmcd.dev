@@ -1,7 +1,7 @@
 +++
 categories = ["data-visualization", "project"]
 date = "2022-09-12"
-description = "Revisiting visualizing the light that comes from the sun."
+description = "Revisiting visualizing the light that comes from the sun. Spectrum analysis, wavelengths of light, data visualization"
 images = ["/posts/sun-spectra-image-v2.svg/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""

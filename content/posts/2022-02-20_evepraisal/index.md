@@ -1,7 +1,7 @@
 +++
 categories = ["gaming", "project"]
 date = "2022-02-20"
-description = "Evepraisal - An Eve Online price estimation tool"
+description = "Evepraisal - Introducing the price estimation tool for the MMORPG game Eve Online that I created. Sometimes the best way to play is not to play"
 images = ["/posts/evepraisal.com/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""

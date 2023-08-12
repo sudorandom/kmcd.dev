@@ -1,7 +1,7 @@
 +++
 categories = ["project", "data-visualization", "internet", "networking"]
 date = "2022-02-26"
-description = "I drew a pretty map that shows the underwater cables that carry our data around the world."
+description = "I drew a pretty map that shows the underwater cables that carry our data around the world; fiber optic cables, submarine cables"
 images = ["/posts/submarine-cable-map.svg/thumbnail.png"]
 featured = "thumbnail.png"
 featuredalt = ""
