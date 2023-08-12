@@ -1,8 +1,12 @@
 <figure{{ with .Get "class" }} class="md__image {{ . }}"{{ end }}>
     {{- if .Get "link" -}}
-        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight">
+        <a href="{{ .Get "link" }}"
+            {{ with .Get "target" }} target="{{ . }}"{{ end }}
+            {{ with .Get "rel" }} rel="{{ . }}"{{ end }}
+            {{- with .Get "description" }} data-description="{{ . }}"{{ end -}}
+            class="spotlight" data-download="true">
     {{- else -}}
-        <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight">
+        <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
     {{- end -}}
 
     {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "2000x1600" }}

@@ -17,11 +17,10 @@ type = "posts"
 ## The Internet map
 I recently expanded on my [Internet map visualization](/posts/internet-map-v1/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The brighter/greener/bigger the dot, the more bandwidth the internet exchange supports.
 
-
-{{< figure src="geo-mercator-small.png" link="geo-mercator.svg" alt="Map of the Internet" attrlink="geo-mercator.svg">}}
+{{< figure src="geo-mercator-small.png" link="geo-mercator.svg" alt="Map of the Internet" attrlink="geo-mercator.svg" description="This map shows the locations of undersea cables and internet exchanges around the world.">}}
 
 And here is the same map **but without country borders**. I think this one looks beautiful:
-{{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg">}}
+{{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg" description="This map shows the locations of undersea cables and internet exchanges around the world, but without land masses.">}}
 
 **[Click here for full resolution image (warning, it's big)](geo-mercator.svg)**
 
