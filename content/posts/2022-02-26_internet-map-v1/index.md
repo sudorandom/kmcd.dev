@@ -16,7 +16,7 @@ aliases = [
 ]
 +++
 
-> There is an updated version of this map detailed on the post: [Visualizing the Internet (part 2)](/posts/internet-map-v2/)
+> There is an updated version of this map detailed [in this updated post](/posts/internet-map-v2/).
 
 ### Basic Details
 I used data from the [submarinecablemap.com](https://submarinecablemap.com) website to create my own visualization of Submarine Cables that live under our oceans and carry the majority of trans-continental internet traffic. Mostly, I wanted a 'dark mode' version of the map but I also plan on adding some interesting annotations from different sources and computing some metrics... Like there is enough fiber optic cable under the oceans to wrap the earth over 103 times! These SVGs were made with javascript, [d3](https://d3js.org). I also used this experience to look at different map projections, which is neat.

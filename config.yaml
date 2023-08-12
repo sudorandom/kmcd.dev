@@ -21,7 +21,7 @@ params:
   gitUrl: "https://github.com/sudorandom/sudorandom.dev/commit/"
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
-  customCSS: ["/style.css"]
+  customCSS: ["css/style.css"]
   backgroundImage: "/transparent_geo-mercator-small.webp"
   backgroundEffects: true
   showPosts: true
