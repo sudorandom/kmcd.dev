@@ -96,9 +96,9 @@ Now here's the pretty part. Here are close-ups of different parts of the map wit
 ## How it's made
 First, this is where I got the data from:
 
-- [PeeringDB](https://peeringdb.com) - PeeringDB is a user-driven database that offers information about network interconnection facilities and peering arrangements, supporting network administrators in optimizing Internet connectivity.
+- [PeeringDB](https://www.peeringdb.com) - PeeringDB is a user-driven database that offers information about network interconnection facilities and peering arrangements, supporting network administrators in optimizing Internet connectivity.
 - [Simple Maps](https://simplemaps.com/data/world-cities) - I used this dataset to geolocate all internet exchanges in PeeringDB using the city and country fields.
-- [Submarine Cable Map](https://submarinecablemap.com/) - TeleGeography maintains a database of all major submarine fiber optic cables and their status.
+- [Submarine Cable Map](https://www.submarinecablemap.com/) - TeleGeography maintains a database of all major submarine fiber optic cables and their status.
 
 Next, these are the different tools/languages that I used:
 
@@ -106,7 +106,7 @@ Next, these are the different tools/languages that I used:
   - [D3](https://d3js.org/) - D3.js is a powerful JavaScript library for data visualization that allows developers to create interactive and dynamic charts, graphs, and other visual representations on the web using HTML, SVG, and CSS.
     - [d3-node](https://www.npmjs.com/package/d3-node) - library that helps with running d3 inside of a nodejs environment
     - [d3-geo](https://www.npmjs.com/package/d3-geo) - library that handles translating coordinates for different map projections. I know it's controversial now, but the earth isn't flat. So to make a flat image you have to pick how you are going to translate the globe coordinates onto a map. Despite its flaws, I used the [mercator projection](https://en.wikipedia.org/wiki/Mercator_projection) because it is by far the most popular map projection.
-- [The Go Programming Language](https://golang.org) - This is my current working language, so it's what I used to integrate with the PeeringDB API and do some data processing/validation.
+- [The Go Programming Language](https://go.dev) - This is my current working language, so it's what I used to integrate with the PeeringDB API and do some data processing/validation.
   - [PeeringDB](https://github.com/gmazoyer/peeringdb) - A library for talking to the PeeringDB API.
 
 The pipeline looks like this:
@@ -143,5 +143,5 @@ References:
 - Github: https://github.com/sudorandom/submarine-cable-map
 - PeeringDB: https://www.peeringdb.com/
 - Simple Maps (Geolocation Database): https://simplemaps.com/data/world-cities
-- Submarine Cable Map: https://submarinecablemap.com
+- Submarine Cable Map: https://www.submarinecablemap.com
  
