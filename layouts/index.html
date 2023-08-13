@@ -1,8 +1,9 @@
 {{ define "body" }}
+    {{ $bgImage := (resources.Get .Site.Params.backgroundImage).Fit "2000x2000 webp" | resources.Fingerprint }}
     {{ if .Site.Params.backgroundEffects }}
-    <body class="{{ if .Site.Params.backgroundImage }} bg" style="background-image: url('{{ .Site.Params.backgroundImage }}');" {{ else }}"{{ end }}>
+    <body class="{{ if .Site.Params.backgroundImage }} bg" style="background-image: url('{{ $bgImage.Permalink }}');" {{ else }}"{{ end }}>
     {{ else }}
-    <body class="{{ if .Site.Params.backgroundImage }} background-image" style="background-image: url('{{ .Site.Params.backgroundImage }}');" {{ else }}"{{ end }}>
+    <body class="{{ if .Site.Params.backgroundImage }} background-image" style="background-image: url('{{ $bgImage.Permalink }}');" {{ else }}"{{ end }}>
     {{ end }}
 {{ end }}
 

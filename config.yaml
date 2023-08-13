@@ -22,7 +22,7 @@ params:
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
   customCSS: ["css/style.css"]
-  backgroundImage: "/transparent_geo-mercator-small.webp"
+  backgroundImage: "images/transparent_geo-mercator-small.webp"
   backgroundEffects: true
   showPosts: true
   tags: false
