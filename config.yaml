@@ -13,8 +13,8 @@ staticDir:
  - "static"
 
 params:
-  Subtitle: "musings of a bored software engineer"
-  homeSubtitle: "Welcome to my personal notepad that I accidentally published online."
+  Subtitle: "Depth-first search into networking, programming, random tech topics"
+  homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: "Read some other posts"
   defaultTheme: "dark"
   EnableThemeToggle: false
