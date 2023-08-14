@@ -1,6 +1,6 @@
 +++
 categories = ["data-visualization", "project"]
-tags = ["spectrum", "sun", "light", "python", "svg", "data", "science"]
+tags = ["dataviz", "spectrum", "sun", "light", "python", "svg", "data", "science"]
 date = "2022-02-19"
 description = "Visualizing the visual spectrum of the sun. Spectrum analysis, wavelengths of light, data visualization"
 featured = "thumbnail.png"

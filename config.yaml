@@ -9,6 +9,8 @@ IsMultiLingual: false
 defaultContentLanguage: en
 enableGitInfo: true
 
+paginate: 50
+
 staticDir: 
  - "static"
 
