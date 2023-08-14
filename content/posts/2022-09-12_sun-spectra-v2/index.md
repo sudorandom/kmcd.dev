@@ -43,3 +43,5 @@ Here is a version of the image that has text which describes what you're seeing.
 [Click here to see the full resolution](annotated.svg)
 
 [Spectroscopy](https://en.wikipedia.org/wiki/Spectroscopy) is a very interesting science and the basis for it is rooted in our understanding of quantum physics. We know a lot about how the sun and other stars work using this science. However, we don't fully understand EVERY observation in these spectral lines. There's always more to learn and understand. Physics in particular has several massive mysteries just waiting to be solved.
+
+A better explanation can be found from [this video](https://www.youtube.com/watch?v=gVZwdYZqCUI) from the youtube channel [Be smart](https://www.youtube.com/@besmart).
