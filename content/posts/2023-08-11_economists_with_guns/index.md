@@ -1,5 +1,6 @@
 +++
 categories = ["gaming", "project"]
+tags = ["eve online", "gaming", "evepraisal"]
 date = "2023-08-11"
 description = "This is a story about how I came to create evepraisal.com, a popular tool for Eve Online that is commonly used to price check cargo scans, contracts, EFT fittings, assets, and more. If none of that means anything to you that's totally fine! I barely know, too."
 images = ["/posts/evepraisal.com/thumbnail.png"]

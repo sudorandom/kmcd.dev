@@ -65,6 +65,7 @@ params:
 
 taxonomies:
   category: "categories"
+  tag: "tags"
 
 menu:
   main:

@@ -1,5 +1,6 @@
 +++
-categories = ["short-story", "the-power-plant"]
+categories = ["short-story"]
+tags = ["the-power-plant", "sci-fi"]
 date = "2023-07-25"
 description = "Through his journal, Kevin Anderson recounts his commencement at a groundbreaking futuristic power plant—a marvel that has already transformed the world. However, as he delves deeper into the heart of this technological wonder, unsettling discoveries emerge, revealing that humanity might be wagering with forces beyond their comprehension."
 cover = "/posts/the-power-plant-01/cover-power-plant-01.png"
@@ -43,4 +44,4 @@ End of Journal Entry #1.
 
 <!-- > You reached the end of this part. [Continue to part 2.](/posts/the-power-plant-02) -->
 
-> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](/categories/the-power-plant/). Thank you for reading!
+> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](/tags/the-power-plant/). Thank you for reading!

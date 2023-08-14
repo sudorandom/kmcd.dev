@@ -1,5 +1,6 @@
 +++
 categories = ["short-story"]
+tags = ["the-power-plant", "sci-fi"]
 date = "2023-07-27"
 description = "Kevin Anderson settles into his new job and learns about the incredible advancements being made. Excited to be a part of history, he is filled with questions about how this is all possible, but the answers he gets only lead to more questions. Will he ever know the truth?"
 cover = "/posts/the-power-plant-02/cover-power-plant-02.jpg"
@@ -51,4 +52,4 @@ End of Journal Entry #2.
 
 <!-- > You reached the end of this part. [Continue to part 3.](/posts/the-power-plant-03) -->
 
-> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](/categories/the-power-plant/). This story is also published to [wattpad](https://www.wattpad.com/myworks/347737911-the-power-plant), so you can also follow it there as well. Thank you for reading!
+> This is the entire story so far. Keep updated by following me on [Mastodon](https://infosec.exchange/@sudorandom) or [Twitter](https://twitter.com/sudorandom/). See all existing parts [here](/tags/the-power-plant/). This story is also published to [wattpad](https://www.wattpad.com/myworks/347737911-the-power-plant), so you can also follow it there as well. Thank you for reading!

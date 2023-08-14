@@ -1,5 +1,6 @@
 +++
 categories = ["programming"]
+tags = ["learning"]
 date = "2023-08-12"
 description = "This is a small post that discusses how I learned computer programming, from cheating at calculator games to anime fan site to a handmade content management system."
 cover = "/posts/how-i-learned-to-code/thumbnail.jpg"

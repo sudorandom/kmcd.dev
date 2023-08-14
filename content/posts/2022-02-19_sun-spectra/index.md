@@ -1,5 +1,6 @@
 +++
 categories = ["data-visualization", "project"]
+tags = ["spectrum", "sun", "light", "python", "svg", "data", "science"]
 date = "2022-02-19"
 description = "Visualizing the visual spectrum of the sun. Spectrum analysis, wavelengths of light, data visualization"
 featured = "thumbnail.png"
@@ -27,7 +28,7 @@ We all know the light that we get from the sun is white, meaning it contains abo
 [Click here to see the full resolution](visible.svg)
 
 ## The sun's spectra (full spectrum)
-I also made a version that shows the NON visible spectrum. I can't use pretty colors for this because we literally don't have colors to map this part of the spectrum to. So I used greyscale (a gradient from black to white) to denote the intensity of this kind of light emited from the sun. The image looks blurry but that's an artifact of how precise the data is.
+I also made a version that shows the NON visible spectrum. I can't use pretty colors for this because we literally don't have colors to map this part of the spectrum to. So I used greyscale (a gradient from black to white) to denote the intensity of this kind of light emitted from the sun. The image looks blurry but that's an artifact of how precise the data is.
 
 ![Spectra of the sun in all spectrums](non-visible.svg "The Sun")
 [Click here to see the full resolution](non-visible.svg)
