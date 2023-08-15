@@ -43,10 +43,10 @@ params:
     logoText: "sudorandom.dev"
     logoCursorColor: "#ffffff"
   social:
-    - name: "github"
-      url: "https://github.com/sudorandom"
     - name: "mastodon"
       url: "https://infosec.exchange/@sudorandom"
+    - name: "github"
+      url: "https://github.com/sudorandom"
     - name: "twitter"
       url: "https://twitter.com/sudorandom/"
     - name: "linkedin"
