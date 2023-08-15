@@ -13,8 +13,8 @@
     <meta property="og:type" content="article" />
     {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
-    {{- range $.Site.Params.images -}}
-    <meta property="og:image" content="{{ index . 0 | absURL }}"/>
+    {{- range .Resources.ByType "image" -}}
+    <meta property="og:image" content="{{ . | absURL }}"/>
     {{ else }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
     {{ end }}

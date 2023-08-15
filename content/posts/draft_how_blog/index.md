@@ -1,5 +1,5 @@
 +++
-categories = ["programming", "internet"]
+categories = ["project"]
 date = "2023-08-20"
 description = "I describe how I made this blog, what I've learned. This blog uses Hugo, Github pages and Cloudflare"
 cover = ""

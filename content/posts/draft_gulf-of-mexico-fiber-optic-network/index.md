@@ -1,5 +1,5 @@
 +++
-categories = ["internet", "networking"]
+categories = ["project"]
 date = "2023-08-01"
 description = ""
 cover = ""

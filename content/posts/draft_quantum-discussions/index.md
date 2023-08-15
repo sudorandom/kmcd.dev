@@ -1,5 +1,5 @@
 +++
-categories = ["physics"]
+categories = ["random"]
 date = "2023-08-15"
 description = ""
 cover = ""

@@ -1,5 +1,5 @@
 +++
-categories = ["gaming", "project"]
+categories = ["project"]
 tags = ["eve online", "gaming", "evepraisal", "golang"]
 date = "2022-02-20"
 description = "Evepraisal - Introducing the price estimation tool for the MMORPG game Eve Online that I created. Sometimes the best way to play is not to play"
