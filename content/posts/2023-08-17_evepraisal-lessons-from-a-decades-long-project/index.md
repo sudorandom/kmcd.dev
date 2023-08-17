@@ -207,14 +207,15 @@ All of the test cases for all parsers were run by the same code, so adding more 
 |---|---|---|
 | Apprisals Performed | 150 Million |  |
 | First Commit | Dec 17, 2012 | [3a24930](https://github.com/evepraisal/python-evepraisal/commit/3a24930edc0566e6c9ca22038a3e6870817497bf) |
+| Last Commit (Python Version) | Nov 27, 2017 | [bb949e2](https://github.com/evepraisal/python-evepraisal/commit/bb949e2c36cf6c10f7e33ea0a8387c0088be71d0) |
 | First Commit (Go Version) | Apr 25, 2017 | [55f6794](https://github.com/evepraisal/go-evepraisal/commit/55f6794c8c4b0d3b2e2dbdcecb069232700d6654) |
 | Lines of code (Python) | 1283+1051=2334 | [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
 | Lines of code (Go) | 8022 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) |
-| Number of Commits | 450+234+130 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) + [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
+| Number of Commits | 450+234+130=814 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) + [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
 
-{{< figure src="python-evepraisal-commit-history.png" link="go-evepraisal-commit-history.png" alt="Commit history for the Python version of Evepraisal" description="Commit history for the Python version of Evepraisal" button="See on github" button-href="https://github.com/evepraisal/python-evepraisal/graphs/code-frequency" >}}
+{{< figure src="python-evepraisal-commit-history.png" link="go-evepraisal-commit-history.png" alt="Commit history for the Python version of Evepraisal" description="Commit history for the Python version of Evepraisal." button="See on github" button-href="https://github.com/evepraisal/python-evepraisal/graphs/code-frequency" >}}
 
-{{< figure src="go-evepraisal-commit-history.png" link="python-evepraisal-commit-history.png" alt="Commit history for the Go version of Evepraisal" description="Commit history for the Go version of Evepraisal" button="See on github" button-href="https://github.com/evepraisal/go-evepraisal/graphs/code-frequency" >}}
+{{< figure src="go-evepraisal-commit-history.png" link="python-evepraisal-commit-history.png" alt="Commit history for the Go version of Evepraisal" description="Commit history for the Go version of Evepraisal. Look at how little activity there is!" button="See on github" button-href="https://github.com/evepraisal/go-evepraisal/graphs/code-frequency" >}}
 
 ## Advice
 Now here's some advice for running a similar project. I feel like most of this applies to many kinds of side-projects that you intend to have people use.
