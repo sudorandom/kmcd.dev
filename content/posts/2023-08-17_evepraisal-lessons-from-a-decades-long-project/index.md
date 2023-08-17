@@ -29,7 +29,7 @@ After that, life went on. I kind of forgot about the tool. I only intended it to
 ### v1: Getting real with Python
 The next version was written in Python and used an API to fetch market data from eve-marketdata.com, which is now sadly no longer running. Also, the mapping of the item name to the so-called "type ID" was done by harvesting the list of all types and type IDs from data files that come along with installing the Eve Online client. These files were SQLite databases that could be easily opened and queried.
 
-{{< bigimg src="2013_appraisal.png" alt="Evepraisal 2013">}}
+{{< figure src="2013_appraisal.png" alt="What the appraisal page looked like in 2013" description="What the appraisal page looked like in 2013" >}}
 
 I used [PostgreSQL](https://www.postgresql.org/) for the database and [memcached](https://memcached.org/) to cache both appraisal pages and requests to eve-marketdata.com. To get an idea of what the data looks like, here are the tables that this version ended up with.
 ```
@@ -50,7 +50,7 @@ Appraisals
 
 If you're wondering where the "type" information is, well... it's in a giant JSON file that is loaded into memory on startup. If you want to see the last version of this file, [it exists here](https://github.com/evepraisal/python-evepraisal/tree/master/data).
 
-{{< bigimg src="2013.png" alt="Evepraisal 2013">}}
+{{< figure src="2013.png" alt="Evepraisal homepage in 2013" description="Evepraisal homepage in 2013" >}}
 
 [This first version](github.com/evepraisal/python-evepraisal/) was great but it wasn't perfect. A lot of memory and disk space was being used for the database. The database needed a good amount of maintenance. After a few years, a lot of these things made the website run fairly slow and I had too many outages for my liking, so I needed to do something to help the situation...
 
@@ -119,9 +119,9 @@ flowchart TD
 ```
 
 And here's what the new version looked like:
-{{< bigimg src="2023.png" alt="Evepraisal 2023">}}
+{{< figure src="2023.png" alt="Evepraisal homepage in 2023" description="Evepraisal homepage in 2023" >}}
 
-{{< bigimg src="2023_appraisal.png" alt="Evepraisal 2023">}}
+{{< figure src="2023_appraisal.png" alt="Appraisal page in 2023" description="Appraisal page in 2023" >}}
 
 All-in-all, I think this rewrite went well. It probably took more effort than I expected, but it paid off over the next 6 years from 2017 to a couple of weeks ago. My primary goal was to get a functioning knowledge of operating a project using the Go programming language, and that happened.
 
@@ -212,9 +212,9 @@ All of the test cases for all parsers were run by the same code, so adding more 
 | Lines of code (Go) | 8022 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) |
 | Number of Commits | 450+234+130 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) + [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
 
-{{< figure src="python-evepraisal-commit-history.png" link="go-evepraisal-commit-history.png" alt="Commit history for the Python version of Evepraisal" attrlink="https://github.com/evepraisal/python-evepraisal/graphs/code-frequency" description="Commit history for the Python version of Evepraisal" >}}
+{{< figure src="python-evepraisal-commit-history.png" link="go-evepraisal-commit-history.png" alt="Commit history for the Python version of Evepraisal" description="Commit history for the Python version of Evepraisal" button="See on github" button-href="https://github.com/evepraisal/python-evepraisal/graphs/code-frequency" >}}
 
-{{< figure src="go-evepraisal-commit-history.png" link="python-evepraisal-commit-history.png" alt="Commit history for the Go version of Evepraisal" attrlink="https://github.com/evepraisal/go-evepraisal/graphs/code-frequency" description="Commit history for the Go version of Evepraisal" >}}
+{{< figure src="go-evepraisal-commit-history.png" link="python-evepraisal-commit-history.png" alt="Commit history for the Go version of Evepraisal" description="Commit history for the Go version of Evepraisal" button="See on github" button-href="https://github.com/evepraisal/go-evepraisal/graphs/code-frequency" >}}
 
 ## Advice
 Now here's some advice for running a similar project. I feel like most of this applies to many kinds of side-projects that you intend to have people use.

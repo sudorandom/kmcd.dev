@@ -4,6 +4,8 @@
             {{ with .Get "target" }} target="{{ . }}"{{ end }}
             {{ with .Get "rel" }} rel="{{ . }}"{{ end }}
             {{- with .Get "description" }} data-description="{{ . }}"{{ end -}}
+            {{- with .Get "button" }} data-button="{{ . }}"{{ end -}}
+            {{- with .Get "button-href" }} data-button-href="{{ . }}"{{ end -}}
             class="spotlight" data-download="true">
     {{- else -}}
         <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
