@@ -145,7 +145,7 @@ I already mentioned CPU/memory constraints in the motivations to re-write the pr
 Certain aspects, like deployment, OS upgrades, and backup/restore, flowed smoothly. Rigorous testing and proactive data management bolstered overall stability.
 
 #### Deployment
-You may be surprised to see my deployment script. You can read it in the [deploy.sh](https://github.com/evepraisal/go-evepraisal/blob/master/scripts/deploy.sh) file. It simply copies up a `systemd` unit file and binary. Then it ensures that the service is enabled. That's basically it.
+You may be surprised to see my deployment script. You can read it in the [deploy.sh](https://github.com/evepraisal/go-evepraisal/blob/master/scripts/deploy.sh) file. It simply copies up a [systemd](https://systemd.io/) unit file and the Go binary. Then it ensures that the service is enabled. That's basically it. It's incredible that the deployment only involves updating a single binary file.
 
 #### OS Upgrades and Migrations
 Throughout the past decade, there were instances of image upgrades and migrations. Thankfully, these processes transpired without major issues, resulting in only a few minutes of downtime once or twice a year. In the cloud environment, periodic migrations were required to address security vulnerabilities. Notably, cloud providers have improved their strategies, making migrations to new VM host more seamless. An example of a migration that wasn't seamless occurred when the VM hosting Evepraisal was moved to a different data center, requiring some downtime of approximately an hour or two.
@@ -154,7 +154,51 @@ Throughout the past decade, there were instances of image upgrades and migration
 Never had to do this... and TBH it’s not the worst thing in the world that the database gets wiped. Sure, it would be annoying to users that have links to their appraisals but a lot of them can be recreated pretty easily.
 
 #### Testing
-There’s a lot of table-based testing in this project, which allowed me to add new test cases without needing to write a lot of code. This is especially useful in the parser part of the app. Here's an example of a couple of test cases for the "listing" parser, which handles lines that simply have a quantity and an item name delimited by some kind of whitespace:
+There’s a lot of [table-based](https://dave.cheney.net/2019/05/07/prefer-table-driven-tests) testing in this project, which allowed me to add new test cases without needing to write a lot of code. This is especially useful in the parser part of the app. Here's an example of a couple of test cases for the "listing" parser, which handles lines that simply have a quantity and an item name delimited by some kind of whitespace:
+
+```go
+{
+    "quantities with a decimal, for some reason",
+    `123.12	Griffin
+456.3	Maulus`,
+    &Listing{
+        Items: []ListingItem{
+            {Name: "Griffin", Quantity: 123},
+            {Name: "Maulus", Quantity: 456},
+        },
+        lines: []int{0, 1},
+    },
+    Input{},
+    false,
+}, {
+    "with ending whitespace",
+    `Compressed Iridescent Gneiss x 109 `,
+    &Listing{
+        Items: []ListingItem{
+            {Name: "Compressed Iridescent Gneiss", Quantity: 109},
+        },
+        lines: []int{0},
+    },
+    Input{},
+    false,
+}, {
+    "with beginning whitespace",
+    `1865 Compressed Glossy Scordite
+ 105 Compressed Brilliant Gneiss
+  27 Compressed Jet Ochre`,
+    &Listing{
+        Items: []ListingItem{
+            {Name: "Compressed Brilliant Gneiss", Quantity: 105},
+            {Name: "Compressed Glossy Scordite", Quantity: 1865},
+            {Name: "Compressed Jet Ochre", Quantity: 27},
+        },
+        lines: []int{0, 1, 2},
+    },
+    Input{},
+    false,
+}
+```
+
 All of the test cases for all parsers were run by the same code, so adding more tests is just adding a new `Case` object. Whenever I fixed a reported bug I would create a new test case so that the same bug couldn't happen again. This has prevented an incredible number of potential regressions over the years.
 
 ### Stats for nerds
@@ -176,7 +220,9 @@ All of the test cases for all parsers were run by the same code, so adding more 
 Now here's some advice for running a similar project. I feel like most of this applies to many kinds of side-projects that you intend to have people use.
 
 ### Identify data dependencies and find good sources
-Evepraisal suffered a lot whenever the source of data wasn't reliable. Eve-marketdata served as the data source for market data for Evepraisal for a long time. I ended up integrating with a similar service as a backup before settling on using CCP's ESI market API to fetch market data from the source.
+Evepraisal suffered a lot whenever the source of data wasn't reliable. Eve-marketdata served as the data source for market data for Evepraisal for a long time. I ended up integrating with a similar service as a backup before settling on using CCP's ESI market API to fetch market data from the original source.
+
+It's a similar story with the type database, first it was gathered using dubious methods that could break often until it was replaced with a more official and reliable data source.
 
 ### Automate the rotation of data dependencies
 I initially had a script that would scrape Eve Online's type data from the game client data files. This was super manual and it involved me updating the game (which took a lot of my disk storage for a game I didn't play much), running a script, and checking in the new giant JSON file with all of the types in it. The process was "fine" but it was very reactionary. I had to do this for every major game release and that's pretty often. I would normally get messaged about the game data needing an update from a user noticing a new item didn't get recognized. That's kind of embarrassing, so I needed to improve this.
@@ -207,6 +253,8 @@ I used AdSense to generate revenue from Evepraisal. Revenue completely covered o
 
 ### If I were to change things...
 You should keep a log and make an entry for every time your attention is required, you can use that log to figure out what to focus on the next time you feel like working on the project.
+
+I've always wanted to do more with the tool but life always got in the way. There are so many cool ways to show and process this kind of data. At various times I saw orders that made no sense pop up. Orders that I don't think were just margin scans. There would be sell-orders way below market value. Buy-orders way above market value. It just made no sense to me because it would happen with high-volume items that had a fairly fixed market price. It didn't happen super often, but you might be able to make some money off of those... as long as it isn't an obvious scam.
 
 Other than that... I don't know. I think this was a massively successful project. I'm extremely proud to have contributed something so significant to the game.
 
