@@ -17,7 +17,7 @@ type = "posts"
 
 +++
 
-I wrote [Evepraisal](/posts/evepraisal.com). Evepraisal is a tool/website that began as a way to more efficiently explode transport ships that evolved into an authoritative pricing estimate for the entire (Eve Online) Universe. Here are some lessons that I’ve learned during the 10 years. This article will cover the technical lessons and experiences that I had maintaining this extremely useful tool for a decade.
+I wrote [Evepraisal](/posts/evepraisal.com). Evepraisal is a tool/website that began as a way to more efficiently explode transport ships in [Eve Online](https://www.eveonline.com/) that evolved into an authoritative pricing estimate authority for the entire (Eve Online) Universe. Here are some lessons that I’ve learned during the 10 years. This article will cover the technical lessons and experiences that I had maintaining this extremely useful tool for a decade.
 
 {{< toc >}}
 
