@@ -222,7 +222,7 @@ Now here's some advice for running a similar project. I feel like most of this a
 ### Identify data dependencies and find good sources
 Evepraisal suffered a lot whenever the source of data wasn't reliable. Eve-marketdata served as the data source for market data for Evepraisal for a long time. I ended up integrating with a similar service as a backup before settling on using CCP's ESI market API to fetch market data from the original source.
 
-It's a similar story with the type database, first it was gathered using dubious methods that could break often until it was replaced with a more official and reliable data source.
+It's a similar story with the type database, first, it was gathered using dubious methods that could break often until it was replaced with a more official and reliable data source.
 
 ### Automate the rotation of data dependencies
 I initially had a script that would scrape Eve Online's type data from the game client data files. This was super manual and it involved me updating the game (which took a lot of my disk storage for a game I didn't play much), running a script, and checking in the new giant JSON file with all of the types in it. The process was "fine" but it was very reactionary. I had to do this for every major game release and that's pretty often. I would normally get messaged about the game data needing an update from a user noticing a new item didn't get recognized. That's kind of embarrassing, so I needed to improve this.
@@ -238,14 +238,15 @@ I, luckily, never really had an issue with backup and restore, but I do think yo
 After you've gotten the project to a stable state the things that will break are the log files that are never truncated or database tables that grow forever. Come up with a strategy to deal with this. I let systemd manage log files for me. By default, systemd will keep 4GB of log files for you, which was enough for me. I had a subprocess in the Evepraisal server that would clean up old appraisals automatically.
 
 ### Get alerts
-You need alerts, especially if your interest in the game varies over time. You may have an issue for days before someone tries to tell you so you should be proactive.
-Log-based alerting
+You need alerts, especially if your interest in the project varies over time. You may have an issue for days before someone tries to tell you so you should be proactive.
+
+- Log-based alerting
     - I used [Papertrail's](https://www.papertrail.com/) free plan to handle logging and alerting for me. I filtered a lot of irrelevant things from the log so Papertrail would only receive actionable logs.
 - Uptime monitoring alerts
     - There are a lot of free services for this but I used [Uptime Robot](https://uptimerobot.com/).
 - Google Alerts
     - Hopefully, the name of your service is unique enough that you can make a [Google alert](https://www.google.com/alerts) for the name. It will show Reddit threads, blog articles, forum posts, etc. that mention this name. It's great, but it can also be a little slow.
-- Subscribe to email lists that will tell you if major changes are happening with the game.
+- Subscribe to email lists that will tell you if major changes are happening with the APIs that you're using.
 - Be available on a social platform like Mastodon and list your handle on the website. If people are using your website someone will find your user and tell you if something is wrong if it's broken for long enough.
 
 ### Monetization
