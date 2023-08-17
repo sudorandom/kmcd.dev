@@ -20,7 +20,7 @@ aliases = [
 > There is an updated version of this map detailed [in this updated post](/posts/internet-map-v2/).
 
 ### Basic Details
-I used data from the [submarinecablemap.com](https://submarinecablemap.com) website to create my own visualization of Submarine Cables that live under our oceans and carry the majority of trans-continental internet traffic. Mostly, I wanted a 'dark mode' version of the map but I also plan on adding some interesting annotations from different sources and computing some metrics... Like there is enough fiber optic cable under the oceans to wrap the earth over 103 times! These SVGs were made with javascript, [d3](https://d3js.org). I also used this experience to look at different map projections, which is neat.
+I used data from the [submarinecablemap.com](https://submarinecablemap.com) website to create my visualization of Submarine Cables that live under our oceans and carry the majority of trans-continental internet traffic. Mostly, I wanted a 'dark mode' version of the map but I also plan on adding some interesting annotations from different sources and computing some metrics... Like there is enough fiber optic cable under the oceans to wrap the earth over 103 times! These SVGs were made with javascript, [d3](https://d3js.org). I also used this experience to look at different map projections, which is neat.
 
 
 [Github](https://github.com/sudorandom/submarine-cable-map) | [All output images](https://github.com/sudorandom/tree/main/output)
@@ -30,12 +30,12 @@ I used data from the [submarinecablemap.com](https://submarinecablemap.com) webs
 Here are the resulting images.
 
 ### geo-mercator.svg
-![Cable map using the mercator projection](geo-mercator.svg "geo-mercator.svg")
+![Cable map using the Mercator projection](geo-mercator.svg "geo-mercator.svg")
 [click here for full resolution](geo-mercator.svg)
 
 ### geo-conic-conformal.svg
 
-![Cable map using the conic coformal projection](geo-conic-conformal.svg "geo-conic-conformal.svg")
+![Cable map using the conic conformal projection](geo-conic-conformal.svg "geo-conic-conformal.svg")
 [click here for full resolution](geo-conic-conformal.svg)
 
 ### geo-conic-equal-area.svg
