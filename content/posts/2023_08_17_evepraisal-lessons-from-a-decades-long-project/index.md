@@ -2,7 +2,7 @@
 categories = ["project"]
 tags = ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql"]
 date = "2023-08-17"
-description = "Inside Evepraisal's operations: data automation, databases, deployment, and giving advice for similar projects."
+description = "Inside Evepraisal's operations: data automation, databases, deployment, and advice for similar projects."
 featured = "thumbnail.png"
 featuredalt = ""
 featuredpath = "date"
@@ -22,14 +22,16 @@ I wrote [Evepraisal](/posts/evepraisal.com). Here are some lessons that I’ve l
 {{< toc >}}
 
 ## Getting Started
-I have already told the story of how it started in my [Economists with Guns](/posts/economists-with-guns/) article, but I did want to add that the first version of what became Evepraisal was written in Python and used a static database of pricing data. It also only worked for cargo scan results because it was used for the Burn Jita event. I actually only intended it to be used for this event, so the prices of items NEVER updated. They were all frozen in time. It was a few months later when I noticed that the tool was still being used a good amount and I started getting requests for updated prices that I thought I might want to improve this tool a bit more. I bought the evepraisal.com domain and started making my work.
+I have already told the story of how it started in my [Economists with Guns](/posts/economists-with-guns/) article, but I did want to add that the first version of what became Evepraisal was written in Python and used a static database of pricing data. It also only worked for cargo scan results because it was used for the [Burn Jita](https://www.eveonline.com/news/view/observing-the-burn-jita-player-event) event in 2012 where players in cheap ships would attack transport ships carrying expensive goods in high security space knowing that the police would quickly show up and destroy the attackers. I made this tool to help identify which ships were holding expensive goods. The first version had all of the major features: a box you can paste some text into, a listing of all the items and a total price estimate on the top of the page. After using it for a little bit I realized that people *didn't believe* my estimates when I just posted them in the scouting chat... So I worked on a way to share the results in chat with a link, which, I believe, is most of the reason for success of the website.
+
+After that, life went on. I kind of forgot about the tool. I only intended it to be used for this event so the prices of items never updated. They were all frozen in time. It was a few months later when I noticed that the tool was still being used a good amount and I started getting requests for updated prices and support for other formats. I bought the evepraisal.com domain and started my work.
 
 ### v1: Getting real with Python
-The next version was written in Python and used an API to fetch market data from eve-marketdata.com, which is now sadly no longer running. Also, the mapping of item name to so-called "type ID" was done by harvesting the list of all types and type IDs from data files that comes along with installing the Eve Online client. These files were actually SQLite databases that could be easily opened and queried. I used PostgreSQL for the database and memcache to cache both appraisal pages and requests to eve-marketdata.com.
+The next version was written in Python and used an API to fetch market data from eve-marketdata.com, which is now sadly no longer running. Also, the mapping of item name to so-called "type ID" was done by harvesting the list of all types and type IDs from data files that comes along with installing the Eve Online client. These files were actually SQLite databases that could be easily opened and queried.
 
 {{< bigimg src="2013_appraisal.png" alt="Evepraisal 2013">}}
 
-To get an idea of what the data looks like, here are the tables that this version ended up with.
+I used PostgreSQL for the database and memcache to cache both appraisal pages and requests to eve-marketdata.com. To get an idea of what the data looks like, here are the tables that this version ended up with.
 ```
 Appraisals
 
@@ -46,23 +48,14 @@ Appraisals
     UserId INTEGER
 ```
 
-Oh, and users can also log in with OpenID and create private appraisals that only they can see. Nice. Here's that table:
-```
-Users
-
-    Id INTEGER
-    OpenId STRING(200)
-    Options TEXT
-```
-
 If you're wondering where the "type" information is, well... it's in a giant JSON file that is loaded into memory on startup. If you want to see the last version of this file, [it exists here](https://github.com/evepraisal/python-evepraisal/tree/master/data).
 
 {{< bigimg src="2013.png" alt="Evepraisal 2013">}}
 
-This first version was great but it wasn't perfect. A lot of memory and disk space was being used for the database. The database needed a good amount of maintenance. A lot of these things made the website run a little slow and I had one too many outages for my liking, so I needed to do something to help the situation...
+[This first version](github.com/evepraisal/python-evepraisal/) was great but it wasn't perfect. A lot of memory and disk space was being used for the database. The database needed a good amount of maintenance. After a few years a lot of these things made the website run fairly slow and I had one too many outages for my liking, so I needed to do something to help the situation...
 
 ### v2: Just Rewrite it in Go
-To address some of the issues with v1 I decided to rewrite the project in Go. I wanted experience writing something "real" in the language so this was it. This effort involved re-writing all of the parsers, all the API handlers, the frontend, and... everything into Go which took a good deal of effort. But in the end it was actually worth it. The memory usage was WAY down for a number of reasons, the CPU usage (which was starting to be a problem too) was very minimal and the website was extremely fast. Rewriting the website in a different language wasn't the only thing that changed though. I changed the database, caching method, how it sourced data, and probably a lot more. All while maintaining a familiar user experience.
+To address some of the issues with v1 I decided to [rewrite the project in Go](github.com/evepraisal/go-evepraisal/). I wanted experience writing something "real" in the language so this was it. This effort involved re-writing all of the parsers, all the API handlers, the frontend, and... *everything* into Go which took a good deal of effort. But in the end it was actually worth it. The memory usage was WAY down for a number of reasons, the CPU usage (which was starting to be a problem too) was very minimal and the website was extremely fast. Rewriting the website in a different language wasn't the only thing that changed though. I changed the database, caching method, how it sourced data, and probably a lot more. All while maintaining a familiar user experience.
 
 #### PostgreSQL to Bolt
 With this rewrite I also switched from PostgreSQL to an embedded key/value store called Bolt. This means that the only ways I have to access data is by the exact primary key or by scanning a range of keys in alphanumeric order. This made some things more difficult but it also taught me a lot about this type of database and it's fast. Really fast. I would post the schema here, but that's not really a thing for Bolt. So instead, I will show you the buckets and the format I used for keys and values for each bucket.
@@ -93,9 +86,9 @@ I moved from from eve-marketdata.com to ESI, which newly supported fetching live
 #### Other Changes
 Around this time I also fixed some usability issues. I tackled pricing for items that had a super low volume or couldn't be sold on the market by summing up the cost of the components that were needed to build that item. I added a percentage upcharge to that to factor in for build time and effort. In the end it made for a decent prices after some tweaking.
 
-In addition to re-implementing the existing parsers in Go, I also added a few more and improved on the "heuristic" parser that would try VERY HARD to find Eve Online types from the input.
+In addition to re-implementing the existing parsers in Go, I also added support for a few more formats and improved on the "heuristic" parser that would try VERY HARD to find Eve Online types from the input.
 
-The data migration was fairly extensive. I had a process that would re-parse every appraisal again to ensure that it could. I noted differences and eventually decided that it was good enough (or better enough) to do a final migration and flip over to the new site. Luckily, I tested enough for most users not to notice that it's a completely different website. I made some UI adjustments, which people noticed, but the fact that the entire thing was re-written was transparent to most users.
+The data migration was fairly extensive. I had a process that would re-parse every appraisal again to ensure that it could. I noted differences and eventually decided that it was good enough (or better enough) to do a final migration and flip over to the new site. Because this process was pretty slow I also optimized the parsers a bit at this time so this would go faster. I tested enough to ensure that when the day came that I swapped the website over to the new version most users didn't notice. I made some UI adjustments, which people did notice, but the fact that the entire thing was re-written was transparent to most users.
 
 #### Data Flow
 So let's put all of this together. Here's the basic dataflow diagram for Evepraisal:
@@ -133,17 +126,20 @@ And here's what the new version looked like:
 All-in-all, I think this rewrite went really well. It probably took more effort than I expected, but it definitely paid off over the course of the next 6 years from 2017 to a couple weeks ago. My primary goal was to get a functioning knowledge of operating a project using the Go programming language, and that definitely happened.
 
 ## Project Recap
-So now that I described the evolution of the project and the two major versions, 
+So now that I described the evolution of the project and the two major versions, let's recap some major issues and non-issues that I had while maintaining the project.
 
 ### What went wrong
-I encountered hurdles such as unreliable game data, naming inconsistencies, missing data, and disk constraints. Overcoming these challenges shaped Evepraisal's resilience.
+I encountered hurdles such as unreliable game data, naming inconsistencies, missing data, and disk constraints. Overcoming these challenges shaped how I approach these problems in my other work.
 
-- Unreliable game data
-    - When they standardized the names of modules but they never bothered to update the type database with the new names
-    - Missing data: Volumes and packaged volumes are not consistent and not in the game data, so I’ve had to maintain my own mapping, which really sucks.
-- Disk Constraints
-    - I was slowly running low on disk space, so I changed the default for the API to not store appraisals
-    - I also started purging data more aggressively by using the "last seen" time to decide which appraisals are unlikely to be looked at again.
+#### Unreliable game data
+When CCP standardized the names of modules, they never bothered to update the type database with the new names. Also, volumes and packaged volumes are not consistent and not in the game data, so I’ve had to maintain my own mapping, which really sucks.
+
+Eve-marketdata had a good number of outages and eventually just stopped working for a long period of time. So in order to get the website back up I quickly made a few integrations with other services (who I think had less reliable data).
+
+#### CPU/Memory/Disk Constraints
+I already mentioned CPU/memory constrains in the motivations to re-write the project using Go. However, v2 still had issues with disk space. Because appraisals were never deleted I was slowly running low on disk space. I ended up fixing this in two ways:
+- changing the default for the API to not store appraisals
+- purging data more aggressively by using the "last seen" time to decide which appraisals are unlikely to be looked at again
 
 ### What didn't go wrong
 Certain aspects, like deployment, OS upgrades, and backup/restore, flowed smoothly. Rigorous testing and proactive data management bolstered overall stability.
@@ -189,7 +185,8 @@ There’s a lot of table-based testing in this project, which allowed me to add 
     false,
 }
 ```
-All of test cases for all parsers were ran by the same code, so adding more tests is just adding a new `Case` object. Whenever I fixed a reported bug I would create a new test case so that same bug couldn't happen again.
+
+All of test cases for all parsers were ran by the same code, so adding more tests is just adding a new `Case` object. Whenever I fixed a reported bug I would create a new test case so that same bug couldn't happen again. This has prevented an incredible number of potential regressions over the years.
 
 ### Stats for nerds
 
@@ -207,7 +204,7 @@ All of test cases for all parsers were ran by the same code, so adding more test
 {{< figure src="go-evepraisal-commit-history.png" link="python-evepraisal-commit-history.png" alt="Commit history for the Go version of Evepraisal" attrlink="https://github.com/evepraisal/go-evepraisal/graphs/code-frequency" description="Commit history for the Go version of Evepraisal" >}}
 
 ## Advice
-Now here's some advice for running a similar project. I feel like most of this is applicable.
+Now here's some advice for running a similar project. I feel like most of this is applicable for many kinds of side-projects that you intend to have people actually use.
 
 ### Identify data dependencies and find good sources
 Evepraisal suffered a lot whenever the source of data wasn't reliable. Eve-marketdata served as the datasource for market data for Evepraisal for a long time. I actually ended up integrating with a similar service as a backup before settling on using CCP's ESI market API to fetch market data from the source.
@@ -240,10 +237,11 @@ You absolutely need alerts, especially if your interest in the game varies over 
 I used AdSense to generate revenue from Evepraisal. Revenue completely covered operational costs but it didn't make too much beyond that. The only ongoing costs for this project were hosting and domain name registration. Monetization ensured that the project lived for as long as it did.
 
 ### If I were to change things...
-
 You should absolutely keep a log and make an entry for every time your attention is required, you can use that log to figure out what to focus on the next time you feel like working on the project.
 
 Other than that... I don't know. I think this was a massively successful project. I'm extremely proud to have contributed something so significant to the game.
 
-## The End
+## gf in local
+This all started from wanting the [Burn Jita](https://www.eveonline.com/news/view/observing-the-burn-jita-player-event) event to be more streamlined. I saw how chaotic it was when identifying targets and I felt like having a tool to quickly guess the value of the target was very much needed. After the next Burn Jita event came around Evepraisal's usage was significantly used. After the event finished I saw a post with the list of all killmails related to the event. I created a query (which I sadly didn't keep) to identify `cargo scan` appraisals that contained the same hull items as the killmail made BEFORE the kill happened. This query managed to find every single kill on the list.
+
 In conclusion, Evepraisal's journey underscores the importance of data reliability, automation, strong testing techniques, and monetization. I thank everyone who has used the tool in their everyday space-lives. You kept me going for so long.
