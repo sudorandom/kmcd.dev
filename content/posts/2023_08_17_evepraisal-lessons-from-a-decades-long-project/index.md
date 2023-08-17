@@ -17,7 +17,7 @@ type = "posts"
 
 +++
 
-I wrote [Evepraisal](/posts/evepraisal.com). Here are some lessons that I’ve learned during the 10 years. This article will cover the technical lessons and experiences that I've had while maintaining this extremely useful tool for a decade.
+I wrote [Evepraisal](/posts/evepraisal.com). Evepraisal is a tool/website that began as a way to more effeciently explode transport ships that evolved into an authoritative pricing estimate for the entire (Eve Online) Universe. Here are some lessons that I’ve learned during the 10 years. This article will cover the technical lessons and experiences that I had maintaining this extremely useful tool for a decade.
 
 {{< toc >}}
 
@@ -88,7 +88,7 @@ Around this time I also fixed some usability issues. I tackled pricing for items
 
 In addition to re-implementing the existing parsers in Go, I also added support for a few more formats and improved on the "heuristic" parser that would try VERY HARD to find Eve Online types from the input.
 
-The data migration was fairly extensive. I had a process that would re-parse every appraisal again to ensure that it could. I noted differences and eventually decided that it was good enough (or better enough) to do a final migration and flip over to the new site. Because this process was pretty slow I also optimized the parsers a bit at this time so this would go faster. I tested enough to ensure that when the day came that I swapped the website over to the new version most users didn't notice. I made some UI adjustments, which people did notice, but the fact that the entire thing was re-written was transparent to most users.
+The data migration was fairly extensive. I had a process that would re-parse every appraisal again to ensure that it could. I noted differences and eventually decided that it was good enough (or better enough) to do a final migration and flip over to the new site. Because this process was pretty slow I also optimized the parsers a bit at this time so this would go faster. I tested enough to ensure that when the day came that I swapped the website over to the new version most users didn't notice. I made some UI adjustments, which people did notice, but the fact that the entire thing was re-written was unseen to most users.
 
 #### Data Flow
 So let's put all of this together. Here's the basic dataflow diagram for Evepraisal:
@@ -132,7 +132,7 @@ So now that I described the evolution of the project and the two major versions,
 I encountered hurdles such as unreliable game data, naming inconsistencies, missing data, and disk constraints. Overcoming these challenges shaped how I approach these problems in my other work.
 
 #### Unreliable game data
-When CCP standardized the names of modules, they never bothered to update the type database with the new names. Also, volumes and packaged volumes are not consistent and not in the game data, so I’ve had to maintain my own mapping, which really sucks.
+When CCP standardized the names of modules, they never bothered to update the type database with the new names. Also, volumes and packaged volumes are not consistent and not in the game data, so I had to maintain my own mapping, which really sucked.
 
 Eve-marketdata had a good number of outages and eventually just stopped working for a long period of time. So in order to get the website back up I quickly made a few integrations with other services (who I think had less reliable data).
 
@@ -148,7 +148,7 @@ Certain aspects, like deployment, OS upgrades, and backup/restore, flowed smooth
 You may be surprised to see my deployment script. You can read it in the [deploy.sh](https://github.com/evepraisal/go-evepraisal/blob/master/scripts/deploy.sh) file. It simply copies up a systemd unit file and binary. Then it ensures that the service is enabled. That's basically it.
 
 #### OS Upgrades and Migrations
-Image upgrades and migrations definitely happened but I haven’t had any issues with it other than a few minutes of downtime once or twice a year. In the cloud space there were cycles where migrations had to be done to mitigate security vulnerabilities. Since this kept happening it seems like the cloud providers have gotten better with seamlessly migrating VMs to a new hypervisor version. The only migrations that disrupt me are when they want to retire the OS image and I believe they completely retired a datacenter that my VM was hosted at once, so that involved a bit longer downtime as the data was shipped to a new datacenter.
+Throughout the past decade, there were instances of image upgrades and migrations. Thankfully, these processes transpired without major issues, resulting in only a few minutes of downtime once or twice a year. In the cloud environment, periodic migrations were required to address security vulnerabilities. Notably, cloud providers have improved their strategies, making migrations to new VM host more seamless. An example of a migration that wasn't seamless occurred when the VM hosting Evepraisal was moved to a different datacenter, requiring some downtime of approximately an hour or two.
 
 #### Backup/restore
 Never had to actually do this... and TBH it’s not the worst thing in the world that the database gets wiped. Sure, it would be annoying to users that have links to their appraisals but a lot of them can be recreated pretty easily.
