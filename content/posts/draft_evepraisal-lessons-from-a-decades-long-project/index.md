@@ -1,7 +1,7 @@
 +++
 categories = ["project"]
-tags = ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql", ]
-date = "2023-08-20"
+tags = ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql"]
+date = "2023-08-17"
 description = "Inside Evepraisal's operations: data automation, databases, deployment, and giving advice for similar projects."
 featured = "thumbnail.png"
 featuredalt = ""
