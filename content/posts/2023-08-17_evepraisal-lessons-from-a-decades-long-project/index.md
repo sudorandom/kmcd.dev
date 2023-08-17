@@ -31,7 +31,7 @@ The next version was written in Python and used an API to fetch market data from
 
 {{< bigimg src="2013_appraisal.png" alt="Evepraisal 2013">}}
 
-I used PostgreSQL for the database and memcache to cache both appraisal pages and requests to eve-marketdata.com. To get an idea of what the data looks like, here are the tables that this version ended up with.
+I used [PostgreSQL](https://www.postgresql.org/) for the database and [memcached](https://memcached.org/) to cache both appraisal pages and requests to eve-marketdata.com. To get an idea of what the data looks like, here are the tables that this version ended up with.
 ```
 Appraisals
 
@@ -58,7 +58,7 @@ If you're wondering where the "type" information is, well... it's in a giant JSO
 To address some of the issues with v1 I decided to [rewrite the project in Go](github.com/evepraisal/go-evepraisal/). I wanted to experience writing something "real" in the language so this was it. This effort involved re-writing all of the parsers, all the API handlers, the frontend, and... *everything* into Go which took a good deal of effort. But in the end it was worth it. The memory usage was WAY down for several reasons, the CPU usage (which was starting to be a problem too) was very minimal and the website was extremely fast. Rewriting the website in a different language wasn't the only thing that changed though. I changed the database, caching method, how it sourced data, and probably a lot more. All while maintaining a familiar user experience.
 
 #### PostgreSQL to Bolt
-With this rewrite, I also switched from PostgreSQL to an embedded key/value store called Bolt. This means that the only way I have to access data is by the exact primary key or by scanning a range of keys in alphanumeric order. This made some things more difficult but it also taught me a lot about this type of database and it's fast. Extremely fast. I would post the schema here, but that's not a thing for Bolt. So instead, I will show you the buckets and the format I used for keys and values for each bucket.
+With this rewrite, I also switched from PostgreSQL to an embedded key/value store called [Bolt](https://github.com/boltdb/bolt). This means that the only way I have to access data is by the exact primary key or by scanning a range of keys in alphanumeric order. This made some things more difficult but it also taught me a lot about this type of database and it's fast. Extremely fast. I would post the schema here, but that's not a thing for Bolt. So instead, I will show you the buckets and the format I used for keys and values for each bucket.
 
 ```
 bucket=appraisals
@@ -78,7 +78,7 @@ key=total_appraisals
 value=uint64
 ```
 
-Creating an Appraisal would involve adding an entry to `appraisals`, `appraisals-last-used`, `appraisals-by-user` (if the user was logged in) and `stats` buckets. Deleting is pretty much the same. It took a while to get these features worked out but once it was done I haven't needed to adjust this very much at all.
+Creating an appraisal would involve adding an entry to `appraisals`, `appraisals-last-used`, `appraisals-by-user` (if the user was logged in) and `stats` buckets. Deleting is pretty much the same. It took a while to get these features worked out but once it was done I haven't needed to adjust this very much at all.
 
 #### Eve-Marketdata to ESI
 I moved from eve-marketdata.com to ESI, which newly supported fetching live(ish) market orders and allowed Evepraisal to have more reliable pricing. ESI also guesses the market price which was a useful value to fall back on but sometimes it was ridiculously out of whack with the market.
@@ -151,7 +151,7 @@ You may be surprised to see my deployment script. You can read it in the [deploy
 Throughout the past decade, there were instances of image upgrades and migrations. Thankfully, these processes transpired without major issues, resulting in only a few minutes of downtime once or twice a year. In the cloud environment, periodic migrations were required to address security vulnerabilities. Notably, cloud providers have improved their strategies, making migrations to new VM host more seamless. An example of a migration that wasn't seamless occurred when the VM hosting Evepraisal was moved to a different data center, requiring some downtime of approximately an hour or two.
 
 #### Backup/restore
-Never had to do this... and TBH it’s not the worst thing in the world that the database gets wiped. Sure, it would be annoying to users that have links to their appraisals but a lot of them can be recreated pretty easily.
+I never had to restore from backup... and, to be honest, it’s not the worst thing in the world that the database gets wiped. Sure, it would be annoying to users that have links to their appraisals but a lot of them can be recreated pretty easily.
 
 #### Testing
 There’s a lot of [table-based](https://dave.cheney.net/2019/05/07/prefer-table-driven-tests) testing in this project, which allowed me to add new test cases without needing to write a lot of code. This is especially useful in the parser part of the app. Here's an example of a couple of test cases for the "listing" parser, which handles lines that simply have a quantity and an item name delimited by some kind of whitespace:
@@ -249,12 +249,12 @@ Log-based alerting
 - Be available on a social platform like Mastodon and list your handle on the website. If people are using your website someone will find your user and tell you if something is wrong if it's broken for long enough.
 
 ### Monetization
-I used AdSense to generate revenue from Evepraisal. Revenue completely covered operational costs but it didn't make too much beyond that. The only ongoing costs for this project were hosting and domain name registration. Monetization ensured that the project lived for as long as it did.
+I used [Google AdSense](https://adsense.google.com/) to generate revenue from Evepraisal. This revenue completely covered operational costs but it didn't make too much beyond that. The only ongoing costs for this project were hosting and domain name registration. Monetization ensured that the project lived for as long as it did.
 
 ### If I were to change things...
 You should keep a log and make an entry for every time your attention is required, you can use that log to figure out what to focus on the next time you feel like working on the project.
 
-I've always wanted to do more with the tool but life always got in the way. There are so many cool ways to show and process this kind of data. At various times I saw orders that made no sense pop up. Orders that I don't think were just margin scans. There would be sell-orders way below market value. Buy-orders way above market value. It just made no sense to me because it would happen with high-volume items that had a fairly fixed market price. It didn't happen super often, but you might be able to make some money off of those... as long as it isn't an obvious scam.
+I've always wanted to do more with the tool but life always got in the way. There are so many cool ways to show and process this kind of data. At various times I saw orders that made no sense pop up; orders that I don't think were just margin scans. There would be sell-orders way below market value. Buy orders way above market value. It just made no sense to me because it would happen with high-volume items that had a fairly fixed market price. It didn't happen super often, but you might be able to make some money off of those... as long as it isn't an obvious scam.
 
 Other than that... I don't know. I think this was a massively successful project. I'm extremely proud to have contributed something so significant to the game.
 
