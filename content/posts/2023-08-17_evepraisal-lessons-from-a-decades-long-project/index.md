@@ -1,7 +1,7 @@
 +++
 categories = ["project"]
 tags = ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql"]
-date = "2023-08-17"
+date = "2023-08-18"
 description = "Inside Evepraisal's operations: data automation, databases, deployment, and advice for similar projects."
 featured = "thumbnail.png"
 featuredalt = ""
@@ -10,10 +10,6 @@ linktitle = ""
 title = "Lessons from a Decades-Long Project"
 slug = "lessons-from-a-decades-long-project"
 type = "posts"
-
-# Unlisted Draft
-[_build]
-  list = "never"
 
 +++
 
