@@ -1,0 +1,12 @@
+<nav class="menu">
+    <ul class="menu__inner submenu">
+        {{- $currentPage := . -}}
+        {{ range .Site.Menus.main }}
+            <li class="dropdown">
+                <a href="{{ .URL | relLangURL }}">
+                    {{ .Name }}
+                </a>
+            </li>
+        {{ end }}
+    </ul>
+</nav>
