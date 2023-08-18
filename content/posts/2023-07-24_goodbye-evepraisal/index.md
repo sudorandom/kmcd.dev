@@ -12,7 +12,7 @@ slug = "goodbye-evepraisal"
 type = "posts"
 +++
 
-> I posed a [new article about operating Evepraisal for over a decade](/posts/lessons-from-a-decades-long-project). It covers the technical details and lessons that I learned throughout the years.
+> I posed a [new article about operating Evepraisal for over a decade](/posts/lessons-from-a-decades-long-project/). It covers the technical details and lessons that I learned throughout the years.
 
 [Evepraisal](/posts/evepraisal.com/) has been a really fun project for me. I think it has made a real impact on how Eve Online is played by many players. However, the time has come to shut it down.
 
