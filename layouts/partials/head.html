@@ -7,7 +7,7 @@
 <meta name="robots" content="index, archive" />
 <meta name="theme-color" content="{{ .Site.Params.themeColor }}" />
 
-{{ $siteImage := (resources.Get "images/geo-mercator-small.png").Fit "1200x630" }}
+{{ $siteImage := (resources.Get "images/geo-mercator-small.png").Fit "1200x630 webp" }}
 {{ if not .IsHome }}
     <meta property="og:title" content="{{ .Title }}" />
     <meta property="og:type" content="article" />
