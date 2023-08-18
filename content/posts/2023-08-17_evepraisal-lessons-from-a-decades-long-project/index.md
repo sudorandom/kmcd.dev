@@ -27,7 +27,7 @@ I have already told the story of how it started in my [Economists with Guns](/po
 After that, life went on. I kind of forgot about the tool. I only intended it to be used for this event so the prices of items never updated. They were all frozen in time. It was a few months later when I noticed that the tool was still being used a good amount and I started getting requests for updated prices and support for other formats. I bought the evepraisal.com domain and started my work.
 
 ### v1: Getting real with Python
-The next version was written in Python and used an API to fetch market data from eve-marketdata.com, which is now sadly no longer running. Also, the mapping of the item name to the so-called "type ID" was done by harvesting the list of all types and type IDs from data files that come along with installing the Eve Online client. These files were SQLite databases that could be easily opened and queried.
+The next version was written in Python and used an API to fetch market data from eve-marketdata.com, which is now sadly no longer running. Also, the mapping of the item name to the so-called "type ID" was done by harvesting the list of all types and type IDs from data files that come along with installing the Eve Online client. These files were SQLite databases that could be easily opened and queried. Thankfully, someone else has already done the reverse engineering work and published a [Python library](https://github.com/ntt/reverence/) to help with querying this data.
 
 {{< figure src="2013_appraisal.png" alt="What the appraisal page looked like in 2013" description="What the appraisal page looked like in 2013" >}}
 
