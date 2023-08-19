@@ -209,6 +209,14 @@ All of the test cases for all parsers were run by the same code, so adding more 
 | Lines of code (Python) | 1283+1051=2334 | [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
 | Lines of code (Go) | 8022 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) |
 | Number of Commits | 450+234+130=814 | [go-evepraisal](https://github.com/evepraisal/go-evepraisal) + [python-evepraisal](https://github.com/evepraisal/python-evepraisal) + [eve-paste](https://github.com/evepraisal/evepaste) |
+| Total Number of Users | 3,162,712 | Google Analytics (private) |
+| Total Number of Browser Sessions | 25,251,120 | Google Analytics (private) |
+| Peak Active Users (single day) | 11,485 | Google Analytics (private) |
+| Top Countries | United States, Russia, United Kingdom, Germany, Canada | Google Analytics (private) |
+| Gender Breakdown | 93.48% Male, 6.52% Female | Google Analytics (private) |
+| Browser Breakdown | 69.31% Chrome, 13.98% Firefox, 6.28% Edge | Google Analytics (private) |
+
+> Note that this doesn't cover API access to Evepraisal, so a lot of those usage metrics aren't captured here.
 
 {{< figure src="python-evepraisal-commit-history.png" link="go-evepraisal-commit-history.png" alt="Commit history for the Python version of Evepraisal" description="Commit history for the Python version of Evepraisal." button="See on github" button-href="https://github.com/evepraisal/python-evepraisal/graphs/code-frequency" >}}
 
