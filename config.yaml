@@ -15,7 +15,7 @@ staticDir:
  - "static"
 
 params:
-  Subtitle: "Depth-first search into networking, programming, random tech topics by a bored software engineer"
+  Subtitle: "Depth-first search into networking, programming, random tech topics."
   Description: "Depth-first search into networking, programming, web development, Eve Online and random tech topics by a bored software engineer."
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: "Read some other posts"

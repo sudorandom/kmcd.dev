@@ -1,5 +1,5 @@
 +++
-description = "Find articles by category. Choose your path."
+description = "Find articles by category. Choose your path. The 'projects' category has the majority of posts, but I sometimes also post in others."
 title = "Categories"
 slug = "categories"
 +++
