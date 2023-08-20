@@ -4,7 +4,7 @@
 <meta name="author" content="{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ range .Site.Author }}{{ . }} {{ end }}{{ end }}">
 
 {{ if .IsHome }}
-    <meta name="description" content="{{ .Site.Params.Subtitle }}" />
+    <meta name="description" content="{{ .Site.Params.Description }}" />
 {{ else if .Params.Description }}
     <meta name="description" content="{{ .Params.Description | truncate 160 }}" />
 {{ else if .Summary }}
