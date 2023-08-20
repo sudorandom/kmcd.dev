@@ -15,7 +15,7 @@ staticDir:
  - "static"
 
 params:
-  Subtitle: "Depth-first search into networking, programming, random tech topics"
+  Subtitle: "Depth-first search into networking, programming, random tech topics by a bored software engineer"
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: "Read some other posts"
   defaultTheme: "dark"

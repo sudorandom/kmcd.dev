@@ -31,6 +31,10 @@
     <title>
         {{ if .IsHome }}
             {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
+        {{ else if eq .Kind "term"}}
+            {{ .Title }} :: {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
+        {{ else if eq .Kind "taxonomy"}}
+            {{ .Title }} :: {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
         {{ else }}
             {{ .Title }} :: {{ $.Site.Title }}
         {{ end }}
