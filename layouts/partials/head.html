@@ -10,7 +10,7 @@
 {{ else if .Summary }}
     <meta name="description" content="{{ .Summary | plainify }}" />
 {{ else }}
-    <meta name="description" content="{{ .Title }} :: {{ $.Site.Title }} {{ with $.Site.Params.Description }} — {{ . }}{{ end }}" />
+    <meta name="description" content="{{ .Title }} :: {{ with $.Site.Params.Description }} — {{ . }}{{ end }}" />
 {{ end }}
 
 <meta name="keywords" content="{{ .Site.Params.keywords }}{{ if .Params.tags }}{{ range .Params.tags }}, {{ . }}{{ end }}{{ end }}" />
