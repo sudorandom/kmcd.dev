@@ -2,7 +2,7 @@
 categories = ["random"]
 tags = ["programming", "productivity"]
 date = "2023-09-10"
-description = "Frank talk about the roller coaster of productivity."
+description = "Frank talk about the rollercoaster of productivity."
 cover = ""
 images = []
 featured = ""
