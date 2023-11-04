@@ -12,7 +12,6 @@ linktitle = ""
 title = "What is gNMI and why is it better than SNMP?"
 slug = "gnmi"
 type = "posts"
-draft = true
 +++
 
 
