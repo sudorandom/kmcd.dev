@@ -72,6 +72,9 @@ Notice that the "Get Interface Statistics" request is repeated over and over aga
 
 Now let's see how gNMI handles this situation using so-called subscriptions:
 ```mermaid
+---
+title: Subscribing to interface statistics with gNMI
+---
 sequenceDiagram
     participant client AS gNMI Client
     participant device AS gNMI Device
