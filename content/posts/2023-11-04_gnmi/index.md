@@ -92,9 +92,9 @@ In this example, we set up the subscription once and from then on we get updates
 
 In addition to the above, here are some other benefits of using gNMI:
 
-- gNMI is more secure than SNMP. Since it is based on HTTP/2, it uses TLS to encrypt all traffic, which helps to protect your network from unauthorized access.
-- gNMI is supported by a growing number of network devices and management tools. This makes it easier to find the solutions that you need to meet your specific needs.
-- gNMI is an open standard. This means that it is not controlled by any one vendor, which gives you more flexibility and choice.
+- **gNMI is more secure than SNMP.** Since it is based on HTTP/2, it uses TLS to encrypt all traffic, which helps to protect your network from unauthorized access.
+- **gNMI is supported by a growing number of network devices and management tools.** This makes it easier to find the solutions that you need to meet your specific needs. Tools like gNMIc make it much easier to peer into the state of devices while offering a much better user experience than tools like `snmpget` or `snmpwalk`.
+- **gNMI is an open standard.** This means that it is not controlled by any one vendor, which gives you more flexibility and choice. Even when the data models that are used aren't OpenConfig, YANG is still almost always used to describe the vendor-specific data model and makes documentation and automation infinitely easier.
 
 Overall, gNMI is a more modern and efficient approach to network management than SNMP. It is a good choice for organizations of all sizes, from small businesses to large enterprises. I have a hypothesis that gNMI could also be good for smaller-scale (maybe homelab?) setups as well, but more on that in a future post. In the future, I also want to dive into some details of gNMI with: different types of subscriptions: ([STREAM](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35152-stream-subscriptions), [POLL](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35153-poll-subscriptions), [ONCE](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35151-once-subscriptions)), `updates_only`/`sync_response`, coalescing of duplicated updates, dial out with [grpctunnel](https://github.com/openconfig/grpctunnel), and core data types. However, I'm low on time and each of these topics deserves separate posts. Until then, thanks for reading!
 
