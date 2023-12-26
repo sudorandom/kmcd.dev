@@ -111,7 +111,7 @@ Next, these are the different tools/languages that I used:
 The pipeline looks like this:
 ```mermaid
 graph LR
-    submarinecables[Submarine Cable Database] --> node[Node JS Script]
+    submarinecables[Submarine Cable Database] --> golang[Go Script]
     peeringdb[PeeringDB] --> golang[Go Script]
     geocities[Geolocation Database] --> golang[Go Script]
     golang[Go Script] --> node[Node JS Script]
