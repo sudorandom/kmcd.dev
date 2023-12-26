@@ -1,6 +1,6 @@
 baseURL: 'https://sudorandom.dev/'
-languageCode: 'en'
-theme: "hello-4s3ti"
+languageCode: 'en-US'
+theme: "hello-friend-ng"
 author: 
   name: "sudorandom"
 title: 'sudorandom.dev'
@@ -15,6 +15,11 @@ staticDir:
  - "static"
 
 params:
+  dateform: "Jan 2, 2006"
+  dateformShort: "Jan 2"
+  dateformNum: "2006-01-02"
+  dateformNumTime: "2006-01-02 15:04"
+
   Subtitle: "Depth-first search into networking, programming, random tech topics."
   Description: "Depth-first search into networking, programming, web development, Eve Online and random tech topics by a bored software engineer."
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
@@ -60,7 +65,6 @@ params:
     rss: true
     trademark: true
     copyright: true
-#   topText:  ["Footer Top text"]
     bottomText: [
       # "Powered by <a href=\"http://gohugo.io\">Hugo</a>", 
       # "with <a href=\"#\">Hello-friend-4s3ti</a>",
@@ -72,21 +76,21 @@ taxonomies:
 
 menu:
   main:
-    - identifier: "portfolio"
-      name: "Portfolio"
-      url: "/portfolio/"
-      weight: 1
-    - identifier: "cv"
-      name: "CV"
-      url: "https://cv.sudorandom.dev"
-      weight: 2
-    - identifier: "shop"
-      name: "Shop"
-      url: "/shop/"
-      weight: 3
     - identifier: "posts"
       name: "Archive"
       url: "/posts/"
+      weight: 1
+    - identifier: "portfolio"
+      name: "Portfolio"
+      url: "/portfolio/"
+      weight: 2
+    - identifier: "cv"
+      name: "CV"
+      url: "https://cv.sudorandom.dev"
+      weight: 3
+    - identifier: "shop"
+      name: "Shop"
+      url: "/shop/"
       weight: 4
 
 markup:
