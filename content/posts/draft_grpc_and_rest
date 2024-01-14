@@ -1,0 +1,23 @@
++++
+categories = ["reference"]
+date = "2023-12-30"
+description = "Let's learn how gRPC and REST can live together"
+cover = ""
+images = []
+featured = ""
+featuredalt = ""
+featuredpath = "date"
+linktitle = ""
+title = "gRPC and REST"
+slug = "grpc-and-rest"
+type = "posts"
+draft = true
++++
+
+# Premise
+
+gRPC is really neat. It provides 
+
+
+https://cloud.google.com/endpoints/docs/grpc/transcoding
+https://connectrpc.com/docs/protocol

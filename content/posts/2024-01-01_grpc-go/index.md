@@ -1,17 +1,18 @@
 +++
-categories = ["opinion"]
-tags = ["networking", "gnmi", "snmp", "monitoring", "network-management", "open-source"]
-date = "2023-11-04"
-description = "gNMI is better than SNMP and more people need to know about it."
+categories = ["article"]
+tags = ["grpc", "golang"]
+date = "2024-01-01"
+description = "grpc-go"
 cover = "cover.jpg"
-images = ["/posts/gnmi/cover.jpg"]
+images = ["/posts/grpc-go/cover.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "Why you should use gNMI over SNMP in 2024"
-slug = "gnmi"
+title = "grpc-go"
+slug = "grpc-go"
 type = "posts"
+draft = true
 +++
 
 

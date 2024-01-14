@@ -49,15 +49,16 @@
         <div class="post-excerpt">{{ . }}</div>
       {{ end }}
 
-      {{ if .Params.Cover }}
-        <figure class="post-cover">
-          <img src="{{ .Params.Cover | absURL }}" alt="{{ .Title }}" />
-          
-          {{ if .Params.CoverCaption }}
-            <figcaption class="center">{{ .Params.CoverCaption | markdownify }}</figcaption>
+      {{ $cover := (.Resources.Get .Params.Cover)}}
+      {{- if $cover -}}
+      {{ $cover = $cover.Crop "1000x400 center" }}
+      <figure class="post-cover">
+          <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="{{ $cover.Title }}" />
+          {{ with .Params.CoverCaption }}
+              <figcaption class="center">{{ . | markdownify }}</figcaption>
           {{ end }}
-        </figure>
-      {{ end }}
+      </figure>
+    {{ end }}
 
       {{- if .Params.toc }}
         <hr />

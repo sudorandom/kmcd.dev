@@ -23,8 +23,8 @@
                 {{ $PageContext = .Site }}
             {{ end }}
             {{ $paginator := .Paginate (where $PageContext.RegularPages "Type" $contentTypeName) 5 }}
-            {{ if .Content }}
-            <div class="content">{{ .Content }}</div>
+            {{ with .Content }}
+            <div class="content">{{ . }}</div>
             {{ end }}
                 <div class="posts">
                 {{ range $paginator.Pages }}
