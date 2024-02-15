@@ -50,7 +50,7 @@ That covers how to start a request. But what does the body look like? Take a loo
 | 1 | 00000000 00000000 00000000 00000111 | Message-Length (Unsigned 32-bit integer; [Big Endian ordering](https://en.wikipedia.org/wiki/Endianness)) |
 | 5 | 00001010 00000101 01010111 01101111 01110010 01101100 01100100 | Message content |
 
-There are **5 bytes** in total as a prefix to each encoded protobuf message. The first byte is for a flag saying if the message is compressed or not. Even though headers might dictate that compression is requested, servers can make their own decisions on whether or not to compress each message. Some messages are just too small to make compression worth it.
+There are **5 bytes** in total as a prefix to each encoded protobuf message. The first byte is for a flag saying if the message is compressed or not. Even though headers might say that compression is supported, servers can make their own decisions on whether or not to compress each message. Some messages are just too small to make compression worth it.
 
 The last 4 bytes of the prefix are an unsigned 32-bit integer ([using big-endian byte ordering](https://en.wikipedia.org/wiki/Endianness)) which tells the client/server how many bytes the next message will take.
 
