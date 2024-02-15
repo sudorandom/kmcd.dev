@@ -1,8 +1,6 @@
 baseURL: 'https://sudorandom.dev/'
 languageCode: 'en'
 theme: "hello-4s3ti"
-author: 
-  name: "sudorandom"
 title: 'sudorandom.dev'
 copyright: "All Rights Reserved"
 IsMultiLingual: false
@@ -19,6 +17,8 @@ params:
   Description: "Depth-first search into networking, programming, web development, Eve Online and random tech topics by a bored software engineer."
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: "Read some other posts"
+  author:
+    name: "sudorandom"
   defaultTheme: "dark"
   EnableThemeToggle: false
   gitUrl: "https://github.com/sudorandom/sudorandom.dev/commit/"
