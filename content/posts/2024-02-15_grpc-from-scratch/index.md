@@ -107,7 +107,7 @@ func readMessage(body io.Reader) []byte {
 }
 ```
 
-This code reads the prefixes (the compression flag and the message size) and then the message size is used when reading the message from the server. That's... essentially it. We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go) on your own time.
+This code reads the prefixes (the compression flag and the message size) and then the message size is used when reading the message from the server. That's... essentially it. We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me, none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go) on your own time.
 
 Here's what the output looks like:
 
