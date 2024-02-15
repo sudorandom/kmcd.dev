@@ -11,7 +11,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 
 	greetv1 "github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch/gen"
-	"github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch/gen/genconnect"
+	"github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch/gen/greetv1connect"
 )
 
 type GreetServer struct{}
@@ -25,7 +25,7 @@ func (s *GreetServer) Greet(ctx context.Context, req *connect.Request[greetv1.Gr
 func main() {
 	greeter := &GreetServer{}
 	mux := http.NewServeMux()
-	path, handler := genconnect.NewGreetServiceHandler(greeter)
+	path, handler := greetv1connect.NewGreetServiceHandler(greeter)
 	mux.Handle(path, handler)
 	log.Fatal(http.ListenAndServe(
 		"localhost:9000",
