@@ -44,11 +44,11 @@ Content-Type: application/grpc+proto
 
 That covers how to start a request. But what does the body look like? Take a look at this table. Sorry, yes: This is binary data. How do you expect gRPC to get its performance improvements if it didn't use a binary encoding??:
 
-| Byte Offset | Content | Description |
-| ----------- | ----------- | ----------- |
-| 0 | 00000000 | Compressed-Flag |
-| 1 | 00000000 00000000 00000000 00000111 | Message-Length (Unsigned 32-bit integer; [Big Endian ordering](https://en.wikipedia.org/wiki/Endianness)) |
-| 5 | 00001010 00000101 01010111 01101111 01110010 01101100 01100100 | Message content |
+| Byte Offset | Content | Decoded | Description |
+| ----------- | ------- | ------- | ----------- |
+| 0 | 00000000 | off | Compressed-Flag |
+| 1:4 | 00000000 00000000 00000000 00000111 | 7 | Message-Length (Unsigned 32-bit integer; [Big Endian ordering](https://en.wikipedia.org/wiki/Endianness)) |
+| 5:12 | 00001010 00000101 01010111 01101111 01110010 01101100 01100100 | 1:"World" | Message content |
 
 There are **5 bytes** in total as a prefix to each encoded protobuf message. The first byte is for a flag saying if the message is compressed or not. Even though headers might say that compression is supported, servers can make their own decisions on whether or not to compress each message. Some messages are just too small to make compression worth it.
 
