@@ -90,18 +90,11 @@ And here's the code for reading the response:
 ```go
 func readMessage(body io.Reader) []byte {
 	prefixes := [5]byte{}
-	if _, err := io.ReadFull(body, prefixes[:]); err != nil {
-		if err == io.EOF {
-			return err
-		}
-		return fmt.Errorf("failed to read envelope: %w", err)
-	}
+	io.ReadFull(body, prefixes[:])
 
 	buffer := &bytes.Buffer{}
 	msgSize := int64(binary.BigEndian.Uint32(prefixes[1:5]))
-	if _, err := io.CopyN(buffer, body, msgSize); err != nil {
-		return fmt.Errorf("failed to read msg: %w", err)
-	}
+	io.CopyN(buffer, body, msgSize)
 
 	return buffer.Bytes()
 }
