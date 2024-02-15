@@ -1,7 +1,7 @@
 +++
 categories = ["article"]
 tags = ["networking", "grpc", "http", "http/2", "go", "golang", "turotial", "protobuf"]
-date = "2024-02-14"
+date = "2024-02-15"
 description = "gRPC is an incredibly popular RPC framework that efficiently connects services. But how does it work? Let's dive in!"
 cover = "cover.jpg"
 images = ["/posts/grpc-from-scratch/cover.jpg"]
