@@ -112,7 +112,7 @@ recv<- greeting:"Hello, World!"
 ## What about gRPC streams?
 Streaming requests simply repeat this envelope encoding. gRPC, for better or worse, made the unary (simple request and response) use case a bit harder for the benefit of making the more complex use cases (streams) simple. Plus, you only have to write one encoder/decoder. For a server streaming RPC, you would simply repeat the `readMessage()` function call until you get an EOF or some other error. This showcases gRPC's simplicity in handling streaming.
 
-> By the way, [ConnectRPC](https://connectrpc.com/docs/protocol) has chosen to "undo" this approach by offering unary RPC more familiarly without the 5-byte custom envelope. It makes using tools like cURL possible and even pleasant, especially when using the JSON encoding. But it is also friendly with gRPC clients [by offering gRPC and gRPC-Web alongside the Connect protocol](https://connectrpc.com/docs/multi-protocol).
+> By the way, [ConnectRPC](https://connectrpc.com/docs/protocol) has chosen to "undo" this approach by offering unary RPC without the 5-byte custom envelope. This makes using tools like cURL possible and even pleasant, especially when using the JSON encoding. But it is also friendly with gRPC clients [by offering gRPC and gRPC-Web alongside the Connect protocol](https://connectrpc.com/docs/multi-protocol).
 
 ## Okay, what was the point?
 Hopefully, I was able to shed a little bit of light on how gRPC *really* works. Binary protocols often have hard-to-understand documentation about each byte in a packet. However, gRPC only has 5 bytes of this weirdness so it's a perfect protocol to whet your appetite on network protocols.
