@@ -94,21 +94,22 @@ func greetHandler(w http.ResponseWriter, r *http.Request) {
 ## Putting it all together
 Surprisingly, this is pretty much all of the parts that are needed to handle a unary gRPC RPC. You can see [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-17_grpc-from-scratch-part-2/go).
 
-**Logs from the client**
+### Logs from the client
 
 ```text
 send-> name:"World"
 recv<- greeting:"Hello, World!"
 ```
 
-**Logs from the server**
+### Logs from the server
 
 ```text
 recv<- name:"World"
 send-> greeting:"Hello, World!"
 ```
 
-**Using buf curl**
+### Using buf curl
+
 In addition to using the generating Go code we can also use tools like `buf curl` to test our server.
 ```shell
 $ buf curl -v \
