@@ -71,7 +71,7 @@ In this example, a trailer named `MessagesSent` will be sent AFTER the `Hello wo
 	// constant value.
 ```
 
-Why doesn't Go support a more... normal interface for trailers? [Who knows.](https://go-review.googlesource.com/c/go/+/2157). Trailers often a bit of an afterthought. That is also proven by the fact that the "Trailer" values [available in Go's http.Request](https://pkg.go.dev/net/http#Request) uses the type `http.Headers`. Oof.
+Why doesn't Go support a more... normal interface for trailers? [Who knows.](https://go-review.googlesource.com/c/go/+/2157). Trailers are often a bit of an afterthought. That is also proven by the fact that the "Trailer" values [available in Go's http.Request](https://pkg.go.dev/net/http#Request) uses the type `http.Headers`. Oof.
 
 ## Implementing the Greet Handler
 As I did last time, I'm omitting error handling for clarity since `readMessage` and `writeMessage` can both return an error. The code that I end up with [does handle errors that might happen when reading or writing the HTTP body](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-17_grpc-from-scratch-part-2/go/server/main.go). However, take a look at the cleaner version first:
