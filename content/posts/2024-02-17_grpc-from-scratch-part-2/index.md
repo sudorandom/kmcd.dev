@@ -16,7 +16,7 @@ type = "posts"
 
 > This is part two of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client.](/posts/grpc-from-scratch)
 
-Last time we made a super simple gRPC client. This time we're going to make a gRPC server. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch#encoding-the-request) and [readMessage](/posts/grpc-from-scratch#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
+Last time we made a super simple gRPC client. **This time we're going to make a gRPC server**. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch#encoding-the-request) and [readMessage](/posts/grpc-from-scratch#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
 
 ## The Setup
 Like last time, we're going to use [ConnectRPC](https://connectrpc.com/docs/go/getting-started) to help us test our implementation. Last time we used the ConnectRPC's server to test our custom gRPC client so this time we're going to use the ConnectRPC's client to test our custom gRPC server. Did I say that right? Yeah, I think so... Let's move on. Here's what the full client looks like:
@@ -142,7 +142,7 @@ buf: * (#1) Call complete
 }
 ```
 
-It works! The `[5 bytes data]` log line that you see is the gRPC framing. The `[7 bytes data]` and `[15 bytes data]` are the request body and response body respectively. Notice the trailers at the end `Grpc-Status: 0` indicating that the RPC succeeded.
+It works! The `[5 bytes data]` log lines that you see are the gRPC framing that happens before each message. The `[7 bytes data]` and `[15 bytes data]` are the request body and response body respectively. Also, notice the trailers at the end; `Grpc-Status: 0` indicates that the RPC finished successfully.
 
 ## How to improve
 How can we improve the client and server that we've written? **MANY** details were glossed over when making this client/server. Here are just a small handful:
