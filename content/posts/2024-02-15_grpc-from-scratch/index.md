@@ -9,12 +9,12 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "gRPC From Scratch"
+title = "gRPC From Scratch: Part 1"
 slug = "grpc-from-scratch"
 type = "posts"
 +++
 
-In the realm of distributed systems and microservices, [gRPC](https://grpc.io/) has become the go-to communication protocol, boasting speed and efficiency over other web technologies like JSON-based HTTP APIs. If you've ever wondered what's happening under the hood of gRPC, you're in luck. Today, we're embarking on an exciting journey into the intricate world of gRPC, delving deep into the byte-level details that make it tick. And while I do this, I hope to convince you that gRPC is a *much simpler* protocol than you probably think.
+In the realm of distributed systems and microservices, [gRPC](https://grpc.io/) has become the go-to communication protocol, boasting speed and efficiency over other web technologies like JSON-based HTTP APIs. If you've ever wondered what's happening under the hood of gRPC, you're in luck. Today, we're embarking on an exciting journey into the intricate world of gRPC, delving deep into the byte-level details that make it tick. While I do this, I hope to convince you that gRPC is a *much simpler* protocol than you probably think.
 
 Today I'm focusing on the basics of how the gRPC protocol works. First, let me tell you what this article is not going to cover: **[protobufs](https://protobuf.dev/)**. That is a separate topic that is covered extremely well [in the official documentation](https://protobuf.dev/programming-guides/encoding/).
 
@@ -87,12 +87,14 @@ func writeMessage(w io.Writer, msg []byte) {
 ```
 
 ### Decoding the Response
-The response is returned using the exact same format as our request. In go, this is what it might look like (without any error handling at all)
+The response is returned using the exact same format as our request. With go, this is what it might look like (without any error handling at all)
 ```go
 func readMessage(body io.Reader) []byte {
+	// read the prefix/envelope
 	prefixes := [5]byte{}
 	io.ReadFull(body, prefixes[:])
 
+	// Using the message size from the prefix, read that many bytes. That's our protobuf message.
 	buffer := &bytes.Buffer{}
 	msgSize := int64(binary.BigEndian.Uint32(prefixes[1:5]))
 	io.CopyN(buffer, body, msgSize)
@@ -120,6 +122,6 @@ Streaming requests simply repeat this envelope encoding. gRPC, for better or wor
 ## Okay, what was the point?
 Hopefully, I was able to shed a little bit of light on how gRPC *really* works. Binary protocols often have hard-to-understand documentation about each byte in a packet. However, gRPC only has 5 bytes of this weirdness so it's a perfect protocol to whet your appetite on network protocols.
 
-If you want to look at more details about the gRPC specification, I would refer you to [the official gRPC specification on GitHub](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md).
+If you want to look at more details about the gRPC specification, I would refer you to [the official gRPC specification on GitHub](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md). [See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go)
 
-[See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go)
+[<< Continue to see gRPC From Scratch: Part 2 where I build a simple gRPC server. >>](/posts/grpc-from-scratch-part-2)
