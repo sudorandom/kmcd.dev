@@ -73,7 +73,7 @@ We're not writing the gRPC server from scratch in this example, just a client (b
 
 {{% render-code file="go/server/main.go" language="go" %}}
 
-### Building a dumb client
+### Encoding the Request
 Now that the setup is out of the way, let's build a client that can send a gRPC request and receive a response from the HTTP server. Note that this will only work for a unary RPC call (a call that does not support streaming). First, let's start with encoding/decoding messages using the format I mentioned above.
 
 Here's the code to write a request to a gRPC server.
@@ -86,7 +86,8 @@ func writeMessage(w io.Writer, msg []byte) {
 }
 ```
 
-And here's the code for reading the response:
+### Decoding the Response
+The response is returned using the exact same format as our request. In go, this is what it might look like (without any error handling at all)
 ```go
 func readMessage(body io.Reader) []byte {
 	prefixes := [5]byte{}
@@ -95,12 +96,14 @@ func readMessage(body io.Reader) []byte {
 	buffer := &bytes.Buffer{}
 	msgSize := int64(binary.BigEndian.Uint32(prefixes[1:5]))
 	io.CopyN(buffer, body, msgSize)
-
 	return buffer.Bytes()
 }
 ```
 
-This code reads the prefixes (the compression flag and the message size) and then the message size is used when reading the message from the server. That's... essentially it. We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me, none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go) on your own time.
+This code reads the prefixes (the compression flag and the message size) and then the message size is used when reading the message from the server. That's... essentially it.
+
+## The rest
+We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me, none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go) on your own time.
 
 Here's what the output looks like:
 

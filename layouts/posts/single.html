@@ -51,7 +51,7 @@
 
       {{ $cover := (.Resources.Get .Params.Cover)}}
       {{- if $cover -}}
-      {{ $cover = $cover.Crop "1000x400 center" }}
+      {{ $cover = $cover.Fill "1000x400 Smart webp q90" }}
       <figure class="post-cover">
           <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="{{ $cover.Title }}" />
           {{ with .Params.CoverCaption }}

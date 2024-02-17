@@ -23,7 +23,6 @@
             {{ if .Params.Cover }}
                 <figure class="post-cover">
                     <img src="{{ .Params.Cover | absURL }}" alt="{{ .Title }}" />
-                
                     {{ if .Params.CoverCaption }}
                         <figcaption class="center">{{ .Params.CoverCaption | markdownify }}</figcaption>
                     {{ end }}
