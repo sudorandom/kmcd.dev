@@ -19,7 +19,7 @@ type = "posts"
 Last time we made a super simple gRPC client. This time we're going to make a gRPC server. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch#encoding-the-request) and [readMessage](/posts/grpc-from-scratch#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
 
 ## The Setup
-Like last time, we're going to use ConnectRPC to help us test our implementation. Last time we used the ConnectRPC server to test our custom gRPC client so this time we're going to use the ConnectRPC client to test our custom gRPC server. Here's what the full client looks like:
+Like last time, we're going to use [ConnectRPC](https://connectrpc.com/docs/go/getting-started) to help us test our implementation. Last time we used the ConnectRPC's server to test our custom gRPC client so this time we're going to use the ConnectRPC's client to test our custom gRPC server. Did I say that right? Yeah, I think so... Let's move on. Here's what the full client looks like:
 
 {{% render-code file="go/client/main.go" language="go" %}}
 
@@ -107,6 +107,42 @@ recv<- greeting:"Hello, World!"
 recv<- name:"World"
 send-> greeting:"Hello, World!"
 ```
+
+**Using buf curl**
+In addition to using the generating Go code we can also use tools like `buf curl` to test our server.
+```shell
+$ buf curl --http2-prior-knowledge -d '{"name": "World"}' --protocol=grpc --schema=greet.proto http://127.0.0.1:9000/greet.v1.GreetService/Greet -v
+buf: * Invoking RPC greet.v1.GreetService.Greet
+buf: * Dialing (tcp) 127.0.0.1:9000...
+buf: * Connected to 127.0.0.1:9000
+buf: > (#1) POST /greet.v1.GreetService/Greet
+buf: > (#1) Accept-Encoding: identity
+buf: > (#1) Content-Type: application/grpc+proto
+buf: > (#1) Grpc-Accept-Encoding: gzip
+buf: > (#1) Grpc-Timeout: 119989m
+buf: > (#1) Te: trailers
+buf: > (#1) User-Agent: grpc-go-connect/1.14.0 (go1.21.6) buf/1.29.0
+buf: > (#1)
+buf: } (#1) [5 bytes data]
+buf: } (#1) [7 bytes data]
+buf: * (#1) Finished upload
+buf: < (#1) HTTP/2.0 200 OK
+buf: < (#1) Content-Length: 20
+buf: < (#1) Content-Type: application/grpc+proto
+buf: < (#1) Date: Sat, 17 Feb 2024 07:35:20 GMT
+buf: < (#1)
+buf: { (#1) [5 bytes data]
+buf: { (#1) [15 bytes data]
+buf: < (#1)
+buf: < (#1) Grpc-Message:
+buf: < (#1) Grpc-Status: 0
+buf: * (#1) Call complete
+{
+  "greeting": "Hello, World!"
+}
+```
+
+It works! The `[5 bytes data]` log line that you see is the gRPC framing. The `[7 bytes data]` and `[15 bytes data]` are the request body and response body respectively. Notice the trailers at the end `Grpc-Status: 0` indicating that the RPC succeeded.
 
 ## How to improve
 How can we improve the client and server that we've written? **MANY** details were glossed over when making this client/server. Here are just a small handful:
