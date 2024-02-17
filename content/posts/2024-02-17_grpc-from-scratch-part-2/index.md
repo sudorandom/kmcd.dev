@@ -1,6 +1,6 @@
 +++
 categories = ["article"]
-tags = ["networking", "grpc", "http", "http/2", "go", "golang", "turotial", "protobuf"]
+tags = ["networking", "grpc", "http", "http/2", "go", "golang", "tutorial", "protobuf"]
 date = "2024-02-17"
 description = "Last part we created a simple gRPC client. Let's take it a bit further. Let's implement a simple gRPC server in go."
 cover = "cover.jpg"
