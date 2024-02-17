@@ -38,7 +38,7 @@ func main() {
 Here we create an HTTP server [with h2c so we aren't required to use TLS for these examples](https://connectrpc.com/docs/go/deployment/#h2c), mount an HTTP path for our one endpoint and start the server. The real fun happens in `greetHandler`. But before I show that, I need to talk about HTTP trailers.
 
 ## HTTP Trailers
-Trailers are the same idea as headers but they happen after the response instead of before. Since gRPC is a streaming protocol it uses trailers to report on the overall status of the request over the HTTP status code. Go supports sending trailers but I am having a hard time coming up with a good explanation of how it works, so here's an example. Why doesn't Go support a normal interface for trailers? Who knows.
+Trailers are the same idea as headers but they happen after the response instead of before. Since gRPC is a streaming protocol it uses trailers to report on the overall status of the request over the HTTP status code. Go supports sending trailers. I am having a hard time coming up with a good explanation of how it works, so here's an example:
 
 ```go
 import (
@@ -70,6 +70,8 @@ In this example, a trailer named `MessagesSent` will be sent AFTER the `Hello wo
 	// is to prefix the [Header] map keys with the [TrailerPrefix]
 	// constant value.
 ```
+
+Why doesn't Go support a more... normal interface for trailers? [Who knows.](https://go-review.googlesource.com/c/go/+/2157). Trailers often a bit of an afterthought. That is also proven by the fact that the "Trailer" values [available in Go's http.Request](https://pkg.go.dev/net/http#Request) uses the type `http.Headers`. Oof.
 
 ## Implementing the Greet Handler
 As I did last time, I'm omitting error handling for clarity since `readMessage` and `writeMessage` can both return an error. The code that I end up with [does handle errors that might happen when reading or writing the HTTP body](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-17_grpc-from-scratch-part-2/go/server/main.go). However, take a look at the cleaner version first:
