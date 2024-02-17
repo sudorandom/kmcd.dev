@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/proto"
 
-	greetv1 "github.com/sudorandom/sudorandom.dev/content/posts/2024-02-17_grpc-from-scratch-part-2/gen"
+	greetv1 "github.com/sudorandom/sudorandom.dev/grpc-from-scratch-part-2/gen"
 )
 
 var (

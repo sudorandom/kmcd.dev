@@ -1,4 +1,4 @@
-module github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch
+module github.com/sudorandom/sudorandom.dev/grpc-from-scratch
 
 go 1.21.7
 

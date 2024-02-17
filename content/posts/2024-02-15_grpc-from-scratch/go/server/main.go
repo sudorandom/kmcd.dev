@@ -10,8 +10,8 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	greetv1 "github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch/gen"
-	"github.com/sudorandom/sudorandom.dev/content/posts/2024-02-15_grpc-from-scratch/gen/greetv1connect"
+	greetv1 "github.com/sudorandom/sudorandom.dev/grpc-from-scratch/gen"
+	"github.com/sudorandom/sudorandom.dev/grpc-from-scratch/gen/greetv1connect"
 )
 
 type GreetServer struct{}
