@@ -9,7 +9,7 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "gRPC From Scratch: Part 1"
+title = "gRPC From Scratch: Part 1 - Client"
 slug = "grpc-from-scratch"
 type = "posts"
 +++
