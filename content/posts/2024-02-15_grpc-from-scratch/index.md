@@ -56,7 +56,7 @@ The last 4 bytes of the prefix are an unsigned 32-bit integer ([using big-endian
 
 gRPC always returns an HTTP 200 status code. That's weird, right? gRPC does this because, for streaming RPCs, it's impossible to know if a request succeeded ahead of time. Therefore, gRPC always returns a 200 as the status code and waits until the very end of the request to report the `gRPC status` using a lesser-known feature of HTTP called an HTTP trailer. Trailers are exactly like headers but come at the end of a request instead of the beginning.
 
-> Did you know? gRPC doesn't *actually* require HTTP/2 support. Most HTTP/1.1 servers and proxies lack support for HTTP Trailers even though trailers were [in the HTTP spec since 1.1]. You can read more about the full story [in this blog post](https://carlmastrangelo.com/blog/why-does-grpc-insist-on-trailers).
+> Did you know? gRPC doesn't *actually* require HTTP/2 support. Most HTTP/1.1 servers and proxies lack support for HTTP Trailers even though trailers were [in the HTTP spec since 1.1](https://www.rfc-editor.org/rfc/rfc7230.html#section-4.4). You can read more about the full story [in this blog post](https://carlmastrangelo.com/blog/why-does-grpc-insist-on-trailers).
 
 ## Okay, let's code something
 For the second half of this article, we're going to build a very un-featureful gRPC client in Go. It won't support many features that are expected out of gRPC but it will be able to make RPC calls.
