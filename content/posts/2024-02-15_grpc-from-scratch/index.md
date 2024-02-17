@@ -14,9 +14,11 @@ slug = "grpc-from-scratch"
 type = "posts"
 +++
 
+> Disclaimer: This article is *NOT* for beginners unfamiliar with gRPC. If you're looking to use gRPC like a sane individual, look elsewhere. Maybe start with [the official gRPC documentation](https://grpc.io/docs/).
+
 In the realm of distributed systems and microservices, [gRPC](https://grpc.io/) has become the go-to communication protocol, boasting speed and efficiency over other web technologies like JSON-based HTTP APIs. If you've ever wondered what's happening under the hood of gRPC, you're in luck. Today, we're embarking on an exciting journey into the intricate world of gRPC, delving deep into the byte-level details that make it tick. While I do this, I hope to convince you that gRPC is a *much simpler* protocol than you probably think.
 
-Today I'm focusing on the basics of how the gRPC protocol works. First, let me tell you what this article is not going to cover: **[protobufs](https://protobuf.dev/)**. That is a separate topic that is covered extremely well [in the official documentation](https://protobuf.dev/programming-guides/encoding/).
+Today I'm focusing on the basics of how the gRPC protocol works from a protocol level. But first, let me tell you what this article is not going to cover: **[protobufs](https://protobuf.dev/)**. That is a separate topic that is covered extremely well [in the official documentation](https://protobuf.dev/programming-guides/encoding/). I may cover this topic later on in this series but for now, protobufs are being treated as a black box.
 
 The first thing to know is that gRPC is built on top of HTTP. Let's outline how protobuf service definitions map to HTTP/2 semantics with gRPC... First, let's take this hello world example.
 
