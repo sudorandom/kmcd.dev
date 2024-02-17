@@ -111,7 +111,12 @@ send-> greeting:"Hello, World!"
 **Using buf curl**
 In addition to using the generating Go code we can also use tools like `buf curl` to test our server.
 ```shell
-$ buf curl --http2-prior-knowledge -d '{"name": "World"}' --protocol=grpc --schema=greet.proto http://127.0.0.1:9000/greet.v1.GreetService/Greet -v
+$ buf curl -v \
+           --protocol=grpc \
+           --schema=greet.proto \
+           -d '{"name": "World"}' \
+           --http2-prior-knowledge \
+           http://127.0.0.1:9000/greet.v1.GreetService/Greet
 buf: * Invoking RPC greet.v1.GreetService.Greet
 buf: * Dialing (tcp) 127.0.0.1:9000...
 buf: * Connected to 127.0.0.1:9000
