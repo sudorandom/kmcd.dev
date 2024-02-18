@@ -1,6 +1,6 @@
 +++
 categories = ["article"]
-tags = ["networking", "grpc", "http", "http/2", "go", "golang", "tutorial", "protobuf"]
+tags = ["networking", "grpc", "http", "http/2", "go", "golang", "tutorial", "protobuf", "connectrpc"]
 date = "2024-02-17"
 description = "Last part we created a simple gRPC client. Let's take it a bit further. Let's implement a simple gRPC server in go."
 cover = "cover.jpg"
@@ -38,7 +38,7 @@ func main() {
 Here we create an HTTP server [with h2c so we aren't required to use TLS for these examples](https://connectrpc.com/docs/go/deployment/#h2c), mount an HTTP path for our one endpoint and start the server. The real fun happens in `greetHandler`. But before I show that, I need to talk about HTTP trailers.
 
 ## HTTP Trailers
-Trailers are the same idea as headers but they happen after the response instead of before. Since gRPC is a streaming protocol it uses trailers to report on the overall status of the request over the HTTP status code. Go supports sending trailers. I am having a hard time coming up with a good explanation of how it works, so here's an example:
+Trailers are the same idea as headers but they happen after the response instead of before. Since gRPC is a streaming protocol it uses trailers to report on the overall status of the request instead of the HTTP status code. Go supports sending trailers. I am having a hard time coming up with a good explanation of how it works, so here's an example:
 
 ```go
 import (
