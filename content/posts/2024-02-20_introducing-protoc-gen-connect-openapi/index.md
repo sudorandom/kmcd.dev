@@ -70,4 +70,4 @@ click openapi-generator "https://github.com/OpenAPITools/openapi-generator" _bla
 
 In summary, I hope this tool will extend the contract-based usage of protobuf along with ConnectRPC's RPC-based API into further places with more documentation, more code generation, and additional validation.
 
-For more information, check out the [protoc-gen-connect-openapi repo on Github](https://github.com/sudorandom/protoc-gen-connect-openapi.
+For more information, check out the [protoc-gen-connect-openapi repo on Github](https://github.com/sudorandom/protoc-gen-connect-openapi).
