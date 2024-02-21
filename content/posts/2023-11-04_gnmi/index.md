@@ -1,6 +1,6 @@
 +++
 categories = ["opinion"]
-tags = ["networking", "gnmi", "snmp", "monitoring", "network-management", "open-source"]
+tags = ["networking", "gnmi", "snmp", "monitoring", "network-management", "open-source", "grpc"]
 date = "2023-11-04"
 description = "gNMI is better than SNMP and more people need to know about it."
 cover = "cover.jpg"
