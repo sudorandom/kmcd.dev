@@ -16,7 +16,7 @@ draft = true
 +++
 
 
-[Protocol Buffers](https://protobuf.dev/) is an amazing message format. It's [incredibly compact](https://nilsmagnus.github.io/post/proto-json-sizes/) and [performant](https://medium.com/@akresling/go-benchmark-json-v-protobuf-4ec3c62ec8d4). However, these advantages come at a cost. Since Protobuf is a binary format it lacks a lot in readability compared to text-based formats like JSON or XML.
+[Protocol Buffers](https://protobuf.dev/) is an amazing message format. It's [incredibly compact](https://nilsmagnus.github.io/post/proto-json-sizes/) and [performant](https://medium.com/@akresling/go-benchmark-json-v-protobuf-4ec3c62ec8d4). However, these advantages come at a cost. Since Protobuf is a binary format it lacks a lot in readability compared to text-based formats like JSON or XML. If you look at encoded protobuf data it just looks like meaningless ones and zeros.
 
 However, all hope is not lost. Even if you just have a binary protobuf file with no knowledge of the corresponding protobuf file we can still get some information out of it. Let me introduce a tool called [Protoscope](https://github.com/protocolbuffers/protoscope). Protoscope is a tool for inspecting protobuf binary. It can do this with or without the protobuf files or the equivalent [descriptor set](https://protobuf.com/docs/descriptors) (but it can do a better job with the protobuf data).
 
@@ -161,6 +161,9 @@ message TestWithMap {
 This shows that protobuf is a very practical encoding that re-uses basic concepts to support more complex structures.
 
 ## Summary
+
+In this blog post, we delved into the intricacies of inspecting binary Protobuf messages using the Protoscope tool. We highlighted its ability to decipher binary data even without the corresponding Protobuf files. We also covered the six wire types used in Protobuf encoding and explored various scenarios involving strings, bytes, numbers, submessages, and maps.
+
 I didn't cover all of the weird edge cases. There are features in the, now deprecated, proto2 format that I didn't show. However, I hope that I've shown that you can get *something* from a binary protobuf file. This, alone, is quite impressive for a binary format. You would usually have a very hard time understanding anything without knowledge of the specific binary protocol. This demonstrates how protobufs takes some of the benefits you might get from text-based encodings (composability, support for "unknown" fields, some amount of discoverability) with the performance of binary formats (speed, reduced size) but protobuf does bring in an extra ingredient: contracts. Because protobuf files are the source of truth for the format and type-safe serialization code, gRPC client code, gRPC server code, and documentation can all be generated from protobuf files this shows the strength of the format... which is why you should try to never be in a situation where you NEED to use protoscope. You should always have a [descriptor set](https://protobuf.com/docs/descriptors) or the protobuf files nearby to decode these messages.
 
 For a more extensive overview of the protobuf binary encoding refer to [the official documentation](https://protobuf.dev/programming-guides/encoding/).
