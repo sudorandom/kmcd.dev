@@ -1,0 +1,7 @@
+2:VARINT 3
+3:VARINT 175
+5:LEN {`01020304`}
+7:VARINT 921
+8:VARINT 1
+9:I32 1.2345i32   # 0x3f9e0419i32
+19:LEN {`ffffffffffffffffff01feffffffffffffffff01fdffffffffffffffff01fcffffffffffffffff01`}

@@ -1,0 +1,15 @@
+10:LEN {
+  1:LEN {"key"}
+  2:LEN {
+    1:LEN {"Corgi"}
+    2:VARINT 1
+  }
+}
+20:LEN {
+  1:LEN {"Knock, knock"}
+  2:LEN {"who's there?"}
+}
+20:LEN {
+  1:LEN {"Java"}
+  2:LEN {"Coffee, not code."}
+}

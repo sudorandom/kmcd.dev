@@ -1,0 +1,48 @@
+// Copyright 2014 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+
+option go_package = "github.com/golang/protobuf/internal/testprotos/proto3_proto";
+
+import "google/protobuf/any.proto";
+
+package proto3_test;
+
+message Message {
+  enum AnEnum {
+    UNKNOWN = 0;
+    A = 1;
+    B = 2;
+    C = 3;
+  }
+
+  string a_string = 1;
+  AnEnum a_enum = 2;
+  uint32 a_uint32 = 3;
+  bytes a_bytes = 4;
+  int64 a_int64 = 7;
+  bool a_bool = 8;
+  float a_float = 9;
+
+  repeated uint64 a_repeated_uint64 = 5;
+  repeated int32 a_repeated_int32 = 19;
+  Nested nested = 6;
+
+  map<string, Nested> a_map = 10;
+
+  google.protobuf.Any anything = 14;
+  repeated google.protobuf.Any many_things = 15;
+
+  Message submessage = 17;
+  repeated Message children = 18;
+
+  map<string, string> string_map = 20;
+}
+
+message Nested {
+  string bunny = 1;
+  bool cute = 2;
+}
+

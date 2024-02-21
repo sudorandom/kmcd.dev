@@ -1,0 +1,11 @@
+6:LEN {
+  1:LEN {"Harey"}
+  2:VARINT 1
+}
+14:LEN {
+  1:LEN {"buf.build/connectrpc/eliza/connectrpc.eliza.v1.SayRequest"}
+  2:LEN {1:LEN {"Hello World!"}}
+}
+17:LEN {}
+18:LEN {1:LEN {"alpha"}}
+18:LEN {1:LEN {"beta"}}
