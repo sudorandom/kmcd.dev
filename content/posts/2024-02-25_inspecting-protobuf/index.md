@@ -158,6 +158,9 @@ message TestWithMap {
 }
 ```
 
+This shows that protobuf is a very practical encoding that re-uses basic concepts to support more complex structures.
+
 ## Summary
+I didn't cover all of the weird edge cases. There are features in the, now deprecated, proto2 format that I didn't show. However, I hope that I've shown that you can get *something* from a binary protobuf file. This, alone, is quite impressive for a binary format. You would usually have a very hard time understanding anything without knowledge of the specific binary protocol. This demonstrates how protobufs takes some of the benefits you might get from text-based encodings (composability, support for "unknown" fields, some amount of discoverability) with the performance of binary formats (speed, reduced size) but protobuf does bring in an extra ingredient: contracts. Because protobuf files are the source of truth for the format and type-safe serialization code, gRPC client code, gRPC server code, and documentation can all be generated from protobuf files this shows the strength of the format... which is why you should try to never be in a situation where you NEED to use protoscope. You should always have a [descriptor set](https://protobuf.com/docs/descriptors) or the protobuf files nearby to decode these messages.
 
 For a more extensive overview of the protobuf binary encoding refer to [the official documentation](https://protobuf.dev/programming-guides/encoding/).
