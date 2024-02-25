@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Greeter_SayHello_FullMethodName = "/auth.Greeter/SayHello"
+	Greeter_SayHello_FullMethodName = "/hello.world.v1.Greeter/SayHello"
 )
 
 // GreeterClient is the client API for Greeter service.
@@ -98,7 +98,7 @@ func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Greeter_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth.Greeter",
+	ServiceName: "hello.world.v1.Greeter",
 	HandlerType: (*GreeterServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

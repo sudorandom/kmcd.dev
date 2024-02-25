@@ -6,8 +6,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/sybogames/grpc-bench/proto"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 )
 
@@ -32,5 +35,5 @@ func main() {
 	}
 	s := grpc.NewServer()
 	proto.RegisterGreeterServer(s, &server{})
-	log.Fatal(s.Serve(lis))
+	log.Fatal(http.Serve(lis, h2c.NewHandler(http.HandlerFunc(s.ServeHTTP), &http2.Server{})))
 }

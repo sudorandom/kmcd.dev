@@ -22,7 +22,7 @@ const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// GreeterName is the fully-qualified name of the Greeter service.
-	GreeterName = "auth.Greeter"
+	GreeterName = "hello.world.v1.Greeter"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -34,7 +34,7 @@ const (
 // period.
 const (
 	// GreeterSayHelloProcedure is the fully-qualified name of the Greeter's SayHello RPC.
-	GreeterSayHelloProcedure = "/auth.Greeter/SayHello"
+	GreeterSayHelloProcedure = "/hello.world.v1.Greeter/SayHello"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -43,14 +43,14 @@ var (
 	greeterSayHelloMethodDescriptor = greeterServiceDescriptor.Methods().ByName("SayHello")
 )
 
-// GreeterClient is a client for the auth.Greeter service.
+// GreeterClient is a client for the hello.world.v1.Greeter service.
 type GreeterClient interface {
 	// Sends a greeting
 	SayHello(context.Context, *connect.Request[proto.HelloRequest]) (*connect.Response[proto.HelloReply], error)
 }
 
-// NewGreeterClient constructs a client for the auth.Greeter service. By default, it uses the
-// Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and sends
+// NewGreeterClient constructs a client for the hello.world.v1.Greeter service. By default, it uses
+// the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and sends
 // uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or
 // connect.WithGRPCWeb() options.
 //
@@ -73,12 +73,12 @@ type greeterClient struct {
 	sayHello *connect.Client[proto.HelloRequest, proto.HelloReply]
 }
 
-// SayHello calls auth.Greeter.SayHello.
+// SayHello calls hello.world.v1.Greeter.SayHello.
 func (c *greeterClient) SayHello(ctx context.Context, req *connect.Request[proto.HelloRequest]) (*connect.Response[proto.HelloReply], error) {
 	return c.sayHello.CallUnary(ctx, req)
 }
 
-// GreeterHandler is an implementation of the auth.Greeter service.
+// GreeterHandler is an implementation of the hello.world.v1.Greeter service.
 type GreeterHandler interface {
 	// Sends a greeting
 	SayHello(context.Context, *connect.Request[proto.HelloRequest]) (*connect.Response[proto.HelloReply], error)
@@ -96,7 +96,7 @@ func NewGreeterHandler(svc GreeterHandler, opts ...connect.HandlerOption) (strin
 		connect.WithSchema(greeterSayHelloMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/auth.Greeter/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/hello.world.v1.Greeter/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case GreeterSayHelloProcedure:
 			greeterSayHelloHandler.ServeHTTP(w, r)
@@ -110,5 +110,5 @@ func NewGreeterHandler(svc GreeterHandler, opts ...connect.HandlerOption) (strin
 type UnimplementedGreeterHandler struct{}
 
 func (UnimplementedGreeterHandler) SayHello(context.Context, *connect.Request[proto.HelloRequest]) (*connect.Response[proto.HelloReply], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("auth.Greeter.SayHello is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("hello.world.v1.Greeter.SayHello is not implemented"))
 }

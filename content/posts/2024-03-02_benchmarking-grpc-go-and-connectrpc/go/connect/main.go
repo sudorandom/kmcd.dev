@@ -7,8 +7,12 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"connectrpc.com/connect"
+	grpcbench "github.com/sybogames/grpc-bench"
 	"github.com/sybogames/grpc-bench/proto"
 	"github.com/sybogames/grpc-bench/proto/protoconnect"
 	"golang.org/x/net/http2"
@@ -43,5 +47,16 @@ func main() {
 	}
 	log.Printf("server listening at %v", lis.Addr())
 
-	log.Fatal(http.Serve(lis, h2c.NewHandler(mux, &http2.Server{})))
+	cleanupFn := grpcbench.SetupProfiles()
+	defer cleanupFn()
+
+	go func() {
+		if err := http.Serve(lis, h2c.NewHandler(mux, &http2.Server{})); err != nil {
+			log.Fatalf("serv err: %v", err)
+		}
+	}()
+
+	done := make(chan os.Signal, 1)
+	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
+	<-done
 }
