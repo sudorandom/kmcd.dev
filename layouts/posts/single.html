@@ -53,7 +53,7 @@
       {{- if $cover -}}
       {{ $cover = $cover.Fill "800x400 Center webp q90" }}
       <figure class="post-cover">
-          <img src="{{ $cover.RelPermalink }}" width="{{ $cover.Width }}" height="{{ $cover.Height }}" alt="{{ $cover.Title }}" />
+          <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
           {{ with .Params.CoverCaption }}
               <figcaption class="center">{{ . | markdownify }}</figcaption>
           {{ end }}
