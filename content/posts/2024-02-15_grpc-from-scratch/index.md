@@ -68,7 +68,7 @@ First, here's the full protobuf file that I'm going to use for this example. It'
 
 {{% render-code file="go/greet.proto" language="protobuf" %}}
 
-I used a [buf.gen.yaml file](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch/go/buf.gen.yaml) along with the `buf generate` command to build this protobuf into Go types.
+I used a [buf.gen.yanl file](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go/buf.gen.yaml) along with the `buf generate` command to build this protobuf into Go types.
 
 ### Making a simple gRPC server
 We're not writing the gRPC server from scratch in this example, just a client (but the principles are the same if you want to do this as an exercise on your own). Additionally, we need a real gRPC server to test our client against so I will use the server handler that [ConnectRPC](https://connectrpc.com/) provides for us. Here's what that looks like:
@@ -107,7 +107,7 @@ func readMessage(body io.Reader) []byte {
 This code reads the prefixes (the compression flag and the message size) and then the message size is used when reading the message from the server. That's... essentially it.
 
 ## The rest
-We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me, none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch/go) on your own time.
+We have the foundation of the gRPC protocol completed. Now, the missing part is code that creates the actual HTTP request, encoding/decoding the actual protobuf types (which is a simple call to `proto.Marshal` and `proto.Unmarshal`) and doing some error handling that I didn't do above. To me, none of that is particularly interesting but you can explore [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go) on your own time.
 
 Here's what the output looks like:
 
@@ -124,6 +124,6 @@ Streaming requests simply repeat this envelope encoding. gRPC, for better or wor
 ## Okay, what was the point?
 Hopefully, I was able to shed a little bit of light on how gRPC *really* works. Binary protocols often have hard-to-understand documentation about each byte in a packet. However, gRPC only has 5 bytes of this weirdness so it's a perfect protocol to whet your appetite on network protocols.
 
-If you want to look at more details about the gRPC specification, I would refer you to [the official gRPC specification on GitHub](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md). [See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch/go)
+If you want to look at more details about the gRPC specification, I would refer you to [the official gRPC specification on GitHub](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md). [See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024-02-15_grpc-from-scratch/go)
 
 [<< Continue to see gRPC From Scratch: Part 2 where I build a simple gRPC server. >>](/posts/grpc-from-scratch-part-2)
