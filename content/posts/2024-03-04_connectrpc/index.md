@@ -2,14 +2,14 @@
 categories = ["article"]
 tags = ["connectrpc", "grpc", "tutorial", "golang"]
 date = "2024-03-05"
-description = "Setting up a gRPC client and server in go with ConnectRPC and buf."
+description = "Unleash the power of gRPC: ConnectRPC breaks down barriers, enabling frictionless communication between gRPC, gRPC-Web, and any HTTP client."
 cover = "cover.jpg"
 images = ["/posts/connectrpc/social.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "Getting started with ConnectRPC"
+title = "ConnectRPC: Making gRPC more approachable"
 slug = "connectrpc"
 type = "posts"
 +++
