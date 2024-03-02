@@ -70,6 +70,9 @@ taxonomies:
   category: "categories"
   tag: "tags"
 
+permalinks:
+  posts: "/posts/:slug/"
+
 menu:
   main:
     - identifier: "posts"
