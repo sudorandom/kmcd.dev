@@ -9,7 +9,7 @@ featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "ConnectRPC: Making gRPC more approachable"
+title = "Making gRPC more approachable with ConnectRPC"
 slug = "connectrpc"
 type = "posts"
 +++
