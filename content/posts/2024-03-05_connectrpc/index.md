@@ -69,7 +69,11 @@ So, ConnectRPC is running *three* different protocols? Isn't that overkill? You 
 
 We can use the gRPC protocol to call into this ConnectRPC service using normal gRPC tooling like [grpcurl](https://github.com/fullstorydev/grpcurl):
 ```shell
-$ grpcurl -plaintext -proto greet/v1/greet.proto -d '{"name": "Jane"}' 127.0.0.1:8080 greet.v1.GreetService.Greet
+$ grpcurl -plaintext \
+          -proto greet/v1/greet.proto \
+          -d '{"name": "Jane"}' \
+          127.0.0.1:8080 \
+          greet.v1.GreetService.Greet
 {
   "greeting": "Hello, Jane!"
 }
@@ -78,33 +82,47 @@ $ grpcurl -plaintext -proto greet/v1/greet.proto -d '{"name": "Jane"}' 127.0.0.1
 If you have the [reflection API enabled](https://github.com/connectrpc/grpcreflect-go), you can omit the -proto option.
 
 ```shell
-$ grpcurl -plaintext -d '{"name": "Jane"}' 127.0.0.1:8080 greet.v1.GreetService.Greet
+$ grpcurl -plaintext \
+          -d '{"name": "Jane"}' \
+          127.0.0.1:8080 \
+          greet.v1.GreetService.Greet
 {
   "greeting": "Hello, Jane!"
 }
 ```
 
-Now here's where the magic is. In addition to gRPC-specific tooling, I can also use generic HTTP tools, like [curl](https://curl.se/):
+Now here's where the magic is. In addition to gRPC-specific tooling, I can also use generic HTTP tools with ConnectRPC servers, like [curl](https://curl.se/):
 ```shell
-$ curl -XPOST -H"Content-Type: application/json" -d '{"name": "Jane"}' "http://127.0.0.1:8080/greet.v1.GreetService/Greet"
+$ curl -XPOST \
+       -H"Content-Type: application/json" \
+       -d '{"name": "Jane"}' \
+       "http://127.0.0.1:8080/greet.v1.GreetService/Greet"
 ```
 This shows how the "I want to be able to send a normal cURL example to someone" desire from above is completely fulfilled.
 
 I also want to point out that there is also the `buf curl` command which is a CLI tool that allows you to call ConnectRPC services using all three protocols (gRPC, gRPC-Web, Connect).
 
 ```shell
-$ buf curl --http2-prior-knowledge -d '{"name": "Jane"}' http://127.0.0.1:8080/greet.v1.GreetService/Greet
+$ buf curl --http2-prior-knowledge \
+           -d '{"name": "Jane"}' \
+           http://127.0.0.1:8080/greet.v1.GreetService/Greet
 {
   "greeting": "Hello, Jane!"
 }
 ```
 This last command actually uses the Connect protocol. We can pass in `--protocol` to use the gRPC-Web or the gRPC protocol instead:
 ```bash
-$ buf curl --http2-prior-knowledge -d '{"name": "Jane"}' http://127.0.0.1:8080/greet.v1.GreetService/Greet --protocol=grpcweb
+$ buf curl --http2-prior-knowledge \
+           -d '{"name": "Jane"}' \
+           http://127.0.0.1:8080/greet.v1.GreetService/Greet \
+           --protocol=grpcweb
 {
   "greeting": "Hello, Jane!"
 }
-$ buf curl --http2-prior-knowledge -d '{"name": "Jane"}' http://127.0.0.1:8080/greet.v1.GreetService/Greet --protocol=grpc
+$ buf curl --http2-prior-knowledge \
+           -d '{"name": "Jane"}' \
+           http://127.0.0.1:8080/greet.v1.GreetService/Greet \
+           --protocol=grpc
 {
   "greeting": "Hello, Jane!"
 }
@@ -113,7 +131,9 @@ $ buf curl --http2-prior-knowledge -d '{"name": "Jane"}' http://127.0.0.1:8080/g
 ### Digging Deeper (optional)
 This is an optional section where we will dig deeper into what is happening here with this last command to show what is happening under the hood. We will see how server reflection works with gRPC and a couple uses of it. We can see more details of the previous `buf curl` command by adding `-v` at the end:
 ```shell
-$ buf curl --http2-prior-knowledge -d '{"name": "Jane"}' http://127.0.0.1:8080/greet.v1.GreetService/Greet -v
+$ buf curl --http2-prior-knowledge \
+           -d '{"name": "Jane"}' \
+           http://127.0.0.1:8080/greet.v1.GreetService/Greet -v
 buf: * Using server reflection to resolve "greet.v1.GreetService"
 buf: * Dialing (tcp) 127.0.0.1:8080...
 buf: * Connected to 127.0.0.1:8080
@@ -248,7 +268,7 @@ message GreetRequest {
   string name = 1;
 }
 ```
-We are able to see all the available services using the `list` and `describe` commands. And if you pass an object to the `describe` command you can dig down into message definitions. Protobuf works well here as the API contract for our services.
+We can see all the available services using the `list` and `describe` commands. And if you pass an object to the `describe` command you can dig down into message definitions. Protobuf works well here as the API contract for our services.
 
 ## Conclusion
 
