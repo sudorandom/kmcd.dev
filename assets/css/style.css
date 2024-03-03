@@ -36,6 +36,10 @@
     margin: 0;
 }
 
+.post.on-list:hover {
+    background: rgb(40, 55, 69);
+}
+
 .bg {
     background-attachment: fixed;
     background-position: 40% 40%;

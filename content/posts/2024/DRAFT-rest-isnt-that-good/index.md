@@ -12,6 +12,7 @@ linktitle = ""
 title = "Rest Isn't That Good"
 slug = "rest-isnt-that-good"
 type = "posts"
+draft = true
 +++
 
 Hot take coming in... hot. Rest isn't that great.
