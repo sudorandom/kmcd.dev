@@ -2,6 +2,10 @@
     align-items: stretch;
 }
 
+.post-item:hover {
+    background-color: rgb(31, 42, 53);
+}
+
 .post-row {
     display: flex;
 }
@@ -42,7 +46,6 @@
 
 .bg {
     background-attachment: fixed;
-    background-position: 40% 40%;
     background-size: auto auto;
 }
 
