@@ -48,11 +48,9 @@ service Status {
   }
 }
 ```
-... but you can see how `status.v1.Status.GetStatus` maps to `GET /v1/status`.
+You can see how `status.v1.Status.GetStatus` maps to `GET /v1/status`. Thanks, protobuf options!
 
-The proxies deployments all have weird downsides like requiring an extra network hop to support multiple protocols. Transcoding, in general, ruins a lot of the benefits you have from a contract-based interface that gRPC provides.
-
-And I have the same reservations about requiring a proxy in the middle to support this. It adds deployment complexity and network/encoding overhead.
+The proxies deployments all have weird downsides like requiring an extra network hop to support multiple protocols. Transcoding, in general, ruins a lot of the benefits you have from a contract-based interface that gRPC provides. For those two reasons, I don't generally prefer this method. However, it can be a really good way to support existing APIs by "swapping out" traditional HTTP handles with gRPC.
 
 ## ConnectRPC
 Let me introduce [ConnectRPC](https://connectrpc.com/). I believe it elegantly solves all of the issues I have with the gRPC ecosystem. ConnectRPC is a series of libraries for building browser and gRPC-compatible APIs. With ConnectRPC as the server, you get support for three protocols: gRPC, gRPC-Web and [the so-called "Connect" protocol](https://connectrpc.com/docs/protocol/). These three protocols are [all served from a single ConnectRPC server](https://connectrpc.com/docs/multi-protocol) by simply using the HTTP content-type header, which gRPC and gRPC-Web clients already send. Let me break down where you might use each protocol:
