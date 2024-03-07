@@ -1,8 +1,8 @@
 +++
-categories = ["opinion"]
+categories = ["project"]
 tags = ["connectrpc", "grpc"]
 date = "2024-03-19"
-description = ""
+description = "unknownconnect-go is library that helps developers using gRPC identify compatibility issues caused by mismatched message definitions."
 cover = "cover.jpg"
 images = ["/posts/unknownconnect-go/cover.jpg"]
 featured = ""
@@ -17,39 +17,48 @@ draft = true
 
 gRPC systems can be quite complex. When making additions to protobuf files the server or the client often gets updated at different times. In a perfect world, this would all be synchronized. But we live in reality. Sometimes release schedules differ between components. Sometimes you just forget to update a component. Many times you might be consuming a gRPC service managed by another team and *they don't tell you that they're changing things*. I made something that will bring unique insight into this problem with very little work.
 
-# Introducing unknownconnect-go
+## Let's make things better
 
 [unknownconnect-go](https://github.com/sudorandom/unknownconnect-go) is an interceptor for [ConnectRPC](https://connectrpc.com/) clients and servers that tells you if you are receiving protobuf messages with unknown fields. Now you can know when you should upgrade your gRPC clients or servers to the latest version. Let's discuss how to use it.
+
+1. **Install the library:**
 
 ```bash
 go get -u github.com/sudorandom/unknownconnect-go
 ```
 
-## Server Examples
-Short example:
+2. **Import the library:**
+
 ```go
 import (
-    "log/slog"
-
     unknownconnect "github.com/sudorandom/unknownconnect-go"
 )
+```
 
-...
+## Server-side usage
+
+Here are two examples demonstrating how to use `unknownconnect-go` on the server-side:
+
+**Short example:**
+
+```go
 unknownconnect.NewInterceptor(func(ctx context.Context, spec connect.Spec, msg proto.Message) error {
     slog.Warn("received a protobuf message with unknown fields", slog.Any("spec", spec), slog.Any("msg", msg))
     return nil
 })
 ```
 
-Full:
+This example creates a new interceptor using `unknownconnect.NewInterceptor`. The interceptor function receives three arguments:
+
+* `ctx`: The context object
+* `spec`: The gRPC service specification
+* `msg`: The received protobuf message. Note that the actual unknown field(s) can be nested deeper within this message.
+
+When a message with unknown fields is received, the interceptor logs a warning message using the `slog.Warn` function. It includes information about the message specification and the message itself. 
+
+**Full example:**
+
 ```go
-import (
-    "log/slog"
-
-    "connectrpc.com/connect"
-    unknownconnect "github.com/sudorandom/unknownconnect-go"
-)
-
 func main() {
     greeter := &GreetServer{}
     mux := http.NewServeMux()
@@ -63,15 +72,21 @@ func main() {
 }
 ```
 
-The first example simply emits a warning log and the second example will fail the request if the server receives a message with unknown fields. You can decide what to do. Here are some ideas:
+This example demonstrates how to use the interceptor with a gRPC server. It creates a new gRPC server for the `Greet` service and adds the `unknownconnect` interceptor using the `connect.WithInterceptors` function.
 
-- Add to a metric that counts how often this happens
-- Fail the request/response; maybe the most useful in non-production integration environments
-- Emit a log
-- Add an annotation to the context to be used in the handler
-- ???
+The interceptor function in this example returns an error with the `connect.InvalidArgument` code, which will cause the server to reject the request if it receives a message with unknown fields.
 
-## Client Examples
+**Customization options:**
+
+The provided examples demonstrate two ways to handle messages with unknown fields. You can customize the behavior of the interceptor to suit your specific needs. Here are some ideas:
+
+* **Log the event:** As shown in the first example, you can simply log a warning message when an unknown field is encountered. This can help debug and monitor the cause.
+* **Add to a metric** With this approach, you can emit metrics whenever unknown fields are encountered. This can be helpful to give more monitoring insight.
+* **Fail the request/response:** This approach, demonstrated in the second example, can be useful in pre-production environments to prevent unexpected behavior caused by mismatched message definitions.
+* **Add an annotation to the context:** This allows you to pass information about the unknown field to your service handler
+
+## Client-side usage
+
 And it works the same for clients, too:
 
 ```go
@@ -110,3 +125,11 @@ func main() {
     slog.Info(res.Msg.Greeting)
 }
 ```
+
+This example works in a similar way to how the server interceptor. It creates a new gRPC client for the Greet service and adds the unknownconnect interceptor using the `connect.WithInterceptors` function.
+
+## Conclusion
+
+`unknownconnect-go` provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential mismatches and ensure smoother operation of your gRPC systems.
+
+GitHub Link: [github.com/sudorandom/sudorandom.dev](https://github.com/sudorandom/sudorandom.dev/)

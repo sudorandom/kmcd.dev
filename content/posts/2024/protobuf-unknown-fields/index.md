@@ -1,15 +1,15 @@
 +++
 categories = ["article"]
-tags = ["protobuf", "api"]
+tags = ["protobuf", "grpc", "api"]
 date = "2024-03-12"
-description = "Let's delve into the cunfusing and neat feature of unknown protobuf fields"
+description = "Let's delve into the cunfusing and neat feature of protobuf; unknown fields"
 cover = "cover.jpg"
 images = ["/posts/protobuf-unknown-fields/cover.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
-title = "Protobuf Unknown Fields"
+title = "Unknown Fields in Protobuf"
 slug = "protobuf-unknown-fields"
 type = "posts"
 +++
@@ -92,7 +92,7 @@ export class User extends Message<User> {
 }
 ```
 
-This user class looks very similar to the previous one but some extra fields describe the expected structure of the message and some extra metadata on the fields to know how to decode protobuf. It also has an extra field for unknown fields. This is what it looks like:
+This user class looks very similar to the previous one but some extra fields describe the expected structure of the message and some extra metadata on the fields to know how to decode protobuf. It also has an extra field (not shown) for unknown fields. This is what it looks like when we log our protobuf message that contains an unknown field:
 
 ```typescript
 {
@@ -101,7 +101,7 @@ This user class looks very similar to the previous one but some extra fields des
     Symbol(@bufbuild/protobuf/unknown-fields): [{0: {no:3, wire_type:2, data: Uint8Array(14)}}]
 }
 ```
-The `@bufbuild/protobuf/unknown-fields` field shows the field number, protobuf wire type (`LEN`, which is what strings are encoded as) and the raw data from the wire stored in the `data` field. And finally, here's what it looks like (in protoscope format) on the wire:
+The `@bufbuild/protobuf/unknown-fields` field shows the field number, protobuf wire type (`LEN`, which is what strings are encoded as) and the raw data from the wire stored in the `data` field. And here's what this message looks like when you encode once more, in protoscope format:
 
 ```text
 1:LEN {"0edc0903-9e31-47be-adad-1dfc434ca2d3"}
@@ -122,11 +122,13 @@ Unknown fields offer several advantages:
 
 However, it's important to be aware of potential drawbacks:
 
-* **Increased message size:** Unknown fields contribute to the overall size of the message, potentially impacting performance.
-* **Unintended consequences:** If unknown fields are misinterpreted by a receiving system, it can lead to unexpected behavior.
+* **Library Support** Unknown fields aren't universally supported in every protobuf library implementation.
+* **Unintended consequences:** If unknown fields are misinterpreted by a receiving system, it can lead to unexpected behavior. If a system is passing along unknown fields it also doesn't know how to validate the data in the unknown fields. Think wisely about which components are responsible for validation.
+* **Security Concerns** Malicious users could potentially exploit unknown fields to inject harmful data into messages, especially if proper validation mechanisms are not in place.
 
 It is recommended by the [API Best Practices article](https://protobuf.dev/programming-guides/api/#support-partial-updates) on [protobuf.dev](https://protobuf.dev) to filter out unknown fields for public APIs. Here's the relevant section:
 
 > In general, public APIs should drop unknown fields on server-side to prevent security attack via unknown fields. For example, garbage unknown fields may cause a server to fail when it starts to use them as new fields in the future.
 
-**In conclusion, protobuf unknown fields are a valuable feature for handling unexpected data in your messages. They offer flexibility and backward compatibility while requiring careful consideration of their potential impact on message size and processing.**
+### In conclusion
+Protobuf unknown fields are a valuable feature for handling unexpected data in your messages. They offer flexibility and backward compatibility. They give you the power to handle many upgrade scenarios in a far more graceful way than traditional JSON/REST APIs. However, they do require careful consideration to when and where they are used.
