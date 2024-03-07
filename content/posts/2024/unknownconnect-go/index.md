@@ -12,7 +12,6 @@ linktitle = ""
 title = "Introducing unknownconnect-go"
 slug = "unknownconnect-go"
 type = "posts"
-draft = true
 +++
 
 gRPC systems can be quite complex. When making additions to protobuf files the server or the client often gets updated at different times. In a perfect world, this would all be synchronized. But we live in reality. Sometimes release schedules differ between components. Sometimes you just forget to update a component. Many times you might be consuming a gRPC service managed by another team and *they don't tell you that they're changing things*. I made something that will bring unique insight into this problem with very little work.
@@ -50,21 +49,21 @@ unknownconnect.NewInterceptor(func(ctx context.Context, spec connect.Spec, msg p
 
 This example creates a new interceptor using `unknownconnect.NewInterceptor`. The interceptor function receives three arguments:
 
-* `ctx`: The context object
-* `spec`: The gRPC service specification
-* `msg`: The received protobuf message. Note that the actual unknown field(s) can be nested deeper within this message.
+* `ctx`: The [context](https://pkg.go.dev/context#Context) object
+* `spec`: The [gRPC service specification](https://pkg.go.dev/connectrpc.com/connect#Spec)
+* `msg`: The received [protobuf message](https://pkg.go.dev/google.golang.org/protobuf/proto#Message). Note that the actual message with unknown field(s) can be nested deeper within this message.
 
-When a message with unknown fields is received, the interceptor logs a warning message using the `slog.Warn` function. It includes information about the message specification and the message itself. 
+In the previous example, when a message with unknown fields is received, the interceptor will log a warning message using the `slog.Warn` function. It includes information about the message specification and the message itself. 
 
 **Full example:**
-
+Here is a full example that shows you how to register the `unknownconnect.Interceptor` with a ConnectRPC handler:
 ```go
 func main() {
     greeter := &GreetServer{}
     mux := http.NewServeMux()
     path, handler := greetv1connect.NewGreetServiceHandler(greeter, connect.WithInterceptors(
         unknownconnect.NewInterceptor(func(ctx context.Context, spec connect.Spec, msg proto.Message) error {
-            return connect.NewError(connect.InvalidArgument, err)
+            return connect.NewError(connect.InvalidArgument, errors.New("protobuf version missmatch; received unknown fields"))
         }),
     ))
     mux.Handle(path, handler)
@@ -72,18 +71,16 @@ func main() {
 }
 ```
 
-This example demonstrates how to use the interceptor with a gRPC server. It creates a new gRPC server for the `Greet` service and adds the `unknownconnect` interceptor using the `connect.WithInterceptors` function.
-
 The interceptor function in this example returns an error with the `connect.InvalidArgument` code, which will cause the server to reject the request if it receives a message with unknown fields.
 
 **Customization options:**
 
-The provided examples demonstrate two ways to handle messages with unknown fields. You can customize the behavior of the interceptor to suit your specific needs. Here are some ideas:
+The two examples above show two ways to handle messages with unknown fields but you can customize the behavior of the interceptor to suit your specific needs. Here are some ideas:
 
 * **Log the event:** As shown in the first example, you can simply log a warning message when an unknown field is encountered. This can help debug and monitor the cause.
 * **Add to a metric** With this approach, you can emit metrics whenever unknown fields are encountered. This can be helpful to give more monitoring insight.
 * **Fail the request/response:** This approach, demonstrated in the second example, can be useful in pre-production environments to prevent unexpected behavior caused by mismatched message definitions.
-* **Add an annotation to the context:** This allows you to pass information about the unknown field to your service handler
+* **Add an annotation to the context:** This allows you to pass information about the unknown field to your service handler.
 
 ## Client-side usage
 
@@ -130,6 +127,6 @@ This example works in a similar way to how the server interceptor. It creates a 
 
 ## Conclusion
 
-`unknownconnect-go` provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential mismatches and ensure smoother operation of your gRPC systems.
+`unknownconnect-go` provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential version mismatches and ensure smoother operation of your gRPC systems.
 
 GitHub Link: [github.com/sudorandom/sudorandom.dev](https://github.com/sudorandom/sudorandom.dev/)
