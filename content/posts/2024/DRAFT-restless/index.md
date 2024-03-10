@@ -52,10 +52,10 @@ Most of these are used in niche, hyper-specific ways. I suspect most developers 
 
 Now we have: `GET`, `POST`, `DELETE`, and `PUT`. Sweet, we're left with enough methods to make a CRUD application. Roughly speaking:
 
-- Create = `POST`
-- Retreive = `GET`
-- Update = `PUT`
-- Delete = `DELETE`
+- **C**reate = `POST`
+- **R**ead = `GET`
+- **U**pdate = `PUT`
+- **D**elete = `DELETE`
 
 Wow! Such simple. So elegant. I'm sure glad that everything web developers do boils down to these 4 simple actions... Oh wait, that's **_totally_ wrong**. There are so many more actions you can do to an object. Just think of how crazy it would be if you were using a programming language where you could only have four pre-defined methods in each class. Think of all of the extra container classes and weird abstractions we'd make on top of that. This sounds like utter insanity and is exactly what REST gives us.
 
@@ -67,19 +67,13 @@ Take a social media app with a large user base. Sending a user's entire profile 
 
 ### OpenAPI? More like "Open... to Interpretation."
 
-Imagine a real-time multiplayer game API. OpenAPI shines for static data like player stats but struggles with the constant updates of a game world (player movement, item interactions). Defining every possible scenario with OpenAPI schemas gets messy. Alternatives like WebSockets, built for real-time communication, might be better for keeping players in sync with the ever-changing game world.
+OpenAPI is a specification for describing RESTful APIs. It acts as a contract between API providers and consumers, defining the available resources, their properties, and the allowed operations (GET, POST, PUT, DELETE) for each. A common way OpenAPI is used is by generating OpenAPI specifications from the source of the backend service. Depending on the level of library integration these tools can automatically discover the HTTP method, route, request and response types, etc. This can help keep documentation up-to-date compared to manually creating OpenAPI spec, which is pretty incredible.
 
-Here are 5 examples of why REST with OpenAPI might fall short:
+Okay, now here's where I get philosophical. If we're going to have a declarative specification for our APIs, I believe the specification should be the source of truth rather than the output. In my mind, OpenAPI specification should be the very first thing you write and agree upon and the servers and clients should be. However, many people don't do this because the tooling isn't amazing. Developers have grown fond of specific libraries and frameworks to develop our APIs so the target for generating language/framework/library code is vast and appears to be an incredibly hard problem. OpenAPI tries to solve so many problems at once. It's coming in after we've designed our APIs and is trying to describe what's already there. It's an afterthought.
 
-1. **Real-time Data Streams (e.g., Stock Ticker, Live Chat):** REST relies on request-response cycles, making it clunky for continuously flowing data. OpenAPI struggles to define the ever-changing structure of a live feed, leading to cumbersome schema updates and inefficient data transfer.
-2. **Fine-grained Data Updates (e.g., Social Media Likes, Game State Changes):** REST methods often operate on entire resources. Imagine liking a specific post comment; deleting the whole post with DELETE is inefficient. OpenAPI schemas struggle to represent these partial updates, forcing developers into workarounds like custom flags in requests or having many, many different kinds of nested objects.
-3. **Complex Data Structures (e.g., Shopping Cart, User Profile):** Modeling intricate entities as single REST objects can be messy. A shopping cart with items, discounts, and customer information becomes a bloated object. OpenAPI schemas can become complex and challenging to maintain for these scenarios.
-4. **Unforeseen Events and Interactions (e.g., Multiplayer Games, Collaborative Workspaces):** OpenAPI excels at defining expected data structures, but struggles with the unpredictable. Imagine a multiplayer game with emergent player behavior. Defining schemas for every possible action becomes impractical.
-5. **Out-of-date specs:** Many OpenAPI specs end up being partially or completely hand-written. The best way to avoid this is to generate servers and clients from OpenAPI specs so that you use it as a single source of truth for the API but generators for many languages are... bad and OpenAPI doesn't have clear semantics around how these types map to each programming language.
+I've attempted to go down the route of using OpenAPI to generate server stubs and clients. It didn't end well. There were too many issues generating clients and servers, even when the OpenAPI specification was valid. So I had to edit our OpenAPI spec to fit the limitations of the code generators just to get code generation to work. And that was just the beginning of my problems. I contend that this is a natural result of the design goals. OpenAPI was not designed for generating code this way, so with many complex scenarios, it can be unclear how to map the spec to the semantics of the language/framework/library. OpenAPI wasn't designed for that, it was only designed to describe the API, not the server or client that produces or consumes it. Now consider just how many "targets" for client and server stubs you want. Now consider that target libraries and the OpenAPI spec itself are evolving. This results in a compatibility matrix from hell.
 
-While OpenAPI serves a valuable purpose for many APIs, its limitations become apparent when dealing with dynamic data streams. This is where alternatives like WebSockets, designed for real-time communication, might be a better fit.
-
-## So what options do we have?
+## So what other options do we have?
 REST _has_ served us well, but the modern web demands more. Let's explore the exciting alternatives that offer a range of benefits and functionalities:
 
 ### GraphQL
