@@ -6,6 +6,10 @@
 
         {{ if .Content }}
             <div class="content">{{ .Content }}</div>
+        {{ else }}
+            <div class="post">
+                Here are all of the articles that I've written that have the <code>{{ .Title }}</code> tag. Enjoy.
+            </div>
         {{ end }}
 
         <div id="theme-tagcloud" class="col-sm-12" style="margin-bottom: 15px;">

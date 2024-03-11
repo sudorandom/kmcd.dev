@@ -1,6 +1,6 @@
 +++
 categories = ["project"]
-tags = ["connectrpc", "grpc"]
+tags = ["connectrpc", "grpc", "protobuf"]
 date = "2024-03-19"
 description = "unknownconnect-go is library that helps developers using gRPC identify compatibility issues caused by mismatched message definitions."
 cover = "cover.jpg"
