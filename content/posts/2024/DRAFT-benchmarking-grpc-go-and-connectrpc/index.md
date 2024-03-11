@@ -1,7 +1,7 @@
 +++
 categories = ["article"]
 tags = ["networking", "grpc", "http", "tutorial", "protobuf", "connectrpc"]
-date = "2024-03-02"
+date = "2024-12-01"
 description = ""
 cover = "cover.jpg"
 images = ["/posts/benchmarking-grpc-go-vs-connectrpc/cover.jpg"]

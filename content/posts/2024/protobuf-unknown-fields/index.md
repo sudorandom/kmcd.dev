@@ -2,7 +2,7 @@
 categories = ["article"]
 tags = ["protobuf", "grpc", "api"]
 date = "2024-03-12"
-description = "Let's delve into the cunfusing and neat feature of protobuf; unknown fields"
+description = "Let's delve into the confusing and neat feature of protobuf; unknown fields"
 cover = "cover.jpg"
 images = ["/posts/protobuf-unknown-fields/cover.jpg"]
 featured = ""
