@@ -7,7 +7,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 9 * * 2"
+    - cron: "0 6 * * 2"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
