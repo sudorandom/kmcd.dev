@@ -18,7 +18,7 @@ gRPC systems can be quite complex. When making additions to protobuf files the s
 
 ## Let's make things better
 
-[unknownconnect-go](https://github.com/sudorandom/unknownconnect-go) is an interceptor for [ConnectRPC](https://connectrpc.com/) clients and servers that tells you if you are receiving protobuf messages with unknown fields. Now you can know when you should upgrade your gRPC clients or servers to the latest version. Let's discuss how to use it.
+[`unknownconnect-go`](https://github.com/sudorandom/unknownconnect-go/) is an interceptor for [ConnectRPC](https://connectrpc.com/) clients and servers that tells you if you are receiving protobuf messages with unknown fields. Now you can know when you should upgrade your gRPC clients or servers to the latest version. Let's discuss how to use it.
 
 1. **Install the library:**
 
@@ -133,6 +133,6 @@ This example works in a similar way to how the server interceptor. It creates a 
 
 ## Conclusion
 
-`unknownconnect-go` provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential version mismatches and ensure smoother operation of your gRPC systems.
+[`unknownconnect-go`](https://github.com/sudorandom/unknownconnect-go/) provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential version mismatches and ensure smoother operation of your gRPC systems.
 
-GitHub Link: [github.com/sudorandom/sudorandom.dev](https://github.com/sudorandom/sudorandom.dev/)
+GitHub Link: [github.com/sudorandom/unknownconnect-go](https://github.com/sudorandom/unknownconnect-go/)
