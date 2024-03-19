@@ -135,4 +135,5 @@ This example works in a similar way to how the server interceptor. It creates a 
 
 [`unknownconnect-go`](https://github.com/sudorandom/unknownconnect-go/) provides a simple and effective way to identify potential compatibility issues in your gRPC systems by detecting messages with unknown fields. It offers flexibility in how you handle these situations, allowing you to log warnings, reject requests, or implement custom logic as needed. By integrating `unknownconnect-go` into your development workflow, you can gain valuable insights into potential version mismatches and ensure smoother operation of your gRPC systems.
 
-GitHub Link: [github.com/sudorandom/unknownconnect-go](https://github.com/sudorandom/unknownconnect-go/)
+- **GitHub Link:** [github.com/sudorandom/unknownconnect-go](https://github.com/sudorandom/unknownconnect-go/)
+- **Package documentation:** [pkg.go.dev/github.com/sudorandom/unknownconnect-go](https://pkg.go.dev/github.com/sudorandom/unknownconnect-go)
