@@ -4,14 +4,18 @@ tags = ["protobuf", "grpc", "connectrpc", "openapi", "http"]
 date = "2024-02-20"
 description = ""
 cover = "cover.jpg"
-images = ["/posts/introducing-protoc-gen-connect-openapi/social.jpg"]
+images = ["/posts/protoc-gen-connect-openapi/social.jpg"]
 featured = ""
 featuredalt = ""
 featuredpath = "date"
 linktitle = ""
 title = "Introducing protoc-gen-connect-openapi"
-slug = "introducing-protoc-gen-connect-openapi"
+slug = "protoc-gen-connect-openapi"
 type = "posts"
+
+aliases = [
+  "/posts/introducing-protoc-gen-connect-openapi",
+]
 +++
 
 [ConnectRPC](https://connectrpc.com) is a fantastic set of libraries that bridge gRPC into the web. gRPC is no longer relegated to the microservice box. Now it can spread its legs into the browser with gRPC-Web or the Connect protocol. The connect protocol, unlike [gRPC-Web](https://github.com/grpc/grpc-web), allows for many standard web tools to work for non-streaming APIs. For unary RPCs Connect exposes an API that is simply JSON over HTTP like you've seen a million times before so tools like curl, postman, the Javascript Fetch API, etc. all work nicely with Connect. ConnectRPC also provides all three protocols (gRPC, gRPC-Web and Connect) [using a single port on a single server](https://connectrpc.com/docs/multi-protocol). That means that you no longer need proxies to enable gRPC-Web and all standard gRPC tools are also at your disposal as well.
