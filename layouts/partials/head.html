@@ -27,7 +27,7 @@
     {{- range last 3 (.Resources.ByType "image") -}}
     {{ $img := . }}
     {{ if ne $img.MediaType.SubType "svg" }}
-        {{ $img = $img.Fit "1200x630 webp" }}
+        {{ $img = $img.Fill "1200x630 Center webp q90" }}
     {{ end }}
     <meta property="og:image" content="{{ $img.Permalink }}"/>
     {{ else }}
