@@ -1,20 +1,21 @@
-+++
-categories = ["project"]
-tags = ["dataviz", "spectrum", "sun", "light", "python", "svg", "data", "science", "displate"]
-date = "2022-09-12"
-description = "Revisiting visualizing the light that comes from the sun. Spectrum analysis, wavelengths of light, data visualization"
-images = ["/posts/sun-spectra-image-v2.svg/thumbnail.png"]
-featured = "thumbnail.png"
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Visualizing the spectrum of the sun (Part 2)"
-slug = "sun-spectra-image-v2.svg"
-type = "posts"
-aliases = [
+---
+categories: ["project"]
+tags: ["dataviz", "spectrum", "sun", "light", "python", "svg", "data", "science", "displate"]
+date: "2022-09-12"
+description: "Revisiting visualizing the light that comes from the sun. Spectrum analysis, wavelengths of light, data visualization"
+images: ["/posts/sun-spectra-image-v2.svg/thumbnail.png"]
+featured: "thumbnail.png"
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Visualizing the spectrum of the sun (Part 2)"
+slug: "sun-spectra-image-v2.svg"
+type: "posts"
+devtoSkip: true
+aliases: [
     "portfolio/sun-spectra-v2/",
 ]
-+++
+---
 
 ## Basic Details
 You may know about my [previous sun spectra project](/posts/sun-spectra-image.svg/) where I created a visualization of the sun's observed electromagnetic spectrum. Well, this is the same thing but I made some different decisions on how to visualize it this time and I think it turned out beautifully. I thought it looked so great that you can get it on [Displate](https://displate.com/displate/5622874)!

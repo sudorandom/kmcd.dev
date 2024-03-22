@@ -1,18 +1,20 @@
-+++
-categories = ["article"]
-tags = ["networking", "grpc", "http", "tutorial", "protobuf"]
-date = "2024-02-25"
-description = ""
-cover = "cover.jpg"
-images = ["/posts/inspecting-protobuf-messages/social.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Inspecting Protobuf Messages"
-slug = "inspecting-protobuf-messages"
-type = "posts"
-+++
+---
+categories: ["article"]
+tags: ["networking", "grpc", "http", "tutorial", "protobuf"]
+date: "2024-02-25"
+description: ""
+cover: "cover.jpg"
+images: ["/posts/inspecting-protobuf-messages/social.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Inspecting Protobuf Messages"
+slug: "inspecting-protobuf-messages"
+type: "posts"
+devtoSkip: true
+canonical_url: https://sudorandom/dev/posts/inspecting-protobuf-messages
+---
 
 
 [Protocol Buffers](https://protobuf.dev/) is an amazing message format. It's [incredibly compact](https://nilsmagnus.github.io/post/proto-json-sizes/) and [performant](https://medium.com/@akresling/go-benchmark-json-v-protobuf-4ec3c62ec8d4). However, these advantages come at a cost. Since Protobuf is a binary format it lacks a lot in readability compared to text-based formats like JSON or XML. If you look at encoded protobuf data it just looks like meaningless ones and zeros.

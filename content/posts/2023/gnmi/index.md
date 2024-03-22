@@ -1,19 +1,20 @@
-+++
-categories = ["opinion"]
-tags = ["networking", "gnmi", "snmp", "monitoring", "network-management", "open-source", "grpc"]
-date = "2023-11-04"
-description = "gNMI is better than SNMP and more people need to know about it."
-cover = "cover.jpg"
-images = ["/posts/gnmi/cover.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Why you should use gNMI over SNMP in 2024"
-slug = "gnmi"
-type = "posts"
-+++
-
+---
+categories: ["opinion"]
+tags: ["networking", "gnmi", "snmp", "monitoring", "network-management", "open-source", "grpc"]
+date: "2023-11-04"
+description: "gNMI is better than SNMP and more people need to know about it."
+cover: "cover.jpg"
+images: ["/posts/gnmi/cover.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Why you should use gNMI over SNMP in 2024"
+slug: "gnmi"
+type: "posts"
+devtoSkip: true
+canonical_url: https://sudorandom/dev/posts/gnmi
+---
 
 Network engineers have some unique challenges in monitoring and managing their own network devices. So it may come as a surprise to some people that, by far, the most used protocol for monitoring network devices was created over 30 years ago. However, there is an industry-accepted replacement and it's time to upgrade.
 
@@ -36,7 +37,7 @@ Here are a few specific reasons:
 - **gNMI is scalable.** gNMI is designed to scale to large networks with many devices. It can handle a high volume of traffic without sacrificing performance.
 
 #### Subscriptions
-Let me elaborate on the "streaming protocol" comment. gNMI allows for a sustained streaming connection where the server can send updates to the client. This is possible because [gNMI uses gRPC](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc). SNMP has no such streaming ability{{< super "\*" >}} and most SNMP communication happens with a simple request/response pattern. Let's look at what a typical SNMP-based monitoring setup looks like:
+Let me elaborate on the "streaming protocol" comment. gNMI allows for a sustained streaming connection where the server can send updates to the client. This is possible because [gNMI uses gRPC](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc). SNMP has no such streaming ability[0] and most SNMP communication happens with a simple request/response pattern. Let's look at what a typical SNMP-based monitoring setup looks like:
 
 ```mermaid
 ---
@@ -101,7 +102,7 @@ Overall, gNMI is a more modern and efficient approach to network management than
 ----
 
 #### Footnotes
-{{< super "\*" >}} Yes, I know SNMP traps exist but they're not applicable in this and many other examples and it's also a pain to work with, may silently break and is overall awful to work with.
+- ***[0]** Yes, I know SNMP traps exist but they're not applicable in this and many other examples and it's also a pain to work with, may silently break and is overall awful to work with.*
 
 #### References
 - [gNMI on github](https://github.com/openconfig/gnmi) - has a reference client/server in Go.

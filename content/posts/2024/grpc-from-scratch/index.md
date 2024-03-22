@@ -1,18 +1,20 @@
-+++
-categories = ["article"]
-tags = ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
-date = "2024-02-15"
-description = "gRPC is an incredibly popular RPC framework that efficiently connects services. But how does it work? Let's dive in!"
-cover = "cover.jpg"
-images = ["/posts/grpc-from-scratch/cover.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "gRPC From Scratch: Part 1 - Client"
-slug = "grpc-from-scratch"
-type = "posts"
-+++
+---
+categories: ["article"]
+tags: ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
+date: "2024-02-15"
+description: "gRPC is an incredibly popular RPC framework that efficiently connects services. But how does it work? Let's dive in!"
+cover: "cover.jpg"
+images: ["/posts/grpc-from-scratch/cover.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "gRPC From Scratch: Part 1 - Client"
+slug: "grpc-from-scratch"
+type: "posts"
+devtoSkip: true
+canonical_url: https://sudorandom/dev/posts/grpc-from-scratch
+---
 
 > Disclaimer: This article is *NOT* for beginners unfamiliar with gRPC. If you're looking to use gRPC like a sane individual, look elsewhere. Maybe start with [the official gRPC documentation](https://grpc.io/docs/).
 

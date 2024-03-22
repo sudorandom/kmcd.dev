@@ -1,20 +1,21 @@
-+++
-categories = ["project"]
-tags = ["dataviz", "spectrum", "sun", "light", "python", "svg", "data", "science"]
-date = "2022-02-19"
-description = "Visualizing the visual spectrum of the sun. Spectrum analysis, wavelengths of light, data visualization"
-featured = "thumbnail.png"
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Visualizing the spectrum of the sun"
-images = ["/posts/sun-spectra-image.svg/thumbnail.png"]
-slug = "sun-spectra-image.svg"
-type = "posts"
-aliases = [
+---
+categories: ["project"]
+tags: ["dataviz", "spectrum", "sun", "light", "python", "svg", "data", "science"]
+date: "2022-02-19"
+description: "Visualizing the visual spectrum of the sun. Spectrum analysis, wavelengths of light, data visualization"
+featured: "thumbnail.png"
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Visualizing the spectrum of the sun"
+images: ["/posts/sun-spectra-image.svg/thumbnail.png"]
+slug: "sun-spectra-image.svg"
+type: "posts"
+devtoSkip: true
+aliases: [
     "portfolio/sun-spectra-v1/",
 ]
-+++
+---
 
 ## Basic Details
 

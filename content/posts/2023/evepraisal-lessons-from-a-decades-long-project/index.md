@@ -1,18 +1,19 @@
-+++
-categories = ["project"]
-tags = ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql"]
-date = "2023-08-18"
-description = "Inside Evepraisal's operations: data automation, databases, deployment, and advice for similar projects."
-cover = "thumbnail.webp"
-featured = "thumbnail.webp"
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Lessons from a Decades-Long Project"
-slug = "lessons-from-a-decades-long-project"
-type = "posts"
-
-+++
+---
+categories: ["project"]
+tags: ["eve online", "gaming", "evepraisal", "golang", "python", "postgresql"]
+date: "2023-08-18"
+description: "Inside Evepraisal's operations: data automation, databases, deployment, and advice for similar projects."
+cover: "thumbnail.webp"
+featured: "thumbnail.webp"
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Lessons from a Decades-Long Project"
+slug: "lessons-from-a-decades-long-project"
+type: "posts"
+devtoSkip: true
+canonical_url: https://sudorandom/dev/posts/lessons-from-a-decades-long-project
+---
 
 I wrote [Evepraisal](/posts/evepraisal.com/). Evepraisal is a tool/website that began as a way to more efficiently blow up transport ships in [Eve Online](https://www.eveonline.com/) that evolved into a trusted pricing estimate authority for the entire (Eve Online) Universe. This article will cover the technical lessons and experiences that I had maintaining this extremely useful tool for a decade.
 

@@ -1,16 +1,17 @@
-+++
-categories = ["random"]
-tags = ["learning", "programming"]
-date = "2023-08-12"
-description = "This is a small post that discusses how I learned computer programming, from cheating at calculator games to anime fan site to a handmade content management system."
-cover = "thumbnail.jpg"
-images = ["/posts/how-i-learned-to-code/thumbnail.jpg"]
-featured = "thumbnail.jpg"
-linktitle = ""
-title = "How I learned to code"
-slug = "how-i-learned-to-code"
-type = "posts"
-+++
+---
+categories: ["random"]
+tags: ["learning", "programming"]
+date: "2023-08-12"
+description: "This is a small post that discusses how I learned computer programming, from cheating at calculator games to anime fan site to a handmade content management system."
+cover: "thumbnail.jpg"
+images: ["/posts/how-i-learned-to-code/thumbnail.jpg"]
+featured: "thumbnail.jpg"
+linktitle: ""
+title: "How I learned to code"
+slug: "how-i-learned-to-code"
+type: "posts"
+devtoSkip: true
+---
 
 Writing about this subject is weird to me. I am a programmer. I get paid to turn caffeine into software... but I feel like I am clueless when it comes to explaining to other people how to get started doing what I do. I learned to program for incredibly silly reasons. Here are a few of my wonderful early projects:
 

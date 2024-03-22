@@ -1,18 +1,19 @@
-+++
-categories = ["video"]
-tags = ["commute", "biking", "cycling", "copenhagen"]
-date = "2023-07-30"
-description = "A video showing my commute to work on a bike from the island of Amager to the heart of Copenhagen, Denmark."
-cover = ""
-images = ["/posts/morning-copenhagen-commute/thumbnail.webp"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Video: Morning Copenhagen Commute"
-slug = "morning-copenhagen-commute"
-type = "posts"
-+++
+---
+categories: ["video"]
+tags: ["commute", "biking", "cycling", "copenhagen"]
+date: "2023-07-30"
+description: "A video showing my commute to work on a bike from the island of Amager to the heart of Copenhagen, Denmark."
+cover: ""
+images: ["/posts/morning-copenhagen-commute/thumbnail.webp"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Video: Morning Copenhagen Commute"
+slug: "morning-copenhagen-commute"
+type: "posts"
+devtoSkip: true
+---
 
 {{< youtube gqjiylaCRuY >}}
 [Youtube Link (if embed doesn't work)](https://www.youtube.com/watch?v=gqjiylaCRuY)

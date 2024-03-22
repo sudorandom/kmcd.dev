@@ -1,16 +1,17 @@
-+++
-categories = ["project"]
-tags = ["eve online", "gaming", "evepraisal", "programming", "python", "golang", "postgresql"]
-date = "2023-07-24"
-description = "Saying goodbye to an amazing long running project; evepraisal price checking utility for the MMORPG game Eve Online"
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Goodbye Evepraisal"
-slug = "goodbye-evepraisal"
-type = "posts"
-+++
+---
+categories: ["project"]
+tags: ["eve online", "gaming", "evepraisal", "programming", "python", "golang", "postgresql"]
+date: "2023-07-24"
+description: "Saying goodbye to an amazing long running project; evepraisal price checking utility for the MMORPG game Eve Online"
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Goodbye Evepraisal"
+slug: "goodbye-evepraisal"
+type: "posts"
+devtoSkip: true
+---
 
 > I posed a [new article about operating Evepraisal for over a decade](/posts/lessons-from-a-decades-long-project/). It covers the technical details and lessons that I learned throughout the years.
 

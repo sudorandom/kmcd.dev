@@ -1,18 +1,19 @@
-+++
-categories = ["project"]
-tags = ["dataviz", "internet", "networking", "fiber optics", "map", "world", "infrastructure", "peeringdb", "svg", "javascript", "golang"]
-date = "2023-08-01"
-description = "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
-cover = ""
-images = ["posts/internet-map-v2/geo-mercator-na.png"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Visualizing the Internet (2023)"
-slug = "internet-map-v2"
-type = "posts"
-+++
+---
+categories: ["project"]
+tags: ["dataviz", "internet", "networking", "fiber optics", "map", "world", "infrastructure", "peeringdb", "svg", "javascript", "golang"]
+date: "2023-08-01"
+description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
+cover: ""
+images: ["posts/internet-map-v2/geo-mercator-na.png"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Visualizing the Internet (2023)"
+slug: "internet-map-v2"
+type: "posts"
+devtoSkip: true
+---
 
 I recently expanded on my [Internet map visualization](/posts/internet-map-v1/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The brighter/greener/bigger the dot, the more bandwidth the internet exchange supports.
 

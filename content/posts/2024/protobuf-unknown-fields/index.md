@@ -1,18 +1,22 @@
-+++
-categories = ["article"]
-tags = ["protobuf", "grpc", "api"]
-date = "2024-03-12"
-description = "Let's delve into the confusing and neat feature of protobuf; unknown fields"
-cover = "cover.jpg"
-images = ["/posts/protobuf-unknown-fields/cover.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Unknown Fields in Protobuf"
-slug = "protobuf-unknown-fields"
-type = "posts"
-+++
+---
+categories: ["article"]
+tags: ["protobuf", "grpc", "api"]
+date: "2024-03-12"
+description: "Let's delve into the confusing and neat feature of protobuf; unknown fields"
+cover: "cover.jpg"
+images: ["/posts/protobuf-unknown-fields/cover.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Unknown Fields in Protobuf"
+slug: "protobuf-unknown-fields"
+type: "posts"
+devtoId: 1797652
+devtoPublished: false
+devtoSkip: false
+canonical_url: https://sudorandom/dev/posts/protobuf-unknown-fields
+---
 
 [Protobuf](https://protobuf.dev/programming-guides/proto3/) offers a powerful feature known as [**unknown fields**](https://protobuf.dev/programming-guides/proto3/#unknowns). These fields act as a safety net when messages encounter unforeseen circumstances. Let's delve into what they are, how they work and why they're useful.
 

@@ -1,21 +1,22 @@
-+++
-categories = ["project"]
-tags = ["dataviz", "internet", "networking", "fiber optics", "map", "world", "infrastructure", "javascript", "svg"]
-date = "2022-02-26"
-description = "I drew a pretty map that shows the underwater cables that carry our data around the world; fiber optic cables, submarine cables"
-images = ["/posts/internet-map-v1/thumbnail.png"]
-featured = "thumbnail.png"
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Visualizing the Internet (2022)"
-slug = "internet-map-v1"
-type = "posts"
-aliases = [
+---
+categories: ["project"]
+tags: ["dataviz", "internet", "networking", "fiber optics", "map", "world", "infrastructure", "javascript", "svg"]
+date: "2022-02-26"
+description: "I drew a pretty map that shows the underwater cables that carry our data around the world; fiber optic cables, submarine cables"
+images: ["/posts/internet-map-v1/thumbnail.png"]
+featured: "thumbnail.png"
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Visualizing the Internet (2022)"
+slug: "internet-map-v1"
+type: "posts"
+devtoSkip: true
+aliases: [
   "/posts/submarine-cable-map.svg",
   "/portfolio/submarine-cable-map",
 ]
-+++
+---
 
 > There is an updated version of this map detailed [in this updated post](/posts/internet-map-v2/).
 

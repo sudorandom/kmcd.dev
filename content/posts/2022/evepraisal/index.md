@@ -1,17 +1,18 @@
-+++
-categories = ["project"]
-tags = ["eve online", "gaming", "evepraisal", "golang"]
-date = "2022-02-20"
-description = "Evepraisal - Introducing the price estimation tool for the MMORPG game Eve Online that I created. Sometimes the best way to play is not to play"
-images = ["/posts/evepraisal.com/thumbnail.png"]
-featured = "thumbnail.png"
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "Evepraisal: A price estimation tool for Eve Online"
-slug = "evepraisal.com"
-type = "posts"
-+++
+---
+categories: ["project"]
+tags: ["eve online", "gaming", "evepraisal", "golang"]
+date: "2022-02-20"
+description: "Evepraisal - Introducing the price estimation tool for the MMORPG game Eve Online that I created. Sometimes the best way to play is not to play"
+images: ["/posts/evepraisal.com/thumbnail.png"]
+featured: "thumbnail.png"
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "Evepraisal: A price estimation tool for Eve Online"
+slug: "evepraisal.com"
+type: "posts"
+devtoSkip: true
+---
 
 ## Basic Details
 

@@ -14,7 +14,7 @@ url: "/posts/connectrpc"
 slug: "connectrpc"
 type: "posts"
 devtoId: 1797651
-devtoPublished: false
+devtoPublished: true
 devtoSkip: false
 canonical_url: https://sudorandom/dev/posts/connectrpc
 ---
@@ -30,10 +30,10 @@ gRPC-Web is a [variant of gRPC](https://github.com/grpc/grpc/blob/master/doc/PRO
 
 gRPC-Web doesn't fix the "this doesn't look like any HTTP API I've ever seen" issue that I have with gRPC in general. In other words, I want to be able to send a normal cURL example to someone. gRPC-Web doesn't work for that without special gRPC-specific clients or tooling.
 
-Additionally, I don't like how gRPC-Web is typically deployed. You usually are forced into a proxy that can convert gRPC into gRPC-Web. Instead, I prefer the gRPC-Web implementation to sit alongside the actual gRPC server. The protocol isn't so different from the normal gRPC version so it shouldn't be too much work to add support to existing gRPC server implementations... But that takes time and effort, and I did say that this solution is practical.
+Additionally, I don't like how gRPC-Web is typically deployed. You usually are forced into a proxy that can convert gRPC into gRPC-Web. Instead, I prefer the gRPC-Web implementation to sit alongside the actual gRPC server. The protocol isn't so different from the normal gRPC version so it shouldn't be too much work to add support to existing gRPC server implementations. I know that the popular gRPC library [tonic](https://docs.rs/tonic/latest/tonic/) supports [gRPC-Web](https://docs.rs/tonic-web/latest/tonic_web/) out of the box.
 
 ## gRPC Transcoding
-The idea with transcoding is to annotate your protobuf service methods with HTTP verbs and path patterns that can map a more REST-like API to gRPC. Many solutions allow you to provide a separate config file so you arent required to have the HTTP annotations making a mess of your protobuf files. [Google has a service](https://cloud.google.com/endpoints/docs/grpc/transcoding) that can use this mapping and provide a REST-like API on top of your gRPC service. and several gRPC proxies can do this kind of transcoding as well like [gRPC-Gateway](https://github.com/grpc-ecosystem/grpc-gateway) and [envoy](https://www.envoyproxy.io).
+The idea with transcoding is to annotate your protobuf service methods with HTTP verbs and path patterns that can map a more REST-like API to gRPC. Many solutions allow you to provide a separate config file so you aren't required to have the HTTP annotations making a mess of your protobuf files. [Google has a service](https://cloud.google.com/endpoints/docs/grpc/transcoding) that can use this mapping and provide a REST-like API on top of your gRPC service. and several gRPC proxies can do this kind of transcoding as well like [gRPC-Gateway](https://github.com/grpc-ecosystem/grpc-gateway) and [envoy](https://www.envoyproxy.io).
 
 Here's a simple version of what the annotations can look like:
 ```protobuf
@@ -55,7 +55,7 @@ service Status {
 ```
 You can see how `status.v1.Status.GetStatus` maps to `GET /v1/status`. Thanks, protobuf options!
 
-The proxies deployments all have weird downsides like requiring an extra network hop to support multiple protocols. Transcoding, in general, ruins a lot of the benefits you have from a contract-based interface that gRPC provides. For those two reasons, I don't generally prefer this method. However, it can be a really good way to support existing APIs by "swapping out" traditional HTTP handles with gRPC.
+However, most ways of deploying this in Go weirdly use proxies, creating a new network hop and a decoding/encoding step. Additionally, transcoding ruins a lot of the benefits you have from a contract-based interface that gRPC provides. Generated clients generally can't interpret the `google.api.http` options so if you want to keep to a contract-based model you have to rely on converting your protobuf file to OpenAPI and generating clients based on that. I don't generally prefer this method because it adds extra complexity. However, it can be a really good way to support existing APIs by "swapping out" traditional HTTP handles with gRPC.
 
 ## ConnectRPC
 Let me introduce [ConnectRPC](https://connectrpc.com/). I believe it elegantly solves all of the issues I have with the gRPC ecosystem. ConnectRPC is a series of libraries for building browser and gRPC-compatible APIs. With ConnectRPC as the server, you get support for three protocols: gRPC, gRPC-Web and [the so-called "Connect" protocol](https://connectrpc.com/docs/protocol/). These three protocols are [all served from a single ConnectRPC server](https://connectrpc.com/docs/multi-protocol) by simply using the HTTP content-type header, which gRPC and gRPC-Web clients already send. Let me break down where you might use each protocol:

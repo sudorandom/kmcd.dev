@@ -1,18 +1,19 @@
-+++
-categories = ["project"]
-tags = ["python", "cloud", "softlayer", "api", "cli", "open source"]
-date = "2023-07-31"
-description = "I wrote and maintained language bindings for a large cloud company. Join me as I reflect on that experience."
-cover = "cover.jpg"
-images = ["/posts/softlayer-python/cover.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "softlayer-python: language bindings/CLI for a cloud company"
-slug = "softlayer-python"
-type = "posts"
-+++
+---
+categories: ["project"]
+tags: ["python", "cloud", "softlayer", "api", "cli", "open source"]
+date: "2023-07-31"
+description: "I wrote and maintained language bindings for a large cloud company. Join me as I reflect on that experience."
+cover: "cover.jpg"
+images: ["/posts/softlayer-python/cover.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "softlayer-python: language bindings/CLI for a cloud company"
+slug: "softlayer-python"
+type: "posts"
+devtoSkip: true
+---
 
 I used to work for a public cloud company called [SoftLayer](https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer). As a cloud company, there is an API that customers can use to provision new virtual servers, load balancers, firewalls and whatever else you might want. On our team, we used SoftLayer services as a customer might and we ended up proving new products and just... experiencing what it was like as a customer. I loved the concept. Our team heavily used this practice of so-called "eating your own dog food."
 

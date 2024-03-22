@@ -1,18 +1,20 @@
-+++
-categories = ["article"]
-tags = ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
-date = "2024-02-17"
-description = "Last part we created a simple gRPC client. Let's take it a bit further. Let's implement a simple gRPC server in go."
-cover = "cover.jpg"
-images = ["/posts/grpc-from-scratch-part-2/social.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "gRPC From Scratch: Part 2 - Server"
-slug = "grpc-from-scratch-part-2"
-type = "posts"
-+++
+---
+categories: ["article"]
+tags: ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
+date: "2024-02-17"
+description: "Last part we created a simple gRPC client. Let's take it a bit further. Let's implement a simple gRPC server in go."
+cover: "cover.jpg"
+images: ["/posts/grpc-from-scratch-part-2/social.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "gRPC From Scratch: Part 2 - Server"
+slug: "grpc-from-scratch-part-2"
+type: "posts"
+devtoSkip: true
+canonical_url: https://sudorandom/dev/posts/grpc-from-scratch-part-2
+---
 
 > This is part two of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client.](/posts/grpc-from-scratch)
 
