@@ -55,7 +55,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" async>
 
 <!-- CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
@@ -63,12 +63,12 @@
 
 {{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
 {{ $style := resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
-<link rel="stylesheet" type="text/css" href="{{ $style.RelPermalink }}">
+<link rel="stylesheet" type="text/css" href="{{ $style.RelPermalink }}" async>
 
 {{ range $val := $.Site.Params.customCSS }}
     {{ if gt (len $val) 0 }}
         {{ $cssFile := resources.Get $val | minify | resources.Fingerprint "md5" }}
-        <link rel="stylesheet" type="text/css" href="{{ $cssFile.Permalink }}">
+        <link rel="stylesheet" type="text/css" href="{{ $cssFile.Permalink }}" async>
     {{ end }}
 {{ end }}
 
