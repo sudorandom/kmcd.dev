@@ -4,15 +4,15 @@ tags = ["api", "protobuf", "grpc", "openapi", "arvo", "thrift"]
 date = "2024-05-09"
 description = "Building for Scale: Why contract-based APIs are the future."
 cover = "cover.jpg"
-images = ["/posts/contracts/cover.jpg"]
+images = ["/posts/api-contracts/cover.jpg"]
 title = "Building APIs with Contracts"
-slug = "contracts"
+slug = "api-contracts"
 type = "posts"
 +++
 
 In today's interconnected world, APIs (Application Programming Interfaces) are the glue that connects computers. They allow different applications to talk to each other, share data, and perform actions. But traditional methods of creating APIs can lead to challenges, especially when dealing with versioning changes and integrating complex systems. This is where **contract-based APIs** come in, offering a more robust and reliable approach and taming some of the wildness that exists on the web.
 
-### The Power of Pre-defined Contracts
+### The Power of Pre-defined API Contracts
 
 Imagine building a house without a blueprint. It would be chaotic and prone to errors. A contract-based API is like a detailed blueprint for communication between applications. It defines exactly what data can be exchanged, in what format, and what actions can be performed. This pre-defined agreement unlocks several advantages for developers and applications:
 
