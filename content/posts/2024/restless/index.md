@@ -16,7 +16,7 @@ type = "posts"
 
 The "RESTful API" has been the workhorse of the web for many years. It has been an ever-changing religion with tenants that developers try their hardest to adhere to. But as web applications evolve, user demands grow and our industry experience with API design grows, it's time to re-evaluate this approach. This article explores the limitations of REST and delves into modern alternatives that can unlock a world of possibilities beyond.
 
-### Objects? More like "objnoxious."
+### Objects? More like "objnoxious"
 
 Imagine building a social media API endpoint to retrieve a user's feed. Using a single REST object to represent a feed item can get messy. This object would need to encompass:
 
@@ -62,15 +62,15 @@ Let's stop pretending that there are only 9 (but actually 4) things you can do t
 
 ### Inefficiency of JSON
 
-Take a social media app with a large user base. Sending a user's entire profile information, including their lengthy bio and high-resolution profile picture, in JSON with every request can be wasteful. Protobuf, on the other hand, is a compact and efficient binary format specifically designed for data serialization. Even factoring in GZIP, JSON loses out to encoded protobuf [in pretty much every way](https://auth0.com/blog/beating-json-performance-with-protobuf/): CPU usage, memory usage, message size and speed. This just shows that there are better formats than JSON.
+JSON is slow and inefficient. It'd be insane if we built the internet around this format. Wait, we did? Really?  JSON is wasteful in many ways. It's text-based, which has an inherent cost in payload size and processing. JSON also will include key names over and over again and the length of the keys directly translates to longer payloads. This is not ideal if we're trying to save on data transfer. Protobuf, on the other hand, is a compact and efficient binary format specifically designed for data serialization. Even factoring in gzip, JSON loses out to encoded protobuf [in pretty much every way](https://auth0.com/blog/beating-json-performance-with-protobuf/): CPU usage, memory usage, message size and speed. This just shows that there are better formats than JSON.
 
-### OpenAPI? More like "Open... to Interpretation."
+### OpenAPI?
 
-OpenAPI is a specification for describing RESTful APIs. It acts as a contract between API providers and consumers, defining the available resources, their properties, and the allowed operations (GET, POST, PUT, DELETE) for each. A common way OpenAPI is used is by generating OpenAPI specifications from the source of the backend service. Depending on the level of library integration these tools can automatically discover the HTTP method, route, request and response types, etc. This can help keep documentation up-to-date compared to manually creating OpenAPI spec, which is pretty incredible.
+[OpenAPI](https://www.openapis.org/) is a specification for describing RESTful APIs. It acts as a contract between API providers and consumers, defining the available resources, their properties, and the allowed operations (GET, POST, PUT, DELETE) for each. A common way OpenAPI is used is by generating OpenAPI specifications from the source of the backend service. Depending on the level of library integration these tools can automatically discover the HTTP method, route, request and response types, etc. This can help keep documentation up-to-date compared to manually creating OpenAPI spec, which is pretty incredible.
 
 Okay, now here's where I get philosophical. If we're going to have a declarative specification for our APIs, I believe the specification should be the source of truth rather than the output. In my mind, OpenAPI specification should be the very first thing you write and agree upon and the servers and clients should be. However, many people don't do this because the tooling isn't amazing. Developers have grown fond of specific libraries and frameworks to develop our APIs so the target for generating language/framework/library code is vast and appears to be an incredibly hard problem. OpenAPI tries to solve so many problems at once. It's coming in after we've designed our APIs and is trying to describe what's already there. It's an afterthought.
 
-I've attempted to go down the route of using OpenAPI to generate server stubs and clients. It didn't end well. There were too many issues generating clients and servers, even when the OpenAPI specification was valid. So I had to edit our OpenAPI spec to fit the limitations of the code generators just to get code generation to work. And that was just the beginning of my problems. I contend that this is a natural result of the design goals. OpenAPI was not designed for generating code this way, so with many complex scenarios, it can be unclear how to map the spec to the semantics of the language/framework/library. OpenAPI wasn't designed for that, it was only designed to describe the API, not the server or client that produces or consumes it. Now consider just how many "targets" for client and server stubs you want. Now consider that target libraries and the OpenAPI spec itself are evolving. This results in a compatibility matrix from hell.
+I've attempted to go down the route of using OpenAPI to generate server stubs and clients. It didn't end well. There were too many issues generating clients and servers, even when the OpenAPI specification was valid. So I had to edit our OpenAPI spec to fit the limitations of the code generators just to get code generation to work. And that was just the beginning of my problems. I contend that this is a natural result of the design goals of the project. OpenAPI was not designed for generating code this way as a priority, so with many complex scenarios, it can be unclear how to map the spec to the semantics of the language/framework/library. OpenAPI wasn't designed for that, it was only designed to describe the API, not the server or client that produces or consumes it. Now consider just how many "targets" for client and server stubs you want. Now consider that target libraries and the OpenAPI spec itself are evolving. This results in a compatibility matrix from hell.
 
 ## So what other options do we have?
 REST _has_ served us well, but the modern web demands more. Let's explore the exciting alternatives that offer a range of benefits and functionalities:
@@ -83,7 +83,7 @@ This method also has its downsides like making the backend API extremely complex
 
 ### gRPC
 
-The "Cut the Drama" API. Consider a mobile game that communicates with a game server. gRPC allows you to define remote procedures (like `attackEnemy` or `usePowerUp`) that the client can call directly on the server. This removes the need for complex REST resource mapping and makes the communication intent clear.
+The "Cut the Drama" API. Consider a mobile game that communicates with a game server. gRPC allows you to define remote procedures (like `attackEnemy` or `usePowerUp`) that the client can call directly on the server. This removes the need for complex REST resource mapping and makes the communication intent clear. There are variants of gRPC like [ConnectRPC](/posts/connectrpc/) that allow for leveraging of HTTP GET requests so you can fully leverage browser caching.
 
 ### WebSockets
 
