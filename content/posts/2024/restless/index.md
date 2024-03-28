@@ -1,18 +1,22 @@
-+++
-categories = ["opinion"]
-tags = ["rest", "api", "rpc", "grpc", "http"]
-date = "2024-03-26"
-description = "Web APIs are the backbone of the modern web, but the ever-evolving landscape demands a rethink. This article explores alternatives to the traditional REST approach, diving into solutions like GraphQL, gRPC, and WebSockets. Unlock the full potential of your APIs and discover a world beyond REST!"
-cover = "cover.jpg"
-images = ["/posts/restless/cover.jpg"]
-featured = ""
-featuredalt = ""
-featuredpath = "date"
-linktitle = ""
-title = "RESTless: Web APIs After REST"
-slug = "restless"
-type = "posts"
-+++
+---
+categories: ["opinion"]
+tags: ["rest", "api", "rpc", "grpc", "http"]
+date: "2024-03-26"
+description: "Web APIs are the backbone of the modern web, but the ever-evolving landscape demands a rethink. This article explores alternatives to the traditional REST approach, diving into solutions like GraphQL, gRPC, and WebSockets. Unlock the full potential of your APIs and discover a world beyond REST!"
+cover: "cover.jpg"
+images: ["/posts/restless/cover.jpg"]
+featured: ""
+featuredalt: ""
+featuredpath: "date"
+linktitle: ""
+title: "RESTless: Web APIs After REST"
+slug: "restless"
+type: "posts"
+devtoId: 1801742
+devtoPublished: true
+devtoSkip: false
+canonical_url: https://sudorandom/dev/posts/restless
+---
 
 The "RESTful API" has been the workhorse of the web for many years. It has been an ever-changing religion with tenants that developers try their hardest to adhere to. But as web applications evolve, user demands grow and our industry experience with API design grows, it's time to re-evaluate this approach. This article explores the limitations of REST and delves into modern alternatives that can unlock a world of possibilities beyond.
 
