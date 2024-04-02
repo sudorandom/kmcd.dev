@@ -1,7 +1,7 @@
 +++
 categories = ["tutorial"]
 tags = ["connectrpc", "protobuf", "rest", "api", "rpc", "grpc", "http"]
-date = "2024-05-02"
+date = "2024-04-02"
 description = "Learn how to drop unknown fields in ConnectRPC to enhance the security of your gRPC services exposed to the internet."
 cover = "cover.jpg"
 images = ["/posts/connectrpc-dropping-unknown-fields/cover.jpg"]
