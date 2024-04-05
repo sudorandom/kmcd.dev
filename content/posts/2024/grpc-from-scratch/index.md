@@ -121,6 +121,14 @@ recv<- greeting:"Hello, World!"
 ## What about gRPC streams?
 Streaming requests simply repeat this envelope encoding. gRPC, for better or worse, made the unary (simple request and response) use case a bit harder for the benefit of making the more complex use cases (streams) simple. Plus, you only have to write one encoder/decoder. For a server streaming RPC, you would simply repeat the `readMessage()` function call until you get an EOF or some other error. This showcases gRPC's simplicity in handling streaming.
 
+Note that you will have to periodically call `Flush()` on the handler's `http.ResponseWriter` argument to get the bytes flushed to the TCP socket. This normally happens for you automatically after the `http.Handler` is complete... but with streaming calls we have to do this ourselves! Here's an example of how to do it:
+
+```golang
+if f, ok := w.(http.Flusher); ok {
+	f.Flush()
+}
+```
+
 > By the way, [ConnectRPC](https://connectrpc.com/docs/protocol) has chosen to "undo" this approach by offering unary RPC without the 5-byte custom envelope. This makes using tools like cURL possible and even pleasant, especially when using the JSON encoding. But it is also friendly with gRPC clients [by offering gRPC and gRPC-Web alongside the Connect protocol](https://connectrpc.com/docs/multi-protocol).
 
 ## Okay, what was the point?

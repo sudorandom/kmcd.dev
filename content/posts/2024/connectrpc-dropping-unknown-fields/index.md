@@ -1,14 +1,18 @@
-+++
-categories = ["tutorial"]
-tags = ["connectrpc", "protobuf", "rest", "api", "rpc", "grpc", "http"]
-date = "2024-04-02"
-description = "Learn how to drop unknown fields in ConnectRPC to enhance the security of your gRPC services exposed to the internet."
-cover = "cover.jpg"
-images = ["/posts/connectrpc-dropping-unknown-fields/cover.jpg"]
-title = "Dropping Unknown Fields in ConnectRPC"
-slug = "connectrpc-dropping-unknown-fields"
-type = "posts"
-+++
+---
+categories: ["tutorial"]
+tags: ["connectrpc", "protobuf", "rest", "api", "rpc", "grpc", "http"]
+date: "2024-04-02"
+description: "Learn how to drop unknown fields in ConnectRPC to enhance the security of your gRPC services exposed to the internet."
+cover: "cover.jpg"
+images: ["/posts/connectrpc-dropping-unknown-fields/cover.jpg"]
+title: "Dropping Unknown Fields in ConnectRPC"
+slug: "connectrpc-dropping-unknown-fields"
+type: "posts"
+devtoId: 1808828
+devtoPublished: true
+devtoSkip: false
+canonical_url: https://sudorandom/dev/posts/connectrpc-dropping-unknown-fields
+---
 
 gRPC, with its focus on performance and language neutrality, remains a popular choice for building microservices and APIs. But when exposing your gRPC service to the internet, there are a few security considerations to account for. Protobuf, the serialization format often used with gRPC, offers various encoding options that can significantly impact your service's security posture. 
 
