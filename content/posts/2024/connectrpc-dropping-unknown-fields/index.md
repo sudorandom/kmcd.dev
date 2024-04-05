@@ -12,7 +12,7 @@ type = "posts"
 
 gRPC, with its focus on performance and language neutrality, remains a popular choice for building microservices and APIs. But when exposing your gRPC service to the internet, there are a few security considerations to account for. Protobuf, the serialization format often used with gRPC, offers various encoding options that can significantly impact your service's security posture. 
 
-One crucial optimization for internet-facing gRPC services is customizing the behavior towards **unknown fields**. I've talked about [unknown fields in a previous post](/posts/protobuf-unknown-fields), so read that one if unknown fields are still a mystery to you and then come back here. By default, protobuf messages can contain fields that are not defined in the current version of the proto schema. While convenient for development and can help with forward compatibility, this poses a security risk in a public environment.
+One crucial optimization for internet-facing gRPC services is customizing the behavior towards **unknown fields**. I've talked about [unknown fields in a previous post](/posts/protobuf-unknown-fields/), so read that one if unknown fields are still a mystery to you and then come back here. By default, protobuf messages can contain fields that are not defined in the current version of the proto schema. While convenient for development and can help with forward compatibility, this poses a security risk in a public environment.
 
 Here's why you should consider dropping unknown fields when exposing gRPC to the internet:
 
