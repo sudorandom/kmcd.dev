@@ -18,7 +18,7 @@ canonical_url: https://sudorandom/dev/posts/grpc-from-scratch-part-2
 
 > This is part two of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client.](/posts/grpc-from-scratch/)
 
-Last time we made a super simple gRPC client. **This time we're going to make a gRPC server**. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch/#encoding-the-request) and [readMessage](/posts/grpc-from-scratch#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
+Last time we made a super simple gRPC client. **This time we're going to make a gRPC server**. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch/#encoding-the-request) and [readMessage](/posts/grpc-from-scratch/#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
 
 ## The Setup
 Like last time, we're going to use [ConnectRPC](https://connectrpc.com/docs/go/getting-started) to help us test our implementation. Last time we used the ConnectRPC's server to test our custom gRPC client so this time we're going to use the ConnectRPC's client to test our custom gRPC server. Did I say that right? Yeah, I think so... Let's move on. Here's what the full client looks like:
