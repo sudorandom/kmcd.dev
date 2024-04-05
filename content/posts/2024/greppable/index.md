@@ -31,7 +31,7 @@ Here are some key principles to follow:
 * **Verbs for Methods:** Methods describe actions. Use verbs at the beginning of method names to convey their purpose (`calculateOrderTotal()`, `updateCustomerRecord()`).
 * **Consistency:** Maintain a consistent naming style throughout your codebase (e.g. camelCase or snake_case) and always use the 'standard' for your language or framework.
 * **Abbreviations with Caution:** Use abbreviations sparingly and only for widely recognized terms (e.g. `HTTP`, `XML`). Overuse can hinder readability. If your variable names look like 2010s-era tech startups, you're probably doing it wrong.
-* **Dynamic Dispatch:** Doing some more complex programming patterns like dynamical dispatching can greatly hurt the ability for the code to be greppable. It can also add in-direction so be sure you use these methods sparingly and add more documentation where needed to help lost souls who are tracing code through the codebase.
+* **Dynamic Dispatch:** Doing some more complex programming patterns like dynamic dispatching can greatly hurt the ability for the code to be greppable. It can also add indirection so be sure you use these methods sparingly and add more documentation where needed to help lost souls who are tracing code through the codebase.
 
 ### The Search Advantage of gRPC
 
