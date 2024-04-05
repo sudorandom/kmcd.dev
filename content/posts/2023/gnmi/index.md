@@ -13,7 +13,7 @@ title: "Why you should use gNMI over SNMP in 2024"
 slug: "gnmi"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom/dev/posts/gnmi
+canonical_url: https://sudorandom.dev/posts/gnmi
 ---
 
 Network engineers have some unique challenges in monitoring and managing their own network devices. So it may come as a surprise to some people that, by far, the most used protocol for monitoring network devices was created over 30 years ago. However, there is an industry-accepted replacement and it's time to upgrade.

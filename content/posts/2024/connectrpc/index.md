@@ -16,7 +16,7 @@ type: "posts"
 devtoId: 1797651
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://sudorandom/dev/posts/connectrpc
+canonical_url: https://sudorandom.dev/posts/connectrpc
 ---
 
 ## Introduction

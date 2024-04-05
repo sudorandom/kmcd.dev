@@ -15,7 +15,7 @@ type: "posts"
 devtoId: 1801742
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://sudorandom/dev/posts/restless
+canonical_url: https://sudorandom.dev/posts/restless
 ---
 
 The "RESTful API" has been the workhorse of the web for many years. It has been an ever-changing religion with tenants that developers try their hardest to adhere to. But as web applications evolve, user demands grow and our industry experience with API design grows, it's time to re-evaluate this approach. This article explores the limitations of REST and delves into modern alternatives that can unlock a world of possibilities beyond.

@@ -13,7 +13,7 @@ title: "gRPC From Scratch: Part 2 - Server"
 slug: "grpc-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom/dev/posts/grpc-from-scratch-part-2
+canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-2
 ---
 
 > This is part two of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client.](/posts/grpc-from-scratch/)

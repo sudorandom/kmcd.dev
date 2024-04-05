@@ -12,7 +12,7 @@ title: "Lessons from a Decades-Long Project"
 slug: "lessons-from-a-decades-long-project"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom/dev/posts/lessons-from-a-decades-long-project
+canonical_url: https://sudorandom.dev/posts/lessons-from-a-decades-long-project
 ---
 
 I wrote [Evepraisal](/posts/evepraisal.com/). Evepraisal is a tool/website that began as a way to more efficiently blow up transport ships in [Eve Online](https://www.eveonline.com/) that evolved into a trusted pricing estimate authority for the entire (Eve Online) Universe. This article will cover the technical lessons and experiences that I had maintaining this extremely useful tool for a decade.
