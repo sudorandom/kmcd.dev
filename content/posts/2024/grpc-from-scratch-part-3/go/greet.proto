@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package greet.v1;
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string greeting = 1;
+}
+
+service GreetService {
+  rpc GreetClientStream(stream GreetRequest) returns (GreetResponse) {}
+  rpc GreetServerStream(GreetRequest) returns (stream GreetResponse) {}
+  rpc GreetBidi(stream GreetRequest) returns (stream GreetResponse) {}
+}

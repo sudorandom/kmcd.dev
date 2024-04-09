@@ -1,14 +1,18 @@
-+++
-categories = ["tutorial"]
-tags = ["api", "protobuf", "grpc", "openapi", "arvo", "thrift"]
-date = "2024-04-09"
-description = "Building for Scale: Why contract-based APIs are the future."
-cover = "cover.jpg"
-images = ["/posts/api-contracts/cover.jpg"]
-title = "Building APIs with Contracts"
-slug = "api-contracts"
-type = "posts"
-+++
+---
+categories: ["tutorial"]
+tags: ["api", "protobuf", "grpc", "openapi", "arvo", "thrift"]
+date: "2024-04-09"
+description: "Building for Scale: Why contract-based APIs are the future."
+cover: "cover.jpg"
+images: ["/posts/api-contracts/cover.jpg"]
+title: "Building APIs with Contracts"
+slug: "api-contracts"
+type: "posts"
+devtoId:
+devtoPublished: true
+devtoSkip: false
+canonical_url: https://sudorandom.dev/posts/api-contracts
+---
 
 In today's interconnected world, APIs (Application Programming Interfaces) are the glue that connects computers. They allow different applications to talk to each other, share data, and perform actions. However, traditional methods of creating APIs can lead to challenges, especially when dealing with versioning changes and integrating complex systems. This is where **contract-based APIs** come in, offering a more robust and reliable approach and taming some of the wildness that exists on the web.
 
@@ -60,14 +64,14 @@ message Address {
 
 In this example, the `User` message has fields for name, ID, email, and an `Address` message. The `Address` message itself has fields for street, city, state, and zip code. These defined message structures ensure consistent data exchange between applications.
 
-### gRPC: Building APIs on a Solid Foundation**
+### gRPC: Building APIs on a Solid Foundation
 
 **gRPC (gRPC Remote Procedure Call)** is a high-performance framework that builds upon protobuf's strengths. It provides a powerful way to implement remote procedure calls, allowing applications to interact using clients generated for each language using (usually) types and semantics that make sense to the language. Here's how gRPC leverages protobuf:
 
 * **Protobuf Messages for Communication:** gRPC uses protobuf messages to define the request and response data exchanged between client and server.
 * **Generated Code for Seamless Interaction:** gRPC automatically generates server and client stubs (boilerplate code) from the `.proto` files. This eliminates manual coding and ensures consistency between client and server implementations.
 
-**Introducing Services and Request/Response Types with gRPC**
+#### Introducing Services and Request/Response Types with gRPC
 
 Now let's expand on the concept of services within a `.proto` file. We can define a service called `UserService` with methods for user management:
 
