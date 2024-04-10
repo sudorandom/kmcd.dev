@@ -6,7 +6,13 @@
             {{- with .Get "description" }} data-description="{{ . }}"{{ end -}}
             {{- with .Get "button" }} data-button="{{ . }}"{{ end -}}
             {{- with .Get "button-href" }} data-button-href="{{ . }}"{{ end -}}
-            class="spotlight" data-download="true">
+            class="spotlight"
+            data-download="true"
+            data-progress="true"
+            data-infinite="true"
+            data-spinner="true"
+            data-autofit="true"
+            data-fit="cover">
     {{- else -}}
         <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
     {{- end -}}

@@ -8,7 +8,7 @@ images: ["/posts/api-contracts/cover.jpg"]
 title: "Building APIs with Contracts"
 slug: "api-contracts"
 type: "posts"
-devtoId:
+devtoId: 1815913
 devtoPublished: true
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/api-contracts
