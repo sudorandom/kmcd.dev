@@ -26,6 +26,9 @@
 }
 
 @media (prefers-color-scheme: light) {
+    .post.on-list {
+        border-bottom: 1px black dashed;
+    }
     .main-heading {
         background-color: #fff;
     }
@@ -52,6 +55,7 @@
 
     .post.on-list {
         background: #1f2a35;
+        border-bottom: 1px white dashed;
     }
 
     #reading-progress-fill {
