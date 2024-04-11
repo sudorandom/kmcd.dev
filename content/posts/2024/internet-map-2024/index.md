@@ -4,7 +4,7 @@ tags: ["dataviz", "internet", "networking", "fiber optics", "map", "world", "inf
 date: "2024-04-23"
 description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
 cover: ""
-images: ["posts/internet-map-2024/transparent_geo-mercator-small.webp"]
+images: ["posts/internet-map-2024/the-internet-map-small.png"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
@@ -16,7 +16,7 @@ devtoSkip: true
 draft: true
 ---
 
-I recently updated my [Map of the Internet visualization](/posts/internet-map-2023/) that shows all of the undersea Unternet cables that run along the bottom of the oceans and seas and the Internet exchange points that offer peering. Together these show a pretty good view of the physical aspects of the internet. This time, I generated a video that shows the evolution of our current internet along with some interesting stats from each year. Enjoy:
+I recently updated my [Map of the Internet visualization](/posts/internet-map-2023/) that shows all of the undersea Internet cables that run along the bottom of the oceans and seas and the Internet exchange points that offer peering. Together these show a pretty good view of the physical aspects of the internet. This time, I generated a video that shows the evolution of our current internet along with some interesting stats from each year. Enjoy:
 
 ## Video
 
@@ -27,7 +27,7 @@ I recently updated my [Map of the Internet visualization](/posts/internet-map-20
 ## Still images
 I, of course, also generated new versions of the static maps. Here's the overview:
 
-{{< figure src="geo-mercator.webp" link="geo-mercator.svg" alt="Map of the Internet" attrlink="geo-mercator.svg" description="This map shows the locations of undersea cables and internet exchanges around the world.">}}
+{{< figure src="the-internet-map.webp" link="the-internet-map.svg" alt="Map of the Internet" attrlink="the-internet-map.svg" description="This map shows the locations of undersea cables and internet exchanges around the world.">}}
 
 So what are you looking at? The lines are submarine cables and the circles are cities with Internet Exchange Points (IXPs).
 
@@ -54,7 +54,7 @@ pie title Peering By Region
 ```
 
 ### Europe
-{{< figure src="geo-mercator-eu.png" link="geo-mercator-eu.png" alt="North America" attrlink="geo-mercator-eu.png" description="This map shows North America.">}}
+{{< figure src="the-internet-map-eu.png" link="the-internet-map-eu.png" alt="North America" attrlink="the-internet-map-eu.png" description="This map shows North America.">}}
 
 Europe reigns supreme in peering traffic, boasting a staggering 1.39 petabits of advertised peering bandwidth. This dominance can be attributed to several factors:
 
@@ -63,14 +63,14 @@ Europe reigns supreme in peering traffic, boasting a staggering 1.39 petabits of
 - Europe has a regulatory environment that encourages open peering practices. This fosters competition and innovation among internet service providers (ISPs), ultimately benefiting end users with lower costs and improved performance.
 
 ### North America
-{{< figure src="geo-mercator-na.png" link="geo-mercator-na.png" alt="North America" attrlink="geo-mercator-na.png" description="This map shows North America.">}}
+{{< figure src="the-internet-map-na.png" link="the-internet-map-na.png" alt="North America" attrlink="the-internet-map-na.png" description="This map shows North America.">}}
 
 North America follows closely behind Europe with a respectable 371 terabits of peering traffic. Similar to Europe, factors like strong economies, a well-developed internet infrastructure, and the presence of major IXPs contribute to this robust peering ecosystem. However, North America's peering traffic might be slightly lower due to a larger geographical footprint compared to Europe.
 
 I find it interesting that there are two submarine cables planned for 2024 (and two more in 2026) going to Myrtle Beach in South Carolina. It might be a decent time to start an internet exchange around that area since there's a good amount of submarine cable capacity going through that area now. This could improve peering options and potentially lower latency for users in the southeastern United States
 
 ### Asia
-{{< figure src="geo-mercator-apac.png" link="geo-mercator-apac.png" alt="North America" attrlink="geo-mercator-apac.png" description="This map shows Asia.">}}
+{{< figure src="the-internet-map-apac.png" link="the-internet-map-apac.png" alt="North America" attrlink="the-internet-map-apac.png" description="This map shows Asia.">}}
 
 Asia exhibits a significant peering presence with 308 terabits of traffic. The region's economic growth and increasing internet penetration are driving forces behind this. But it's important to note:
 
@@ -80,16 +80,38 @@ Asia exhibits a significant peering presence with 308 terabits of traffic. The r
 You may be trying to remember what the island is in the center-right of this picture that many things appear to connect to. That, my friends, is [Guam](https://en.wikipedia.org/wiki/Guam), an unincorporated territory of the United States.
 
 ### Africa/South America
-{{< figure src="geo-mercator-af.png" link="geo-mercator-af.png" alt="North America" attrlink="geo-mercator-af.png" description="This map shows Africa.">}}
+{{< figure src="the-internet-map-af.png" link="the-internet-map-af.png" alt="North America" attrlink="the-internet-map-af.png" description="This map shows Africa.">}}
 
 South America and Africa have the lowest peering traffic at 236 terabits and 47.3 terabits, respectively. This can be attributed to:
 
 - These regions are still in the development stages when it comes to internet infrastructure. Lower investments in IXPs and network backbones can limit peering opportunities.
 - The number of IXPs in these regions might be lower compared to Europe and North America.
 
-{{< figure src="geo-mercator-sa.png" link="geo-mercator-sa.png" alt="North America" attrlink="geo-mercator-sa.png" description="This map shows South America.">}}
+{{< figure src="the-internet-map-sa.png" link="the-internet-map-sa.png" alt="North America" attrlink="the-internet-map-sa.png" description="This map shows South America.">}}
 
 For South America there seems to be a geographically dominant peering spot: Buenos Aires in Argentina.
+
+## How it's made
+The images are generated the same way I did [in the last version](/posts/internet-map-2023/), so refer to that article for more context. Generating the video, however, required a little bit more technology. I primarily used a tool called [https://github.com/tungs/timecut](timecut) that records the SVG animations for me and encodes it as an mp4 file using `ffmpeg`. I used another `ffmpeg` call to mix in the audio song. By the way, I used some trial and error to figure out that the tempo of the song is `110bpm`. To find out how long to sleep before changing to the next frame I did some simple math... but I also double-checked it with [this nifty website](https://sengpielaudio.com/calculator-bpmtempotime.htm) that shows how long in milliseconds there are between between each beat with different tempos. It may have been easier to do this "manually" with video editing software but I enjoy the fact that I can generate the entire video from the command line. Because the fps is so low the 4k video file that I generate only takes up 18MB.
+
+Here's the updated pipeline:
+```mermaid
+graph LR
+    submarinecables[Submarine Cable Database] --> golang[Go Script]
+    peeringdb[PeeringDB] --> golang[Go Script]
+    geocities[Geolocation Database] --> golang[Go Script]
+    golang[Go Script] --> node[Node JS Script]
+    node[Node JS Script] --> svg[SVG]
+    node[Node JS Script] --> animated-svg[Animated SVG]
+    svg[SVG] --> convert[ImageMagick Convert] --> png[PNG]
+    svg[SVG] --> morgify[ImageMagick Morgify] --> jpg[Displate JPG]
+    animated-svg[Animated SVG] --> timecut[Timecut/ffmpeg] --> mp4[MP4]
+    style svg stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5;
+    style animated-svg stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5;
+    style jpg stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5;
+    style png stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5;
+    style mp4 stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5;
+```
 
 ### Closing Thoughts
 This visualization provides a fascinating glimpse into the physical infrastructure that underpins the Internet. As our reliance on the internet continues to grow, so too will the need for robust and resilient network infrastructure. By understanding the physical underpinnings of the internet, we can appreciate its ingenuity and work towards ensuring its continued growth and accessibility for everyone.
