@@ -20,11 +20,11 @@ params:
   author:
     name: "sudorandom"
   defaultTheme: "dark"
-  EnableThemeToggle: false
+  EnableThemeToggle: true
   gitUrl: "https://github.com/sudorandom/sudorandom.dev/commit/"
   EnableSharingButtons: true
   EnableGlobalLanguageMenu: false
-  customCSS: ["css/style.css"]
+  customCSS: []
   backgroundImage: "images/transparent_geo-mercator-small.webp"
   backgroundEffects: true
   showPosts: true

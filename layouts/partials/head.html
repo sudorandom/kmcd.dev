@@ -62,8 +62,13 @@
     type="text/css" async>
 
 {{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
-{{ $style := resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
-<link rel="stylesheet" type="text/css" href="{{ $style.RelPermalink }}" async>
+{{ with resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
+    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
+{{ end }}
+
+{{ with resources.Get "scss/style.scss" | resources.ToCSS $options | resources.Fingerprint }}
+    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
+{{ end }}
 
 {{ range $val := $.Site.Params.customCSS }}
     {{ if gt (len $val) 0 }}
