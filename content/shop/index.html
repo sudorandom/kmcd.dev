@@ -41,12 +41,15 @@ devtoSkip: true
 
 </main>
 
-<script>
-var macy = Macy({
-container: '#macy-container',
-trueOrder: false,
-waitForImages: false,
-margin: 4,
-columns: 2
-});
+<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
+<script defer>
+(function () {
+    var macy = Macy({
+    container: '#macy-container',
+    trueOrder: false,
+    waitForImages: false,
+    margin: 10,
+    columns: 3
+    });
+})();
 </script>

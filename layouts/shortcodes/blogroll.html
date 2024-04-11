@@ -1,0 +1,10 @@
+<ul>
+{{- range $.Site.Data.blogroll.body.outline -}}
+{{- $type := (printf "%T" .) -}}
+{{- if ne $type "string" -}}
+{{- range . -}}
+    <li><a href="{{ index . "-htmlUrl" }}" target="_blank">{{ index . "-title"}}</a> &nbsp; <a href="{{ index . "-xmlUrl"}}" target="_blank" class="icon fa-solid fa-rss"></a></li>
+{{- end -}}
+{{- end -}}
+{{- end -}}
+</ul>
