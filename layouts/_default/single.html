@@ -1,18 +1,5 @@
 {{ define "main" }}
     <main class="post">
-
-        <div class="post-info">
-            {{ if .IsTranslated }}
-              {{ if not .Params.hidelanguage }}
-                {{ range .Translations }}
-                {{ i18n "postAvailable" }}
-                    <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
-                {{ end}}
-              {{ end }}
-            {{ end }}
-            </p>
-        </div>
-
         <article>
             {{if .Params.hideTitle }}
             {{ else }}

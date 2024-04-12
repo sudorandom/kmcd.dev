@@ -1,0 +1,14 @@
+
+<div class="links-wrapper">
+{{- range $.Site.Data.links.body.outline -}}
+<div class="links-box">
+    <h2>{{ index . "-text"}}</h2>
+    <ul>
+    {{- range .outline -}}
+        <li><a href="{{ index . "-htmlUrl" }}" target="_blank">{{ index . "-title"}}</a> &nbsp; <a href="{{ index . "-xmlUrl"}}" target="_blank" class="icon fa-solid fa-rss"></a></li>
+    {{- end -}}
+    </ul>
+</div>
+{{- end -}}
+</div>
+    

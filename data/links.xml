@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+    <head>
+        <title>Miniflux</title>
+        <dateCreated>Fri, 12 Apr 2024 15:33:38 UTC</dateCreated>
+    </head>
+    <body>
+        <outline text="Blogroll">
+            <outline title="Adepts of 0xCC" text="Adepts of 0xCC" xmlUrl="https://adepts.of0x.cc/feed.xml" htmlUrl="https://adepts.of0x.cc/" type="rss"></outline>
+            <outline title="Cool As Heck" text="Cool As Heck" xmlUrl="https://cool-as-heck.blog/feed.atom" htmlUrl="https://cool-as-heck.blog" type="rss"></outline>
+            <outline title="Cory Dransfeldt" text="Cory Dransfeldt" xmlUrl="https://feedpress.me/coryd.json" htmlUrl="https://coryd.dev/feeds" type="rss"></outline>
+            <outline title="Jim Nielsen’s Blog" text="Jim Nielsen’s Blog" xmlUrl="https://blog.jim-nielsen.com/feed.xml" htmlUrl="https://blog.jim-nielsen.com" type="rss"></outline>
+            <outline title="shellsharks" text="shellsharks" xmlUrl="https://shellsharks.com/feeds/feed.xml" htmlUrl="https://shellsharks.com" type="rss"></outline>
+            <outline title="Songs on the Security of Networks" text="Songs on the Security of Networks" xmlUrl="https://rys.io/en/feed.rss" htmlUrl="https://rys.io/" type="rss"></outline>
+            <outline title="Syntackle" text="Syntackle" xmlUrl="https://syntackle.com/feed.xml" htmlUrl="https://syntackle.com/" type="rss"></outline>
+            <outline title="text/plain" text="text/plain" xmlUrl="https://textslashplain.com/feed/" htmlUrl="https://textslashplain.com" type="rss"></outline>
+            <outline title="The Cloudflare Blog" text="The Cloudflare Blog" xmlUrl="https://blog.cloudflare.com/rss" htmlUrl="https://blog.cloudflare.com" type="rss"></outline>
+        </outline>
+        <outline text="Humor">
+            <outline title="comiCSS" text="comiCSS" xmlUrl="https://comicss.art/atom.xml" htmlUrl="https://comicss.art/" type="rss"></outline>
+            <outline title="CommitStrip" text="CommitStrip" xmlUrl="https://www.commitstrip.com/en/feed/?" htmlUrl="https://www.commitstrip.com" type="rss"></outline>
+            <outline title="Monkeyuser" text="Monkeyuser" xmlUrl="https://www.monkeyuser.com/index.xml" htmlUrl="https://www.monkeyuser.com/" type="rss"></outline>
+            <outline title="PHD Comics" text="PHD Comics" xmlUrl="https://phdcomics.com/gradfeed.php" htmlUrl="http://www.phdcomics.com" type="rss"></outline>
+            <outline title="The Coding Love" text="The Coding Love" xmlUrl="https://thecodinglove.com/feed" htmlUrl="https://thecodinglove.com/" type="rss"></outline>
+            <outline title="The Daily WTF" text="The Daily WTF" xmlUrl="https://feeds.feedburner.com/TheDailyWtf" htmlUrl="http://thedailywtf.com/" type="rss"></outline>
+            <outline title="The Oatmeal" text="The Oatmeal" xmlUrl="https://theoatmeal.com/feed/rss" htmlUrl="http://theoatmeal.com/" type="rss"></outline>
+            <outline title="turnoff.us" text="turnoff.us" xmlUrl="https://turnoff.us/feed.xml" htmlUrl="http://turnoff.us" type="rss"></outline>
+            <outline title="xkcd.com" text="xkcd.com" xmlUrl="https://xkcd.com/rss.xml" htmlUrl="https://xkcd.com/" type="rss"></outline>
+        </outline>
+        <outline text="Video">
+            <outline title="Chill Fuel" text="Chill Fuel" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCHoRvL_JN1_pqRmMlgfUVsQ" htmlUrl="https://www.youtube.com/channel/UCHoRvL_JN1_pqRmMlgfUVsQ" type="rss"></outline>
+            <outline title="CodeAesthetic" text="CodeAesthetic" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCaSCt8s_4nfkRglWCvNSDrg" htmlUrl="https://www.youtube.com/channel/UCaSCt8s_4nfkRglWCvNSDrg" type="rss"></outline>
+            <outline title="Code Bullet" text="Code Bullet" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UC0e3QhIYukixgh5VVpKHH9Q" htmlUrl="https://www.youtube.com/channel/UC0e3QhIYukixgh5VVpKHH9Q" type="rss"></outline>
+            <outline title="Fireship" text="Fireship" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCsBjURrPoezykLs9EqgamOA" htmlUrl="https://www.youtube.com/channel/UCsBjURrPoezykLs9EqgamOA" type="rss"></outline>
+            <outline title="ThePrimeTime" text="ThePrimeTime" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCUyeluBRhGPCW4rPe_UvBZQ" htmlUrl="https://www.youtube.com/channel/UCUyeluBRhGPCW4rPe_UvBZQ" type="rss"></outline>
+        </outline>
+    </body>
+</opml>

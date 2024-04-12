@@ -116,3 +116,62 @@ pre {
         background-color: #333;
     }
 }
+
+h2 {
+    margin-top: 1em;
+}
+
+.toot {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.toot-header img {
+    max-height: 48px;
+    max-width: 48px;
+    float: left;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.toot-date {
+    display: inline-block;
+    font-weight: lighter;
+}
+
+.toot-author-name {
+    display: block;
+}
+
+.toot-author-handle {
+    font-size: 12px;
+}
+
+.toot-footer {
+    font-size: 12px;
+}
+
+ul.icons {
+    margin: 0;
+    padding: 0;
+}
+
+.links-wrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+    width: 100%;
+}
+
+.links-box {
+    border-radius: 5px;
+    padding: 20px;
+}
