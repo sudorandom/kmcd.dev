@@ -166,7 +166,7 @@ ul.icons {
 
 .links-wrapper {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 10px;
     width: 100%;
 }
