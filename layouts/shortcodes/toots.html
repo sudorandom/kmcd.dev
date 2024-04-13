@@ -101,22 +101,6 @@
 					{{ end }}
 				{{ end }}
 			{{ end }}
-			{{ with .card }}
-				{{- $cardData := . -}}
-				{{- with $cardData.image -}}
-					<a href="{{ $cardData.url }}" rel="'noopener">
-						<div class="toot-card">
-							<div class="toot-card-image">
-								<img src="{{ $cardData.image }}" alt="Card image toot {{ $toot.id }}" loading="lazy" class="toot-card-image-image" />
-							</div>
-							<div class="toot-card-content">
-								<p class="card-title">{{ $cardData.title }}</p>
-								<p class="card-description">{{ $cardData.description }}</p>
-							</div>
-						</div>
-					</a>
-				{{- end -}}
-			{{ end }}
 			{{ with .poll }}
 				{{ $poll := . }}
 				{{ with $poll.options }}
