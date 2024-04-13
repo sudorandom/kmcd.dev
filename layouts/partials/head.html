@@ -17,7 +17,7 @@
 <meta name="robots" content="index, archive" />
 <meta name="theme-color" content="{{ .Site.Params.themeColor }}" />
 
-{{ $siteImage := (resources.Get "images/geo-mercator-small.png").Fit "1200x630 webp" }}
+{{ $siteImage := (resources.Get "images/geo-mercator-small.png").Fit "3600x1890 webp" }}
 {{ if not .IsHome }}
     <meta property="og:title" content="{{ .Title }}" />
     <meta property="og:type" content="article" />
@@ -113,8 +113,3 @@
 {{- if templates.Exists "partials/extra-head.html" -}}
     {{ partial "extra-head.html" . }}
 {{- end }}
-
-<!-- Google Analytics internal template -->
-{{- if .Site.GoogleAnalytics }}
-    {{ template "_internal/google_analytics.html" . }}
-{{- end}}
