@@ -1,0 +1,23 @@
+---
+description: "Search around sudorandom.dev"
+linktitle: ""
+title: "Search"
+devtoSkip: true
+---
+
+<p>
+    Looking for something specific? Look no further! Or... look further, but here? Whatever, type some words in the box below and press <code>enter</code>. You know how this works by now..
+</p>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+<div id="search"></div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({
+            element: "#search",
+            showSubResults: true,
+            resetStyles: false,
+        });
+    });
+</script>

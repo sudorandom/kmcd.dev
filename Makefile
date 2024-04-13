@@ -11,3 +11,7 @@ mastodon:
 
 run:
 	hugo server --buildDrafts --buildFuture --minify
+
+build:
+	hugo
+	npx -y pagefind --site public

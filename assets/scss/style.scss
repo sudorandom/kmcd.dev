@@ -246,3 +246,10 @@ ul.icons {
 .container pre {
     text-align: left;
 }
+
+#search {
+    padding: 15px;
+    [data-theme=dark] & {
+        background-color: white;
+    }
+}
