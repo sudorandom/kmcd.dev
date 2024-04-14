@@ -101,7 +101,10 @@
 <!-- RSS -->
 {{ with .OutputFormats.Get "rss" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ else }}
+    <link rel="alternate" type="application/rss+xml" href="/posts/index.xml" title="sudorandom.dev">
 {{ end -}}
+
 
 <!-- JSON Feed -->
 {{ if .OutputFormats.Get "json" }}
