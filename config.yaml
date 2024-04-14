@@ -100,3 +100,9 @@ menu:
 markup:
   tableOfContents:
     endLevel: 4
+
+outputs:
+  home: ['html']
+  section: ['html']
+  taxonomy: ['html']
+  term: ['html']
