@@ -1,6 +1,4 @@
-{{ $imageCount := 0 }}
-{{ $votesCount := 0 }}
-{{- range $.Site.Data.mastodon }}
+{{- with . }}
 	{{ $toot := . }}
 	{{ if isset . "content" }}
 		<div class="toot" cite="{{ .link }}">
@@ -19,12 +17,7 @@
 			</div>
 			{{ .content | safeHTML }}
 			{{ with .media_attachments }}
-				{{ range $media_attachments := . }}
-					{{ if eq $media_attachments.type "image" }}
-						{{ $imageCount = (add ($imageCount) 1) }}
-					{{ end }}
-				{{ end }}
-				<div class="toot-img-grid-{{ $imageCount }}">
+				<div class="toot-img-grid">
 				{{ range $media_attachments := . }}
 					{{ if eq $media_attachments.type "image" }}
 						{{ $mediaMD5 = md5 $media_attachments.url }}
@@ -99,26 +92,6 @@
 							{{- end -}}
 						</div>
 					{{ end }}
-				{{ end }}
-			{{ end }}
-			{{ with .poll }}
-				{{ $poll := . }}
-				{{ with $poll.options }}
-					{{ range $pollOptions := . }}
-						{{ $votesCount = add $votesCount  $pollOptions.votes_count }}
-					{{ end }}
-					<div class="toot-poll-wrapper">
-						{{ range $pollOptions := . }}
-							<div class="toot-poll-count">
-								<strong>{{ (mul 100 (div $pollOptions.votes_count $votesCount)) | lang.FormatPercent 1 }}</strong>
-							</div>
-							<div class="toot-poll-meter">
-								<meter id="vote-count" max="{{ $votesCount }}" value="{{ $pollOptions.votes_count }}"></meter>
-							</div>
-							<div class="toot-poll-title">{{ $pollOptions.title }}</div>
-						{{ end }}
-					</div>
-					<p class="legal toot-poll-total">{{ $votesCount }} people</p>
 				{{ end }}
 			{{ end }}
 			<div class="toot-footer">
