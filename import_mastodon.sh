@@ -8,7 +8,7 @@ curl "https://infosec.exchange/api/v1/accounts/${ACCOUNT_ID}/statuses" \
 rm -rf ./content/updates/imported
 mkdir -p ./content/updates/imported
 
-jq -cr 'keys[] as $k | "\($k)\n\({title: "Mastodon Post", date: .[$k].created_at, permalink: .[$k].url, params: .[$k]})"' data/mastodon.json | while read -r key; do
+jq -cr 'keys[] as $k | "\($k)\n\({title: "Mastodon Post", date: .[$k].created_at, categories: ["short-form"], permalink: .[$k].url, params: .[$k]})"' data/mastodon.json | while read -r key; do
   fname=$(jq --raw-output ".[$key].id" data/mastodon.json)
   read -r item
   echo $item | jq 'del(.params.tags)' > "./content/updates/imported/$fname.html"
