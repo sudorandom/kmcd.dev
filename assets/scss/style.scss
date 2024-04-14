@@ -215,6 +215,48 @@ ul.icons {
     margin-top: 0;
 }
 
+.projects-wrapper {
+    display: grid;
+    grid-gap: 10px;
+    width: 100%;
+}
+
+.projects-box {
+    border-radius: 10px;
+    padding: 20px;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.projects-box h2 {
+    margin-top: 0;
+}
+
+.shop-wrapper {
+    display: grid;
+    grid-gap: 10px;
+    width: 100%;
+}
+
+.shop-box {
+    border-radius: 10px;
+    padding: 20px;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.shop-box h2 {
+    margin-top: 0;
+}
+
 .main-wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
