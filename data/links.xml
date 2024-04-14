@@ -2,15 +2,17 @@
 <opml version="2.0">
     <head>
         <title>Miniflux</title>
-        <dateCreated>Sat, 13 Apr 2024 18:35:08 UTC</dateCreated>
+        <dateCreated>Sun, 14 Apr 2024 11:53:48 UTC</dateCreated>
     </head>
     <body>
         <outline text="Blogroll">
             <outline title="Adepts of 0xCC" text="Adepts of 0xCC" xmlUrl="https://adepts.of0x.cc/feed.xml" htmlUrl="https://adepts.of0x.cc/" type="rss"></outline>
+            <outline title="benkuhn.net" text="benkuhn.net" xmlUrl="https://www.benkuhn.net/index.xml" htmlUrl="https://www.benkuhn.net/" type="rss"></outline>
             <outline title="Cool As Heck" text="Cool As Heck" xmlUrl="https://cool-as-heck.blog/feed.atom" htmlUrl="https://cool-as-heck.blog" type="rss"></outline>
             <outline title="Cory Dransfeldt" text="Cory Dransfeldt" xmlUrl="https://feedpress.me/coryd.json" htmlUrl="https://coryd.dev/feeds" type="rss"></outline>
             <outline title="Disconnect" text="Disconnect" xmlUrl="https://disconnect.blog/rss/" htmlUrl="https://disconnect.blog/" type="rss"></outline>
             <outline title="Jim Nielsen’s Blog" text="Jim Nielsen’s Blog" xmlUrl="https://blog.jim-nielsen.com/feed.xml" htmlUrl="https://blog.jim-nielsen.com" type="rss"></outline>
+            <outline title="Kev Quirk" text="Kev Quirk" xmlUrl="https://kevquirk.com/feed" htmlUrl="https://kevquirk.com" type="rss"></outline>
             <outline title="Labnotes (by Assaf Arkin)" text="Labnotes (by Assaf Arkin)" xmlUrl="https://labnotes.org/rss/" htmlUrl="https://labnotes.org/" type="rss"></outline>
             <outline title="localghost" text="localghost" xmlUrl="https://localghost.dev/feed.xml" htmlUrl="https://localghost.dev/" type="rss"></outline>
             <outline title="shellsharks" text="shellsharks" xmlUrl="https://shellsharks.com/feeds/feed.xml" htmlUrl="https://shellsharks.com" type="rss"></outline>
