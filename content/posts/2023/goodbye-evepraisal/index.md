@@ -11,6 +11,7 @@ title: "Goodbye Evepraisal"
 slug: "goodbye-evepraisal"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277301853521433"
 ---
 
 > I posed a [new article about operating Evepraisal for over a decade](/posts/lessons-from-a-decades-long-project/). It covers the technical details and lessons that I learned throughout the years.

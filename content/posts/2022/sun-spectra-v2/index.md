@@ -15,6 +15,7 @@ devtoSkip: true
 aliases: [
     "portfolio/sun-spectra-v2/",
 ]
+mastodonID: "112277304410632895"
 ---
 
 ## Basic Details

@@ -14,6 +14,7 @@ slug: "inspecting-protobuf-messages"
 type: "posts"
 devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/inspecting-protobuf-messages
+mastodonID: "112277282269734509"
 ---
 
 

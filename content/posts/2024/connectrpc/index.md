@@ -17,6 +17,7 @@ devtoId: 1797651
 devtoPublished: true
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/connectrpc
+mastodonID: "112277280987047720"
 ---
 
 ## Introduction

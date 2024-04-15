@@ -11,6 +11,7 @@ title: "How I learned to code"
 slug: "how-i-learned-to-code"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277293862200824"
 ---
 
 Writing about this subject is weird to me. I am a programmer. I get paid to turn caffeine into software... but I feel like I am clueless when it comes to explaining to other people how to get started doing what I do. I learned to program for incredibly silly reasons. Here are a few of my wonderful early projects:

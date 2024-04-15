@@ -16,6 +16,7 @@ aliases: [
 ]
 type: "posts"
 devtoSkip: true
+mastodonID: "112277297012772799"
 ---
 
 I recently expanded on my [Internet map visualization](/posts/internet-map-2022/) that showed all of the undersea internet cables that run along the bottom of the oceans and seas. This time, I also added dots that represent the locations of all of the advertised internet exchanges in the world. The brighter/greener/bigger the dot, the more bandwidth the internet exchange supports.

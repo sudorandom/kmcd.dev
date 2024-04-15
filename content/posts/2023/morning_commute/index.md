@@ -13,6 +13,7 @@ title: "Video: Morning Copenhagen Commute"
 slug: "morning-copenhagen-commute"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277299656130947"
 ---
 
 {{< youtube gqjiylaCRuY >}}

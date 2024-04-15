@@ -17,6 +17,7 @@ aliases: [
   "/posts/submarine-cable-map.svg",
   "/portfolio/submarine-cable-map",
 ]
+mastodonID: "112277305457708149"
 ---
 
 > There is an updated version of this map detailed [in this updated post](/posts/internet-map-2023/).

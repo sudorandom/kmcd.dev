@@ -14,6 +14,7 @@ slug: "grpc-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-2
+mastodonID: "112277285817413643"
 ---
 
 > This is part two of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client.](/posts/grpc-from-scratch/)

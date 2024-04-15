@@ -12,6 +12,7 @@ title: "Economists with (virtual) Guns"
 slug: "economists-with-guns"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277295705206443"
 ---
 
 > Note: This post was originally posted in 2015. I am re-posting it with some small edits. Updates are at the bottom.

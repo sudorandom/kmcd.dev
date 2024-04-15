@@ -11,6 +11,7 @@ title: "The Rollercoaster of Productivity in Side Projects"
 slug: "productivity"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277290470311405"
 ---
 
 Okay, let's talk.

@@ -14,6 +14,7 @@ slug: "grpc-from-scratch"
 type: "posts"
 devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/grpc-from-scratch
+mastodonID: "112277287224227663"
 ---
 
 > Disclaimer: This article is *NOT* for beginners unfamiliar with gRPC. If you're looking to use gRPC like a sane individual, look elsewhere. Maybe start with [the official gRPC documentation](https://grpc.io/docs/).

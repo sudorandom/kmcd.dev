@@ -14,6 +14,7 @@ slug: "protoc-gen-connect-openapi"
 type: "posts"
 devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/protoc-gen-connect-openapi
+mastodonID: "112277284000727243"
 
 aliases: [
   "/posts/introducing-protoc-gen-connect-openapi",

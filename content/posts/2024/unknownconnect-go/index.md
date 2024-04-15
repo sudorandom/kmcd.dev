@@ -16,6 +16,7 @@ devtoId: 1797653
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/unknownconnect-go
+mastodonID: "112277271581348914"
 ---
 
 gRPC systems can be quite complex. When making additions to protobuf files the server or the client often gets updated at different times. In a perfect world, this would all be synchronized. But we live in reality. Sometimes release schedules differ between components. Sometimes you just forget to update a component. Many times you might be consuming a gRPC service managed by another team and *they don't tell you that they're changing things*. I made something that will bring unique insight into this problem with very little work.

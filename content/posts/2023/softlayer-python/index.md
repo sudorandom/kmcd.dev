@@ -13,6 +13,7 @@ title: "softlayer-python: language bindings/CLI for a cloud company"
 slug: "softlayer-python"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277298441633204"
 ---
 
 I used to work for a public cloud company called [SoftLayer](https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer). As a cloud company, there is an API that customers can use to provision new virtual servers, load balancers, firewalls and whatever else you might want. On our team, we used SoftLayer services as a customer might and we ended up proving new products and just... experiencing what it was like as a customer. I loved the concept. Our team heavily used this practice of so-called "eating your own dog food."

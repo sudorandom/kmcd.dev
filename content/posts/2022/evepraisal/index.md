@@ -12,6 +12,7 @@ title: "Evepraisal: A price estimation tool for Eve Online"
 slug: "evepraisal.com"
 type: "posts"
 devtoSkip: true
+mastodonID: "112277306681115233"
 ---
 
 ## Basic Details
