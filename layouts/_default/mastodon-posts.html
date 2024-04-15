@@ -1,0 +1,13 @@
+{{ define "main" }}
+<main class="post">
+{{- $posts := where site.RegularPages.ByDate.Reverse "Type" "posts" -}}
+<ul>
+{{ range $posts }}
+    {{ if not .Params.MastodonID }}
+    {{ $body := printf "📝: %s %s %s" .Title (delimit (apply .Params.tags "printf" "#%s" ".") " ") .Permalink }}
+    <li><a href="https://infosec.exchange/share?text={{htmlEscape $body}}" target="_blank">{{.Title}}</a></li>
+    {{ end }}
+{{end}}
+</ul>
+</main>
+{{ end }}

@@ -12,6 +12,7 @@ devtoId: 1808828
 devtoPublished: true
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/connectrpc-dropping-unknown-fields
+mastodonID: "112277143180958915"
 ---
 
 gRPC, with its focus on performance and language neutrality, remains a popular choice for building microservices and APIs. But when exposing your gRPC service to the internet, there are a few security considerations to account for. Protobuf, the serialization format often used with gRPC, offers various encoding options that can significantly impact your service's security posture. 

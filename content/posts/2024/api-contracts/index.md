@@ -12,6 +12,7 @@ devtoId: 1815913
 devtoPublished: true
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/api-contracts
+mastodonID: "112277137790306008"
 ---
 
 In today's interconnected world, APIs (Application Programming Interfaces) are the glue that connects computers. They allow different applications to talk to each other, share data, and perform actions. However, traditional methods of creating APIs can lead to challenges, especially when dealing with versioning changes and integrating complex systems. This is where **contract-based APIs** come in, offering a more robust and reliable approach and taming some of the wildness that exists on the web.

@@ -23,7 +23,7 @@ params:
   defaultTheme: "dark"
   EnableThemeToggle: true
   gitUrl: "https://github.com/sudorandom/sudorandom.dev/commit/"
-  EnableSharingButtons: true
+  EnableSharingButtons: false
   EnableGlobalLanguageMenu: false
   customCSS: []
   backgroundImage: "images/transparent_geo-mercator-small.webp"

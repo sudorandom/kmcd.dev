@@ -42,15 +42,6 @@
 					{{ end }}
 				{{ end }}
 				</div>
-				{{/*
-					N.B.:
-					The above results in an empty, no-height div
-					when there's no image but there **is**
-					at least one item in `$media_attachments`.
-					Unfortunately, it seems to be the only way
-					to accomplish this. Not a good HTML practice,
-					but gets the job done.
-				*/}}
 				{{ range $media_attachments := . }}
 					{{ if eq $media_attachments.type "video" }}
 						{{ $mediaMD5 = md5 $media_attachments.url }}

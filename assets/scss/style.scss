@@ -195,7 +195,7 @@ ul.icons {
 
 .links-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(1000px, 1fr));
     grid-gap: 10px;
     width: 100%;
 }
@@ -217,8 +217,10 @@ ul.icons {
 
 .projects-wrapper {
     display: grid;
+    margin-bottom: 15px;
     grid-gap: 10px;
     width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .projects-box {
@@ -232,8 +234,12 @@ ul.icons {
     }
 }
 
-.projects-box h2 {
+.projects-box h2, h3 {
     margin-top: 0;
+}
+
+.project-icons {
+    font-size: 32px;
 }
 
 .shop-wrapper {
