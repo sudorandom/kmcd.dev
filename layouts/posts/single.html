@@ -87,7 +87,7 @@
     {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
       {{ partial "toot.html" .Params }}
       <div class="button previous">
-        <a href="{{.Permalink}}" target="_blank">
+        <a href="{{.Params.Url}}" target="_blank">
           <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
           <span class="button__text">Discuss on Mastodon</span>
         </a>
