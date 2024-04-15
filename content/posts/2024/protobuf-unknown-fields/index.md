@@ -16,6 +16,7 @@ devtoId: 1797652
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/protobuf-unknown-fields
+mastodonID: "112277337082054030"
 ---
 
 [Protobuf](https://protobuf.dev/programming-guides/proto3/) offers a powerful feature known as [**unknown fields**](https://protobuf.dev/programming-guides/proto3/#unknowns). These fields act as a safety net when messages encounter unforeseen circumstances. Let's delve into what they are, how they work and why they're useful.

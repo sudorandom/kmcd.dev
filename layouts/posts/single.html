@@ -84,20 +84,15 @@
 
     <hr />
 
-    {{ with .Params.mastodonID }}
-      {{ $mastodonID := (string .) }}
-      {{- range $.Site.Data.mastodon }}
-        {{- if eq .id $mastodonID -}}
-          {{ partial "toot.html" . }}
-          <div class="button previous">
-            <a href="{{.url}}" target="_blank">
-              <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
-              <span class="button__text">Discuss on Mastodon</span>
-            </a>
-          </div>
-        {{- end -}}
-      {{- end -}}
-    {{ end }}
+    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
+      {{ partial "toot.html" .Params }}
+      <div class="button previous">
+        <a href="{{.Permalink}}" target="_blank">
+          <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
+          <span class="button__text">Discuss on Mastodon</span>
+        </a>
+      </div>
+    {{- end -}}
 
     <div class="post-info">
       {{ partial "pagination-single.html" . }}
