@@ -86,9 +86,15 @@
 				{{ end }}
 			{{ end }}
 			{{ partial "toot.html" .Reblog }}
+			{{ if .Reblog }}
+			<div class="toot-footer">
+				{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span>
+			</div>
+			{{ else }}
 			<div class="toot-footer">
 				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span></a>
 			</div>
+			{{ end }}
 		</div>
 	{{ end }}
 {{- end -}}
