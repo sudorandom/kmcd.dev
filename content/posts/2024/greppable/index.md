@@ -26,10 +26,10 @@ Drawing inspiration from the powerful [Linux command `grep`](https://www.gnu.org
 
 Here are some key principles to follow:
 
-* **Specificity:** Ditch generic names like `processData()` or `utils`. Opt for terms that reflect the specific content (`cleanAndValidateUserData()`, `orderId`).
+* **Specificity:** Ditch generic names like `processData()` or `utils`. Opt for terms that reflect the specific content (`cleanAndValidateOrderData()`, `orderId`).
 * **Priority:** It is far more important for filenames, class names and methods to have specific names than it is for variables inside of functions. Variables inside of functions already have a lot of implied context, like the filename, class (if your language uses classes) and the function that the variable appears in. All of that extra context should be greppable but the variables probably don't need to be.
-* **Verbs for Methods:** Methods describe actions. Use verbs at the beginning of method names to convey their purpose (`calculateOrderTotal()`, `updateCustomerRecord()`).
 * **Consistency:** Maintain a consistent naming style throughout your codebase (e.g. camelCase or snake_case) and always use the 'standard' for your language or framework.
+* **Verbs when naming methods:** Methods describe actions. Use verbs at the beginning of method names to convey their purpose (`calculateOrderTotal()`, `updateCustomerRecord()`).
 * **Abbreviations with Caution:** Use abbreviations sparingly and only for widely recognized terms (e.g. `HTTP`, `XML`). Overuse can hinder readability. If your variable names look like 2010s-era tech startups, you're probably doing it wrong.
 * **Dynamic Dispatch:** Doing some more complex programming patterns like dynamic dispatching can greatly hurt the ability for the code to be greppable. It can also add indirection so be sure you use these methods sparingly and add more documentation where needed to help lost souls who are tracing code through the codebase.
 
@@ -41,6 +41,4 @@ For instance, in a RESTful API, an endpoint for updating a user profile might be
 
 **The Greppability Benefit**
 
-Meaningful names not only make code easier to understand but also significantly reduce maintenance time. When you (or another developer) revisit your codebase later, clear names eliminate the need to decipher cryptic naming choices.
-
-By embracing specific and consistent naming conventions, you can transform your code into a truly greppable resource, where the functionalities you need are readily discoverable through simple searches.
+Meaningful names not only make code easier to understand but also significantly reduce maintenance time. When you (or another developer) revisit your codebase later, clear names can make traversing the codebase much nicer. I think the term "greppability" has a clear meaning and can come up in many contexts: in code, data, documentation, etc. Do you think this a good word for a developer to have in their vocabulary?
