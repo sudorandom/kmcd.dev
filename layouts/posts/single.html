@@ -1,71 +1,68 @@
 {{ define "main" }}
   <main class="post">
-    <div class="main-wrapper">
-      <div class="main-box">
-        <div class="post-info">
-          <div>
-          <p>
-            <i class="fa-solid fa-clock"></i>
-            {{ i18n "readingTime" .Page.ReadingTime }}
-            <i class="fa-solid fa-clipboard"></i>
-            {{ .Page.WordCount | lang.NumFmt 0 }} Words
-            {{ if .IsTranslated }}
-              {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
-                  | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
-              {{ end}}
-            {{ end }}
-          </p>
-          <p>
-            <i class="fa-solid fa-calendar-days"></i>
-            {{ if .Site.Params.dateformNum }}
-              {{ dateFormat .Site.Params.dateformNum .Date.Local }}
-            {{ else }}
-              {{ dateFormat "2006-01-02" .Date.Local }}
-            {{ end }}
+    <h1 class="post-title">
+      <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+    </h1>
+    {{ with .Params.Description }}
+      <div class="post-excerpt">{{ . }}</div>
+    {{ end }}
 
-            {{ if .Lastmod }}
-              {{ if not (eq .Lastmod .Date )}}
-                {{- if .GitInfo }}
-                ({{ i18n "lastModified" }}: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener"></a>{{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})</a>
-                {{ else }}
-                ({{ i18n "lastModified" }}: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
-                {{- end }}
-              {{ end }}
+    <div class="main-wrapper">
+    <div class="main-box">
+      <div class="post-info">
+        <div>
+        <p>
+          <i class="fa-solid fa-clock"></i>
+          {{ i18n "readingTime" .Page.ReadingTime }}
+          <i class="fa-solid fa-clipboard"></i>
+          {{ .Page.WordCount | lang.NumFmt 0 }} words
+          {{ if .IsTranslated }}
+            {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
+                | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
+            {{ end}}
+          {{ end }}
+        </p>
+        <p>
+          <i class="fa-solid fa-calendar-days"></i>
+          {{ if .Site.Params.dateformNum }}
+            {{ dateFormat .Site.Params.dateformNum .Date.Local }}
+          {{ else }}
+            {{ dateFormat "2006-01-02" .Date.Local }}
+          {{ end }}
+
+          {{ if .Lastmod }}
+            {{ if not (eq .Lastmod .Date )}}
+              {{- if .GitInfo }}
+              (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02 15:04" .Lastmod.Local }}</a>)
+              {{ else }}
+              (updated: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+              {{- end }}
             {{ end }}
-          </p>
-          </div>
-          <div>
-          <p>
-          {{ partial "tags.html" .Params.tags }}
+          {{ end }}
+        </p>
+        </div>
+        <div>
+        <p>
           {{ partial "categories.html" . }}
-          </p>
-          </div>
+          {{ partial "tags.html" .Params.tags }}
+        </p>
         </div>
       </div>
-    </div>
-
-    <article>
-      <h1 class="post-title">
-        <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
-      </h1>
-
-      <div class="main-wrapper">
-      <div class="main-box">
-      {{ with .Params.Description }}
-        <div class="post-excerpt">{{ . }}</div>
-      {{ end }}
 
       {{ $cover := (.Resources.Get .Params.Cover)}}
       {{- if $cover -}}
-      {{ $cover = $cover.Fill "760x400 Center webp q90" }}
-      <figure class="post-cover">
+      {{ $cover = $cover.Fill "760x300 Center webp q90" }}
+      <figure>
           <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
           {{ with .Params.CoverCaption }}
               <figcaption class="center">{{ . | markdownify }}</figcaption>
           {{ end }}
       </figure>
+    {{ else }}
+      <hr />
     {{ end }}
 
+    <article>
       {{- if .Params.toc }}
         <hr />
         <aside id="toc">
@@ -89,8 +86,6 @@
       </div>
       </div>
     </article>
-
-    <hr />
 
     {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
       {{ partial "toot.html" .Params }}

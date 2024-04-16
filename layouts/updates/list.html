@@ -1,8 +1,8 @@
 {{ define "main" }}
     {{ $paginator := .Paginate .Data.Pages 10 }}
-    
+
     <main class="posts">
-        <h1>{{ .Title }}</h1>
+        <h1 class="page-title">{{ .Title }}</h1>
 
         {{ if .Content }}
             <div class="content">{{ .Content }}</div>

@@ -6,9 +6,8 @@
                 <h1 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
             {{ end }}
 
-
             {{ if .Params.Cover }}
-                <figure class="post-cover">
+                <figure>
                     <img src="{{ .Params.Cover | absURL }}" alt="{{ .Title }}" />
                     {{ if .Params.CoverCaption }}
                         <figcaption class="center">{{ .Params.CoverCaption | markdownify }}</figcaption>
@@ -29,8 +28,6 @@
                 {{ .Content }}
             </div>
         </article>
-
-        <hr />
 
         <div class="post-info">
             {{ partial "tags.html" .Params.tags }}

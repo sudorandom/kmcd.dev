@@ -24,15 +24,14 @@
             {{ end }}
             {{ $paginator := .Paginate (where $PageContext.RegularPages "Type" $contentTypeName) 10 }}
             <div class="main-heading">
-                <div class="posts-header">
-                    <h3>Blog Posts</h3>
-                </div>
+            <div class="posts-header">
+                <h3>Blog Posts</h3>
             </div>
-            <div class="posts">
+
             {{ range $paginator.Pages }}
             <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
                 <div class="post-row">
-                    <h3 class="post-title">
+                    <h3>
                         <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
                         {{- if .Date -}}
                         <small>{{ .Date.Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>

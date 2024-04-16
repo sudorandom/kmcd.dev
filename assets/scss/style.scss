@@ -25,13 +25,17 @@ main {
     color: #ccc;
 }
 
-.bg:before {
-    background-image: unset;
+.posts {
+    padding: 20px;
+    margin: 0 auto 20px;
 }
 
-.posts {
-    padding: 0;
-    margin-top: 0;
+.index-posts {
+    margin: 0 auto 20px;
+}
+
+.bg:before {
+    background-image: unset;
 }
 
 .posts-header {
@@ -90,10 +94,34 @@ main {
     }
 }
 
+.post-item {
+    padding: 10px, 0;
+}
+
 .post-item:hover {
     [data-theme=dark] & {
-        background-color: rgb(31, 42, 53);
+        background: rgb(40, 55, 69);
     }
+}
+
+.post.on-list {
+    [data-theme=dark] & {
+        background: #1f2a35;
+        border-bottom: 1px white dashed;
+    }
+}
+
+.post.on-list h3 {
+    font-size: 16px;
+    width: 100%;
+
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.post.on-list small {
+    margin-left: auto;
+    font-weight: lighter;
 }
 
 .post.on-list:hover {
@@ -108,15 +136,14 @@ main {
     }
 }
 
-.post.on-list {
-    [data-theme=dark] & {
-        background: #1f2a35;
-        border-bottom: 1px white dashed;
-    }
-}
-
 .post-row {
     display: flex;
+}
+
+.page-title {
+    width: 100%;
+    margin-bottom: 0;
+    font-size: 30px;
 }
 
 .post-title {
@@ -126,14 +153,14 @@ main {
     font-size: 30px;
 }
 
-.post-tags {
-    margin: 0;
-    vertical-align: bottom;
-}
-
 .post-title small {
     margin-left: auto;
     font-weight: lighter;
+}
+
+.post-tags {
+    margin: 0;
+    vertical-align: bottom;
 }
 
 .post-meta {
