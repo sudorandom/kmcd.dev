@@ -20,7 +20,7 @@
 				<div class="toot-img-grid">
 				{{ range $media_attachments := . }}
 					{{ if eq $media_attachments.type "image" }}
-						{{ $mediaMD5 = md5 $media_attachments.url }}
+						{{ $mediaMD5 := md5 $media_attachments.url }}
 						<style>
 							.img-{{ $mediaMD5 }} {
 								aspect-ratio: {{ $media_attachments.meta.original.width }} / {{ $media_attachments.meta.original.height }};
@@ -44,7 +44,7 @@
 				</div>
 				{{ range $media_attachments := . }}
 					{{ if eq $media_attachments.type "video" }}
-						{{ $mediaMD5 = md5 $media_attachments.url }}
+						{{ $mediaMD5 := md5 $media_attachments.url }}
 						<style>
 							.img-{{ $mediaMD5 }} {
 								aspect-ratio: {{ $media_attachments.meta.original.width }} / {{ $media_attachments.meta.original.height }};
@@ -85,6 +85,7 @@
 					{{ end }}
 				{{ end }}
 			{{ end }}
+			{{ partial "toot.html" .Reblog }}
 			<div class="toot-footer">
 				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span></a>
 			</div>
