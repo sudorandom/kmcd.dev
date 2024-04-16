@@ -13,6 +13,18 @@ main {
     padding-right: 10px;
 }
 
+.post-info {
+    margin-top: 0;
+    opacity: unset;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
+}
+
+.post-excerpt {
+    color: #ccc;
+}
+
 .bg:before {
     background-image: unset;
 }
@@ -109,6 +121,9 @@ main {
 
 .post-title {
     width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 30px;
 }
 
 .post-tags {
@@ -126,7 +141,6 @@ main {
 }
 
 .post-cover {
-    display: block;
     margin-left: auto;
     margin-right: auto;
 }
@@ -283,8 +297,7 @@ ul.icons {
 .main-box {
     border-radius: 10px;
     padding: 20px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin: 20px 0 10px 0;
     [data-theme=light] & {
         background: #fafafa;
     }

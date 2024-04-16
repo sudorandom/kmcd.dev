@@ -1,43 +1,47 @@
 {{ define "main" }}
   <main class="post">
-
-    <div class="post-info">
-      <p>
-        <i class="fa-solid fa-clock"></i>
-        {{ i18n "readingTime" .Page.ReadingTime }}
-        <i class="fa-solid fa-clipboard"></i>
-        {{ i18n "wordCount" .Page.WordCount }}
-        {{ if .IsTranslated }}
-          {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
-              | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
-          {{ end}}
-        {{ end }}
-      </p>
-      <p>
-        <i class="fa-solid fa-calendar-days"></i>
-        {{ if .Site.Params.dateformNum }}
-          {{ dateFormat .Site.Params.dateformNum .Date.Local }}
-        {{ else }}
-          {{ dateFormat "2006-01-02" .Date.Local }}
-        {{ end }}
-
-        {{ if .Lastmod }} 
-          {{ if not (eq .Lastmod .Date )}}
-            {{ if .Site.Params.dateformNumTime }}
-              ({{ i18n "lastModified" }}: {{ dateFormat .Site.Params.dateformNumTime .Lastmod.Local }})
-            {{ else }} 
-              ({{ i18n "lastModified" }}: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+    <div class="main-wrapper">
+      <div class="main-box">
+        <div class="post-info">
+          <div>
+          <p>
+            <i class="fa-solid fa-clock"></i>
+            {{ i18n "readingTime" .Page.ReadingTime }}
+            <i class="fa-solid fa-clipboard"></i>
+            {{ .Page.WordCount | lang.NumFmt 0 }} Words
+            {{ if .IsTranslated }}
+              {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
+                  | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
+              {{ end}}
             {{ end }}
-          {{ end }}
-        {{ end }}
-      </p>
-      <p>
-      {{ partial "tags.html" .Params.tags }}
-      {{ partial "categories.html" . }}
-      {{- if .GitInfo }}
-			    <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-git-commit"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg><a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ .GitInfo.AbbreviatedHash }}</a> @ {{ if .Site.Params.dateformNum }}{{ dateFormat .Site.Params.dateformNum .GitInfo.AuthorDate.Local }}{{ else }}{{ dateFormat "2006-01-02" .GitInfo.AuthorDate.Local }}{{ end }}</p>
-			{{- end }}
-      </p>
+          </p>
+          <p>
+            <i class="fa-solid fa-calendar-days"></i>
+            {{ if .Site.Params.dateformNum }}
+              {{ dateFormat .Site.Params.dateformNum .Date.Local }}
+            {{ else }}
+              {{ dateFormat "2006-01-02" .Date.Local }}
+            {{ end }}
+
+            {{ if .Lastmod }}
+              {{ if not (eq .Lastmod .Date )}}
+                {{- if .GitInfo }}
+                ({{ i18n "lastModified" }}: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener"></a>{{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})</a>
+                {{ else }}
+                ({{ i18n "lastModified" }}: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+                {{- end }}
+              {{ end }}
+            {{ end }}
+          </p>
+          </div>
+          <div>
+          <p>
+          {{ partial "tags.html" .Params.tags }}
+          {{ partial "categories.html" . }}
+          </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <article>
@@ -45,6 +49,8 @@
         <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
       </h1>
 
+      <div class="main-wrapper">
+      <div class="main-box">
       {{ with .Params.Description }}
         <div class="post-excerpt">{{ . }}</div>
       {{ end }}
@@ -79,6 +85,8 @@
 
       <div class="post-content">
         {{ .Content }}
+      </div>
+      </div>
       </div>
     </article>
 

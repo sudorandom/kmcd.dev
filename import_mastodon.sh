@@ -6,7 +6,7 @@ curl "https://infosec.exchange/api/v1/accounts/${ACCOUNT_ID}/statuses" \
     | jq 'del(.[] | select(.in_reply_to_id != null))' \
     > data/mastodon.json
 
-jq -cr 'keys[] as $k | "\($k)\n\({title: "Mastodon Post", date: .[$k].created_at, devtoPublished: false, devtoSkip: true, categories: ["short-form"], permalink: .[$k].url, params: .[$k]})"' data/mastodon.json | while read -r key; do
+jq -cr 'keys[] as $k | "\($k)\n\({title: "Mastodon Post", date: .[$k].created_at, devtoPublished: false, devtoSkip: true, sitemap: {disable: true}, categories: ["short-form"], permalink: .[$k].url, params: .[$k]})"' data/mastodon.json | while read -r key; do
   fname=$(jq --raw-output ".[$key].id" data/mastodon.json)
   read -r item
   echo $item | jq 'del(.params.tags)' > "./content/updates/imported/$fname.html"
