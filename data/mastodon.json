@@ -272,8 +272,8 @@
               "aspect": 1.663978494623656
             },
             "focus": {
-              "x": 0.0,
-              "y": 0.0
+              "x": 0,
+              "y": 0
             }
           },
           "description": "The Chirp Systems homepage, which says Increase your NOI with automated curb to couch access control, and features a picture of their app running on a mobile phone.",
