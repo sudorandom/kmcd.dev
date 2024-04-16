@@ -1,5 +1,311 @@
 [
   {
+    "id": "112277607006407737",
+    "created_at": "2024-04-15T22:32:01.753Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112277607006407737/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112277607006407737/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112275804291554451",
+      "created_at": "2024-04-15T14:53:34.507Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://infosec.exchange/users/briankrebs/statuses/112275804291554451",
+      "url": "https://infosec.exchange/@briankrebs/112275804291554451",
+      "replies_count": 28,
+      "reblogs_count": 420,
+      "favourites_count": 308,
+      "edited_at": null,
+      "local_only": false,
+      "content": "<p>The U.S. government is warning that smart locks securing entry to an estimated 50,000 dwellings nationwide contain hard-coded credentials that can be used to remotely open any of the locks. The lock&#39;s maker Chirp Systems remains unresponsive, even though it was first notified about the critical weakness in March 2021. Meanwhile, Chirp&#39;s parent company, RealPage, Inc., is being sued by multiple U.S. states for allegedly colluding with landlords to illegally raise rents.</p><p><a href=\"https://krebsonsecurity.com/2024/04/crickets-from-chirp-systems-in-smart-lock-key-leak/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">krebsonsecurity.com/2024/04/cr</span><span class=\"invisible\">ickets-from-chirp-systems-in-smart-lock-key-leak/</span></a></p>",
+      "reblog": null,
+      "account": {
+        "id": "109292943884713975",
+        "username": "briankrebs",
+        "acct": "briankrebs",
+        "display_name": "BrianKrebs",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "indexable": true,
+        "group": false,
+        "created_at": "2022-11-05T00:00:00.000Z",
+        "note": "<p>Independent investigative journalist. Covers cybercrime, security, privacy. Author of &#39;Spam Nation,&#39; a NYT bestseller. Former Washington Post reporter, &#39;95-&#39;09. Signal: briankrebs.07 Twitter: <span class=\"h-card\" translate=\"no\"><a href=\"https://infosec.exchange/@briankrebs\" class=\"u-url mention\">@<span>briankrebs</span></a></span> Linkedin: <a href=\"https://www.linkedin.com/in/bkrebs/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://www.</span><span class=\"\">linkedin.com/in/bkrebs/</span><span class=\"invisible\"></span></a></p>",
+        "url": "https://infosec.exchange/@briankrebs",
+        "uri": "https://infosec.exchange/users/briankrebs",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/292/943/884/713/975/original/aad1b6c1f00ab8ef.png",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/292/943/884/713/975/original/aad1b6c1f00ab8ef.png",
+        "header": "https://assets.infosec.exchange/headers/original/missing.png",
+        "header_static": "https://assets.infosec.exchange/headers/original/missing.png",
+        "followers_count": 69234,
+        "following_count": 880,
+        "statuses_count": 6065,
+        "last_status_at": "2024-04-16",
+        "hide_collections": false,
+        "noindex": false,
+        "emojis": [],
+        "roles": [],
+        "fields": [
+          {
+            "name": "website",
+            "value": "<a href=\"https://krebsonsecurity.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">krebsonsecurity.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": "2023-09-11T03:09:04.473+00:00"
+          }
+        ]
+      },
+      "media_attachments": [
+        {
+          "id": "112275801103714169",
+          "type": "image",
+          "url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/275/801/103/714/169/original/19fbf6e64456f747.png",
+          "preview_url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/275/801/103/714/169/small/19fbf6e64456f747.png",
+          "remote_url": null,
+          "preview_remote_url": null,
+          "text_url": null,
+          "meta": {
+            "original": {
+              "width": 1309,
+              "height": 787,
+              "size": "1309x787",
+              "aspect": 1.6632782719186785
+            },
+            "small": {
+              "width": 619,
+              "height": 372,
+              "size": "619x372",
+              "aspect": 1.663978494623656
+            },
+            "focus": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "description": "The Chirp Systems homepage, which says Increase your NOI with automated curb to couch access control, and features a picture of their app running on a mobile phone.",
+          "blurhash": "UJRD1U_N00?H?HnOt7R+tR%MWBoL%gD%%MRj"
+        }
+      ],
+      "mentions": [],
+      "tags": [],
+      "emojis": [],
+      "card": {
+        "url": "https://krebsonsecurity.com/2024/04/crickets-from-chirp-systems-in-smart-lock-key-leak/",
+        "title": "Crickets from Chirp Systems in Smart Lock Key Leak – Krebs on Security",
+        "description": "",
+        "language": "en",
+        "type": "link",
+        "author_name": "",
+        "author_url": "",
+        "provider_name": "",
+        "provider_url": "",
+        "html": "",
+        "width": 0,
+        "height": 0,
+        "image": null,
+        "image_description": "",
+        "embed_url": "",
+        "blurhash": null,
+        "published_at": null
+      },
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
+      "followers_count": 131,
+      "following_count": 44,
+      "statuses_count": 259,
+      "last_status_at": "2024-04-15",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112277605435650266",
+    "created_at": "2024-04-15T22:31:37.785Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112277605435650266/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112277605435650266/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112275370461019457",
+      "created_at": "2024-04-15T13:03:13.000Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://fosstodon.org/users/kate/statuses/112275370369041234",
+      "url": "https://fosstodon.org/@kate/112275370369041234",
+      "replies_count": 39,
+      "reblogs_count": 548,
+      "favourites_count": 51,
+      "edited_at": null,
+      "content": "<p>Brits ask “A penny for your thoughts?” and Americans respond with “Just my two cents”. At current exchange rates ($1.00 = £0.80) this means Brits are receiving 1.6p of American thoughts for just 1p. In this paper we propose an alternative asset pricing model for the marketplace of ideas, considering—</p>",
+      "reblog": null,
+      "account": {
+        "id": "109293194373656400",
+        "username": "kate",
+        "acct": "kate@fosstodon.org",
+        "display_name": "Kate Morley",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "indexable": false,
+        "group": false,
+        "created_at": "2022-11-05T00:00:00.000Z",
+        "note": "<p>👩🏻‍💻 Software developer 🌍 Environmentalist 🌱 Vegan 🏳️‍🌈 Queer (she/they)</p>",
+        "url": "https://fosstodon.org/@kate",
+        "uri": "https://fosstodon.org/users/kate",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/109/293/194/373/656/400/original/1c8207b5f73605c6.jpg",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/109/293/194/373/656/400/original/1c8207b5f73605c6.jpg",
+        "header": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/109/293/194/373/656/400/original/dd8ff26fd09a0824.jpg",
+        "header_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/109/293/194/373/656/400/original/dd8ff26fd09a0824.jpg",
+        "followers_count": 2826,
+        "following_count": 36,
+        "statuses_count": 141,
+        "last_status_at": "2024-04-15",
+        "hide_collections": false,
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://iamkate.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">iamkate.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": "2024-04-15T13:55:51.756+00:00"
+          },
+          {
+            "name": "GitHub",
+            "value": "<a href=\"https://github.com/KateMorley\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/KateMorley</span><span class=\"invisible\"></span></a>",
+            "verified_at": "2024-04-15T13:55:52.009+00:00"
+          }
+        ]
+      },
+      "media_attachments": [],
+      "mentions": [],
+      "tags": [],
+      "emojis": [],
+      "card": null,
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
+      "followers_count": 131,
+      "following_count": 44,
+      "statuses_count": 259,
+      "last_status_at": "2024-04-15",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
     "id": "112277451371281355",
     "created_at": "2024-04-15T21:52:26.949Z",
     "in_reply_to_id": null,
@@ -10,9 +316,9 @@
     "language": "en",
     "uri": "https://infosec.exchange/users/sudorandom/statuses/112277451371281355",
     "url": "https://infosec.exchange/@sudorandom/112277451371281355",
-    "replies_count": 0,
+    "replies_count": 1,
     "reblogs_count": 0,
-    "favourites_count": 0,
+    "favourites_count": 1,
     "edited_at": null,
     "local_only": false,
     "content": "<p>Sorry about the post spam. I&#39;m trying something out for my blog and it kind of went crazier than I expected. &gt;.&gt;</p>",
@@ -41,7 +347,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -114,7 +420,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -218,7 +524,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -326,7 +632,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -438,7 +744,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -550,7 +856,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -662,7 +968,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -782,7 +1088,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -886,7 +1192,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1002,7 +1308,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1126,7 +1432,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1234,7 +1540,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1362,7 +1668,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1490,7 +1796,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1610,7 +1916,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1746,7 +2052,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1854,7 +2160,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
       "followers_count": 131,
       "following_count": 44,
-      "statuses_count": 256,
+      "statuses_count": 259,
       "last_status_at": "2024-04-15",
       "hide_collections": false,
       "noindex": false,
@@ -1925,346 +2231,6 @@
       "embed_url": "",
       "blurhash": "U25rGS8^4mx]H??wR%RNk[R.sknfETNJxBxV",
       "published_at": "2023-07-31T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112277297012772799",
-    "created_at": "2024-04-15T21:13:11.626Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "unlisted",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112277297012772799",
-    "url": "https://infosec.exchange/@sudorandom/112277297012772799",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📝: Visualizing the Internet (2023) <a href=\"https://infosec.exchange/tags/dataviz\" class=\"mention hashtag\" rel=\"tag\">#<span>dataviz</span></a> <a href=\"https://infosec.exchange/tags/internet\" class=\"mention hashtag\" rel=\"tag\">#<span>internet</span></a> <a href=\"https://infosec.exchange/tags/networking\" class=\"mention hashtag\" rel=\"tag\">#<span>networking</span></a> <a href=\"https://infosec.exchange/tags/fiber\" class=\"mention hashtag\" rel=\"tag\">#<span>fiber</span></a>-optics <a href=\"https://infosec.exchange/tags/map\" class=\"mention hashtag\" rel=\"tag\">#<span>map</span></a> <a href=\"https://infosec.exchange/tags/world\" class=\"mention hashtag\" rel=\"tag\">#<span>world</span></a> <a href=\"https://infosec.exchange/tags/infrastructure\" class=\"mention hashtag\" rel=\"tag\">#<span>infrastructure</span></a> <a href=\"https://infosec.exchange/tags/peeringdb\" class=\"mention hashtag\" rel=\"tag\">#<span>peeringdb</span></a> <a href=\"https://infosec.exchange/tags/svg\" class=\"mention hashtag\" rel=\"tag\">#<span>svg</span></a> <a href=\"https://infosec.exchange/tags/javascript\" class=\"mention hashtag\" rel=\"tag\">#<span>javascript</span></a> <a href=\"https://infosec.exchange/tags/golang\" class=\"mention hashtag\" rel=\"tag\">#<span>golang</span></a> <a href=\"https://sudorandom.dev/posts/internet-map-2023/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">sudorandom.dev/posts/internet-</span><span class=\"invisible\">map-2023/</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "Web",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "followers_count": 131,
-      "following_count": 44,
-      "statuses_count": 256,
-      "last_status_at": "2024-04-15",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "dataviz",
-        "url": "https://infosec.exchange/tags/dataviz"
-      },
-      {
-        "name": "internet",
-        "url": "https://infosec.exchange/tags/internet"
-      },
-      {
-        "name": "networking",
-        "url": "https://infosec.exchange/tags/networking"
-      },
-      {
-        "name": "fiber",
-        "url": "https://infosec.exchange/tags/fiber"
-      },
-      {
-        "name": "map",
-        "url": "https://infosec.exchange/tags/map"
-      },
-      {
-        "name": "world",
-        "url": "https://infosec.exchange/tags/world"
-      },
-      {
-        "name": "infrastructure",
-        "url": "https://infosec.exchange/tags/infrastructure"
-      },
-      {
-        "name": "peeringdb",
-        "url": "https://infosec.exchange/tags/peeringdb"
-      },
-      {
-        "name": "svg",
-        "url": "https://infosec.exchange/tags/svg"
-      },
-      {
-        "name": "javascript",
-        "url": "https://infosec.exchange/tags/javascript"
-      },
-      {
-        "name": "golang",
-        "url": "https://infosec.exchange/tags/golang"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://sudorandom.dev/posts/internet-map-2023/",
-      "title": "Visualizing the Internet (2023)",
-      "description": "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/022/442/986/original/fede237eebc37312.webp",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "U068NvV@MKWAMdozjbo|D4aet+aLxdV@koah",
-      "published_at": "2023-08-01T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112277295705206443",
-    "created_at": "2024-04-15T21:12:51.674Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "unlisted",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112277295705206443",
-    "url": "https://infosec.exchange/@sudorandom/112277295705206443",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📝: Economists with (virtual) Guns <a href=\"https://infosec.exchange/tags/eve\" class=\"mention hashtag\" rel=\"tag\">#<span>eve</span></a>-online <a href=\"https://infosec.exchange/tags/gaming\" class=\"mention hashtag\" rel=\"tag\">#<span>gaming</span></a> <a href=\"https://infosec.exchange/tags/evepraisal\" class=\"mention hashtag\" rel=\"tag\">#<span>evepraisal</span></a> <a href=\"https://sudorandom.dev/posts/economists-with-guns/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">sudorandom.dev/posts/economist</span><span class=\"invisible\">s-with-guns/</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "Web",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "followers_count": 131,
-      "following_count": 44,
-      "statuses_count": 256,
-      "last_status_at": "2024-04-15",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "eve",
-        "url": "https://infosec.exchange/tags/eve"
-      },
-      {
-        "name": "gaming",
-        "url": "https://infosec.exchange/tags/gaming"
-      },
-      {
-        "name": "evepraisal",
-        "url": "https://infosec.exchange/tags/evepraisal"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://sudorandom.dev/posts/economists-with-guns/",
-      "title": "Economists with (virtual) Guns",
-      "description": "This is a story about how I came to create evepraisal.com, a popular tool for Eve Online that is commonly used to price check cargo scans, contracts, EFT fittings, assets, and more. If none of that means anything to you that's totally fine! I barely know, too.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "",
-      "provider_url": "",
-      "html": "",
-      "width": 2646,
-      "height": 1890,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/013/314/635/original/664b888fdb18c20e.webp",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "U89%;lM{IAWB-;ofayR%00xut7IUD*ofIURj",
-      "published_at": "2023-08-11T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112277293862200824",
-    "created_at": "2024-04-15T21:12:23.551Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "unlisted",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112277293862200824",
-    "url": "https://infosec.exchange/@sudorandom/112277293862200824",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📝: How I learned to code <a href=\"https://infosec.exchange/tags/learning\" class=\"mention hashtag\" rel=\"tag\">#<span>learning</span></a> <a href=\"https://infosec.exchange/tags/programming\" class=\"mention hashtag\" rel=\"tag\">#<span>programming</span></a> <a href=\"https://sudorandom.dev/posts/how-i-learned-to-code/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">sudorandom.dev/posts/how-i-lea</span><span class=\"invisible\">rned-to-code/</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "Web",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/4ff2fc4833c06e39.png",
-      "followers_count": 131,
-      "following_count": 44,
-      "statuses_count": 256,
-      "last_status_at": "2024-04-15",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "learning",
-        "url": "https://infosec.exchange/tags/learning"
-      },
-      {
-        "name": "programming",
-        "url": "https://infosec.exchange/tags/programming"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://sudorandom.dev/posts/how-i-learned-to-code/",
-      "title": "How I learned to code",
-      "description": "This is a small post that discusses how I learned computer programming, from cheating at calculator games to anime fan site to a handmade content management system.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/013/391/368/original/02568d7d130f1691.webp",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "U439$8ayMHf4R4kCkBaJVXfko}fRt-adVXkW",
-      "published_at": "2023-08-12T00:00:00.000Z"
     },
     "poll": null
   }
