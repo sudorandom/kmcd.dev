@@ -13,7 +13,10 @@ title: "Making Greppable Code"
 slug: "greppable"
 type: "posts"
 devtoSkip: false
+devtoPublished: true
+devtoId: 1824143
 canonical_url: https://sudorandom.dev/posts/greppable
+mastodonID: "112279427895131690"
 ---
 
 Have you ever felt like you're sifting through lines of code, desperately searching for that elusive function or variable? Fear not, for there's a way to make your code more discoverable: **greppable naming conventions**. 
