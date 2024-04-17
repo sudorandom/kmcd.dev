@@ -106,6 +106,8 @@
 .pagination {
   margin-top: 20px;
 
+  grid-column: 1 / -1;
+
   &__title {
     display: flex;
     text-align: center;
