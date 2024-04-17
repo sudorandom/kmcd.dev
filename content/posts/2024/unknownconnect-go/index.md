@@ -1,5 +1,5 @@
 ---
-categories: ["project"]
+categories: ["article", "project"]
 tags: ["connectrpc", "grpc", "protobuf"]
 date: "2024-03-19"
 description: "unknownconnect-go is library that helps developers using gRPC identify compatibility issues caused by mismatched message definitions."

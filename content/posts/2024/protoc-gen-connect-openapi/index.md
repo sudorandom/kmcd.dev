@@ -1,5 +1,5 @@
 ---
-categories: ["project"]
+categories: ["article", "project"]
 tags: ["protobuf", "grpc", "connectrpc", "openapi", "http"]
 date: "2024-02-20"
 description: ""

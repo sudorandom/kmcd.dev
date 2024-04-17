@@ -1,5 +1,8 @@
 {{ define "main" }}
-    <main class="post">
-        {{ partial "toot.html" .Params }}
-    </main>
+  <main class="post">
+    <h1 class="post-title">
+      <a href="{{ .Permalink }}">{{ .Title | markdownify }} <small>{{ dateFormat "2006-01-02 15:04" .Date.Local }}</small></a>
+    </h1>
+    {{ partial "toot.html" .Params }}
+  </main>
 {{ end }}

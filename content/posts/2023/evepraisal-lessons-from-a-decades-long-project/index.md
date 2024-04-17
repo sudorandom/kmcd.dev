@@ -1,5 +1,5 @@
 ---
-categories: ["project"]
+categories: ["article", "project"]
 tags: ["eve-online", "gaming", "evepraisal", "golang", "python", "postgresql"]
 date: "2023-08-18"
 description: "Inside Evepraisal's operations: data automation, databases, deployment, and advice for similar projects."

@@ -1,5 +1,5 @@
 ---
-categories: ["project"]
+categories: ["article", "project"]
 tags: ["dataviz", "internet", "networking", "fiber-optics", "map", "world", "infrastructure", "peeringdb", "svg", "javascript", "golang"]
 date: "2023-08-01"
 description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
