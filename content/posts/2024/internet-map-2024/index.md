@@ -57,7 +57,7 @@ pie title Peering By Region
 ```
 
 ### Europe
-{{< figure src="the-internet-map-eu.png" link="the-internet-map-eu.png" alt="North America" attrlink="the-internet-map-eu.png" description="This map shows North America.">}}
+{{< figure src="the-internet-map-eu.png" link="the-internet-map-eu.png" alt="Europe" attrlink="the-internet-map-eu.png" description="Europe's internet peering cities and undersea cables.">}}
 
 Europe reigns supreme in peering traffic, boasting a staggering 1.39 petabits of advertised peering bandwidth. This dominance can be attributed to several factors:
 
@@ -66,14 +66,14 @@ Europe reigns supreme in peering traffic, boasting a staggering 1.39 petabits of
 - Europe has a regulatory environment that encourages open peering practices. This fosters competition and innovation among internet service providers (ISPs), ultimately benefiting end users with lower costs and improved performance.
 
 ### North America
-{{< figure src="the-internet-map-na.png" link="the-internet-map-na.png" alt="North America" attrlink="the-internet-map-na.png" description="This map shows North America.">}}
+{{< figure src="the-internet-map-na.png" link="the-internet-map-na.png" alt="North America" attrlink="the-internet-map-na.png" description="North America's internet peering cities and undersea cables.">}}
 
 North America follows closely behind Europe with a respectable 371 terabits of peering traffic. Similar to Europe, factors like strong economies, a well-developed internet infrastructure, and the presence of major IXPs contribute to this robust peering ecosystem. However, North America's peering traffic might be slightly lower due to a larger geographical footprint compared to Europe.
 
 I find it interesting that there are two submarine cables planned for 2024 (and two more in 2026) going to Myrtle Beach in South Carolina. It might be a decent time to start an internet exchange around that area since there's a good amount of submarine cable capacity going through that area now. This could improve peering options and potentially lower latency for users in the southeastern United States
 
 ### Asia
-{{< figure src="the-internet-map-apac.png" link="the-internet-map-apac.png" alt="North America" attrlink="the-internet-map-apac.png" description="This map shows Asia.">}}
+{{< figure src="the-internet-map-apac.png" link="the-internet-map-apac.png" alt="Asia" attrlink="the-internet-map-apac.png" description="Asia's internet peering cities and undersea cables.">}}
 
 Asia exhibits a significant peering presence with 308 terabits of traffic. The region's economic growth and increasing internet penetration are driving forces behind this. But it's important to note:
 
@@ -83,14 +83,14 @@ Asia exhibits a significant peering presence with 308 terabits of traffic. The r
 You may be trying to remember what the island is in the center-right of this picture that many things appear to connect to. That, my friends, is [Guam](https://en.wikipedia.org/wiki/Guam), an unincorporated territory of the United States.
 
 ### Africa/South America
-{{< figure src="the-internet-map-af.png" link="the-internet-map-af.png" alt="North America" attrlink="the-internet-map-af.png" description="This map shows Africa.">}}
+{{< figure src="the-internet-map-af.png" link="the-internet-map-af.png" alt="Africa" attrlink="the-internet-map-af.png" description="Africas's internet peering cities and undersea cables.">}}
 
 South America and Africa have the lowest peering traffic at 236 terabits and 47.3 terabits, respectively. This can be attributed to:
 
 - These regions are still in the development stages when it comes to internet infrastructure. Lower investments in IXPs and network backbones can limit peering opportunities.
 - The number of IXPs in these regions might be lower compared to Europe and North America.
 
-{{< figure src="the-internet-map-sa.png" link="the-internet-map-sa.png" alt="North America" attrlink="the-internet-map-sa.png" description="This map shows South America.">}}
+{{< figure src="the-internet-map-sa.png" link="the-internet-map-sa.png" alt="South America" attrlink="the-internet-map-sa.png" description="South America's internet peering cities and undersea cables.">}}
 
 For South America there seems to be a geographically dominant peering spot: Buenos Aires in Argentina.
 
