@@ -44,13 +44,11 @@
                     </div>
                 </div>
                 <div class="post-row">
-                    {{ if .Site.Params.tags }}
-                        <span class="post-tags">
-                        {{ range .Params.tags }}
-                            <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
-                        {{ end }}
-                        </span>
+                    <span class="post-tags">
+                    {{ range .Params.tags }}
+                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
                     {{ end }}
+                    </span>
                 </div>
             </div> 
             {{ end }}
