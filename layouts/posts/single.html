@@ -89,13 +89,20 @@
 
     {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
       {{ partial "toot.html" .Params }}
-      <div class="button previous">
-        <a href="{{.Params.Url}}" target="_blank">
-          <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
-          <span class="button__text">Discuss on Mastodon</span>
-        </a>
-      </div>
     {{- end -}}
+
+    {{ with .Site.RegularPages.Related . | first 3 }}
+    <div class="main-wrapper">
+      <div class="main-box">
+          <h3>See Also</h3>
+          <ul>
+          {{ range . }}
+          <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+    {{ end }}
 
     <div class="post-info">
       {{ partial "pagination-single.html" . }}

@@ -43,6 +43,10 @@ a.button {
     opacity: 0.6;
   }
 
+  &.mastodon {
+    float: right;
+  }
+
   &:hover {
     opacity: 0.8;
   }
