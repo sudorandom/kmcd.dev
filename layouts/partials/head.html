@@ -47,7 +47,8 @@
         {{ if .IsHome }}
             {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
         {{ else }}
-            {{ .Title }}
+            {{ .Title }}{{ with .Params.Subtitle }}- {{ . }}{{ end }}
+            {{ if eq .Kind "section" }} :: {{ $.Site.Title }}{{end}}
         {{ end }}
     </title>
 {{ end }}

@@ -1,9 +1,9 @@
 {{ define "main" }}
     <main class="post">
         <article>
-            {{if .Params.hideTitle }}
-            {{ else }}
+            {{if not .Params.hideTitle }}
                 <h1 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+                {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
             {{ end }}
 
             {{ if .Params.Cover }}
