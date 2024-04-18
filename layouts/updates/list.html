@@ -3,6 +3,7 @@
 
     <main class="posts">
         <h1 class="page-title">{{ .Title }}</h1>
+        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
 
         {{ if .Content }}
             <div class="content">{{ .Content }}</div>

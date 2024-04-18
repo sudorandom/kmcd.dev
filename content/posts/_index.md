@@ -1,5 +1,6 @@
 +++
 title = "The Post Archive"
+subtitle = "Posted once a week or your money back."
 outputs = ['html','rss']
 +++
 

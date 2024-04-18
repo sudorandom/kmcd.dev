@@ -2,6 +2,7 @@
 description: "Here are copies of the updates that I post to my social media account on Mastodon."
 linktitle: ""
 title: "Updates"
+subtitle: "Copied from mastodon."
 devtoSkip: true
 aliases:
   - /categories/short-form/
