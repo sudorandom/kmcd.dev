@@ -106,6 +106,12 @@ outputs:
   taxonomy: ['html']
   term: ['html']
 
+outputFormats:
+  jsonfeed:
+    mediaType: "application/json"
+    baseName: "feed"
+    isPlainText: true
+
 related:
   includeNewer: true
   indices:
