@@ -1,5 +1,5 @@
 ---
-categories: ["article"]
+categories: ["article", "tutorial"]
 tags: ["networking", "grpc", "http", "tutorial", "protobuf"]
 date: "2024-02-25"
 description: ""
