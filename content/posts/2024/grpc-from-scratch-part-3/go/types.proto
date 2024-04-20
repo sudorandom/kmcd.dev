@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package example;
+
+message TestMessage {
+  // Basic types
+  int32 int_value = 1;
+  uint64 uint_value = 2;
+  sint32 sint_value = 3;
+  fixed32 fixed32_value = 4;
+  sfixed32 sfixed32_value = 5;
+  bool bool_value = 6;
+  string string_value = 7;
+  bytes bytes_value = 8;
+
+  // Repeated fields (varint encoding)
+  repeated int32 repeated_int_value = 9;
+
+  // Packed repeated fields (fixed-size encoding)
+  repeated fixed32 packed_fixed32_value = 10;
+
+  // Enums
+  enum MyEnum {
+    DEFAULT = 0;
+    VALUE1 = 1;
+    VALUE2 = 2;
+  }
+  MyEnum enum_value = 11;
+
+  // Nested message
+  message NestedMessage {
+    string nested_string = 1;
+  }
+  NestedMessage nested_message = 12;
+}

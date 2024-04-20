@@ -1,8 +1,8 @@
 ---
 categories: ["article"]
 tags: ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
-date: "2024-12-01"
-description: "We've made the world's simplest gRPC client and server for unary RPCs. Now let's tackle ~streaming~."
+date: "2024-05-07"
+description: "We've made the world's simplest gRPC client and server for unary RPCs. Now let's tackle ~protobuf encoding~."
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-3/cover.jpg"]
 featured: ""
@@ -19,18 +19,119 @@ draft: true
 
 > This is part three of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client](/posts/grpc-from-scratch/) and [gRPC From Scratch: Part 2 where I build a simple gRPC server.](/posts/grpc-from-scratch-part-2/)
 
-In the last two parts, I showed how to make an extremely simple client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of protobufs for me. That ends today. I'll start by using using the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. They include a fun disclaimer:
+In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of protobufs for me. That ends today. I'll start by using using the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:
 
 > For marshaling and unmarshaling entire protobuf messages, use the google.golang.org/protobuf/proto package instead.
 
 Am I going to listen to this solid advice? No! I want to know how this works! No reflection and no reliance on generated code. So let's get started:
 
-## protowire
-Protowire provides
+## Wire Types
+I discuss this in my [Inspecting Protobuf Messages](/posts/inspecting-protobuf-messages/) post that protobuf only has a small handful of types.
 
-### strings
+| ID | Name | Used for|
+| ----------- | ------- | -------|
+| 0 | VARINT | int32, int64, uint32, uint64, sint32, sint64, bool, enum |
+| 1 | I64 | fixed64, sfixed64, double |
+| 2 | LEN | string, bytes, embedded messages, packed repeated fields |
+| 3 | SGROUP | group start (deprecated) |
+| 4 | EGROUP | group end (deprecated) |
+| 5 | I32 | fixed32, sfixed32, float |
 
-### integers
+For today we're only going to work with the `LEN` and `VARINT` wire types. So let's get started. Protobuf messages are a series of key-value pairs. Keys are "field numbers" and values are one of the types in the table above. But since this is a binary format we also need to know the byte length of the key-value pair so we know where the value is terminated. This kind of encoding is very common. So common, in fact, that there's a name for the generic form: [Tag-Length-Value or TLV](https://en.wikipedia.org/wiki/Type%E2%80%93length%E2%80%93value). To save space, protobuf decided to encode both the tag and length into a single byte. The lower three bits are the wire type and the other 5 (and maybe more) are used for the field number. So that looks like this:
 
-### array of integers
-packed values
+```
+0000 1000
+```
+
+In other words, you can shift the three least significant bits off to get the protobuf wire type and the rest is for the field number or:
+```
+(field_number << 3) | wire_type
+```
+
+So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?!  Why is no one talking about this glaring limitation in protobufs?! I'm now forced to explain what protobuf calls "Base 128 Varints".
+
+### Big numbers
+In the previous example, we saw `VARINT` take a single byte. What does it look like when your number is too big? Where does the variable (VAR) come in? The protobuf encoding uses what it calls Base-128 Variable Integers. "Base 128" means you can count to 127 before rolling over to the next "digit" (or in this case, byte). The most significant bit is used as a continuation bit, which is a signal that there's at least one more byte worth of data to complete this integer. Let's decode one for practice:
+
+```
+11000000 11000100 00000111   // Original inputs.
+ 1000000  1000100  0000111   // Drop continuation bits.
+ 0000111  1000100  1000000   // Convert to big-endian.
+ 000011110001001000000       // Concatenate.
+ (1 × 2¹⁶) + (1 × 2¹⁵) +
+ (1 × 2¹⁴) + (1 × 2¹³) +
+ (1 × 2⁹) + (1 × 2⁶)
+ = 123456                    // Interpret as an unsigned 64-bit integer.
+```
+
+Next, I will show you some go code that can do this encoding and decoding of the VARINT. Note that this code is actually in the [standard library](https://pkg.go.dev/encoding/binary) and makes reference to protocol-buffers directly ([source](https://github.com/golang/go/blob/go1.22.2/src/encoding/binary/varint.go#L39-L47)).
+
+```go
+// AppendUvarint appends the varint-encoded form of x,
+// as generated by [PutUvarint], to buf and returns the extended buffer.
+func AppendUvarint(buf []byte, x uint64) []byte {
+	for x >= 0x80 {
+		buf = append(buf, byte(x)|0x80)
+		x >>= 7
+	}
+	return append(buf, byte(x))
+}
+```
+
+What's happening here? Let's break it down:
+- The core logic is in a `for` loop that continues as long as x is greater than or equal to 128 (represented by `0x80` in hexadecimal). Why 128? That's the highest number (in hexadecimal) that you can count to only using 7 bits. Remember that the most significant bit (MSB) is used as a continuation bit.
+- The next line appends the uint64 argument truncated to a byte, so the last 8 bits. One of those bits isn't actually used because of the `|0x80` part of the line. This combines our extracted 7 bits with `0x80` to ensure that the continuation bit is set to true.
+- The next line uses the right shift operator to shift 7 bits off of our current uint64 value because we've "dealt with" these bits already. Next, we check the for-loop condition again until we get a number lower than `128`.
+- Finally, we append the final byte as-is because we know that it's less than 128 which assures us that the MSB is NOT set.
+
+Next, we have the decoding code for VARINT. That looks like this ([source](https://github.com/golang/go/blob/go1.22.2/src/encoding/binary/varint.go#L69-L88)):
+
+```go
+// Uvarint decodes a uint64 from buf and returns that value and the
+// number of bytes read (> 0). If an error occurred, the value is 0
+// and the number of bytes n is <= 0 meaning:
+//
+//	n == 0: buf too small
+//	n  < 0: value larger than 64 bits (overflow)
+//	        and -n is the number of bytes read
+func Uvarint(buf []byte) (uint64, int) {
+	var x uint64
+	var s uint
+	for i, b := range buf {
+		if i == MaxVarintLen64 {
+			// Catch byte reads past MaxVarintLen64.
+			// See issue https://golang.org/issues/41185
+			return 0, -(i + 1) // overflow
+		}
+		if b < 0x80 {
+			if i == MaxVarintLen64-1 && b > 1 {
+				return 0, -(i + 1) // overflow
+			}
+			return x | uint64(b)<<s, i + 1
+		}
+		x |= uint64(b&0x7f) << s
+		s += 7
+	}
+	return 0, 0
+}
+```
+- It loops through each byte:
+   - Checks for overflow (reading past expected max size).
+   - Handles the last byte:
+     - Validates it and returns the decoded value if it's the last one.
+   - Processes continuation bytes:
+     - Extracts data bits and combines them with the accumulated value, shifting them to their correct position. The expression `b&0x7f` ensures that the continuation bit is not included in the result by using a bitwise AND with the current byte and `0x7f`, which looks like this in binary `01111111`.
+     - Keeps track of total bits processed.
+- If the loop finishes without a valid ending, it signals an error.
+
+Now that we've gone through that, I will tell you that these functions aren't actually used by the protobuf library.
+
+## integers
+Now that we know how the VARINT wire-type works we now have enough raw material to write some protobuf packets. Again, we need three things to make a message with a single field: Field number, wire type, and the encoded value.
+
+## strings/byte arrays
+First, we're going to start with strings and byte arrays. These use the `LEN` wire type.
+
+## integer arrays (packed)
+
+## embedded messages

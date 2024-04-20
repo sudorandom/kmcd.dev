@@ -47,8 +47,14 @@
         {{ if .IsHome }}
             {{ $.Site.Title }} {{ with $.Site.Params.Subtitle }} — {{ . }} {{ end }}
         {{ else }}
-            {{ .Title }}{{ with .Params.Subtitle }} - {{ . }}{{ end }}
-            {{ if eq .Kind "section" }} :: {{ $.Site.Title }}{{end}}
+            {{ if eq .Type "tags" }}
+                {{ if eq .Kind "taxonomy" }}{{ .Title }}{{ with .Params.Subtitle }} - {{ . }}{{ end }}{{ else }}Posts that match tag: {{ .Title | lower }}{{ end }}
+            {{ else if eq .Type "categories" }}
+                {{ if eq .Kind "taxonomy" }}{{ .Title }}{{ with .Params.Subtitle }} - {{ . }}{{ end }}{{ else }}Posts that match category: {{ .Title }}{{ end }}
+            {{ else }}
+                {{ .Title }}{{ with .Params.Subtitle }} - {{ . }}{{ end }}
+                {{ if eq .Kind "section" }} :: {{ $.Site.Title }}{{end}}
+            {{ end}}
         {{ end }}
     </title>
 {{ end }}
