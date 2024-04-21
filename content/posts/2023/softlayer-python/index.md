@@ -3,8 +3,8 @@ categories: ["article", "project"]
 tags: ["python", "cloud", "softlayer", "api", "cli", "open-source"]
 date: "2023-07-31"
 description: "I wrote and maintained language bindings for a large cloud company. Join me as I reflect on that experience."
-cover: "cover.jpg"
-images: ["/posts/softlayer-python/cover.jpg"]
+cover: "cover.png"
+images: ["/posts/softlayer-python/cover.png"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"

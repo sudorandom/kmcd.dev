@@ -1,0 +1,44 @@
+{{ define "main" }}
+    {{ $pages := where .Site.RegularPages "Section" "posts" }}
+    <main class="post">
+        <h1 class="post-title">
+          <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+        </h1>
+        {{ with .Params.Description }}
+          <div class="post-excerpt">{{ . }}</div>
+        {{ end }}
+    
+        <div class="main-wrapper">
+        <div class="main-box">
+
+        {{ if .Content }}
+            <div class="content">{{ .Content }}</div>
+        {{ end }}
+
+        <div id="macy-container">
+        {{ range $pages }}
+            {{ $cover := (.Resources.Get (or .Params.Cover .Params.Featured))}}
+            {{- if $cover -}}
+            {{ $cover = $cover.Fit "800x800 Center webp q100" }}
+            <div class="grid-item">
+                <a href="{{.Permalink}}">
+                    <img src="{{ $cover.Permalink }}" alt="{{.Title}}">
+                </a>
+            </div>
+            {{end}}
+        {{ end }}
+    </main>
+
+<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
+<script defer>
+(function () {
+    var macy = Macy({
+    container: '#macy-container',
+    trueOrder: false,
+    waitForImages: false,
+    margin: 10,
+    columns: 3
+    });
+})();
+</script>
+{{ end }}
