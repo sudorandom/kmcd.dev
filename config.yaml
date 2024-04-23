@@ -56,7 +56,7 @@ params:
   footer:
     showVersion: true
     socialIcons: true
-    author: true
+    author: false
     rss: true
     trademark: true
     copyright: true

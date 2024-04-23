@@ -1,6 +1,6 @@
 ---
 categories: ["article", "tutorial"]
-tags: ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
+tags: ["networking", "grpc", "go", "golang", "tutorial", "protobuf"]
 date: "2024-05-07"
 description: "We've made the world's simplest gRPC client and server for unary RPCs. Now let's tackle ~protobuf encoding~."
 cover: "cover.jpg"

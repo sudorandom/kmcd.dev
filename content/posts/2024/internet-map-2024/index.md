@@ -12,7 +12,8 @@ linktitle: ""
 title: "Visualizing the Internet (2024)"
 slug: "internet-map-2024"
 type: "posts"
-devtoId:
+mastodonID: "112318628224487252"
+devtoId: 1831151
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://sudorandom.dev/posts/internet-map-2024
