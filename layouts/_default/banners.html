@@ -4,16 +4,14 @@
         <h1 class="post-title">
           <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
         </h1>
-        {{ with .Params.Description }}
-          <div class="post-excerpt">{{ . }}</div>
-        {{ end }}
-    
-        <div class="main-wrapper">
-        <div class="main-box">
+        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
 
         {{ if .Content }}
             <div class="content">{{ .Content }}</div>
         {{ end }}
+
+        <div class="main-wrapper">
+        <div class="main-box">
 
         <div id="macy-container">
         {{ range $pages }}
