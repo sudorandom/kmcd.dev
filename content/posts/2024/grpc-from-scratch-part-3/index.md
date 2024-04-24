@@ -48,7 +48,7 @@ In other words, you can shift the three least significant bits off to get the pr
 (field_number << 3) | wire_type
 ```
 
-So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?!  Why is no one talking about this *glaring* limitation in protobufs?! I'm now forced to explain what protobuf calls "Base 128 Varints".
+So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?! Why is no one talking about this *glaring* limitation in protobufs?! I'm now forced to explain what protobuf calls "Base 128 Varints".
 
 ### Big numbers
 In the previous example, we saw `VARINT` take a single byte. What does it look like when your number is too big? Where does the variable (VAR) come in? The protobuf encoding uses what it calls Base-128 Variable Integers. "Base 128" means you can count to 127 before rolling over to the next "digit" (or in this case, byte). The most significant bit is used as a continuation bit, which is a signal that there's at least one more byte worth of data to complete this integer. Let's decode one for practice:
@@ -249,7 +249,7 @@ func ReadString(buf *bytes.Buffer) (string, error) {
 
 ## Integer Arrays (Packed)
 
-Packed repeated fields are a space-saving optimization for integer arrays.  Instead of encoding each element individually,  a single `VARINT` is used at the beginning specifying the number of elements, followed by the raw integer data, one after another, with no separators. 
+Packed repeated fields are a space-saving optimization for integer arrays. Instead of encoding each element individually, a single `VARINT` is used at the beginning specifying the number of elements, followed by the raw integer data, one after another, with no separators. 
 
 Here's an example of how to encode a packed repeated integer field:
 ```go
@@ -303,10 +303,10 @@ Decoding a packed repeated field is similar. First, you read the number of eleme
 
 ## Embedded Messages
 
-Embedded messages are another protobuf data type.  They allow you to nest messages within other messages.  When encoding an embedded message, you treat it like any other field. You write the field tag, and then you write the entire encoded message data  using the same process you would use to encode the message itself.  Decoding an embedded message involves reading the field tag and then treating the following bytes as the encoded message data, which you can then unmarshal using the appropriate message type.
+Embedded messages are another protobuf data type. They allow you to nest messages within other messages.  When encoding an embedded message, you treat it like any other field. You write the field tag, and then you write the entire encoded message data using the same process you would use to encode the message itself. Decoding an embedded message involves reading the field tag and then treating the following bytes as the encoded message data, which you can then unmarshal using the appropriate message type.
 
 ## Conclusion
 
-In this part of the series, we've taken a deep dive into the world of manual protobuf encoding. We explored wire types, tackled Base-128 Varints, and  built functions to encode and decode basic protobuf data types. While for most use cases, you'll probably want to leverage the efficiency and convenience of generated code and libraries like `protowire`, understanding manual encoding can be a valuable asset for debugging or interfacing with protobuf data from other systems. 
+In this part of the series, we've taken a deep dive into the world of manual protobuf encoding. We explored wire types, tackled Base-128 Varints, and built functions to encode and decode basic protobuf data types. While for most use cases, you'll probably want to leverage the efficiency and convenience of generated code and libraries like `protowire`, understanding manual encoding can be a valuable asset for debugging or interfacing with protobuf data from other systems. 
 
 In the next part of the series, we will put more pieces together with a layer on top of our encoding code and integrate this protobuf library into the client and server that we made in parts 1 and 2. build a real gRPC client and server that uses protobufs for data exchange!
