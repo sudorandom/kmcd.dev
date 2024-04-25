@@ -1,6 +1,7 @@
 +++
 description = ""
 title = "Banners"
+titleIcon = "fa-image"
 subtitle = "Banners of all my posts"
 slug = "/banners"
 layout = "banners"

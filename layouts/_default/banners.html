@@ -1,9 +1,7 @@
 {{ define "main" }}
     {{ $pages := where .Site.RegularPages "Section" "posts" }}
     <main class="post">
-        <h1 class="post-title">
-          <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
-        </h1>
+        <h1 class="page-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}{{ .Title }}</h1>
         {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
 
         {{ if .Content }}

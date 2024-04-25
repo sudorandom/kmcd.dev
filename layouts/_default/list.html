@@ -2,7 +2,7 @@
     {{ $paginator := .Paginate .Data.Pages }}
     
     <main class="posts">
-        <h1 class="page-title">{{ .Title }}</h1>
+        <h1 class="page-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}{{ .Title }}</h1>
         {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
 
         {{ if .Content }}
