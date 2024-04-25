@@ -1,0 +1,7 @@
+<script type="text/javascript">
+const pages = [{{ range .Site.AllPages }}{{ if not .IsHome }}"{{ .Permalink }}",{{ end }}
+    {{ end }}
+];
+let random_idx = Math.floor(Math.random() * (pages.length - 1));
+window.location = pages[random_idx];
+</script>
