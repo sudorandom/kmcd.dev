@@ -51,6 +51,10 @@ params:
     - name: "linkedin"
       url: "https://www.linkedin.com/in/sudorandom/"
 
+  mainSections:
+    - posts
+    - prompts
+
   footer:
     showVersion: true
     socialIcons: true
@@ -97,12 +101,6 @@ menu:
 markup:
   tableOfContents:
     endLevel: 4
-
-outputs:
-  home: ['html']
-  section: ['html']
-  taxonomy: ['html']
-  term: ['html']
 
 outputFormats:
   jsonfeed:
