@@ -91,22 +91,19 @@
       {{ partial "toot.html" .Params }}
     {{- end -}}
 
-    {{ with .Site.RegularPages.Related . | first 4 }}
     <div class="main-wrapper">
       <div class="main-box">
           <h3>See Also</h3>
           <ul>
-          {{ range . }}
+          {{ range .Site.RegularPages.Related . | first 4 }}
           <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
           {{ end }}
           <li><a href="/random/">Go to a random page</a> <a href="/random/"><i class="fa-solid fa-dice"></i></a></li>
         </ul>
+        <div class="post-info">
+          {{ partial "pagination-single.html" . }}
+        </div>
       </div>
-    </div>
-    {{ end }}
-
-    <div class="post-info">
-      {{ partial "pagination-single.html" . }}
     </div>
 
     {{- if .Site.Params.EnableSharingButtons }}

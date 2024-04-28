@@ -1,0 +1,62 @@
+{{ define "main" }}
+  <main class="post">
+    <h1 class="post-title">
+      Daily Prompt
+    </h1>
+    {{ with .Params.Description }}
+      <div class="post-excerpt">{{ . }}</div>
+    {{ end }}
+
+    <div class="main-wrapper">
+    <div class="main-box">
+      <div class="post-info">
+        <div>
+        <p>
+          <i class="fa-solid fa-calendar-days"></i>
+          {{ if .Site.Params.dateformNum }}
+            {{ dateFormat .Site.Params.dateformNum .Date.Local }}
+          {{ else }}
+            {{ dateFormat "2006-01-02" .Date.Local }}
+          {{ end }}
+
+          {{ if .Lastmod }}
+            {{ if not (eq .Lastmod .Date )}}
+              {{- if .GitInfo }}
+              (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02 15:04" .Lastmod.Local }}</a>)
+              {{ else }}
+              (updated: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+              {{- end }}
+            {{ end }}
+          {{ end }}
+        </p>
+        </div>
+        <div>
+        <p>
+          {{ partial "categories.html" . }}
+        </p>
+        </div>
+      </div>
+
+      {{ $cover := (.Resources.Get .Params.Cover)}}
+      {{- if $cover -}}
+      {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
+      <figure>
+          <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
+          {{ with .Params.CoverCaption }}
+              <figcaption class="center">{{ . | markdownify }}</figcaption>
+          {{ end }}
+      </figure>
+    {{ else }}
+      <hr />
+    {{ end }}
+
+    <article>
+      <div class="post-content">
+        {{ .Title }}
+      </div>
+      </div>
+      </div>
+    </article>
+  </main>
+
+{{ end }}

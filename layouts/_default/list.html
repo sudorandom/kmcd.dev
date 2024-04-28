@@ -17,7 +17,7 @@
                         {{ range .Pages }}
                             <li class="post-item">
                                 <a href="{{.Permalink}}">
-                                    <span class="post-title">{{.Title}}</span>
+                                    <span class="post-title">{{ .Title }}</span>
                                     <span class="post-day">
                                         {{ if .Site.Params.dateformShort }}
                                             {{ .Date.Format .Site.Params.dateformShort }}

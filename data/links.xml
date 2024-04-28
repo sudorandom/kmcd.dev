@@ -2,7 +2,7 @@
 <opml version="2.0">
     <head>
         <title>Miniflux</title>
-        <dateCreated>Sun, 14 Apr 2024 11:53:48 UTC</dateCreated>
+        <dateCreated>Sun, 28 Apr 2024 17:55:20 UTC</dateCreated>
     </head>
     <body>
         <outline text="Blogroll">
@@ -19,7 +19,6 @@
             <outline title="Songs on the Security of Networks" text="Songs on the Security of Networks" xmlUrl="https://rys.io/en/feed.rss" htmlUrl="https://rys.io/" type="rss"></outline>
             <outline title="Syntackle" text="Syntackle" xmlUrl="https://syntackle.com/feed.xml" htmlUrl="https://syntackle.com/" type="rss"></outline>
             <outline title="text/plain" text="text/plain" xmlUrl="https://textslashplain.com/feed/" htmlUrl="https://textslashplain.com" type="rss"></outline>
-            <outline title="The Cloudflare Blog" text="The Cloudflare Blog" xmlUrl="https://blog.cloudflare.com/rss" htmlUrl="https://blog.cloudflare.com" type="rss"></outline>
         </outline>
         <outline text="Humor">
             <outline title="comiCSS" text="comiCSS" xmlUrl="https://comicss.art/atom.xml" htmlUrl="https://comicss.art/" type="rss"></outline>
