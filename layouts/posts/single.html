@@ -87,8 +87,14 @@
       </div>
     </article>
 
-    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-      {{ partial "toot.html" .Params }}
+    {{- if .Params.mastodonID -}}
+      {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
+        {{ partial "toot.html" .Params }}
+      {{- end -}}
+    {{- else -}}
+      {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
+        {{ partial "toot.html" .Params }}
+      {{- end -}}
     {{- end -}}
 
     <div class="main-wrapper">
