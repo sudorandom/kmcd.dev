@@ -46,8 +46,6 @@ params:
       url: "https://infosec.exchange/@sudorandom"
     - name: "github"
       url: "https://github.com/sudorandom"
-    - name: "twitter"
-      url: "https://twitter.com/sudorandom/"
     - name: "linkedin"
       url: "https://www.linkedin.com/in/sudorandom/"
 

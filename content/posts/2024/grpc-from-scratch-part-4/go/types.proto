@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package example;
+
+message TestMessage {
+  // Basic types
+  int32 int_value = 1;
+  uint64 uint_value = 2;
+  bool bool_value = 3;
+  string string_value = 4;
+
+  // Repeated fields (varint encoding)
+  repeated int32 repeated_int_value = 10;
+
+  // Nested message
+  message NestedMessage {
+    string nested_string = 1;
+  }
+  NestedMessage nested_message = 11;
+}

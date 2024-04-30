@@ -67,7 +67,7 @@ func TestProtoWireDecodeInt32(t *testing.T) {
 
 func TestProtoWireEncodeInt32(t *testing.T) {
 	var buf []byte
-	buf = protowire.AppendTag(buf, protowire.Number(1), protowire.VarintType)
+	buf = protowire.AppendVarint(buf, uint64(1<<3)|uint64(0))
 	buf = protowire.AppendVarint(buf, 1234)
 
 	res := gen.TestMessage{}
@@ -106,16 +106,13 @@ func TestProtoWireDecodeInt32Array(t *testing.T) {
 
 func TestProtoWireEncodeInt32Array(t *testing.T) {
 	arr := []int32{100002130, 2, 3, 4, 5}
-	var buf []byte
-	buf = protowire.AppendVarint(buf, protowire.EncodeTag(protowire.Number(10), protowire.BytesType))
-	size := 0
+	var buf, buf2 []byte
+	buf = protowire.AppendVarint(buf, uint64(10<<3)|uint64(2))
 	for i := 0; i < len(arr); i++ {
-		size += protowire.SizeVarint(uint64(arr[i]))
+		buf2 = protowire.AppendVarint(buf2, uint64(arr[i]))
 	}
-	buf = protowire.AppendVarint(buf, uint64(size))
-	for i := 0; i < len(arr); i++ {
-		buf = protowire.AppendVarint(buf, uint64(arr[i]))
-	}
+	buf = protowire.AppendVarint(buf, uint64(len(buf2)))
+	buf = append(buf, buf2...)
 
 	res := gen.TestMessage{}
 	require.NoError(t, proto.Unmarshal(buf, &res))

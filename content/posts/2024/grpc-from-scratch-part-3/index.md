@@ -19,7 +19,7 @@ draft: true
 
 > This is part three of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client](/posts/grpc-from-scratch/) and [gRPC From Scratch: Part 2 where I build a simple gRPC server.](/posts/grpc-from-scratch-part-2/)
 
-In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of protobufs for me. That ends today. I'll start by looking at the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:
+In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of encoding and decoding protobufs for me. That ends today. I'll start by looking at the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:
 
 > For marshaling and unmarshaling entire protobuf messages, use the google.golang.org/protobuf/proto package instead.
 
@@ -37,34 +37,34 @@ I discuss this in my [Inspecting Protobuf Messages](/posts/inspecting-protobuf-m
 | 4 | EGROUP | group end (deprecated) |
 | 5 | I32 | fixed32, sfixed32, float |
 
-For today we're only going to implement the `LEN` and `VARINT` wire types. So let's get started. Protobuf messages are a series of key-value pairs. Keys are "field numbers" and values are one of the types in the table above. But since this is a binary format we also need to know the byte length of the key-value pair so we know where the value is terminated. This kind of encoding is very common. So common, in fact, that there's a name for the generic form: [Tag-Length-Value or TLV](https://en.wikipedia.org/wiki/Type%E2%80%93length%E2%80%93value). To save space, protobuf decided to encode both the field number and wire type into a single byte. The lower three bits are the wire type and the other 5 (and maybe more) are used for the field number. So that looks like this:
+For today we're only going to implement some of the `LEN` and `VARINT` wire types. Protobuf messages are a series of key-value pairs. Keys are "field numbers" and values are one of the types in the table above. But since this is a binary format we also need to know the byte length of the key-value pair if the type doesn't have a fixed lenght. We need this to know where the value ends and the next one begins. This kind of encoding is very common. So common, in fact, that there's a name for the generic form: [Tag-Length-Value or TLV](https://en.wikipedia.org/wiki/Type%E2%80%93length%E2%80%93value). To save space, protobuf decided to encode both the field number and wire type into a single byte. The lower three bits are the wire type and the other 5 (and maybe more) are used for the field number. This is what the "Tag-Length" part looks like for field number `1` with the `VARINT` wire type:
 
 ```
 0000 1000
 ```
 
-In other words, you can shift the three least significant bits off to get the protobuf wire type and the rest is for the field number or:
+You can shift the three least significant bits off to get the protobuf wire type and the rest is used for the field number. It is at this point where the bitwise operators start becoming useful:
 ```
 (field_number << 3) | wire_type
 ```
 
-So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?! Why is no one talking about this *glaring* limitation in protobufs?! I'm now forced to explain what protobuf calls "Base 128 Varints".
+So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?! Why is no one talking about this *glaring* limitation in protobufs?! At this point, I am now forced to explain what protobuf calls `Base 128 Varints`.
 
 ### Big numbers
-In the previous example, we saw `VARINT` take a single byte. What does it look like when your number is too big? Where does the variable (VAR) come in? The protobuf encoding uses what it calls Base-128 Variable Integers. "Base 128" means you can count to 127 before rolling over to the next "digit" (or in this case, byte). The most significant bit is used as a continuation bit, which is a signal that there's at least one more byte worth of data to complete this integer. Let's decode one for practice:
+In the previous example, we saw `VARINT` take a single byte. What does it look like when your number is too big? Where does the variableness come in? The protobuf encoding uses what it calls Base-128 Variable Integers. "Base 128" means you can count to 127 before rolling over to the next "digit" (or in this case, byte). The most significant bit is used as a continuation bit, which is a signal that there's at least one more byte worth of data to complete this integer. Let's decode one for practice:
 
-```
+```binary
 11000000 11000100 00000111   // Original inputs.
  1000000  1000100  0000111   // Drop continuation bits.
  0000111  1000100  1000000   // Convert to big-endian.
  000011110001001000000       // Concatenate.
- (1 × 2¹⁶) + (1 × 2¹⁵) +
- (1 × 2¹⁴) + (1 × 2¹³) +
+ (1 × 2^16) + (1 × 2^15) +
+ (1 × 2^14) + (1 × 2¹³) +
  (1 × 2⁹) + (1 × 2⁶)
  = 123456                    // Interpret as an unsigned 64-bit integer.
 ```
 
-Next, I will show you some go code that can do this encoding and decoding of the VARINT. Note that this code is actually in the [standard library](https://pkg.go.dev/encoding/binary) and makes reference to protocol-buffers directly ([source](https://github.com/golang/go/blob/go1.22.2/src/encoding/binary/varint.go#L39-L47)).
+Next, I will show you some go code that can do this encoding and decoding of the `VARINT`. Note that this code is actually in Go's [standard library](https://pkg.go.dev/encoding/binary) and makes reference to protocol-buffers directly ([source](https://github.com/golang/go/blob/go1.22.2/src/encoding/binary/varint.go#L39-L47)).
 
 ```go
 // AppendUvarint appends the varint-encoded form of x,
@@ -124,69 +124,31 @@ func Uvarint(buf []byte) (uint64, int) {
      - `s` keeps track of the total bits already processed. It increments by 7 because that's how many bits we can use for each byte because of the continuation bit.
 - If the loop finishes without a valid ending, it signals an error.
 
-Now that we've gone through that, I will tell you that **these functions aren't actually used by the protobuf library.** I suspect that they were initially used but the current [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) implementation doesn't use for loops; it has unwrapped for loops. Here's [AppendVarint](https://github.com/protocolbuffers/protobuf-go/blob/v1.33.0/encoding/protowire/wire.go#L184-L263) and [ConsumeVarint](https://github.com/protocolbuffers/protobuf-go/blob/v1.33.0/encoding/protowire/wire.go#L265-L367). Awesome, that code looks insane but it is likely a bit faster than the version of the code that we just saw.
-
-I hear that `bytes.Buffer` is often-times faster than using `[]bytes` append(), so I'm actually going to re-write these functions to use `bytes.Buffer`. This will also prevent us from needing to manually manage the byte offset. My hunch is that this method is slower but I still like it because it results in more readable code. Here are the equivilant functions now:
-
-**Writing a VARINT**
-```go
-func WriteUvarint(buf *bytes.Buffer, x uint64) {
-	for x >= 0x80 {
-		buf.WriteByte(byte(x) | 0x80)
-		x >>= 7
-	}
-	buf.WriteByte(byte(x))
-}
-```
-This function is pretty much the same, except I am using buf.WriteBytes instead of append() and I don't need to return anything now since the offset and the actual byte array are managed by the `bytes.Buffer`.
-
-**Reading a VARINT**
-```go
-func ReadUvarint(buf *bytes.Buffer) (uint64, error) {
-	var x uint64
-	var s uint
-	var i int
-	for {
-		b, err := buf.ReadByte()
-		if err != nil {
-			return 0, err
-		}
-		if i == MaxVarintLen64 {
-			return 0, ErrOverflow // overflow
-		}
-		if b < 0x80 {
-			if i == MaxVarintLen64-1 && b > 1 {
-				return 0, ErrOverflow // overflow
-			}
-			return x | uint64(b)<<s, nil
-		}
-		x |= uint64(b&0x7f) << s
-		s += 7
-		i++
-	}
-}
-```
-The core of this function is also the same, but how the loop operates is slightly different and I return an error instead of a byte count (with sentinal values for errors).
+Now that we've gone through that, I will tell you that **these functions aren't actually used by the protobuf library.** I suspect that they were initially used but the current [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) implementation doesn't use `for` loops at all; it has unwrapped for loops. Here's [AppendVarint](https://github.com/protocolbuffers/protobuf-go/blob/v1.33.0/encoding/protowire/wire.go#L184-L263) and [ConsumeVarint](https://github.com/protocolbuffers/protobuf-go/blob/v1.33.0/encoding/protowire/wire.go#L265-L367). That code looks insane but it is likely a bit faster than the version of the code that I just showed you.
 
 ## Integers
-Now that we know how the VARINT wire-type works we now have enough raw material to write some protobuf packets. Again, we need three things to make a message with a single field: Field number, wire type, and the encoded value. As mentioned earlier, the field number and wire type are merged into a single VARINT value using the formula: `(field_number << 3) | wire_type`. This essentially means that the the least significant bits are reserved for the wire type and the rest are used for the field number. Okay, what does that look like to write a full field in protobuf? Using the functions I made above, I made a `WriteField` function to help with writing the field tag.
+Now that we know how the `VARINT` wire-type works we now have enough raw material to write some protobuf packets. Again, we need three things to make a message with a single field: Field number, wire type, and the encoded value. As mentioned earlier, the field number and wire type are merged into a single `VARINT` value using the formula: `(field_number << 3) | wire_type`. This essentially means that the the least significant bits are reserved for the wire type and the rest are used for the field number, and we expand using the Base-128 varint method above if the field number needs more bits to be represented. Now, let's write a full field in protobuf! Here's how we encode a message with a single int32 field:
 
-```go
-buf := &bytes.Buffer{}
-WriteUvarint(buf, uint64(1<<3)|uint64(0))
-WriteUvarint(buf, 1234)
+```plaintext
+1: 1234
 ```
 
-And... that's it. We've fully encoded probably the simpliest (non-empty) protobuf message. We can check that it works by running a test with the "real" protobuf library:
+```go
+var buf []byte
+buf = protowire.AppendVarint(buf, uint64(1<<3)|uint64(0))
+buf = protowire.AppendVarint(buf, 1234)
+```
+
+And... that's it. We've fully encoded probably the simplest (non-empty) protobuf message. We can check that it works by running a test with the "real" protobuf library:
 
 ```go
 func TestEncodeRaw(t *testing.T) {
-	buf := &bytes.Buffer{}
-	WriteUvarint(buf, uint64(1<<3)|uint64(0))
-	WriteUvarint(buf, 1234)
+	var buf []byte
+	buf = protowire.AppendVarint(buf, uint64(1<<3)|uint64(0))
+	buf = protowire.AppendVarint(buf, 1234)
 
 	res := gen.TestMessage{}
-	require.NoError(t, proto.Unmarshal(buf.Bytes(), &res))
+	require.NoError(t, proto.Unmarshal(buf, &res))
 	assert.Equal(t, int32(1234), res.IntValue)
 }
 ```
@@ -197,6 +159,7 @@ All of the field numbers and corresponding types in this article match up to thi
 
 Okay, let's show what it looks like to read this message:
 
+TODO: fix this code
 ```go
 tagNumber, protoType, err := ReadFieldTag(buf)
 ...
@@ -210,6 +173,7 @@ Next, we're going to start with strings and byte arrays. These use the `LEN` wir
 - Content size as a `VARINT`
 - The actual content
 
+TODO: fix this code
 Encode:
 ```go
 s := "hello world"
@@ -227,6 +191,7 @@ s, err := ReadString(buf)
 ```
 
 And to complete the context, you need the `ReadString` and `ReadBytes` functions here:
+TODO: update this code
 ```go
 func ReadBytes(buf *bytes.Buffer) ([]byte, error) {
 	size, err := ReadUvarint(buf)
@@ -245,6 +210,7 @@ func ReadString(buf *bytes.Buffer) (string, error) {
 	return string(b), err
 }
 ```
+TODO: update this text
 `ReadBytes` has error checking omitted to make it clearer what it is doing. First, it uses `ReadUvarint` to read the size of the byte array or string. Then it makes a new byte slice that matches this size of the byte array/string/whatever. Then it reads from the `buf` object into our new byte slices. Note that we're allocating new memory here, which does vary from what protowire does. Protowire returns a slice of the buffer. This avoids an allocation at this level but I think it also may cause more memory usage. But I wanted to point out the balance here. Avoiding extra allocations here may be a performance benefit and may be a good reason to keep with `[]byte` over `bytes.Buffer`. I'm also concerned about the size here. It may be the case where `bytes.Buffer` or another kind of `io.Writer` is better for writing messages and directly using `[]byte` is better for reading messages.
 
 ## Integer Arrays (Packed)
@@ -253,25 +219,18 @@ Packed repeated fields are a space-saving optimization for integer arrays. Inste
 
 Here's an example of how to encode a packed repeated integer field:
 ```go
-func SizeVarint(v uint64) int {
-	return int(9*uint32(bits.Len64(v))+64) / 64
-}
-```
-
-```go
 arr := []int32{100002130, 2, 3, 4, 5}
-buf := &bytes.Buffer{}
-WriteFieldTag(buf, 10, 2)
-size := 0
+var buf, buf2 []byte
+buf = protowire.AppendVarint(buf, uint64(10<<3)|uint64(2))
 for i := 0; i < len(arr); i++ {
-	size += SizeVarint(uint64(arr[i]))
+	buf2 = protowire.AppendVarint(buf2, uint64(arr[i]))
 }
-WriteUvarint(buf, uint64(size))
-for i := 0; i < len(arr); i++ {
-	WriteUvarint(buf, uint64(arr[i]))
-}
+buf = protowire.AppendVarint(buf, uint64(len(buf2)))
+buf = append(buf, buf2...)
 ```
+Notice that we are writing the list of `int32` values to a second buffer. I do this so that we can know the size of the encoded/packed `int32` values so that I can properly set the size for the encapsulating `LEN` wire type. This time reading is a bit easier. See how that works here:
 
+TODO: fix this example
 ```go
 func ReadRepeatedInt32(buf *bytes.Buffer) ([]int32, error) {
 	result := []int32{}
@@ -299,14 +258,11 @@ assert.NoError(t, err)
 assert.Equal(t, []int32{1, 2, 3, 400}, result)
 ```
 
+TODO: fix this text
 Decoding a packed repeated field is similar. First, you read the number of elements using `ReadUvarint`. Then you would have a loop that reads that number of elements using the appropriate decoding function based on the field type (in this case, `ReadUvarint` again for `int32`).
-
-## Embedded Messages
-
-Embedded messages are another protobuf data type. They allow you to nest messages within other messages.  When encoding an embedded message, you treat it like any other field. You write the field tag, and then you write the entire encoded message data using the same process you would use to encode the message itself. Decoding an embedded message involves reading the field tag and then treating the following bytes as the encoded message data, which you can then unmarshal using the appropriate message type.
 
 ## Conclusion
 
-In this part of the series, we've taken a deep dive into the world of manual protobuf encoding. We explored wire types, tackled Base-128 Varints, and built functions to encode and decode basic protobuf data types. While for most use cases, you'll probably want to leverage the efficiency and convenience of generated code and libraries like `protowire`, understanding manual encoding can be a valuable asset for debugging or interfacing with protobuf data from other systems. 
+In this part of the series, we've taken a deep dive into the world of manual protobuf encoding. We explored a few wire types and the primatives that they are built on, like Base-128 varints, and built functions to encode and decode basic protobuf data types. While for most use cases, you'll probably want to leverage the efficiency and convenience of generated code and libraries like `golang/protobuf`, understanding how to manually encode these messages can be a valuable asset for debugging, creating a protobuf library implementation in your favorite new language or for possibly creating your own binary encoding.
 
 In the next part of the series, we will put more pieces together with a layer on top of our encoding code and integrate this protobuf library into the client and server that we made in parts 1 and 2. build a real gRPC client and server that uses protobufs for data exchange!

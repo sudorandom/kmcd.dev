@@ -43,7 +43,9 @@ To pair with the weekly tracking. **`I conduct a more in-depth reflection every 
 - Reflect on big family budget items and see if they align with my priorities in life.
 
 ## Yearly themes
-Yes, [I am a Cortexan](https://www.relay.fm/cortex) and podcast episodes outlining [yearly themes](https://www.youtube.com/watch?v=cXexYmOHkas) are among my favorites. Yearly themes give a framework for me to push myself to do things I want to do while allowing me to adjust (every quarter) exactly what it means to accomplish my theme. Sometimes life throws additional challenges. For example, it's silly to fail at achieving a goal of "running a mile every day" if you break your leg. This year is **"The Year of Building"**. Here's what I wrote about my theme shortly before the year began:
+Yes, [I am a Cortexan](https://www.relay.fm/cortex) and podcast episodes outlining [yearly themes](https://www.youtube.com/watch?v=cXexYmOHkas) are among my favorites. Yearly themes give a framework for me to push myself to do things I want to do while allowing me to adjust (every quarter) exactly what it means to accomplish my theme. Sometimes life throws additional challenges. For example, it's silly to fail at achieving a goal of "running a mile every day" if you break your leg.
+
+For me, this year is **"The Year of Building"**. Here's what I wrote about my theme shortly before the year began:
 
 > I want to build some cool things. I want to make some useful open source projects. I want to implement some neat solutions at work and actually prove them out. My follow-through sometimes lacks when I lose interest in things. I want to make more cool blog posts.
 >
