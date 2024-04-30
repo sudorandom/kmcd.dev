@@ -15,6 +15,7 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/inspecting-protobuf-messages
 mastodonID: "112277434216326412"
+featured: true
 ---
 
 

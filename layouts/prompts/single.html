@@ -22,9 +22,9 @@
           {{ if .Lastmod }}
             {{ if not (eq .Lastmod .Date )}}
               {{- if .GitInfo }}
-              (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02 15:04" .Lastmod.Local }}</a>)
+              (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02" .Lastmod.Local }}</a>)
               {{ else }}
-              (updated: {{ dateFormat "2006-01-02 15:04" .Lastmod.Local }})
+              (updated: {{ dateFormat "2006-01-02" .Lastmod.Local }})
               {{- end }}
             {{ end }}
           {{ end }}

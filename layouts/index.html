@@ -22,23 +22,16 @@
             {{ if .IsHome }}
                 {{ $PageContext = .Site }}
             {{ end }}
-            {{ $paginator := .Paginate (where $PageContext.RegularPages "Type" $contentTypeName) 10 }}
             <div class="main-heading">
             <div class="posts-header">
-                <h3>Blog Posts</h3>
+                <h3>Featured Posts</h3>
             </div>
 
-            {{ range $paginator.Pages }}
+            {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
             <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
                 <div class="post-row">
                     <h3>
-                        <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
-                        {{- if .Date -}}
-                        <small>{{ .Date.Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                        {{ if $.Site.Params.LastModDisplay }}
-                            {{ partial "lastmod.html" . }}
-                        {{- end -}}
-                    {{- end -}}
+                        <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
                     </h3>
                     <div class="post-meta">
                     </div>
@@ -50,7 +43,35 @@
                     {{ end }}
                     </span>
                 </div>
-            </div> 
+            </div>
+            {{ end }}
+            <div class="posts-footer"></div>
+
+            <div class="main-heading">
+            <div class="posts-header">
+                <h3>Latest Posts</h3>
+            </div>
+
+            {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+            <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
+                <div class="post-row">
+                    <h3>
+                        <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+                        {{- if .Date -}}
+                        <small>{{ .Date.Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
+                        {{- end -}}
+                    </h3>
+                    <div class="post-meta">
+                    </div>
+                </div>
+                <div class="post-row">
+                    <span class="post-tags">
+                    {{ range .Params.tags }}
+                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
+                    {{ end }}
+                    </span>
+                </div>
+            </div>
             {{ end }}
             <div class="posts-footer">
                 Didn't find what you want? Check out <a href="/posts/">the archive</a> for more.

@@ -14,7 +14,7 @@ slug: "tracking-the-wins"
 type: "posts"
 devtoSkip: false
 devtoPublished: true
-devtoId:
+devtoId: 1838246
 canonical_url: https://sudorandom.dev/posts/tracking-the-wins
 ---
 
