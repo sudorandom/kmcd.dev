@@ -10,7 +10,7 @@ featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 title: "Visualizing the Internet (2023)"
-slug: "/posts/internet-map-2023"
+slug: "internet-map-2023"
 aliases: [
   "internet-map-v2",
 ]

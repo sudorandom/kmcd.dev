@@ -27,10 +27,11 @@
                 {{ $cover := (.Resources.Get .Params.Cover)}}
                 {{- if $cover -}}
                   {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
-                  <p>
-                    <img hspace="5" src="{{ $cover.Permalink }}" alt="{{ $cover.Title }}" />
-                  </p>
+                  {{- `<p> <img hspace="5" src="` | safeHTML -}}
+                  {{ $cover.Permalink }}
+                  {{ `" />` | safeHTML }} </p>
                 {{ end }}
+                {{ .Description }}
                 ]]>
             </description>
             {{ $content := .Content -}}

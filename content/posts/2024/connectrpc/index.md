@@ -10,7 +10,7 @@ featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 title: "Making gRPC more approachable with ConnectRPC"
-slug: "/posts/connectrpc"
+slug: "connectrpc"
 type: "posts"
 devtoId: 1797651
 devtoPublished: true
