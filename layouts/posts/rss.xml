@@ -22,13 +22,24 @@
             <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
             {{ with .Site.Author.email }}<author>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</author>{{end}}
             <guid>{{ .Permalink }}</guid>
-            <description>{{ printf `<![CDATA[%s]]>` .Summary | safeHTML | chomp }}</description>
+            <description>
+                {{ `<![CDATA[ ` | safeHTML }}
+                {{ $cover := (.Resources.Get .Params.Cover)}}
+                {{- if $cover -}}
+                  {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
+                  <p>
+                    <img hspace="5" src="{{ $cover.Permalink }}" alt="{{ $cover.Title }}" />
+                  </p>
+                {{ end }}
+                ]]>
+            </description>
             {{ $content := .Content -}}
-            {{- $content = replaceRE "a href=\"(#.*?)\"" (printf "%s%s%s" "a href=\"" .Permalink "$1\"") $Content -}}
+            {{- $content = replaceRE "a href=\"#(.*?)\"" (printf "%s%s%s" "a href=\"" .Permalink "#$1\"") $content -}}
+            {{- $content = replaceRE "a href=\"/(.*?)\"" (printf "%s%s%s" "a href=\"" .Permalink "$1\"") $content -}}
             {{- $content = replaceRE "img src=\"(.*?)\"" (printf "%s%s%s" "img src=\"" .Permalink "$1\"") $content -}}
             {{- $content = replaceRE "<svg.*</svg>" "" $content -}}
             {{- $content = replaceRE `-moz-tab-size:\d;-o-tab-size:\d;tab-size:\d;?` "" $content -}}
-            <content:encoded>{{ printf `<![CDATA[%s]]>` .Content | safeHTML | chomp }}</content:encoded>
+            <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
         </item>
         {{ end }}
     </channel>

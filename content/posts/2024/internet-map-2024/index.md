@@ -32,7 +32,7 @@ I recently updated my [Map of the Internet visualization](/posts/internet-map-20
 I, of course, also generated new versions of the static maps. Below is an overview of the entire world. Click on the image below to zoom/pan the full-resolution version or click the link under the image to download it:
 
 {{< figure src="the-internet-map.webp" link="the-internet-map.svg" alt="Map of the Internet" attrlink="the-internet-map.svg" description="This map shows the locations of undersea cables and internet exchanges around the world.">}}
-**[Click here for full resolution image (warning, it's big)](the-internet-map.svg)**
+**[Click here for full resolution image (warning, it's big)]({{< permalink "the-internet-map.svg" >}})**
 
 So what are you looking at? The lines are submarine cables and the circles are cities with Internet Exchange Points (IXPs).
 

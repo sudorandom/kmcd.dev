@@ -10,7 +10,7 @@ featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 title: "Visualizing the Internet (2023)"
-slug: "internet-map-2023"
+slug: "/posts/internet-map-2023"
 aliases: [
   "internet-map-v2",
 ]
@@ -26,9 +26,9 @@ I recently expanded on my [Internet map visualization](/posts/internet-map-2022/
 And here is the same map **but without country borders**. I think this one looks beautiful:
 {{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg" description="This map shows the locations of undersea cables and internet exchanges around the world, but without land masses.">}}
 
-**[Click here for full resolution image (warning, it's big)](geo-mercator.svg)**
+**[Click here for full resolution image (warning, it's big)]({{< permalink "geo-mercator.svg" >}})**
 
-**[Click here for full resolution image (no borders) (warning, this one is also big)](nocountrylines_geo-mercator.svg)**
+**[Click here for full resolution image (no borders) (warning, this one is also big)]({{< permalink "nocountrylines_geo-mercator.svg" >}})**
 
 ## What's an internet exchange?
 **Internet Exchange:**
@@ -94,7 +94,7 @@ Now here's the pretty part. Here are close-ups of different parts of the map wit
 
 {{< figure src="svalbard.png" title="Svalbard" alt="Svalbard" caption="Svalbard is a set of islands owned by Norway that is waaay far north. It's one of those places that gets 6 months of day followed by 6 months of night. And it's always super cold. It's interesting to see two undersea cables to a place like this. Svalbard is where [the global seed vault](https://www.croptrust.org/work/svalbard-global-seed-vault/) lives, with seeds from all over the world. If you want to use these two cables you can check out [some webcams that are set up in Svalbard](https://www.spitsbergen-svalbard.com/photos-panoramas-videos-and-webcams/spitsbergen-webcams.html)." loading="lazy" >}}
 
-{{< figure src="maldives.png" title="Maldives" alt="Maldives" caption="Maldives is another interesting place where fiber optic cables live. You might notice that the fiber optic cables cross each other. It appears that it was done in order to connect islands that the first cable didn't service before. The cables were commissioned around 5 years apart. It must have been a hard 5 years if you lived on one of the islands that didn't get high speed internet on the first round." loading="lazy" >}}
+{{< figure src="maldives.png" title="Maldives" alt="Maldives" caption="Maldives is another interesting place where fiber optic cables live. You might notice that the fiber optic cables cross each other. It appears that it was done in order to connect islands that the first cable didn't service before. The cables were commissioned around 5 years apart. It must have been a hard 5 years if you lived on one of the islands that didn't get high-speed internet on the first round." loading="lazy" >}}
 
 
 ## How it's made
