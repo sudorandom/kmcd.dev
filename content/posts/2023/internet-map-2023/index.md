@@ -26,14 +26,14 @@ I recently expanded on my [Internet map visualization](/posts/internet-map-2022/
 And here is the same map **but without country borders**. I think this one looks beautiful:
 {{< figure src="nocountrylines_geo-mercator-small.png" link="nocountrylines_geo-mercator.svg" alt="Map of the Internet" attrlink="nocountrylines_geo-mercator.svg" description="This map shows the locations of undersea cables and internet exchanges around the world, but without land masses.">}}
 
-**[Click here for full resolution image (warning, it's big)]({{< permalink "geo-mercator.svg" >}})**
+**[Click here for full resolution image (warning, it's big)](geo-mercator.svg)**
 
-**[Click here for full resolution image (no borders) (warning, this one is also big)]({{< permalink "nocountrylines_geo-mercator.svg" >}})**
+**[Click here for full resolution image (no borders) (warning, this one is also big)](nocountrylines_geo-mercator.svg)**
 
 ## What's an internet exchange?
 **Internet Exchange:**
 
-An internet exchange, often referred to as an Internet Exchange Point (IXP), is a physical infrastructure or facility where Internet Service Providers (ISPs) and other network operators connect their networks together to exchange Internet traffic. The primary purpose of an internet exchange is to improve the efficiency of data exchange between different networks by allowing direct peering between them. Instead of sending data through multiple third-party networks, which can lead to increased latency and costs, ISPs can directly exchange traffic at an internet exchange, resulting in faster and more cost-effective data transmission.
+An Internet exchange, often referred to as an Internet Exchange Point (IXP), is a physical infrastructure or facility where Internet Service Providers (ISPs) and other network operators connect their networks together to exchange Internet traffic. The primary purpose of an internet exchange is to improve the efficiency of data exchange between different networks by allowing direct peering between them. Instead of sending data through multiple third-party networks, which can lead to increased latency and costs, ISPs can directly exchange traffic at an internet exchange, resulting in faster and more cost-effective data transmission.
 
 Internet exchanges play a crucial role in the functioning of the global internet. By facilitating direct peering, they help reduce the reliance on expensive long-distance links and enhance the overall performance and resilience of the internet. They also promote competition among ISPs and encourage the growth of internet infrastructure in specific regions.
 

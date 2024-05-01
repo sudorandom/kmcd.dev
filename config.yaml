@@ -1,4 +1,4 @@
-baseURL: 'https://sudorandom.dev/'
+baseURL: 'https://sudorandom.dev'
 languageCode: 'en'
 theme: "hello-4s3ti"
 title: 'sudorandom.dev'
@@ -99,6 +99,12 @@ menu:
 markup:
   tableOfContents:
     endLevel: 4
+  goldmark:
+    renderHooks:
+      image:
+        enableDefault: true
+      link:
+        enableDefault: true
 
 outputFormats:
   jsonfeed:

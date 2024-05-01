@@ -15,7 +15,7 @@
             data-autofit="true"
             data-fit="cover">
     {{- else -}}
-        <a href="{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
+        <a href="{{ .Page.Permalink }}{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
     {{- end -}}
 
     {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "2000x1600 webp" }}

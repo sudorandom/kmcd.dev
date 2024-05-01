@@ -1,0 +1,3 @@
+<img src="{{ site.BaseURL | safeURL }}{{ .Destination | safeURL }}"
+  {{- with .Text }} alt="{{ . }}"{{ end -}}
+  {{- with .Title }} title="{{ . }}"{{ end -}}>

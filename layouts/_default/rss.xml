@@ -35,9 +35,6 @@
                 ]]>
             </description>
             {{ $content := .Content -}}
-            {{- $content = replaceRE "a href=\"#(.*?)\"" (printf "%s%s%s" "a href=\"" .Permalink "#$1\"") $content -}}
-            {{- $content = replaceRE "a href=\"/(.*?)\"" (printf "%s%s%s" "a href=\"" .Permalink "$1\"") $content -}}
-            {{- $content = replaceRE "img src=\"(.*?)\"" (printf "%s%s%s" "img src=\"" .Permalink "$1\"") $content -}}
             {{- $content = replaceRE "<svg.*</svg>" "" $content -}}
             {{- $content = replaceRE `-moz-tab-size:\d;-o-tab-size:\d;tab-size:\d;?` "" $content -}}
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>

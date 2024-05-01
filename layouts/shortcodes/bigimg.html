@@ -1,5 +1,5 @@
 {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "1600x1000 webp" }}
-<img src="{{ $image.RelPermalink }}"
+<img src="{{ $image.Permalink }}"
         {{- if or (.Get "alt") (.Get "caption") }}
         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
         {{- end -}}
