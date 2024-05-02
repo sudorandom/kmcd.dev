@@ -33,18 +33,18 @@ I used data from the [submarinecablemap.com](https://submarinecablemap.com) webs
 Here are the resulting images.
 
 ### geo-mercator.svg
-![Cable map using the Mercator projection](geo-mercator.svg "geo-mercator.svg")
-[click here for full resolution](geo-mercator.svg)
+![Cable map using the Mercator projection](/posts/internet-map-2022/geo-mercator.svg "geo-mercator.svg")
+[click here for full resolution](/posts/internet-map-2022/geo-mercator.svg)
 
 ### geo-conic-conformal.svg
 
-![Cable map using the conic conformal projection](geo-conic-conformal.svg "geo-conic-conformal.svg")
-[click here for full resolution](geo-conic-conformal.svg)
+![Cable map using the conic conformal projection](/posts/internet-map-2022/geo-conic-conformal.svg "geo-conic-conformal.svg")
+[click here for full resolution](/posts/internet-map-2022/geo-conic-conformal.svg)
 
 ### geo-conic-equal-area.svg
-![Cable map using the Geo Conic Equal Area projection](geo-conic-equal-area.svg "geo-conic-equal-area.svg")
-[click here for full resolution](geo-conic-equal-area.svg)
+![Cable map using the Geo Conic Equal Area projection](/posts/internet-map-2022/geo-conic-equal-area.svg "geo-conic-equal-area.svg")
+[click here for full resolution](/posts/internet-map-2022/geo-conic-equal-area.svg)
 
 ### geo-natural-earth-1.svg
-![Cable map using the Geo Natural Earth projection](geo-natural-earth-1.svg "geo-natural-earth-1")
-[click here for full resolution](geo-natural-earth-1.svg)
+![Cable map using the Geo Natural Earth projection](/posts/internet-map-2022/geo-natural-earth-1.svg "geo-natural-earth-1")
+[click here for full resolution](/posts/internet-map-2022/geo-natural-earth-1.svg)

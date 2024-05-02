@@ -58,10 +58,10 @@ I randomly linked the website that I had just created in one of the fleet channe
 
 The Burn Jita event continued for a couple more days and instead of cargo scanning ships, I was working on improving the tool that others used to find targets to gank more efficiently. The rest is history.
 
-![Screenshot of appraisal](screenshot_appraisal.png "Evepraisal")
+![Screenshot of appraisal](/posts/evepraisal.com/screenshot_appraisal.png "Evepraisal")
 
 The website slowly evolved into what is now known as Evepraisal. I added support for many different formats and switched from using price data from a static database dump to using more frequently updated sources like Eve-Central, Eve-marketdata.com and eventually the official ESI API had support for everything IU needed. I’ve heard from several people who are career gankers in Eve who leverage Evepraisal to be profitable.
 
-![Screenshot of evepraisal.com homepage](screenshot_index.png "Evepraisal")
+![Screenshot of evepraisal.com homepage](/posts/evepraisal.com/screenshot_index.png "Evepraisal")
 
 I've since shutdown the website. [See more about the reasoning here](/posts/goodbye-evepraisal/).
