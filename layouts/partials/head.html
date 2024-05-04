@@ -17,7 +17,7 @@
 <meta name="robots" content="index, archive" />
 <meta name="theme-color" content="{{ .Site.Params.themeColor }}" />
 
-{{ $siteImage := (resources.Get "images/geo-mercator-small.png").Fit "3600x1890 webp" }}
+{{ $siteImage := (resources.Get "images/site_cover.png").Fit "3600x1890 webp" }}
 {{ if not .IsHome }}
     <meta property="og:title" content="{{ .Title }}" />
     <meta property="og:type" content="article" />
