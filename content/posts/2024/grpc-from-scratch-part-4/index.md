@@ -1,7 +1,8 @@
 ---
 categories: ["article", "tutorial"]
 tags: ["networking", "grpc", "go", "golang", "tutorial", "protobuf"]
-date: "2024-05-07"
+series: ["gRPC from Scratch"]
+date: "2024-07-21"
 description: "We have more work to do with protobuf encoding!"
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-4/cover.jpg"]

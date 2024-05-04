@@ -1,6 +1,7 @@
 ---
 categories: ["article"]
 tags: ["networking", "grpc", "http", "go", "golang", "tutorial", "protobuf", "connectrpc"]
+series: ["gRPC from Scratch"]
 date: "2024-02-15"
 description: "gRPC is an incredibly popular RPC framework that efficiently connects services. But how does it work? Let's dive in!"
 cover: "cover.jpg"

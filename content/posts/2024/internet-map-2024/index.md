@@ -1,6 +1,7 @@
 ---
 categories: ["article", "project", "video"]
 tags: ["dataviz", "internet-map", "internet", "networking", "fiber-optics", "map", "world", "infrastructure", "peeringdb", "svg", "javascript", "golang"]
+series: ["Internet Map"]
 date: "2024-04-23"
 description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
 cover: "cover.png"

@@ -13,4 +13,4 @@ jq -cr 'keys[] as $k | "\($k)\n\({title: ("Mastodon Post: " + (.[$k].created_at 
   echo $item | echo "$(jq --raw-output .params.content)" >> "./content/updates/imported/$fname.html"
 done
 
-rm -rf ./data/mastodon_inform
+rm -rf ./data/mastodon-inform

@@ -7,6 +7,16 @@
       <div class="post-excerpt">{{ . }}</div>
     {{ end }}
 
+  {{- with (.GetTerms "series") -}}
+  {{- $series := slice -}}
+  {{- range . -}}
+    {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Title) -}}
+  {{- end -}}
+  <div class="main-box">
+    This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.
+  </div>
+{{- end -}}
+
     <div class="main-wrapper">
     <div class="main-box">
       <div class="post-info">
@@ -87,15 +97,38 @@
       </div>
     </article>
 
-    {{- if .Params.mastodonID -}}
-      {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-        {{ partial "toot.html" .Params }}
+    {{- with (.GetTerms "series") -}}
+    {{- range . -}}
+    <div class="main-wrapper">
+    <div class="main-box">
+    <h3>{{ .Title }} series</h3>
+    {{- $series := .Pages.ByDate -}}
+    <ol>
+      {{- range $series -}}
+      <li>
+        {{- if eq .File.UniqueID $.File.UniqueID -}}
+          <b>{{ .Title }}</b>
+        {{- else -}}
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        {{- end -}}
+      </li>
       {{- end -}}
-    {{- else -}}
-      {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
-        {{ partial "toot.html" .Params }}
-      {{- end -}}
+    </ol>
+    </div>
+    </div>
+  {{- end -}}
+  {{- end -}}
+
+
+  {{- if .Params.mastodonID -}}
+    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
+      {{ partial "toot.html" .Params }}
     {{- end -}}
+  {{- else -}}
+    {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
+      {{ partial "toot.html" .Params }}
+    {{- end -}}
+  {{- end -}}
 
     <div class="main-wrapper">
       <div class="main-box">
@@ -111,18 +144,6 @@
         </div>
       </div>
     </div>
-
-    {{- if .Site.Params.EnableSharingButtons }}
-      <div class="sharing-buttons">
-        {{ partial "sharing-buttons.html" . }}
-      </div>
-    {{- end }}
-
-    {{ if .Site.Params.Commento.Url }}
-      <script defer src={{ .Site.Params.Commento.Url }} async></script>
-      <div id="commento"></div>
-    {{ end }}
-
   </main>
   {{ if .Page.Store.Get "hasMermaid" }}
     <script type="module" async>

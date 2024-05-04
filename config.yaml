@@ -69,6 +69,7 @@ params:
 taxonomies:
   category: "categories"
   tag: "tags"
+  series: "series"
 
 permalinks:
   posts: "/posts/:slug/"
