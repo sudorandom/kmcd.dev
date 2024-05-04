@@ -2,7 +2,7 @@
 categories: ["article", "tutorial"]
 tags: ["networking", "grpc", "go", "golang", "tutorial", "protobuf"]
 date: "2024-05-07"
-description: "We've made the world's simplest gRPC client and server for unary RPCs. Now let's tackle ~protobuf encoding~."
+description: "Under the Hood of gRPC: let us demystify protobuf encoding and understand how it works"
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-3/cover.jpg"]
 featured: ""
@@ -22,7 +22,7 @@ In the last two parts, I showed how to make an extremely simple gRPC client and 
 
 > For marshaling and unmarshaling entire protobuf messages, use the google.golang.org/protobuf/proto package instead.
 
-Am I going to listen to this solid advice? No! I want to know how this works! No reflection and no reliance on generated code. So let's get started:
+Am I going to listen to this solid advice? No! I want to know how this works! No reflection and no reliance on generated code. All of the code in this post are taken from unit tests [available here](https://github.com/sudorandom/sudorandom.dev/blob/main/content/posts/2024/grpc-from-scratch-part-3/go/protowire_test.go) so feel free to download the tests and play around with it locally. Now, let's get started.
 
 ## Wire Types
 I discuss in my [Inspecting Protobuf Messages](/posts/inspecting-protobuf-messages/) post that protobuf only has a small handful of types. Here they are again:
