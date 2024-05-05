@@ -26,6 +26,13 @@
     margin-left: 5px;
     border-radius: 1px;
     animation: cursor 1s infinite;
+
+    [data-theme=light] & {
+      background: #283745;
+    }
+    [data-theme=dark] & {
+      background: #fff;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -17,15 +17,6 @@
       <div class="post-excerpt">{{ . }}</div>
     {{ end }}
 
-  {{- with (.GetTerms "series") -}}
-  {{- $series := slice -}}
-  {{- range . -}}
-    {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Title) -}}
-  {{- end -}}
-  <div class="main-box">
-    This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.
-  </div>
-{{- end -}}
 
     <div class="post-info">
       {{ partial "categories.html" . }}
@@ -44,7 +35,14 @@
           {{ else }}
             {{ dateFormat "2006-01-02" .Date.Local }}
           {{ end }}
-        </span>
+
+          {{ if .Lastmod }}
+          {{ if not (eq .Lastmod .Date )}}
+            {{- if .GitInfo }}
+            <span><a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener"><i class="fa-solid fa-code-commit"></i></a></span>
+            {{- end }}
+          {{ end }}
+          {{ end }}
         {{ with $toot }}
           <span><a href="{{ .Url }}" target="_blank"><i class="fa-brands fa-mastodon"></i></a></span>
         {{ end }}
@@ -81,6 +79,16 @@
           </audio>
         </div>
       {{ end }}
+
+      {{- with (.GetTerms "series") -}}
+      {{- $series := slice -}}
+      {{- range . -}}
+        {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Title) -}}
+      {{- end -}}
+      <p>
+        <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
+      </p>
+      {{- end -}}
 
       <div class="post-content">
         {{ .Content }}
