@@ -14,11 +14,22 @@ main {
 }
 
 .post-info {
-    margin-top: 0;
+    margin-top: 10px;
     opacity: unset;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 10px;
+    font-size: 14px;
+}
+
+.post-info-2 {
+    text-align:right;
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 10px;
+    opacity: unset;
+    font-size: 14px;
+}
+
+.post-info-2 span {
+    margin-left: 10px;
 }
 
 .post-excerpt {

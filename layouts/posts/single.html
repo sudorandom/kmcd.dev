@@ -1,4 +1,14 @@
 {{ define "main" }}
+  {{ $toot := slice }}
+  {{- if .Params.mastodonID -}}
+    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
+      {{- $toot = .Params -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
+      {{- $toot = .Params -}}
+    {{- end -}}
+  {{- end -}}
   <main class="post">
     <h1 class="post-title">
       <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
@@ -17,22 +27,17 @@
   </div>
 {{- end -}}
 
+    <div class="post-info">
+      {{ partial "categories.html" . }}
+      {{ partial "tags.html" .Params.tags }}
+    </div>
+
     <div class="main-wrapper">
     <div class="main-box">
-      <div class="post-info">
-        <div>
-        <p>
-          <i class="fa-solid fa-clock"></i>
-          {{ i18n "readingTime" .Page.ReadingTime }}
-          <i class="fa-solid fa-clipboard"></i>
-          {{ .Page.WordCount | lang.NumFmt 0 }} words
-          {{ if .IsTranslated }}
-            {{ range (where $.Translations ".Lang" "!=" ".Lang") }}
-                | <a href="{{ .Permalink }}"><span class="flag flag-icon flag-icon-{{ index $.Site.Data.langFlags (.Lang) }} flag-icon-squared"></span></a>
-            {{ end}}
-          {{ end }}
-        </p>
-        <p>
+      <div class="post-info-2">
+        <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
+        <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.NumFmt 0 }} words</span>
+        <span>
           <i class="fa-solid fa-calendar-days"></i>
           {{ if .Site.Params.dateformNum }}
             {{ dateFormat .Site.Params.dateformNum .Date.Local }}
@@ -41,22 +46,19 @@
           {{ end }}
 
           {{ if .Lastmod }}
-            {{ if not (eq .Lastmod .Date )}}
-              {{- if .GitInfo }}
-              (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02" .Lastmod.Local }}</a>)
-              {{ else }}
-              (updated: {{ dateFormat "2006-01-02" .Lastmod.Local }})
-              {{- end }}
-            {{ end }}
+          {{ if not (eq .Lastmod .Date )}}
+            {{- if .GitInfo }}
+            (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02" .Lastmod.Local }}</a>)
+            {{ else }}
+            (updated: {{ dateFormat "2006-01-02" .Lastmod.Local }})
+            {{- end }}
           {{ end }}
-        </p>
-        </div>
-        <div>
-        <p>
-          {{ partial "categories.html" . }}
-          {{ partial "tags.html" .Params.tags }}
-        </p>
-        </div>
+          {{ end }}
+        </span>
+        {{ with $toot }}
+          <span><a href="{{ .Url }}" target="_blank"><i class="fa-brands fa-mastodon"></i></a></span>
+        {{ end }}
+        <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');"><i class="fa-solid fa-link"></i></a></span>
       </div>
 
       {{ $cover := (.Resources.Get .Params.Cover)}}
@@ -101,7 +103,7 @@
     {{- range . -}}
     <div class="main-wrapper">
     <div class="main-box">
-    <h3>{{ .Title }} series</h3>
+    <h3>{{ .Title }} Series</h3>
     {{- $series := .Pages.ByDate -}}
     <ol>
       {{- range $series -}}
@@ -119,15 +121,8 @@
   {{- end -}}
   {{- end -}}
 
-
-  {{- if .Params.mastodonID -}}
-    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-      {{ partial "toot.html" .Params }}
-    {{- end -}}
-  {{- else -}}
-    {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
-      {{ partial "toot.html" .Params }}
-    {{- end -}}
+  {{- with $toot -}}
+    {{ partial "toot.html" . }}
   {{- end -}}
 
     <div class="main-wrapper">

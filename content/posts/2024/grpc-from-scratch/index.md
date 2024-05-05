@@ -139,5 +139,3 @@ if f, ok := w.(http.Flusher); ok {
 Hopefully, I was able to shed a little bit of light on how gRPC *really* works. Binary protocols often have hard-to-understand documentation about each byte in a packet. However, gRPC only has 5 bytes of this weirdness so it's a perfect protocol to whet your appetite on network protocols.
 
 If you want to look at more details about the gRPC specification, I would refer you to [the official gRPC specification on GitHub](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md). [See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch/go)
-
-[<< Continue to see gRPC From Scratch: Part 2 where I build a simple gRPC server. >>](/posts/grpc-from-scratch-part-2/)
