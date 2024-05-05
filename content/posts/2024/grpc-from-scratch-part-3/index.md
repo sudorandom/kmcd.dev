@@ -17,8 +17,6 @@ devtoSkip: true
 canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-3
 ---
 
-> This is part three of a series. [Click here to see gRPC From Scratch: Part 1 where I build a simple gRPC client](/posts/grpc-from-scratch/) and [gRPC From Scratch: Part 2 where I build a simple gRPC server.](/posts/grpc-from-scratch-part-2/)
-
 In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of encoding and decoding protobufs for me. That ends today. I'll start by looking at the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:
 
 > For marshaling and unmarshaling entire protobuf messages, use the google.golang.org/protobuf/proto package instead.
@@ -48,7 +46,7 @@ You can shift the three least significant bits off to get the protobuf wire type
 (field_number << 3) | wire_type
 ```
 
-So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions or add another byte to describe more types. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?! Why is no one talking about this *glaring* limitation in protobufs?! At this point, I am now forced to explain what protobuf refers to as `Base 128 Varints`.
+So... 3 bits for the wire type leaves room for 8 different options so protobuf has room for two more wire types before they have to break compatibility with older versions or add another byte to describe more types. And 5 bits for the field number which leaves room for...... **32 different fields**??? What?! You can't have a message that has more than 32 fields?! Why is no one talking about this *glaring* limitation where the number of fields is limited to a four-year-old's counting ability?! Well, obviously this is not true and, at this point, I am now forced to explain what protobuf refers to as `Base 128 Varints`.
 
 ### Big numbers
 In the previous example, we saw `VARINT` take a single byte. What does it look like when your number is too big? Where does the variableness part of `VARINT` come in? The protobuf encoding uses what it calls Base-128 Variable Integers in several places. "Base 128" means you can count to 127 before rolling over to the next "digit" (or in this case, byte). The most significant bit is used as a continuation bit, which is a signal that there's at least one more byte worth of data to complete this integer. Let's decode one for practice:

@@ -44,16 +44,6 @@
           {{ else }}
             {{ dateFormat "2006-01-02" .Date.Local }}
           {{ end }}
-
-          {{ if .Lastmod }}
-          {{ if not (eq .Lastmod .Date )}}
-            {{- if .GitInfo }}
-            (updated: <a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener">{{ dateFormat "2006-01-02" .Lastmod.Local }}</a>)
-            {{ else }}
-            (updated: {{ dateFormat "2006-01-02" .Lastmod.Local }})
-            {{- end }}
-          {{ end }}
-          {{ end }}
         </span>
         {{ with $toot }}
           <span><a href="{{ .Url }}" target="_blank"><i class="fa-brands fa-mastodon"></i></a></span>
