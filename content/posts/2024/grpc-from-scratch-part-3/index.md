@@ -3,7 +3,7 @@ categories: ["article", "tutorial"]
 tags: ["networking", "grpc", "go", "golang", "tutorial", "protobuf"]
 series: ["gRPC from Scratch"]
 date: "2024-05-07"
-description: "Under the Hood of gRPC: let us demystify protobuf encoding and understand how it works"
+description: "Let's look under the hood of gRPC by getting into the weeds of protocol buffers."
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-3/cover.jpg"]
 featured: ""
