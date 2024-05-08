@@ -4,7 +4,6 @@ tags: ["programming", "software-engineering", "mental-health", "productivity"]
 date: "2024-04-30"
 description: "Stay motivated and avoid burnout"
 cover: "cover.jpg"
-images: ["/posts/greppable/cover.jpg"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
