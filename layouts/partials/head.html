@@ -24,10 +24,20 @@
     <meta property="og:description" content="{{ .Description }}" />
     {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
+    {{- $page := . -}}
     {{- range last 3 (.Resources.ByType "image") -}}
     {{ $img := . }}
     {{ if ne $img.MediaType.SubType "svg" }}
-        {{ $img = $img.Fill "1200x630 Center webp q90" }}
+        {{ $filters := slice
+            (images.Process "fill 1200x630 Center webp q90")
+            (images.Padding 100 0 0 0 "#333")
+            (images.Text $page.Title (dict
+                "size" 40
+                "x" 20
+                "y" 20
+                "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
+          }}
+        {{ $img = $img.Filter $filters }}
     {{ end }}
     <meta property="og:image" content="{{ $img.Permalink }}"/>
     {{ else }}
@@ -62,11 +72,14 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" async>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poetsen+One&display=swap" rel="stylesheet" async>
+<link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet" async>
+
 
 <!-- CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
     type="text/css" async>
+
 
 {{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
 {{ with resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
