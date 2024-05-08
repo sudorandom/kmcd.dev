@@ -7,12 +7,12 @@
     {{ $img := . }}
     {{ if ne $img.MediaType.SubType "svg" }}
         {{ $filters := slice
-            (images.Process "fill 1200x630 Center png q90")
-            (images.Padding 100 0 0 0 "#333")
+            (images.Process "fill 1200x560 Center png q90")
+            (images.Padding 70 0 0 0 "#1F2A35")
             (images.Text $page.Title (dict
                 "size" 40
-                "x" 20
-                "y" 20
+                "x" 40
+                "y" 10
                 "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
           }}
         {{ $img = $img.Filter $filters }}
