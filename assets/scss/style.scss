@@ -33,7 +33,9 @@ main {
 }
 
 .post-excerpt {
-    color: #ccc;
+    [data-theme=dark] & {
+        color: #ccc;
+    }
 }
 
 .posts {
