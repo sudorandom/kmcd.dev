@@ -355,6 +355,12 @@ ul.icons {
     margin-top: 0;
 }
 
+.main-box-light {
+    [data-theme=dark] & {
+        background: #283745;
+    }
+}
+
 .links-box h2 {
     margin-top: 0;
 }
