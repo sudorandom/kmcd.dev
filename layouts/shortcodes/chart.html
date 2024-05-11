@@ -1,0 +1,13 @@
+{{- $seed := "randomess-is-a-lie" -}}
+{{- $id := substr (md5 .Inner) 0 16 -}}
+<div class="chart">
+    <canvas id="{{ $id }}"></canvas>
+</div>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var ctx = document.getElementById('{{ $id }}').getContext('2d');
+        var options = {{ .Inner | chomp | safeJS }};
+        new Chart(ctx, options);
+    });
+</script>
+{{ .Page.Store.Set "hasChartJS" true }}
