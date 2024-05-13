@@ -24,9 +24,9 @@ As time marches on, and with it, some concerns about `grpc-go` have emerged:
 ## The lineup
 Because of these reasons, I decided to explore some alternatives to grpc-go and if I require similar performance, I should make sure that the alternatives are in the same ballpark of performance. This post dives into benchmarks comparing the performance of three different ways to run a gRPC server in Go:
 
-* **[grpc-go](https://github.com/grpc/grpc-go):** The official library from Google.
-* **[grpc-go-servehttp](https://pkg.go.dev/google.golang.org/grpc#Server.ServeHTTP):** A variant of `grpc-go` that allows using the standard Go HTTP server. This is useful when you want to add extra HTTP routes alongside the gRPC ones without having to manage another HTTP server instance on a different port.
-* **[connectrpc](https://github.com/connectrpc/connect-go):** A third-party gRPC library that supports the Go HTTP server [(and gRPC-Web and the Connect protocol)](https://connectrpc.com/docs/multi-protocol/). I wrote about this before [here](/posts/connectrpc).
+* **[grpc-go](https://github.com/grpc/grpc-go):** The official library from Google. See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/grpc-go/main.go).
+* **[grpc-go-servehttp](https://pkg.go.dev/google.golang.org/grpc#Server.ServeHTTP):** A variant of `grpc-go` that allows using the standard Go HTTP server. This is useful when you want to add extra HTTP routes alongside the gRPC ones without having to manage another HTTP server instance on a different port. See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/grpc-go-servehttp/main.go).
+* **[connectrpc](https://github.com/connectrpc/connect-go):** A third-party gRPC library that supports the Go HTTP server [(and gRPC-Web and the Connect protocol)](https://connectrpc.com/docs/multi-protocol/). I wrote about this [previously](/posts/connectrpc). See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/connectrpc/main.go).
 
 Before diving into writing my own benchmarks, I wanted to see what exists today:
 - The gRPC authors have published their own **[benchmark results](https://grpc.io/docs/guides/benchmarking/)**. In these results, it looks like grpc-go is among the top performers.
@@ -55,6 +55,7 @@ This scenario uses an empty message to gauge the overall performance of handling
     "insecure": true
 }
 ```
+[(source)](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/scenarios/empty.json)
 
 ### Results
 The results are measured in Requests Per Second (RPS) which means that higher is better. This was run on an Intel NUC:
@@ -152,6 +153,7 @@ This scenario uses a larger message with most of the protobuf types to exercise 
     "insecure": true
 }
 ```
+[(source)](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/scenarios/complex.json)
 
 In this scenario, I also tested with and without an alternative marshal/unmarshal implementation provided by [vtprotobuf](https://github.com/planetscale/vtprotobuf), which can further optimize performance. This was omitted from the last test because there shouldn't really be much performance difference when you're parsing an empty message.
 
@@ -229,4 +231,4 @@ I am curious about exactly why supporting the `ServeHTTP` interface causes such 
 
 I do have to give the standard disclaimer about benchmarks. This is an artificial benchmark that was run on my underpowered, hobbyist Intel NUC and while grpc-go performs well, the difference between it and the other methods is probably negligible for use cases that don't require peak performance.
 
-See the full benchmark source here at [github.com/sudorandom/go-grpc-bench](https://github.com/sudorandom/go-grpc-bench/). The repo does contain CPU profile captures alongside the results which I was attempting to use to narrow down the performance differences, but I haven't found anything interesting there yet. If I succeed at finding anything interesting, I may post another update here!
+See the full benchmark source here at [github.com/sudorandom/go-grpc-bench](https://github.com/sudorandom/go-grpc-bench/tree/v0.0.1). The repo does contain CPU profile captures alongside the results which I was attempting to use to narrow down the performance differences, but I haven't found anything interesting there yet. If I succeed at finding anything interesting, I may post another update here!

@@ -1,4 +1,3 @@
-{{- $seed := "randomess-is-a-lie" -}}
 {{- $id := substr (md5 .Inner) 0 16 -}}
 <div class="chart">
     <canvas id="{{ $id }}"></canvas>
