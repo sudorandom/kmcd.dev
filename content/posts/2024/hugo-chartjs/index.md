@@ -20,6 +20,7 @@ I recently wanted to add some charts to a blog post and [mermaid](https://mermai
 
 At this point, I was ready to throw the entire project aside and do my own thing. This is what I ended up with. It only requires a new shortcode and a snippet inside the `<head>` inside your template. This will be very specific to your template so I can't give an exact location for this code. So instead of having a dependency, it's just two simple edits/additions to your existing layouts to add support.
 
+### Installation
 First, here's the new shortcode; `layouts/shortcodes/chart.html`:
 ```html
 {{- $id := substr (md5 .Inner) 0 16 -}}
@@ -235,7 +236,7 @@ You can use any chart [available in chart.js](https://www.chartjs.org/docs/lates
 See more options on bar charts [here](https://www.chartjs.org/docs/latest/charts/polar.html).
 
 ### Some other kinds
-I'm going to spare you from giving an example of every type of chart. Please reference the official [chart.js documentation](https://www.chartjs.org/docs/latest/) to see all available options
+I'm going to spare you from giving an example of every type of chart. Please reference the official [chart.js documentation](https://www.chartjs.org/docs/latest/) to see all available options.
 
 
 ### End
