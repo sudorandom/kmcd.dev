@@ -352,17 +352,17 @@
         "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/112/139/363/910/006/502/original/86f2ebe21f8189e8.png",
         "header": "https://assets.infosec.exchange/headers/original/missing.png",
         "header_static": "https://assets.infosec.exchange/headers/original/missing.png",
-        "followers_count": 1777,
+        "followers_count": 1783,
         "following_count": 1006,
-        "statuses_count": 536,
-        "last_status_at": "2024-05-15",
+        "statuses_count": 545,
+        "last_status_at": "2024-05-16",
         "hide_collections": false,
         "emojis": [],
         "fields": [
           {
             "name": "Blog",
             "value": "<a href=\"https://shellsharks.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">shellsharks.com</span><span class=\"invisible\"></span></a>",
-            "verified_at": "2024-05-15T01:40:15.793+00:00"
+            "verified_at": "2024-05-16T13:52:57.411+00:00"
           },
           {
             "name": "Personal Mastodon",
@@ -948,7 +948,7 @@
         "header_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/109/606/268/322/256/674/original/53499180808e27f4.png",
         "followers_count": 804,
         "following_count": 382,
-        "statuses_count": 8434,
+        "statuses_count": 8439,
         "last_status_at": "2024-05-16",
         "hide_collections": false,
         "emojis": [
