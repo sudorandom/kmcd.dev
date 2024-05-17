@@ -231,4 +231,6 @@ I am curious about exactly why supporting the `ServeHTTP` interface causes such 
 
 I do have to give the standard disclaimer about benchmarks. This is an artificial benchmark that was run on my underpowered, hobbyist Intel NUC and while grpc-go performs well, the difference between it and the other methods is probably negligible for use cases that don't require peak performance.
 
+The approach that ConnectRPC has with using ServeHTTP with a normal `http.Server` provided by the standard library means that it's likely to "just work" with http/3 [when it lands in the Go standard library](https://github.com/golang/go/issues/32204). This is exciting for these artificial benchmarks (and some real use cases) where creating new connections is a significant part of the overhead.
+
 See the full benchmark source here at [github.com/sudorandom/go-grpc-bench](https://github.com/sudorandom/go-grpc-bench/tree/v0.0.1). The repo does contain CPU profile captures alongside the results which I was attempting to use to narrow down the performance differences, but I haven't found anything interesting there yet. If I succeed at finding anything interesting, I may post another update here!

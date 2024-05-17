@@ -24,7 +24,7 @@
             {{ end }}
             <div class="main-heading">
             <div class="posts-header">
-                <h3>Featured Posts</h3>
+                <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
             </div>
 
             {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
@@ -49,7 +49,7 @@
 
             <div class="main-heading">
             <div class="posts-header">
-                <h3>Latest Posts</h3>
+                <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
             </div>
 
             {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}

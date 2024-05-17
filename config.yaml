@@ -26,7 +26,7 @@ params:
   EnableSharingButtons: false
   EnableGlobalLanguageMenu: false
   customCSS: []
-  backgroundImage: "images/transparent_geo-mercator-small.webp"
+  backgroundImage: "images/transparent_the-internet-map.webp"
   backgroundEffects: true
   showPosts: true
   contentTypeName: posts
