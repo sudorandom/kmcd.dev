@@ -39,14 +39,14 @@
           {{ if .Lastmod }}
           {{ if not (eq .Lastmod .Date )}}
             {{- if .GitInfo }}
-            <span><a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener"><i class="fa-solid fa-code-commit"></i></a></span>
+            <span><a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener" aria-label="Latest git commit"><i class="fa-solid fa-code-commit"></i></a></span>
             {{- end }}
           {{ end }}
           {{ end }}
         {{ with $toot }}
-          <span><a href="{{ .Url }}" target="_blank"><i class="fa-brands fa-mastodon"></i></a></span>
+          <span><a href="{{ .Url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
         {{ end }}
-        <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');"><i class="fa-solid fa-link"></i></a></span>
+        <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
       </div>
 
       {{ $cover := (.Resources.Get .Params.Cover)}}
@@ -130,7 +130,7 @@
           {{ range .Site.RegularPages.Related . | first 4 }}
           <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
           {{ end }}
-          <li><a href="/random/">Go to a random page</a> <a href="/random/"><i class="fa-solid fa-dice"></i></a></li>
+          <li><a href="/random/">Go to a random page</a> <a href="/random/" aria-label="Go to a random page"><i class="fa-solid fa-dice"></i></a></li>
         </ul>
         <div class="post-info">
           {{ partial "pagination-single.html" . }}
