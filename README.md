@@ -1,4 +1,4 @@
-[![Deploy Hugo site to Pages](https://github.com/sudorandom/sudorandom.dev/actions/workflows/hugo.yml/badge.svg)](https://github.com/sudorandom/sudorandom.dev/actions/workflows/hugo.yml)
+[![Deploy Hugo site to Pages](https://github.com/sudorandom/kmcd.dev/actions/workflows/hugo.yml/badge.svg)](https://github.com/sudorandom/kmcd.dev/actions/workflows/hugo.yml)
 
 # Building my site
 I'm not sure why you're reading this if you're anyone other than me. But if you are me, here's how to run the site locally. This re-builds when a file is changed:

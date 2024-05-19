@@ -14,11 +14,11 @@ title: "gRPC From Scratch: Part 2 - Server"
 slug: "grpc-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-2
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-2
 mastodonID: "112277285817413643"
 ---
 
-Last time we made a super simple gRPC client. **This time we're going to make a gRPC server**. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch/#encoding-the-request) and [readMessage](/posts/grpc-from-scratch/#decoding-the-response) from [last time](https://sudorandom.dev/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
+Last time we made a super simple gRPC client. **This time we're going to make a gRPC server**. We are going to completely reuse the [writeMessage](/posts/grpc-from-scratch/#encoding-the-request) and [readMessage](/posts/grpc-from-scratch/#decoding-the-response) from [last time](/posts/grpc-from-scratch/) because they work the same on the server. After all, the envelope for servers is the same as the envelope for clients. Sweet!
 
 ## The Setup
 Like last time, we're going to use [ConnectRPC](https://connectrpc.com/docs/go/getting-started) to help us test our implementation. Last time we used the ConnectRPC's server to test our custom gRPC client so this time we're going to use the ConnectRPC's client to test our custom gRPC server. Did I say that right? Yeah, I think so... Let's move on. Here's what the full client looks like:
@@ -76,7 +76,7 @@ In this example, a trailer named `MessagesSent` will be sent AFTER the `Hello wo
 Why doesn't Go support a more... normal interface for trailers? [Who knows.](https://go-review.googlesource.com/c/go/+/2157). Trailers are often a bit of an afterthought. That is also proven by the fact that the "Trailer" values [available in Go's http.Request](https://pkg.go.dev/net/http#Request) uses the type `http.Headers`. Oof.
 
 ## Implementing the Greet Handler
-As I did last time, I'm omitting error handling for clarity since `readMessage` and `writeMessage` can both return an error. The code that I end up with [does handle errors that might happen when reading or writing the HTTP body](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go/server/main.go). However, take a look at the cleaner version first:
+As I did last time, I'm omitting error handling for clarity since `readMessage` and `writeMessage` can both return an error. The code that I end up with [does handle errors that might happen when reading or writing the HTTP body](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go/server/main.go). However, take a look at the cleaner version first:
 
 ```go
 func greetHandler(w http.ResponseWriter, r *http.Request) {
@@ -96,7 +96,7 @@ func greetHandler(w http.ResponseWriter, r *http.Request) {
 ```
 
 ## Putting it all together
-Surprisingly, this is pretty much all of the parts that are needed to handle a unary gRPC RPC. You can see [the entire working prototype here](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go).
+Surprisingly, this is pretty much all of the parts that are needed to handle a unary gRPC RPC. You can see [the entire working prototype here](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go).
 
 ### Logs from the client
 
@@ -173,4 +173,4 @@ How can we improve the client and server that we've written? **MANY** details we
 
 There is quite a lot that goes into making a real gRPC client/server and a lot of small details that can have a large impact. Many of those details can be found in [the gRPC over HTTP2 spec](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md). Also, if I were making a real client/server I would use a test suite designed for testing a gRPC implementation's conformity to the gRPC spec. [ConnectRPC has one](https://github.com/connectrpc/conformance). Using that paired with testing with various gRPC tools and languages while trying to use as many features is probably the best way to validate your client and gRPC server implementations.
 
-[See the full prototype from this post here.](https://github.com/sudorandom/sudorandom.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go)
+[See the full prototype from this post here.](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/grpc-from-scratch-part-2/go)

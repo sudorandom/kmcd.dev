@@ -15,7 +15,7 @@ type: "posts"
 devtoId: 1797651
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://sudorandom.dev/posts/connectrpc
+canonical_url: https://kmcd.dev/posts/connectrpc
 mastodonID: "112277436177327682"
 ---
 

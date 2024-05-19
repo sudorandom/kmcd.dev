@@ -14,7 +14,7 @@ title: "gRPC From Scratch: Part 4 - More Protobuf Encoding"
 slug: "grpc-from-scratch-part-4"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-4
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-4
 draft: true
 ---
 TODO: intro

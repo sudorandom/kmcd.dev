@@ -15,7 +15,7 @@ type: "posts"
 devtoId: 1797653
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://sudorandom.dev/posts/unknownconnect-go
+canonical_url: https://kmcd.dev/posts/unknownconnect-go
 mastodonID: "112277437847001145"
 ---
 

@@ -13,7 +13,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	pb "github.com/sudorandom/sudorandom.dev/inspecting-protobuf/gen/proto"
+	pb "github.com/sudorandom/kmcd.dev/inspecting-protobuf/gen/proto"
 )
 
 const testdataPrefix = "testdata"

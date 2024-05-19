@@ -11,7 +11,7 @@ type: "posts"
 devtoId: 1815913
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://sudorandom.dev/posts/api-contracts
+canonical_url: https://kmcd.devontracts
 mastodonID: "112277335329654214"
 ---
 

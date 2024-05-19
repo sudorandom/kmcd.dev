@@ -1,7 +1,7 @@
-baseURL: 'https://sudorandom.dev'
+baseURL: 'https://kmcd.dev'
 languageCode: 'en'
 theme: "hello-4s3ti"
-title: 'sudorandom.dev'
+title: 'kmcd.dev'
 copyright: "All Rights Reserved"
 IsMultiLingual: false
 defaultContentLanguage: en
@@ -19,10 +19,10 @@ params:
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: ""
   author:
-    name: "sudorandom"
+    name: "Kevin McDonald"
   defaultTheme: "dark"
   EnableThemeToggle: true
-  gitUrl: "https://github.com/sudorandom/sudorandom.dev/commit/"
+  gitUrl: "https://github.com/sudorandom/kmcd.dev/commit/"
   EnableSharingButtons: false
   EnableGlobalLanguageMenu: false
   customCSS: []
@@ -39,15 +39,15 @@ params:
   ShowReadingTime: true
   LastModDisplay: false
   logo:
-    logoText: "sudorandom.dev"
+    logoText: "kmcd.dev"
     logoCursorColor: "#ffffff"
   social:
     - name: "mastodon"
       url: "https://infosec.exchange/@sudorandom"
+    - name: "linkedin"
+      url: "https://linkedin.com/in/sudorandom"
     - name: "github"
       url: "https://github.com/sudorandom"
-    - name: "linkedin"
-      url: "https://www.linkedin.com/in/sudorandom/"
 
   mainSections:
     - posts
@@ -77,25 +77,17 @@ permalinks:
 menu:
   main:
     - identifier: "posts"
-      name: "Posts"
+      name: "/posts"
       url: "/posts/"
       weight: 1
-    - identifier: "projects"
-      name: "Projects"
-      url: "/projects/"
+    - identifier: "me"
+      name: "/me"
+      url: "/me/"
       weight: 2
     - identifier: "links"
-      name: "Links"
+      name: "/links"
       url: "/links/"
       weight: 3
-    - identifier: "updates"
-      name: "Updates"
-      url: "/updates/"
-      weight: 4
-    - identifier: "shop"
-      name: "Shop"
-      url: "/shop/"
-      weight: 5
 
 markup:
   tableOfContents:

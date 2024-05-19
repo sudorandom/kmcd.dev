@@ -17,7 +17,7 @@ mastodonID: "112318628224487252"
 devtoId: 1831151
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://sudorandom.dev/posts/internet-map-2024
+canonical_url: https://kmcd.dev/posts/internet-map-2024
 featured: true
 ---
 

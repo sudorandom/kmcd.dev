@@ -14,14 +14,14 @@ title: "gRPC From Scratch: Part 3 - Protobuf Encoding"
 slug: "grpc-from-scratch-part-3"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/grpc-from-scratch-part-3
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-3
 ---
 
 In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of encoding and decoding protobufs for me. That ends today. I'll start by looking at the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:
 
 > For marshaling and unmarshaling entire protobuf messages, use the google.golang.org/protobuf/proto package instead.
 
-Am I going to listen to this solid advice? No! I want to know how this works! No reflection and no reliance on generated code. All of the code in this post are taken from unit tests [available here](https://github.com/sudorandom/sudorandom.dev/blob/main/content/posts/2024/grpc-from-scratch-part-3/go/protowire_test.go) so feel free to download the tests and play around with it locally. Now, let's get started.
+Am I going to listen to this solid advice? No! I want to know how this works! No reflection and no reliance on generated code. All of the code in this post are taken from unit tests [available here](https://github.com/sudorandom/kmcd.dev/blob/main/content/posts/2024/grpc-from-scratch-part-3/go/protowire_test.go) so feel free to download the tests and play around with it locally. Now, let's get started.
 
 ## Wire Types
 I discuss in my [Inspecting Protobuf Messages](/posts/inspecting-protobuf-messages/) post that protobuf only has a small handful of types. Here they are again:

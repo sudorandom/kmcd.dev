@@ -8,7 +8,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	gen "github.com/sudorandom/sudorandom.dev/grpc-from-scratch/gen"
+	gen "github.com/sudorandom/kmcd.dev/grpc-from-scratch/gen"
 	http "net/http"
 	strings "strings"
 )

@@ -13,7 +13,7 @@ title: "Blog Update"
 slug: "blog-update"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/blog-update
+canonical_url: https://kmcd.dev/blog-update
 mastodonID: ""
 ---
 
@@ -45,7 +45,7 @@ I updated the projects page to be more... clear. The image gallery format just w
 I have become a fan of the "small web" and I feel like link pages bring some of that small web feeling back. See mine, [here](/links/).
 
 ## Technologies
-Some may be interested to know how this blog is built. The source code is available here on GitHub at [sudorandom/sudorandom.dev](https://github.com/sudorandom/sudorandom.dev/). An enterprising reader could get sneak-peaks by watching this repo 👀
+Some may be interested to know how this blog is built. The source code is available here on GitHub at [sudorandom/kmcd.dev](https://github.com/sudorandom/kmcd.dev/). An enterprising reader could get sneak-peaks by watching this repo 👀
 
 ### Cloudflare
 As you may be able to tell from DNS, I use Cloudflare as a CDN, DNS, and firewall. Cloudflare has an incredibly generous free tier, which I use extensively.

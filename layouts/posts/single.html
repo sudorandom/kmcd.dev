@@ -138,32 +138,6 @@
       </div>
     </div>
   </main>
-  {{ if .Page.Store.Get "hasChartJS" }}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script> Chart.defaults.color = '#fff'; </script>
-  {{ end }}
-  {{ if .Page.Store.Get "hasMermaid" }}
-    <script type="module" async>
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({
-            startOnLoad: false,
-            darkMode: false,
-            theme: 'dark',
-            themeVariables: {
-              background: "transparent",
-              pie1: "#003f5c",
-              pie2: "#2f4b7c",
-              pie3: "#665191",
-              pie4: "#a05195",
-              pie5: "#d45087",
-              pie6: "#f95d6a",
-              pie7: "#ff7c43",
-              pie8: "#ffa600",
-            }
-        });
-        mermaid.run()
-    </script>
-  {{ end }}
 
   <div id="reading-progress"><div id="reading-progress-fill"></div></div>
   <script type="text/javascript">

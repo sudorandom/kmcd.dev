@@ -13,7 +13,7 @@ title: "Why you should use gNMI over SNMP in 2024"
 slug: "gnmi"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/gnmi
+canonical_url: https://kmcd.dev/posts/gnmi
 mastodonID: "112277288984060202"
 ---
 

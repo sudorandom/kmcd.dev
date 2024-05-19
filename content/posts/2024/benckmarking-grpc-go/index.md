@@ -10,7 +10,7 @@ title: "Benchmarking gRPC (golang)"
 slug: "benchmarking-go-grpc"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/benchmarking-go-grpc
+canonical_url: https://kmcd.dev/benchmarking-go-grpc
 ---
 
 Hey everyone, as you know from my previous posts I'm a big fan of gRPC especially when working with Go. It's been my go-to tool for building remote procedure calls (RPCs) for a while now. It has been extremely reliable for providing high-performance RPC systems. Originally, there was only one choice: Google's `grpc-go` library. It came before HTTP/2 support landed in the Go standard library, and being from Google, the creators of gRPC, it seemed like the natural fit. But is it *actually* the best gRPC library for Go?

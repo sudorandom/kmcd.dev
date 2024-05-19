@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/sudorandom/sudorandom.dev/grpc-from-scratch/gen"
+	"github.com/sudorandom/kmcd.dev/grpc-from-scratch/gen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
 )

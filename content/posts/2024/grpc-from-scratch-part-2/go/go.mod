@@ -1,4 +1,4 @@
-module github.com/sudorandom/sudorandom.dev/grpc-from-scratch-part-2
+module github.com/sudorandom/kmcd.dev/grpc-from-scratch-part-2
 
 go 1.21.7
 

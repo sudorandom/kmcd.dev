@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/sudorandom/sudorandom.dev/grpc-from-scratch-part-2/gen
+    default: github.com/sudorandom/kmcd.dev/grpc-from-scratch-part-2/gen
 plugins:
   - plugin: buf.build/protocolbuffers/go
     out: gen

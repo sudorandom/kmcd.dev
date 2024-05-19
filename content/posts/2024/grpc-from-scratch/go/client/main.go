@@ -11,7 +11,7 @@ import (
 	"net"
 	"net/http"
 
-	greetv1 "github.com/sudorandom/sudorandom.dev/grpc-from-scratch/gen"
+	greetv1 "github.com/sudorandom/kmcd.dev/grpc-from-scratch/gen"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/sync/errgroup"

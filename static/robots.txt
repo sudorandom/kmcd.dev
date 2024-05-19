@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
 
-Sitemap: https://sudorandom.dev/sitemap.xml
+Sitemap: https://kmcd.dev/sitemap.xml

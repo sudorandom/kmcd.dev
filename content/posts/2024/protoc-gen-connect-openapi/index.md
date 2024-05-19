@@ -13,7 +13,7 @@ title: "Introducing protoc-gen-connect-openapi"
 slug: "protoc-gen-connect-openapi"
 type: "posts"
 devtoSkip: true
-canonical_url: https://sudorandom.dev/posts/protoc-gen-connect-openapi
+canonical_url: https://kmcd.dev/posts/protoc-gen-connect-openapi
 mastodonID: "112277431193411736"
 
 aliases: [

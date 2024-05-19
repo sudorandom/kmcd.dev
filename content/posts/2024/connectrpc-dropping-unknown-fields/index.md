@@ -11,7 +11,7 @@ type: "posts"
 devtoId: 1808828
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://sudorandom.dev/posts/connectrpc-dropping-unknown-fields
+canonical_url: https://kmcd.dev/connectrpc-dropping-unknown-fields
 mastodonID: "112277345241838737"
 ---
 

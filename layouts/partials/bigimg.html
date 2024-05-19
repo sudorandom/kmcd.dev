@@ -1,0 +1,12 @@
+{{ $image := (.page.Resources.GetMatch .src).Fit "1600x1000 webp" }}
+{{ if $image }}
+<img src="{{ $image.Permalink }}"
+        {{- if or .alt .caption }}
+        alt="{{ with .alt }}{{ . }}{{ else }}{{ .caption | markdownify| plainify }}{{ end }}"
+        {{- end -}}
+        {{- with .width }} width="{{ . }}"{{ end -}}
+        {{- with .height }} height="{{ . }}"{{ end -}}
+        {{- with .loading }} loading="{{ . }}"{{ end -}}/>
+{{ else }}
+{{ errorf "image not found %s" .src }}
+{{ end }}

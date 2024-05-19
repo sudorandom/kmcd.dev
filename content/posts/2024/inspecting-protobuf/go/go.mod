@@ -1,4 +1,4 @@
-module github.com/sudorandom/sudorandom.dev/inspecting-protobuf
+module github.com/sudorandom/kmcd.dev/inspecting-protobuf
 
 go 1.21.7
 
