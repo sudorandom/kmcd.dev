@@ -59,20 +59,13 @@ jobs:
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
 
-      - name: Build with Hugo
+      - name: Build
         env:
           # For maximum backward compatibility with Hugo modules
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
         run: |
-          hugo \
-            --gc \
-            --minify \
-            --baseURL "https://kmcd.dev/"
-
-      - name: Generate search index
-        run: |
-          npx -y pagefind --site public
+          make build
 
       - name: Publish
         uses: cloudflare/pages-action@1
@@ -80,5 +73,22 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kmcd-dev
+          directory: public
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Future
+        env:
+          # For maximum backward compatibility with Hugo modules
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+        run: |
+          make build-future
+
+      - name: Publish Future
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: kmcd-dev-future
           directory: public
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

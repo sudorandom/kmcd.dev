@@ -10,5 +10,9 @@ run:
 	hugo server --buildDrafts --buildFuture --minify
 
 build:
-	hugo
+	hugo --gc --minify --cleanDestinationDir --baseURL "https://kmcd.dev/"
+	npx -y pagefind --site public
+
+build-future:
+	hugo --gc --minify --cleanDestinationDir --baseURL "https://shhh.kmcd.dev/" --buildFuture
 	npx -y pagefind --site public
