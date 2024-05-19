@@ -35,6 +35,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    environment: github-pages
     env:
       HUGO_VERSION: 'latest'
     steps:
