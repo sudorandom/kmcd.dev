@@ -41,7 +41,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
       "followers_count": 135,
       "following_count": 63,
-      "statuses_count": 351,
+      "statuses_count": 332,
       "last_status_at": "2024-05-19",
       "hide_collections": false,
       "noindex": false,
@@ -237,1732 +237,6 @@
     "poll": null
   },
   {
-    "id": "112469017640714232",
-    "created_at": "2024-05-19T17:50:16.248Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017640714232",
-    "url": "https://infosec.exchange/@sudorandom/112469017640714232",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Blog Update: An update about the state of the blog.<br /><a href=\"https://kmcd.dev/posts/blog-update/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev/posts/blog-update/</span><span class=\"invisible\"></span></a><br /><a href=\"https://infosec.exchange/tags/blog\" class=\"mention hashtag\" rel=\"tag\">#<span>blog</span></a> <a href=\"https://infosec.exchange/tags/update\" class=\"mention hashtag\" rel=\"tag\">#<span>update</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "blog",
-        "url": "https://infosec.exchange/tags/blog"
-      },
-      {
-        "name": "update",
-        "url": "https://infosec.exchange/tags/update"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/blog-update/",
-      "title": "Blog Update",
-      "description": "An update about the state of the blog.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/140/original/e4d59f2f810678f7.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UJ9tl|TINEnhVsacoyxvDzs:t8R%tjx^ohNE",
-      "published_at": "2024-05-14T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017640136494",
-    "created_at": "2024-05-19T17:50:16.241Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017640136494",
-    "url": "https://infosec.exchange/@sudorandom/112469017640136494",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 gRPC From Scratch: Part 3 - Protobuf Encoding: Let&#39;s look under the hood of gRPC by getting into the weeds of protocol buffers.<br /><a href=\"https://kmcd.dev/posts/grpc-from-scratch-part-3/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/grpc-from-scrat</span><span class=\"invisible\">ch-part-3/</span></a><br /><a href=\"https://infosec.exchange/tags/networking\" class=\"mention hashtag\" rel=\"tag\">#<span>networking</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/go\" class=\"mention hashtag\" rel=\"tag\">#<span>go</span></a> <a href=\"https://infosec.exchange/tags/golang\" class=\"mention hashtag\" rel=\"tag\">#<span>golang</span></a> <a href=\"https://infosec.exchange/tags/tutorial\" class=\"mention hashtag\" rel=\"tag\">#<span>tutorial</span></a> <a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "networking",
-        "url": "https://infosec.exchange/tags/networking"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "go",
-        "url": "https://infosec.exchange/tags/go"
-      },
-      {
-        "name": "golang",
-        "url": "https://infosec.exchange/tags/golang"
-      },
-      {
-        "name": "tutorial",
-        "url": "https://infosec.exchange/tags/tutorial"
-      },
-      {
-        "name": "protobuf",
-        "url": "https://infosec.exchange/tags/protobuf"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/grpc-from-scratch-part-3/",
-      "title": "gRPC From Scratch: Part 3 - Protobuf Encoding",
-      "description": "Let's look under the hood of gRPC by getting into the weeds of protocol buffers.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/142/original/75aca0f1fb2be7a2.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UPEK+kV@9sXNx^OWrWXS1Joe%1j0oc,@J.nl",
-      "published_at": "2024-05-07T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017628098088",
-    "created_at": "2024-05-19T17:50:16.054Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017628098088",
-    "url": "https://infosec.exchange/@sudorandom/112469017628098088",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Tracking the Wins: Stay motivated and avoid burnout<br /><a href=\"https://kmcd.dev/posts/tracking-the-wins/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/tracking-the-wi</span><span class=\"invisible\">ns/</span></a><br /><a href=\"https://infosec.exchange/tags/programming\" class=\"mention hashtag\" rel=\"tag\">#<span>programming</span></a> <a href=\"https://infosec.exchange/tags/software\" class=\"mention hashtag\" rel=\"tag\">#<span>software</span></a>-engineering <a href=\"https://infosec.exchange/tags/mental\" class=\"mention hashtag\" rel=\"tag\">#<span>mental</span></a>-health <a href=\"https://infosec.exchange/tags/productivity\" class=\"mention hashtag\" rel=\"tag\">#<span>productivity</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "programming",
-        "url": "https://infosec.exchange/tags/programming"
-      },
-      {
-        "name": "software",
-        "url": "https://infosec.exchange/tags/software"
-      },
-      {
-        "name": "mental",
-        "url": "https://infosec.exchange/tags/mental"
-      },
-      {
-        "name": "productivity",
-        "url": "https://infosec.exchange/tags/productivity"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/tracking-the-wins/",
-      "title": "Tracking the Wins",
-      "description": "Stay motivated and avoid burnout",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/138/original/6382ea86a0c72120.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UHBozT_4W.iuKPJ+WURiVrr;t7NxX9bcs:s;",
-      "published_at": "2024-04-30T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017614766594",
-    "created_at": "2024-05-19T17:50:15.852Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017614766594",
-    "url": "https://infosec.exchange/@sudorandom/112469017614766594",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Making Greppable Code: Meaningful names help make code searchable so think twice before naming everything &#39;entity&#39;<br /><a href=\"https://kmcd.dev/posts/greppable/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev/posts/greppable/</span><span class=\"invisible\"></span></a><br /><a href=\"https://infosec.exchange/tags/programming\" class=\"mention hashtag\" rel=\"tag\">#<span>programming</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/api\" class=\"mention hashtag\" rel=\"tag\">#<span>api</span></a> <a href=\"https://infosec.exchange/tags/rest\" class=\"mention hashtag\" rel=\"tag\">#<span>rest</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "programming",
-        "url": "https://infosec.exchange/tags/programming"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "api",
-        "url": "https://infosec.exchange/tags/api"
-      },
-      {
-        "name": "rest",
-        "url": "https://infosec.exchange/tags/rest"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/greppable/",
-      "title": "Making Greppable Code",
-      "description": "Meaningful names help make code searchable so think twice before naming everything 'entity'",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/141/original/53c73e23f030f40d.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UNE;D_W.2fxv58ohIBw@+Xoz-jaKMIt6NMNf",
-      "published_at": "2024-04-16T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017612577808",
-    "created_at": "2024-05-19T17:50:15.821Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017612577808",
-    "url": "https://infosec.exchange/@sudorandom/112469017612577808",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Building APIs with Contracts: Building for Scale: Why contract-based APIs are the future.<br /><a href=\"https://kmcd.dev/posts/api-contracts/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev/posts/api-contracts/</span><span class=\"invisible\"></span></a><br /><a href=\"https://infosec.exchange/tags/api\" class=\"mention hashtag\" rel=\"tag\">#<span>api</span></a> <a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/openapi\" class=\"mention hashtag\" rel=\"tag\">#<span>openapi</span></a> <a href=\"https://infosec.exchange/tags/arvo\" class=\"mention hashtag\" rel=\"tag\">#<span>arvo</span></a> <a href=\"https://infosec.exchange/tags/thrift\" class=\"mention hashtag\" rel=\"tag\">#<span>thrift</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "api",
-        "url": "https://infosec.exchange/tags/api"
-      },
-      {
-        "name": "protobuf",
-        "url": "https://infosec.exchange/tags/protobuf"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "openapi",
-        "url": "https://infosec.exchange/tags/openapi"
-      },
-      {
-        "name": "arvo",
-        "url": "https://infosec.exchange/tags/arvo"
-      },
-      {
-        "name": "thrift",
-        "url": "https://infosec.exchange/tags/thrift"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/api-contracts/",
-      "title": "Building APIs with Contracts",
-      "description": "Building for Scale: Why contract-based APIs are the future.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/136/original/0877edf462c15bfc.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "ULKnbznNOk-o9EtlixrYZ#Xnt8Ip0Mr@WAX5",
-      "published_at": "2024-04-09T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017600552340",
-    "created_at": "2024-05-19T17:50:15.634Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017600552340",
-    "url": "https://infosec.exchange/@sudorandom/112469017600552340",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Dropping Unknown Fields in ConnectRPC: Learn how to drop unknown fields in ConnectRPC to enhance the security of your gRPC services exposed to the internet.<br /><a href=\"https://kmcd.dev/posts/connectrpc-dropping-unknown-fields/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/connectrpc-drop</span><span class=\"invisible\">ping-unknown-fields/</span></a><br /><a href=\"https://infosec.exchange/tags/connectrpc\" class=\"mention hashtag\" rel=\"tag\">#<span>connectrpc</span></a> <a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a> <a href=\"https://infosec.exchange/tags/rest\" class=\"mention hashtag\" rel=\"tag\">#<span>rest</span></a> <a href=\"https://infosec.exchange/tags/api\" class=\"mention hashtag\" rel=\"tag\">#<span>api</span></a> <a href=\"https://infosec.exchange/tags/rpc\" class=\"mention hashtag\" rel=\"tag\">#<span>rpc</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/http\" class=\"mention hashtag\" rel=\"tag\">#<span>http</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "connectrpc",
-        "url": "https://infosec.exchange/tags/connectrpc"
-      },
-      {
-        "name": "protobuf",
-        "url": "https://infosec.exchange/tags/protobuf"
-      },
-      {
-        "name": "rest",
-        "url": "https://infosec.exchange/tags/rest"
-      },
-      {
-        "name": "api",
-        "url": "https://infosec.exchange/tags/api"
-      },
-      {
-        "name": "rpc",
-        "url": "https://infosec.exchange/tags/rpc"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "http",
-        "url": "https://infosec.exchange/tags/http"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/connectrpc-dropping-unknown-fields/",
-      "title": "Dropping Unknown Fields in ConnectRPC",
-      "description": "Learn how to drop unknown fields in ConnectRPC to enhance the security of your gRPC services exposed to the internet.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/135/original/46a337a65c54e197.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UAE_{-Os_P=C]z%0V?FgDiozK$r?K*TJXUr;",
-      "published_at": "2024-04-02T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017588855660",
-    "created_at": "2024-05-19T17:50:15.456Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017588855660",
-    "url": "https://infosec.exchange/@sudorandom/112469017588855660",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 RESTless: Web APIs After REST: Web APIs are the backbone of the modern web, but the ever-evolving landscape demands a rethink. This article explores alternatives to the traditional REST approach, diving into solutions like GraphQL, gRPC, and WebSockets. Unlock the full potential of your APIs and discover a world beyond REST!<br /><a href=\"https://kmcd.dev/posts/restless/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev/posts/restless/</span><span class=\"invisible\"></span></a><br /><a href=\"https://infosec.exchange/tags/rest\" class=\"mention hashtag\" rel=\"tag\">#<span>rest</span></a> <a href=\"https://infosec.exchange/tags/api\" class=\"mention hashtag\" rel=\"tag\">#<span>api</span></a> <a href=\"https://infosec.exchange/tags/rpc\" class=\"mention hashtag\" rel=\"tag\">#<span>rpc</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/http\" class=\"mention hashtag\" rel=\"tag\">#<span>http</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "rest",
-        "url": "https://infosec.exchange/tags/rest"
-      },
-      {
-        "name": "api",
-        "url": "https://infosec.exchange/tags/api"
-      },
-      {
-        "name": "rpc",
-        "url": "https://infosec.exchange/tags/rpc"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "http",
-        "url": "https://infosec.exchange/tags/http"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/restless/",
-      "title": "RESTless: Web APIs After REST",
-      "description": "Web APIs are the backbone of the modern web, but the ever-evolving landscape demands a rethink. This article explores alternatives to the traditional REST approach, diving into solutions like GraphQL, gRPC, and WebSockets. Unlock the full potential of your APIs and discover a world beyond REST!",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/137/original/409ccd7a754a5b79.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UF9*V~M_H;x^b{%2IBa#MJtR-=IUR5xayDM{",
-      "published_at": "2024-03-26T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017576029180",
-    "created_at": "2024-05-19T17:50:15.260Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017576029180",
-    "url": "https://infosec.exchange/@sudorandom/112469017576029180",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Introducing unknownconnect-go: unknownconnect-go is library that helps developers using gRPC identify compatibility issues caused by mismatched message definitions.<br /><a href=\"https://kmcd.dev/posts/unknownconnect-go/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/unknownconnect-</span><span class=\"invisible\">go/</span></a><br /><a href=\"https://infosec.exchange/tags/connectrpc\" class=\"mention hashtag\" rel=\"tag\">#<span>connectrpc</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "connectrpc",
-        "url": "https://infosec.exchange/tags/connectrpc"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "protobuf",
-        "url": "https://infosec.exchange/tags/protobuf"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/unknownconnect-go/",
-      "title": "Introducing unknownconnect-go",
-      "description": "unknownconnect-go is library that helps developers using gRPC identify compatibility issues caused by mismatched message definitions.",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/133/original/33731b2c4800d499.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "UOHyg.N{yCxZE+t7Z~R*MHs9I]WVIAxtf5Vs",
-      "published_at": "2024-03-19T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017563045499",
-    "created_at": "2024-05-19T17:50:15.063Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017563045499",
-    "url": "https://infosec.exchange/@sudorandom/112469017563045499",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>🪧 Unknown Fields in Protobuf: Let&#39;s delve into the confusing and neat feature of protobuf; unknown fields<br /><a href=\"https://kmcd.dev/posts/protobuf-unknown-fields/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/protobuf-unknow</span><span class=\"invisible\">n-fields/</span></a><br /><a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a> <a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/api\" class=\"mention hashtag\" rel=\"tag\">#<span>api</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "protobuf",
-        "url": "https://infosec.exchange/tags/protobuf"
-      },
-      {
-        "name": "grpc",
-        "url": "https://infosec.exchange/tags/grpc"
-      },
-      {
-        "name": "api",
-        "url": "https://infosec.exchange/tags/api"
-      }
-    ],
-    "emojis": [],
-    "card": {
-      "url": "https://kmcd.dev/posts/protobuf-unknown-fields/",
-      "title": "Unknown Fields in Protobuf",
-      "description": "Let's delve into the confusing and neat feature of protobuf; unknown fields",
-      "language": "en",
-      "type": "link",
-      "author_name": "",
-      "author_url": "",
-      "provider_name": "kmcd.dev",
-      "provider_url": "",
-      "html": "",
-      "width": 1200,
-      "height": 630,
-      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/134/original/b9a86d5f6c1522a5.png",
-      "image_description": "",
-      "embed_url": "",
-      "blurhash": "ULJ8;V-m=o0gm+V[M~%04ntQIqxBDht7$yWY",
-      "published_at": "2024-03-12T00:00:00.000Z"
-    },
-    "poll": null
-  },
-  {
-    "id": "112469017285035529",
-    "created_at": "2024-05-19T17:50:10.820Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017285035529",
-    "url": "https://infosec.exchange/@sudorandom/112469017285035529",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-19]: Recommend some lesser-known users or blogs that cover the backend programming and networking protocols.</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017275932668",
-    "created_at": "2024-05-19T17:50:10.681Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017275932668",
-    "url": "https://infosec.exchange/@sudorandom/112469017275932668",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-17]: What change should we all make to make the Internet a more engaging and welcoming place?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017275891323",
-    "created_at": "2024-05-19T17:50:10.680Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017275891323",
-    "url": "https://infosec.exchange/@sudorandom/112469017275891323",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-18]: What is your commute to work like? Do you like it? Would you consider taking public transit or biking if the infrastructure were there for it?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017273568325",
-    "created_at": "2024-05-19T17:50:10.645Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017273568325",
-    "url": "https://infosec.exchange/@sudorandom/112469017273568325",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-16]: Do you think the &#39;dead internet theory&#39; is already a reality? Why or why not?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017265308590",
-    "created_at": "2024-05-19T17:50:10.519Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017265308590",
-    "url": "https://infosec.exchange/@sudorandom/112469017265308590",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-15]: Describe a time when you used an API or protocol for something it was never intended to do.</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017263828827",
-    "created_at": "2024-05-19T17:50:10.496Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017263828827",
-    "url": "https://infosec.exchange/@sudorandom/112469017263828827",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-14]: What used to be utterly incomprehensible to you that you understand well today?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017262029980",
-    "created_at": "2024-05-19T17:50:10.467Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017262029980",
-    "url": "https://infosec.exchange/@sudorandom/112469017262029980",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-13]: What piece of software doesn&#39;t deserve to exist and the world would be better without?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017252602225",
-    "created_at": "2024-05-19T17:50:10.325Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017252602225",
-    "url": "https://infosec.exchange/@sudorandom/112469017252602225",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-12]: When procrastinating, what do you find yourself doing instead?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
-    "id": "112469017250489438",
-    "created_at": "2024-05-19T17:50:10.292Z",
-    "in_reply_to_id": null,
-    "in_reply_to_account_id": null,
-    "sensitive": false,
-    "spoiler_text": "",
-    "visibility": "public",
-    "language": "en",
-    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017250489438",
-    "url": "https://infosec.exchange/@sudorandom/112469017250489438",
-    "replies_count": 0,
-    "reblogs_count": 0,
-    "favourites_count": 0,
-    "edited_at": null,
-    "local_only": false,
-    "content": "<p>📆 Daily Prompt [2024-05-11]: How do you connect with other programmers (other than co-workers)?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
-    "reblog": null,
-    "application": {
-      "name": "EchoFeed",
-      "website": null
-    },
-    "account": {
-      "id": "109300069582362316",
-      "username": "sudorandom",
-      "acct": "sudorandom",
-      "display_name": "sudorandom",
-      "locked": false,
-      "bot": false,
-      "discoverable": true,
-      "indexable": true,
-      "group": false,
-      "created_at": "2022-11-07T00:00:00.000Z",
-      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
-      "url": "https://infosec.exchange/@sudorandom",
-      "uri": "https://infosec.exchange/users/sudorandom",
-      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
-      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
-      "followers_count": 135,
-      "following_count": 63,
-      "statuses_count": 351,
-      "last_status_at": "2024-05-19",
-      "hide_collections": false,
-      "noindex": false,
-      "emojis": [],
-      "roles": [],
-      "fields": [
-        {
-          "name": "Languages",
-          "value": "English, Danish (beginner)",
-          "verified_at": null
-        },
-        {
-          "name": "Interests",
-          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
-          "verified_at": null
-        },
-        {
-          "name": "Website",
-          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
-          "verified_at": "2023-08-05T19:52:30.951+00:00"
-        }
-      ]
-    },
-    "media_attachments": [],
-    "mentions": [],
-    "tags": [
-      {
-        "name": "writing",
-        "url": "https://infosec.exchange/tags/writing"
-      },
-      {
-        "name": "softwareengineering",
-        "url": "https://infosec.exchange/tags/softwareengineering"
-      }
-    ],
-    "emojis": [],
-    "card": null,
-    "poll": null
-  },
-  {
     "id": "112468508088757121",
     "created_at": "2024-05-19T15:40:41.101Z",
     "in_reply_to_id": null,
@@ -2004,7 +278,7 @@
       "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
       "followers_count": 135,
       "following_count": 63,
-      "statuses_count": 351,
+      "statuses_count": 332,
       "last_status_at": "2024-05-19",
       "hide_collections": false,
       "noindex": false,
@@ -2040,6 +314,1013 @@
         "url": "https://infosec.exchange/tags/softwareengineering"
       }
     ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112462833282538472",
+    "created_at": "2024-05-18T15:37:30.430Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112462833282538472",
+    "url": "https://infosec.exchange/@sudorandom/112462833282538472",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-18]: What is your commute to work like? Do you like it? Would you consider taking public transit or biking if the infrastructure were there for it?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112462468181073348",
+    "created_at": "2024-05-18T14:04:39.424Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112462468181073348/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112462468181073348/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112436799028859096",
+      "created_at": "2024-05-14T01:16:39.000Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://fosstodon.org/users/aclark/statuses/112436799056895136",
+      "url": "https://fosstodon.org/@aclark/112436799056895136",
+      "replies_count": 17,
+      "reblogs_count": 323,
+      "favourites_count": 4,
+      "edited_at": null,
+      "content": "<p>Hey folks! </p><p>I'm the creator of Python <span class=\"h-card\" translate=\"no\"><a href=\"https://fosstodon.org/@pillow\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>pillow</span></a></span> &amp; today is my birthday. Can I ask you for a favor?</p><p>I'm looking for a new role &amp; I'd appreciate a boost. Check out my resume here:</p><p>- <a href=\"https://aclark.net/resume/\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">aclark.net/resume/</span><span class=\"invisible\"></span></a></p><p>I'm passionate about Python, open source &amp; making a living with open source. What's the next move?</p><p>Thank you <span class=\"h-card\" translate=\"no\"><a href=\"https://mastodon.social/@willmcgugan\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>willmcgugan</span></a></span>  for the nudge ❤️</p>",
+      "reblog": null,
+      "account": {
+        "id": "111988770590615933",
+        "username": "aclark",
+        "acct": "aclark@fosstodon.org",
+        "display_name": "Alex",
+        "locked": false,
+        "bot": false,
+        "discoverable": false,
+        "indexable": false,
+        "group": false,
+        "created_at": "2024-02-24T00:00:00.000Z",
+        "note": "<p>Python <span class=\"h-card\" translate=\"no\"><a href=\"https://fosstodon.org/@pillow\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>pillow</span></a></span> Creator &amp; Project Lead</p>",
+        "url": "https://fosstodon.org/@aclark",
+        "uri": "https://fosstodon.org/users/aclark",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/111/988/770/590/615/933/original/d693aac31ee2929d.jpg",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/111/988/770/590/615/933/original/d693aac31ee2929d.jpg",
+        "header": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/111/988/770/590/615/933/original/71c39510d15e9023.jpg",
+        "header_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/111/988/770/590/615/933/original/71c39510d15e9023.jpg",
+        "followers_count": 87,
+        "following_count": 86,
+        "statuses_count": 12,
+        "last_status_at": "2024-05-14",
+        "hide_collections": false,
+        "emojis": [],
+        "fields": []
+      },
+      "media_attachments": [],
+      "mentions": [
+        {
+          "id": "109326068010432912",
+          "username": "pillow",
+          "url": "https://fosstodon.org/@pillow",
+          "acct": "pillow@fosstodon.org"
+        },
+        {
+          "id": "109290834996689529",
+          "username": "willmcgugan",
+          "url": "https://mastodon.social/@willmcgugan",
+          "acct": "willmcgugan@mastodon.social"
+        }
+      ],
+      "tags": [],
+      "emojis": [],
+      "card": {
+        "url": "https://aclark.net/resume/",
+        "title": "\n            \n                \n                    Résumé\n                \n            \n            \n                \n                \n            \n        ",
+        "description": "",
+        "language": "en",
+        "type": "link",
+        "author_name": "",
+        "author_url": "",
+        "provider_name": "",
+        "provider_url": "",
+        "html": "",
+        "width": 0,
+        "height": 0,
+        "image": null,
+        "image_description": "",
+        "embed_url": "",
+        "blurhash": null,
+        "published_at": null
+      },
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112457506015288161",
+    "created_at": "2024-05-17T17:02:42.783Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112457506015288161/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112457506015288161/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112457443606477679",
+      "created_at": "2024-05-17T16:46:50.500Z",
+      "in_reply_to_id": "112457174499400339",
+      "in_reply_to_account_id": "109300069582362316",
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://infosec.exchange/users/lennybacon/statuses/112457443606477679",
+      "url": "https://infosec.exchange/@lennybacon/112457443606477679",
+      "replies_count": 1,
+      "reblogs_count": 1,
+      "favourites_count": 2,
+      "edited_at": null,
+      "local_only": false,
+      "content": "<p><span class=\"h-card\" translate=\"no\"><a href=\"https://infosec.exchange/@sudorandom\" class=\"u-url mention\">@<span>sudorandom</span></a></span> Register a domain and start a blog instead of feeding Plattforms</p>",
+      "reblog": null,
+      "application": {
+        "name": "Mona for iPhone",
+        "website": "https://mastodon.social/@MonaApp"
+      },
+      "account": {
+        "id": "111742511149375989",
+        "username": "lennybacon",
+        "acct": "lennybacon",
+        "display_name": "Daniel Fisher(lennybacon)",
+        "locked": false,
+        "bot": false,
+        "discoverable": null,
+        "indexable": false,
+        "group": false,
+        "created_at": "2024-01-12T00:00:00.000Z",
+        "note": "<p>entrepreneur, enthusiast, technologist, developer, architect. Views, models and controllers are my own. He/him</p>",
+        "url": "https://infosec.exchange/@lennybacon",
+        "uri": "https://infosec.exchange/users/lennybacon",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/111/742/511/149/375/989/original/5c87ce890e6ab76d.png",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/111/742/511/149/375/989/original/5c87ce890e6ab76d.png",
+        "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/111/742/511/149/375/989/original/b87e09e415fa3713.jpg",
+        "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/111/742/511/149/375/989/original/b87e09e415fa3713.jpg",
+        "followers_count": 276,
+        "following_count": 405,
+        "statuses_count": 1528,
+        "last_status_at": "2024-05-19",
+        "hide_collections": null,
+        "noindex": false,
+        "emojis": [],
+        "roles": [],
+        "fields": [
+          {
+            "name": "Blog",
+            "value": "<a href=\"https://lennybacon.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">lennybacon.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": null
+          },
+          {
+            "name": "Site",
+            "value": "<a href=\"https://danielfisher.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">danielfisher.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": null
+          }
+        ]
+      },
+      "media_attachments": [],
+      "mentions": [
+        {
+          "id": "109300069582362316",
+          "username": "sudorandom",
+          "url": "https://infosec.exchange/@sudorandom",
+          "acct": "sudorandom"
+        }
+      ],
+      "tags": [],
+      "emojis": [],
+      "card": null,
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112457174499400339",
+    "created_at": "2024-05-17T15:38:24.252Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112457174499400339",
+    "url": "https://infosec.exchange/@sudorandom/112457174499400339",
+    "replies_count": 2,
+    "reblogs_count": 1,
+    "favourites_count": 1,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🧑‍💻 Daily Prompt [2024-05-17]: What change should we all make to make the Internet a more engaging and welcoming place?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112451519383418283",
+    "created_at": "2024-05-16T15:40:14.030Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112451519383418283",
+    "url": "https://infosec.exchange/@sudorandom/112451519383418283",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🧑‍💻 Daily Prompt [2024-05-16]: Do you think the &#39;dead internet theory&#39; is already a reality? Why or why not?</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112449437663577579",
+    "created_at": "2024-05-16T06:50:49.505Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112449437663577579",
+    "url": "https://infosec.exchange/@sudorandom/112449437663577579",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>My current read on HTTP/3 is that it is the epitome of the William Gibson quote &quot;The future is already here – it’s just not very evenly distributed&quot;</p><p>HTTP/3 solves some very real issues with HTTP/2 (more on that later). Browser support is already really good but it&#39;s so strange to me that developer tooling seems so far behind.</p><p>- I have to use a custom build of curl to use http3.</p><p>- gRPC, a protocol known for pushing the world into HTTP/2 is flailing on committing to support HTTP/3 (except for, apparently, C#).</p><p>Yet 30% of web traffic is being served with HTTP/3. What the actual fuck?</p><p>I totally understand that quic and HTTP/3 are a big undertaking but it&#39;s just confusing how browsers, CDNs and load balancers can move so fast but some incredibly important tooling lags behind. Except for browsers, how do people test HTTP/3 endpoints?</p><p>HTTP/3 does solve a lot of problems for browsers and the web experience, but, for me, I am really excited at the possibility of using HTTP/3 to solve issues with gRPC (both in the frontend with gRPC-Web and the backend). I&#39;ve had real issues with head-of-line blocking in the past and I really want the unambiguous solution to be adopting HTTP/3. I&#39;m just a little restless because this all seems so close~~~</p>",
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112446865699983617",
+    "created_at": "2024-05-15T19:56:44.454Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112446865699983617",
+    "url": "https://infosec.exchange/@sudorandom/112446865699983617",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 1,
+    "edited_at": "2024-05-15T19:56:56.459Z",
+    "local_only": false,
+    "content": "<p>Feeling cute, I might try some HTTP/3 tonight.</p><p>* using HTTP/3<br />* [HTTP/3] [0] OPENED stream for https://localhost:6660/flex.FlexService/NormalRPC<br />* [HTTP/3] [0] [:method: POST]<br />* [HTTP/3] [0] [:scheme: https]<br />* [HTTP/3] [0] [:authority: localhost:6660]<br />* [HTTP/3] [0] [:path: /flex.FlexService/NormalRPC]<br />* [HTTP/3] [0] [user-agent: curl/8.8.0-DEV]<br />* [HTTP/3] [0] [content-type: application/json]<br />* [HTTP/3] [0] [accept: application/json]<br />* [HTTP/3] [0] [content-length: 634]<br />&gt; POST /flex.FlexService/NormalRPC HTTP/3</p>",
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112445849592021953",
+    "created_at": "2024-05-15T15:38:19.878Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112445849592021953",
+    "url": "https://infosec.exchange/@sudorandom/112445849592021953",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🧑‍💻 Daily Prompt [2024-05-15]: Describe a time when you used an API or protocol for something it was never intended to do.</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112445185475786804",
+    "created_at": "2024-05-15T12:49:26.268Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112445185475786804",
+    "url": "https://infosec.exchange/@sudorandom/112445185475786804",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>That moment when you&#39;re searching for how to do something and you come across your own blog post. This didn&#39;t actually answer my question but I must be doing something right with SEO</p>",
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112445054207397733",
+    "created_at": "2024-05-15T12:16:03.273Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112445054207397733/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112445054207397733/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112439644784611032",
+      "created_at": "2024-05-14T13:19:49.000Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://shellsharks.social/users/shellsharks/statuses/112439642634360251",
+      "url": "https://shellsharks.social/@shellsharks/112439642634360251",
+      "replies_count": 5,
+      "reblogs_count": 12,
+      "favourites_count": 2,
+      "edited_at": null,
+      "content": "<p>As the <a href=\"https://shellsharks.social/tags/indieweb\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>indieweb</span></a> continues to grow in popularity and mindshare, more and more folks new to the scene have shown apprehension, shyness, disillusionment and alienation with respect to being \"part of the community\". This seems to stem from a fundamental misunderstanding of what the IndieWeb is. It's not some fancy protocol or construct on a website, it's just you being you on a site you own. The following note is a response to one such lamentation</p><p><a href=\"https://shellsharks.com/notes/2024/05/14/one-of-us\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">shellsharks.com/notes/2024/05/</span><span class=\"invisible\">14/one-of-us</span></a></p><p><a href=\"https://shellsharks.social/tags/weblogpomo2024\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>weblogpomo2024</span></a> <a href=\"https://shellsharks.social/tags/blogging\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>blogging</span></a></p>",
+      "reblog": null,
+      "account": {
+        "id": "112139363910006502",
+        "username": "shellsharks",
+        "acct": "shellsharks@shellsharks.social",
+        "display_name": "shellsharks",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "indexable": true,
+        "group": false,
+        "created_at": "2024-03-22T00:00:00.000Z",
+        "note": "<p>Infosec researcher | Indieweb enthusiast | Find me @ <a href=\"https://shellsharks.com\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">shellsharks.com</span><span class=\"invisible\"></span></a></p><p><a href=\"https://shellsharks.social/tags/fedi22\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>fedi22</span></a> <a href=\"https://shellsharks.social/tags/infosec\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>infosec</span></a> <a href=\"https://shellsharks.social/tags/cybersecurity\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>cybersecurity</span></a> <a href=\"https://shellsharks.social/tags/tech\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>tech</span></a> <a href=\"https://shellsharks.social/tags/indieweb\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>indieweb</span></a> <a href=\"https://shellsharks.social/tags/apple\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>apple</span></a> searchable</p><p>Profile picture: A red shark holding a terminal window shaped like a surfboard. The terminal reads “&gt; whoami shellsharks”</p><p><a href=\"https://keyoxide.org/FA7AC5E3626AEF016A5AD0BB172E73E0A585273E\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">keyoxide.org/FA7AC5E3626AEF016</span><span class=\"invisible\">A5AD0BB172E73E0A585273E</span></a></p>",
+        "url": "https://shellsharks.social/@shellsharks",
+        "uri": "https://shellsharks.social/users/shellsharks",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/112/139/363/910/006/502/original/86f2ebe21f8189e8.png",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/112/139/363/910/006/502/original/86f2ebe21f8189e8.png",
+        "header": "https://assets.infosec.exchange/headers/original/missing.png",
+        "header_static": "https://assets.infosec.exchange/headers/original/missing.png",
+        "followers_count": 1788,
+        "following_count": 1007,
+        "statuses_count": 571,
+        "last_status_at": "2024-05-19",
+        "hide_collections": false,
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Blog",
+            "value": "<a href=\"https://shellsharks.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">shellsharks.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": "2024-05-17T14:10:11.080+00:00"
+          },
+          {
+            "name": "Personal Mastodon",
+            "value": "<a href=\"https://mastodon.social/@sass\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">mastodon.social/@sass</span><span class=\"invisible\"></span></a>",
+            "verified_at": null
+          },
+          {
+            "name": "Shark after Dark 🌙",
+            "value": "<a href=\"https://shellsharks.social/@afterdark\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"\">shellsharks.social/@afterdark</span><span class=\"invisible\"></span></a>",
+            "verified_at": null
+          }
+        ]
+      },
+      "media_attachments": [],
+      "mentions": [],
+      "tags": [
+        {
+          "name": "indieweb",
+          "url": "https://infosec.exchange/tags/indieweb"
+        },
+        {
+          "name": "weblogpomo2024",
+          "url": "https://infosec.exchange/tags/weblogpomo2024"
+        },
+        {
+          "name": "blogging",
+          "url": "https://infosec.exchange/tags/blogging"
+        }
+      ],
+      "emojis": [],
+      "card": {
+        "url": "https://shellsharks.com/notes/2024/05/14/one-of-us",
+        "title": "One of us",
+        "description": "Cybersecurity Research and More",
+        "language": "en",
+        "type": "link",
+        "author_name": "",
+        "author_url": "",
+        "provider_name": "shellsharks",
+        "provider_url": "",
+        "html": "",
+        "width": 864,
+        "height": 864,
+        "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/607/606/original/81a2179e9ffd74f0.png",
+        "image_description": "",
+        "embed_url": "",
+        "blurhash": "UrQJApM{_Nx]iwofbvRj?bWBIAo2S~R*r?s:",
+        "published_at": "2024-05-14T13:00:00.000Z"
+      },
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about fiber optic cables, data viz, programming, and nonsense.  🇺🇸 living in 🇩🇰  <a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>  <a href=\"https://github.com/sudorandom\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">github.com/sudorandom</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 135,
+      "following_count": 63,
+      "statuses_count": 332,
+      "last_status_at": "2024-05-19",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://sudorandom.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">sudorandom.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2023-08-05T19:52:30.951+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
     "emojis": [],
     "card": null,
     "poll": null
