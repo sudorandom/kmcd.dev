@@ -1,6 +1,5 @@
 baseURL: 'https://kmcd.dev'
 languageCode: 'en'
-theme: "hello-4s3ti"
 title: 'kmcd.dev'
 copyright: "All Rights Reserved"
 IsMultiLingual: false

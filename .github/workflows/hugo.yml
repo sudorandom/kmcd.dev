@@ -78,6 +78,15 @@ jobs:
         run: |
           npx -y pagefind --site public
 
+      - name: Publish
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: kmcd-dev
+          directory: public
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+  
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
