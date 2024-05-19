@@ -39,7 +39,7 @@
           {{ if .Lastmod }}
           {{ if not (eq .Lastmod .Date )}}
             {{- if .GitInfo }}
-            <span><a href="{{ .Site.Params.gitUrl -}}{{ .GitInfo.Hash }}" target="_blank" rel="noopener" aria-label="Latest git commit"><i class="fa-solid fa-code-commit"></i></a></span>
+            <span><a href="{{ .Site.Params.gitUrl -}}/commits/main/content/{{ .Page.File.Path }}" target="_blank" rel="noopener" aria-label="Latest git commit"><i class="fa-solid fa-code-commit"></i></a></span>
             {{- end }}
           {{ end }}
           {{ end }}

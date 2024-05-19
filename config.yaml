@@ -21,7 +21,7 @@ params:
     name: "Kevin McDonald"
   defaultTheme: "dark"
   EnableThemeToggle: true
-  gitUrl: "https://github.com/sudorandom/kmcd.dev/commit/"
+  gitUrl: "https://github.com/sudorandom/kmcd.dev"
   EnableSharingButtons: false
   EnableGlobalLanguageMenu: false
   customCSS: []

@@ -109,7 +109,13 @@ h4 {
 }
 
 p a {
-  color: #77e3f4;
+  [data-theme=dark] & {
+    color: #77e3f4;
+  }
+
+  [data-theme=light] & {
+    color: #2798aa;
+  }
 }
 
 a {
