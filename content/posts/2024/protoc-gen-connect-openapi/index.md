@@ -1,6 +1,7 @@
 ---
 categories: ["article", "project"]
 tags: ["protobuf", "grpc", "connectrpc", "openapi", "http"]
+keywords: ["protoc-gen-connect-go"]
 date: "2024-02-20"
 description: ""
 cover: "cover.jpg"

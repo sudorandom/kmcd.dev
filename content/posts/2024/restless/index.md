@@ -1,6 +1,7 @@
 ---
 categories: ["opinion"]
 tags: ["rest", "api", "rpc", "grpc", "http"]
+keywords: ["restless api", "restful vs restless api"]
 date: "2024-03-26"
 description: "Web APIs are the backbone of the modern web, but the ever-evolving landscape demands a rethink. This article explores alternatives to the traditional REST approach, diving into solutions like GraphQL, gRPC, and WebSockets. Unlock the full potential of your APIs and discover a world beyond REST!"
 cover: "cover.jpg"

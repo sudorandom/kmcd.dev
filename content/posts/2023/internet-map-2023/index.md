@@ -1,6 +1,7 @@
 ---
 categories: ["article", "project"]
 tags: ["dataviz", "internet-map", "internet", "networking", "fiber-optics", "map", "world", "infrastructure", "peeringdb", "svg", "javascript", "golang"]
+keywords: ["internet infrastructure map", "internet visualized", "global internet map", "internet exchange map", "internet exchange point map", "internet map of the world", "ixp map", "internet node map", "internet hub locations"]
 series: ["Internet Map"]
 date: "2023-08-01"
 description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
