@@ -39,7 +39,7 @@ I've made some improvements to how RSS feeds are generated so that links and ima
 I originally used the [Hello Friend 4s3ti](https://github.com/coolapso/hugo-theme-hello-4s3ti) theme for my blog. I've slowly made small adjustments, moving more and more layouts away from the theme into the main blog section. At some point, I may copy over the rest of the resources and use a completely custom theme which will allow me to delete features I don't ever plan on using and more easily customize. But anyway, I like the style that I've settled on. It fits me.
 
 ### Projects Page
-I updated the projects page to be more... clear. The image gallery format just wasn't working to show what I worked on. I'm not an artist and I should come to terms with that! See the page [here](/projects/).
+I updated the projects page to be more... clear. The image gallery format just wasn't working to show what I worked on. I'm not an artist and I should come to terms with that! See the page [here](/me/#projects).
 
 ### Links Page
 I have become a fan of the "small web" and I feel like link pages bring some of that small web feeling back. See mine, [here](/links/).

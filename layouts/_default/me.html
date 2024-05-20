@@ -6,7 +6,7 @@
             <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
             {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
         {{ end }}
-        <h2>Personal</h2>
+        <span id="personal"><h2>Personal</h2></span>
         <div class="main-wrapper">
             <div class="main-box main-box">
                 <figure style="float:left;padding:10px;">
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <h2>Professional</h2>
+        <span id="professional"><h2>Professional</h2></span>
         <div class="main-wrapper">
             <div class="main-box main-box">
                 <figure style="float:right;padding:10px;">
@@ -47,7 +47,7 @@
         </div>
 
         {{- with .Site.Params.social }}
-        <h2>Social</h2>
+        <span id="social"><h2>Social</h2></span>
         <div class="projects-wrapper">
         <div class="projects-box">
             <p>
@@ -68,7 +68,8 @@
         </div>
         {{- end }}
 
-        <h2>Ongoing Projects</h2>
+        <span id="projects"></span>
+        <span id="ongoing-projects"><h2>Ongoing Projects</h2></span>
         <div class="projects-wrapper">
         <div class="projects-box">
             <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
@@ -106,7 +107,7 @@
         </div>
         </div>
 
-        <h2>Finished Projects</h2>
+        <span id="finished-projects"><h2>Finished Projects</h2></span>
         <div class="projects-wrapper">
         <div class="projects-box">
             <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
@@ -144,7 +145,7 @@
         </div>
         </div>
 
-        <h2>Support Me</h2>
+        <span id="support"><h2>Support Me</h2></span>
         <div class="projects-wrapper">
         <div class="projects-box">
             <p>
