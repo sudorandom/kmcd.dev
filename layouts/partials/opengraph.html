@@ -6,18 +6,32 @@
     {{- range last 3 (.Resources.ByType "image") -}}
     {{ $img := . }}
     {{ if ne $img.MediaType.SubType "svg" }}
-        {{ $filters := slice
-            (images.Process "fill 1200x560 Center png q90")
-            (images.Padding 70 0 0 0 "#1F2A35")
-            (images.Text $page.Title (dict
-                "size" 40
-                "x" 40
-                "y" 10
-                "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
+      {{ $filters := slice
+        (images.Process "fill 1200x1200 Center png q95")
+        (images.Padding 70 0 0 0 "#1F2A35")
+        (images.Text $page.Title (dict
+            "size" 40
+            "x" 40
+            "y" 10
+            "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
           }}
-        {{ $img = $img.Filter $filters }}
+      {{ $squareImg := $img.Filter $filters }}
+      <meta property="og:image" content="{{ $squareImg.Permalink }}"/>
+
+      {{ $filters := slice
+          (images.Process "fill 1200x560 Center png q95")
+          (images.Padding 70 0 0 0 "#1F2A35")
+          (images.Text $page.Title (dict
+              "size" 40
+              "x" 40
+              "y" 10
+              "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
+        }}
+      {{ $socialimg := $img.Filter $filters }}
+      <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
+    {{ else }}
+      <meta property="og:image" content="{{ $img.Permalink }}"/>
     {{ end }}
-    <meta property="og:image" content="{{ $img.Permalink }}"/>
     {{ else }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
     {{ end }}
