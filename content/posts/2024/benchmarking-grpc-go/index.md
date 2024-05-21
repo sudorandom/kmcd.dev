@@ -32,9 +32,9 @@ Before diving into writing my own benchmarks, I wanted to see what exists today:
 - The gRPC authors have published their own **[benchmark results](https://grpc.io/docs/guides/benchmarking/)**. In these results, it looks like grpc-go is among the top performers.
 - **[LesnyRumcajs/grpc_bench](https://github.com/LesnyRumcajs/grpc_bench)** has a very good suite of gRPC frameworks in many different languages. The latest "official" results are [here](https://github.com/LesnyRumcajs/grpc_bench/discussions/441). This paints a significantly different picture where grpc-go is in the "middle of the pack".
 
-I wanted to reproduce what happens in grpc_bench but with profiling so that I can dig in and see what parts of the code are taking longer. After trying to bootstrap it to grpc_bench for a while I ended up just making my own repo with benchmark tests just for Go libraries.
+I wanted to reproduce what happens in grpc_bench but with Go's CPU profiling enabled so that I can dig in and see what parts of the code are taking longer. After trying to bootstrap it to grpc_bench for a while I ended up just making my own repo with benchmark tests just for Go libraries.
 
-*Aside:* Don't worry, before I did this I did [contribute back](https://github.com/LesnyRumcajs/grpc_bench/pull/459) a change that updates all of the relevant libraries and the version of Go being used. I figured this might be some of the cause of the low ConnectRPC numbers because it was using a super old version from before they moved to using `connectrpc.com/connect` as the canonical import.
+*Aside:* Don't worry, before I did this I [contributed back](https://github.com/LesnyRumcajs/grpc_bench/pull/459) a change that updates all of the relevant libraries and the version of Go being used. I guessed that this might be some of the reason for the low ConnectRPC numbers because it was using a super old version from before they moved to `connectrpc.com/connect` as the canonical import.
 
 In my new benchmark repo, I used [ghz](https://ghz.sh/) to run the benchmarks. I added the ability to capture pprof profiles while running the benchmark.
 
@@ -61,6 +61,8 @@ This scenario uses an empty message to gauge the overall performance of handling
 The results are measured in Requests Per Second (RPS) which means that higher is better. This was run on an Intel NUC:
 - Intel(R) Core(TM) i7-8705G CPU @ 3.10GHz
 - 8GB of DDR4 RAM
+
+This is a pretty outdated machine so if you run these benchmarks locally, you should see better performance.
 
 {{< chart >}}
 {
