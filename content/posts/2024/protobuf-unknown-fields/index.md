@@ -16,7 +16,7 @@ type: "posts"
 devtoId: 1797652
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://kmcd.dev/protobuf-unknown-fields
+canonical_url: https://kmcd.dev/posts/protobuf-unknown-fields
 mastodonID: "112277337082054030"
 ---
 
