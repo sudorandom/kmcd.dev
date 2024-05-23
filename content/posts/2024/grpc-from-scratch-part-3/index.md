@@ -15,6 +15,7 @@ slug: "grpc-from-scratch-part-3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-3
+mastodonID: "112398336658297977"
 ---
 
 In the last two parts, I showed how to make an extremely simple gRPC client and server that... kind-of works. But I punted on a topic last time that is pretty important: I used generated protobuf types and the Go protobuf library to do all of the heavy lifting of encoding and decoding protobufs for me. That ends today. I'll start by looking at the [`protowire`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protowire) library directly, which is a bit closer to what is actually happening on the wire. The library includes a fun disclaimer:

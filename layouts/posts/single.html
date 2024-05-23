@@ -5,8 +5,9 @@
       {{- $toot = .Params -}}
     {{- end -}}
   {{- else -}}
-    {{- with index (where (sort .Site.RegularPages ".Params.date" "asc") ".Content" "like" .Params.canonical_url) 0 -}}
+    {{- with index (sort (where (where .Site.RegularPages "Section" "updates") ".Content" "like" .RelPermalink) ".Params.date" "asc") 0 -}}
       {{- $toot = .Params -}}
+      {{- warnf "Mastodon post found for post: '%s' MastodonID: \"%s\"" $.Page.Path $toot.id -}}
     {{- end -}}
   {{- end -}}
   <main class="post">
@@ -26,6 +27,7 @@
     <div class="main-wrapper">
     <div class="main-box">
       <div class="post-info-2">
+        <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ .Site.Author.shortname }}</a></span>
         <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
         <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.NumFmt 0 }} words</span>
         <span>

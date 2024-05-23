@@ -14,7 +14,7 @@ slug: "blog-update"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/blog-update
-mastodonID: ""
+mastodonID: "112437982084208909"
 ---
 
 Hello! This will be a lighter update for this blog. I'm going to recap some of the changes I've made to it over the last couple of months, the technologies that power it, and my plans for the future.

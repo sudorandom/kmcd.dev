@@ -15,6 +15,7 @@ devtoSkip: false
 devtoPublished: true
 devtoId: 1838246
 canonical_url: https://kmcd.dev/posts/tracking-the-wins
+mastodonID: "112358233895547657"
 ---
 
 Mental health is hugely important for software engineers. When I first started coding, the thrill of solving problems and getting that hit of dopamine from the instant feedback loop was incredible. It's easy to forget those initial challenges and accomplishments as you progress, though, and problems that used to look like unscalable walls turn into speed bumps. That's why I believe regularly reflecting on your work is so valuable. Otherwise, you might find yourself dwelling on the struggles and forgetting the successes you've achieved along the way.

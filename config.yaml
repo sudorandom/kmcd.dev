@@ -12,13 +12,15 @@ staticDir:
  - "static"
  - "data"
 
+author:
+  name: "Kevin McDonald"
+  shortName: "Kevin"
+
 params:
   Subtitle: "Depth-first search into networking, programming, random tech topics."
   Description: "Depth-first search into networking, programming, web development and random tech topics by a bored software engineer."
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."
   ReadOtherPosts: ""
-  author:
-    name: "Kevin McDonald"
   defaultTheme: "dark"
   EnableThemeToggle: true
   gitUrl: "https://github.com/sudorandom/kmcd.dev"
