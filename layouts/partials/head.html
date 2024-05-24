@@ -106,12 +106,6 @@
     {{ partial "extra-head.html" . }}
 {{- end }}
 
-<!-- chartjs -->
-{{ if .Page.Store.Get "hasChartJS" }}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script> Chart.defaults.color = '#fff'; </script>
-{{ end }}
-
 <!-- mermaid -->
 {{ if .Page.Store.Get "hasMermaid" }}
 <script type="module" async>

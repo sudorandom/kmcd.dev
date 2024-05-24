@@ -18,41 +18,39 @@ I recently wanted to add some charts to a blog post and [mermaid](https://mermai
 - I felt like adding a "layout" and a new git submodule just for this was fairly extreme just to add support for a single javascript library.
 - The documentation on the [chart.js website](https://www.chartjs.org/) didn't match up with what was supported. I then realized that the hugo-chart plugin was using *Chart.js version 2* when the latest released version was v4... a whole two major versions behind. Yikes. So not only would this add a new git submodule, which is annoying, but it wasn't even up-to-date.
 
-At this point, I was ready to throw the entire project aside and do my own thing. This is what I ended up with. It only requires a new shortcode and a snippet inside the `<head>` inside your template. This will be very specific to your template so I can't give an exact location for this code. So instead of having a dependency, it's just two simple edits/additions to your existing layouts to add support.
+At this point, I was ready to throw the entire project aside and do my own thing. This is what I ended up with. It only requires a single file to add the new shortcode. So instead of having a git dependency, just add this file to your shortcodes.
 
 ### Installation
-First, here's the new shortcode; `layouts/shortcodes/chart.html`:
+Add this file at the path `layouts/shortcodes/chart.html`:
 ```html
+{{- if not (.Page.Scratch.Get "hasChartJS") -}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script> Chart.defaults.color = '#fff'; </script>
+{{- .Page.Scratch.Set "hasChartJS" true -}}
+{{- end -}}
+
 {{- $id := substr (md5 .Inner) 0 16 -}}
 <div class="chart">
     <canvas id="{{ $id }}"></canvas>
 </div>
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        var ctx = document.getElementById('{{ $id }}').getContext('2d');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var ctx = document.getElementById('{{ $id }}')
         var options = {{ .Inner | chomp | safeJS }};
         new Chart(ctx, options);
     });
 </script>
-{{ .Page.Store.Set "hasChartJS" true }}
 ```
 
-Next, you need to add this snippet to the `<head>` somewhere (layout specific):
-```html
-{{ if .Page.Store.Get "hasChartJS" }}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script> Chart.defaults.color = '#fff'; </script>
-{{ end }}
-```
-The `.Page.Store.Set` and `.Page.Store.Get` calls allows me to only have the `<script>` tag importing chart.js a single time, which seems cleaner to me than importing it for each call to the chart shortcode.
+The `.Page.Scratch.Set` and `.Page.Scratch.Get` calls allows me to only have the `<script>` tag that imports chart.js a single time, which seems cleaner to me than importing it for each call to the chart shortcode.
 
-Once these two things are in place, you can now call the `chart` shortcode like this:
+Once this file is in place, you can now call the `chart` shortcode like this:
 ```javascript
 {{</* chart */>}}
 {
   type: 'type',
-  data: {},
-  options: {}
+  data: {...},
+  options: {...}
 }
 {{</* /chart */>}}
 ```
@@ -84,6 +82,7 @@ and a chart will be generated using chart.js. A few full examples are below:
 }
 {{</* /chart */>}}
 ```
+
 {{< chart >}}
 {
   type: 'line',
@@ -143,6 +142,7 @@ See more options on line charts [here](https://www.chartjs.org/docs/latest/chart
 }
 {{</* /chart */>}}
 ```
+
 {{< chart >}}
 {
     type: 'bar',
