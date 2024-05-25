@@ -3,9 +3,9 @@
   xmlns:content="http://purl.org/rss/1.0/modules/content/"
   xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+        <title>kmcd.dev</title>
         <link>{{ .Permalink }}</link>
-        <description>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+        <description>Recent content on kmcd.dev</description>
         <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
         <language>{{.}}</language>{{end}}{{ with .Site.Author.email }}
         <managingEditor>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Author.email }}
