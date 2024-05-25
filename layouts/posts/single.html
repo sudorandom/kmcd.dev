@@ -1,15 +1,5 @@
 {{ define "main" }}
-  {{ $toot := slice }}
-  {{- if .Params.mastodonID -}}
-    {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-      {{- $toot = .Params -}}
-    {{- end -}}
-  {{- else -}}
-    {{- with index (sort (where (where .Site.RegularPages "Section" "updates") ".Content" "like" .RelPermalink) ".Params.date" "asc") 0 -}}
-      {{- $toot = .Params -}}
-      {{- warnf "Mastodon post found for post: '%s' MastodonID: \"%s\"" $.Page.Path $toot.id -}}
-    {{- end -}}
-  {{- end -}}
+  {{ partial "load-mastodon.html" . }}
   <main class="post">
     <h1 class="post-title">
       <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
@@ -45,7 +35,7 @@
             {{- end }}
           {{ end }}
           {{ end }}
-        {{ with $toot }}
+        {{ with .Page.Store.Get "toot" }}
           <span><a href="{{ .Url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
         {{ end }}
         <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
@@ -121,7 +111,7 @@
   {{- end -}}
   {{- end -}}
 
-  {{- with $toot -}}
+  {{- with .Page.Store.Get "toot" -}}
     {{ partial "toot.html" . }}
   {{- end -}}
 

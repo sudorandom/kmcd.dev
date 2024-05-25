@@ -14,6 +14,7 @@ slug: "why-im-rebranding"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/why-im-rebranding
+mastodonID: "112489893003172528"
 ---
 
 For the longest time, I've had the alias `sudorandom`. At this point, it feels like just another name. So why did I rebrand this website from `sudorandom.dev` to `kmcd.dev`? Let's dig into it.

@@ -1,0 +1,12 @@
+{{- if not (.Page.Store.Get "toot") -}}
+{{- if .Params.mastodonID -}}
+{{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
+    {{- $.Page.Store.Set "toot" .Params -}}
+{{- end -}}
+{{- else -}}
+{{- with index (sort (where (where .Site.RegularPages "Section" "updates") ".Content" "like" .RelPermalink) ".Params.date" "asc") 0 -}}
+    {{- $.Page.Store.Set "toot" .Params -}}
+    {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path .Params.id -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
