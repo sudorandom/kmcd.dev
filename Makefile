@@ -6,13 +6,12 @@ rss:
 run:
 	hugo server --buildDrafts --buildFuture --minify
 
-socialstore-me:
-	git clone --depth=1 https://github.com/sudorandom/socialstore-me.git
-
 mastodon:
+	git clone --depth=1 https://github.com/sudorandom/socialstore-me.git
 	@mkdir -p assets/mastodon data/mastodon
 	cp -r socialstore-me/media/* assets/mastodon/
 	cp -r socialstore-me/statuses/* data/mastodon/
+	@rm -rf socialstore-me
 
 build:
 	hugo --gc --minify --cleanDestinationDir --baseURL "https://kmcd.dev/"
