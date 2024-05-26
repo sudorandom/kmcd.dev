@@ -4,3 +4,6 @@ node_modules
 public
 _gen
 .vscode
+
+assets/mastodon
+data/mastodon

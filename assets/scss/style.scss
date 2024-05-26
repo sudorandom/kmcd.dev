@@ -251,6 +251,18 @@ h2 {
     text-decoration: none;
 }
 
+.toot-img-grid {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 25% 25%;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.toot-media-img {
+    padding: 5px;
+}
+
 ul.icons {
     margin: 0;
     padding: 0;

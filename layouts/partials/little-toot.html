@@ -1,0 +1,32 @@
+{{- with . }}
+	{{ $toot := . }}
+	{{ if isset . "content" }}
+		<div class="toot" cite="{{ .link }}">
+			<div class="button small mastodon previous">
+				{{ if (not .reblog) }}
+				<a href="{{ .url }}" target="_blank">
+					<span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
+					<span class="button__text">Discuss on Mastodon</span>
+				</a>
+				{{ end }}
+			</div>
+			<div class="toot-header">
+				<a class="toot-profile" href="{{ .account.url }}" rel="noopener">
+					<span class="toot-author">
+						<img
+							src="{{ .account.avatar }}"
+							alt="Mastodon avatar for @{{ .account.username }}"
+							loading="lazy"
+						/>
+						<a class="toot-author-name" href="{{ .account.url }}" rel="noopener">{{ .account.display_name }}</a>
+						<a class="toot-author-handle" href="{{ .account.url }}" rel="noopener">@{{ .account.username }}@infosec.exchange</a>
+					</span>
+				</a>
+			</div>
+			{{ .content | safeHTML }}
+			<div class="toot-footer">
+				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span></a>
+			</div>
+		</div>
+	{{ end }}
+{{- end -}}

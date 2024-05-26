@@ -14,7 +14,7 @@ linktitle: ""
 title: "Visualizing the Internet (2024)"
 slug: "internet-map-2024"
 type: "posts"
-mastodonID: "112318628224487252"
+mastodonID: "112469017920907939"
 devtoId: 1831151
 devtoPublished: false
 devtoSkip: false

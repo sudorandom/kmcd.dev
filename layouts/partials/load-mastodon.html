@@ -1,12 +1,17 @@
 {{- if not (.Page.Store.Get "toot") -}}
-{{- if .Params.mastodonID -}}
-{{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-    {{- $.Page.Store.Set "toot" .Params -}}
-{{- end -}}
-{{- else -}}
-{{- with index (sort (where (where .Site.RegularPages "Section" "updates") ".Content" "like" .RelPermalink) ".Params.date" "asc") 0 -}}
-    {{- $.Page.Store.Set "toot" .Params -}}
-    {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path .Params.id -}}
-{{- end -}}
-{{- end -}}
+    {{- if .Params.mastodonID -}}
+        {{- $statusMap := (index .Site.Data.mastodon.index.statuses .Params.mastodonID) -}}
+        {{- $statusPath := $statusMap.path -}}
+        {{- $toot := (index .Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
+        {{- $.Page.Store.Set "toot" $toot -}}
+    {{- else -}}
+        {{- range .Site.Data.mastodon.index.statuses -}}
+            {{- $statusPath := .path -}}
+            {{- $toot := (index .Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
+            {{- if (strings.Contains $toot.Content $.Page.RelPermalink) -}}
+                {{- $.Page.Store.Set "toot" . -}}
+                {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path .Params.id -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
 {{- end -}}

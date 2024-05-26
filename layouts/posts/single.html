@@ -36,7 +36,7 @@
           {{ end }}
           {{ end }}
         {{ with .Page.Store.Get "toot" }}
-          <span><a href="{{ .Url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
+          <span><a href="{{ .status.url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
         {{ end }}
         <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
       </div>
@@ -111,10 +111,6 @@
   {{- end -}}
   {{- end -}}
 
-  {{- with .Page.Store.Get "toot" -}}
-    {{ partial "toot.html" . }}
-  {{- end -}}
-
     <div class="main-wrapper">
       <div class="main-box">
           <h3>See Also</h3>
@@ -129,6 +125,18 @@
         </div>
       </div>
     </div>
+
+  {{- with .Page.Store.Get "toot" -}}
+    <h2>Comments</h2>
+    {{ partial "little-toot.html" .status }}
+
+    {{ with .replies}}
+      {{- range . }}
+        {{ partial "little-toot.html" .status }}
+      {{- end -}}
+    {{ end }}
+
+  {{- end -}}
   </main>
 
   <div id="reading-progress"><div id="reading-progress-fill"></div></div>
