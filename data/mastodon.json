@@ -1,0 +1,1420 @@
+[
+  {
+    "id": "112502468947748998",
+    "created_at": "2024-05-25T15:37:22.686Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112502468947748998",
+    "url": "https://infosec.exchange/@sudorandom/112502468947748998",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-25]: What&#39;s one habit you&#39;re currently trying to build?</p><p><a href=\"https://infosec.exchange/tags/daily\" class=\"mention hashtag\" rel=\"tag\">#<span>daily</span></a>-prompt <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "daily",
+        "url": "https://infosec.exchange/tags/daily"
+      },
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112501871414350540",
+    "created_at": "2024-05-25T13:05:25.050Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112501871414350540/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112501871414350540/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112501786246865431",
+      "created_at": "2024-05-25T12:43:45.000Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://mastodon.world/users/birming/statuses/112501786216072597",
+      "url": "https://mastodon.world/@birming/112501786216072597",
+      "replies_count": 0,
+      "reblogs_count": 6,
+      "favourites_count": 1,
+      "edited_at": null,
+      "content": "<p>Blogging Is Back 👨‍💻 <a href=\"https://mastodon.world/tags/WeblogPoMo2024\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>WeblogPoMo2024</span></a> <br><a href=\"https://birming.com/posts/blogging-is-back\" rel=\"nofollow noopener noreferrer\" translate=\"no\" target=\"_blank\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">birming.com/posts/blogging-is-</span><span class=\"invisible\">back</span></a></p>",
+      "reblog": null,
+      "account": {
+        "id": "112388339719003400",
+        "username": "birming",
+        "acct": "birming@mastodon.world",
+        "display_name": "Robert Birming",
+        "locked": false,
+        "bot": false,
+        "discoverable": false,
+        "indexable": false,
+        "group": false,
+        "created_at": "2024-05-04T00:00:00.000Z",
+        "note": "<p>Love to read, write and take photos.</p>",
+        "url": "https://mastodon.world/@birming",
+        "uri": "https://mastodon.world/users/birming",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/112/388/339/719/003/400/original/1429590c88e48e28.jpeg",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/112/388/339/719/003/400/original/1429590c88e48e28.jpeg",
+        "header": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/112/388/339/719/003/400/original/11bd0ddb1e9f0176.jpg",
+        "header_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/112/388/339/719/003/400/original/11bd0ddb1e9f0176.jpg",
+        "followers_count": 26,
+        "following_count": 30,
+        "statuses_count": 393,
+        "last_status_at": "2024-05-26",
+        "hide_collections": false,
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Hometown",
+            "value": "Stockholm, Sweden",
+            "verified_at": null
+          },
+          {
+            "name": "Blog",
+            "value": "<a href=\"https://birming.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">birming.com</span><span class=\"invisible\"></span></a>",
+            "verified_at": "2024-05-20T18:34:28.980+00:00"
+          }
+        ]
+      },
+      "media_attachments": [],
+      "mentions": [],
+      "tags": [
+        {
+          "name": "weblogpomo2024",
+          "url": "https://infosec.exchange/tags/weblogpomo2024"
+        }
+      ],
+      "emojis": [],
+      "card": {
+        "url": "https://birming.com/posts/blogging-is-back",
+        "title": "Blogging Is Back - Robert Birming",
+        "description": "If you kept an eye on the web around the 00s, when blogging started to take off, you’ll remember that “A blog about everything under the sun” and “Just another...",
+        "language": "en",
+        "type": "link",
+        "author_name": "",
+        "author_url": "",
+        "provider_name": "Robert Birming",
+        "provider_url": "",
+        "html": "",
+        "width": 1188,
+        "height": 670,
+        "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/024/070/266/original/d9d435ad631e1d63.png",
+        "image_description": "Blogging Is Back - Robert Birming",
+        "embed_url": "",
+        "blurhash": "UARW0bD%t7ayt7oLaeWB~q-;NGj[RjR*oft7",
+        "published_at": null
+      },
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112501286681046432",
+    "created_at": "2024-05-25T10:36:42.724Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112501286681046432",
+    "url": "https://infosec.exchange/@sudorandom/112501286681046432",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>That moment when you write so much code in one file github thinks it&#39;s an auto-generated file and doesn&#39;t show it in the UI</p>",
+    "reblog": null,
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112496809519965109",
+    "created_at": "2024-05-24T15:38:06.670Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112496809519965109",
+    "url": "https://infosec.exchange/@sudorandom/112496809519965109",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-24]: What is a stereotype about your field that is absolutely true?</p><p><a href=\"https://infosec.exchange/tags/daily\" class=\"mention hashtag\" rel=\"tag\">#<span>daily</span></a>-prompt <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "daily",
+        "url": "https://infosec.exchange/tags/daily"
+      },
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112494266346575470",
+    "created_at": "2024-05-24T04:51:20.924Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": null,
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112494266346575470/activity",
+    "url": "https://infosec.exchange/users/sudorandom/statuses/112494266346575470/activity",
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "",
+    "reblog": {
+      "id": "112493155109212238",
+      "created_at": "2024-05-24T00:08:44.000Z",
+      "in_reply_to_id": null,
+      "in_reply_to_account_id": null,
+      "sensitive": false,
+      "spoiler_text": "",
+      "visibility": "public",
+      "language": "en",
+      "uri": "https://mastodon.social/users/dannotdaniel/statuses/112493155067047132",
+      "url": "https://mastodon.social/@dannotdaniel/112493155067047132",
+      "replies_count": 9,
+      "reblogs_count": 77,
+      "favourites_count": 3,
+      "edited_at": null,
+      "content": "<p>mastodon is the methodone of social media </p><p>you still get some of that dopamine hit but without the babies crawling at you on the ceiling</p><p><a href=\"https://mastodon.social/tags/ILoveMastodon\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>ILoveMastodon</span></a></p>",
+      "reblog": null,
+      "account": {
+        "id": "109295025030470149",
+        "username": "dannotdaniel",
+        "acct": "dannotdaniel@mastodon.social",
+        "display_name": "ᴚ uɐᗡ",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "indexable": true,
+        "group": false,
+        "created_at": "2022-04-29T00:00:00.000Z",
+        "note": "<p>your friendly neighborhood cheesemonger.</p><p>🛠️ Unlearning some Things 🛠️</p><p>HERE for:<br>🧀 cheese<br>🏛️ democracy<br>🎨 art, animations, <a href=\"https://mastodon.social/tags/pixelart\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>pixelart</span></a>, <a href=\"https://mastodon.social/tags/3d\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>3d</span></a><br>📷 photography<br>🎸 tasty blues solos<br>🤓 general nerdery</p><p>NOT here for:<br>🚫 not \"expecting follow back\"<br>🚫 not into crypto / adjacent scams<br>😅 ignore the spinny coin</p><p><a href=\"https://mastodon.social/tags/StandWithUkraine\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>StandWithUkraine</span></a> 🇺🇦<br><a href=\"https://mastodon.social/tags/MaskUp\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>MaskUp</span></a> 💉😷<br><a href=\"https://mastodon.social/tags/CheezeEmAll\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>CheezeEmAll</span></a> <a href=\"https://mastodon.social/tags/BrieBest\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>BrieBest</span></a> 🧀<br><a href=\"https://mastodon.social/tags/mastodon\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>mastodon</span></a> <a href=\"https://mastodon.social/tags/fediverse\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>fediverse</span></a> 🌈📙<br><a href=\"https://mastodon.social/tags/TransWomenAreWomen\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>TransWomenAreWomen</span></a> 🏳️‍⚧️<br><a href=\"https://mastodon.social/tags/NeverMeta\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>NeverMeta</span></a> <a href=\"https://mastodon.social/tags/BlockThreads\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>BlockThreads</span></a><br><a href=\"https://mastodon.social/tags/animation\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>animation</span></a> <a href=\"https://mastodon.social/tags/vfx\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>vfx</span></a> <a href=\"https://mastodon.social/tags/simulations\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>simulations</span></a><br><a href=\"https://mastodon.social/tags/linux\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>linux</span></a> <a href=\"https://mastodon.social/tags/python\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>python</span></a> <a href=\"https://mastodon.social/tags/b3d\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>b3d</span></a> <a href=\"https://mastodon.social/tags/gimp\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>gimp</span></a> <a href=\"https://mastodon.social/tags/foss\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>foss</span></a> 🤓</p>",
+        "url": "https://mastodon.social/@dannotdaniel",
+        "uri": "https://mastodon.social/users/dannotdaniel",
+        "avatar": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/109/295/025/030/470/149/original/ef61aab31c93b091.gif",
+        "avatar_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/avatars/109/295/025/030/470/149/static/ef61aab31c93b091.png",
+        "header": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/109/295/025/030/470/149/original/71dbf3874d69603e.png",
+        "header_static": "https://media.infosec.exchange/infosec.exchange/cache/accounts/headers/109/295/025/030/470/149/original/71dbf3874d69603e.png",
+        "followers_count": 1800,
+        "following_count": 3647,
+        "statuses_count": 22857,
+        "last_status_at": "2024-05-26",
+        "hide_collections": false,
+        "emojis": [],
+        "fields": [
+          {
+            "name": "pronouns",
+            "value": "he/him",
+            "verified_at": null
+          },
+          {
+            "name": "cheese",
+            "value": "yes please where is it",
+            "verified_at": null
+          },
+          {
+            "name": "also me #DeadTwitter",
+            "value": "<a href=\"https://twittodon.com/share.php?t=dannotdaniel&amp;m=dannotdaniel@mastodon.social\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">twittodon.com/share.php?t=dann</span><span class=\"invisible\">otdaniel&amp;m=dannotdaniel@mastodon.social</span></a>",
+            "verified_at": "2024-05-25T00:22:32.358+00:00"
+          },
+          {
+            "name": "also me",
+            "value": "<span class=\"h-card\" translate=\"no\"><a href=\"https://hellions.cloud/@dannotdaniel\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>dannotdaniel@hellions.cloud</span></a></span>",
+            "verified_at": null
+          }
+        ]
+      },
+      "media_attachments": [],
+      "mentions": [],
+      "tags": [
+        {
+          "name": "ilovemastodon",
+          "url": "https://infosec.exchange/tags/ilovemastodon"
+        }
+      ],
+      "emojis": [],
+      "card": null,
+      "poll": null
+    },
+    "application": null,
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112491142673874392",
+    "created_at": "2024-05-23T15:36:57.461Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112491142673874392",
+    "url": "https://infosec.exchange/@sudorandom/112491142673874392",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-23]: What&#39;s one myth about your field that you&#39;d like to debunk?</p><p><a href=\"https://infosec.exchange/tags/daily\" class=\"mention hashtag\" rel=\"tag\">#<span>daily</span></a>-prompt <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "daily",
+        "url": "https://infosec.exchange/tags/daily"
+      },
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112489893003172528",
+    "created_at": "2024-05-23T10:19:08.999Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112489893003172528",
+    "url": "https://infosec.exchange/@sudorandom/112489893003172528",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🪧 Why I&#39;m Rebranding: Find out why the name of this website changed<br /><a href=\"https://kmcd.dev/posts/why-im-rebranding/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/why-im-rebrandi</span><span class=\"invisible\">ng/</span></a><br /><a href=\"https://infosec.exchange/tags/blog\" class=\"mention hashtag\" rel=\"tag\">#<span>blog</span></a> <a href=\"https://infosec.exchange/tags/update\" class=\"mention hashtag\" rel=\"tag\">#<span>update</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "blog",
+        "url": "https://infosec.exchange/tags/blog"
+      },
+      {
+        "name": "update",
+        "url": "https://infosec.exchange/tags/update"
+      }
+    ],
+    "emojis": [],
+    "card": {
+      "url": "https://kmcd.dev/posts/why-im-rebranding/",
+      "title": "Why I'm Rebranding",
+      "description": "Find out why the name of this website changed",
+      "language": "en",
+      "type": "link",
+      "author_name": "",
+      "author_url": "",
+      "provider_name": "kmcd.dev",
+      "provider_url": "",
+      "html": "",
+      "width": 1200,
+      "height": 1270,
+      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/978/537/original/4cb2934aa0d0d77f.png",
+      "image_description": "",
+      "embed_url": "",
+      "blurhash": "URGRM2~B-pt6NGD%s,j=9uIpkCWC5SXAogRn",
+      "published_at": "2024-05-23T00:00:00.000Z"
+    },
+    "poll": null
+  },
+  {
+    "id": "112485480269596231",
+    "created_at": "2024-05-22T15:36:56.028Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112485480269596231",
+    "url": "https://infosec.exchange/@sudorandom/112485480269596231",
+    "replies_count": 2,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-22]: How do you stay motivated to keep learning and growing?</p><p><a href=\"https://infosec.exchange/tags/daily\" class=\"mention hashtag\" rel=\"tag\">#<span>daily</span></a>-prompt <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "daily",
+        "url": "https://infosec.exchange/tags/daily"
+      },
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112479911110191954",
+    "created_at": "2024-05-21T16:00:37.400Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112479911110191954",
+    "url": "https://infosec.exchange/@sudorandom/112479911110191954",
+    "replies_count": 0,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-21]: What book have you recently read that sparked new ideas for you?</p><p><a href=\"https://infosec.exchange/tags/daily\" class=\"mention hashtag\" rel=\"tag\">#<span>daily</span></a>-prompt <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "daily",
+        "url": "https://infosec.exchange/tags/daily"
+      },
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112477609624331475",
+    "created_at": "2024-05-21T06:15:19.512Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112477609624331475",
+    "url": "https://infosec.exchange/@sudorandom/112477609624331475",
+    "replies_count": 0,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🪧 Benchmarking gRPC (golang): Let&#39;s so how fast gRPC can go in Go.<br /><a href=\"https://kmcd.dev/posts/benchmarking-go-grpc/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/benchmarking-go</span><span class=\"invisible\">-grpc/</span></a><br /><a href=\"https://infosec.exchange/tags/grpc\" class=\"mention hashtag\" rel=\"tag\">#<span>grpc</span></a> <a href=\"https://infosec.exchange/tags/golang\" class=\"mention hashtag\" rel=\"tag\">#<span>golang</span></a> <a href=\"https://infosec.exchange/tags/go\" class=\"mention hashtag\" rel=\"tag\">#<span>go</span></a> <a href=\"https://infosec.exchange/tags/benchmark\" class=\"mention hashtag\" rel=\"tag\">#<span>benchmark</span></a> <a href=\"https://infosec.exchange/tags/performance\" class=\"mention hashtag\" rel=\"tag\">#<span>performance</span></a> <a href=\"https://infosec.exchange/tags/protobuf\" class=\"mention hashtag\" rel=\"tag\">#<span>protobuf</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "grpc",
+        "url": "https://infosec.exchange/tags/grpc"
+      },
+      {
+        "name": "golang",
+        "url": "https://infosec.exchange/tags/golang"
+      },
+      {
+        "name": "go",
+        "url": "https://infosec.exchange/tags/go"
+      },
+      {
+        "name": "benchmark",
+        "url": "https://infosec.exchange/tags/benchmark"
+      },
+      {
+        "name": "performance",
+        "url": "https://infosec.exchange/tags/performance"
+      },
+      {
+        "name": "protobuf",
+        "url": "https://infosec.exchange/tags/protobuf"
+      }
+    ],
+    "emojis": [],
+    "card": {
+      "url": "https://kmcd.dev/posts/benchmarking-go-grpc/",
+      "title": "Benchmarking gRPC (golang)",
+      "description": "Let's so how fast gRPC can go in Go.",
+      "language": "en",
+      "type": "link",
+      "author_name": "",
+      "author_url": "",
+      "provider_name": "kmcd.dev",
+      "provider_url": "",
+      "html": "",
+      "width": 1200,
+      "height": 630,
+      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/879/868/original/c61690216ea76291.png",
+      "image_description": "",
+      "embed_url": "",
+      "blurhash": "UNGkzV.89uIB%cNFV[V{9ZWBt7xt0MsB$%I:",
+      "published_at": "2024-05-21T00:00:00.000Z"
+    },
+    "poll": null
+  },
+  {
+    "id": "112474156874962777",
+    "created_at": "2024-05-20T15:37:14.738Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112474156874962777",
+    "url": "https://infosec.exchange/@sudorandom/112474156874962777",
+    "replies_count": 1,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": "2024-05-20T15:42:05.989Z",
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-20]: What are some ways that a creative mindset has helped you with your work?</p><p><a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  },
+  {
+    "id": "112469017920907939",
+    "created_at": "2024-05-19T17:50:20.523Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112469017920907939",
+    "url": "https://infosec.exchange/@sudorandom/112469017920907939",
+    "replies_count": 0,
+    "reblogs_count": 1,
+    "favourites_count": 1,
+    "edited_at": null,
+    "local_only": false,
+    "content": "<p>🪧 Visualizing the Internet (2024): Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges.<br /><a href=\"https://kmcd.dev/posts/internet-map-2024/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">kmcd.dev/posts/internet-map-20</span><span class=\"invisible\">24/</span></a><br /><a href=\"https://infosec.exchange/tags/dataviz\" class=\"mention hashtag\" rel=\"tag\">#<span>dataviz</span></a> <a href=\"https://infosec.exchange/tags/internet\" class=\"mention hashtag\" rel=\"tag\">#<span>internet</span></a>-map <a href=\"https://infosec.exchange/tags/internet\" class=\"mention hashtag\" rel=\"tag\">#<span>internet</span></a> <a href=\"https://infosec.exchange/tags/networking\" class=\"mention hashtag\" rel=\"tag\">#<span>networking</span></a> <a href=\"https://infosec.exchange/tags/fiber\" class=\"mention hashtag\" rel=\"tag\">#<span>fiber</span></a>-optics <a href=\"https://infosec.exchange/tags/map\" class=\"mention hashtag\" rel=\"tag\">#<span>map</span></a> <a href=\"https://infosec.exchange/tags/world\" class=\"mention hashtag\" rel=\"tag\">#<span>world</span></a> <a href=\"https://infosec.exchange/tags/infrastructure\" class=\"mention hashtag\" rel=\"tag\">#<span>infrastructure</span></a> <a href=\"https://infosec.exchange/tags/peeringdb\" class=\"mention hashtag\" rel=\"tag\">#<span>peeringdb</span></a> <a href=\"https://infosec.exchange/tags/svg\" class=\"mention hashtag\" rel=\"tag\">#<span>svg</span></a> <a href=\"https://infosec.exchange/tags/javascript\" class=\"mention hashtag\" rel=\"tag\">#<span>javascript</span></a> <a href=\"https://infosec.exchange/tags/golang\" class=\"mention hashtag\" rel=\"tag\">#<span>golang</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [
+      {
+        "id": "112469017716908582",
+        "type": "image",
+        "url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/716/908/582/original/37b24182cd975446.webp",
+        "preview_url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/716/908/582/small/37b24182cd975446.webp",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 2000,
+            "height": 1429,
+            "size": "2000x1429",
+            "aspect": 1.3995801259622114
+          },
+          "small": {
+            "width": 568,
+            "height": 406,
+            "size": "568x406",
+            "aspect": 1.3990147783251232
+          }
+        },
+        "description": "Map of the Internet",
+        "blurhash": "U07UI{RjIVoJs;ofoKWB4Tt7t7M|ozWBNGWU"
+      },
+      {
+        "id": "112469017775803940",
+        "type": "image",
+        "url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/775/803/940/original/3afc982e9852d86c.webp",
+        "preview_url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/775/803/940/small/3afc982e9852d86c.webp",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 1200,
+            "height": 1000,
+            "size": "1200x1000",
+            "aspect": 1.2
+          },
+          "small": {
+            "width": 526,
+            "height": 438,
+            "size": "526x438",
+            "aspect": 1.2009132420091324
+          }
+        },
+        "description": "Europe",
+        "blurhash": "U07UI{0M01$w4TX9t8of02Q,~9XAxZxtjE%2"
+      },
+      {
+        "id": "112469017828921074",
+        "type": "image",
+        "url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/828/921/074/original/634bc3c24e30773a.webp",
+        "preview_url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/828/921/074/small/634bc3c24e30773a.webp",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 1200,
+            "height": 1000,
+            "size": "1200x1000",
+            "aspect": 1.2
+          },
+          "small": {
+            "width": 526,
+            "height": 438,
+            "size": "526x438",
+            "aspect": 1.2009132420091324
+          }
+        },
+        "description": "North America",
+        "blurhash": "U071l[MbI=%h^j?bkWw@9GRj$xRkD%tRVrNK"
+      },
+      {
+        "id": "112469017906806884",
+        "type": "image",
+        "url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/906/806/884/original/1b94a1570a0e8c73.webp",
+        "preview_url": "https://media.infosec.exchange/infosec.exchange/media_attachments/files/112/469/017/906/806/884/small/1b94a1570a0e8c73.webp",
+        "remote_url": null,
+        "preview_remote_url": null,
+        "text_url": null,
+        "meta": {
+          "original": {
+            "width": 1800,
+            "height": 1600,
+            "size": "1800x1600",
+            "aspect": 1.125
+          },
+          "small": {
+            "width": 509,
+            "height": 452,
+            "size": "509x452",
+            "aspect": 1.1261061946902655
+          }
+        },
+        "description": "Asia",
+        "blurhash": "U06*gpw@E2?c~q%MM|tR9FIU%MRODiM{j?R5"
+      }
+    ],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "dataviz",
+        "url": "https://infosec.exchange/tags/dataviz"
+      },
+      {
+        "name": "internet",
+        "url": "https://infosec.exchange/tags/internet"
+      },
+      {
+        "name": "networking",
+        "url": "https://infosec.exchange/tags/networking"
+      },
+      {
+        "name": "fiber",
+        "url": "https://infosec.exchange/tags/fiber"
+      },
+      {
+        "name": "map",
+        "url": "https://infosec.exchange/tags/map"
+      },
+      {
+        "name": "world",
+        "url": "https://infosec.exchange/tags/world"
+      },
+      {
+        "name": "infrastructure",
+        "url": "https://infosec.exchange/tags/infrastructure"
+      },
+      {
+        "name": "peeringdb",
+        "url": "https://infosec.exchange/tags/peeringdb"
+      },
+      {
+        "name": "svg",
+        "url": "https://infosec.exchange/tags/svg"
+      },
+      {
+        "name": "javascript",
+        "url": "https://infosec.exchange/tags/javascript"
+      },
+      {
+        "name": "golang",
+        "url": "https://infosec.exchange/tags/golang"
+      }
+    ],
+    "emojis": [],
+    "card": {
+      "url": "https://kmcd.dev/posts/internet-map-2024/",
+      "title": "Visualizing the Internet (2024)",
+      "description": "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges.",
+      "language": "en",
+      "type": "link",
+      "author_name": "",
+      "author_url": "",
+      "provider_name": "kmcd.dev",
+      "provider_url": "",
+      "html": "",
+      "width": 1200,
+      "height": 630,
+      "image": "https://media.infosec.exchange/infosec.exchange/cache/preview_cards/images/023/824/143/original/22b46c49525a8dca.png",
+      "image_description": "",
+      "embed_url": "",
+      "blurhash": "U27BDv?bIVMx_4?bWBIU?c?bWBIU_4?aM{M{",
+      "published_at": "2024-04-23T00:00:00.000Z"
+    },
+    "poll": null
+  },
+  {
+    "id": "112468508088757121",
+    "created_at": "2024-05-19T15:40:41.101Z",
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "language": "en",
+    "uri": "https://infosec.exchange/users/sudorandom/statuses/112468508088757121",
+    "url": "https://infosec.exchange/@sudorandom/112468508088757121",
+    "replies_count": 0,
+    "reblogs_count": 1,
+    "favourites_count": 0,
+    "edited_at": "2024-05-19T17:04:46.590Z",
+    "local_only": false,
+    "content": "<p>📆 Daily Prompt [2024-05-19]: Recommend some lesser-known users or blogs that cover backend programming and networking protocols.</p><p> <a href=\"https://infosec.exchange/tags/writing\" class=\"mention hashtag\" rel=\"tag\">#<span>writing</span></a> <a href=\"https://infosec.exchange/tags/softwareengineering\" class=\"mention hashtag\" rel=\"tag\">#<span>softwareengineering</span></a></p>",
+    "reblog": null,
+    "application": {
+      "name": "EchoFeed",
+      "website": null
+    },
+    "account": {
+      "id": "109300069582362316",
+      "username": "sudorandom",
+      "acct": "sudorandom",
+      "display_name": "sudorandom",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "indexable": true,
+      "group": false,
+      "created_at": "2022-11-07T00:00:00.000Z",
+      "note": "<p>Software Engineer. I post about backend programming, and nonsense.  🇺🇸 living in 🇩🇰 </p><p><a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a></p>",
+      "url": "https://infosec.exchange/@sudorandom",
+      "uri": "https://infosec.exchange/users/sudorandom",
+      "avatar": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "avatar_static": "https://media.infosec.exchange/infosec.exchange/accounts/avatars/109/300/069/582/362/316/original/37209718fa7513e2.jpg",
+      "header": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "header_static": "https://media.infosec.exchange/infosec.exchange/accounts/headers/109/300/069/582/362/316/original/2c905419ef36413a.png",
+      "followers_count": 136,
+      "following_count": 64,
+      "statuses_count": 348,
+      "last_status_at": "2024-05-25",
+      "hide_collections": false,
+      "noindex": false,
+      "emojis": [],
+      "roles": [],
+      "fields": [
+        {
+          "name": "Languages",
+          "value": "English, Danish (beginner)",
+          "verified_at": null
+        },
+        {
+          "name": "Interests",
+          "value": "Network protocols, Data viz, Data analysis, Video Games, Board Games",
+          "verified_at": null
+        },
+        {
+          "name": "Website",
+          "value": "<a href=\"https://kmcd.dev\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"\">kmcd.dev</span><span class=\"invisible\"></span></a>",
+          "verified_at": "2024-05-25T17:40:09.733+00:00"
+        }
+      ]
+    },
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [
+      {
+        "name": "writing",
+        "url": "https://infosec.exchange/tags/writing"
+      },
+      {
+        "name": "softwareengineering",
+        "url": "https://infosec.exchange/tags/softwareengineering"
+      }
+    ],
+    "emojis": [],
+    "card": null,
+    "poll": null
+  }
+]
