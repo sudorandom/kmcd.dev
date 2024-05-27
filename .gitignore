@@ -2,8 +2,14 @@
 node_modules
 .hugo_build.lock
 public
+live
+live.old
+future
+future.old
 _gen
 .vscode
+
+env
 
 assets/mastodon
 data/mastodon
