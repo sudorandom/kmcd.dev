@@ -69,7 +69,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kmcd-dev
-          directory: public
+          directory: live
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Future
@@ -86,5 +86,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kmcd-dev-future
-          directory: public
+          directory: future
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
