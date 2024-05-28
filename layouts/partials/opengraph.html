@@ -1,5 +1,5 @@
+{{ $siteImage := (resources.Get "images/site_cover.png").Fit "3600x1890 webp" }}
 {{ if .IsHome }}
-    {{ $siteImage := (resources.Get "images/site_cover.png").Fit "3600x1890 webp" }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
 {{ else if (eq .Type "prompts") }}
     {{ $title := printf "Daily Prompt: %s" (dateFormat "2006-01-02" .Date.Local) }}
