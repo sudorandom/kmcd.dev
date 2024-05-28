@@ -2,15 +2,16 @@
     {{- if .Params.mastodonID -}}
         {{- $statusMap := (index .Site.Data.mastodon.index.statuses .Params.mastodonID) -}}
         {{- $statusPath := $statusMap.path -}}
-        {{- $toot := (index .Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
+        {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
         {{- $.Page.Store.Set "toot" $toot -}}
     {{- else -}}
         {{- range .Site.Data.mastodon.index.statuses -}}
             {{- $statusPath := .path -}}
-            {{- $toot := (index .Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
-            {{- if (strings.Contains $toot.Content $.Page.RelPermalink) -}}
-                {{- $.Page.Store.Set "toot" . -}}
-                {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path .Params.id -}}
+            {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
+            {{ $path := (split (path.Dir $statusPath) "/") }}
+            {{- if (strings.Contains $toot.status.content $.Page.RelPermalink) -}}
+                {{- $.Page.Store.Set "toot" $toot -}}
+                {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path $toot.status.id -}}
             {{- end -}}
         {{- end -}}
     {{- end -}}

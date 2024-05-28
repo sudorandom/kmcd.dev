@@ -11,6 +11,7 @@ slug: "hugo-chartjs"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/hugo-chartjs
+mastodonID: "112517411212093961"
 ---
 
 I recently wanted to add some charts to a blog post and [mermaid](https://mermaid.live) just wasn't cutting it. Mermaid didn't support the options I wanted to use and ultimately wasn't flexible enough to show a horizontal bar chart with the customization options I wanted. So I went looking for alternatives... and that's when I found this [shen-yu/hugo-chart](https://github.com/shen-yu/hugo-chart)... layout? for hugo that adds [Chart.js](https://www.chartjs.org/) support. Chart.js is a great javascript library for creating many kinds of charts with many customization options. *Perfect*, I thought. As I started using `shen/yu-hugo-chart` to add chart.js to my site, a few things stood out to me:
