@@ -75,7 +75,12 @@ taxonomies:
   series: "series"
 
 permalinks:
-  posts: "/posts/:slug/"
+  page:
+    posts: "/posts/:slug/"
+    prompts: /prompts/:year-:month-:day/
+  section:
+    posts: /posts/
+    prompts: /prompts/
 
 menu:
   main:
@@ -91,6 +96,10 @@ menu:
       name: "/links"
       url: "/links/"
       weight: 3
+    - identifier: "prompts"
+      name: "/prompts"
+      url: "/prompts/"
+      weight: 4
 
 markup:
   tableOfContents:

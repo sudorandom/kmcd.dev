@@ -1,4 +1,5 @@
 {{ define "main" }}
+  {{ partial "load-mastodon.html" . }}
   <main class="post">
     <h1 class="post-title">
       Daily Prompt: {{ dateFormat "2006-01-02" .Date.Local }}
@@ -9,32 +10,31 @@
 
     <div class="main-wrapper">
     <div class="main-box">
-    {{ $toot := slice }}
-    {{- if .Params.mastodonID -}}
-      {{- with .Site.GetPage (printf "/updates/imported/%s.html" .Params.mastodonID) }}
-        {{- $toot = .Params -}}
-      {{- end -}}
-    {{- else -}}
-      {{ $post := . }}
-      {{ range (sort .Site.RegularPages ".Params.date" "asc") }}
-      {{ if and (eq .Type "updates") (strings.Contains .Content $post.Title )}}
-        {{ $toot = .Params }}
-      {{ end }}
-      {{ end }}
-    {{- end -}}
-
-
     <article>
-      {{- with $toot -}}
-        {{ partial "toot.html" . }}
-      {{- else -}}
       <div class="post-content">
         <h2>{{ .Title }}</h2>
+        {{ with .Page.Store.Get "toot" }}
+        <div class="button small mastodon previous">
+          <a href="{{ .status.url }}" target="_blank">
+            <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
+            <span class="button__text">Discuss on Mastodon</span>
+          </a>
+        </div>
+        {{ end }}
       </div>
       </div>
       </div>
-      {{- end -}}
     </article>
+    {{- with .Page.Store.Get "toot" -}}
+    <h2>Replies{{ with .replies }}<small>({{ len . }})</small>{{ end }}</h2>
+    {{ with .replies}}
+      {{- range . }}
+        {{ partial "little-toot.html" .status }}
+      {{- end -}}
+    {{ end }}
+
+  {{- end -}}
+
     {{ partial "pagination-single.html" . }}
   </main>
 
