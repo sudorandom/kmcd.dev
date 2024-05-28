@@ -8,11 +8,11 @@
     {{ if ne $img.MediaType.SubType "svg" }}
       {{ $filters := slice
         (images.Process "fill 1200x1200 Center png q95")
-        (images.Padding 70 0 0 0 "#1F2A35")
+        (images.Padding 135 30 30 30 "#1F2A35")
         (images.Text $page.Title (dict
-            "size" 40
+            "size" 45
             "x" 40
-            "y" 10
+            "y" 60
             "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
           }}
       {{ $squareImg := $img.Filter $filters }}
