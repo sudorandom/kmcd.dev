@@ -128,7 +128,6 @@
 
   {{- with .Page.Store.Get "toot" -}}
     <h2>Comments{{ with .replies }}<small>({{ len . }})</small>{{ end }}</h2>
-    {{ partial "little-toot.html" .status }}
 
     {{ with .replies}}
       {{- range . }}
@@ -136,6 +135,40 @@
       {{- end -}}
     {{ end }}
 
+    <div class="main-wrapper">
+      <div class="main-box">
+        {{
+          $commentHeading := (slice
+            "Discuss"
+            "Chime In"
+            "Thoughts?"
+            "Feedback"
+            "Join the Conversation"
+            "Your Turn"
+            "Let's Hear It"
+          )
+        }}
+        <h3>{{ index $commentHeading (mod .status.id (len $commentHeading)) | safeHTML }}</h3>
+        <p>
+          {{
+            $commentText := (slice
+              "<strong>Let's discuss!</strong> Do you have any questions or insights to add?"
+              "<strong>Got a different perspective?</strong> I love hearing different viewpoints."
+              "<strong>Leave a question or comment</strong> for future readers who might have the same questions."
+              "<strong>Community is important.</strong> Help cultivate one here by replying."
+            )
+          }}
+
+          {{ index $commentText (mod .status.id (len $commentText)) | safeHTML }}
+        </p>
+        <div class="button small mastodon previous">
+          <a href="{{ .status.url }}" target="_blank">
+            <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
+            <span class="button__text">Add your comment on Mastodon</span>
+          </a>
+        </div>
+      </div>
+    </div>
   {{- end -}}
   </main>
 

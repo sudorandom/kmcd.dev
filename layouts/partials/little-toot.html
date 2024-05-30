@@ -2,14 +2,14 @@
 	{{ $toot := . }}
 	{{ if isset . "content" }}
 		<div class="toot" cite="{{ .link }}">
+			{{ if (not .reblog) }}
 			<div class="button small mastodon previous">
-				{{ if (not .reblog) }}
 				<a href="{{ .url }}" target="_blank">
 					<span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
-					<span class="button__text">Discuss on Mastodon</span>
+					<span class="button__text">Reply</span>
 				</a>
-				{{ end }}
 			</div>
+			{{ end }}
 			<div class="toot-header">
 				<a class="toot-profile" href="{{ .account.url }}" rel="noopener">
 					<span class="toot-author">
