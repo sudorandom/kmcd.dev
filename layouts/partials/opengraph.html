@@ -2,6 +2,7 @@
 {{ if .IsHome }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
 {{ else if (eq .Type "prompts") }}
+    {{ partial "prompts/load-cover.html" . }}
     {{ $title := printf "Daily Prompt: %s" (dateFormat "2006-01-02" .Date.Local) }}
     {{ $filters := slice
       (images.Process "fill 1200x1200 Center png q95")
@@ -12,7 +13,7 @@
           "y" 60
           "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
         }}
-    {{ $promptCover := (resources.Get "images/prompt_cover.jpg").Filter $filters }}
+    {{- $promptCover := ($.Page.Store.Get "prompts-cover").Filter $filters -}}
     <meta property="og:image" content="{{ $promptCover.Permalink }}"/>
 {{ else }}
     {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
