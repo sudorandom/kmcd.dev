@@ -26,13 +26,12 @@
       </div>
     </article>
     {{- with .Page.Store.Get "toot" -}}
-    <h2>Replies{{ with .replies }}<small>({{ len . }})</small>{{ end }}</h2>
     {{ with .replies}}
+      <h2>Replies<small>({{ len . }})</small></h2>
       {{- range . }}
         {{ partial "little-toot.html" .status }}
       {{- end -}}
     {{ end }}
-
   {{- end -}}
 
     {{ partial "pagination-single.html" . }}
