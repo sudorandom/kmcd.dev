@@ -26,6 +26,10 @@
 			{{ .content | safeHTML }}
 			<div class="toot-footer">
 				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span></a>
+
+				<span style="float:right">
+					<a href="{{.url}}" rel="noopener">{{ .replies_count }} {{ if (eq .replies_count 1.0) }}reply{{ else }}replies{{ end }}</a>
+				</span>
 			</div>
 		</div>
 	{{ end }}

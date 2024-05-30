@@ -40,7 +40,7 @@
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
             {{- partial "load-mastodon.html" . -}}
             {{- with .Page.Store.Get "toot" -}}
-            <comments>{{ .url }}</comments>
+            <comments>{{ .status.url }}</comments>
             {{- end -}}
         </item>
         {{ end }}
