@@ -45,12 +45,12 @@ params:
   social:
     - name: "mastodon"
       url: "https://infosec.exchange/@sudorandom"
+    - name: "bluesky"
+      url: "https://bsky.app/profile/sudorandom.bsky.social"
     - name: "linkedin"
       url: "https://linkedin.com/in/sudorandom"
     - name: "github"
       url: "https://github.com/sudorandom"
-    - name: "bluesky"
-      url: "https://bsky.app/profile/sudorandom.bsky.social"
 
   mainSections:
     - posts
