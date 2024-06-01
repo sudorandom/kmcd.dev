@@ -1,15 +1,18 @@
+{{- $foundToot := $.Page.Store.Get "toot" -}}
+
 {{/* find based on explicit mastodonID */}}
-{{- if not ($.Page.Store.Get "toot") -}}
+{{- if not $foundToot -}}
     {{- if .Params.mastodonID -}}
         {{- $statusMap := (index $.Site.Data.mastodon.index.statuses .Params.mastodonID) -}}
         {{- $statusPath := $statusMap.path -}}
         {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
         {{- $.Page.Store.Set "toot" $toot -}}
+        {{- $foundToot = $toot -}}
     {{- end -}}
 {{- end -}}
 
 {{/* find based on linked relative links */}}
-{{- if not ($.Page.Store.Get "toot") -}}
+{{- if not $foundToot -}}
     {{- range $.Site.Data.mastodon.index.statuses -}}
         {{- $statusPath := .path -}}
         {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
@@ -17,21 +20,27 @@
         {{- if (strings.Contains $toot.status.content $.Page.RelPermalink) -}}
             {{- $.Page.Store.Set "toot" $toot -}}
             {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path $toot.status.id -}}
-            {{ break }}
+            {{- $foundToot = $toot -}}
+            {{- break -}}
         {{- end -}}
     {{- end -}}
 {{- end -}}
 
 {{/* find for prompts */}}
-{{- if (and (not ($.Page.Store.Get "toot")) (eq .Section "prompts")) -}}
-    {{- range $.Site.Data.mastodon.index.statuses -}}
-        {{- $statusPath := .path -}}
-        {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
-        {{ $path := (split (path.Dir $statusPath) "/") }}
-        {{- if (strings.Contains $toot.status.content $.Page.Title) -}}
-            {{- $.Page.Store.Set "toot" $toot -}}
-            {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path $toot.status.id -}}
-            {{ break }}
+{{- if not $foundToot -}}
+    {{- if (eq .Section "prompts") -}}
+        {{- range $.Site.Data.mastodon.index.statuses -}}
+            {{- $statusPath := .path -}}
+            {{- $toot := (index $.Site.Data.mastodon (split (path.Dir $statusPath) "/")) -}}
+            {{ $path := (split (path.Dir $statusPath) "/") }}
+            {{- if (strings.Contains $toot.status.content $.Page.Title) -}}
+                {{- $.Page.Store.Set "toot" $toot -}}
+                {{- warnf "Mastodon post found for post: '%s' mastodonID: \"%s\"" $.Page.Path $toot.status.id -}}
+                {{- $foundToot = $toot -}}
+                {{- break -}}
+            {{- end -}}
         {{- end -}}
     {{- end -}}
 {{- end -}}
+
+{{ return $foundToot }}

@@ -1,5 +1,5 @@
 {{ define "main" }}
-  {{ partial "load-mastodon.html" . }}
+  {{- $toot := (partial "mastodon/load.html" .) -}}
   <main class="post">
     <h1 class="post-title">
       Daily Prompt: {{ dateFormat "2006-01-02" .Date.Local }}
@@ -11,17 +11,13 @@
     <div class="main-wrapper">
     <div class="main-box">
     <article>
-      {{ partial "prompts/load-cover.html" . }}
-      {{- $cover := ($.Page.Store.Get "prompts-cover").Fill "1520x400 Center webp q100" -}}
+      {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
       <figure>
           <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
-          {{ with .Params.CoverCaption }}
-              <figcaption class="center">{{ . | markdownify }}</figcaption>
-          {{ end }}
       </figure>
       <div class="post-content">
         <h2>{{ .Title }}</h2>
-        {{ with .Page.Store.Get "toot" }}
+        {{ with $toot }}
         <div class="button small mastodon previous">
           <a href="{{ .status.url }}" target="_blank">
             <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
@@ -34,14 +30,18 @@
       </div>
     </article>
     {{ partial "pagination-single.html" . }}
-    {{- with .Page.Store.Get "toot" -}}
-    {{ with .replies}}
-      <h2>Replies<small>({{ len . }})</small></h2>
-      {{- range . }}
-        {{ partial "little-toot.html" .status }}
-      {{- end -}}
-    {{ end }}
-  {{- end -}}
+    {{- with $toot -}}
+      {{ with .replies}}
+        <h2>Replies<small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</h2>
+        {{- range . }}
+          <div class="main-wrapper">
+            <div class="toot-box">
+              {{ partial "mastodon/comment.html" . }}
+            </div>
+          </div>
+        {{- end -}}
+      {{ end }}
+    {{- end -}}
   </main>
 
 {{ end }}

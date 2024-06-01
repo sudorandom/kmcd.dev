@@ -1,5 +1,2 @@
-{{- if not ($.Page.Store.Get "prompts-cover") -}}
-{{- $promptImages := (resources.Match "images/prompt_covers/*") -}}
-{{- $cover := (index $promptImages (mod .Date.Day (len $promptImages))) -}}
-{{- $.Page.Store.Set "prompts-cover" $cover -}}
-{{- end -}}
+{{- $images := (resources.Match "images/prompt_covers/*") -}}
+{{- return (index $images (mod .Date.Day (len $images))) -}}

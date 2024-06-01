@@ -1,5 +1,4 @@
-{{- with . }}
-	{{ $toot := . }}
+{{- with .status }}
 	{{ if isset . "content" }}
 		<div class="toot" cite="{{ .link }}">
 			{{ if (not .reblog) }}
@@ -23,6 +22,7 @@
 					</span>
 				</a>
 			</div>
+
 			{{ .content | safeHTML }}
 			<div class="toot-footer">
 				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}&nbsp;<span class="pokey">(UTC)</span></a>
@@ -30,6 +30,10 @@
 					<a href="{{.url}}" rel="noopener">{{ .replies_count }} {{ if (eq .replies_count 1.0) }}reply{{ else }}replies{{ end }}</a>
 				</span>
 			</div>
+			{{ range $.replies }}
+				<hr />
+				{{ partial "mastodon/comment.html" . }}
+			{{ end }}
 		</div>
 	{{ end }}
 {{- end -}}

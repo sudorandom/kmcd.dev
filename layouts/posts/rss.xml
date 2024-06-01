@@ -38,8 +38,8 @@
             {{- $content = replaceRE "<svg.*</svg>" "" $content -}}
             {{- $content = replaceRE `-moz-tab-size:\d;-o-tab-size:\d;tab-size:\d;?` "" $content -}}
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
-            {{- partial "load-mastodon.html" . -}}
-            {{- with .Page.Store.Get "toot" -}}
+            {{- $toot := (partial "mastodon/load.html" .) -}}
+            {{- with $toot -}}
             <comments>{{ .status.url }}</comments>
             {{- end -}}
         </item>

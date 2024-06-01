@@ -215,10 +215,22 @@ h2 {
     margin-top: 1em;
 }
 
-.toot {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.toot-box {
     padding: 20px;
+    padding-left: 0px;
+    border-radius: 10px;
+    margin: 10px 0 10px 0;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.toot {
+    // padding: 20px;
+    margin-left: 20px;
     border-radius: 10px;
     [data-theme=light] & {
         background: #fafafa;
@@ -226,6 +238,10 @@ h2 {
     [data-theme=dark] & {
         background: #1f2a35;
     }
+}
+
+.toot hr {
+    margin: 20px 0;
 }
 
 .toot-header img {
@@ -390,4 +406,10 @@ ul.icons {
     [data-theme=dark] & {
         background-color: white;
     }
+}
+
+.mermaid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

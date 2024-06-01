@@ -5,6 +5,7 @@ series: ["Sun Spectrum"]
 date: "2022-02-19"
 description: "Visualizing the visual spectrum of the sun. Spectrum analysis, wavelengths of light, data visualization"
 featured: "thumbnail.png"
+cover: "thumbnail.png"
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
