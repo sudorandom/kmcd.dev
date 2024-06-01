@@ -1,10 +1,9 @@
 ---
 categories: ["article"]
-tags: ["programming", "writing", "softwareengineering", "hugo"]
-date: "2024-06-04"
+tags: ["programming", "writing", "softwareengineering", "hugo", "blog"]
+date: "2024-06-04T10:00:00Z"
 description: "Kickstart your creative juices with a daily writing prompt."
 cover: "cover.jpg"
-featured: ""
 title: "Daily Prompts"
 slug: "daily-prompts"
 type: "posts"
@@ -59,6 +58,8 @@ graph TD
 I have a simple script that checks for new changes in my Github repo periodically and does a rebuild to see if there are any scheduled changes. However, you may be wondering how I add mastodon posts to my "static" website. If you experiment enough, you may see that replies get added to my website within 10 minutes (if posted during the day in the European CEST timezone, otherwise it waits until the morning). I made this happen by writing some code with Go and a library called [go-mastodon](https://github.com/mattn/go-mastodon) that scans through my previous mastodon posts and puts the updated statuses into a Github repo which is updated for each build of my website. If I want to block content from appearing on my website, I can block the user or mute the reply.
 
 The system works out pretty well. I can improve this, however. I could use a webhook to trigger builds more quickly when there are changes to my Github repo or if there are new posts on mastodon. As it stands, I have to wait up to 10 minutes to see the changes reflected... which isn't bad, it could just be better. This doesn't help with scheduled posts, but it would reduce the frequency that I have to check for updates.
+
+I intend to polish the script and publish it as a tool that others can use. I may try to also add support for Blue Sky as well but I make no promises!
 
 ### Enjoy
 I do hope that others find the prompts useful. If you have a suggestion for a prompt or any questions about my setup, please let me know in the comments for *this* post!
