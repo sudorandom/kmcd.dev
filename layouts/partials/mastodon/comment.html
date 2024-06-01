@@ -1,4 +1,5 @@
 {{- $depth := (or .depth 1) -}}
+{{- $root := . -}}
 {{- with .status }}
 	{{- if isset . "content" }}
 		<div class="toot" cite="{{ .link }}">
@@ -29,8 +30,9 @@
 			<div class="toot-footer">
 				<a href="{{.url}}" class="toot-date" rel="noopener">{{ dateFormat "3:04 PM • January 2, 2006" .created_at }}</a>
 				{{- if (and (gt $depth 3) (gt .replies_count 0)) -}}
+					{{ $count := math.Sub (partial "mastodon/comment.count.html" $root ) 1 }}
 					<span style="float:right">
-						<a href="{{.url}}" rel="noopener">{{ .replies_count }} more {{ if (eq .replies_count 1.0) }}reply{{ else }}replies{{ end }}</a>
+						<a href="{{.url}}" rel="noopener" target="_blank">{{ $count }} more {{ if (eq $count 1) }}reply{{ else }}replies{{ end }}</a>
 					</span>
 				{{ end }}
 			</div>
