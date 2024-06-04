@@ -23,7 +23,7 @@ Hello! This will be a lighter update for this blog. I'm going to recap some of t
 I've been keeping up a one-post-a-week cadence. This has started pretty well because I was in a hyper-productive mode and built up a fairly sizable backlog but I'm now in a less productive phase. Therefore, some weeks in the future may be "softer" than others and I may resort to link posts, commenting about recent events, and other lower-effort ways of getting more words onto the website. This post is one of the lower-effort posts since it doesn't require research!
 
 ## Importing mastodon posts
-Mastodon posts are automatically downloaded and re-hosted on this website, [here](/updates/). This serves a few purposes:
+Mastodon posts are automatically downloaded and re-hosted on this website. This serves a few purposes:
 
 - At the bottom of every blog post, the corresponding mastodon post is referenced. I hope this will be a good way to point readers who want to make a comment on the article or to give me a thumbs up.
 - Allows me to reference Mastodon posts inside of blog posts (without relying on an external service or iframes). I haven't used this yet, but it may come in handy.
