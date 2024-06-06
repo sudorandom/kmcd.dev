@@ -4,7 +4,7 @@
 {{ else if (eq .Type "prompts") }}
     {{ $title := printf "Daily Prompt: %s" (dateFormat "2006-01-02" .Date.Local) }}
     {{ $filters := slice
-      (images.Process "fill 1200x1200 Center png q95")
+      (images.Process "fill 1140x1035 Center png q95")
       (images.Padding 135 30 30  "#1F2A35")
       (images.Text $title (dict
           "size" 45
