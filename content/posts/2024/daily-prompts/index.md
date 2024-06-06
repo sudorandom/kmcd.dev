@@ -8,6 +8,7 @@ title: "Daily Prompts"
 slug: "daily-prompts"
 type: "posts"
 canonical_url: https://kmcd.dev/posts/daily-prompts
+mastodonID: "112557775048196416"
 ---
 
 You may have noticed from my [mastodon feed](https://infosec.exchange/@sudorandom) or from a link on the website's navigation that I have added **daily prompts**. Each day is a new question to answer. You can respond to the post on Mastodon and it will appear (after some minutes) on this website. I've been doing it for the entire month of May and I intend to keep doing it to spur my thoughts and maybe others. I feel like having a question to answer each day helps give others context on who I am, what I'm doing and how I see the world. I have also found that it acts as a good way to reflect on things. I've wanted some answers to be different... so I now have some motivation to make them different.

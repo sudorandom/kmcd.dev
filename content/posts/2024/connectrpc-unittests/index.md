@@ -27,49 +27,19 @@ Before we dive in, let's address the "why." Unit testing your ConnectRPC servers
 ConnectRPC, built upon the Protocol Buffers ecosystem, offers a couple of primary approaches to unit testing:
 
 1. **Direct Service Testing:** This is ideal for unit testing but it's not always possible. You directly call the methods of your service implementation (typically a struct in Go), bypassing any client and server networking.
-2. **In-Memory Server Testing:** This approach simulates a ConnectRPC server running in memory. It's helpful when you want to test the interactions between your client and server code but is usually "overkill" unless you're wanting to test interceptors or HTTP middleware.
+2. **Server Testing:** This approach creates an actual ConnectRPC server with `net/http/httptest`. It's helpful when you want to test the interactions between your client and server code but is usually "overkill" unless you're wanting to test interceptors or HTTP middleware.
 
-## Hands-On: Unit Testing Example
+## Hands-On: Our example service
+Here is the protobuf file that we're using for our example:
+{{% render-code file="go/greet/v1/greet.proto" language="protobuf" %}}
+
+And here is the resulting server implementation:
+{{% render-code file="go/endpoints.go" language="go" %}}
+
+## Hands-On: Direct Service Testing Example
 
 Let's write some unit tests for a simple ConnectRPC service:
-
-```go
-package main
-
-import (
-    "context"
-    "errors"
-    "testing"
-
-    v1 "your/module/path/v1" // Replace with your protocol buffers package path
-    v1connect "your/module/path/v1/v1connect"
-)
-
-type greeterService struct{}
-
-var _ v1connect.GreeterService = (*greeterService)(nil)
-
-func (s *greeterService) Greet(ctx context.Context, req *v1connect.GreetRequest) (*v1connect.GreetResponse, error) {
-    if req.Msg.Name == "" {
-        return nil, errors.New("missing name")
-    }
-    return &v1connect.GreetResponse{Greeting: "Hello, " + req.Name}, nil
-}
-
-func TestGreet(t *testing.T) {
-    service := &greeterService{}
-
-    // Direct service testing
-    response, err := service.Greet(context.Background(), &v1connect.GreetRequest{Name: "Alice"})
-    if err != nil {
-        t.Fatalf("Greet failed: %v", err)
-    }
-    if response.Greeting != "Hello, Alice" {
-        t.Errorf("Unexpected greeting: got %q, want %q", response.Greeting, "Hello, Alice")
-    }
-}
-
-```
+{{% render-code file="go/direct_test.go" language="go" %}}
 
 **Explanation:**
 
@@ -77,77 +47,10 @@ func TestGreet(t *testing.T) {
 2. **Direct Service Testing:** The `TestGreet` function creates an instance of your `greeterService` and directly calls its `Greet` method. We then assert that the response matches our expectations.
 
 
-## Hands-On: Table Tests
+## Hands-On: Table-Driven Tests with Testify
 Now that we wrote a single unit test, the next example will show you how to utilize table tests in order to easily write more test cases. You will see code that looks like this in well-tested Go repositories.
 
-```go
-package main
-
-import (
-    "context"
-    "testing"
-
-    v1 "your/module/path/v1" 
-    v1connect "your/module/path/v1/v1connect"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
-)
-
-// ... (greeterService definition remains the same)
-
-func TestGreetTable(t *testing.T) {
-    service := &greeterService{}
-    cancelledCtx, cancel := context.WithCancel(context.Background())
-    cancel()
-
-    testCases := []struct {
-        name    string
-        ctx     context.Context
-        req     *v1connect.GreetRequest
-        want    *v1connect.GreetResponse
-        wantErr string
-    }{
-        {
-            name:    "Success",
-            req:     &v1connect.GreetRequest{Name: "Bob"},
-            want:    &v1connect.GreetResponse{Greeting: "Hello, Bob"},
-            wantErr: "",
-        },
-        {
-            name:    "Empty Name",
-            req:     &v1connect.GreetRequest{},
-            want:    nil, // Expecting an error
-            wantErr: "missing name",
-        },
-        {
-            name:    "Context Cancelled",
-            ctx:     cancelledCtx,
-            req:     &v1connect.GreetRequest{Name: "Alice"},
-            want:    nil,
-            wantErr: "context canceled",
-        },
-    }
-
-    for _, tc := range testCases {
-        t.Run(tc.name, func(t *testing.T) {
-            ctx := tc.ctx
-            if ctx == nil {
-                ctx = context.Background()
-            }
-
-            got, err := service.Greet(ctx, tc.req)
-            if tc.wantErr != "" {
-                require.Error(t, err)
-                assert.Contains(t, err.Error(), tc.wantErr)
-            } else {
-                require.NoError(t, err)
-                assert.Equal(t, tc.want, got)
-            }
-        })
-    }
-}
-
-```
+{{% render-code file="go/table_test.go" language="go" %}}
 
 **Explanation:**
 
@@ -161,56 +64,15 @@ func TestGreetTable(t *testing.T) {
 * **Error Simulation:** Shows how to test your service's behavior under error conditions like context cancellation.
 * **Testify:** Enhances readability and provides more expressive assertions.
 
-## 
-```go
-package main
+## Hands-On: Server Testing Example
 
-import (
-	"context"
-	"errors"
-	"net"
-	"testing"
+Here's how you can test the same service using `net/http/httptest` server:
 
-	v1 "your/module/path/v1"            // Replace with your protocol buffers package path
-	v1connect "your/module/path/v1/v1connect"
-	"github.com/bufbuild/connect-go"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto" // for in-memory server
+{{% render-code file="go/server_test.go" language="go" %}}
 
-	// For in-memory server
-	"github.com/bufbuild/connect-go/bufconn"
-)
-
-// ... (greeterService definition remains the same)
-
-func TestGreetWithServer(t *testing.T) {
-	lis := bufconn.Listen(1024 * 1024) // In-memory listener
-	t.Cleanup(func() { lis.Close() })  // Ensure listener is closed at the end
-
-	server := v1connect.NewGreeterServiceHandler(&greeterService{},)
-	go func() {
-		if err := connect.Serve(lis, server); err != nil {
-			t.Fatalf("Server exited with error: %v", err)
-		}
-	}()
-
-	dialer := func(context.Context, string) (net.Conn, error) {
-		return lis.Dial()
-	}
-	client := v1connect.NewGreeterServiceClient(
-		connect.NewClient[v1.GreetRequest, v1.GreetResponse](dialer),
-	)
-
-	response, err := client.Greet(context.Background(), &v1.GreetRequest{Name: "Alice"})
-	if err != nil {
-		t.Fatalf("Greet failed: %v", err)
-	}
-	if response.Greeting != "Hello, Alice" {
-		t.Errorf("Unexpected greeting: got %q, want %q", response.Greeting, "Hello, Alice")
-	}
-}
-```
+- **Server Setup:** We create a ConnectRPC handler and start it with `httptest.NewServer(mux)`.
+- **Client Setup:** We create a ConnectRPC client that connects to the server that we just created.
+- **Test Interaction:** We use the client to call the Greet method and assert the response, just like in the direct service testing example.
 
 ## Conclusion: Test with Confidence
 
