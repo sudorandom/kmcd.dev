@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["connectrpc", "grpc", "unittest"]
+tags: ["connectrpc", "golang", "unittest", "grpc", "testing", "backend", "tutorial"]
 date: "2024-06-11T11:00:00Z"
 description: "Learn how to test your ConnectRPC services."
 cover: "cover.jpg"
@@ -36,16 +36,17 @@ Here is the protobuf file that we're using for our example:
 And here is the resulting server implementation:
 {{% render-code file="go/endpoints.go" language="go" %}}
 
+Here we defined our `greetv1connect.GreetServiceHandler` implementation. It implements the `Greet` method defined in the protobuf file alove. Since this is for demonstration purposes, all we do is check to see if the given `name` is empty, sleep for 10 milliseconds to simulate a network call and returns the greeting as `"Hello, {name}"`.
+
+A keep observer might notice that this file contains our first "test". The line `var _ greetv1connect.GreetServiceHandler = (*greeterService)(nil)` is a way of doing a type assertion in Go. It ensures that your `greeterService` struct correctly implements the `GreeterService` interface defined by the protobuf file above. This relies on a trick of the Go syntax that will try to bind a variable `_` using the `greetv1connect.GreetServiceHandler` type. If the given `greeterService` pointer doesn't implement the interface then the compiler should complain about what specific methods are missing and which method signatures don't match.
+
 ## Hands-On: Direct Service Testing Example
 
 Let's write some unit tests for a simple ConnectRPC service:
 {{% render-code file="go/direct_test.go" language="go" %}}
 
 **Explanation:**
-
-1. **Type Assertion:** The line `var _ v1connect.GreeterService = (*greeterService)(nil)` is a type assertion. It ensures that your `greeterService` struct correctly implements the `GreeterService` interface defined by your Protocol Buffers. This relies on a trick of the Go syntax that will try to bind a variable `_` using the `v1connect.GreeterService` type. If the given `greeterService` pointer doesn't implement the interface then the compiler should complain about what specific methods are missing and which method signatures don't match.
-2. **Direct Service Testing:** The `TestGreet` function creates an instance of your `greeterService` and directly calls its `Greet` method. We then assert that the response matches our expectations.
-
+The `TestGreet` function creates an instance of your `greeterService` and directly calls its `Greet` method. We then assert that the response matches our expectations. This is, by far, the simplest method for testing a ConnectRPC service.
 
 ## Hands-On: Table-Driven Tests with Testify
 Now that we wrote a single unit test, the next example will show you how to utilize table tests in order to easily write more test cases. You will see code that looks like this in well-tested Go repositories.
@@ -57,12 +58,6 @@ Now that we wrote a single unit test, the next example will show you how to util
 1. **Table Setup:** A `testCases` slice defines scenarios with varying inputs (`req`), expected outputs (`want`), and potential errors (`wantErr`).
 2. **Context Cancellation:** The test case "Context Cancelled" simulates a cancelled context by creating a context with `context.WithCancel` and immediately calling `cancel()`.
 3. **Testify Assertions:** The `require` package is used for assertions that should stop the test if they fail (e.g., requiring an error). The `assert` package is used for assertions that are not critical for continuing the test. Typically, errors during test setup use `require` and assertions on the results of the test use `assert`.
-
-**Key Improvements:**
-
-* **Table Tests:** More concisely expresses multiple test scenarios.
-* **Error Simulation:** Shows how to test your service's behavior under error conditions like context cancellation.
-* **Testify:** Enhances readability and provides more expressive assertions.
 
 ## Hands-On: Server Testing Example
 
