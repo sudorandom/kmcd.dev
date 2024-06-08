@@ -1,0 +1,3 @@
+{{- $path := printf "%s%s" .Page.File.Dir (.Get "file") -}}
+{{- $ghPath := printf "%s/blob/main/content/%s" .Site.Params.GitUrl $path -}}
+<a href="{{ $ghPath }}" target="_blank">{{ .Get "file" | path.Base }}</a>

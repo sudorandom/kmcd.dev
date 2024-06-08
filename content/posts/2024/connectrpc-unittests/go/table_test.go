@@ -11,6 +11,7 @@ import (
 	greetv1 "example/gen/greet/v1"
 )
 
+// start
 func TestGreetTable(t *testing.T) {
 	service := &greeterService{}
 	cancelledCtx, cancel := context.WithCancel(context.Background())

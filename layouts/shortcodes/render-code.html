@@ -1,3 +1,8 @@
-{{ $file := (printf "%s%s" .Page.File.Dir (.Get "file")) | readFile }}
-{{ $lang := .Get "language" }}
-{{ (print "```" $lang "\n" $file "\n```") | safeHTML }}
+{{ $path := printf "%s%s" .Page.File.Dir (.Get "file") }}
+{{ $file := $path | readFile -}}
+{{- with (.Get "start") -}}
+    {{- $parts := strings.Split $file . -}}
+    {{- $file = delimit (after 1 $parts) . -}}
+{{- end -}}
+{{- $lang := .Get "language" -}}
+{{- (print "```" $lang "\n" (trim $file "\n\r") "\n```") | safeHTML }}

@@ -320,6 +320,11 @@ pre {
   }
 }
 
+aside {
+  text-align: right;
+  font-style: italic;
+}
+
 blockquote {
   border-left: 3px solid #3eb0ef;
   margin: 20px;
@@ -468,7 +473,7 @@ hr {
 
 // Prism JS Additionals
 .highlight {
-  margin: 30px auto;
+  margin: 10px auto;
 }
 
 /* BG */

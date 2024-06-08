@@ -12,6 +12,7 @@ import (
 	"example/gen/greet/v1/greetv1connect"
 )
 
+// start
 func TestGreetWithServer(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.Handle(greetv1connect.NewGreetServiceHandler(&greeterService{}))

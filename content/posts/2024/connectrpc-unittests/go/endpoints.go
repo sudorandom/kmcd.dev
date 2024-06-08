@@ -11,6 +11,7 @@ import (
 	"example/gen/greet/v1/greetv1connect"
 )
 
+// start
 type greeterService struct{}
 
 var _ greetv1connect.GreetServiceHandler = (*greeterService)(nil)

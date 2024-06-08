@@ -9,6 +9,7 @@ import (
 	greetv1 "example/gen/greet/v1"
 )
 
+// start
 func TestGreet(t *testing.T) {
 	service := &greeterService{}
 	response, err := service.Greet(context.Background(), connect.NewRequest(&greetv1.GreetRequest{Name: "Alice"}))
