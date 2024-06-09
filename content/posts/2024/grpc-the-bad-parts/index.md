@@ -34,7 +34,7 @@ The reliance on HTTP/2 initially limited gRPC's reach, as not all platforms and 
 
 Late Adoption of HTTP/3: The delay in embracing HTTP/3 might have hindered gRPC's ability to take full advantage of the protocol's performance and efficiency benefits. I have personally been affected by [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) that can happen when using gRPC with HTTP/2 and it would be so nice to be able to completely do away with this issue by being able to use HTTP/3 with gRPC.
 
-{{< figure src="caveman.jpg" caption="The future is already here – it's just not evenly distributed. -- William Gibson" height="500px" >}}
+{{< figure src="caveman.jpg" caption="The future is already here – it's just not evenly distributed. — William Gibson" height="500px" >}}
 
 ## JSON Mapping and Prototext
 
@@ -93,4 +93,4 @@ With all of that said, many of these issues are already fixed!
 
 By acknowledging these challenges and actively working towards solutions, the gRPC community can enhance the framework's accessibility, usability, and overall appeal, ensuring its continued relevance and success in the evolving landscape of API development. I do think [ConnectRPC](https://kmcd.dev/posts/connectrpc/) improves upon the entire gRPC experience. I'm overall excited to know what's next.
 
-{{< figure src="sunrise.jpg" height="500px" >}}
+{{< figure src="sunrise.jpg" caption="A new day begins." height="500px" >}}
