@@ -1,5 +1,5 @@
 ---
-categories: ["article"]
+categories: ["article", "tutorial"]
 tags: ["connectrpc", "golang", "unittest", "grpc", "testing", "backend", "tutorial"]
 date: "2024-06-11T11:00:00Z"
 description: "Learn how to test your ConnectRPC services."
