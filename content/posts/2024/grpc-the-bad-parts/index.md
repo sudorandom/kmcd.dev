@@ -16,11 +16,11 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts
 ---
 
-gRPC, the high-performance RPC framework, has been super successful (if you work for Google) and has drastically changed the way we all deploy APIs (if you work for Google). But it's not without its downsides. Making a transport network protocol that requires code generation and support in many programming languages to work is sure to get some things wrong. As gRPC approaches a decade of usage, it is important to reflect on what could have been better.
+gRPC, the high-performance RPC framework, has been super successful (if you work for Google) and has drastically changed the way we all deploy APIs (if you work for Google). gRPC and protobuf is an extremely performant contract-focused framework with extremely wide language support. But it's not without its downsides. Making a transport network protocol that requires code generation and support in many programming languages to work is sure to get some things wrong. As gRPC approaches a decade of usage, it is important to reflect on what could have been better.
 
 ## Learning Curve
 
-Let's start out extremely nit picky. So-called unary RPCs are calls where the client sends a single request to the server and gets a single response back. Why does gRPC have to use such a non-standard term for this that only mathematitions have an intuitive understanding of? I have to explain the term every time I use it. And I'm a little tired of it.
+Let's start out extremely nit picky. So-called unary RPCs are calls where the client sends a single request to the server and gets a single response back. Why does gRPC have to use such a non-standard term for this that only mathematicians have an intuitive understanding of? I have to explain the term every time I use it. And I'm a little tired of it.
 
 Speaking of unary RPCs, the implementation is more complicated than it needs to be. While gRPC's streaming capabilities are powerful, they have introduced complexity for simple RPC calls that don't require streaming. This hurts the ability to inspect gRPC calls because now there is framing on every unary RPC which only makes sense for streaming. Protobuf encoding is complicated enough so let's not add extra gRPC framing where it isn't needed. Also, it doesn't pass my "send a friend a cURL example" test for any web API. It's just super annoying to explain to someone how to use gRPC. I've said "okay, but is server reflection enabled?" so many times. I'm just tired of it.
 
@@ -30,7 +30,7 @@ This complexity also bleeds into the tooling with the mandatory code generation 
 
 ## Compatability with the Web
 
-The reliance on HTTP/2 initially limited gRPC's reach, as not all platforms and browsers fully supported it. This has improved over time, but it still poses a challenge in some environments. But even with HTTP/2 support, browsers have avoided adding a way to retrieve HTTP trailers so browsers today still cannot use "original" gRPC. gRPC-Web has acted as a bandaid for this issue by avoiding the use of trailers, but it often requires "extra stuff" to run a proxy that supports gRPC-Web. Which is annoying.
+The reliance on HTTP/2 initially limited gRPC's reach, as not all platforms and browsers fully supported it. This has improved over time, but it still poses a challenge in some environments. But even with HTTP/2 support, browsers have avoided adding a way to process HTTP trailers so browsers today still cannot use "original" gRPC. gRPC-Web has acted as a plaster for this issue by avoiding the use of trailers, but it often requires "extra stuff" to run a proxy that supports gRPC-Web. Which is annoying.
 
 Late Adoption of HTTP/3: The delay in embracing HTTP/3 might have hindered gRPC's ability to take full advantage of the protocol's performance and efficiency benefits. I have personally been affected by the [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) issue that can happen when using gRPC with HTTP/2 and it would be so nice to be able to completely do away with this issue by being able to use HTTP/3 with gRPC.
 
@@ -39,7 +39,7 @@ Late Adoption of HTTP/3: The delay in embracing HTTP/3 might have hindered gRPC'
 ## JSON Mapping and Prototext
 
 Another area where the "timing" was wrong was the lack of a standardized JSON mapping early on. It has made gRPC less accessible for developers accustomed to JSON-based APIs and I don't think it ever recovered from that stigma. Having a mapping between protobuf types and JSON simplifies integration and interoperability with existing tools and systems. You would not believe how happy web developers can get when you say "yeah,
-this is a super-efficient binary format... but you can set this flag and get JSON back if you want to debug." They get unreasonably excited. *Unreasonably, excited.* Anyway, now that protobuf has standard rules for mapping protobuf types to JSON (and the other way) I feel like the [protobuf text format](https://protobuf.dev/reference/protobuf/textformat-spec/) is an unnessisary complixity. The cases where I would maybe use the text format, today, I would just use JSON. So let's throw the text format away. We don't need it and I'm down to pretend like it never existed if everyone else is. Cool?
+this is a super-efficient binary format... but you can set this flag and get JSON back if you want to debug." They get unreasonably excited. *Unreasonably, excited.* Anyway, now that protobuf has standard rules for mapping protobuf types to JSON (and the other way) I feel like the [protobuf text format](https://protobuf.dev/reference/protobuf/textformat-spec/) is an unnecessary complexity. The cases where I would maybe use the text format, today, I would just use JSON. So let's throw the text format away. We don't need it and I'm down to pretend like it never existed if everyone else is. Cool?
 
 ## Finite Message Sizes
 
@@ -92,6 +92,6 @@ While I've been critical of gRPC, I hope my comments come across as constructive
 - The gRPC community is actually alive and well if you know where to look. For example, the [buf slack](https://buf.build/links/slack) has been a great resource for me. You may find me hanging out and answering questions fairly often.
 - The [Buf CLI](https://buf.build/docs/ecosystem/cli-overview) is an amazing tool for gRPC. It completely replaces `protoc` but also adds linting, breaking change detection, curl for gRPC, integration with the Buf Schema Registry (wow, real dependency management!) and more! In addition, more tools that you know and love from HTTP are supporting gRPC like [Postman](https://blog.postman.com/postman-now-supports-grpc/), [Insomnia](https://docs.insomnia.rest/insomnia/grpc) and [k6](https://k6.io/docs/using-k6/protocols/grpc/).
 
-By acknowledging these challenges and actively working towards solutions, the gRPC community can enhance the framework's accessibility, usability, and overall appeal, ensuring its continued relevance and success in the evolving landscape of API development. I do think [ConnectRPC](https://kmcd.dev/posts/connectrpc/) improves upon the entire gRPC experience. I'm overall excited to know what's next.
+Despite gRPC's undeniable successes, it's important to acknowledge the framework's shortcomings to ensure its continued evolution and improvement. By addressing its learning curve, compatibility issues, lack of standardization, and community engagement, we can unlock gRPC's full potential and make it a more accessible and user-friendly tool for all developers.
 
 {{< figure src="sunrise.jpg" caption="A new day begins." height="500px" >}}
