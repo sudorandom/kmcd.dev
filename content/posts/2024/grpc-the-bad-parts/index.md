@@ -16,7 +16,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts
 ---
 
-gRPC, the high-performance RPC framework, has been super successful (if you work for Google) and has drastically changed the way we all deploy APIs (if you work for Google). gRPC and protobuf is an extremely performant contract-focused framework with extremely wide language support. But it's not without its downsides. Making a transport network protocol that requires code generation and support in many programming languages to work is sure to get some things wrong. As gRPC approaches a decade of usage, it is important to reflect on what could have been better.
+gRPC, the high-performance RPC framework, has been super successful (if you work for Google) and has drastically changed the way we all deploy APIs (if you work for Google). gRPC and protobuf is an extremely performant contract-focused framework with extremely wide language support. But it's not without its downsides. Making a RPC framework that requires code generation and support in many programming languages is sure to get some things wrong. As gRPC approaches a decade of usage, it is important to reflect on what could have been better.
 
 ## Learning Curve
 
@@ -30,16 +30,16 @@ This complexity also bleeds into the tooling with the mandatory code generation 
 
 ## Compatability with the Web
 
-The reliance on HTTP/2 initially limited gRPC's reach, as not all platforms and browsers fully supported it. This has improved over time, but it still poses a challenge in some environments. But even with HTTP/2 support, browsers have avoided adding a way to process HTTP trailers so browsers today still cannot use "original" gRPC. gRPC-Web has acted as a plaster for this issue by avoiding the use of trailers, but it often requires "extra stuff" to run a proxy that supports gRPC-Web. Which is annoying.
+The reliance on HTTP/2 initially limited gRPC's reach, as not all platforms and browsers fully supported it. This has improved over time, but it still poses a challenge in some environments. But even with HTTP/2 support, browsers have avoided adding a way to process HTTP trailers so browsers today still cannot use "original" gRPC. gRPC-Web has acted as a plaster for this issue by avoiding the use of trailers, but it often requires "extra stuff" like running a proxy that supports gRPC-Web. Which is annoying.
 
-Late Adoption of HTTP/3: The delay in embracing HTTP/3 might have hindered gRPC's ability to take full advantage of the protocol's performance and efficiency benefits. I have personally been affected by the [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) issue that can happen when using gRPC with HTTP/2 and it would be so nice to be able to completely do away with this issue by being able to use HTTP/3 with gRPC.
+Late Adoption of HTTP/3: The delay in embracing HTTP/3 might have hindered gRPC's ability to take full advantage of the protocol's performance and efficiency benefits. I have personally been affected by the [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) issue that can happen when using gRPC with HTTP/2 and it would be so nice to be able to completely do away with this issue by being able to use HTTP/3 with gRPC. It's strange to see a framework that pushed many languages to support HTTP/2 struggling to do the same thing with HTTP/3.
 
 {{< figure src="caveman.jpg" caption="The future is already here – it's just not evenly distributed. — William Gibson" height="500px" >}}
 
 ## JSON Mapping and Prototext
 
 Another area where the "timing" was wrong was the lack of a standardized JSON mapping early on. It has made gRPC less accessible for developers accustomed to JSON-based APIs and I don't think it ever recovered from that stigma. Having a mapping between protobuf types and JSON simplifies integration and interoperability with existing tools and systems. You would not believe how happy web developers can get when you say "yeah,
-this is a super-efficient binary format... but you can set this flag and get JSON back if you want to debug." They get unreasonably excited. *Unreasonably, excited.* Anyway, now that protobuf has standard rules for mapping protobuf types to JSON (and the other way) I feel like the [protobuf text format](https://protobuf.dev/reference/protobuf/textformat-spec/) is an unnecessary complexity. The cases where I would maybe use the text format, today, I would just use JSON. So let's throw the text format away. We don't need it and I'm down to pretend like it never existed if everyone else is. Cool?
+this is a super-efficient binary format... but you can set this flag and get JSON back if you want to debug." They get unreasonably excited. *Unreasonably. excited.* Anyway, now that protobuf has standard rules for mapping protobuf types to JSON (and the other way) I feel like the [protobuf text format](https://protobuf.dev/reference/protobuf/textformat-spec/) is an unnecessary complexity. I don't see a use-case for the text format now that we have JSON. So let's throw the text format away. We don't need it and I'm down to pretend like it never existed if everyone else is. Cool?
 
 ## Finite Message Sizes
 
@@ -73,7 +73,7 @@ You might be thinking "Google uses gRPC in most of their APIs so obviously they'
 
 ## ded internet theory
 
-I see a lot of gRPC/protobuf discussions places that are devoid of activity. The lack of visible activity on some websites might create the impression that gRPC is stagnant or less actively maintained. This could deter potential adopters and contribute to slower community growth. This might be a case of too many options, making it difficult to find someone to nerd out about gRPC outside of GitHub issues where such enthusiasm might be perceived as annoying.
+I see a lot of gRPC/protobuf communities that are devoid of activity. The lack of visible activity on some websites might create the impression that gRPC is stagnant or less actively maintained. This could deter potential adopters and contribute to slower community growth. This might be a case of too many options, making it difficult to find someone to nerd out about gRPC outside of GitHub issues where such enthusiasm might be perceived as annoying.
 
 {{< figure src="squirrel.jpg" caption="We can be lonely together." height="500px" >}}
 
