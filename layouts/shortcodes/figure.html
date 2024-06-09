@@ -21,7 +21,7 @@
     {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit (or (.Get "fit") "2000x1600 webp") }}
     <img src="{{ $image.Permalink }}"
          {{- if or (.Get "alt") (.Get "caption") }}
-         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
+         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
          {{- end -}}
          {{- with .Get "width" }} width="{{ . }}"{{ end -}}
          {{- with .Get "height" }} height="{{ . }}"{{ end -}}
