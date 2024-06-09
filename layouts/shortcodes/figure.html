@@ -18,7 +18,7 @@
         <a href="{{ .Page.Permalink }}{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
     {{- end -}}
 
-    {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit "2000x1600 webp" }}
+    {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit (or (.Get "fit") "2000x1600 webp") }}
     <img src="{{ $image.Permalink }}"
          {{- if or (.Get "alt") (.Get "caption") }}
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
