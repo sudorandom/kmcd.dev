@@ -3,6 +3,7 @@ categories: ["project"]
 tags: ["eve-online", "gaming", "evepraisal", "programming", "python", "golang", "postgresql"]
 date: "2023-07-24"
 description: "Saying goodbye to an amazing long-running project; evepraisal price checking utility for the MMORPG game Eve Online"
+cover: "cover.jpg"
 featured: ""
 featuredalt: ""
 featuredpath: "date"
@@ -32,3 +33,5 @@ Recently, CCP banned the IP address that I currently use to gather market data f
 The source code for Evepraisal is open to all to use and modify. You can find it at [github.com/evepraisal/go-evepraisal](https://github.com/evepraisal/go-evepraisal). Also, see my [other post about Evepraisal](/posts/evepraisal.com/) for more information about how Evepraisal was made and what made it special.
 
 o7, fly safe
+
+> If you have an interest in programming with Go, the Internet, gRPC or just want to read words that I write, check out [my blog](/). You can start by reading the other [evepraisal-related posts](/tags/evepraisal/).
