@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "protobuf", "humor"]
+tags: ["grpc", "protobuf", "api", "rpc", "webdev", "humor", "http2", "http3"]
 date: "2024-06-18"
 description: "gRPC isn't perfect but who is?"
 cover: "cover.jpg"
