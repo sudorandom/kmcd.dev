@@ -12,7 +12,7 @@ canonical_url: https://kmcd.dev/posts/connectrpc-unittests
 
 If you've embarked on the journey of building efficient and scalable RPC systems with [ConnectRPC](https://connectrpc.com/), you might be pondering the best way to ensure the reliability and correctness of your services. Unit testing is the obvious tool for this, providing a safety net that catches bugs early and empowers you to refactor code fearlessly. In the ConnectRPC world, unit testing can be daunting due to its integration with Protocol Buffers and the client-server architecture. In this guide, we'll unravel the mysteries of unit testing ConnectRPC services, while arming you with practical examples and advanced techniques to fortify your codebase.
 
-First off, the full source code can be found [on github](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/connectrpc-unittests). If it helps, feel free to download, run, and modify as you see fit!
+First off, the full source code can be found [on github](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/connectrpc-unittests/go). If it helps, feel free to download, run, and modify as you see fit!
 
 ## Why Unit Test?
 
@@ -90,7 +90,7 @@ See the full source at Github: {{< github-link file="go/server_test.go" >}}.
 
 In this guide, we've explored the "why" and "how" of unit testing your ConnectRPC services. By embracing unit testing as a core part of your development workflow, you'll create more robust, reliable, and maintainable RPC systems. Remember, effective testing isn't just about fixing bugs – it's about building confidence in your codebase and enabling you to iterate and evolve your services with ease.
 
-The full source code can be found [on github](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/connectrpc-unittests).
+The full source code can be found [on github](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2024/connectrpc-unittests/go).
 
 **Next Steps:**
 
