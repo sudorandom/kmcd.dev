@@ -1,7 +1,7 @@
 {{ define "main" }}
   <main class="post">
     <h1 class="post-title">
-      <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+      <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
     </h1>
     {{ with .Params.Description }}
       <div class="post-excerpt">{{ . }}</div>

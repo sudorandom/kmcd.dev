@@ -56,9 +56,9 @@
             <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
                 <div class="post-row">
                     <h3>
-                        <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
-                        {{- if .Date -}}
-                        <small>{{ .Date.Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
+                        <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+                        {{- with .Date -}}
+                        <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
                         {{- end -}}
                     </h3>
                     <div class="post-meta">
