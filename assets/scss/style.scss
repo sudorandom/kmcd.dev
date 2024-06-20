@@ -410,8 +410,6 @@ ul.icons {
 
 .mermaid {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 figure {
@@ -419,6 +417,6 @@ figure {
 }
 
 figure img {
-    margin: auto;
-    object-fit: contain;
+    width: 100%;
+    object-fit: cover;
 }

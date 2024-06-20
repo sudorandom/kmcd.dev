@@ -22,5 +22,5 @@ build:
 	npx -y pagefind --site live
 
 build-future:
-	hugo --gc --minify --cleanDestinationDir --baseURL "https://shhh.kmcd.dev/" --buildFuture --destination=future
+	hugo --gc --minify --cleanDestinationDir --baseURL "https://shhh.kmcd.dev/" --buildFuture  --buildDrafts --destination=future
 	npx -y pagefind --site future
