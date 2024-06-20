@@ -14,89 +14,54 @@ canonical_url: https://kmcd.dev/posts/leaving-texas
 draft: true
 ---
 
+Today, I'm going to talk a bit about a topic that I haven't talked about much on this blog. I have crossed the two-and-a-half-year mark of living in Denmark and I figured it was time to reflect on how it is living in the little Nordic country after living my entire life living around Dallas, Texas. So let's get reflecting! First, I want to outline why I decided to leave Texas. In a follow-up post, I will discuss "Why Denmark?" and reflect on how the last few years have been.
 
-## Why Denmark?
-You may be saying "I get why you decided to move, but why *Denmark*?"
+## Why Leave Texas?
+Most people aren't surprised at why anyone would leave the United States, but I think it's useful to list some of the big reasons. Because I have a terrible memory I will be referencing notes that I made in May 2021. Be warned, many of these notes are political but I just can't avoid political topics because it does have a large influence on my decision to leave.
 
-### Beautiful cities and landscapes
-I love the design of many European cities. The historic buildings, the walkable city centers, the metro and train systems, the bus systems that actually get to most places, etc.
+### Education
+I don't have a high opinion of public education in Texas. Guess which kinds of schools are WAY less likely to have a school shooting? Private Schools. While I very much had the means to send my child to private school since I had a very high-paying job, the prospect of raising my child in a drastically different environment than the majority of her peers felt extremely gross and classist. And having to pay to feel like your child is relatively safe just seems crazy. It seems broken. This isn't even considering the extremely low resources that many public schools have to do their job of educating children. This doesn't match my values.
 
-### Public health care
-Health care is a touchy subject, but I firmly believe that making it a public service is the right choice. I'm tired of seeing fundraising campaigns to cover basic medical expenses. I'd rather have a giant fundraiser that everyone, by default, pays into and everyone can tap into if they need.
+### Health Care
+Even for wealthy families, a serious health condition can lead to financial ruin. The United States ties health insurance with your job. So you have to be working to get good health insurance. Many medical conditions can prevent you from working and it's all too common for companies to shove you to the door when your health is declining. This doesn't match my values.
 
-### Happy Citizens
-It's silly, but the fact that Denmark [consistently ranks near the top](https://worldhappiness.report/ed/2024/happiness-of-the-younger-the-older-and-those-in-between/#ranking-of-happiness-2021-2023) of the happiest citizens tells me something about the society. Yes, this is likely a silly and flawed study but there seems to be some truth to it.
+### Abortion and Contraceptives
+Laws against abortion were starting to take shape when we were making our decision. I feel like women and girls deserve health care and autonomy over one of the most impactful processes that happens to their bodies. So I was set on leaving Texas for this reason... because I have a daughter. More and more states have added their own laws against abortion after the overturning of Roe vs Wade and now it looks like it has become a national issue... This doesn't match my values.
 
-### Work-life Balance
-Denmark has a legal requirement for employees to give five weeks of vacation time per year. It can go up beyond that. Non-salary employees also get "vacation pay" which can be used to keep your pay consistent while you take time off. Furthermore, the amount of hours for full-time work in Denmark is 37 hours.
+### Fascism
+There is a rise in hyper-nationalistic attitudes akin to fascism. Some of this has spread to Europe, but it doesn't appear like it's anything close to the far right in the United States at the moment. I think it's insane that I would need to say this, but fascism doesn't match my values.
 
-### Women also work
-Denmark has a very good record for women working effectively in Denmark. The gap between the percentage of women and men working is much lower than in most countries. Women are very much expected to be a part of society and men are expected to do their share in housework and childcare.
+### Religion
+I am not religious and I feel like I don’t share the same values and beliefs as most people in Texas or the United States. While there is a growing "non-religious" demographic in the United States I still feel surrounded by those who don't share my values.
 
-But how does Denmark make this work? How is it possible for so many women to work when there are children to raise? Denmark offers a very generous maternity and paternity leave with up to a year off in total. When the child is one year old, subsidized child care starts and is *extremely* cheap for the quality of care that you get. And from then on, both parents have time to work full-time jobs and continue their careers. It just makes sense. Most citizens here are happy to pay more tax to live in a society where this is how it works. It's expensive, but children are worth it.
+{{< figure src="religion.png" height="500px" caption="Source: [Gallup](https://news.gallup.com/poll/358364/religious-americans.aspx)" >}}
+
+### Work-life balance
+Work-life balance is universally awful in the States. Even for high-paying jobs, it is nearly impossible to get the same amount of paid time off as you get by law in many European countries. It is very common to be expected to work way more than is reasonable. While I do have a high work ethic, life is more than work. The work culture of the United States in general doesn't match my values.
+
+### Poverty
+The United States has a lot of homeless people. There's an adaptation that many people develop when living in a large city in the US where you just stop seeing homeless people. They're still there, but your subconscious mind will actively prevent you from registering that the person is there. This appears to be the only way for people to get through their day. It's sad. This doesn't match my values.
+
+Here's some related data provided by [OECD](https://data.oecd.org/inequality/poverty-rate.htm). According to this data, the United States has a poverty rate of 18%. With this data, Denmark is very close to the best with 4.8%.
+
+{{< figure src="poverty.png" height="500px" caption="Source: [OECD](https://data.oecd.org/inequality/poverty-rate.htm)" >}}
+
+### Cities are built for cars, not people
+How most cities are designed in the US is insane. Cars are a required item that everyone has to own. This has a lot of impacts on day-to-day life but there are two I want to focus on here. The age that a kid feels truly autonomous in the United States is age 16 when you can get a driver's license and start driving yourself places. Let's ignore the classism where I assume that every 16-year-old has parents who can afford to buy each of their kids a car. It is also so easy to not think of other cars around you in traffic as people. Everyone is literally separated by glass and metal. I feel like this subtracts from social cohesion and may be a much more causal part of many other societal ills that the US has. I am, in fact, a fan of this newer wave of urban planners like [notjustbikes](https://www.youtube.com/c/notjustbikes) and [Strong Towns](https://www.youtube.com/@strongtowns).
+
+Anyway, just listing [all the ways that car culture harms people](https://usa.streetsblog.org/2024/03/05/all-the-ways-that-cars-harm-our-communities-well-almost-all) can be the topic of several posts. But for now, let's just say that the over-reliance on cars doesn't match my values.
+
+### Gun control
+Gun ownership is deeply ingrained in American culture. I think that's actually fine. Guns can be fun and in some cases, useful. But having NO control over who gets to access deadly firearms is lunacy. And I don't think Americans can fully understand how off-base Americans are on this until they've lived in a country with strong gun control. Danish people will randomly set off fireworks. Sometimes in the middle of the day when there's nothing to see. They do it as part of protests and leading up to New Year's you will constantly hear random fireworks being set off all over the city. And then you realize that NO ONE hears these noises and immediately think "Active shooter, get to cover!" I no longer react to random fireworks this way because I have healed from this trauma that I never knew I had. The gun laws in the United States don't match my values.
+
+### Climate change denial
+I'm not sure how much more I need to talk about here. Many Americans just refuse to accept that their lives may have to change to reduce their CO2 emissions. I think it takes a well-informed population to hold companies accountable for their externalities and to make a series of small sacrifices that will end up doing less harm to our environment. I don't think Americans are actively misinformed in this regard.
 
 ### Weather
-You may find it surprising that I would list the weather as a positive for Denmark. But in contrast to Texas, it's nowhere near as extreme. There are few-to-no tornados, earthquakes or hurricanes. Occasionally there is a storm with strong winds with flooding but it is nowhere near the amount of destruction of tornados. Why do I care about tornados so much? My house was hit by one in 2019. I was alone with my 6-month-old daughter and it was the scariest few minutes of my life that shook up our lives for the next year.
+I hate the Texas heat. It's only bearable due to massive amounts of air conditioning.
 
-### Biking culture
-Denmark has a strong bicycle culture. What I like most about Danish cycling culture is that it's not just the super extreme cyclers who have insanely expensive bikes and full-body suits. It's mostly just normal people who use a bike to get to work because it's the cheapest, fastest and usually the most pleasant way to get places.
+My house was [hit by a tornado in 2019](https://en.wikipedia.org/wiki/Tornado_outbreak_of_October_20%E2%80%9322,_2019#North_Dallas%E2%80%93Richardson,_Texas). I know it's impossible to avoid all kinds of extreme weather but I am done living in tornado alley.
 
-### And more
-- Literally Vikings
-- Our daughter will be bilingual, which is super cool
-- World leaders in wind energy
-- Wonderful design aesthetic
-- Pastries
-- Low crime rate
-- Very progressive social policies
+### Summing Up
 
-## Immigrant Attitude
-We decided to *NOT* do a "scouting" vacation so the first time we were to visit Denmark we were moving there. This seems like a strange decision to most people that we talk to but I firmly think we did the right thing for us. We figured that we weren't going to learn anything from a vacation that would stop us from at least trying to live there for a year. Vacationing is such a different experience than actually living somewhere and it really is hard to imagine what it is like living somewhere unless you just do it.
-
-You may ask why we moved when we did. This was at the end of 2021. COVID was still a big deal. our daughter was two years old at the time and we considered that it would get harder and harder for her to learn Danish like a native Danish kid the longer we waited. This was the biggest reason we pulled the trigger as fast as we could.
-
-Expat vs immigrant
-
-
-## The first month
-The first month is, by far, the hardest...
-
-- Walking a lot. A LOT.
-- Learn how to use the bus and metro system
-- Bureaucracy is a little crazy when you don't speak the language. In Denmark there is a specific order of when you can do certain things... and some steps took a surprisingly large amount of time, like onboarding to a bank.
-- Treated the first month or so like a vacation
-- No tipping
-- Very rare small talk with strangers
-- Transit etiquette
-- Americans are loud
-
-## The first year
-Super excited about every cultural difference.
-Everything takes more time, re-learning how to eat and grocery shop
-Learning about the Danish education system
-Building up proper clothing
-First attempt at learning Danish
-Adjusting to the weather. Winter is coming. I had the hardest time in the period after New Year's. I get "over" winter. There's much more variety between the seasons here. Summers are amazing. Winters are very dark.
-If you manage to make Danish friends, hang on to them because they're priceless. Danes can be seen as hard to become good friends with, but if you put in work to a friendship they will, too. Personally, I'm absolutely terrible at making friends but luckily I have my wife, who is in a very social job at a craft beer bar.
-
-Surprising differences:
-- Fireworks
-- Feeling of safety
-- Children with cigarettes and walking beer
-
-My job and adjusting our lifestyle
- - No car
- - 
-
-## The second year
-Most cultural differences are no longer novel. I can ride a bike very well now.
-Learned to ride a bike
-Started learning Danish in earnest
-
-## Onward
-Danish class
-Path to permanent residency
-Path to citizenship
-Rules change a lot, so you can't plan TOO far ahead: (stay calm, learn Danish, do good work)
-
-Summary
+This post is getting much longer than I expected so I will make this a series. Let me underline that all of these problems can be improved with reliable voting and advocating for change. However, my daughter only has one childhood. She can't wait 20 years for some of these items to get marginally better. And one may respond "sure, I get all of these problems, but where else is better?!" and I would respond "Denmark". So next time, I will talk about why I specifically chose Copenhagen, Denmark as our new home and reflect on how the past two years of living there.
