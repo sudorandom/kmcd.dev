@@ -1,8 +1,9 @@
 ---
 categories: ["article"]
 tags: ["life", "denmark"]
+series: ["Journey to Denmark"]
 date: "2024-06-25"
-description: "Why I left."
+description: "Why I left my life behind."
 cover: "cover.jpg"
 images: ["/posts/leaving-texas/cover.jpg"]
 title: "Leaving Texas for Greener Pastures"
@@ -11,10 +12,11 @@ type: "posts"
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/leaving-texas
-draft: true
+featured: true
+featuredTitle: "Journey to Denmark"
 ---
 
-Today, I'm going to talk a bit about a topic that I haven't talked about much on this blog. I have crossed the two-and-a-half-year mark of living in Denmark and I figured it was time to reflect on how it is living in the little Nordic country after living my entire life living around Dallas, Texas. So let's get reflecting! First, I want to outline why I decided to leave Texas. In a follow-up post, I will discuss "Why Denmark?" and reflect on how the last few years have been.
+Today, I'm going to talk a bit about a topic that I haven't talked about much on this blog. I have crossed the two-and-a-half-year mark of living in Denmark and I figured it was time to reflect on how it is living in the little Nordic country after living my entire life living around Dallas, Texas. First, though, I want to outline why I decided to leave Texas. In a follow-up post, I will discuss "Why Denmark?" and reflect on how the last few years have been.
 
 ## Why Leave Texas?
 Most people aren't surprised at why anyone would leave the United States, but I think it's useful to list some of the big reasons. Because I have a terrible memory I will be referencing notes that I made in May 2021. Be warned, many of these notes are political but I just can't avoid political topics because it does have a large influence on my decision to leave.
@@ -34,7 +36,9 @@ I am not religious and I feel like I don’t share the same values and beliefs a
 {{< figure src="religion.png" height="500px" caption="Source: [Gallup](https://news.gallup.com/poll/358364/religious-americans.aspx)" >}}
 
 ### Work-life balance
-Work-life balance is generally awful in the States. Even for high-paying jobs, it is nearly impossible to get the same amount of paid time off as you get by law in many European countries. It is very common to be expected to work way more than is reasonable. While I do have a high work ethic, life is more than work. The work culture of the United States in general doesn't match my values.
+Work-life balance is generally awful in the States. Even for high-paying jobs, it is nearly impossible to get the same amount of paid time off as you get by law in many European countries. It is very common to be expected to work way more than is reasonable and work even when you're "a little sick". Pregnant women are often expected to work until the day they give birth and return to work soon after birth. And it's absolutely crazy that we solve the wrong problems. For example, many "lactation room" where working women who have recently been pregnant have a place to pump milk, out of view from others. This outlines so many societal issues for me.
+
+While I do have a high work ethic, life is more than work. The work culture of the United States in general doesn't match my values.
 
 ### Poverty
 The United States has a lot of homeless people. There's an adaptation that many people develop when living in a large city in the US where you just stop seeing homeless people. They're still there, but your subconscious mind will actively prevent you from registering that the person is there. This appears to be the only way for people to get through their day. It's sad. This doesn't match my values.
@@ -43,7 +47,7 @@ Here's some related data provided by [OECD](https://data.oecd.org/inequality/pov
 
 {{< figure src="poverty.png" height="500px" caption="Source: [OECD](https://data.oecd.org/inequality/poverty-rate.htm)" >}}
 
-### Cities are built for cars, not people
+### Car Culture
 How most cities are designed in the US is insane. Cars are a required item that everyone has to own. This has a lot of impacts on day-to-day life but there are two I want to focus on here. The age that a kid feels truly autonomous in the United States is age 16 when you can get a driver's license and start driving yourself places. Let's ignore the classism where I assume that every 16-year-old has parents who can afford to buy each of their kids a car. It is also so easy to not think of other cars around you in traffic as people. Everyone is separated by glass and metal. I feel like this subtracts from social cohesion and may be a much more causal part of many other societal ills that the US has.
 
 I am, in fact, a fan of this newer wave of urban planners like [notjustbikes](https://www.youtube.com/c/notjustbikes) and [Strong Towns](https://www.youtube.com/@strongtowns).
@@ -62,9 +66,12 @@ That said, I do have one more issue with extreme Texan weather...
 
 My house was [hit by a tornado in 2019](https://en.wikipedia.org/wiki/Tornado_outbreak_of_October_20%E2%80%9322,_2019#North_Dallas%E2%80%93Richardson,_Texas). Since my wife was traveling out-of-state visiting relatives at the time I was home alone with our six-month-old daughter. It was a terrifying experience. The house was damaged but was repairable so our family lived out of an apartment for half a year while the house was repaired. It was a hard time for me and I have since experienced extreme anxiety when severe storms happen, which is pretty often in Texas. I was close to seeking a therapist to try to help with anxiety, but, luckily, the reaction has faded in time. I know it's impossible to avoid all kinds of extreme weather but I am done living in tornado alley.
 
-### Climate change denial
-I'm not sure how much more I need to talk about here. Many Americans just refuse to accept that their lives may have to change to reduce their CO2 emissions. I think it takes a well-informed population to hold companies accountable for their externalities and to make a series of small sacrifices that will end up doing less harm to our environment. I think Americans are actively misinformed in this regard. Some effects of climate change are happening now. It's making [some areas of the United States impractical to live in already](https://www.forbes.com/advisor/homeowners-insurance/why-is-homeowners-insurance-in-florida-such-a-disaster/) and this is only the beginning. I want to live in a society that cares about the world they live in. Again, it's absolutely insane that I have to say this.
+### Climate Change
+I'm not sure how much I need to talk about here. Many Americans just refuse to accept that their lives may have to change to reduce their CO2 emissions. I think it takes a well-informed population to hold companies accountable for their externalities and to make a series of small sacrifices that will end up doing less harm to our environment. I think Americans are actively misinformed in this regard. Some effects of climate change are happening now. It's making [some areas of the United States impractical to live in already](https://www.forbes.com/advisor/homeowners-insurance/why-is-homeowners-insurance-in-florida-such-a-disaster/) and this is only the beginning. I want to live in a society that cares about the world they live in. Again, it's absolutely insane that I have to say this.
 
 ### Summing Up
+Leaving Texas was a deeply personal decision, driven by a desire for a society that better aligned with my values and aspirations for my family's future. While the Lone Star State holds cherished memories, family and countless opportunities, the challenges I've outlined ultimately outweighed the benefits.
 
-This post is getting much longer than I expected so I will make this a series. Let me underline that all of these problems can be improved with reliable voting and advocating for change. However, my daughter only has one childhood. She can't wait 20 years for some of these items to get marginally better. And one may respond "sure, I get all of these problems, but where else is better?!" and I would respond "Denmark". So next time, I will talk about why I specifically chose Copenhagen, Denmark as our new home and reflect on how the past two years of living there.
+But amidst the disappointment and frustration, a glimmer of hope emerged – the prospect of a fresh start in a land known for its progressive policies, strong social safety net, and emphasis on well-being.
+
+Next week you can join me in the next installment of this series, where I'll delve into the factors that drew me to Copenhagen, Denmark, and share the joys, struggles, and unexpected lessons learned during my first two years abroad. Will Denmark prove to be the "greener pastures" I was looking for? Stay tuned to find out.
