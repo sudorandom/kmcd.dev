@@ -12,7 +12,7 @@ type: "posts"
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/leaving-texas
-featured: true
+featured: false
 featuredTitle: "Journey to Denmark"
 ---
 
