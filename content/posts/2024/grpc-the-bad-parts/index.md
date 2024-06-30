@@ -72,13 +72,9 @@ You might be thinking "Google uses gRPC in most of their APIs so obviously they'
 
 I see a lot of gRPC/protobuf communities that are devoid of activity. The lack of visible activity on some websites might create the impression that gRPC is stagnant or less actively maintained. This could deter potential adopters and contribute to slower community growth. This might be a case of too many options, making it difficult to find someone to nerd out about gRPC outside of GitHub issues where such enthusiasm might be perceived as annoying.
 
-{{< figure src="squirrel.jpg" caption="We can be lonely together." height="200px" >}}
-
 ## Bad tooling
 
 For the longest time, when I saw that a codebase uses protobuf I find a weird script which downloads random protobuf files in super custom ways and places them in random paths and then makes a series of super complex calls to `protoc`. Only google would think not solving dependency management is the solution to dependency management. Google has their own extremely Google-y way of managing dependencies that us peasants can only dream of using.
-
-{{< figure src="tools.jpg" caption="When life gives you hammers, make hammernade." height="200px" >}}
 
 ## It can be (and is) better
 
