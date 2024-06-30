@@ -3,15 +3,15 @@ categories: ["article"]
 tags: ["life", "denmark"]
 series: ["Life in Denmark"]
 date: "2024-07-02"
-description: "Why I decided to move to Denmark, of all places."
+description: "Why I decided to go from BBQ to Smørrebrød."
 cover: "cover.jpg"
-images: ["/posts/texas-to-hygge/cover.jpg"]
-title: "Texans to Hygge"
-slug: "texas-to-hygge"
+images: ["/posts/texas-in-denmark/cover.jpg"]
+title: "Texans in Denmark"
+slug: "texas-in-denmark"
 type: "posts"
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://kmcd.dev/posts/texas-to-hygge
+canonical_url: https://kmcd.dev/posts/texas-in-denmark
 draft: true
 ---
 
@@ -159,5 +159,7 @@ I listed a bunch of cultural differences in the last section. Well, there's not 
 Our family is set on staying here for the long haul. There are some big dates to keep an eye on: passport renewals, visa extensions for me and my family, and applying for permanent residency.
 
 Other than waiting, I have two requirements that I need to actively work on for permanent residency: pass a higher level of Danish and pass an active citizen exam. Then I wait for my 4 years of employment to pass and I can apply. For citizenship, there's a much more difficult exam and I have to wait *9 years* before I can apply. These requirements can and often do change.
+
+{{< figure src="nyhavn.jpg" >}}
 
 As we look ahead, I have a lot of hope that Copenhagen will continue to be an amazing place to live. While the path to permanent residency and eventual citizenship may be long and winding, we are confident in our decision to make Denmark our home. We eagerly await the milestones ahead, embracing the opportunities for growth and the chance to become even more integrated into this vibrant and welcoming society. While we may always be Texans at heart, we are excited to continue to forge a new life in Denmark filled with new experiences, new friendships, and a newfound appreciation for the simple joys of Danish living.
