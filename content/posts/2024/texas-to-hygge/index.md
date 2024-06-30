@@ -1,12 +1,12 @@
 ---
 categories: ["article"]
 tags: ["life", "denmark"]
-series: ["Journey to Denmark"]
+series: ["Life in Denmark"]
 date: "2024-07-02"
 description: "Why I decided to move to Denmark, of all places."
 cover: "cover.jpg"
 images: ["/posts/texas-to-hygge/cover.jpg"]
-title: "Texans in Hygge"
+title: "Texans to Hygge"
 slug: "texas-to-hygge"
 type: "posts"
 devtoPublished: false
@@ -66,10 +66,12 @@ You may ask why we moved when we did. This was the second half of 2021. COVID wa
 ### Three months before the move
 Before our big move, we had a lot of things to settle. We rented an Airbnb for three months so that we could have time to sell almost everything that we owned. Our house. Our cars. And quite literally almost everything else. We took a total of 8 large suitcases, 3 carry-on bags and a stroller (which was destroyed in transit). We packed some clothing, practical items and a few keepsakes. That is all we had to start our new life.
 
+#### The Job Search
 During these three months, I also interviewed for jobs in Denmark. This could be a post all of its own, but when I decided to start applying to jobs in earnest was July of 2021. One thing I didn't know about Denmark at the time is that the *entire month of July* is typically when a lot of Danes take off for their summer vacations. This is because most schools have three weeks in July designated for vacations. I wasn't getting a lot of responses simply because the country was quite literally closed for business. But I stuck to it and eventually got traction on a few jobs which eventually ended up in a pretty good offer that I signed. I quite literally had one of my interviews with someone from their summerhouse. After the offer was agreed to, I started the process for my permit. This required that I travel to Houston to officially submit my paperwork and to have my fingerprint scanned and picture taken. Luckily the closest Danish embassy was relatively close.
 
-Note that I was also working for Apple at this time which, by the way, was a dream job. I only left it so we could expedite the move to Denmark. I did try searching for openings in Denmark within Apple but there really aren't a lof of Apple jobs in Denmark that match my skills. I was interviewing for jobs in The Netherlands as well since it was a very close 2nd place on our short list of places to move to. I did find several opportunities in Amsterdam and I was close to accepting one of them whenever a few people in Denmark decided to check their email while on vacation, thankfully. If things were slightly different, I could be learning Dutch instead of Danish right now.
+At this time I was still working at my dream job at Apple. I only left the job so we could expedite the move to Denmark. I did try searching for openings in Denmark within Apple but there really aren't a lot of Apple jobs in Denmark that match my skills. I was interviewing for jobs in The Netherlands as well since it was a very close 2nd place on our short list of places to move to. I did find several opportunities in Amsterdam and I was close to accepting one of them whenever a few people in Denmark decided to check their email while on vacation, thankfully. If things were slightly different, I could be learning Dutch instead of Danish right now.
 
+#### Onward!
 With a job offer secured, the work permit process underway, and plane tickets booked, it felt like our plans were finally coming together. As we prepared to leave everything familiar behind, we knew that this was just the beginning of our adventure.
 
 {{< figure src="luggage.png" >}}
@@ -82,6 +84,8 @@ The day finally arrived, and we embarked on our journey to Denmark.
 Oddly, the first day was the hardest for me. I can't sleep very well on airplanes so it felt like the longest day on earth. We had two layovers and by the time we got on the third plane, my two-and-a-half-year-old daughter was COMPLETELY over the experience. We were the kind of parents that severely limited our daughter's television-watching time. This has been great so far... Except when you need to entertain a toddler who isn't interested in TV shows for 14 fucking hours... then it's not so great. She also was far less interested in the experience of being in an airplane than we expected.
 
 After our plane had finally landed at Copenhagen Airport, we had to get to our Airbnb (we had one rented for a month while we got our rental house settled) to check in and get our keys. Remember that we had several large and heavy suitcases to contend with and this is when we learned that the "1st floor" is up one and a half flights of stairs because in most of Europe the "first floor" is one level above the "ground floor". We picked the most fun way to discover this. We also were scheduled to get the keys for the rental house soon after we arrived. This schedule was a mistake. Everything took much longer than expected so I was in a rush to get all of our luggage up to the Airbnb in time to get to our appointment. I moved everything we owned up a few flights of stairs before quickly running/walking to the nearby rental house. We ended up making it only a few minutes late. Everything went well with the walkthrough and we headed back to the AirBnB where we slept the first night in our new home country.
+
+I have some pictures of this day but we look absolutely exhausted so I will not be sharing those!
 
 ### The First Month
 {{< figure src="bikes.png" >}}
@@ -99,7 +103,9 @@ Bureaucracy is a little difficult when you don't speak the language. In Denmark 
 As the initial excitement of arrival settled, we began to navigate the realities of daily life in Denmark. The first year was a whirlwind of learning and adjusting.
 
 ### The first year
-The first year went by so quickly. I was super excited about every little cultural difference. It sounds very strange but grocery shopping took a while to adjust to. Not only was everything in a language we didn't understand (we expected that) but it's strange how much you rely on familiar types of packaging and brands when shopping. It's funny because *now* I can't even sympathize too much with my past self. I don't even remember the specifics behind what was so difficult... But I do remember having a pasta dish using extremely spicy marinara sauce on accident; the dish ended up being inedible.
+The first year went by so quickly. I was super excited about every little cultural difference. It sounds very strange but grocery shopping took a while to adjust to. Not only was everything in a language we didn't understand (we expected that) but it's strange how much you rely on familiar types of packaging and brands when shopping. It's funny because *now* I can't even sympathize too much with my past self because I no longer have any issues with grocery shopping. I don't even remember the specifics behind what was so difficult... But I do remember having a pasta dish using extremely spicy marinara sauce on accident; the dish ended up being inedible.
+
+{{< figure src="work.jpg" >}}
 
 I started my new job. We figured out how to sign my daughter up for kindergarten. My wife got a part-time job near home. We rebuilt our wardrobe since we weren't able to take a lot of clothes over with us. I took a stab at learning Danish but I did this with a fully online class and none of the lessons "stuck" for me, and life ended up getting in the way so I would consider this attempt as a failure.
 
@@ -127,12 +133,9 @@ Despite these cultural adjustments, the second year brought a sense of belonging
 As we settled into our second year, we began to feel more at home in Denmark. Many aspects of our lives fell into place, giving us a sense of stability and belonging.
 
 #### Permanent home
-Our lease was running out for our rental house so we decided to look for a more permanent place to stay. We ended up finding an apartment that we loved and we went through the process to purchase it. There are a lot of caveats when purchasing real estate in Denmark as a non-permanent resident so many people may not have the ability to do what we did. To get financing you usually have to put down a large down payment (sometimes up to 40%) before banks will work with you as a foreigner. Additionally, the Danish government can just say "no" if you haven't lived in Denmark for more than 5 years. You also can't rent out or sublet until you've lived here for five years. Those are only some of the issues with buying an apartment like we did. Despite these potential hurdles, the process went surprisingly smoothly for us, thanks in part to the streamlined Danish system and the assistance of a knowledgeable lawyer. Please look these things up yourself and it's customary to hire a lawyer to help during the process of buying real estate. The process is far more streamlined and easier than the process in the United States. I don't think I physically signed a single thing during the entire process and there were no random $500 charges that popped up during the process. Also, financing was set up well before the "closing" date and there was no need for title companies due to laws and regulations.
+Our lease was running out for our rental house so we decided to look for a more permanent place to stay. We ended up finding an apartment that we loved and we went through the process to purchase it. We've learned that there are a lot of caveats when purchasing real estate in Denmark as a non-permanent resident: financing is harder to get and you will likely be offered a worse rate unless you put a larger down payment (up to 40%), the Danish government can just say "no" if you haven't lived in Denmark for more than 5 years, and you can't rent out or sublet the place until you've lived here for five years. Despite these potential hurdles, the process went surprisingly smoothly for us, thanks in part to the streamlined Danish system and the assistance of a knowledgeable lawyer. We have found that the home-buying process is far more streamlined and easier than the process in the United States. I don't think I physically signed a single thing during the entire process and there were no random $500 charges that popped up during the process.
 
 {{< figure src="moving2.jpg" caption="Obviously, we had another round of Ikea orders to complete our new home." >}}
-
-#### Cycling
-The second year is when I started reliably riding my bike in earnest. As my legs got stronger I transitioned from a heavy e-bike to a normal city bike. It was stolen once (I recovered it thanks to a hidden AirTag). I got tired of carrying around the battery. I cycle 2-3 times a week to work and Danish class. It is still tiring but that is because I can't seem to force myself to go slower than my "max speed" when cycling. I always seem to want to go at a pace that pushes my limits. I also continued to cycle throughout all of winter, which was a big accomplishment for me; only opting to take the metro if there was ice on the roads or there were particularly windy days.
 
 #### Learning Danish
 I'm going to Danish class in person now and it has been working a lot better for me compared to online classes. I'm at a weird skill level now where I can understand a good number of basic conversations but it's still challenging for me to form sentences on the fly and all of it is still exhausting. I think this is the point where I can start saturating my mind with Danish shows, newspapers, magazines, books and music so my brain starts thinking in Danish more naturally. But it's going well. My daughter is 5 years old now and is speaking Danish fluently. Our plan of bringing her over early enough to grasp the language like a native speaker has worked exceedingly well.
@@ -142,6 +145,12 @@ I haven't mentioned **unions** yet. Denmark has unions for most industries and s
 
 #### Work
 I also switched jobs. After living in Denmark for a year I've gotten a better grasp of the market and made a move to get closer to the amount I should be getting paid. Part of this was due to data released by my union. As an ex-Apple software engineer from the United States, I took a **deep** pay cut coming to Denmark but it works out well because of our mix of significant savings and our severely downscaled lifestyle. Furthermore, the Danish work culture places a high value on work-life balance and employee well-being, which more than compensates for the lower salary.
+
+#### Cycling
+The second year is when I started reliably riding my bike in earnest. As my legs got stronger I transitioned from a heavy e-bike to a normal city bike. It was stolen once (I recovered it thanks to a hidden AirTag). I got tired of carrying around the battery. I cycle 2-3 times a week to work and Danish class. It is still tiring but that is because I can't seem to force myself to go slower than my "max speed" when cycling. I always seem to want to go at a pace that pushes my limits. I also continued to cycle throughout all of winter, which was a big accomplishment for me; only opting to take the metro if there was ice on the roads or there were particularly windy days. You can see what my commute looked like at the time by checking on the [video I made while commuting to work](/posts/morning-copenhagen-commute/). I've been intending to make a new video because my office location has changed.
+
+{{< youtube gqjiylaCRuY >}}
+[Youtube Link (if embed doesn't work)](https://www.youtube.com/watch?v=gqjiylaCRuY)
 
 #### Cultural Differences
 I listed a bunch of cultural differences in the last section. Well, there's not much to note here because I don't come across them often anymore... or at least not many of these things seem as strange anymore.

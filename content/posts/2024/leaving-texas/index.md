@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["life", "denmark"]
-series: ["Journey to Denmark"]
+series: ["Life in Denmark"]
 date: "2024-06-25"
 description: "Why I left my life behind."
 cover: "cover.jpg"
@@ -13,7 +13,7 @@ devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/leaving-texas
 featured: false
-featuredTitle: "Journey to Denmark"
+featuredTitle: "Life in Denmark"
 ---
 
 Today, I'm going to talk a bit about a topic that I haven't talked about much on this blog. I have crossed the two-and-a-half-year mark of living in Denmark and I figured it was time to reflect on how it is living in the little Nordic country after living my entire life living around Dallas, Texas. First, though, I want to outline why I decided to leave Texas. In a follow-up post, I will discuss "Why Denmark?" and reflect on how the last few years have been.
