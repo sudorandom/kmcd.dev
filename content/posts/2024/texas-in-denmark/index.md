@@ -2,7 +2,7 @@
 categories: ["article"]
 tags: ["life", "denmark"]
 series: ["Life in Denmark"]
-date: "2024-07-02"
+date: "2024-07-09"
 description: "Why I decided to go from BBQ to Smørrebrød."
 cover: "cover.jpg"
 images: ["/posts/texas-in-denmark/cover.jpg"]
