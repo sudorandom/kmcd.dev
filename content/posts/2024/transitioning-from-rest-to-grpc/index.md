@@ -1,7 +1,7 @@
 ---
 categories: ["article", "tutorial"]
 tags: ["connectrpc", "grpc", "tutorial", "golang", "rest"]
-date: "2024-07-09"
+date: "2024-07-16"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/transitioning-from-rest-to-grpc/cover.jpg"]
