@@ -73,7 +73,7 @@
       {{- with (.GetTerms "series") -}}
       {{- $series := slice -}}
       {{- range . -}}
-        {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Title) -}}
+        {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Name) -}}
       {{- end -}}
       <p>
         <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
@@ -91,15 +91,15 @@
     {{- range . -}}
     <div class="main-wrapper">
     <div class="main-box">
-    <h3>{{ .Title }} Series</h3>
+    <h3><a href="{{ .Permalink }}">{{ .Name }}</a>&nbsp;Series</h3>
     {{- $series := .Pages.ByDate -}}
     <ol>
       {{- range $series -}}
       <li>
         {{- if eq .File.UniqueID $.File.UniqueID -}}
-          <b>{{ .Title }}</b>
+          <b>{{ .Name }}</b>
         {{- else -}}
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
+          <a href="{{ .Permalink }}">{{ .Name }}</a>
         {{- end -}}
       </li>
       {{- end -}}
