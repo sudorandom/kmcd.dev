@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "protobuf", "api", "rpc", "webdev", "humor", "http2", "http3"]
+tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2", "http3"]
 series: ["gRPC: the good and the bad"]
 date: "2024-07-02"
 description: "Not perfect, but still pretty awesome."
@@ -59,6 +59,8 @@ Say goodbye to the guesswork of loosely typed APIs. gRPC's protobuf definitions 
 * **Better code generation:** Automatic generation of client and server code in various languages saves time and effort.
 * **Smoother development cycles:** Consistent contracts make it easier to evolve your API without breaking existing clients.
 * **Generated Documentation:** Automatic generation of documentation means that your documentation will never be out of sync with your API.
+
+API contracts are very powerful. For more on this topic, I've written an article discussing API contracts called [Building APIs with Contracts](/posts/api-contracts/).
 
 ## Streaming Support
 Streaming support is arguably the best and most unique feature for gRPC. It does away with needing to frequently poll for updates in many scenarios which make it a good candidate for:
