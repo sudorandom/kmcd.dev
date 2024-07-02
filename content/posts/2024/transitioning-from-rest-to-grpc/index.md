@@ -18,10 +18,9 @@ canonical_url: https://kmcd.dev/posts/transitioning-from-rest-to-grpc
 draft: true
 ---
 
-I've talked a lot [about ConnectRPC](/posts/connectrpc) and how I think it presents a developer experience that is a step above gRPC. However, I don't think I did a good job of highlighting how ConnectRPC (and gRPC) can slowly adopted. That is what I will tackle today.
+I've talked a lot [about ConnectRPC](/posts/connectrpc/) and how I think it presents a developer experience that is a step above gRPC. However, I don't think I did a good job of highlighting how ConnectRPC (and gRPC) can slowly adopted. That is what I will tackle today.
 
 Let's start off with a REST API.
-
 
 Define REST API
 Define gRPC with REST API Annotations

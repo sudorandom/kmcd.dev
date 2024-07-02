@@ -48,7 +48,7 @@ repeated MapFieldEntry map_field = N;
 
 It's super frustrating because I don't understand why `value_type` can't be a map. The solution to this problem is just to make your own wrapper type to use as the value that contains a map. It is kind of annoying and this does come up semi-often. Crap, this was supposed to be a positive article. Let's get back on track.
 
-I think the protobuf encoding is better than JSON in many ways. That is awesome and cool. However, I understand that sometimes you just want JSON, and with [gRPC you absolutely can just use JSON](https://protobuf.dev/programming-guides/proto3/#json). gRPC still has a few binary framing bytes before each message that won't be human readable but if you're really concerned with those check out the [ConnectRPC](/posts/grpc-the-good-parts/#connectrpc) section below.
+I think the protobuf encoding is better than JSON in many ways. However, I understand that sometimes you just want JSON, and with [gRPC you absolutely can just use JSON](https://protobuf.dev/programming-guides/proto3/#json). gRPC still has a few binary framing bytes before each message that won't be human readable but if you're really concerned with those check out the [ConnectRPC](/posts/grpc-the-good-parts/#connectrpc) section below.
 
 Most gRPC implementations also let you define your own encoding, so it may possible to insert your own favorite encoding if you want to push the limits.
 
