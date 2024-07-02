@@ -69,7 +69,7 @@ Streaming support is arguably the best and most unique feature for gRPC. It does
 * **Live updates:** Push updates to clients as soon as they happen.
 * **Any scenario where constant communication is key:** From gaming to financial data, gRPC's streaming capabilities open up a world of possibilities.
 
-If you come from the networking world, you might know that gNMI (which is based on gRPC) is the replacement for SNMP. Instead of polling network devices for the same data every minute, you can now use gNMI to subscribe. I've written more about this in a post called [Why you should use gNMI over SNMP in 2024](/posts/gnmi/).
+If you come from the networking world, you might know that gNMI (which is based on gRPC) is the replacement for SNMP. Instead of polling network devices for the same data every minute, you can now use gNMI to subscribe to counters. I've written more about this in a post called [Why you should use gNMI over SNMP in 2024](/posts/gnmi/).
 
 ## Cross-Language Support
 gRPC doesn't care what programming language you prefer. Thanks to code generation tools, you can seamlessly work with gRPC in a wide range of languages, including:
@@ -139,7 +139,7 @@ This is pretty amazing because it's doing a lot of the hard work for you and you
 ### gRPC-Web
 One of the big limitations of gRPC is that it doesn't work on the web with web browsers due to limited support of HTTP trailers. Browsers support receiving trailers but there isn't yet a way to retrieve those trailers from javascript. Yes, this is incredibly frustrating, especially since there are many small use cases where trailer support would be amazing to have.
 
-The gRPC-Web protocol gives browsers the ability to use gRPC, which drastically improves the story of contract-based services in gRPC. It also allows for HTTP/1.1 clients to work with gRPC. Some platforms (I'm looking at you, Unity) still don't support HTTP/2, even though it's 2024 and the `HTTP/2` spec was created nearly a decade ago.
+The gRPC-Web protocol gives browsers the ability to use gRPC, which drastically improves the story of contract-based services in gRPC. It also allows for HTTP/1.1 clients to work with gRPC. Some platforms (I'm looking at you, [Unity](https://forum.unity.com/threads/support-for-http-2-with-unitywebrequest.1030510/)) still don't support HTTP/2, even though it's 2024 and the `HTTP/2` spec was created nearly a decade ago.
 
 ### ConnectRPC
 [ConnectRPC](https://connectrpc.com/) automatically generates JSON/HTTP APIs from your gRPC definitions while also maintaining compatibility with gRPC and gRPC-Web. This HTTP protocol, [called Connect](https://connectrpc.com/docs/protocol/), follows HTTP standards more closely. For example, the `Content-Coding` header, `Content-Length` header, HTTP status codes, etc. all work as expected for unary RPC calls. That means you can run this normal-looking curl command and talk to a gRPC service:
@@ -151,7 +151,7 @@ curl --header "Content-Type: application/json" \
 ```
 
 ### Twirp
-[Twirp](https://twitchtv.github.io/twirp/) is very similar to ConnectRPC. It was developed by Twitch, and is another framework that can help bridge the gap between gRPC and REST. [Twirp's approach](https://twitchtv.github.io/twirp/docs/spec_v7.html) is to use protobufs to generate an alternative protocol that also aligns more with HTTP conventions. It doesn't also support gRPC and gRPC-Web. Implementing those alongside twirp is left as an exercise for the user.
+[Twirp](https://twitchtv.github.io/twirp/) is very similar to ConnectRPC. It was developed by Twitch, and is another framework that can help bridge the gap between gRPC and REST. [Twirp's approach](https://twitchtv.github.io/twirp/docs/spec_v7.html) is to use protobufs to generate an alternative protocol that also aligns more with HTTP conventions. It doesn't also support gRPC and gRPC-Web. Implementing those alongside twirp is left as an exercise for the user if you want to interoperate with other gRPC tooling.
 
 ## Tooling
 I have mentioned that gRPC tooling isn't that great. I still agree with that if we're talking about the "out of the box" tooling from the gRPC project. However, the community is much bigger than the gRPC Authors and someone finally made the protobuf code generation a lot better.
