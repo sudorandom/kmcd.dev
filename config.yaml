@@ -33,10 +33,10 @@ params:
   contentTypeName: posts
   hideReadMore: true
   # ReadMoreText: true
-# ReadMore: "foo"
-# socialIcons: true
-# homeTitle: "Title"
-# homeSubtitle: "Subtitle"
+  # ReadMore: "foo"
+  socialIcons: true
+  # homeTitle: "Title"
+  # homeSubtitle: "Subtitle"
   ShowReadingTime: true
   LastModDisplay: false
   logo:

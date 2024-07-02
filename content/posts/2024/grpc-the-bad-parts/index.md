@@ -24,6 +24,8 @@ gRPC, the high-performance RPC framework, has been super successful (if you work
 
 Let's start out extremely nit picky. So-called unary RPCs are calls where the client sends a single request to the server and gets a single response back. Why does gRPC have to use such a non-standard term for this that only mathematicians have an intuitive understanding of? I have to explain the term every time I use it. And I'm a little tired of it.
 
+{{< image src="meme.png" width="400px" class="center" >}}
+
 Speaking of unary RPCs, the implementation is more complicated than it needs to be. While gRPC's streaming capabilities are powerful, they have introduced complexity for simple RPC calls that don't require streaming. This hurts the ability to inspect gRPC calls because now there is framing on every unary RPC which only makes sense for streaming. Protobuf encoding is complicated enough so let's not add extra gRPC framing where it isn't needed. Also, it doesn't pass my "send a friend a cURL example" test for any web API. It's just super annoying to explain to someone how to use gRPC. I've said "okay, but is server reflection enabled?" so many times. I'm just tired of it.
 
 This complexity also bleeds into the tooling with the mandatory code generation step. This can be a hurdle, especially for dynamic languages where runtime flexibility is valued. Additionally, some developers might be hesitant to adopt a technology that necessitates an extra build step. We already need 20 build steps for modern web development, it's sometimes hard to justify one more.

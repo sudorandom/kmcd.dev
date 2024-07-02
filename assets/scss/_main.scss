@@ -167,6 +167,11 @@ img {
   }
 }
 
+.center img {
+  display:block;
+  margin:auto;
+}
+
 figure {
   display: table;
   max-width: 100%;
