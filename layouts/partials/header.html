@@ -1,8 +1,8 @@
-<header class="header">
-    <span class="header__inner">
+<header class="page-header">
+    <span class="page-header__inner">
         {{ partial "logo.html" . }}
 
-        <span class="header__right">
+        <span class="page-header__right">
             {{ if len .Site.Menus }}
                 {{ partial "menu.html" . }}
                 <span class="menu-trigger">
