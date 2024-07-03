@@ -176,7 +176,7 @@ There's so many plugins now. I even [made one](https://github.com/sudorandom/pro
 
 In addition to these libraries and plugins, more tools that you know and love from HTTP are supporting gRPC like [Postman](https://blog.postman.com/postman-now-supports-grpc/), [Insomnia](https://docs.insomnia.rest/insomnia/grpc) and [k6](https://k6.io/docs/using-k6/protocols/grpc/).
 
-The availability of numerous third-party plugins underscores the fact that gRPC is more than just a framework – it's a dynamic ecosystem that fosters innovation and empowers developers to customize their workflows.
+The availability of numerous third-party plugins underscores the fact that gRPC is more than just a framework – it's a dynamic ecosystem that fosters innovation and empowers developers to customize their workflows to meet their specific requirements.
 
 ## Conclusion
 gRPC offers a compelling set of advantages for modern web development.
