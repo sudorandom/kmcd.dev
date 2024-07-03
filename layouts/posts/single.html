@@ -124,11 +124,10 @@
       </div>
     </div>
 
-  {{- $toot := (partial "mastodon/load.html" .) -}}
-  {{- with $toot -}}
-    <h2>Comments{{ with .replies }}<small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</small>{{ end }}</h2>
+    {{- $toot := (partial "mastodon/load.html" .) -}}
+    <h2>Comments{{ with $toot.replies }}<small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</small>{{ end }}</h2>
 
-    {{ with .replies}}
+    {{ with $toot.replies}}
       {{- range . }}
         <div class="main-wrapper">
           <div class="toot-box">
@@ -151,7 +150,7 @@
             "Let's Hear It"
           )
         }}
-        <h3>{{ index $commentHeading (mod .status.id (len $commentHeading)) | safeHTML }}</h3>
+        <h3>{{ index $commentHeading (mod $toot.status.id (len $commentHeading)) | safeHTML }}</h3>
         <p>
           {{
             $commentText := (slice
@@ -162,17 +161,26 @@
             )
           }}
 
-          {{ index $commentText (mod .status.id (len $commentText)) | safeHTML }}
+          {{ index $commentText (mod $toot.status.id (len $commentText)) | safeHTML }}
         </p>
-        <div class="button small mastodon previous">
-          <a href="{{ .status.url }}" target="_blank">
-            <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
-            <span class="button__text">Add your comment on Mastodon</span>
-          </a>
+          <div class="button small mastodon previous">
+            <a href="https://discu.eu/?q={{ $.Page.Params.canonical_url }}&submit_title={{ $.Page.Title }}" target="_blank">
+              <span class="button__icon"><i class="fa-solid fa-globe"></i></span>
+              <span class="button__text">Web Discussions</span>
+            </a>
+          </div>
+
+          {{ with $toot }}
+          <div class="button small mastodon previous">
+            <a href="{{ .status.url }}" target="_blank">
+              <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
+              <span class="button__text">Add your comment on Mastodon</span>
+            </a>
+          </div>
+          {{ end }}
         </div>
       </div>
     </div>
-  {{- end -}}
   </main>
 
   <div id="reading-progress"><div id="reading-progress-fill"></div></div>
