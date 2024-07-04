@@ -4,7 +4,7 @@ tags: ["dataviz", "internet-map", "internet", "networking", "fiber-optics", "map
 keywords: ["internet infrastructure map", "internet visualized", "global internet map", "internet exchange map", "internet exchange point map", "internet map of the world", "ixp map", "internet node map", "internet hub locations"]
 series: ["Internet Map"]
 date: "2024-04-23"
-description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
+description: "Map of the Internet including undersea cables and internet exchanges."
 cover: "cover.png"
 images: ["posts/internet-map-2024/the-internet-map-small.png"]
 featured: ""
