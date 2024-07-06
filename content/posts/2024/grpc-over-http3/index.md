@@ -35,40 +35,64 @@ As the internet evolved better security practices, we've layered TLS on top of T
 
 ```mermaid
 sequenceDiagram
-    Client ->> Server: SYN
-    Server ->> Client: SYN-ACK
-    Client ->> Server: ACK
+    actor Client
 
-    Client ->> Server: Client Hello
-    Server ->> Client: Server Hello
-    Client ->> Server: Server Finished
-    Server ->> Client: Client Finished
+    rect rgb(47,75,124)
+        Client ->> Server: SYN
+        Server ->> Client: SYN-ACK
+        Client ->> Server: ACK
+    end
 
-    Client ->> Server: HTTP Request
-    Server ->> Client: HTTP Response
+    rect rgb(102,81,145)
+        Client ->> Server: Client Hello
+        Server ->> Client: Server Hello
+        Client ->> Server: Server Finished
+        Server ->> Client: Client Finished
+    end
+
+    rect rgb(249,93,106)
+        Client ->> Server: HTTP Request
+        Server ->> Client: HTTP Response
+    end
 ```
 
 Yes, this process involves **three round trips** before the client even sends a request. Viewed in this way, this seems shockingly slow to me. By combining TLS 1.3, QUIC and HTTP/3, we can do away with several of those round trips. So with HTTP/3 it typically looks like this with only a single round trip before we can issue our request:
 
 ```mermaid
 sequenceDiagram
-    Client ->> Server: QUIC
-    Server ->> Client: QUIC
-    Client ->> Server: QUIC
+    actor Client
 
-    Client ->> Server: HTTP Request
-    Server ->> Client: HTTP Response
+    rect rgb(47,75,124)
+        Client ->> Server: QUIC
+        Server ->> Client: QUIC
+        Client ->> Server: QUIC
+    end
+
+    rect rgb(249,93,106)
+        Client ->> Server: HTTP Request
+        Server ->> Client: HTTP Response
+    end
 ```
 
 But wait, we can actually go further. With a feature called `0-RTT`, the number of round trips for a new connection can actually be **ZERO**. The idea is that the client can presume that a connection will be established and send the request based on that presumption. 0-RTT quite literally removes the need to do a round trip before making the first request. It looks like this:
 
 ```mermaid
 sequenceDiagram
-    Client ->> Server: QUIC
-    Client ->> Server: HTTP Request
+    actor Client
 
-    Server ->> Client: QUIC
-    Server ->> Client: HTTP Response
+    rect rgb(47,75,124)
+        Client ->> Server: QUIC
+    end
+    rect rgb(249,93,106)
+        Client ->> Server: HTTP Request
+    end
+
+    rect rgb(47,75,124)
+        Server ->> Client: QUIC
+    end
+    rect rgb(249,93,106)
+        Server ->> Client: HTTP Response
+    end
 ```
 
 Note that 0-RTT requires the client to have some cached information about the server so it's not always possible to use.
@@ -84,9 +108,13 @@ When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should requi
 ## HTTP/3 + gRPC + Go
 HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to support HTTP/3.
 
-- **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of a HTTP/3 transport for gRPC.
-- **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there's good examples of this in the wild yet.
-- **Go**: ConnectRPC for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
+There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea.
+
+- **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
+- **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there are good examples of this in the wild yet.
+- **Go**: [ConnectRPC](https://github.com/connectrpc/connect-go) for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
+
+If you know about other gRPC implementations that can work with HTTP/3 (client or server), let me know. These are only the ones I know about.
 
 When learning about HTTP/3 I always like getting my hands dirty and using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go. I'm including the full examples in this article because I've looked and haven't really been able to find good examples for this. I hope it's helpful for others. The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post. Some examples will have things like imports omitted for brevity.
 
