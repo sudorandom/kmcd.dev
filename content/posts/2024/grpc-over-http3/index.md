@@ -50,7 +50,7 @@ sequenceDiagram
         Server ->> Client: Client Finished
     end
 
-    rect rgb(249,93,106)
+    rect rgb(200,80,96)
         Client ->> Server: HTTP Request
         Server ->> Client: HTTP Response
     end
@@ -60,7 +60,7 @@ Yes, this process involves **three round trips** before the client even sends a 
 
 ```mermaid
 sequenceDiagram
-    actor Client
+	    actor Client
 
     rect rgb(47,75,124)
         Client ->> Server: QUIC
@@ -68,7 +68,7 @@ sequenceDiagram
         Client ->> Server: QUIC
     end
 
-    rect rgb(249,93,106)
+    rect rgb(200,80,96)
         Client ->> Server: HTTP Request
         Server ->> Client: HTTP Response
     end
@@ -83,14 +83,14 @@ sequenceDiagram
     rect rgb(47,75,124)
         Client ->> Server: QUIC
     end
-    rect rgb(249,93,106)
+    rect rgb(200,80,96)
         Client ->> Server: HTTP Request
     end
 
     rect rgb(47,75,124)
         Server ->> Client: QUIC
     end
-    rect rgb(249,93,106)
+    rect rgb(200,80,96)
         Server ->> Client: HTTP Response
     end
 ```
