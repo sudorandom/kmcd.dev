@@ -20,14 +20,14 @@ draft: true
 ## Introduction
 At the time of writing, HTTP/3 is supported by 30.4% of the top 10 million websites. This market penetration is astounding, but it seems like all of this progress has been possible almost exclusively by work on browsers, load balancers and CDN providers. But what about the backend? How's HTTP/3 doing there? Not as well.
 
-Because of this, I have been very interested in HTTP/3 in the context of gRPC. While gRPC has already played a significant role in pushing the adoption of HTTP/2, HTTP/3 promises several benefits that all seem to apply especially to gRPC services.
+Because of this, I have been very interested in HTTP/3 in the context of gRPC. While gRPC has been instrumental in driving the adoption of HTTP/2, HTTP/3 promises several benefits that all seem to apply to gRPC services.
 
 In this post, we'll dive into what HTTP/3 is and explore the compelling reasons why it's an ideal fit for gRPC applications. We'll uncover the technical advancements that make HTTP/3 faster, more reliable, and more secure. But we won't stop at theory; we'll get our hands dirty with practical examples in Go, demonstrating how to set up and test gRPC servers and clients over HTTP/3.
 
 By the end of this journey, you'll have a solid understanding of the benefits HTTP/3 brings to gRPC, the tools available to start using it today, and the potential it holds for the future of API development. So, fasten your seatbelts and get ready to experience the next generation of network protocols!
 
 ## Why HTTP/3
-gRPC has had a lot of success pushing the world into HTTP/2 but there are some advantages to pushing even further and adopting the new major version of HTTP, [HTTP/3](https://http3-explained.haxx.se/en). I will talk for a little bit about these advantages before moving on to playing with HTTP/3. So why should we use HTTP/3?
+gRPC has had a lot of success pushing the world into HTTP/2 but there are some advantages to pushing even further and adopting the new major version of HTTP, [HTTP/3](https://http3-explained.haxx.se/en). Let's discuss these advantages before delving into code examples. So why should we use HTTP/3?
 
 ### Quicker Connection Establishment
 HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is actually built upon UDP.
@@ -85,7 +85,7 @@ When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should requi
 ## HTTP/3 + gRPC + Go
 HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made.
 
-- **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pironeer here, already containing an implementation of a HTTP/3 transport for gRPC.
+- **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of a HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there's good examples of this in the wild yet.
 - **Go**: ConnectRPC for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
 
@@ -164,10 +164,10 @@ openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
     -keyout cert.key  -out cert.crt
 ```
 
-After. That is all there is to it! Now we have a gRPC server that now supports HTTP/3.
+That is all there is to it! Now we have a gRPC server that now supports HTTP/3.
 
 #### Testing with an example client in Go
-Now that we have a server running I needed some way to test it, so let's use a client set up with ConnectRPC. Here's what I ended up with:
+Now that we have a server running we need some way to test it, so let's use a client using ConnectRPC:
 
 ```go
 package main
@@ -226,7 +226,7 @@ func main() {
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.1/client-http/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
 
-In the case of the client, we only have to define a `http3.RoundTripper` instance and pass that into a completely normal `http.Client` instance. That's... quite literally it. Everything else should be the same.
+In the case of the client, we only need to define a `http3.RoundTripper` instance and pass that into a completely normal `http.Client` instance. That's... quite literally it. Everything else should be the same.
 
 ```plaintext
 2024/07/06 12:57:24 connect:  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
@@ -297,7 +297,7 @@ It works the same, but the output is a bit different since protobuf types print 
 Now we have a server and a client that talks HTTP/3! Amazing! Now this isn't good enough for me.
 
 #### Testing HTTP/3 servers with curl
-I wanted to test this with a "real" HTTP/3 client because maybe there are some weird issues where quic-go servers only work against quic-go clients. I don't know. I want further validation, okay? So I reached for `curl`, the de-facto tool for calling HTTP APIs from the command line. So I immediately tried to just run `curl --http3`:
+I wanted to test this with a "real" HTTP/3 client because maybe there are some weird issues where quic-go servers only work against quic-go clients. To be extra sure, I wanted to validate this further with a well-established HTTP/3 client. So I reached for `curl`, the de-facto tool for calling HTTP APIs from the command line. So I immediately tried to just run `curl --http3`:
 
 ```shell
 $ curl \
@@ -351,7 +351,7 @@ $ curl \
 {"sentence":"Hello World!"}
 ```
 
-Success! You can see that HTTP/3 is being used due to the verbose logging. This flexes our server with HTTP/3 but you may be wondering what this has to do with gRPC. I'm only using basic HTTP requests with JSON and you're totally right. The last two examples leverage only one of the three protocols that ConnectRPC provides by default, [the connect protocol](https://connectrpc.com/docs/protocol/). Thus far I haven't validated don't if the other two protocols, gRPC or gRPC-Web, really work using this transport. To test that, we'll need more gRPC-centric tooling.
+Success! You can see that HTTP/3 is being used due to the verbose logging. This flexes our server with HTTP/3 but you may be wondering what this has to do with gRPC. I'm only using basic HTTP requests with JSON and you're totally right. The last two examples leverage only one of the three protocols that ConnectRPC provides by default, [the connect protocol](https://connectrpc.com/docs/protocol/). Thus far, I haven't validated if the other two protocols, gRPC or gRPC-Web, really work using this transport. To test that, we'll need more gRPC-centric tooling.
 
 #### Adding HTTP/3 to the Buf CLI
 I also wanted to test with gRPC-specific tooling to ensure gRPC and gRPC-Web worked as expected. So I added support for HTTP/3 with the buf CLI. This ended up being pretty easy and looks similar to the example above. I have an [open PR here](https://github.com/bufbuild/buf/pull/3127) and if you want a sneak peak you can build the Buf CLI from [my branch](https://github.com/sudorandom/buf/tree/http3). Here it is testing against ConnectRPC's demo website:
