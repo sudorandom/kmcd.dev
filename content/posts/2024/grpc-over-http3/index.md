@@ -17,9 +17,9 @@ canonical_url: https://kmcd.dev/posts/grpc-over-http3/
 ---
 
 ## Introduction
-At the time of writing, HTTP/3 is supported by 30.4% of the top 10 million websites. This market penetration is astounding, but it seems like all of this progress has been possible almost exclusively by work on browsers, load balancers and CDN providers. But what about the backend? How's HTTP/3 doing there? Not as well.
+At the time of writing, HTTP/3 is [supported by 30.4% of the top 10 million websites](https://w3techs.com/technologies/details/ce-http3). This market penetration is astounding, but it seems like all of this progress has been possible almost exclusively by work on browsers, load balancers and CDN providers. What about the backend? How's HTTP/3 doing there? The answer, sadly, is not as incredible.
 
-Because of this, I have been very interested in HTTP/3 in the context of gRPC. While gRPC has been instrumental in driving the adoption of HTTP/2, HTTP/3 promises several benefits that all seem to apply to gRPC services.
+Because of this, I have been very interested in HTTP/3 in the context of gRPC. While gRPC has been instrumental in driving the adoption of HTTP/2, HTTP/3 promises several benefits that all seem to apply exceptionally well to gRPC services.
 
 In this post, we'll dive into what HTTP/3 is and explore the compelling reasons why it's an ideal fit for gRPC applications. We'll uncover the technical advancements that make HTTP/3 faster, more reliable, and more secure. But we won't stop at theory; we'll get our hands dirty with practical examples in Go, demonstrating how to set up and test gRPC servers and clients over HTTP/3.
 
@@ -48,7 +48,7 @@ sequenceDiagram
     Server ->> Client: HTTP Response
 ```
 
-Yes, this is **three round trips** before the client even sends a request. By combining TLS 1.3, QUIC and HTTP/3 we can do away with several of those round trips. So with HTTP/3 it typically looks like this with only a single round trip before we can issue our request:
+Yes, this process involves **three round trips** before the client even sends a request. Viewed in this way, this seems shockingly slow to me. By combining TLS 1.3, QUIC and HTTP/3, we can do away with several of those round trips. So with HTTP/3 it typically looks like this with only a single round trip before we can issue our request:
 
 ```mermaid
 sequenceDiagram
@@ -88,9 +88,7 @@ HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gR
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there's good examples of this in the wild yet.
 - **Go**: ConnectRPC for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
 
-When learning about HTTP/3 I always like getting my hands dirty and using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go.
-
-The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post.
+When learning about HTTP/3 I always like getting my hands dirty and using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go. I'm including the full examples in this article because I've looked and haven't really been able to find good examples for this. I hope it's helpful for others. The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post. Some examples will have things like imports omitted for brevity.
 
 ### Example server in Go
 Let's see how effortlessly we can set up a gRPC server with HTTP/3 support using Go. The key players here are:
