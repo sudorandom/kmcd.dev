@@ -11,7 +11,7 @@ slug: "leaving-texas"
 type: "posts"
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://kmcd.dev/posts/leaving-texas
+canonical_url: https://kmcd.dev/posts/leaving-texas/
 featured: false
 featuredTitle: "Life in Denmark"
 ---

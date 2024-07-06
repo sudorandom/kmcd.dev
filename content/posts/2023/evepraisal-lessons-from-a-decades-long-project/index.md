@@ -12,7 +12,7 @@ title: "Lessons from a Decades-Long Project"
 slug: "lessons-from-a-decades-long-project"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/lessons-from-a-decades-long-project
+canonical_url: https://kmcd.dev/posts/lessons-from-a-decades-long-project/
 mastodonID: "112277291254014638"
 ---
 

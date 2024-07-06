@@ -13,7 +13,7 @@ title: "Why I'm Rebranding"
 slug: "why-im-rebranding"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/why-im-rebranding
+canonical_url: https://kmcd.dev/posts/why-im-rebranding/
 mastodonID: "112489893003172528"
 ---
 

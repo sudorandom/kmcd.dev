@@ -14,7 +14,7 @@ title: "gRPC From Scratch: Part 2 - Server"
 slug: "grpc-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-2
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-2/
 mastodonID: "112277285817413643"
 ---
 

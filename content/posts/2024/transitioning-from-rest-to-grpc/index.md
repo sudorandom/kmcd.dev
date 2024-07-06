@@ -14,7 +14,7 @@ slug: "transitioning-from-rest-to-grpc"
 type: "posts"
 devtoPublished: false
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/transitioning-from-rest-to-grpc
+canonical_url: https://kmcd.dev/posts/transitioning-from-rest-to-grpc/
 draft: true
 ---
 

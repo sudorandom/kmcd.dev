@@ -13,7 +13,7 @@ title: "Blog Update"
 slug: "blog-update"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/blog-update
+canonical_url: https://kmcd.dev/posts/blog-update/
 mastodonID: "112437982084208909"
 ---
 

@@ -15,7 +15,7 @@ type: "posts"
 devtoSkip: false
 devtoPublished: true
 devtoId: 1824143
-canonical_url: https://kmcd.dev/posts/greppable
+canonical_url: https://kmcd.dev/posts/greppable/
 mastodonID: "112279427895131690"
 ---
 

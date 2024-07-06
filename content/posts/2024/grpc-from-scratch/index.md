@@ -14,7 +14,7 @@ title: "gRPC From Scratch: Part 1 - Client"
 slug: "grpc-from-scratch"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc-from-scratch
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch/
 mastodonID: "112277287224227663"
 featured: true
 featuredTitle: "Series: gRPC From Scratch"

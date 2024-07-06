@@ -10,7 +10,7 @@ title: "Benchmarking gRPC (golang)"
 slug: "benchmarking-go-grpc"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/benchmarking-go-grpc
+canonical_url: https://kmcd.dev/posts/benchmarking-go-grpc/
 MastodonID: "112477609624331475"
 ---
 

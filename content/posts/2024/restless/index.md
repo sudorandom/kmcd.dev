@@ -16,7 +16,7 @@ type: "posts"
 devtoId: 1801742
 devtoPublished: true
 devtoSkip: false
-canonical_url: https://kmcd.dev/posts/restless
+canonical_url: https://kmcd.dev/posts/restless/
 mastodonID: "112277350972272100"
 ---
 

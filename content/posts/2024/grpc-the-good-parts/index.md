@@ -14,7 +14,7 @@ title: "gRPC: The Good Parts"
 slug: "grpc-the-good-parts"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc-the-good-parts
+canonical_url: https://kmcd.dev/posts/grpc-the-good-parts/
 ---
 
 While REST APIs remain a popular choice for building web services, gRPC is increasingly being adopted for its unique advantages in performance, efficiency, and developer experience. You may have seen my post, [gRPC: The Bad Parts](/posts/grpc-the-bad-parts/), where I talk about some of my issues with gRPC. Based on the many comments about that article, I could easily write a sequel with even more complaints. However, today I'm going to focus on the *good* parts of gRPC. It has become obvious to me that many people didn't read the ending of the last post which attempted to outline how many of the points that I made are no longer true. So I figured that I need to give the positive aspects of gRPC a dedicated post.

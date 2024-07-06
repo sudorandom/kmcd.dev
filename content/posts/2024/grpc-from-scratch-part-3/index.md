@@ -14,7 +14,7 @@ title: "gRPC From Scratch: Part 3 - Protobuf Encoding"
 slug: "grpc-from-scratch-part-3"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-3
+canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-3/
 mastodonID: "112398336658297977"
 ---
 

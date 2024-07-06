@@ -14,7 +14,7 @@ title: "gRPC: The Bad Parts"
 slug: "grpc-the-bad-parts"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts
+canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts/
 featured: true
 ---
 

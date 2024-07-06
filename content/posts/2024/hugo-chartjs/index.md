@@ -10,7 +10,7 @@ title: "Adding chart.js to Hugo"
 slug: "hugo-chartjs"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/hugo-chartjs
+canonical_url: https://kmcd.dev/posts/hugo-chartjs/
 mastodonID: "112517411212093961"
 ---
 

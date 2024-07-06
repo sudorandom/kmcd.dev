@@ -7,7 +7,7 @@ cover: "cover.jpg"
 title: "Daily Prompts"
 slug: "daily-prompts"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/daily-prompts
+canonical_url: https://kmcd.dev/posts/daily-prompts/
 mastodonID: "112557775048196416"
 ---
 

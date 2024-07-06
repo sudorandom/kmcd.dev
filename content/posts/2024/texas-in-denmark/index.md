@@ -11,7 +11,7 @@ slug: "texas-in-denmark"
 type: "posts"
 devtoPublished: false
 devtoSkip: false
-canonical_url: https://kmcd.dev/posts/texas-in-denmark
+canonical_url: https://kmcd.dev/posts/texas-in-denmark/
 ---
 
 In [my last post](/posts/leaving-texas), I talked about the reasons that me and my family decided to leave Texas. Today I'm going to talk about why we decided Denmark as our new home. **Why *Denmark*?** I get this question often, especially from Danes. I hope to answer how we came up with Denmark as our family's new home and how it has been in the past two and a half years. I do not intend for this to be a guide for others since the details of bureaucracy change quite often and I think everyone's experience will be very different from ours. My colleague has actually written a [Developers Guide to Moving to Denmark](https://matduggan.com/developers-guide-to-moving-to-denmark/) which is very informative on this front. My of his experiences echo mine. Instead, I want to describe "the vibe" of the last few years in Denmark, so others might have a general sense of what it might be like to make the same life-changing move.

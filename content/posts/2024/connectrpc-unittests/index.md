@@ -7,7 +7,7 @@ cover: "cover.jpg"
 title: "Unit Testing ConnectRPC Servers"
 slug: "connectrpc-unittests"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/connectrpc-unittests
+canonical_url: https://kmcd.dev/posts/connectrpc-unittests/
 ---
 
 If you've embarked on the journey of building efficient and scalable RPC systems with [ConnectRPC](https://connectrpc.com/), you might be pondering the best way to ensure the reliability and correctness of your services. Unit testing is the obvious tool for this, providing a safety net that catches bugs early and empowers you to refactor code fearlessly. In the ConnectRPC world, unit testing can be daunting due to its integration with Protocol Buffers and the client-server architecture. In this guide, we'll unravel the mysteries of unit testing ConnectRPC services, while arming you with practical examples and advanced techniques to fortify your codebase.

@@ -14,7 +14,7 @@ type: "posts"
 devtoSkip: false
 devtoPublished: true
 devtoId: 1838246
-canonical_url: https://kmcd.dev/posts/tracking-the-wins
+canonical_url: https://kmcd.dev/posts/tracking-the-wins/
 mastodonID: "112358233895547657"
 ---
 
