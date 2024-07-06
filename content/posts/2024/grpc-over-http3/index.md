@@ -82,7 +82,7 @@ HTTP/3 solves the head-of-line blocking issue by avoiding TCP altogether. Instea
 When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. This might have been true for HTTP/2 but this is not true for HTTP/3. HTTP/3 *requires* encryption and usage of the TLS 1.3 protocol. There are several reasons for this, but the most compelling one is that TLS 1.3 working with QUIC allows for zero round trips to negotiate a new connection before making a request, which is even faster than HTTP/1.1 without TLS. It's a double win by being both more secure and faster.
 
 ## HTTP/3 + gRPC + Go
-HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made.
+HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to support HTTP/3.
 
 - **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of a HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there's good examples of this in the wild yet.
