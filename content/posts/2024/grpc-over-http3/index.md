@@ -195,29 +195,16 @@ That is all there is to it! Now we have a gRPC server that now supports HTTP/3.
 Now that we have a server running we need some way to test it, so let's use a client using ConnectRPC:
 
 ```go
-package main
-
-import (
-	"crypto/tls"
-	"io"
-	"log"
-	"net/http"
-	"strings"
-
-	"github.com/quic-go/quic-go/http3"
-)
-
 const (
-	skipVerify = true
 	url        = "https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say"
-
 	reqBody = `{"sentence": "Hello World!"}`
 )
 
 func main() {
 	roundTripper := &http3.RoundTripper{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: skipVerify,
+			// we need this because our certificate is self signed
+			InsecureSkipVerify: true,
 		},
 	}
 	defer roundTripper.Close()
