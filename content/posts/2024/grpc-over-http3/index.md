@@ -14,7 +14,6 @@ slug: "grpc-over-http3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-over-http3/
-draft: true
 ---
 
 ## Introduction
