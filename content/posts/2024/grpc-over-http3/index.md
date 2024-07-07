@@ -311,7 +311,7 @@ curl: try 'curl --help' or 'curl --manual' for more information
 
 {{< image src="suprised.png" width="400px" class="center" >}}
 
-Wait, what? What's happening?? I thought curl support HTTP/3! What gives? Well, the story [isn't that simple](https://daniel.haxx.se/blog/2024/06/10/http-3-in-curl-mid-2024/). The curl CLI might support HTTP/3 but the libraries that it uses also need to be on the correct version to make it all work. To get around that, I installed curl using [Cloudflare's homebrew formula](https://blog.cloudflare.com/http3-the-past-present-and-future#using-curl) which will install everything needed to get curl to work with HTTP/3. So let's try it out:
+Wait, what? What's happening?? I thought curl supported HTTP/3! What gives? Well, the story [isn't that simple](https://daniel.haxx.se/blog/2024/06/10/http-3-in-curl-mid-2024/). The curl CLI might support HTTP/3 but the libraries that it uses also need to be on the correct version to make it all work. To get around that, I installed curl using [Cloudflare's homebrew formula](https://blog.cloudflare.com/http3-the-past-present-and-future#using-curl) which will install everything needed to get curl to work with HTTP/3. So let's try it out:
 
 ```shell
 $ curl \
