@@ -102,7 +102,7 @@ HTTP/2 has allowed gRPC to be quite good at multiplexing multiple requests and s
 
 HTTP/3 solves the head-of-line blocking issue by avoiding TCP altogether. Instead, it is built on top of a protocol called QUIC which is built on top of UDP. QUIC is aware of multiple streams so it knows when it is appropriate to deliver packets without having this head-of-line blocking behavior. This makes HTTP/3 much better when dealing with unreliable networks. With its heavy use of streams, gRPC in particular would greatly benefit from the elimination of the head-of-line blocking issue.
 
-### Encryption by Default
+### Encryption is&nbsp;*Required*
 When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. As a result, we now have [h2c](https://datatracker.ietf.org/doc/html/rfc7540#section-3.2), which is a way to use HTTP/2 without encryption.
 
 {{< image src="encryption.png" width="400px" class="center" >}}
