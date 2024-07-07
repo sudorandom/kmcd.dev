@@ -3,202 +3,277 @@
 <main class="post">
     <article>
         {{if not .Params.hideTitle }}
-            <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
-            {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
+        <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a
+                href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
         {{ end }}
-        <span id="personal"><h2>Personal</h2></span>
+        <span id="personal">
+            <h2>Personal</h2>
+        </span>
         <div class="main-wrapper">
             <div class="main-box main-box">
                 <figure style="float:left;padding:10px;">
                     {{ $meimg := ($.Page.Resources.GetMatch "me.jpg").Resize "200x webp" }}
-                    <img src="{{ $meimg.Permalink }}" style="border-radius:10px;" width="$meimg.Width" height="$meimg.Width" alt="Me, Kevin McDonald" />
+                    <img src="{{ $meimg.Permalink }}" style="border-radius:10px;" width="$meimg.Width"
+                        height="$meimg.Width" alt="Me, Kevin McDonald" />
                 </figure>
                 <p>
-                    Hello! My name is <strong>Kevin McDonald</strong>. I am a <strong>software engineer</strong> living in Copenhagen. 
+                    Hello! My name is <strong>Kevin McDonald</strong>. I am a <strong>software engineer</strong> living
+                    in Copenhagen.
                 </p>
 
                 <p>
-                    Having grown up in <strong>Texas</strong>, mostly around the DFW area, I now find myself living in the beautiful city of <strong>Copenhagen, Denmark</strong>. In 2021, my wife and I decided to embark on this adventure to raise our daughter and embrace a new way of living. As a part of this new life, I've taken up cycling as my main mode of transportation (I don't even own a car!), and I'm even learning Danish. My daughter attends a Danish kindergarten and is growing up bilingual. At this point she identifies more as Danish than American. This journey has been difficult at times but it has also been incredibly rewarding.
+                    Having grown up in <strong>Texas</strong>, mostly around the DFW area, I now find myself living in
+                    the beautiful city of <strong>Copenhagen, Denmark</strong>. In 2021, my wife and I decided to embark
+                    on this adventure to raise our daughter and embrace a new way of living. As a part of this new life,
+                    I've taken up cycling as my main mode of transportation (I don't even own a car!), and I'm even
+                    learning Danish. My daughter attends a Danish kindergarten and is growing up bilingual. At this
+                    point she identifies more as Danish than American. This journey has been difficult at times but it
+                    has also been incredibly rewarding.
                 </p>
 
                 <p>
-                    Video games used to be a big part of how I spent my free time. I got really into Halo/Halo 2 in high school, World of Warcraft in college and Eve Online in my 20s (see the Evepraisal project below). Now-a-days I really only play casual games, usually roguelikes, but the interest is still there. I just don't have the time!
+                    Video games used to be a big part of how I spent my free time. I got really into Halo/Halo 2 in high
+                    school, World of Warcraft in college and Eve Online in my 20s (see the Evepraisal project below).
+                    Now-a-days I really only play casual games, usually roguelikes, but the interest is still there. I
+                    just don't have the time!
                 </p>
 
                 <p>
-                    I read Sci-Fi and fantasy books, usually in audiobook form. I sometimes read non-fiction on topics like popular science and software engineering.
+                    I read Sci-Fi and fantasy books, usually in audiobook form. I sometimes read non-fiction on topics
+                    like popular science and software engineering.
                 </p>
             </div>
         </div>
 
-        <span id="professional"><h2>Professional</h2></span>
+        <span id="professional">
+            <h2>Professional</h2>
+        </span>
         <div class="main-wrapper">
             <div class="main-box main-box">
                 <figure style="float:right;padding:10px;">
                     {{ $appleBadgeImg := ($.Page.Resources.GetMatch "apple_badge.jpg").Resize "200x webp" }}
-                    <img src="{{ $appleBadgeImg.Permalink }}" style="border-radius:10px;" width="$appleBadgeImg.Width" height="$appleBadgeImg.Width" alt="Apple Badge" />
+                    <img src="{{ $appleBadgeImg.Permalink }}" style="border-radius:10px;" width="$appleBadgeImg.Width"
+                        height="$appleBadgeImg.Width" alt="Apple Badge" />
                 </figure>
                 <p>
-                    I previously worked for <a href="https://www.apple.com" target="_blank">Apple</a> and <a href="https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer">SoftLayer</a> (before and after IBM). I currently work for <a href="https://sybogames.com">SYBO</a>. If you want the full details of my work history, see my <a href="https://www.linkedin.com/in/sudorandom/" target="_blank">profile on linkedin</a>.
+                    I previously worked for <a href="https://www.apple.com" target="_blank">Apple</a> and <a
+                        href="https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer">SoftLayer</a> (before and after IBM). I
+                    currently work for <a href="https://sybogames.com">SYBO</a>. If you want the full details of my work
+                    history, see my <a href="https://www.linkedin.com/in/sudorandom/" target="_blank">profile on
+                        linkedin</a>.
                 </p>
                 <p>
-                    I began my career persuing "full stack" but now I am solidly a backend engineer. I have gravitated more towards backend systems, and specifically internal tools. However, I have a wide variety of experiences. I have been the primary developer for several public-facing products. I have delved into data engineering with designing ETL pipelines, network pollers, and metric systems. I've developed insights that have made measurable impacts on product design and has directly lead to saving and earning millions of dollars monthly. I have also dipped my toe into cybersecurity by looking at the attack surface of my current company's APIs and developed reasonable exploits and proof of concepts to demonstrate the need to focus on this topic more. This has directly lead to fixing those particular exploits, more attention to security best practices and was a piece of evidence for creating a real cybersecurity team at that company.
+                    I began my career pursuing "full stack" but now I am solidly a backend engineer. I have gravitated
+                    more towards backend systems, and specifically internal tools. However, I have a wide variety of
+                    experiences. I have been the primary developer for several public-facing products. I have delved
+                    into data engineering with designing ETL pipelines, network pollers, and metric systems. I've
+                    developed insights that have made measurable impacts on product design and has directly led to
+                    saving and earning millions of dollars monthly. I have also dipped my toe into cybersecurity by
+                    looking at the attack surface of my current company's APIs and developed reasonable exploits and
+                    proof of concepts to demonstrate the need to focus on this topic more. This has directly lead to
+                    fixing those particular exploits, more attention to security best practices and was a piece of
+                    evidence for creating a real cybersecurity team at that company.
                 </p>
                 <p>
-                    I tend to get interested in network protocols and disecting how they work. I have dived deep into gRPC, SNMP, HTTP/2, gNMI, NETCONF and TL1. I don't see myself stopping any time soon with this. My current working programming language is <strong>Go</strong>, but I have previously worked with <strong>Elixir, Clojure, Python, Java, and PHP</strong> as my working programming language in the past.
+                    I tend to get interested in network protocols and dissecting how they work. I have dived deep into
+                    gRPC, SNMP, HTTP/2, gNMI, NETCONF and TL1. I don't see myself stopping any time soon with this. My
+                    current working programming language is <strong>Go</strong>, but I have previously worked with
+                    <strong>Elixir, Clojure, Python, Java, and PHP</strong> as my working programming language in the
+                    past.
                 </p>
             </div>
         </div>
 
         {{- with .Site.Params.social }}
-        <span id="social"><h2>Social</h2></span>
+        <span id="social">
+            <h2>Social</h2>
+        </span>
         <div class="projects-wrapper">
-        <div class="projects-box">
-            <p>
-                You can find me at the following places! Feel free to shoot me a message!
+            <div class="projects-box">
+                <p>
+                    You can find me at the following places! Feel free to shoot me a message!
                 <ul>
                     {{ range . -}}
                     {{ $url := .url | urls.Parse -}}
                     <li>
-                        <a href="{{ .url }}" target="_blank" rel="me" title="{{ .name | humanize }}">{{ $url.Host }}{{ $url.Path }}</a>
+                        <a href="{{ .url }}" target="_blank" rel="me" title="{{ .name | humanize }}">{{ $url.Host }}{{
+                            $url.Path }}</a>
                     </li>
                     {{- end -}}
                 </ul>
-            </p>
-            <p>
-                My online alias is <strong><code>sudorandom</code></strong>. The username "sudorandom" is, of course a pun. It mixes "sudo" (which gives a single linux command super user privileges) with "pseudorandom" like things that seem unpredictable but are computer-made, so they follow strict rules.
-            </p>
-        </div>
+                </p>
+                <p>
+                    My online alias is <strong><code>sudorandom</code></strong>. The username "sudorandom" is, of course
+                    a pun. It mixes "sudo" (which gives a single linux command super user privileges) with
+                    "pseudorandom" like things that seem unpredictable but are computer-made, so they follow strict
+                    rules.
+                </p>
+            </div>
         </div>
         {{- end }}
 
         <span id="projects"></span>
-        <span id="ongoing-projects"><h2>Ongoing Projects</h2></span>
+        <span id="ongoing-projects">
+            <h2>Ongoing Projects</h2>
+        </span>
         <div class="projects-wrapper">
-        <div class="projects-box">
-            <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
-            <p>
-                {{ partial "blog_summary.html" }}
-            </p>
-            <div class="project-icons">
-                <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
-            </div>
-        </div>
-        </div>
-        <div class="projects-wrapper">
-        <div class="projects-box">
-            <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></i></h3>
-            <p>
-                Generate OpenAPI specificaitons from protobuf that matches <a href="https://connectrpc.com/">Connect RPC</a>. Born from my own needs and frustrations gluing together existing tooling in non-ideal ways.
-            </p>
-            <div class="project-icons">
-                <a href="/posts/protoc-gen-connect-openapi/"><i class="fa-solid fa-book"></i></a>
-                <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-github"></i></a>
-                <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-golang"></i></a>
-            </div>
-        </div>
-        <div class="projects-box">
-            <h3><a href="https://github.com/sudorandom/unknownconnect-go" target="_blank">unknownconnect-go</a></h3>
-            <p>
-                An interceptor for <a href="https://github.com/connectrpc/connect-go" target="_blank">connect-go</a> (ConnectRPC) clients and servers that tells you if you are receiving protobuf messages with unknown fields. A topic I've been writing about a lot lately. I love that it allows you to detect inconsistencies in environments that use ConnectRPC.
-            </p>
-            <div class="project-icons">
-                <a href="/posts/unknownconnect-go/"><i class="fa-solid fa-book"></i></a>
-                <a href="https://github.com/sudorandom/unknownconnect-go/" target="_blank"><i class="fa-brands fa-github"></i></a>
-                <a href="https://pkg.go.dev/github.com/sudorandom/unknownconnect-go" target="_blank"><i class="fa-brands fa-golang"></i></a>
-            </div>
-        </ul>
-        </div>
-        </div>
-
-        <span id="finished-projects"><h2>Finished Projects</h2></span>
-        <div class="projects-wrapper">
-        <div class="projects-box">
-            <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
-            <p>
-                Evepraisal was an extremely popular bulk-price estimator for Eve Online. It started as a tool to help pirates evaluate cargo-scan results but it evolve into a tool that helped shape Eve Online's economy. The project lived on well past my time playing the game and, sadly, because of the <a href="/posts/lessons-from-a-decades-long-project/">ongoing maintenance</a> and my detatchment from the game I eventually <a href="/posts/goodbye-evepraisal/">shut it down</a>.
-            </p>
-            <div class="project-icons">
-                <a href="/posts/evepraisal.com/"><i class="fa-solid fa-book"></i></a>
-                <a href="https://github.com/evepraisal/go-evepraisal" target="_blank"><i class="fa-brands fa-github"></i></a>
-            </div>
-        </div>
-        </div>
-
-        <div class="projects-wrapper">
-        <div class="projects-box">
-            <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
-            <p>
-                A set of Python libraries that assist in calling the SoftLayer API. Has a CLI, general API and specifialized code to help with more complicated workflows. This became the most popular ways to interact with SoftLayer APIs.
-            </p>
-            <div class="project-icons">
-                <a href="/posts/softlayer-python/"><i class="fa-solid fa-book"></i></a>
-                <a href="https://github.com/softlayer/softlayer-python" target="_blank"><i class="fa-brands fa-github"></i></a>
-            </div>
-        </div>
-
-        <div class="projects-box">
-            <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
-            <p>
-                An FTP and SFTP interface for OpenStack Object Storage (swift) built in Twisted Python. I'm unsure how much the project is still used but it was critical for moving a lot of data from legacy systems onto SoftLayer/IBM's Object Storage product.
-            </p>
-            <div class="project-icons">
-                <a href="/posts/swftp/"><i class="fa-solid fa-book"></i></a>
-                <a href="https://github.com/softlayer/swftp" target="_blank"><i class="fa-brands fa-github"></i></a>
-            </div>
-        </div>
-        </div>
-
-        <span id="support"><h2>Support Me</h2></span>
-        <div class="projects-wrapper">
-        <div class="projects-box">
-            <p>
-                Here is what I have available on <a href="https://displate.com/artsysquirrrels/computer-generated?art=5dd499109f9ea">displate.com</a>. They sell metal posters that you can hang on your wall using magnets, which makes it easy to switch them out to keep your walls looking fresh. Consider buying one of mine for your home! Or at least using my affiliate link to order other posters from displate: <a href="http://displate.com/?art=5dd499109f9ea">displate.com/?art=5dd499109f9ea</a>
-            </p>
-
-            <div id="macy-container">
-                <div class="grid-item">
-                    <a href="https://displate.com/displate/6788735?art=5dd499109f9ea" target="_blank">
-                        {{ partial "bigimg.html" (dict "page" . "src" "displate_nocountrylines_geo-mercator.webp" "alt" "Map of the Internet (no country lines)") }}
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <a href="https://displate.com/displate/6785800?art=5dd499109f9ea" target="_blank">
-                        {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator-2.webp" "alt" "Map of the Internet") }}
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <a href="https://displate.com/displate/5622874?art=5dd499109f9ea" target="_blank">
-                        {{ partial "bigimg.html" (dict "page" . "src" "displate_sun-spectrum-visible-fade.webp" "alt" "Spectrum of the sun") }}
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <a href="https://displate.com/displate/5703123?art=5dd499109f9ea" target="_blank">
-                        {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator.webp" "alt" "Map of the Internet (underwater cables)") }}
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <a href="https://displate.com/displate/4635891?art=5dd499109f9ea" target="_blank">
-                        {{ partial "bigimg.html" (dict "page" . "src" "displate_random-hex.webp" "alt" "Random spelled out in hexadecimal") }}
-                    </a>
+            <div class="projects-box">
+                <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
+                <p>
+                    {{ partial "blog_summary.html" }}
+                </p>
+                <div class="project-icons">
+                    <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
                 </div>
             </div>
         </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi"
+                        target="_blank">protoc-gen-connect-openapi</a></i></h3>
+                <p>
+                    Generate OpenAPI specifications from protobuf that matches <a href="https://connectrpc.com/">Connect
+                        RPC</a>. Born from my own needs and frustrations gluing together existing tooling in non-ideal
+                    ways.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/protoc-gen-connect-openapi/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                    <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i
+                            class="fa-brands fa-golang"></i></a>
+                </div>
+            </div>
+            <div class="projects-box">
+                <h3><a href="https://github.com/sudorandom/unknownconnect-go" target="_blank">unknownconnect-go</a></h3>
+                <p>
+                    An interceptor for <a href="https://github.com/connectrpc/connect-go" target="_blank">connect-go</a>
+                    (ConnectRPC) clients and servers that tells you if you are receiving protobuf messages with unknown
+                    fields. A topic I've been writing about a lot lately. I love that it allows you to detect
+                    inconsistencies in environments that use ConnectRPC.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/unknownconnect-go/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/sudorandom/unknownconnect-go/" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                    <a href="https://pkg.go.dev/github.com/sudorandom/unknownconnect-go" target="_blank"><i
+                            class="fa-brands fa-golang"></i></a>
+                </div>
+                </ul>
+            </div>
+        </div>
+
+        <span id="finished-projects">
+            <h2>Finished Projects</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
+                <p>
+                    Evepraisal was an extremely popular bulk-price estimator for Eve Online. It started as a tool to
+                    help pirates evaluate cargo-scan results but it evolve into a tool that helped shape Eve Online's
+                    economy. The project lived on well past my time playing the game and, sadly, because of the <a
+                        href="/posts/lessons-from-a-decades-long-project/">ongoing maintenance</a> and my detatchment
+                    from the game I eventually <a href="/posts/goodbye-evepraisal/">shut it down</a>.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/evepraisal.com/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/evepraisal/go-evepraisal" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
+                <p>
+                    A set of Python libraries that assist in calling the SoftLayer API. Has a CLI, general API and
+                    specialized code to help with more complicated workflows. This became the most popular ways to
+                    interact with SoftLayer APIs.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/softlayer-python/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/softlayer/softlayer-python" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="projects-box">
+                <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
+                <p>
+                    An FTP and SFTP interface for OpenStack Object Storage (swift) built in Twisted Python. I'm unsure
+                    how much the project is still used but it was critical for moving a lot of data from legacy systems
+                    onto SoftLayer/IBM's Object Storage product.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/swftp/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/softlayer/swftp" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <span id="support">
+            <h2>Support Me</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <p>
+                    Here is what I have available on <a
+                        href="https://displate.com/artsysquirrrels/computer-generated?art=5dd499109f9ea">displate.com</a>.
+                    They sell metal posters that you can hang on your wall using magnets, which makes it easy to switch
+                    them out to keep your walls looking fresh. Consider buying one of mine for your home! Or at least
+                    using my affiliate link to order other posters from displate: <a
+                        href="http://displate.com/?art=5dd499109f9ea">displate.com/?art=5dd499109f9ea</a>
+                </p>
+
+                <div id="macy-container">
+                    <div class="grid-item">
+                        <a href="https://displate.com/displate/6788735?art=5dd499109f9ea" target="_blank">
+                            {{ partial "bigimg.html" (dict "page" . "src" "displate_nocountrylines_geo-mercator.webp"
+                            "alt" "Map of the Internet (no country lines)") }}
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a href="https://displate.com/displate/6785800?art=5dd499109f9ea" target="_blank">
+                            {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator-2.webp" "alt" "Map of the Internet") }}
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a href="https://displate.com/displate/5622874?art=5dd499109f9ea" target="_blank">
+                            {{ partial "bigimg.html" (dict "page" . "src" "displate_sun-spectrum-visible-fade.webp"
+                            "alt" "Spectrum of the sun") }}
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a href="https://displate.com/displate/5703123?art=5dd499109f9ea" target="_blank">
+                            {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator.webp" "alt" "Map of the Internet (underwater cables)") }}
+                        </a>
+                    </div>
+                    <div class="grid-item">
+                        <a href="https://displate.com/displate/4635891?art=5dd499109f9ea" target="_blank">
+                            {{ partial "bigimg.html" (dict "page" . "src" "displate_random-hex.webp" "alt" "Random spelled out in hexadecimal") }}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </article>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
 <script defer>
-(function () {
-    var macy = Macy({
-    container: '#macy-container',
-    trueOrder: false,
-    waitForImages: false,
-    margin: 10,
-    columns: 3
-    });
-})();
+    (function () {
+        var macy = Macy({
+            container: '#macy-container',
+            trueOrder: false,
+            waitForImages: false,
+            margin: 10,
+            columns: 3
+        });
+    })();
 </script>
 </main>
 {{ end }}
