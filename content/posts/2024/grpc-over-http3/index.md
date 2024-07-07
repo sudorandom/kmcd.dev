@@ -120,7 +120,7 @@ When researching this topic, I discovered that HTTP/3 with gRPC is a bit of a co
 
 If you know about other gRPC implementations that can work with HTTP/3 (client or server), let me know. These are only the ones I know about.
 
-When learning about HTTP/3 I always like getting my hands dirty and using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go. I'm including the full examples in this article because I've looked and haven't really been able to find good examples for this. I hope it's helpful for others. The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post. Examples will have things like imports omitted for brevity but the full source is linked under each example.
+When learning something new I always like getting my hands dirty by using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go. I'm including the full examples in this article because I've looked and haven't really been able to find good examples for this. I hope it's helpful for others. The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post. Examples will have things like imports omitted for brevity but the full source is linked under each example.
 
 ### Example server in Go
 Let's see how effortlessly we can set up a gRPC server with HTTP/3 support using Go. The key players here are:
