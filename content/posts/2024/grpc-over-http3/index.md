@@ -105,7 +105,7 @@ HTTP/2 has allowed gRPC to be quite good at multiplexing multiple requests and s
 HTTP/3 solves the head-of-line blocking issue by avoiding TCP altogether. Instead, it is built on top of a protocol called QUIC which is built on top of UDP. QUIC is aware of multiple streams so it knows when it is appropriate to deliver packets without having this head-of-line blocking behavior. This makes HTTP/3 much better when dealing with unreliable networks. With its heavy use of streams, gRPC in particular would greatly benefit from the elimination of the head-of-line blocking issue.
 
 ### Encryption is&nbsp;*Required*
-When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. As a result, we now have [h2c](https://datatracker.ietf.org/doc/html/rfc7540#section-3.2), which is a way to use HTTP/2 without encryption.
+When creating HTTP/2 there was a lot of disagreement over if it should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. Further, they argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. As a result, we now have [h2c](https://datatracker.ietf.org/doc/html/rfc7540#section-3.2), which is a way to use HTTP/2 without encryption.
 
 {{< image src="encryption.png" width="400px" class="center" >}}
 
@@ -150,7 +150,7 @@ func main() {
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.1/server-single/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
 
-That's it! With this minimal setup, we now have a gRPC server that supports HTTP/3! I just used an `http3.Server` instance instead of `http.Server`. `http3.Server` does have different options that expose some of the different options between QUIC and TCP. Note that it is possible to run an `http.Server` alongside `http3.Server` using the same address with the same port. How is this possible? Because HTTP/3 uses UDP and the ports are completely separate from TCP ports. Here's an example:
+That's it! With this minimal setup, we now have a gRPC server that supports HTTP/3! I just used an `http3.Server` instance instead of `http.Server`. `http3.Server` does have different options related to the differences between QUIC and TCP. Note that it is possible to run an `http.Server` alongside `http3.Server` using the same address with the same port. How is this possible? Because HTTP/3 uses UDP and the ports are completely separate from TCP ports. Here's an example:
 
 ```go
 func main() {
@@ -202,7 +202,7 @@ openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
 That's it! With just a few lines of code, we now have a gRPC server that supports HTTP/3!
 
 #### Testing with an example client in Go
-Now that we have a server running we need some way to test it, so let's use a client using ConnectRPC:
+Now that we have a server running we need some way to test it, so let's use the standard library `http.Client` with some quic-go magic sprinkled on top:
 
 ```go
 const (
@@ -256,7 +256,7 @@ In the case of the client, we only need to define a `http3.RoundTripper` instanc
 2024/07/06 12:57:24 recv:  {"sentence":"Hello World!"}
 ```
 
-In this example, I'm calling the gRPC service using ConnectRPC's client, demonstrating how it can work seamlessly over HTTP/3 as well.
+In this next example, I'm calling the service using ConnectRPC's client, demonstrating how it can work seamlessly over HTTP/3 as well.
 
 ```go
 const url = "https://127.0.0.1:6660"
@@ -311,6 +311,8 @@ curl: option --http3: the installed libcurl version doesn't support this
 curl: try 'curl --help' or 'curl --manual' for more information
 ```
 
+{{< image src="suprised.png" width="400px" class="center" >}}
+
 Wait, what? What's happening?? I thought curl support HTTP/3! What gives? Well, the story [isn't that simple](https://daniel.haxx.se/blog/2024/06/10/http-3-in-curl-mid-2024/). The curl CLI might support HTTP/3 but the libraries that it uses also need to be on the correct version to make it all work. To get around that, I installed curl using [Cloudflare's homebrew formula](https://blog.cloudflare.com/http3-the-past-present-and-future#using-curl) which will install everything needed to get curl to work with HTTP/3. So let's try it out:
 
 ```shell
@@ -357,7 +359,7 @@ $ curl \
 Success! You can see that HTTP/3 is being used by inspecting the verbose logging. This flexes our server with HTTP/3 but you may be wondering what this has to do with gRPC because I'm only using basic HTTP requests with JSON and you're totally right. The previous examples only leverage one of the three protocols that ConnectRPC provides by default, [the connect protocol](https://connectrpc.com/docs/protocol/). Thus far, I haven't validated if the other two protocols, gRPC or gRPC-Web, really work using this transport. To test that, we'll need more gRPC-centric tooling.
 
 #### Adding HTTP/3 to the Buf CLI
-I also wanted to test with gRPC-specific tooling to ensure gRPC and gRPC-Web worked as expected. So I added support for HTTP/3 with the buf CLI. This ended up being pretty easy and looks similar to the ConnectRPC example client above. I have an [open PR here](https://github.com/bufbuild/buf/pull/3127) and if you want a sneak peak you can build the Buf CLI from [my branch](https://github.com/sudorandom/buf/tree/http3). Below, I show how I test this new feature with ConnectRPC's demo website:
+I also wanted to test with gRPC-specific tooling to ensure gRPC and gRPC-Web worked as expected. So I added support for HTTP/3 with the buf CLI. This ended up being pretty easy and looks similar to the ConnectRPC example client above. I have an [open PR here](https://github.com/bufbuild/buf/pull/3127) and if you want a sneak peak you can build the Buf CLI from [my branch](https://github.com/sudorandom/buf/tree/http3). Below, I show how I tested this new feature with ConnectRPC's demo website:
 
 ```shell
 $ buf curl \
@@ -408,7 +410,7 @@ buf: * (#1) Call complete
 }
 ```
 
-Success! HTTP/3 works now! By default, `buf curl` will use the connect protocol, so let's try gRPC-Web next:
+Success! HTTP/3 works now! When I tested this, I was surprised that [demo.connectrpc.com](https://demo.connectrpc.com) actually supported HTTP/3, but it does! By default, `buf curl` will use the connect protocol, so we didn't test anything new. So let's try gRPC-Web next:
 
 ```shell
 $buf curl \
@@ -444,9 +446,9 @@ Wait, what? Why is it complaining about missing HTTP trailers? What gives?
 To explain this, I had to dig into [quic-go's](https://github.com/quic-go/quic-go) HTTP/3 implementation.
 
 #### Adding trailer support to quic-go
-I looked into quic-go and discovered that it doesn't support trailers yet. There is [an issue](https://github.com/quic-go/quic-go/issues/2266) and a [related pull request](https://github.com/quic-go/quic-go/pull/2344). The issue is four years old, the PR is two years old, and both are still open after all of this time. This seems quite crazy to me at first, but, on reflection, I realized that gRPC is the most popular thing that currently uses HTTP trailers. However, `grpc-go` directly uses HTTP/2 support from `golang.org/x/net/http2` instead of using `net/http` so it would require a good amount of work to get HTTP/3 support through quic-go in the same way. Therefore, this issue probably isn't on the radar of anyone working on `grpc-go`. However, it is trivial (as seen above) to use quic-go with ConnectRPC, so I think this is a unique situation where progress can be made quickly.
+When I looked into quic-go, I discovered that it *doesn't support [HTTP trailers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer) yet*. There is [an issue](https://github.com/quic-go/quic-go/issues/2266) and a [related pull request](https://github.com/quic-go/quic-go/pull/2344). But the issue is four years old, the PR is two years old, and both are still open after all of this time. This seemed quite crazy to me at first, but, on reflection, I realized that gRPC is the most popular thing that currently uses HTTP trailers. However, `grpc-go` directly uses HTTP/2 support from `golang.org/x/net/http2` instead of using `net/http` so it would require a good amount of work to get HTTP/3 support through quic-go. Therefore, this issue probably isn't on the radar of anyone working on `grpc-go`. However, it is trivial (as seen above) to use quic-go with ConnectRPC, so I think this is a unique situation where progress can be made quickly.
 
-So I ended up implementing trailer support for clients and I [submitted my own PR](https://github.com/quic-go/quic-go/issues/2266). I don't think it is quite ready yet but when I use [my branch](https://github.com/sudorandom/quic-go/tree/client-trailers) with my branch of `buf curl`, gRPC actually works with HTTP/3!
+So I ended up implementing trailer support for clients and I [submitted my own PR](https://github.com/quic-go/quic-go/issues/2266). I don't think it is quite ready yet but when I use [my branch of quic-go](https://github.com/sudorandom/quic-go/tree/client-trailers) with [my branch of the buf CLI](https://github.com/sudorandom/buf/tree/http3), gRPC actually works with HTTP/3!
 
 ```shell
 $ buf curl \
@@ -472,5 +474,3 @@ While the gRPC ecosystem's full adoption of HTTP/3 is in its early stages, the b
 I encourage you to experiment with HTTP/3 and gRPC in your own projects. Explore different implementations, measure the performance gains, and don't be afraid to dive into the code if you run into issues. Your active engagement with this evolving technology can directly contribute to the ongoing development of gRPC and HTTP/3. While widespread adoption of HTTP/3 for gRPC on the backend is still in its early stages, if you have the flexibility to control both server and client components, or are working with browser-based clients, you might find compelling use cases for it even today.
 
 I'd love to hear about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? Or perhaps you've found that QUIC is slower without the kernel-level optimizations that TCP can take advantage of? What challenges have you encountered while experimenting with this exciting technology? Let's share our experiences and workarounds because even though HTTP/3 is still finding its footing in this context, there's a lot we can learn from each other.
-
-<!-- {{< image src="http3.png" width="400px" class="center" >}} -->
