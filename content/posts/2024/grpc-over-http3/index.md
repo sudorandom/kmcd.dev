@@ -105,10 +105,8 @@ HTTP/3 solves the head-of-line blocking issue by avoiding TCP altogether. Instea
 ### Encryption by Default
 When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. This might have been true for HTTP/2 but this is not true for HTTP/3. HTTP/3 *requires* encryption and usage of the TLS 1.3 protocol. There are several reasons for this, but the most compelling one is that TLS 1.3 working with QUIC allows for zero round trips to negotiate a new connection before making a request, which is even faster than HTTP/1.1 without TLS. It's a double win by being both more secure and faster.
 
-## HTTP/3 + gRPC + Go
-HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to support HTTP/3.
-
-There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea.
+## Experimentation
+When researching this topic, I have discovered that HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to officially support HTTP/3 throughout the entire gRPC ecosystem. There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea. Some projects are closer to HTTP/3 than others, so here are the implementations that I have found where you can make gRPC over HTTP/3 work:
 
 - **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there are good examples of this in the wild yet.
@@ -472,6 +470,6 @@ In this post, we've explored the exciting potential of HTTP/3 to supercharge gRP
 
 While the gRPC ecosystem's full adoption of HTTP/3 is in its early stages, the benefits are clear, and the tools are already available in some places. As developers, we have the opportunity to push this technology forward and shape the future of high-performance, secure communication.
 
-I encourage you to try out HTTP/3 with gRPC in your own projects. Experiment with different implementations, explore the performance gains and don't hesitate to dig into the code if you encounter any roadblocks. By actively engaging with this evolving technology, we can collectively contribute to the ongoing development of gRPC and HTTP/3.
+I encourage you to experiment with HTTP/3 and gRPC in your own projects. Explore different implementations, measure the performance gains, and don't be afraid to dive into the code if you run into issues. Your active engagement with this evolving technology can directly contribute to the ongoing development of gRPC and HTTP/3. While widespread adoption of HTTP/3 for gRPC on the backend is still in its early stages, if you have the flexibility to control both server and client components, or are working with browser-based clients, you might find compelling use cases for it even today.
 
-Let me know about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? What challenges have you faced? Let's continue the conversation and share our knowledge to unlock the full potential of this powerful combination.
+I'd love to hear about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? Or perhaps you've found that QUIC is slower without the kernel-level optimizations that TCP enjoys? What challenges have you encountered while experimenting with this exciting technology? Let's share our experiences and workarounds because even though HTTP/3 is still finding its footing in this context, there's a lot we can learn from each other.
