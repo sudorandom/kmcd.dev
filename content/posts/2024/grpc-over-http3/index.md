@@ -28,8 +28,8 @@ By the end of this journey, you'll have a solid understanding of the benefits HT
 ## Why HTTP/3
 gRPC has had a lot of success pushing the world into HTTP/2 but there are some advantages to pushing even further and adopting the new major version of HTTP, [HTTP/3](https://http3-explained.haxx.se/en). Let's discuss these advantages before delving into code examples. So why should we use HTTP/3?
 
-### Quicker Connection Establishment
-HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is actually built upon UDP.
+### Faster Connection Establishment
+HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is built on top of UDP.
 
 As the internet evolved better security practices, we've layered TLS on top of TCP, so a TCP connection gets established first and then an HTTP/gRPC/etc. request can be made. This layering made it much easier to slowly adopt TLS but it has also made it slower to establish connections that need TLS because it added more round trips between the server and client before a connection can be "established". Here's what it looks like:
 
@@ -38,16 +38,16 @@ sequenceDiagram
     actor Client
 
     rect rgb(47,75,124)
-        Client ->> Server: SYN
-        Server ->> Client: SYN-ACK
-        Client ->> Server: ACK
+        Client ->> Server: TCP SYN
+        Server ->> Client: TCP SYN-ACK
+        Client ->> Server: TCP ACK
     end
 
     rect rgb(102,81,145)
-        Client ->> Server: Client Hello
-        Server ->> Client: Server Hello
-        Client ->> Server: Server Finished
-        Server ->> Client: Client Finished
+        Client ->> Server: TLS Client Hello
+        Server ->> Client: TLS Server Hello
+        Client ->> Server: TLS Server Finished
+        Server ->> Client: TLS Client Finished
     end
 
     rect rgb(200,80,96)
@@ -123,10 +123,12 @@ If you know about other gRPC implementations that can work with HTTP/3 (client o
 When learning something new I always like getting my hands dirty by using it. I feel like this is the best way to learn. Since Go is my current working language, I decided to explore HTTP/3 using ConnectRPC in Go. I'm including the full examples in this article because I've looked and haven't really been able to find good examples for this. I hope it's helpful for others. The full working examples are on [a git repo](https://github.com/sudorandom/example-connect-http3/) that I made for this post. Examples will have things like imports omitted for brevity but the full source is linked under each example.
 
 ### Example server in Go
-Let's see how effortlessly we can set up a gRPC server with HTTP/3 support using Go. The key players here are:
+Let's explore how easy it is to set up a gRPC server with HTTP/3 support using Go. The key players here are:
 
 - [quic-go](https://github.com/quic-go/quic-go): This library provides a robust implementation of the QUIC protocol in Go, enabling HTTP/3 communication.
 - [ConnectRPC](https://github.com/connectrpc/connect-go): connect-go, the Go implementation of ConnectRPC allows us to define gRPC services using familiar Go HTTP handlers (http.Handler), which greatly simplifies the integration process.
+
+I am using the [Eliza service](https://buf.build/connectrpc/eliza) as the service to implement with ConnectRPC. This is a simple service intended to help demonstrate ConnectRPC. The implementation is un-important, so I omitted it but my implementation just echos back whatever the user sends.
 
 {{< highlight go >}}
 func main() {
@@ -460,13 +462,16 @@ $ buf curl \
 
 There are a few issues that I have with my PR. I based it off of the earlier PR but many things have changed with the codebase that actually make it harder to implement this feature. However, it's super encouraging that this code seems to work without too much fuss.
 
+### Experiment Results
+Through my experimentation, I found that HTTP/3 can be easily integrated with gRPC in Go, but there are still some areas for improvement, such as the lack of trailer support in quic-go.
+
 ## Conclusion
 In this post, we've explored the exciting potential of HTTP/3 to supercharge gRPC performance. We dove into the key advantages of HTTP/3, such as faster connection establishment, elimination of head-of-line blocking, and mandatory encryption. By getting our hands dirty with practical examples in Go, we've seen firsthand how HTTP/3 can be seamlessly integrated into gRPC services using tools like ConnectRPC and Buf.
 
 While the gRPC ecosystem's full adoption of HTTP/3 is in its early stages, the benefits are clear, and the tools are already available in some libraries and tools. As developers, we have the opportunity to push this technology forward and shape the future of high-performance, secure communication.
 
-{{< image src="cat.png" width="400px" class="center" >}}
+{{< image src="i-should-use-http3.png" width="400px" class="center" >}}
 
-I encourage you to experiment with HTTP/3 and gRPC in your own projects. Explore different implementations, measure the performance gains, and don't be afraid to dive into the code if you run into issues. Your active engagement with this evolving technology can directly contribute to the ongoing development of gRPC and HTTP/3. While widespread adoption of HTTP/3 for gRPC on the backend is still in its early stages, if you have the flexibility to control both server and client components, or are working with browser-based clients, you might find compelling use cases for it even today.
+I encourage you to experiment with HTTP/3 and gRPC in your own projects. Explore different implementations, measure the performance gains, and don't be afraid to dive into the code if you run into issues. Your active engagement with this evolving technology can directly contribute to the ongoing development of gRPC and HTTP/3. Although widespread adoption of HTTP/3 for gRPC on the backend is still in its early stages, if you have the flexibility to control both server and client components, or are working with browser-based clients, you might find compelling use cases for it even today.
 
-I'd love to hear about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? Or perhaps you've found that QUIC is slower without the kernel-level optimizations that TCP can take advantage of? What challenges have you encountered while experimenting with this exciting technology? Let's share our experiences and workarounds because even though HTTP/3 is still finding its footing in this context, there's a lot we can learn from each other.
+I'd love to hear about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? Or perhaps you've found that QUIC is slower without the kernel-level optimizations that TCP can take advantage of? What challenges have you encountered while experimenting with this exciting technology? Let's share our experiences and findings because even though HTTP/3 is still finding its footing in this context, there's a lot we can learn from each other.
