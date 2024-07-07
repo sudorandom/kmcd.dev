@@ -169,7 +169,9 @@ func main() {
 	eg.Go(func() error {
 		return h3srv.ListenAndServeTLS("cert.crt", "cert.key")
 	})
-	eg.Go(srv.ListenAndServe)
+	eg.Go(func() error {
+		return srv.ListenAndServeTLS("cert.crt", "cert.key")
+	})
 	if err := eg.Wait(); err != nil {
 		log.Fatalf("error: %s", err)
 	}
@@ -178,6 +180,8 @@ func main() {
 {{< aside >}}
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.1/server-multi/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
+
+This code demonstrates running multiple HTTP servers concurrently, providing support for HTTP/1.1, HTTP/2, and HTTP/3 on the same port by leveraging TCP for HTTP/1.1 and HTTP/2 and UDP for HTTP/3.
 
 Oh, and note that this requires a certificate and a key because HTTP/3 **requires** TLS. Here's the command that I used to create a self-signed cert for testing:
 
