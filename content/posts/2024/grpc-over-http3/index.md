@@ -103,10 +103,14 @@ HTTP/2 has allowed gRPC to be quite good at multiplexing multiple requests and s
 HTTP/3 solves the head-of-line blocking issue by avoiding TCP altogether. Instead, it is built on top of a protocol called QUIC which is built on top of UDP. QUIC is aware of multiple streams so it knows when it is appropriate to deliver packets without having this head-of-line blocking behavior. This makes HTTP/3 much better when dealing with unreliable networks. With its heavy use of streams, gRPC in particular would greatly benefit from the elimination of the head-of-line blocking issue.
 
 ### Encryption by Default
-When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. This might have been true for HTTP/2 but this is not true for HTTP/3. HTTP/3 *requires* encryption and usage of the TLS 1.3 protocol. There are several reasons for this, but the most compelling one is that TLS 1.3 working with QUIC allows for zero round trips to negotiate a new connection before making a request, which is even faster than HTTP/1.1 without TLS. It's a double win by being both more secure and faster.
+When creating HTTP/2 there was a lot of disagreement over if HTTP/3 should require TLS. Many have argued that this requirement would hurt the adoption of HTTP/2. They argue that HTTP/2 offers a lot of benefits that can be attained without the use of TLS. As a result, we now have [h2c](https://datatracker.ietf.org/doc/html/rfc7540#section-3.2), which is a way to use HTTP/2 without encryption.
+
+{{< image src="encryption.png" width="400px" class="center" >}}
+
+These arguments might have worked for HTTP/2 but they didn't hold up for HTTP/3. HTTP/3 *requires* encryption and usage of the TLS 1.3 protocol. There are several reasons for this, but the most compelling one is that TLS 1.3 working with QUIC allows for fewer (and sometimes zero) round trips to negotiate a new connection before making a request, which is even faster than HTTP/1.1 without TLS. It's a double win by being both more secure and, theoretically, much faster.
 
 ## Experimentation
-When researching this topic, I have discovered that HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to officially support HTTP/3 throughout the entire gRPC ecosystem. There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea. Some projects are closer to HTTP/3 than others, so here are the implementations that I have found where you can make gRPC over HTTP/3 work:
+When researching this topic, I discovered that HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to officially support HTTP/3 throughout the entire gRPC ecosystem. There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea. Some projects are closer to HTTP/3 than others, so here are the implementations that I have found where you can make gRPC over HTTP/3 work:
 
 - **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there are good examples of this in the wild yet.
@@ -122,10 +126,11 @@ Let's see how effortlessly we can set up a gRPC server with HTTP/3 support using
 - [quic-go](https://github.com/quic-go/quic-go): This library provides a robust implementation of the QUIC protocol in Go, enabling HTTP/3 communication.
 - [ConnectRPC](https://github.com/connectrpc/connect-go): connect-go, the Go implementation of ConnectRPC allows us to define gRPC services using familiar Go HTTP handlers (http.Handler), which greatly simplifies the integration process.
 
-```go
+{{< highlight go >}}
 func main() {
 	mux := http.NewServeMux()
-	mux.Handle(elizav1connect.NewElizaServiceHandler(&server{})) // Implementation is only in the full source
+	// Implementation is only in the full source
+	mux.Handle(elizav1connect.NewElizaServiceHandler(&server{}))
 
 	addr := "127.0.0.1:6660"
 	log.Printf("Starting connectrpc on %s", addr)
@@ -137,7 +142,8 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 }
-```
+{{< / highlight >}}
+
 {{< aside >}}
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.1/server-single/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
@@ -429,7 +435,11 @@ $ buf curl \
 }
 ```
 
-Wait, what? Why is it complaining about missing HTTP trailers? What gives? To explain this, I had to dig into [quic-go's](https://github.com/quic-go/quic-go) HTTP/3 implementation.
+Wait, what? Why is it complaining about missing HTTP trailers? What gives?
+
+{{< image src="trailers.png" width="400px" class="center" >}}
+
+To explain this, I had to dig into [quic-go's](https://github.com/quic-go/quic-go) HTTP/3 implementation.
 
 #### Adding trailer support to quic-go
 I looked into quic-go and discovered that it doesn't support trailers yet. There is [an issue](https://github.com/quic-go/quic-go/issues/2266) and a [related pull request](https://github.com/quic-go/quic-go/pull/2344). The issue is four years old, the PR is two years old, and both are still open after all of this time. This seems quite crazy to me at first, but, on reflection, I realized that gRPC is the most popular thing that currently uses HTTP trailers. However, `grpc-go` directly uses HTTP/2 support from `golang.org/x/net/http2` instead of using `net/http` so it would require a good amount of work to get HTTP/3 support through quic-go in the same way. Therefore, this issue probably isn't on the radar of anyone working on `grpc-go`. However, it is trivial (as seen above) to use quic-go with ConnectRPC, so I think this is a unique situation where progress can be made quickly.
@@ -455,6 +465,10 @@ In this post, we've explored the exciting potential of HTTP/3 to supercharge gRP
 
 While the gRPC ecosystem's full adoption of HTTP/3 is in its early stages, the benefits are clear, and the tools are already available in some libraries and tools. As developers, we have the opportunity to push this technology forward and shape the future of high-performance, secure communication.
 
+{{< image src="cat.png" width="400px" class="center" >}}
+
 I encourage you to experiment with HTTP/3 and gRPC in your own projects. Explore different implementations, measure the performance gains, and don't be afraid to dive into the code if you run into issues. Your active engagement with this evolving technology can directly contribute to the ongoing development of gRPC and HTTP/3. While widespread adoption of HTTP/3 for gRPC on the backend is still in its early stages, if you have the flexibility to control both server and client components, or are working with browser-based clients, you might find compelling use cases for it even today.
 
 I'd love to hear about your experiences with HTTP/3 and gRPC. Have you seen significant performance improvements? Or perhaps you've found that QUIC is slower without the kernel-level optimizations that TCP can take advantage of? What challenges have you encountered while experimenting with this exciting technology? Let's share our experiences and workarounds because even though HTTP/3 is still finding its footing in this context, there's a lot we can learn from each other.
+
+<!-- {{< image src="http3.png" width="400px" class="center" >}} -->
