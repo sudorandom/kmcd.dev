@@ -79,18 +79,5 @@
             </div>
         {{ end }}
         <!-- End Posts -->
-
-        <!-- Social Icons -->
-        {{ if .Site.Params.socialIcons }}
-        <div class="content">
-            <ul class="icons">
-            {{- with .Site.Params.social }}
-             {{ partial "social-icons.html" . }}
-            {{- end }}
-            </ul>
-        </div>
-        {{ end }}
-        <!-- End Social Icons-->
-
     </main>
 {{ end }}
