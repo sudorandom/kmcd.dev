@@ -463,7 +463,11 @@ $ buf curl \
 There are a few issues that I have with my PR. I based it off of the earlier PR but many things have changed with the codebase that actually make it harder to implement this feature. However, it's super encouraging that this code seems to work without too much fuss.
 
 ### Experiment Results
-Through my experimentation, I found that HTTP/3 can be easily integrated with gRPC in Go, but there are still some areas for improvement, such as the lack of trailer support in quic-go.
+My experimentation reveals that while native gRPC over HTTP/3 in Go is still under development, there are viable workarounds today. Both the gRPC-Web and Connect protocols function seamlessly over HTTP/3, and in fact, ConnectRPC may already be using HTTP/3 in production environments if your infrastructure supports it. I discovered this firsthand with the [demo ConnectRPC website](https://connectrpc.com/demo/), which leverages HTTP/3 from the browser to the load balancer.
+
+{{< image src="demo-connectrpc.png" width="400px" class="center" >}}
+
+(Note: It's likely that HTTP/2 is used between the load balancer and the backend service in this case.)
 
 ## Conclusion
 In this post, we've explored the exciting potential of HTTP/3 to supercharge gRPC performance. We dove into the key advantages of HTTP/3, such as faster connection establishment, elimination of head-of-line blocking, and mandatory encryption. By getting our hands dirty with practical examples in Go, we've seen firsthand how HTTP/3 can be seamlessly integrated into gRPC services using tools like ConnectRPC and Buf.
