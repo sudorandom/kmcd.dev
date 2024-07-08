@@ -98,7 +98,7 @@ sequenceDiagram
     end
 ```
 
-Note that 0-RTT requires the client to have some cached information about the server so it's not always possible to use.
+Note that 0-RTT requires the client to have some cached information about the server so it's not always possible to use. Also, there are still some security concerns, mostly focused on the potential for denial of service attacks.
 
 ### Head-of-line Blocking
 HTTP/2 has allowed gRPC to be quite good at multiplexing multiple requests and streams onto a single connection. This wasn't possible with HTTP/1.1. However, there is an issue that can arise due to TCP's guarantee of delivering packets **in order** even if they arrive out of order. This is an issue because packets for a request could be waiting for retransmissions from another request that is using the same connection. From gRPC's point of view, these requests are independent things, so there's no need to wait but TCP does not know about these separate streams, so we end up experiencing a so-called [head-of-line blocking](https://en.wikipedia.org/wiki/Head-of-line_blocking) issue.
