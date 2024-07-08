@@ -120,6 +120,7 @@ When researching this topic, I discovered that HTTP/3 with gRPC is a bit of a co
 - **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there are good examples of this in the wild yet.
 - **Go**: [ConnectRPC](https://github.com/connectrpc/connect-go) for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
+- **Cronet**: [Cronet](https://developer.android.com/develop/connectivity/cronet), designed primarily for mobile clients (Android and iOS), provides a way to utilize Chrome's network stack, including its QUIC and HTTP/3 support. This can be particularly useful for building gRPC clients with HTTP/3 capabilities in mobile environments.
 
 If you know about other gRPC implementations that can work with HTTP/3 (client or server), let me know. These are only the ones I know about.
 
