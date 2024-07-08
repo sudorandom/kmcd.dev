@@ -26,7 +26,10 @@ In this post, we'll dive into what HTTP/3 is and explore the compelling reasons 
 By the end of this journey, you'll have a solid understanding of the benefits HTTP/3 brings to gRPC, the tools available to start using it today, and the potential it holds for the future of API development. So, fasten your seatbelts and get ready to experience the next generation of network protocols!
 
 ## Why HTTP/3
+
 gRPC has had a lot of success pushing the world into HTTP/2 but there are some advantages to pushing even further and adopting the new major version of HTTP, [HTTP/3](https://http3-explained.haxx.se/en). Let's discuss these advantages before delving into code examples. So why should we use HTTP/3?
+
+{{< image src="butwhy.png" width="400px" class="center" >}}
 
 ### Faster Connection Establishment
 HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is built on top of UDP.
