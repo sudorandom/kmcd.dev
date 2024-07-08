@@ -470,7 +470,9 @@ My experimentation reveals that while native gRPC over HTTP/3 in Go is still und
 
 {{< image src="demo-connectrpc.png" width="400px" class="center" >}}
 
-(Note: It's likely that HTTP/2 is used between the load balancer and the backend service in this case.)
+{{< aside >}}
+Note: In this specific case, the connection between the load balancer and the backend service likely utilizes HTTP/2. However, even if that is the case, the reduced number of round trips between the load balancer and the end user is likely still an advantage when compared to HTTP/1.1 and HTTP/2.
+{{< /aside >}}
 
 ## Conclusion
 In this post, we've explored the exciting potential of HTTP/3 to supercharge gRPC performance. We dove into the key advantages of HTTP/3, such as faster connection establishment, elimination of head-of-line blocking, and mandatory encryption. By getting our hands dirty with practical examples in Go, we've seen firsthand how HTTP/3 can be seamlessly integrated into gRPC services using tools like ConnectRPC and Buf.
