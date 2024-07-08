@@ -32,9 +32,9 @@ gRPC has had a lot of success pushing the world into HTTP/2 but there are some a
 {{< image src="butwhy.png" width="400px" class="center" >}}
 
 ### Faster Connection Establishment
-HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is built on top of UDP.
+HTTP/3 is built on [QUIC](https://blog.cloudflare.com/the-road-to-quic) (Quick UDP Internet Connections). You can think of it as a replacement for TCP but as the name suggests, it is built on top of UDP. While TCP has historically been the foundation of web communication, offering sequential packet ordering, congestion control and retransmissions, the needs of web browsers have evolved to need some different features and limitations. All three main features of TCP—sequential packet ordering, congestion control, and retransmissions—can sometimes hinder the performance of modern web applications. Acknowledging these limitations led to the development of QUIC and HTTP/3, which both leverage UDP.
 
-As the internet evolved better security practices, we've layered TLS on top of TCP, so a TCP connection gets established first and then an HTTP/gRPC/etc. request can be made. This layering made it much easier to slowly adopt TLS but it has also made it slower to establish connections that need TLS because it added more round trips between the server and client before a connection can be "established". Here's what it looks like:
+As the internet evolved better security practices, we've layered TLS on top of TCP, so a TCP connection gets established first and then an HTTP/gRPC/etc. request can be made. This layering made it much easier to slowly adopt TLS but it has also made it slower to establish connections that need TLS because it added more round trips between the server and client before a connection can be "established". Each round trip introduces latency, delaying the time it takes for a request to reach the server and receive a response. Here's what it looks like with HTTP/1.1 and HTTP/2:
 
 ```mermaid
 sequenceDiagram
