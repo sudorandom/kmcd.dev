@@ -467,12 +467,12 @@ $ buf curl \
 There are a few issues that I have with my PR. I based it off of the earlier PR but many things have changed with the codebase that actually make it harder to implement this feature. However, it's super encouraging that this code seems to work without too much fuss.
 
 ### Experiment Results
-My experimentation reveals that while native gRPC over HTTP/3 in Go is still under development, there are viable workarounds today. Both the gRPC-Web and Connect protocols function seamlessly over HTTP/3, and in fact, ConnectRPC may already be using HTTP/3 in production environments if your infrastructure supports it. I discovered this firsthand with the [demo ConnectRPC website](https://connectrpc.com/demo/), which leverages HTTP/3 from the browser to the load balancer.
+My experimentation shows that while Go doesn't yet have full, native support for gRPC over HTTP/3, there are practical workarounds available today. Both the gRPC-Web and Connect protocols function seamlessly over HTTP/3, and in fact, ConnectRPC may already be leveraging HTTP/3 in production environments where infrastructure allows. I discovered this firsthand with the [demo ConnectRPC website](https://connectrpc.com/demo/), which leverages HTTP/3 from the browser to the load balancer.
 
 {{< image src="demo-connectrpc.png" width="400px" class="center" >}}
 
 {{< aside >}}
-Note: In this specific case, the connection between the load balancer and the backend service likely utilizes HTTP/2. However, even if that is the case, the reduced number of round trips between the load balancer and the end user is likely still an advantage when compared to HTTP/1.1 and HTTP/2.
+Note: While the connection between my browser and the demo service is HTTP/3, it is likely that HTTP/2 is being used between the load balancer and the backend service. Even without HTTP/3 through the entire stack, the reduced number of round trips between the load balancer and the end user is likely still an advantage due to the decreased connection latency.
 {{< /aside >}}
 
 ## Conclusion
