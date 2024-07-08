@@ -258,7 +258,7 @@ In the case of the client, we only need to define a `http3.RoundTripper` instanc
 2024/07/06 12:57:24 recv:  {"sentence":"Hello World!"}
 ```
 
-In this next example, I'm calling the service using ConnectRPC's client, demonstrating how it can work seamlessly over HTTP/3 as well.
+This works as expected! In this next example, I'm calling the service using a client built with ConnectRPC, demonstrating how it can work seamlessly over HTTP/3 as well, just by configuring `http.Client` a little differently.
 
 ```go
 const url = "https://127.0.0.1:6660"
@@ -361,52 +361,14 @@ $ curl \
 Success! You can see that HTTP/3 is being used by inspecting the verbose logging. This flexes our server with HTTP/3 but you may be wondering what this has to do with gRPC because I'm only using basic HTTP requests with JSON and you're totally right. The previous examples only leverage one of the three protocols that ConnectRPC provides by default, [the connect protocol](https://connectrpc.com/docs/protocol/). Thus far, I haven't validated if the other two protocols, gRPC or gRPC-Web, really work using this transport. To test that, we'll need more gRPC-centric tooling.
 
 #### Adding HTTP/3 to the Buf CLI
-I also wanted to test with gRPC-specific tooling to ensure gRPC and gRPC-Web worked as expected. So I added support for HTTP/3 with the buf CLI. This ended up being pretty easy and looks similar to the ConnectRPC example client above. I have an [open PR here](https://github.com/bufbuild/buf/pull/3127) and if you want a sneak peak you can build the Buf CLI from [my branch](https://github.com/sudorandom/buf/tree/http3). Below, I show how I tested this new feature with ConnectRPC's demo website:
+I also wanted to test with gRPC-specific tooling to ensure gRPC and gRPC-Web worked as expected. So I added support for HTTP/3 with the buf CLI because it supports calling services using [Connect](https://connectrpc.com/docs/protocol/), [gRPC](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md) and [gRPC-Web](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md). This ended up being pretty easy and looks similar to the ConnectRPC example client above. I have an [open PR here](https://github.com/bufbuild/buf/pull/3127) and if you want a sneak peak you can build the Buf CLI from [my branch](https://github.com/sudorandom/buf/tree/http3). Below, I show how I tested this new feature with ConnectRPC's demo website:
 
 ```shell
 $ buf curl \
-    -v \
     --http3 \
     --schema=buf.build/connectrpc/eliza \
     -d '{"sentence": "Hello world!"}' \
     https://demo.connectrpc.com/connectrpc.eliza.v1.ElizaService/Say
-buf: * Invoking RPC connectrpc.eliza.v1.ElizaService.Say
-buf: * Dialing (udp) demo.connectrpc.com:443...
-buf: * ALPN: offering h3
-buf: * TLS connection using TLS 1.3 / TLS_AES_128_GCM_SHA256
-buf: * ALPN: server accepted h3
-buf: * Server certificate:
-buf: *   subject: CN=demo.connectrpc.com
-buf: *   start date: 2024-07-06 00:43:34 +0000 UTC
-buf: *   end date: 2024-10-04 01:36:47 +0000 UTC
-buf: *   subjectAltNames: [demo.connectrpc.com]
-buf: *   issuer: CN=WR3,O=Google Trust Services,C=US
-buf: * Server certificate chain verified
-buf: * Server certificate is valid for demo.connectrpc.com
-buf: * Connected to 34.102.161.239:443
-buf: > (#1) POST /connectrpc.eliza.v1.ElizaService/Say
-buf: > (#1) Accept-Encoding: gzip
-buf: > (#1) Connect-Protocol-Version: 1
-buf: > (#1) Connect-Timeout-Ms: 119507
-buf: > (#1) Content-Type: application/proto
-buf: > (#1) User-Agent: connect-go/1.16.2 (go1.22.4) buf/1.34.1-dev
-buf: > (#1)
-buf: } (#1) [14 bytes data]
-buf: * (#1) Finished upload
-buf: < (#1) HTTP/3.0 200 OK
-buf: < (#1) Accept-Encoding: gzip
-buf: < (#1) Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
-buf: < (#1) Content-Length: 43
-buf: < (#1) Content-Type: application/proto
-buf: < (#1) Date: Sat, 06 Jul 2024 13:39:17 GMT
-buf: < (#1) Server: Google Frontend
-buf: < (#1) Traceparent: 00-3575ade79a62056af7f98888d7491080-e46aebd0417521e6-01
-buf: < (#1) Vary: Origin
-buf: < (#1) Via: 1.1 google
-buf: < (#1) X-Cloud-Trace-Context: 3575ade79a62056af7f98888d7491080/16459227067862819302;o=1
-buf: < (#1)
-buf: { (#1) [43 bytes data]
-buf: * (#1) Call complete
 {
   "sentence": "Hello...I'm glad you could drop by today."
 }
@@ -441,11 +403,13 @@ $ buf curl \
 }
 ```
 
-Wait, what? Why is it complaining about missing HTTP trailers? What gives?
+Wait, ***what***? Why is it complaining about missing HTTP trailers? What gives?
 
 {{< image src="trailers.png" width="400px" class="center" >}}
 
-To explain this, I had to dig into [quic-go's](https://github.com/quic-go/quic-go) HTTP/3 implementation.
+HTTP trailers are a recurring issue for gRPC. HTTP trailers are a special type of HTTP header that is sent at the very end of a message body after all the data has been transmitted. They are useful for sending metadata that cannot be determined until the entire message is known, such as checksums, signatures, or other end-of-message signals. gRPC relies on trailers to return status codes and error details.
+
+To explain why I am not receiving the HTTP trailers, I had to dig into [quic-go's](https://github.com/quic-go/quic-go) HTTP/3 implementation.
 
 #### Adding trailer support to quic-go
 When I looked into quic-go, I discovered that it *doesn't support [HTTP trailers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer) yet*. There is [an issue](https://github.com/quic-go/quic-go/issues/2266) and a [related pull request](https://github.com/quic-go/quic-go/pull/2344). But the issue is four years old, the PR is two years old, and both are still open after all of this time. This seemed quite crazy to me at first, but, on reflection, I realized that gRPC is the most popular thing that currently uses HTTP trailers. However, `grpc-go` directly uses HTTP/2 support from `golang.org/x/net/http2` instead of using `net/http` so it would require a good amount of work to get HTTP/3 support through quic-go. Therefore, this issue probably isn't on the radar of anyone working on `grpc-go`. However, it is trivial (as seen above) to use quic-go with ConnectRPC, so I think this is a unique situation where progress can be made quickly.
@@ -467,7 +431,7 @@ $ buf curl \
 There are a few issues that I have with my PR. I based it off of the earlier PR but many things have changed with the codebase that actually make it harder to implement this feature. However, it's super encouraging that this code seems to work without too much fuss.
 
 ### Experiment Results
-My experimentation shows that while Go doesn't yet have full, native support for gRPC over HTTP/3, there are practical workarounds available today. Both the gRPC-Web and Connect protocols function seamlessly over HTTP/3, and in fact, ConnectRPC may already be leveraging HTTP/3 in production environments where infrastructure allows. I discovered this firsthand with the [demo ConnectRPC website](https://connectrpc.com/demo/), which leverages HTTP/3 from the browser to the load balancer.
+My experimentation shows that while Go doesn't yet have full, native support for gRPC over HTTP/3, there are practical workarounds available today. Both the gRPC-Web and Connect protocols function seamlessly over HTTP/3, and in fact, ConnectRPC may already be leveraging HTTP/3 in production environments where infrastructure allows. I discovered this firsthand with the [ConnectRPC demo website](https://connectrpc.com/demo/), which will connect using HTTP/3 from the browser to the load balancer (after a few requests so the browser knows HTTP/3 is available).
 
 {{< image src="demo-connectrpc.png" width="400px" class="center" >}}
 
