@@ -25,6 +25,8 @@ In this post, we'll dive into what HTTP/3 is and explore the compelling reasons 
 
 By the end of this journey, you'll have a solid understanding of the benefits HTTP/3 brings to gRPC, the tools available to start using it today, and the potential it holds for the future of API development. So, fasten your seatbelts and get ready to experience the next generation of network protocols!
 
+All code examples are available at [sudorandom/example-connect-http3 on GitHub](https://github.com/sudorandom/example-connect-http3/blob/v0.0.1/).
+
 ## Why HTTP/3
 
 gRPC has had a lot of success pushing the world into HTTP/2 but there are some advantages to pushing even further and adopting the new major version of HTTP, [HTTP/3](https://http3-explained.haxx.se/en). Let's discuss these advantages before delving into code examples. So why should we use HTTP/3?
