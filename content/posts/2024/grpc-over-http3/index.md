@@ -252,7 +252,7 @@ func main() {
 
 In the case of the client, we only need to define a `http3.RoundTripper` instance and pass that into a completely normal `http.Client` instance. That's... quite literally it. Everything else should be the same.
 
-```plaintext
+```shell
 2024/07/06 12:57:24 connect:  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
 2024/07/06 12:57:24 send:  {"sentence": "Hello World!"}
 2024/07/06 12:57:24 recv:  {"sentence":"Hello World!"}
@@ -293,7 +293,7 @@ func main() {
 
 It works the same, but the output is a bit different since protobuf types print slightly differently from JSON:
 
-```plaintext
+```shell
 2024/07/06 12:57:12 connect:  https://127.0.0.1:6660
 2024/07/06 12:57:12 send:  sentence:"Hello World!"
 2024/07/06 12:57:14 recv:  sentence:"Hello World!"
