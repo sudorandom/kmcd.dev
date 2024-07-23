@@ -129,16 +129,16 @@ getHTTPVersion().then((httpVersion) => {
     }
 
     switch (httpVersion) {
-    case 'http/1.0':
+    case 'HTTP/1.0':
         document.getElementById("http10").removeAttribute("hidden");
         break;
-    case 'http/1.1':
+    case 'HTTP/1.1':
         document.getElementById("http11").removeAttribute("hidden");
         break;
-    case 'http/2':
+    case 'HTTP/2':
         document.getElementById("http2").removeAttribute("hidden");
         break;
-    case 'http/3':
+    case 'HTTP/3':
         document.getElementById("http3").removeAttribute("hidden");
         break;
     default:

@@ -10,7 +10,7 @@ layout: http
 
 ### Other Versions
 See the descriptions for other HTTP versions:
-- [http/1.0](/http/?version=http/1.0)
-- [http/1.1](/http/?version=http/1.1)
-- [http/2](/http/?version=http/2)
-- [http/3](/http/?version=http/3)
+- [HTTP/1.0](/http/?version=HTTP/1.0)
+- [HTTP/1.1](/http/?version=HTTP/1.1)
+- [HTTP/2](/http/?version=HTTP/2)
+- [HTTP/3](/http/?version=HTTP/3)
