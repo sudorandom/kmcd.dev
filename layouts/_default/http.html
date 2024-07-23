@@ -55,6 +55,9 @@
         <div class="post-content" id="http2" hidden>
             <h2>You have downloaded this page with&nbsp;<strong>HTTP/2</strong></h2>
             <p>
+                Note that if you refresh this page there's a chance that you will connect with HTTP/3 instead. This is caused by the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Alt-Svc">Alt-Svc header</a> or the <a href="https://blog.cloudflare.com/speeding-up-https-and-http-3-negotiation-with-dns">HTTPS DNS Entry</a> being read by your browser after the first request to the page is already in progress or completed.
+            </p>
+            <p>
                 HTTP/2 introduced binary framing, header compression (HPACK), multiplexing (multiple requests/responses concurrently over a single connection), and server push.
             </p>
             <h3>Limitations</h3>

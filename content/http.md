@@ -1,7 +1,7 @@
 ---
 description: "What version of HTTP are you connecting with?"
 linktitle: ""
-title: "HTTP"
+title: "What version of HTTP are you connecting with?"
 titleIcon: "fa-globe"
 subtitle: ""
 devtoSkip: false
