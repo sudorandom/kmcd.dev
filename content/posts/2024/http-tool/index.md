@@ -40,11 +40,24 @@ So as you can see, the server side of HTTP/3 is getting more and more ready for 
 
 So because web browsers and many web load balancer services already have support for HTTP/3 it shouldn't be surprising to know that [30% of websites now support HTTP/3](https://w3techs.com/technologies/details/ce-http3). This is an impressive figure, given how different the foundations of HTTP/3 are compared to HTTP/2 and HTTP/1.1.
 
-At the risk of repeating myself, let's cover the benefits of HTTP/3:
+As a reminder, here are the benefits of HTTP/3:
 - **Faster connection establishment**, which is especially useful with slower, unstable or congested connections.
 - Completely avoids the **head-of-line blocking** problem, allowing browsers to use a single connection to load everything at full speed.
 
 ## The tool
 So, are you curious to know if your browser is leveraging the latest web technology? I built a simple tool that will reveal the HTTP version you're using to access this website.  It'll even let you know if you're enjoying the full benefits of HTTP/3's speed and efficiency. Give it a try and see how your browser stacks up!
+
+### How It Is Made
+This is a static blog, which obviously makes it a little harder to make a tool like this. In addition to that, the protocol used to connect from the load balancer isn't necessarily the protocol used by clients. In my case, I use Cloudflare as a host and load balancer, so I configured the endpoint to add a new HTTP header that contains the HTTP version used between the client and load balancer. It might look like:
+
+```http
+x-kmcd-http-request-version: HTTP/3
+```
+
+### Javascript/Browser Limitations
+So, I have this new header being returned, but I need to do something to display the value. One thing that's a little crazy to me is that Javascript on a page *cannot read the headers that were returned for the current page.* So... When you load the page, Javascript runs and calls the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to retrieve the page again. The response object that is returned *does* contain the full list of headers, which is what I used to determine the output. By the way, you might ask "doesn't the response object also contain the version of HTTP used?" and the answer is, unfortunately, no. It seems like it would be simple to add but it's just not there.
+
+## Check it out
+So go check out the tool. If you don't get `HTTP/3` at first you may have to refresh a few times. There are [a few different ways](https://http3-explained.haxx.se/en/h3/h3-altsvc) to hint to browsers that HTTP/3 is supported and I use all of them... but many browsers will avoid attempting HTTP/3 for the first few requests to a website until it trusts that HTTP/3 is available. So go on and try it and let me know if it's useful at all:
 
 [Click here to go to the tool.](/http/)
