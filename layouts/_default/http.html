@@ -57,6 +57,67 @@
             </article>
         </div>
     </div>
+
+    <div class="main-wrapper">
+        <div class="main-box">
+            <h3 id="http10">HTTP/1.0</h3>
+            <p>
+                HTTP/1.0 Introduced status codes, headers for content negotiation, and support for various media types.
+            </p>
+            <p>
+                Each request/response required a new TCP connection, leading to overhead and performance issues.
+            </p>
+            <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc1945">RFC 1945</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-box">
+            <h3 id="http11">HTTP/1.1</h3>
+            <p>
+                HTTP/1.1 introduced persistent connections (keeping a TCP connection open for multiple requests/responses), chunked transfer encoding, virtual hosting, and caching mechanisms.
+            </p>
+            <p>
+                HTTP/1.1 has limited support for concurrency and requires opening multiple connections to perform requests in parallel. It is also still text-based so the overhead for requests is rather large. Headers also cannot be compressed.
+            </p>
+            <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc2616">RFC 2616 (obsoleted)</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7230">RFC 7230</a> - <a href="https://www.rfc-editor.org/rfc/rfc7235">RFC 7235</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-box">
+            <h3 id="http2">HTTP/2</h3>
+            <p>
+                HTTP/2 introduced binary framing, header compression (HPACK), multiplexing (multiple requests/responses concurrently over a single connection), and server push.
+            </p>
+            <p>
+                HTTP/2 still relies on TCP, which can suffer from head-of-line blocking and performance issues on lossy networks.
+            </p>
+            <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7540">RFC 7540</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-box">
+            <h3 id="http3">HTTP/3</h3>
+            <p>
+                HTTP/3 uses QUIC as its transport protocol which is built on UDP, providing faster connection establishment, improved congestion control, and multiplexed streams that are independently reliable.
+            </p>
+            <p>
+                HTTP/3 is relatively new, so adoption is still growing. However, [all major browsers support HTTP/3](https://caniuse.com/http3)so for the web, adoption is mostly held up with server support.
+            </p>
+            <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9114">RFC 9114</a></li>
+            </ul>
+        </div>
+    </div>
 </main>
 
 <script>
