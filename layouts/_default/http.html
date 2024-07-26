@@ -47,7 +47,7 @@
                 </div>
 
                 <div id="httpunknown-header" hidden>
-                    <h2>You have downloaded this page with&nbsp;<span class="http-version emphasized-text">???</span></h2>
+                    <h2>You have downloaded this page with&nbsp;<span class="data-http-version emphasized-text">???</span></h2>
                     <p>
                         This is awkward. You appear to be using a version of HTTP that this page doesn't know about! It could be that the HTTP version detection is broken, a new version was released and I just haven't updated this page yet, or you messed with the query parameter that I use to test this page. Regardless, congrats for finding this!
                     </p>
@@ -57,7 +57,49 @@
 
                 <div id="clientDataWrapper" hidden>
                     <p>By the way, here is more information that is revealed about you based on your IP address:</p>
-                    <pre><code id="clientData"></code></pre>
+
+                    <table>
+                        <tr>
+                            <th>HTTP Version</th>
+                            <td><span class="data-http-version emphasized-text"></span></td>
+                        </tr>
+                        <tr>
+                            <th>IP Address</th>
+                            <td><span class="data-ip"></span></td>
+                        </tr>
+                        <tr>
+                            <th>ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank">(?)</a></th>
+                            <td><span class="data-asn"></span></td>
+                        </tr>
+                        <tr>
+                            <th>City</th>
+                            <td><span class="data-city"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Postal Code</th>
+                            <td><span class="data-postal-code"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Country</th>
+                            <td><span class="data-country"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Continent</th>
+                            <td><span class="data-continent"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Geo Coordinates</th>
+                            <td><span class="data-geo"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Time Zone</th>
+                            <td><span class="data-tz"></span></td>
+                        </tr>
+                        <tr>
+                            <th>User Agent</th>
+                            <td><span class="data-useragent"></span></td>
+                        </tr>
+                    </table>
                 </div>
             </article>
         </div>
@@ -155,25 +197,27 @@ async function getHTTPVersion() {
 }
 
 getHTTPVersion().then((props) => {
-    let { httpVersion } = props;
+    let {
+        httpVersion,
+        asnum,
+        city,
+        continent,
+        country,
+        ip,
+        lat,
+        lon,
+        postalCode,
+        region,
+        regionCode,
+        tzName,
+        useragent,
+    } = props;
     if (!httpVersion) {
         httpVersion = "???"
     }
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('version')) {
-        if (searchParams.get('version')) {
-            for (elem of document.getElementsByClassName("http-version")) {
-                elem.innerHTML = httpVersion
-            }
-        }
         httpVersion = searchParams.get('version');
-    }
-
-    console.log(props)
-    props = Object.fromEntries(Object.entries(props).filter(([_, v]) => v != null));
-    if (Object.keys(props).length > 0) {
-        document.getElementById("clientDataWrapper").removeAttribute("hidden");
-        document.getElementById("clientData").innerHTML = JSON.stringify(props, null, 2)
     }
 
     switch (httpVersion) {
@@ -192,7 +236,30 @@ getHTTPVersion().then((props) => {
     default:
         document.getElementById("httpunknown-header").removeAttribute("hidden");
     }
+
+    for (elem of document.getElementsByClassName("data-http-version")) {
+        elem.innerHTML = httpVersion
+    }
+
+    console.log(props);
+    props = Object.fromEntries(Object.entries(props).filter(([_, v]) => v != null));
+    if (Object.keys(props).length > 0) {
+        document.getElementById("clientDataWrapper").removeAttribute("hidden");
+        document.getElementById("data-asn").innerHTML = asnum;
+        document.getElementById("data-city").innerHTML = city;
+        document.getElementById("data-continent").innerHTML = continent;
+        document.getElementById("data-country").innerHTML = country;
+        document.getElementById("data-ip").innerHTML = ip;
+        if (lat && lon) {
+            document.getElementById("data-geo").innerHTML = `(${lat}, ${lon})`;
+        }
+        document.getElementById("data-postal-code").innerHTML = postalCode;
+        document.getElementById("data-region").innerHTML = region;
+        document.getElementById("data-tz").innerHTML = tzName;
+        document.getElementById("data-useragent").innerHTML = useragent;
+    }
 })
+
 </script>
 
 {{ end }}
