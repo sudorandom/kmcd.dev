@@ -61,43 +61,43 @@
                     <table>
                         <tr>
                             <th>HTTP Version</th>
-                            <td><span class="data-http-version emphasized-text"></span></td>
+                            <td><span id="data-http-version" class="emphasized-text"></span></td>
                         </tr>
                         <tr>
                             <th>IP Address</th>
-                            <td><span class="data-ip"></span></td>
+                            <td><span id="data-ip"></span></td>
                         </tr>
                         <tr>
                             <th>ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank">(?)</a></th>
-                            <td><span class="data-asn"></span></td>
+                            <td><span id="data-asn"></span></td>
                         </tr>
                         <tr>
                             <th>City</th>
-                            <td><span class="data-city"></span></td>
+                            <td><span id="data-city"></span></td>
                         </tr>
                         <tr>
                             <th>Postal Code</th>
-                            <td><span class="data-postal-code"></span></td>
+                            <td><span id="data-postal-code"></span></td>
                         </tr>
                         <tr>
                             <th>Country</th>
-                            <td><span class="data-country"></span></td>
+                            <td><span id="data-country"></span></td>
                         </tr>
                         <tr>
                             <th>Continent</th>
-                            <td><span class="data-continent"></span></td>
+                            <td><span id="data-continent"></span></td>
                         </tr>
                         <tr>
                             <th>Geo Coordinates</th>
-                            <td><span class="data-geo"></span></td>
+                            <td><span id="data-geo"></span></td>
                         </tr>
                         <tr>
                             <th>Time Zone</th>
-                            <td><span class="data-tz"></span></td>
+                            <td><span id="data-tz"></span></td>
                         </tr>
                         <tr>
                             <th>User Agent</th>
-                            <td><span class="data-useragent"></span></td>
+                            <td><span id="data-useragent"></span></td>
                         </tr>
                     </table>
                 </div>
@@ -245,6 +245,7 @@ getHTTPVersion().then((props) => {
     props = Object.fromEntries(Object.entries(props).filter(([_, v]) => v != null));
     if (Object.keys(props).length > 0) {
         document.getElementById("clientDataWrapper").removeAttribute("hidden");
+        document.getElementById("data-http-version").innerHTML = httpVersion;
         document.getElementById("data-asn").innerHTML = asnum;
         document.getElementById("data-city").innerHTML = city;
         document.getElementById("data-continent").innerHTML = continent;
