@@ -54,6 +54,11 @@
                 </div>
 
                 {{ .Content }}
+
+                <div id="clientDataWrapper" hidden>
+                    <p>By the way, here is more information that is revealed about you based on your IP address:</p>
+                    <pre><code id="clientData"></code></pre>
+                </div>
             </article>
         </div>
     </div>
@@ -129,13 +134,28 @@ async function getHTTPVersion() {
         }
         // the server is configured to always return a header containing the http version used on the edge.
         // We will use that unless there's a query param set for debugging.
-        return resp.headers.get('x-kmcd-http-request-version')
+        return {
+            httpVersion: resp.headers.get('x-kmcd-http-request-version'),
+            asnum: resp.headers.get('x-kmcd-asnum'),
+            city: resp.headers.get('x-kmcd-city'),
+            continent: resp.headers.get('x-kmcd-continent'),
+            country: resp.headers.get('x-kmcd-country'),
+            ip: resp.headers.get('x-kmcd-ip'),
+            lat: resp.headers.get('x-kmcd-lat'),
+            lon: resp.headers.get('x-kmcd-lon'),
+            postalCode: resp.headers.get('x-kmcd-postal-code'),
+            region: resp.headers.get('x-kmcd-region'),
+            regionCode: resp.headers.get('x-kmcd-region-code'),
+            tzName: resp.headers.get('x-kmcd-tz-name'),
+            userAgent: resp.headers.get('x-kmcd-user-agent'),
+        }
     } catch (error) {
         console.error(error.message);
     }
 }
 
-getHTTPVersion().then((httpVersion) => {
+getHTTPVersion().then((props) => {
+    let { httpVersion } = props;
     if (!httpVersion) {
         httpVersion = "???"
     }
@@ -149,7 +169,12 @@ getHTTPVersion().then((httpVersion) => {
         httpVersion = searchParams.get('version');
     }
 
-    console.log(httpVersion)
+    console.log(props)
+    props = Object.fromEntries(Object.entries(props).filter(([_, v]) => v != null));
+    if (Object.keys(value).length > 0) {
+        document.getElementById("clientDataWrapper").removeAttribute("hidden");
+        document.getElementById("clientData").innerHTML = JSON.stringify(props, null, 2)
+    }
 
     switch (httpVersion) {
     case 'HTTP/1.0':
