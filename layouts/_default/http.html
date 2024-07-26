@@ -189,7 +189,7 @@ async function getHTTPVersion() {
             region: resp.headers.get('x-kmcd-region'),
             regionCode: resp.headers.get('x-kmcd-region-code'),
             tzName: resp.headers.get('x-kmcd-tz-name'),
-            userAgent: resp.headers.get('x-kmcd-user-agent'),
+            useragent: resp.headers.get('x-kmcd-user-agent'),
         }
     } catch (error) {
         console.error(error.message);
