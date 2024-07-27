@@ -1,0 +1,123 @@
+{{ define "main" }}
+
+<main class="post">
+    <article>
+        {{if not .Params.hideTitle }}
+        <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a
+                href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
+        {{ end }}
+
+        <span id="tools">
+            <h2>Tools</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="/http/">HTTP Version Tool</a></h3>
+                <p>
+                    See which version of HTTP your browser is using to connect to my website. My website supports HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3, so you can use this to see if your browser is using the latest and greatest. It also outputs some of the things your browser is sending, like user agent, your IP address and the ASN your internet traffic originates from, which tells me which ISP you are using.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/http-tool/"><i class="fa-solid fa-book"></i></a>
+                    <a href="/http/"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <span id="ongoing-projects">
+            <h2>Ongoing Projects</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
+                <p>
+                    {{ partial "blog_summary.html" }}
+                </p>
+                <div class="project-icons">
+                    <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi"
+                        target="_blank">protoc-gen-connect-openapi</a></i></h3>
+                <p>
+                    Generate OpenAPI specifications from protobuf that matches <a href="https://connectrpc.com/">Connect
+                        RPC</a>. Born from my own needs and frustrations gluing together existing tooling in non-ideal
+                    ways.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/protoc-gen-connect-openapi/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-golang"></i></a>
+                </div>
+            </div>
+            <div class="projects-box">
+                <h3><a href="https://github.com/sudorandom/unknownconnect-go" target="_blank">unknownconnect-go</a></h3>
+                <p>
+                    An interceptor for <a href="https://github.com/connectrpc/connect-go" target="_blank">connect-go</a>
+                    (ConnectRPC) clients and servers that tells you if you are receiving protobuf messages with unknown
+                    fields. A topic I've been writing about a lot lately. I love that it allows you to detect
+                    inconsistencies in environments that use ConnectRPC.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/unknownconnect-go/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/sudorandom/unknownconnect-go/" target="_blank"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://pkg.go.dev/github.com/sudorandom/unknownconnect-go" target="_blank"><i class="fa-brands fa-golang"></i></a>
+                </div>
+                </ul>
+            </div>
+        </div>
+
+        <span id="finished-projects">
+            <h2>Finished Projects</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
+                <p>
+                    Evepraisal was an extremely popular bulk-price estimator for Eve Online. It started as a tool to
+                    help pirates evaluate cargo-scan results but it evolve into a tool that helped shape Eve Online's
+                    economy. The project lived on well past my time playing the game and, sadly, because of the <a
+                        href="/posts/lessons-from-a-decades-long-project/">ongoing maintenance</a> and my detatchment
+                    from the game I eventually <a href="/posts/goodbye-evepraisal/">shut it down</a>.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/evepraisal.com/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/evepraisal/go-evepraisal" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
+                <p>
+                    A set of Python libraries that assist in calling the SoftLayer API. Has a CLI, general API and
+                    specialized code to help with more complicated workflows. This became the most popular ways to
+                    interact with SoftLayer APIs.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/softlayer-python/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/softlayer/softlayer-python" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="projects-box">
+                <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
+                <p>
+                    An FTP and SFTP interface for OpenStack Object Storage (swift) built in Twisted Python. I'm unsure
+                    how much the project is still used but it was critical for moving a lot of data from legacy systems
+                    onto SoftLayer/IBM's Object Storage product.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/swftp/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://github.com/softlayer/swftp" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </article>
+</main>
+
+{{ end }}
