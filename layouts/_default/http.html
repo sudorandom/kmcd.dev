@@ -52,56 +52,62 @@
                         This is awkward. You appear to be using a version of HTTP that this page doesn't know about! It could be that the HTTP version detection is broken, a new version was released and I just haven't updated this page yet, or you messed with the query parameter that I use to test this page. Regardless, congrats for finding this!
                     </p>
                 </div>
-
-                {{ .Content }}
-
-                <div id="clientDataWrapper" hidden>
-                    <p>By the way, here is more information that is revealed about you based on your IP address:</p>
-
-                    <table>
-                        <tr>
-                            <th>HTTP Version</th>
-                            <td><span id="data-http-version" class="emphasized-text"></span></td>
-                        </tr>
-                        <tr>
-                            <th>IP Address</th>
-                            <td><span id="data-ip"></span></td>
-                        </tr>
-                        <tr>
-                            <th>ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank">(?)</a></th>
-                            <td><span id="data-asn"></span></td>
-                        </tr>
-                        <tr>
-                            <th>City</th>
-                            <td><span id="data-city"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Postal Code</th>
-                            <td><span id="data-postal-code"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Country</th>
-                            <td><span id="data-country"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Continent</th>
-                            <td><span id="data-continent"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Geo Coordinates</th>
-                            <td><span id="data-geo"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Time Zone</th>
-                            <td><span id="data-tz"></span></td>
-                        </tr>
-                        <tr>
-                            <th>User Agent</th>
-                            <td><span id="data-useragent"></span></td>
-                        </tr>
-                    </table>
                 </div>
             </article>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="main-box">
+            <h3 id="http11">More Info</h3>
+            <div id="clientDataWrapper" hidden>
+                <p>By the way, here is more information that is revealed about you from the request your browser made:</p>
+
+                <table>
+                    <tr>
+                        <th>HTTP Version</th>
+                        <td><span id="data-http-version" class="emphasized-text"></span></td>
+                    </tr>
+                    <tr>
+                        <th>IP Address</th>
+                        <td><span id="data-ip"></span></td>
+                    </tr>
+                    <tr>
+                        <th>ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank">(?)</a></th>
+                        <td><span id="data-asn"></span></td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td><span id="data-city"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Postal Code</th>
+                        <td><span id="data-postal-code"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Country</th>
+                        <td><span id="data-country"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Continent</th>
+                        <td><span id="data-continent"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Geo Coordinates</th>
+                        <td><span id="data-geo"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Time Zone</th>
+                        <td><span id="data-tz"></span></td>
+                    </tr>
+                    <tr>
+                        <th>User Agent</th>
+                        <td><span id="data-useragent"></span></td>
+                    </tr>
+                </table>
+            </div>
+
+            {{ .Content }}
         </div>
     </div>
 
