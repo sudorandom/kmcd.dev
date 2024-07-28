@@ -50,7 +50,7 @@ That's... it. It can't get much simpler than that.
 
 ### The Response
 
-Upon receiving a request, the server responds with the contents of the requested resource. This response is a simple stream of bytes, usually representing an HTML document. Notably, there are no headers in an HTTP/0.9 response or a status code that tells us if we're receiving an error page or the resource that we asked for. Since there were no status codes, there was no way to indicate if a requested resource was not found, a concept that would later be introduced with the 404 status code.
+Upon receiving a request, the server responds with the contents of the requested resource. This response is a simple stream of bytes, usually representing an HTML document. Notably, there are no headers in an HTTP/0.9 response or a status code that tells us if we're receiving an error page or the resource that we asked for. Since there were no status codes, there was no way to indicate if a requested resource was not found — a concept that would later be introduced with the 404 status code.
 
 ### Full example
 ```http
