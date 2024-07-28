@@ -42,7 +42,7 @@ In HTTP/0.9, a client sends a single-line request to the server. This request li
 
 For example, to request the index.html file from the server's root directory, the client would send:
 
-```
+```http
 GET /index.html
 ```
 
@@ -201,10 +201,10 @@ The --http0.9 flag instructs curl to accept the headerless responses of HTTP/0.9
 You should note that curl is *sending* a request as if it were HTTP/1.1 but appears accept to the headerless responses of HTTP/0.9. Here's what the curl manpage says about the flag:
 
 ```shell
-       --http0.9
-              (HTTP) Tells curl to be fine with HTTP version 0.9 response.
+--http0.9
+       (HTTP) Tells curl to be fine with HTTP version 0.9 response.
 
-              HTTP/0.9 is a completely headerless response and therefore you can also connect with this to non-HTTP servers and still get a response since curl will simply transparently downgrade - if allowed.
+       HTTP/0.9 is a completely headerless response and therefore you can also connect with this to non-HTTP servers and still get a response since curl will simply transparently downgrade - if allowed.
 ```
 
 I verified this behavior a bit more when I mixed `--http1.0` and `--http0.9`. Instead of using `HTTP/1.1` in the first line of the request, curl declares that it is using `HTTP/1.0` while still treating the body correctly (not expecting a status code or headers):
