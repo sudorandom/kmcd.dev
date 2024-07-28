@@ -19,7 +19,6 @@ func (s *Server) ServeAndListen() error {
 		panic("http server started without a handler")
 	}
 	l, err := net.Listen("tcp", s.Addr)
-
 	if err != nil {
 		return err
 	}

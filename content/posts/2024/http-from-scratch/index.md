@@ -62,13 +62,33 @@ Upon receiving a request, the server responds with the contents of the requested
 
 Again, this is an extremely simple protocol at this point. Request a resource and get the data. There's no place to put metadata when requesting or responding. By the way, lines prefixed with `>` are from the client to the server and `<` are from the server to the client. Remember this, because this is important for understanding verbose `curl` output, which we'll use a good amount in the future.
 
-### Limitations
+```mermaid
+sequenceDiagram
+    actor Client
 
+    rect rgb(47,75,124)
+        Client ->> Server: TCP SYN
+        Server ->> Client: TCP SYN-ACK
+        Client ->> Server: TCP ACK
+    end
+
+    rect rgb(200,80,96)
+        Client ->> Server: HTTP Request
+        Server ->> Client: HTTP Response
+    end
+
+    rect rgb(47,75,124)
+        Server ->> Client: TCP FIN
+		Client ->> Server: TCP ACK
+    end
+```
+
+### Limitations
 While revolutionary for its time, HTTP/0.9 had some significant limitations that paved the way for future improvements:
 
-* **No Headers:**  The absence of headers meant that the server could not convey any additional information about the response, such as content type or length.
-* **Only GET:** The only supported method was GET, which meant that clients could only request resources and not submit data to the server.
-* **No Status Codes:**  There was no mechanism to indicate errors or other status information.
+- **No Headers:**  The absence of headers meant that the server could not convey any additional information about the response, such as content type or length.
+- **Only GET:** The only supported method was GET, which meant that clients could only request resources and not submit data to the server.
+- **No Status Codes:**  There was no mechanism to indicate errors or other status information.
 
 ## Implementing an HTTP/0.9 Server
 Okay, now let's implement the server.
@@ -84,7 +104,6 @@ func (s *Server) ServeAndListen() error {
 		panic("http server started without a handler")
 	}
 	l, err := net.Listen("tcp", s.Addr)
-
 	if err != nil {
 		return err
 	}
