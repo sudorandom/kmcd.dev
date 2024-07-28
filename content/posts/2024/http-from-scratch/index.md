@@ -255,9 +255,15 @@ $ echo GET this/is/a/test | ncat 127.0.0.1 9000
 Hello World!
 ```
 
+After writing most of this article, I finally realized that I never even attempted to test my web server using a real web browser. It seems like the only major browser that still supports HTTP/0.9 is Firefox, so let's see it!
+
+{{< image src="firefox.png" width="600px" class="center" >}}
+
+**Yes, it works!** Success!
+
 ## Implementing an HTTP/0.9 Client
 
-Now that we've made a server and used existing clients, we might as well make a client in Go as well. Don't worry, this one is super simple:
+Now that we've made a server and used existing clients, we might as well make a client in Go. Don't worry, this one is super simple:
 
 ```go
 conn, err := net.Dial("tcp", "127.0.0.1:9000")
