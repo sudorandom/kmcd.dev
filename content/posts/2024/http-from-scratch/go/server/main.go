@@ -31,30 +31,33 @@ func (s *Server) ServeAndListen() error {
 			log.Fatal(err)
 		}
 
-		go func(c net.Conn) {
-			reader := bufio.NewReader(c)
-			line, _, err := reader.ReadLine()
-			if err != nil {
-				return
-			}
-
-			fields := strings.Fields(string(line))
-			if len(fields) < 2 {
-				return
-			}
-			r := &http.Request{
-				Method:     fields[0],
-				URL:        &url.URL{Scheme: "http", Path: fields[1]},
-				Proto:      "HTTP/0.9",
-				ProtoMajor: 0,
-				ProtoMinor: 9,
-				RemoteAddr: c.RemoteAddr().String(),
-			}
-
-			s.Handler.ServeHTTP(newWriter(c), r)
-			c.Close()
-		}(conn)
+		go s.handleConnection(conn)
 	}
+}
+
+func (s *Server) handleConnection(conn net.Conn) {
+	defer conn.Close()
+
+	reader := bufio.NewReader(conn)
+	line, _, err := reader.ReadLine()
+	if err != nil {
+		return
+	}
+
+	fields := strings.Fields(string(line))
+	if len(fields) < 2 {
+		return
+	}
+	r := &http.Request{
+		Method:     fields[0],
+		URL:        &url.URL{Scheme: "http", Path: fields[1]},
+		Proto:      "HTTP/0.9",
+		ProtoMajor: 0,
+		ProtoMinor: 9,
+		RemoteAddr: conn.RemoteAddr().String(),
+	}
+
+	s.Handler.ServeHTTP(newWriter(conn), r)
 }
 
 type responseBodyWriter struct {

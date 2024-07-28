@@ -78,6 +78,7 @@ type Server struct {
 	Handler http.Handler
 }
 
+
 func (s *Server) ServeAndListen() error {
 	if s.Handler == nil {
 		panic("http server started without a handler")
@@ -95,34 +96,41 @@ func (s *Server) ServeAndListen() error {
 			log.Fatal(err)
 		}
 
-		go func(c net.Conn) {
-			reader := bufio.NewReader(c)
-			line, _, err := reader.ReadLine()
-			if err != nil {
-				return
-			}
-
-			fields := strings.Fields(string(line))
-			if len(fields) < 2 {
-				return
-			}
-			r := &http.Request{
-				Method:     fields[0],
-				URL:        &url.URL{Scheme: "http", Path: fields[1]},
-				Proto:      "HTTP/0.9",
-				ProtoMajor: 0,
-				ProtoMinor: 9,
-				RemoteAddr: c.RemoteAddr().String(),
-			}
-
-			s.Handler.ServeHTTP(newWriter(c), r)
-			c.Close()
-		}(conn)
+		go s.handleConnection(conn)
 	}
 }
 ```
 
-You can see here that our ServeAndListen() listens on the configured TCP port and then loops forever, accepting and handling new connections in separate goroutines. Handling a connection is very simple in HTTP/0.9 because clients can only create a new connection, send a single request and then the connection is closed. This code reads the first line given by the user and then calls `strings.Fields` to split the different parts of the request up. As a reminder, this is what the request looks like in HTTP/0.9:
+You can see here that our ServeAndListen() listens on the configured TCP port and then loops forever, accepting and handling new connections in separate goroutines. Now let's look at `s.handleConnection()`
+
+```go
+func (s *Server) handleConnection(conn net.Conn) {
+	defer conn.Close()
+
+	reader := bufio.NewReader(conn)
+	line, _, err := reader.ReadLine()
+	if err != nil {
+		return
+	}
+
+	fields := strings.Fields(string(line))
+	if len(fields) < 2 {
+		return
+	}
+	r := &http.Request{
+		Method:     fields[0],
+		URL:        &url.URL{Scheme: "http", Path: fields[1]},
+		Proto:      "HTTP/0.9",
+		ProtoMajor: 0,
+		ProtoMinor: 9,
+		RemoteAddr: conn.RemoteAddr().String(),
+	}
+
+	s.Handler.ServeHTTP(newWriter(conn), r)
+}
+```
+
+Handling a connection is very simple in HTTP/0.9 because clients can only create a new connection, send a single request and then the connection is closed. This code reads the first line given by the user and then calls `strings.Fields` to split the different parts of the request up. As a reminder, this is what the request looks like in HTTP/0.9:
 
 ```http
 GET /path/to/resource
@@ -281,6 +289,6 @@ In the upcoming parts of this series, we'll delve into how HTTP evolved to overc
 - HTTP/3: Built on QUIC instead of TCP
 
 Resources:
+- https://http.dev/0.9
 - https://www.w3.org/Protocols/HTTP/AsImplemented.html
 - https://ec.haxx.se/http/versions/http09.html
-- https://http.dev/0.9
