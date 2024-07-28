@@ -23,7 +23,7 @@ draft: true
 ## Introduction
 Welcome to the first installment of our "HTTP from Scratch" blog series! In this series, we'll embark on a journey through the evolution of the Hypertext Transfer Protocol (HTTP), the backbone of the World Wide Web. By building simple implementations of each major HTTP version, we'll gain a deep understanding of how this essential protocol has shaped the internet we use every day and how it has evolved to what we have now.
 
-In this post, we'll travel back to the early days of the web and explore HTTP/0.9, HTTP's initial incarnation. HTTP/0.9 was a groundbreaking technology that enabled the first web browsers and servers to communicate, laying the foundation for the World Wide Web that we know today. But HTTP/0.9 had its limitations. We'll discuss these shortcomings, which ultimately paved the way for subsequent versions of HTTP that introduced features like headers, status codes, and support for additional HTTP methods, connection reuse, binary framing and, eventually, abandoning TCP for UDP for better reliability and performance.
+In this post, we'll travel back to the early days of the web and explore [HTTP/0.9][1], HTTP's initial incarnation. HTTP/0.9 was a groundbreaking technology that enabled the first web browsers and servers to communicate, laying the foundation for the World Wide Web that we know today. But HTTP/0.9 had its limitations. We'll discuss these shortcomings, which ultimately paved the way for subsequent versions of HTTP that introduced features like headers, status codes, and support for additional HTTP methods, connection reuse, binary framing and, eventually, abandoning TCP for UDP for better reliability and performance. For a more formal description of the HTTP/0.9 specification, you can reference [http.dev][1] or [w3.org][2].
 
 To get a hands-on understanding of HTTP/0.9, we'll take a practical approach. Since no modern web servers support this early version, we'll create our own HTTP/0.9 server from scratch using Go. This will allow us to experiment with the protocol and gain valuable insights into its inner workings.
 
@@ -199,7 +199,7 @@ $ go run server/main.go
 2024/07/27 21:55:28 Listening on 127.0.0.1:9000
 ```
 
-Now that we have an HTTP/0.9 server, how do we test it?? Since HTTP/0.9 pretty much isn't used anywhere, how do find a client to test this server? Luckily, `curl` supports HTTP/0.9, so let's try that!
+Now that we have an HTTP/0.9 server, how do we test it?? Since HTTP/0.9 pretty much isn't used anywhere, how do find a client to test this server? Luckily, `curl` [supports HTTP/0.9][3], so let's try that!
 ```shell
 $ curl --http0.9 http://127.0.0.1:9000/this/is/a/test
 Hello World!
@@ -229,7 +229,7 @@ $ curl http://127.0.0.1:9000/this/is/a/test
 curl: (1) Received HTTP/0.9 when not allowed
 ```
 
-You can test this server with simpler tools. For example, [netcat](https://en.wikipedia.org/wiki/Netcat) (`ncat`), can be used to make this same request. This will be a theme for the text-based protocols where often it's simpler just to write text out directly to netcat than it is to use other kinds of tooling:
+You can test this server with simpler tools. For example, [netcat][4] (`ncat`), can be used to make this same request. This will be a theme for the text-based protocols where often it's simpler just to write text out directly to netcat than it is to use other kinds of tooling:
 
 ```shell
 $ echo GET this/is/a/test | ncat 127.0.0.1 9000
@@ -288,7 +288,7 @@ In the upcoming parts of this series, we'll delve into how HTTP evolved to overc
 - HTTP/2: Switches from a text-based protocol to binary
 - HTTP/3: Built on QUIC instead of TCP
 
-Resources:
-- https://http.dev/0.9
-- https://www.w3.org/Protocols/HTTP/AsImplemented.html
-- https://ec.haxx.se/http/versions/http09.html
+[1]: https://http.dev/0.9
+[2]: https://www.w3.org/Protocols/HTTP/AsImplemented.html
+[3]: https://ec.haxx.se/http/versions/http09.html
+[4]: https://en.wikipedia.org/wiki/Netcat
