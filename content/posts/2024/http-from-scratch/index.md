@@ -282,7 +282,7 @@ We explored the basic request-response model of HTTP/0.9, understanding how clie
 
 By building a rudimentary HTTP/0.9 server and client in Go, we gained hands-on experience with the protocol's core concepts. We learned how to handle TCP connections, parse requests, and send responses, laying a solid foundation for understanding more advanced HTTP versions.
 
-As we move forward in this series, we'll see how HTTP evolved to address the shortcomings of HTTP/0.9. We'll explore the introduction of headers, status codes, and additional methods, which enabled more robust and feature-rich communication between web clients and servers. Stay tuned for the next part of our series, where we'll dive into HTTP/1.0 and its significant enhancements over HTTP/0.9. As a sneak peek, these are the major features added to each version:
+In the upcoming parts of this series, we'll delve into how HTTP evolved to overcome the limitations of HTTP/0.9 and address the needs of the evolving World Wide Web. We'll explore the introduction of headers, status codes, and additional methods, which enabled more robust and feature-rich communication between web clients and servers. Stay tuned for the next part of our series, where we'll dive into HTTP/1.0 and its significant enhancements over HTTP/0.9. As a sneak peek, these are the major features added to each version:
 
 - HTTP/0.9: First attempt to transfer generic resources by paths
 - HTTP/1.0: Adds status codes, headers, verbs
