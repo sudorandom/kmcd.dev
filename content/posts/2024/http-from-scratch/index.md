@@ -46,7 +46,7 @@ For example, to request the index.html file from the server's root directory, th
 GET /index.html
 ```
 
-That's... it. It can't get much simpler than that.
+That's... it. It can't get much simpler than that. Note that there are no headers to indicate content size, compression, content type, etc. This isn't a part of HTTP/0.9 as all of that was introduced in HTTP/1.0.
 
 ### The Response
 
@@ -59,7 +59,8 @@ Upon receiving a request, the server responds with the contents of the requested
 < Hello World!
 < </html>
 ```
-Lines prefixed with `>` are from the client to the server and `<` are from the server to the client. Remember this, because this is important for understanding verbose `curl` output, which we'll use a good amount in the future.
+
+Again, this is an extremely simple protocol at this point. Request a resource and get the data. There's no place to put metadata when requesting or responding. By the way, lines prefixed with `>` are from the client to the server and `<` are from the server to the client. Remember this, because this is important for understanding verbose `curl` output, which we'll use a good amount in the future.
 
 ### Limitations
 
@@ -187,7 +188,7 @@ See the full source at Github: {{< github-link file="go/server/main.go" >}}.
 Now we just need to run the server:
 ```shell
 $ go run server/main.go
-2024/07/27 21:55:28 Listing on 127.0.0.1:9000
+2024/07/27 21:55:28 Listening on 127.0.0.1:9000
 ```
 
 Now that we have an HTTP/0.9 server, how do we test it?? Since HTTP/0.9 pretty much isn't used anywhere, how do find a client to test this server? Luckily, `curl` supports HTTP/0.9, so let's try that!
@@ -232,32 +233,21 @@ Hello World!
 Now that we've made a server and used existing clients, we might as well make a client in Go as well. Don't worry, this one is super simple:
 
 ```go
-package main
-
-import (
-	"fmt"
-	"io"
-	"log"
-	"net"
-)
-
-func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:9000")
-	if err != nil {
-		log.Fatalf("err: %s", err)
-	}
-
-	if _, err := conn.Write([]byte("GET /this/is/a/test\r\n")); err != nil {
-		log.Fatalf("err: %s", err)
-	}
-
-	body, err := io.ReadAll(conn)
-	if err != nil {
-		log.Fatalf("err: %s", err)
-	}
-
-	fmt.Println(string(body))
+conn, err := net.Dial("tcp", "127.0.0.1:9000")
+if err != nil {
+	log.Fatalf("err: %s", err)
 }
+
+if _, err := conn.Write([]byte("GET /this/is/a/test\r\n")); err != nil {
+	log.Fatalf("err: %s", err)
+}
+
+body, err := io.ReadAll(conn)
+if err != nil {
+	log.Fatalf("err: %s", err)
+}
+
+fmt.Println(string(body))
 ```
 See the full source at Github: {{< github-link file="go/client/main.go" >}}.
 
