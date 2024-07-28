@@ -52,6 +52,15 @@ That's... it. It can't get much simpler than that.
 
 Upon receiving a request, the server responds with the contents of the requested resource. This response is a simple stream of bytes, usually representing an HTML document. Notably, there are no headers in an HTTP/0.9 response or a status code that tells us if we're receiving an error page or the resource that we asked for. Since there were no status codes, there was no way to indicate if a requested resource was not found, a concept that would later be introduced with the 404 status code.
 
+### Full example
+```http
+> GET /index.html
+< <html>
+< Hello World!
+< </html>
+```
+Lines prefixed with `>` are from the client to the server and `<` are from the server to the client. Remember this, because this is important for understanding verbose `curl` output, which we'll use a good amount in the future.
+
 ### Limitations
 
 While revolutionary for its time, HTTP/0.9 had some significant limitations that paved the way for future improvements:
@@ -61,19 +70,8 @@ While revolutionary for its time, HTTP/0.9 had some significant limitations that
 * **No Status Codes:**  There was no mechanism to indicate errors or other status information.
 
 ## Implementing an HTTP/0.9 Server
-
+Okay, now let's implement the server.
 ```go
-package main
-
-import (
-	"bufio"
-	"log"
-	"net"
-	"net/http"
-	"net/url"
-	"strings"
-)
-
 type Server struct {
 	Addr    string
 	Handler http.Handler
@@ -121,25 +119,40 @@ func (s *Server) ServeAndListen() error {
 		}(conn)
 	}
 }
+```
 
+You can see here that our ServeAndListen() listens on the configured TCP port and then loops forever, accepting and handling new connections in separate goroutines. Handling a connection is very simple in HTTP/0.9 because clients can only create a new connection, send a single request and then the connection is closed. This code reads the first line given by the user and then calls `strings.Fields` to split the different parts of the request up. As a reminder, this is what the request looks like in HTTP/0.9:
+
+```http
+GET /path/to/resource
+```
+
+Okay, now let's look at what `newWriter` does. ServeHTTP expects a `http.ResponseWriter`, which looks like this:
+```go
+type ResponseWriter interface {
+	Header() Header
+	Write([]byte) (int, error)
+	WriteHeader(statusCode int)
+}
+```
+
+Here's what our HTTP/0.9 looks like:
+```go
 type responseBodyWriter struct {
 	conn net.Conn
 }
 
-// Header implements http.ResponseWriter.
 func (r *responseBodyWriter) Header() http.Header {
-	panic("unsupported with HTTP/0.9")
+	// unsupported with HTTP/0.9
+	return nil
 }
 
-// Write implements http.ResponseWriter.
-// Subtle: this method shadows the method (Conn).Write of responseBodyWriter.Conn.
 func (r *responseBodyWriter) Write(b []byte) (int, error) {
 	return r.conn.Write(b)
 }
 
-// WriteHeader implements http.ResponseWriter.
 func (r *responseBodyWriter) WriteHeader(statusCode int) {
-	panic("unsupported with HTTP/0.9")
+	// unsupported with HTTP/0.9
 }
 
 func newWriter(c net.Conn) http.ResponseWriter {
@@ -147,7 +160,11 @@ func newWriter(c net.Conn) http.ResponseWriter {
 		conn: c,
 	}
 }
+```
+The important thing to note here is that HTTP/0.9 doesn't support status codes or headers so we don't need to do anything in `Header()` and `WriteHeader(statusCode)`
 
+Now let's put it together in a main function:
+```go
 func main() {
     addr := "127.0.0.1:9000"
 	s := Server{
@@ -156,13 +173,17 @@ func main() {
 			w.Write([]byte("Hello World!"))
 		}),
 	}
-    log.Printf("Listing on %s", addr)
+    log.Printf("Listening on %s", addr)
 	if err := s.ServeAndListen(); err != nil {
 		log.Fatal(err)
 	}
 }
 ```
+Note that the HTTP handler is a normal-looking `http.Handler` so this server could work with any existing HTTP router or framework.
 
+See the full source at Github: {{< github-link file="go/server/main.go" >}}.
+
+### Testing the server
 Now we just need to run the server:
 ```shell
 $ go run server/main.go
@@ -173,10 +194,11 @@ Now that we have an HTTP/0.9 server, how do we test it?? Since HTTP/0.9 pretty m
 ```shell
 $ curl --http0.9 http://127.0.0.1:9000/this/is/a/test
 Hello World!
-* Closing connection 0
 ```
 
-You should note that curl is *sending* a request as if it were HTTP/1.1 but appears to treat the body correctly. That's confusing because I told curl to use HTTP/0.9! The `--http0.9` flag impacts how the response is treated. Here's what the curl manpage says about the flag:
+The --http0.9 flag instructs curl to accept the headerless responses of HTTP/0.9.
+
+You should note that curl is *sending* a request as if it were HTTP/1.1 but appears accept to the headerless responses of HTTP/0.9. Here's what the curl manpage says about the flag:
 
 ```shell
        --http0.9
@@ -190,7 +212,6 @@ I verified this behavior a bit more when I mixed `--http1.0` and `--http0.9`. In
 ```shell
 $ curl --http1.0 --http0.9 http://127.0.0.1:9000/this/is/a/test
 Hello World!
-* Closing connection 0
 ```
 
 By the way, if you don't use the `--http0.9` (or if your server returns the status code/headers in a format that doesn't make sense) you will receive an error message, "Received HTTP/0.9 when not allowed":
@@ -199,7 +220,7 @@ $ curl http://127.0.0.1:9000/this/is/a/test
 curl: (1) Received HTTP/0.9 when not allowed
 ```
 
-You can test this server with simpler tools. For example, netcat (`ncat`), can be used to make this same request. This will be a theme for the text-based protocols where often it's simpler just to write text out directly to netcat than it is to use other kinds of tooling:
+You can test this server with simpler tools. For example, [netcat](https://en.wikipedia.org/wiki/Netcat) (`ncat`), can be used to make this same request. This will be a theme for the text-based protocols where often it's simpler just to write text out directly to netcat than it is to use other kinds of tooling:
 
 ```shell
 $ echo GET this/is/a/test | ncat 127.0.0.1 9000
@@ -238,6 +259,7 @@ func main() {
 	fmt.Println(string(body))
 }
 ```
+See the full source at Github: {{< github-link file="go/client/main.go" >}}.
 
 This code does the following:
 
@@ -271,3 +293,4 @@ As we move forward in this series, we'll see how HTTP evolved to address the sho
 Resources:
 - https://www.w3.org/Protocols/HTTP/AsImplemented.html
 - https://ec.haxx.se/http/versions/http09.html
+- https://http.dev/0.9

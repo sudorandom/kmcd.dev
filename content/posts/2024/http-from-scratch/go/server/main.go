@@ -61,20 +61,17 @@ type responseBodyWriter struct {
 	conn net.Conn
 }
 
-// Header implements http.ResponseWriter.
 func (r *responseBodyWriter) Header() http.Header {
-	panic("unsupported with HTTP/0.9")
+	// unsupported with HTTP/0.9
+	return nil
 }
 
-// Write implements http.ResponseWriter.
-// Subtle: this method shadows the method (Conn).Write of responseBodyWriter.Conn.
 func (r *responseBodyWriter) Write(b []byte) (int, error) {
 	return r.conn.Write(b)
 }
 
-// WriteHeader implements http.ResponseWriter.
 func (r *responseBodyWriter) WriteHeader(statusCode int) {
-	panic("unsupported with HTTP/0.9")
+	// unsupported with HTTP/0.9
 }
 
 func newWriter(c net.Conn) http.ResponseWriter {
@@ -91,7 +88,7 @@ func main() {
 			w.Write([]byte("Hello World!"))
 		}),
 	}
-	log.Printf("Listing on %s", addr)
+	log.Printf("Listening on %s", addr)
 	if err := s.ServeAndListen(); err != nil {
 		log.Fatal(err)
 	}
