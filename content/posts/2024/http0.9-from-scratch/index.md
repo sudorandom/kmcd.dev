@@ -14,7 +14,7 @@ title: "HTTP/0.9 From Scratch"
 slug: "http0.9-from-scratch"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
+canonical_url: https://kmcd.dev/posts/http0.9-from-scratch/
 featured: false
 featuredTitle: "Series: HTTP From Scratch"
 ---
