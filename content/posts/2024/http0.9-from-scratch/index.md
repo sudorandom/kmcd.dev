@@ -5,19 +5,18 @@ series: ["HTTP from Scratch"]
 date: "2024-07-30"
 description: "Building the foundation with HTTP/0.9"
 cover: "cover.jpg"
-images: ["/posts/http-from-scratch/cover.jpg"]
+images: ["/posts/http1.0-from-scratch/cover.jpg"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "HTTP From Scratch: Part 1 - HTTP/0.9"
-slug: "http-from-scratch"
+title: "HTTP/0.9 From Scratch"
+slug: "http0.9-from-scratch"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/http-from-scratch/
+canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
 featured: false
 featuredTitle: "Series: HTTP From Scratch"
-draft: true
 ---
 
 ## Introduction
