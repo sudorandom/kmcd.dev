@@ -53,6 +53,7 @@ draft: true
 ### HTTP Methods
 - Explain the role of different HTTP methods (GET, POST, HEAD, etc.).
 - Provide brief examples of how each method is used.
+
 ### Status Codes
 - Discuss the importance of status codes in providing feedback to the client.
 - Explain the different categories of status codes (1xx Informational, 2xx Success, 3xx Redirection, 4xx Client Error, 5xx Server Error).
@@ -63,6 +64,7 @@ draft: true
     - Parsing and interpreting headers in the request.
     - Handling optional request bodies.
     - Generating status lines and headers in the response.
+    - We're NOT going to maintain backward compatibility with HTTP/0.9 because the semantics of returning a response just isn't compatible and it can be dangerous to support it alongside later versions.
 - Provide code snippets for the updated server implementation.
 
 ## Testing the Implementation

@@ -20,7 +20,7 @@ featuredTitle: "Series: HTTP From Scratch"
 ---
 
 ## Introduction
-Welcome to the first installment of our "HTTP from Scratch" blog series! In this series, we'll embark on a journey through the evolution of the Hypertext Transfer Protocol (HTTP), the backbone of the World Wide Web. By building simple implementations of each major HTTP version, we'll gain a deep understanding of how this essential protocol has shaped the internet we use every day and how it has evolved to what we have now.
+Welcome to the first installment of our "HTTP from Scratch" blog series! In this series, we'll embark on a journey through the evolution of the Hypertext Transfer Protocol (HTTP), the backbone of the World Wide Web. By building simple implementations of each major HTTP version in Go, we'll gain a deep understanding of how this essential protocol has shaped the internet we use every day and how it has evolved to what we have now. *Be warned that none of the code will be the most performant, secure or featureful.*
 
 In this post, we'll travel back to the early days of the web (1991) and explore [HTTP/0.9][1], HTTP's initial incarnation. At the time, HTTP/0.9 was a groundbreaking technology that enabled the first web browsers and servers to communicate, laying the foundation for the World Wide Web that we know today. But HTTP/0.9 had its limitations. We'll discuss these shortcomings, which ultimately paved the way for subsequent versions of HTTP that introduced features like headers, status codes, and support for additional HTTP methods, connection reuse, binary framing and, eventually, abandoning TCP for UDP for better reliability and performance. For a more formal description of the HTTP/0.9 specification, you can reference [http.dev][1] or [w3.org][2].
 
