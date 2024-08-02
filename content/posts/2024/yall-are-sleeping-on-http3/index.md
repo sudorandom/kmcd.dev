@@ -30,7 +30,7 @@ In a short few years **[over 30% of web traffic is served with HTTP/3](https://w
 
 {{< bigtext >}}***HTTP/3 isn't the future. It's the present.***{{< /bigtext >}}
 
-Every time I mention HTTP/3 there's always someone who pops up who's completely unaware that it even exists, thinks that it's some minor change or thinks that supporting HTTP/3 is cargo cult behavior. If that last point didn't make sense to you, good. I think the phrase "cargo cult" has been so misused in the tech industry that it has become useless. Anyway, every web developer should probably know that HTTP/3 exists because HTTP/3 is a giant change. HTTP/3 abandons TCP in favor of a channel-aware UDP-based protocol called QUIC. To me, ***this feels important!*** This feels like people need to be talking about it, doing more experiments around QUIC, and writing more tooling, security analysis and benchmarks. QUIC has the potential to dethrone TCP as the reliable layer 4 protocol.
+Every time I mention HTTP/3 there's always someone who pops up who's completely unaware that it even exists, thinks that it's some minor change or thinks that supporting HTTP/3 is cargo cult behavior. Every web developer should probably know that HTTP/3 exists because HTTP/3 is a giant change. HTTP/3 abandons TCP in favor of a channel-aware UDP-based protocol called QUIC. To me, ***this feels important!*** This feels like people need to be talking about it, doing more experiments around QUIC, and writing more tooling, security analysis and benchmarks. QUIC has the potential to dethrone TCP as the reliable layer 4 protocol. This is a big deal.
 
 Why should you care about HTTP/3 if you're not a big nerd who likes learning about network protocols? Because it promises to bring a lot of advantages: faster page loads, smoother video streaming, and more resilient connections. Plus, I think web developers need to know about the foundations of their profession. And this foundation has been changing. Rapidly.
 
@@ -38,13 +38,13 @@ Why should you care about HTTP/3 if you're not a big nerd who likes learning abo
 
 ## What's wrong with TCP?
 ### Multiple streams: One Connection
-There are issues with multiplexing multiple streams onto one TLS-backed connection. This is because of TCP's ordering guarantee. It doesn't know about the higher-level protocol's streams so data delivery can be blocked simply because TCP is waiting on packets belonging to an irrelevant stream. This is the so-called [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) problem that still exists with HTTP/2 because it is built on top of TCP. Why is this important for the web? Because new HTTP/2 connections are fairly expensive and require multiple round-trips to negotiate. You need a round trip for TCP and two round trips for TLS.
+There are issues with multiplexing multiple streams onto one TCP-backed connection. This is because of TCP's ordering guarantee. It doesn't know about the higher-level protocol's streams so data delivery can be blocked simply because TCP is waiting on packets belonging to an irrelevant stream. This is the so-called [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) problem that still exists with HTTP/2 because it is built on top of TCP. Why is this important for the web? Because new HTTP/2 connections are fairly expensive and require multiple round-trips to negotiate. You need a round trip for TCP and two round trips for TLS.
 
 ### It isn't good in dynamic network environments
 As mentioned in the last section, TCP connections are slow to set up because of the number of round trips required. In environments that change often, causing your web clients to switch networks (and client IP addresses), the clients will have to re-establish an entirely new connection each time you switch networks. Think about the large pause that happens when you switch wifi networks while using video chat. That's exactly this issue. TCP was not designed to handle this situation without that pause. In the following section, I'm going to tell you how QUIC (and HTTP/3) handles this situation in a much more reliable and smooth way. This is extremely relevant today in a world where mobile phones can choose to swap between multiple wifi and mobile networks.
 
 ### Why can’t I use wi-fi and mobile at the same time?
-This is actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but rollout has been slow and difficult for TCP.
+This *is* actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but the rollout has been slow and difficult for TCP.
 
 ## Enter: QUIC and HTTP/3
 ### Faster Connections
@@ -72,6 +72,7 @@ So, while the "UDP is unreliable" mantra might have been true in the past, proto
 
 ## Let's see how far we've come
 Okay, so I mentioned how available HTTP/3 is a few times now. But let's look at the specifics: browser support, cloud support and support when self-hosting.
+
 {{< image src="tech-elite.png" width="600px" class="center" >}}
 
 ### Web Browsers
