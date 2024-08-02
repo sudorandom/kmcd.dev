@@ -157,6 +157,13 @@ From the graph below you can see that in a short few years, HTTP/3 usage is rapi
 
 I will be honest though, other sources, such as [Cloudflare](https://blog.cloudflare.com/http3-usage-one-year-on) and [Internet Society Pulse](https://pulse.internetsociety.org/technologies), present a slightly different picture, with HTTP/2 still handling a significant portion of traffic.
 
+### Why don't web developers know about this?
+Well, simply put, none of this really intersects with them in any meaningful way. You can't even tell what version of HTTP your browser is making from Javascript. No, [not even with the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Response). I recently looked into this because I wanted to print out the version of HTTP being used when loading my website in [a tool that I made](/http/) but I had to resort to [adding headers to the response via Cloudflare](https://developers.cloudflare.com/ruleset-engine/rules-language/fields/) to get that information. Because of all of this, I'm certain that there's a large number of web developers who have no idea that their website is using HTTP/3.
+
+{{< image src="the-same.png" width="400px" class="center" >}}
+
+If you want to know which version of HTTP your browser is calling your website with, most browser inspector interfaces can show the version used by going to the network tab, right-clicking the headers and adding "Protocol" to the list of columns to show.
+
 ## Challenges Ahead
 There are two main areas to focus on with QUIC: adding more tooling and language support for the protocol.
 
@@ -180,18 +187,18 @@ However, the momentum is undeniable. With major browsers, cloud providers, and l
 So, what are you waiting for? If you're a web developer or tech enthusiast, now is the time to dive into QUIC and start exploring its potential. Experiment with new applications, build innovative tools and share your findings with the community. I've started doing this by [trying HTTP/3 with gRPC](/posts/grpc-over-http3/). The future of the internet is being written in QUIC, and you can be a part of it.
 
 Here's a link dump of more resources on this topic that I used in my research. Maybe it is useful for others:
-- https://datatracker.ietf.org/doc/html/rfc9114
-- https://datatracker.ietf.org/doc/rfc9000/
-- https://www.fastly.com/blog/measuring-quic-vs-tcp-computational-efficiency/
-- https://github.com/lxin/quic
-- https://www.chromium.org/quic/
-- https://codilime.com/blog/http3-protocol/
-- https://http3-explained.haxx.se/en
-- https://caniuse.com/http3
-- https://sanjeev41924.medium.com/http-3-challenges-to-security-and-possible-response-e81f429506e0
-- https://pulse.internetsociety.org/blog/the-challenges-ahead-for-http-3
-- https://medium.com/tech-internals-conf/http-3-shiny-new-thing-or-more-issues-6e4fe14e52ea
-- https://w3techs.com/technologies/history_overview/site_element/all/y
-- https://blog.apnic.net/2023/09/25/why-http-3-is-eating-the-world/
-- https://blog.apnic.net/2023/10/02/how-quic-helps-you-seamlessly-connect-to-different-networks/
-- https://lwn.net/Articles/965134/
+- [HTTP/3 Spec (RFC 9114)](https://datatracker.ietf.org/doc/html/rfc9114)
+- [QUIC Spec (RFC 9000)](https://datatracker.ietf.org/doc/rfc9000/)
+- [QUIC matches TCP's efficiency, says our research. | Fastly](https://www.fastly.com/blog/measuring-quic-vs-tcp-computational-efficiency/)
+- [QUIC in Linux Kernel](https://github.com/lxin/quic)
+- [Chromium's document on QUIC](https://www.chromium.org/quic/)
+- [HTTP/3 Protocol — Performance and Security Implications](https://codilime.com/blog/http3-protocol/)
+- [HTTP/3 explained](https://http3-explained.haxx.se/en)
+- [Can I Use HTTP/3](https://caniuse.com/http3)
+- [HTTP/3 — Challenges to security and possible response](https://sanjeev41924.medium.com/http-3-challenges-to-security-and-possible-response-e81f429506e0)
+- [The Challenges Ahead for HTTP/3](https://pulse.internetsociety.org/blog/the-challenges-ahead-for-http-3)
+- [HTTP/3: Shiny New Thing, or More Issues?](https://medium.com/tech-internals-conf/http-3-shiny-new-thing-or-more-issues-6e4fe14e52ea)
+- [W3 Techs - Historical yearly trends in the usage statistics of site elements for websites](https://w3techs.com/technologies/history_overview/site_element/all/y)
+- [Why HTTP/3 is eating the world](https://blog.apnic.net/2023/09/25/why-http-3-is-eating-the-world/)
+- [How QUIC helps you seamlessly connect to different networks](https://blog.apnic.net/2023/10/02/how-quic-helps-you-seamlessly-connect-to-different-networks/)
+- [net: In-kernel QUIC implementation with Userspace handshake](https://lwn.net/Articles/965134/)
