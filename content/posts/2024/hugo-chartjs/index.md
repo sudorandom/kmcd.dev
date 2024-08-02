@@ -70,7 +70,7 @@ and a chart will be generated using chart.js. A few full examples are below:
         'Apr',
         'May',
         'June',
-        'Juny'
+        'July'
       ],
     datasets: [{
       label: 'My First Dataset',
@@ -95,7 +95,7 @@ and a chart will be generated using chart.js. A few full examples are below:
         'Apr',
         'May',
         'June',
-        'Juny'
+        'July'
       ],
     datasets: [{
       label: 'My First Dataset',
