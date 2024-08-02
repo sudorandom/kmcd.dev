@@ -38,13 +38,13 @@ Why should you care about HTTP/3 if you're not a big nerd who likes learning abo
 
 ## What's wrong with TCP?
 ### Multiple streams: One Connection
-There are issues with multiplexing multiple streams onto one TCP-backed connection. This is because of TCP's ordering guarantee. It doesn't know about the higher-level protocol's streams so data delivery can be blocked simply because TCP is waiting on packets belonging to an irrelevant stream. This is the so-called [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) problem that still exists with HTTP/2 because it is built on top of TCP. Why is this important for the web? Because new HTTP/2 connections are fairly expensive and require multiple round-trips to negotiate. You need a round trip for TCP and two round trips for TLS.
+There are issues with multiplexing multiple streams onto one TCP-backed connection. This is because of TCP's ordering guarantee. It doesn't distinguish between data streams from higher-level protocols, so the delivery of one stream can be blocked if TCP is waiting for packets from another, unrelated stream. This is the so-called [head-of-line blocking](https://http3-explained.haxx.se/en/why-quic/why-tcphol) problem that still exists with HTTP/2 because it is built on top of TCP. Why is this important for the web? Because new HTTP/2 connections are fairly expensive and require multiple round-trips to negotiate. You need a round trip for TCP and two round trips for TLS.
 
 ### It isn't good in dynamic network environments
 As mentioned in the last section, TCP connections are slow to set up because of the number of round trips required. In environments that change often, causing your web clients to switch networks (and client IP addresses), the clients will have to re-establish an entirely new connection each time you switch networks. Think about the large pause that happens when you switch wifi networks while using video chat. That's exactly this issue. TCP was not designed to handle this situation without that pause. In the following section, I'm going to tell you how QUIC (and HTTP/3) handles this situation in a much more reliable and smooth way. This is extremely relevant today in a world where mobile phones can choose to swap between multiple wifi and mobile networks.
 
-### Why can’t I use wi-fi and mobile at the same time?
-This *is* actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but the rollout has been slow and difficult for TCP.
+### Why can’t I use wifi and mobile at the same time?
+This *is* actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but the rollout has been slow and difficult for TCP. Below I will tell you how QUIC's built-in support for connection migration and 0-RTT resumption offers a smoother and more efficient solution to this problem.
 
 ## Enter: QUIC and HTTP/3
 ### Faster Connections
@@ -62,7 +62,7 @@ Unlike TCP+HTTP/2, multiple streams of data can be sent over a single connection
 QUIC's [more responsive congestion control](https://www.catchpoint.com/http2-vs-http3/quic-vs-tcp) leads to faster recovery from packet loss.
 
 ### "But I heard UDP is unreliable"
-It's a common misconception that UDP is inherently unreliable compared to TCP. TCP packets are just as unreliable, but they transparently get retried by TCP implementations. Therefore, heavy packet loss in TCP looks like a slower connection. While it is true that UDP doesn't offer the same built-in guarantees as TCP, QUIC implements the same guarantees on top of UDP.
+It's a common misconception that UDP is inherently unreliable compared to TCP. TCP packets are just as unreliable, but they transparently get retried by TCP client and server implementations. In other words, both TCP and UDP packets can be lost or corrupted during transmission; the difference lies in how they handle those errors. While it is true that UDP doesn't offer the same built-in guarantees as TCP, QUIC implements the same guarantees on top of UDP.
 
 Think of it like this: TCP is like a delivery service that meticulously tracks every package and resends any that go missing. UDP, on the other hand, is more like a bulk mailer, sending out a flood of letters and hoping most of them arrive. However, QUIC builds its own tracking system on top of UDP, ensuring reliable delivery of data.
 
