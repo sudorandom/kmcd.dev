@@ -161,7 +161,9 @@ Well, simply put, none of this really intersects with them in any meaningful way
 
 {{< image src="the-same.png" width="400px" class="center" >}}
 
-If you want to know which version of HTTP your browser is calling your website with, most browser inspector interfaces can show the version used by going to the network tab, right-clicking the headers and adding "Protocol" to the list of columns to show.
+If you want to know which version of HTTP your browser is using when loading your website, most browser inspector interfaces can show this by going to the network tab, right-clicking the headers and adding "Protocol" to the list of columns to show. It also usually shows the protocol when you look at the details of each request.
+
+{{< image src="inspector.png" width="600px" class="center" >}}
 
 ## Challenges Ahead
 There are two main areas to focus on with QUIC: adding more tooling and language support for the protocol.
