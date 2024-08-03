@@ -2,7 +2,7 @@
 categories: ["article"]
 tags: ["networking", "http", "go", "golang", "tutorial"]
 series: ["HTTP from Scratch"]
-date: "2024-08-06"
+date: "2024-08-13"
 description: "The final shape of the web forms."
 cover: "cover.jpg"
 images: ["/posts/http1.0-from-scratch/cover.jpg"]

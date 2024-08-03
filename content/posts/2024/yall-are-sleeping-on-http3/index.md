@@ -14,7 +14,6 @@ slug: "yall-are-sleeping-on-http3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/yall-are-sleeping-on-http3/
-draft: true
 ---
 
 ## Wake up call
@@ -44,7 +43,7 @@ There are issues with multiplexing multiple streams onto one TCP-backed connecti
 As mentioned in the last section, TCP connections are slow to set up because of the number of round trips required. In environments that change often, causing your web clients to switch networks (and client IP addresses), the clients will have to re-establish an entirely new connection each time you switch networks. Think about the large pause that happens when you switch wifi networks while using video chat. That's exactly this issue. TCP was not designed to handle this situation without that pause. In the following section, I'm going to tell you how QUIC (and HTTP/3) handles this situation in a much more reliable and smooth way. This is extremely relevant today in a world where mobile phones can choose to swap between multiple wifi and mobile networks.
 
 ### Why can’t I use wifi and mobile at the same time?
-This *is* actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but the rollout has been slow and difficult for TCP. Below I will tell you how QUIC's built-in support for connection migration and 0-RTT resumption offers a smoother and more efficient solution to this problem.
+This *is* actually possible with TCP, using a feature called [multipath TCP](https://www.multipath-tcp.org/), but the rollout has been slow and difficult for TCP. QUIC's built-in support for connection migration and 0-RTT resumption offers a smoother and more efficient solution to this problem, potentially enabling true multipath connectivity in the future.
 
 ## Enter: QUIC and HTTP/3
 ### Faster Connections
@@ -56,7 +55,7 @@ First off, QUIC requires far fewer round trips to set up an encrypted connection
 I mentioned earlier how the rollout of multipath for TCP hasn't been super successful. With the features to support 0-RTT, support for multipath is essentially built-in, so you may see more concurrent usage of wifi, ethernet and mobile networks in the future.
 
 ### Multiplexing
-Unlike TCP+HTTP/2, multiple streams of data can be sent over a single connection concurrently without blocking each other because guaranteed ordering happens at the stream level, not for the entire connection. [This completely fixes the head-of-line blocking issue](https://http.dev/3#the-quic-protocol-and-limitations-with-tcp) mentioned above.
+In contrast to TCP+HTTP/2, QUIC ensures that packet loss or delays on one stream don't impact others. This is because QUIC manages ordering guarantees at the individual stream level, not for the entire connection, effectively [eliminating head-of-line blocking](https://http.dev/3#the-quic-protocol-and-limitations-with-tcp).
 
 ### Improved Congestion Control
 QUIC's [more responsive congestion control](https://www.catchpoint.com/http2-vs-http3/quic-vs-tcp) leads to faster recovery from packet loss.
@@ -151,7 +150,7 @@ Take a look at the comparative usage of HTTP/2 and HTTP/3 over the last few year
 {{< /chart >}}
 [Source: w3techs.com](https://w3techs.com/technologies/history_overview/site_element/all/y)
 
-From the graph below you can see that in a short few years, HTTP/3 usage is rapidly approaching the same usage as HTTP/2. We had "peak HTTP/2" in 2021 and maybe next year we will see HTTP/3 overtake HTTP/2 to be the de-facto standard for new web deployments. If I were to guess, I think HTTP/2 might be deprecated sooner than HTTP/1.1.
+From this graph, you can see that in a short few years, HTTP/3 usage is rapidly approaching the same usage as HTTP/2. We had "peak HTTP/2" in 2021 and maybe next year we will see HTTP/3 overtake HTTP/2 to be the de-facto standard for new web deployments. If I were to guess, I think HTTP/2 might be deprecated sooner than HTTP/1.1.
 
 {{< image src="reaper.png" width="600px" class="center" >}}
 
@@ -186,7 +185,7 @@ However, the momentum is undeniable. With major browsers, cloud providers, and l
 
 So, what are you waiting for? If you're a web developer or tech enthusiast, now is the time to dive into QUIC and start exploring its potential. Experiment with new applications, build innovative tools and share your findings with the community. I've started doing this by [trying HTTP/3 with gRPC](/posts/grpc-over-http3/). The future of the internet is being written in QUIC, and you can be a part of it.
 
-Here's a link dump of more resources on this topic that I used in my research. Maybe it is useful for others:
+If you want to learn more, here are a lot of resources that I used to research for this article:
 - [HTTP/3 Spec (RFC 9114)](https://datatracker.ietf.org/doc/html/rfc9114)
 - [QUIC Spec (RFC 9000)](https://datatracker.ietf.org/doc/rfc9000/)
 - [QUIC matches TCP's efficiency, says our research. | Fastly](https://www.fastly.com/blog/measuring-quic-vs-tcp-computational-efficiency/)

@@ -114,7 +114,7 @@ The `@bufbuild/protobuf/unknown-fields` field shows the field number, protobuf w
 2:LEN {"Bob"}
 3:LEN {"bob@example.com"}
 ```
-*Our email field is there!* Even though our application isn't updated to know about the email field when we write back the protobuf object (maybe with some changes) the unknown field comes along with it. [This is configurable](https://github.com/bufbuild/protobuf-es/blob/main/docs/runtime_api.md#binary-serialization-options) because this may not be the desired behavior in every case.
+*Our email field is there!* Even though our application isn't updated to know about the email field when we write back the protobuf object (maybe with some changes) the unknown field comes along with it. [This is configurable](https://github.com/bufbuild/protobuf-es/blob/main/MANUAL.md#serialization) because this may not be the desired behavior in every case.
 
 This scenario does pre-suppose that you write your frontend in a specific way, where changes are written back to the same protobuf message object that you used when fetching the user data initially and that same message is sent in the subsequent edit user request. However, that's often not a crazy pattern to adopt that may save you from potential data loss when introducing new features that aren't immediately supported everywhere.
 
