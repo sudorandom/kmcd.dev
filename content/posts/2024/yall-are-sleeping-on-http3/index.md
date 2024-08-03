@@ -175,17 +175,17 @@ Even though browsers and load balancers have good support for QUIC, most program
 From what I've seen, there's no well-supported kernel module for QUIC. There exist some projects that do [add a kernel module for Linux](https://github.com/lxin/quic) but it doesn't seem like it's heavily used yet. TCP has benefitted a lot from being backed by OS kernels, which gives it performance optimizations not available in user space but that strength is also a weakness. TCP is now hard to change and adapt. It appears like QUIC has evolved much quicker because of its user-space implementations, but should it stay there? Should there be [a hybrid approach](https://lwn.net/Articles/965134/) that could give a balance of flexibility and performance advantages? To me, those are open questions and I'm curious how this will unfold over time.
 
 ### Naysayers
-Since QUIC does present a lot of changes, there are people ([mostly network engineers](https://www.reddit.com/r/networking/comments/148qz1f/why_is_there_a_general_hostility_to_quic_by/)) who do not like the quick adoption of QUIC. Here are some of the complaints:
+Since QUIC does present a lot of changes, there are people, [mostly network engineers](https://www.reddit.com/r/networking/comments/148qz1f/why_is_there_a_general_hostility_to_quic_by/), who do not like the quick adoption of QUIC. Here are some of the complaints:
 
 - Most web traffic is a bloated mess anyway, and the additional few milliseconds it takes to stand up a TCP connection doesn't account for a large amount of bloat in modern web applications.
 - QUIC makes it more difficult for network administrators to monitor and inspect traffic.
 - [QUIC induces more CPU overhead](https://news.ycombinator.com/item?id=39169357), as it doesn't have decades of optimization that TCP has.
-- QUIC is a relatively new protocol, and there may still be undiscovered bugs or vulnerabilities, especially with so many languages re-implementing the protocol.
+- QUIC is a relatively new protocol, and there may still be undiscovered bugs or vulnerabilities, especially with so many languages/platforms re-implementing the protocol.
 - Since QUIC is being implemented separately by many different languages so far, there's a greater chance for bugs and security exploits.
 
-Further, many argue that the benefits just don't outweigh the risks. I don't think I agree. I think these network engineers are discounting just how much traffic comes from mobile or dynamic (sketchy) wifi environments.
+Further, many argue that the benefits just don't outweigh the risks. I don't think I agree. I think these network engineers are discounting just how much traffic comes from mobile or dynamic (sketchy) wifi environments. However, I am surprised at how quickly and the method by which QUIC has been rolled out. Should we pump the brakes or is it too late?
 
-However, I am surprised at how quickly and the method by which QUIC has been rolled out. Should we pump the brakes or is it too late?
+{{< image src="angry-neteng.png" width="600px" class="center" >}}
 
 ## The Future is QUIC
 HTTP/3 and QUIC are more than just incremental improvements; they represent a fundamental shift in how we build the web. By overcoming the limitations of TCP, QUIC offers a faster, more reliable, and more secure foundation for modern Internet communication.
