@@ -197,6 +197,7 @@ But QUIC's potential extends far beyond the web. Its ability to handle real-time
 - [Hysteria: Censorship-resistant proxy](https://github.com/apernet/hysteria)
 - [Cloudflare Tunnels](https://blog.cloudflare.com/getting-cloudflare-tunnels-to-connect-to-the-cloudflare-network-with-quic)
 - [Media over QUIC](https://quic.video/)
+- [WebTransport (based on HTTP/3) was decided on in gRPC-Web](https://github.com/grpc/grpc-web/blob/master/doc/roadmap.md) to support bidirectional streams
 
 While the transition to HTTP/3 is well underway, it's far from complete. There are still challenges to overcome, such as improving tooling, expanding language support, and ensuring compatibility with existing infrastructure.
 

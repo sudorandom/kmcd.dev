@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -21,8 +23,9 @@ type Server struct {
 }
 
 func (s *Server) ServeAndListen() error {
-	if s.Handler == nil {
-		panic("http server started without a handler")
+	handler := s.Handler
+	if handler == nil {
+		handler = http.DefaultServeMux
 	}
 	l, err := net.Listen("tcp", s.Addr)
 	if err != nil {
@@ -33,7 +36,7 @@ func (s *Server) ServeAndListen() error {
 	for {
 		conn, err := l.Accept()
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		go func() {
@@ -59,13 +62,17 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	if !found {
 		return errors.New("invalid method")
 	}
+	if !methodValid(req.Method) {
+		return errors.New("invalid method")
+	}
 	req.RequestURI, reqLine, found = strings.Cut(reqLine, " ")
 	if !found {
 		return errors.New("invalid path")
 	}
 	req.Proto, _, _ = strings.Cut(reqLine, " ")
 	if len(req.Proto) == 0 {
-		req.Proto = "HTTP/0.9"
+		// NOTE: we're just going to assume HTTP/1.0 if the request line doesn't contain the HTTP version
+		req.Proto = "HTTP/1.0"
 	}
 	req.ProtoMajor, req.ProtoMinor, found = parseProtocol(req.Proto)
 	if !found {
@@ -76,13 +83,24 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		return fmt.Errorf("invalid path: %w", err)
 	}
 	req.RemoteAddr = conn.RemoteAddr().String()
+	req.Header = make(http.Header)
+	for {
+		line, err := reader.ReadLineBytes()
+		if err != nil && err != io.EOF {
+			return err
+		} else if err != nil {
+			break
+		}
+		if len(line) == 0 {
+			break
+		}
 
-	mimeHeader, err := reader.ReadMIMEHeader()
-	if err != nil {
-		return err
+		k, v, ok := bytes.Cut(line, []byte{':'})
+		if !ok {
+			return errors.New("invalid header")
+		}
+		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
-	req.Header = http.Header(mimeHeader)
-	// TODO: set up body, if it exists
 
 	s.Handler.ServeHTTP(&responseBodyWriter{
 		proto:   req.Proto,
@@ -102,6 +120,14 @@ func parseProtocol(proto string) (int, int, bool) {
 		return 1, 1, true
 	}
 	return 0, 0, false
+}
+
+func methodValid(method string) bool {
+	switch method {
+	case http.MethodGet, http.MethodHead, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete, http.MethodConnect, http.MethodOptions, http.MethodTrace:
+		return true
+	}
+	return false
 }
 
 type responseBodyWriter struct {
@@ -141,7 +167,7 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 	for k, vals := range r.headers {
 		for _, val := range vals {
 			io.WriteString(r.conn, k)
-			r.conn.Write([]byte{':'})
+			r.conn.Write([]byte{':', ' '})
 			io.WriteString(r.conn, val)
 			r.conn.Write([]byte{'\r', '\n'})
 		}
@@ -151,11 +177,15 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 
 func main() {
 	addr := "127.0.0.1:9000"
+	mux := http.NewServeMux()
+	mux.Handle("/blog", http.FileServer(http.Dir("public")))
+	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("content-type", "application/json")
+		json.NewEncoder(w).Encode(r.Header)
+	})
 	s := Server{
-		Addr: addr,
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello World!"))
-		}),
+		Addr:    addr,
+		Handler: mux,
 	}
 	log.Printf("Listening on %s", addr)
 	if err := s.ServeAndListen(); err != nil {
