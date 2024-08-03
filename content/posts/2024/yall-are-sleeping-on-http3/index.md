@@ -179,7 +179,11 @@ HTTP/3 and QUIC are more than just incremental improvements; they represent a fu
 
 The benefits are clear: faster page loads, smoother video streaming, more responsive applications, and seamless transitions between networks. This translates to a better user experience, increased engagement, and ultimately, a more vibrant and dynamic internet.
 
-But QUIC's potential extends far beyond the web. Its ability to handle real-time communication, coupled with its built-in security features, makes it an attractive option for applications like online gaming, video conferencing, and more.
+But QUIC's potential extends far beyond the web. Its ability to handle real-time communication, coupled with its built-in security features, makes it an attractive option for applications like [online gaming](https://daposto.medium.com/quic-for-gamenetworking-46cf23936228), [video conferencing](https://quic.video/blog/replacing-webrtc/), and more. There are already some big projects built on QUIC:
+- [SSH3: SSH using QUIC](https://github.com/francoismichel/ssh3)
+- [Hysteria: Censorship-resistant proxy](https://github.com/apernet/hysteria)
+- [Cloudflare Tunnels](https://blog.cloudflare.com/getting-cloudflare-tunnels-to-connect-to-the-cloudflare-network-with-quic)
+- [Media over QUIC](https://quic.video/)
 
 While the transition to HTTP/3 is well underway, it's far from complete. There are still challenges to overcome, such as improving tooling, expanding language support, and ensuring compatibility with existing infrastructure.
 
