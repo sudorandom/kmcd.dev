@@ -150,7 +150,7 @@ Take a look at the comparative usage of HTTP/2 and HTTP/3 over the last few year
 {{< /chart >}}
 [Source: w3techs.com](https://w3techs.com/technologies/history_overview/site_element/all/y)
 
-From this graph, you can see that in a short few years, HTTP/3 usage is rapidly approaching the same usage as HTTP/2. We had "peak HTTP/2" in 2021 and maybe next year we will see HTTP/3 overtake HTTP/2 to be the de-facto standard for new web deployments. If I were to guess, I think HTTP/2 might be deprecated sooner than HTTP/1.1.
+From this graph, you can see that in a short few years, HTTP/3 usage is rapidly approaching the same usage as HTTP/2. We had "peak HTTP/2" in 2021 and maybe next year we will see HTTP/3 overtake HTTP/2 to be the de-facto standard for new web deployments.
 
 {{< image src="reaper.png" width="600px" class="center" >}}
 
