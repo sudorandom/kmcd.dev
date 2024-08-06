@@ -181,7 +181,6 @@ Since QUIC does present a lot of changes, there are people, [mostly network engi
 - QUIC makes it more difficult for network administrators to monitor and inspect traffic.
 - [QUIC induces more CPU overhead](https://news.ycombinator.com/item?id=39169357), as it doesn't have decades of optimization that TCP has.
 - QUIC is a relatively new protocol, and there may still be undiscovered bugs or vulnerabilities, especially with so many languages/platforms re-implementing the protocol.
-- Since QUIC is being implemented separately by many different languages so far, there's a greater chance for bugs and security exploits.
 
 Further, many argue that the benefits just don't outweigh the risks. I don't think I agree. I think these network engineers are discounting just how much traffic comes from mobile or dynamic (sketchy) wifi environments. However, I am surprised at how quickly and the method by which QUIC has been rolled out. Should we pump the brakes or is it too late?
 

@@ -19,64 +19,88 @@ draft: true
 ---
 
 ## Introduction
-- Recap the key points from the previous article about HTTP/0.9.
-- Introduce HTTP/1.0 as the next major iteration of the protocol, released in 1996.
-- Briefly highlight the key improvements in HTTP/1.0:
-    - Headers for metadata.
-    - Multiple HTTP methods (POST, HEAD, etc.).
-    - Status codes for error handling and response information.
-    - Content negotiation.
-- State the goal of the article: to implement a simple server that can communicate using HTTP/1.0.
+In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today.  
+
+HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
+
+- **Headers:** Metadata that added context and control to requests and responses.
+- **HTTP Methods:** A diverse set of actions (GET, POST, HEAD, etc.) beyond simple retrieval.
+- **Status Codes:** Clear signals about the outcome of requests, paving the way for error handling.
+- **Content Negotiation:** The ability to request specific formats or languages for content.
+
+In this article, we'll journey through the intricacies of HTTP/1.0 and craft a simple Go server that speaks this influential protocol.
 
 ## Understanding HTTP/1.0
 
 ### Request Structure
-- Explain the multi-line format of HTTP/1.0 requests:
-    - Request line (method, path, protocol version).
-    - Headers (key-value pairs for metadata).
-    - Empty line to separate headers from the body (optional for some methods).
-    - Request body (optional).
-- Provide an example of a full HTTP/1.0 request.
 
-### Response Structure
-- Explain the multi-line format of HTTP/1.0 responses:
-    - Status line (protocol version, status code, reason phrase).
-    - Headers (key-value pairs for metadata).
-    - Empty line to separate headers from the body.
-    - Response body.
-- Provide an example of a full HTTP/1.0 response.
+HTTP/1.0 requests follow a structured format:
+
+1. **Request Line:** Specifies the HTTP method (e.g., GET, POST), the requested path, and the protocol version (HTTP/1.0).
+2. **Headers:** Key-value pairs that provide additional information (e.g., `User-Agent`, `Content-Type`, `Referer`).
+3. **Empty Line:**  Signals the end of the headers.
+4. **Request Body (Optional):** Data sent with the request (common with POST).
+
+#### Example
+```http
+GET /index.html HTTP/1.0
+User-Agent: Mozilla/5.0
+Host: www.example.com
+
+(Optional request body)
+```
+
+#### Response Structure
+HTTP/1.0 responses mirror this structure:
+
+1. **Status Line:**  Includes the protocol version, a status code (e.g., 200 OK, 404 Not Found), and a reason phrase.
+2. **Headers:** Similar to request headers, providing metadata about the response.
+3. **Empty Line:** Separates headers from the body.
+4. **Response Body:** The actual content being sent back to the client.
+
+#### Example
+
+```http
+HTTP/1.0 200 OK
+Content-Type: text/html
+Content-Length: 1354
+
+(HTML content here)
+```
 
 ### Headers
-- Discuss the importance of headers in conveying metadata about requests and responses.
-- Explain some common headers (Content-Type, Content-Length, User-Agent, etc.).
+Headers act as messengers, conveying vital information about requests and responses. Some common headers include:
+
+- `Content-Type`:  Indicates the format of the data (text/html, image/jpeg, etc.).
+- `Content-Length`: Specifies the size of the response body.
+- `User-Agent`: Identifies the client software making the request.
 
 ### HTTP Methods
-- Explain the role of different HTTP methods (GET, POST, HEAD, etc.).
-- Provide brief examples of how each method is used.
+HTTP/1.0 introduced a variety of methods:
+
+- **GET:**  Requests a resource.
+- **POST:**  Submits data to be processed by the server.
+- **HEAD:**  Similar to GET, but only requests the headers, not the body.
 
 ### Status Codes
-- Discuss the importance of status codes in providing feedback to the client.
-- Explain the different categories of status codes (1xx Informational, 2xx Success, 3xx Redirection, 4xx Client Error, 5xx Server Error).
-- Provide examples of common status codes (200 OK, 404 Not Found, 500 Internal Server Error, etc.).
+Status codes are essential for communication between the client and server. They fall into categories:
+- **1xx:** Informational.
+- **2xx:** Success.
+- **3xx:** Redirection.
+- **4xx:** Client Error (e.g., 404 Not Found).
+- **5xx:** Server Error (e.g., 500 Internal Server Error).
 
-## Implementing an HTTP/1.0 Server
-- Discuss the modifications needed in the server code to support HTTP/1.0:
-    - Parsing and interpreting headers in the request.
-    - Handling optional request bodies.
-    - Generating status lines and headers in the response.
-    - We're NOT going to maintain backward compatibility with HTTP/0.9 because the semantics of returning a response just isn't compatible and it can be dangerous to support it alongside later versions.
-- Provide code snippets for the updated server implementation.
+## Implementing an HTTP/1.0 Server in Go
+TODO: Implement request bodies...
+
+TODO: Describe each section of the server here
 
 ## Testing the Implementation
-- Demonstrate how to run the server.
-- Show examples of successful requests and responses using different HTTP methods and status codes.
-- Explain how to test error scenarios and content negotiation.
+We'll guide you through testing your server using tools like `curl` or a web browser, showcasing how to interact with different methods, status codes, and headers. We'll also explore how to simulate error scenarios to ensure your server handles them gracefully.
 
 ## Beyond HTTP/1.0
-- Briefly mention the subsequent versions of HTTP (1.1, 2, and 3) and the improvements they introduced.
-- Tease the next article in the series, which will cover the implementation of HTTP/1.1.
+While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP/1.1, HTTP/2, and HTTP/3 brought further enhancements. In our next article, we'll dive into the world of HTTP/1.1, exploring its advancements over HTTP/1.0; reusable connections, the host header to help with making one server handle multiple websites and TLS finally enters the scene.
 
 ## Conclusion
-- Summarize the key takeaways from the article.
-- Emphasize the added flexibility and capabilities of HTTP/1.0 compared to HTTP/0.9.
-- Encourage readers to experiment with the code and explore the protocol further.
+HTTP/1.0 marked a pivotal moment in the evolution of the web. By understanding its core principles and building a simple server, we gain valuable insights into the foundations of modern web communication. As you experiment and explore, remember that this is just the beginning – the web's journey is ongoing!
+

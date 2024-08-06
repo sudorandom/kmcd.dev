@@ -102,12 +102,27 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
 
+	req.Body = &bodyReader{conn: conn, reader: reader.R}
+
 	s.Handler.ServeHTTP(&responseBodyWriter{
 		proto:   req.Proto,
 		conn:    conn,
 		headers: make(http.Header),
 	}, req)
 	return nil
+}
+
+type bodyReader struct {
+	conn   net.Conn
+	reader *bufio.Reader
+}
+
+func (r *bodyReader) Read(p []byte) (n int, err error) {
+	return r.conn.Read(p)
+}
+
+func (r *bodyReader) Close() error {
+	return r.conn.Close()
 }
 
 func parseProtocol(proto string) (int, int, bool) {
@@ -182,6 +197,12 @@ func main() {
 	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "application/json")
 		json.NewEncoder(w).Encode(r.Header)
+	})
+	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		defer r.Body.Close()
+		all, err := io.ReadAll(r.Body)
+		log.Println(all, err)
+		io.Copy(w, r.Body)
 	})
 	s := Server{
 		Addr:    addr,
