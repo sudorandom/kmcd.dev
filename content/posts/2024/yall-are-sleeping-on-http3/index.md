@@ -91,7 +91,7 @@ Next, if you want to host websites with HTTP/3 it would be awesome if cloud prov
 - [Google Cloud CDN and Load Balancer](https://cloud.google.com/blog/products/networking/cloud-cdn-and-load-balancing-support-http3)
 - [AWS CloudFront](https://aws.amazon.com/about-aws/whats-new/2022/08/amazon-cloudfront-supports-http-3-quic/)
 - [Akamai CDN](https://techdocs.akamai.com/property-mgr/docs/http3-support)
-- [Azure Application Gateway](https://techcommunity.microsoft.com/t5/azure-networking-blog/quic-based-http-3-with-application-gateway-feature-information/ba-p/3913972)
+- [Azure Application Gateway](https://techcommunity.microsoft.com/t5/azure-networking-blog/quic-based-http-3-with-application-gateway-feature-information/ba-p/3913972) (not widely available as it's in Private Preview)
 - [CDN77](https://www.cdn77.com/blog/gquic-support-road-to-http3)
 - [Fastly CDN](https://docs.fastly.com/en/guides/enabling-http3-for-fastly-services)
 
@@ -103,6 +103,8 @@ But what if you're setting up your own infrastructure, foregoing the cloud? What
 - [Caddy](https://caddyserver.com/docs/caddyfile/options#section-global-options)
 - [LiteSpeed](https://docs.litespeedtech.com/lsws/cp/cpanel/quic-http3/)
 - [H2O](https://h2o.examp1e.net/configure/http3_directives.html)
+- [traefik](https://doc.traefik.io/traefik/routing/entrypoints/#http3)
+- [haproxy](https://www.haproxy.com/blog/how-to-enable-quic-load-balancing-on-haproxy)
 
 ### Is HTTP/2 already dying?
 Take a look at the comparative usage of HTTP/2 and HTTP/3 over the last few years:
@@ -198,7 +200,7 @@ But QUIC's potential extends far beyond the web. Its ability to handle real-time
 - [Media over QUIC](https://quic.video/)
 - [WebTransport (based on HTTP/3) was decided on in gRPC-Web](https://github.com/grpc/grpc-web/blob/master/doc/roadmap.md) to support bidirectional streams
 
-While the transition to HTTP/3 is well underway, it's far from complete. There are still challenges to overcome, such as improving tooling, expanding language support, and ensuring compatibility with existing infrastructure.
+While the transition to HTTP/3 is well underway, it's far from complete. There are still challenges to overcome, such as improving tooling, expanding language support, and ensuring compatibility with existing infrastructure. And it remains to be seen if HTTP/3 is ready for mass adoption.
 
 However, the momentum is undeniable. With major browsers, cloud providers, and load balancers embracing QUIC, the future is bright. As developers and engineers continue to innovate and build on this foundation, we can expect to see even more exciting possibilities emerge.
 
