@@ -3,12 +3,14 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
 	"log/slog"
+	"math"
 	"net"
 	"net/http"
 	"net/textproto"
@@ -50,8 +52,13 @@ func (s *Server) ServeAndListen() error {
 func (s *Server) handleConnection(conn net.Conn) error {
 	defer conn.Close()
 
-	reader := textproto.NewReader(bufio.NewReader(io.LimitReader(conn, 1024*1014*1)))
-	reqLine, err := reader.ReadLine()
+	// Limit headers to 1MB
+	limitReader := io.LimitReader(conn, 1*1024*1024).(*io.LimitedReader)
+	reader := bufio.NewReader(limitReader)
+	headerReader := textproto.NewReader(bufio.NewReader(reader))
+
+	// Read the request line: GET /path/to/index.html HTTP/1.0
+	reqLine, err := headerReader.ReadLine()
 	if err != nil {
 		return fmt.Errorf("read request line error: %w", err)
 	}
@@ -84,8 +91,9 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	}
 	req.RemoteAddr = conn.RemoteAddr().String()
 	req.Header = make(http.Header)
+	req.Close = true // this is always true for HTTP/1.0
 	for {
-		line, err := reader.ReadLineBytes()
+		line, err := headerReader.ReadLineBytes()
 		if err != nil && err != io.EOF {
 			return err
 		} else if err != nil {
@@ -102,33 +110,65 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
 
-	req.Body = &bodyReader{conn: conn, reader: reader.R}
+	limitReader.N = math.MaxInt64
 
-	s.Handler.ServeHTTP(&responseBodyWriter{
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, http.LocalAddrContextKey, conn.LocalAddr())
+	ctx, cancelCtx := context.WithCancel(ctx)
+	defer cancelCtx()
+	contentLength, err := parseContentLength(req.Header.Get("Content-Length"))
+	if err != nil {
+		return err
+	}
+	req.ContentLength = contentLength
+
+	if req.ContentLength == 0 {
+		req.Body = noBody{}
+	} else {
+		req.Body = &bodyReader{reader: io.LimitReader(reader, req.ContentLength)}
+	}
+
+	w := &responseBodyWriter{
 		proto:   req.Proto,
 		conn:    conn,
 		headers: make(http.Header),
-	}, req)
+	}
+	s.Handler.ServeHTTP(w, req.WithContext(ctx))
+	if !w.sentHeaders {
+		w.sendHeaders(http.StatusOK)
+	}
 	return nil
 }
 
+type noBody struct{}
+
+func (noBody) Read([]byte) (int, error)         { return 0, io.EOF }
+func (noBody) Close() error                     { return nil }
+func (noBody) WriteTo(io.Writer) (int64, error) { return 0, nil }
+
 type bodyReader struct {
-	conn   net.Conn
-	reader *bufio.Reader
+	reader io.Reader
 }
 
 func (r *bodyReader) Read(p []byte) (n int, err error) {
-	return r.conn.Read(p)
+	return r.reader.Read(p)
 }
 
 func (r *bodyReader) Close() error {
-	return r.conn.Close()
+	_, err := io.Copy(io.Discard, r.reader)
+	return err
+}
+
+func parseContentLength(headerval string) (int64, error) {
+	if headerval == "" {
+		return 0, nil
+	}
+
+	return strconv.ParseInt(headerval, 10, 64)
 }
 
 func parseProtocol(proto string) (int, int, bool) {
 	switch proto {
-	case "HTTP/0.9":
-		return 0, 9, true
 	case "HTTP/1.0":
 		return 1, 0, true
 	case "HTTP/1.1":
@@ -168,11 +208,11 @@ func (r *responseBodyWriter) WriteHeader(statusCode int) {
 		slog.Warn(fmt.Sprintf("WriteHeader called twice, second time with: %d", statusCode))
 		return
 	}
-	r.sentHeaders = true
 	r.sendHeaders(statusCode)
 }
 
 func (r *responseBodyWriter) sendHeaders(statusCode int) {
+	r.sentHeaders = true
 	io.WriteString(r.conn, r.proto)
 	r.conn.Write([]byte{' '})
 	io.WriteString(r.conn, strconv.FormatInt(int64(statusCode), 10))
@@ -193,15 +233,14 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 func main() {
 	addr := "127.0.0.1:9000"
 	mux := http.NewServeMux()
-	mux.Handle("/blog", http.FileServer(http.Dir("public")))
+	mux.Handle("/", http.FileServer(http.Dir("public")))
+	mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
 	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "application/json")
 		json.NewEncoder(w).Encode(r.Header)
 	})
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
-		all, err := io.ReadAll(r.Body)
-		log.Println(all, err)
 		io.Copy(w, r.Body)
 	})
 	s := Server{
