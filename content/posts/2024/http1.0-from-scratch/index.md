@@ -18,15 +18,17 @@ canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
 draft: true
 ---
 
+TODO: Add more links to specification sections and callbacks to the previous article.
+
 ## Introduction
 In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today.  
 
 HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
 
 - **Headers:** Metadata that added context and control to requests and responses.
-- **HTTP Methods:** A diverse set of actions (GET, POST, HEAD, etc.) beyond simple retrieval.
-- **Status Codes:** Clear signals about the outcome of requests, paving the way for error handling.
-- **Content Negotiation:** The ability to request specific formats or languages for content.
+- **Methods:** A diverse set of actions (POST, HEAD, PUT, DELETE, etc.) beyond just retrieving documents.
+- **Status Codes:** Clear signals about the outcome of requests, paving the way for better error handling and redirection.
+- **Content Negotiation:** The ability to request specific formats, encoding or languages for content.
 
 In this article, we'll journey through the intricacies of HTTP/1.0 and craft a simple Go server that speaks this influential protocol.
 
@@ -341,10 +343,39 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 - `Write(b []byte)` writes some data and can be called multiple times for streaming the body back to the client. Note that once you start writing the body, the headers will automatically be sent.
 
 ## Testing the Implementation
-We'll guide you through testing your server using tools like `curl` or a web browser, showcasing how to interact with different methods, status codes, and headers. We'll also explore how to simulate error scenarios to ensure your server handles them gracefully.
+
+For this time, I've added a few more handlers to test different aspects of our HTTP server.
+```go
+func main() {
+	addr := "127.0.0.1:9000"
+	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir("public")))
+	mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
+	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("content-type", "application/json")
+		json.NewEncoder(w).Encode(r.Header)
+	})
+	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		defer r.Body.Close()
+		io.Copy(w, r.Body)
+	})
+	s := Server{
+		Addr:    addr,
+		Handler: mux,
+	}
+	log.Printf("Listening on %s", addr)
+	if err := s.ServeAndListen(); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+- TODO: add curl examples
+- TODO: add telnet or nc examples
+- TODO: rendering my blog (screenshots)
 
 ## Beyond HTTP/1.0
-While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP/1.1, HTTP/2, and HTTP/3 brought further enhancements. In my next article, we'll dive into the world of HTTP/1.1, exploring its advancements over HTTP/1.0; reusable connections, chunked encoding, and TLS finally enters the scene.
+While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP/1.1, HTTP/2, and HTTP/3 brought further enhancements. In my next article, we'll dive into the world of HTTP/1.1, exploring its advancements over HTTP/1.0; reusable connections, chunked encoding, and TLS will finally enter the scene.
 
 ## Conclusion
 HTTP/1.0 marked a pivotal moment in the evolution of the web. By understanding its core principles and building a simple server, we gain valuable insights into the foundations of modern web communication. As you experiment and explore, remember that this is just the beginning – the web's journey is ongoing!
