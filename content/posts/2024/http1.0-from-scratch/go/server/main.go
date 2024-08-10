@@ -90,8 +90,8 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		return fmt.Errorf("invalid path: %w", err)
 	}
 	req.RemoteAddr = conn.RemoteAddr().String()
-	req.Header = make(http.Header)
 	req.Close = true // this is always true for HTTP/1.0
+	req.Header = make(http.Header)
 	for {
 		line, err := headerReader.ReadLineBytes()
 		if err != nil && err != io.EOF {
@@ -110,6 +110,7 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
 
+	// Unbound the limit after we've read the headers since the body can be any size
 	limitReader.N = math.MaxInt64
 
 	ctx := context.Background()
@@ -121,7 +122,6 @@ func (s *Server) handleConnection(conn net.Conn) error {
 		return err
 	}
 	req.ContentLength = contentLength
-
 	if req.ContentLength == 0 {
 		req.Body = noBody{}
 	} else {
@@ -142,9 +142,8 @@ func (s *Server) handleConnection(conn net.Conn) error {
 
 type noBody struct{}
 
-func (noBody) Read([]byte) (int, error)         { return 0, io.EOF }
-func (noBody) Close() error                     { return nil }
-func (noBody) WriteTo(io.Writer) (int64, error) { return 0, nil }
+func (noBody) Read([]byte) (int, error) { return 0, io.EOF }
+func (noBody) Close() error             { return nil }
 
 type bodyReader struct {
 	reader io.Reader
