@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["networking", "http", "go", "golang", "tutorial"]
+tags: ["networking", "http", "go", "golang", "tutorial", "web", "webdev"]
 series: ["HTTP from Scratch"]
 date: "2024-07-30"
 description: "Building the foundation with HTTP/0.9"

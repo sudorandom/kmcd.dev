@@ -1,9 +1,9 @@
 ---
 categories: ["article"]
-tags: ["networking", "http", "go", "golang", "tutorial"]
+tags: ["networking", "http", "go", "golang", "tutorial", "web", "webdev"]
 series: ["HTTP from Scratch"]
 date: "2024-08-13"
-description: "The final shape of the web forms."
+description: "Laying the Foundation: Building the Web with HTTP/1.0."
 cover: "cover.jpg"
 images: ["/posts/http1.0-from-scratch/cover.jpg"]
 featured: ""
@@ -19,9 +19,7 @@ draft: true
 ---
 
 ## Introduction
-In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today.
-
-HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
+In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today. HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
 
 - **Headers:** Metadata that added context and control to requests and responses ([RFC 1945 4.2](https://datatracker.ietf.org/doc/html/rfc1945#section-4.2)).
 - **Methods:** A diverse set of actions (POST, HEAD, PUT, DELETE, etc.) beyond just retrieving documents ([RFC 1945 8](https://datatracker.ietf.org/doc/html/rfc1945#section-8)).
@@ -38,7 +36,7 @@ HTTP/1.0 requests follow a structured format:
 
 1. **Request Line:** Specifies the HTTP method (e.g., GET, POST), the requested path, and the protocol version (HTTP/1.0).
 2. **Headers:** Key-value pairs that provide additional information (e.g., `User-Agent`, `Content-Type`, `Referer`).
-3. **Empty Line:**  Signals the end of the headers.
+3. **Empty Line:** Signals the end of the headers.
 4. **Request Body (Optional):** Data sent with the request (common with POST).
 
 #### Example
@@ -53,8 +51,8 @@ Host: www.example.com
 #### Response Structure
 HTTP/1.0 responses mirror this structure:
 
-1. **Status Line:**  Includes the protocol version, a status code (e.g., 200 OK, 404 Not Found), and a reason phrase.
-2. **Headers:** Similar to request headers, providing metadata about the response.
+1. **Status Line:**  Includes the protocol version, a status code (e.g., 200 OK, 404 Not Found), and a reason phrase. ([RFC 1945 6.1](https://datatracker.ietf.org/doc/html/rfc1945#section-6.1))
+2. **Headers:** Similar to request headers, providing metadata about the response. ([RFC 1945 6.2](https://datatracker.ietf.org/doc/html/rfc1945#section-6.2))
 3. **Empty Line:** Separates headers from the body.
 4. **Response Body:** The actual content being sent back to the client.
 
@@ -68,12 +66,36 @@ Content-Length: 1354
 (HTML content here)
 ```
 
+Nothing has changed with the sequence of events from HTTP/0.9. It still looks like this:
+
+```mermaid
+sequenceDiagram
+    actor Client
+
+    rect rgb(47,75,124)
+        Client ->> Server: TCP SYN
+        Server ->> Client: TCP SYN-ACK
+        Client ->> Server: TCP ACK
+    end
+
+    rect rgb(200,80,96)
+        Client ->> Server: HTTP Request
+        Server ->> Client: HTTP Response
+    end
+
+    rect rgb(47,75,124)
+        Server ->> Client: TCP FIN
+		Client ->> Server: TCP ACK
+    end
+```
+
 ### Headers
 Headers act as messengers, conveying vital information about requests and responses. Some common headers include:
 
-- `Content-Type`:  Indicates the format of the data (text/html, image/jpeg, etc.).
-- `Content-Length`: Specifies the size of the response body.
-- `User-Agent`: Identifies the client software making the request.
+- `Content-Type`:  Indicates the format of the data (text/html, image/jpeg, etc.). ([RFC 1945 10.5](https://datatracker.ietf.org/doc/html/rfc1945#section-10.5))
+- `Accept`:  Tells the server which content type the client expects. ([RFC 1945 D2.1](https://datatracker.ietf.org/doc/html/rfc1945#appendix-D.2.1))
+- `Content-Length`: Specifies the size of the response body. ([RFC 1945 10.4](https://datatracker.ietf.org/doc/html/rfc1945#section-10.4))
+- `User-Agent`: Identifies the client software making the request. ([RFC 1945 10.15](https://datatracker.ietf.org/doc/html/rfc1945#section-10.15))
 
 ### HTTP Methods
 HTTP/1.0 introduced a variety of methods:
@@ -84,14 +106,20 @@ HTTP/1.0 introduced a variety of methods:
 
 ### Status Codes
 Status codes are essential for communication between the client and server. They fall into categories:
-- **1xx:** Informational.
-- **2xx:** Success.
-- **3xx:** Redirection.
-- **4xx:** Client Error (e.g., 404 Not Found).
-- **5xx:** Server Error (e.g., 500 Internal Server Error).
+- **1xx:** [Informational.](https://datatracker.ietf.org/doc/html/rfc1945#section-9.1)
+- **2xx:** [Success.](https://datatracker.ietf.org/doc/html/rfc1945#section-9.2)
+- **3xx:** [Redirection](https://datatracker.ietf.org/doc/html/rfc1945#section-9.3).
+- **4xx:** [Client Error (e.g., 404 Not Found).](https://datatracker.ietf.org/doc/html/rfc1945#section-9.4)
+- **5xx:** [Server Error (e.g., 500 Internal Server Error).](https://datatracker.ietf.org/doc/html/rfc1945#section-9.5)
 
 ## Implementing an HTTP/1.0 Server in Go
-The heart of our HTTP/1.0 server is this Server struct, which encapsulates the server's address and the handler responsible for processing incoming requests. The ServeAndListen method initiates the server, listens for connections, and handles each one concurrently.
+Enough theory! Let's roll up our sleeves and bring HTTP/1.0 to life.
+
+    Programming is learned by writing programs. — Brian Kernighan
+
+We'll build a simple Go server from the ground up, handling requests and responses with the elegance and efficiency that Go is known for. By the end of this section, you'll have a working HTTP/1.0 server that you can interact with using familiar tools like `curl` and your web browser. Note that this server is NOT "production ready" and is only meant for learning. Many aspects of HTTP are not clearly defined in the spec that are critical to get right to avoid security exploits and denial of service attacks.
+
+The heart of our HTTP/1.0 server is this Server struct, which encapsulates the server's address and the handler responsible for processing incoming requests. The `ServeAndListen()` method initiates the server, listens for connections, and handles each one concurrently, in a new goroutine.
 
 ```go
 type Server struct {
@@ -126,7 +154,7 @@ func (s *Server) ServeAndListen() error {
 ```
 You might notice that it's mostly unchanged from the 0.9 version. But as a recap, this code sets up a TCP listener on the specified address, starts an infinite loop, accepts connections and calls `s.handleConnection` in a new goroutine.
 
-Now we're moving to the the heart of the HTTP server. The `handleConnection` method parses the incoming HTTP request, extracting the method, path, headers, and optional body. It then passes the constructed `http.Request` to the server's handler for further processing and response generation.
+Now we're moving to the heart of the HTTP server. The `handleConnection` method parses the incoming HTTP request, extracting the method, path, headers, and optional body. It then passes the constructed `http.Request` to the server's handler for further processing and response generation.
 ```go
 func (s *Server) handleConnection(conn net.Conn) error {
 	defer conn.Close()
@@ -282,7 +310,7 @@ func methodValid(method string) bool {
 }
 ```
 
-And now we have the response body writer. So far, all of the code has been in aide for creating an `http.Request` object, but handlers also need a `http.ResponseWriter` to satisfy the handler interface:
+And now we have the response body writer. So far, all of the code has been in aid for creating an `http.Request` object, but handlers also need a `http.ResponseWriter` to satisfy the handler interface:
 ```go
 type Handler interface {
 	ServeHTTP(ResponseWriter, *Request)
@@ -336,7 +364,7 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 	r.conn.Write([]byte{'\r', '\n'})
 }
 ```
-- `Header()` allows handlers to add handlers add add headers to the response.
+- `Header()` allows handlers to add headers to the response.
 - `WriteHeader(statusCode int)` writes out the status code line and any headers that the handler has added
 - `Write(b []byte)` writes some data and can be called multiple times for streaming the body back to the client. Note that once you start writing the body, the headers will automatically be sent.
 
@@ -360,6 +388,11 @@ func main() {
 That's it. We're done with our server! See the full source at Github: {{< github-link file="go/server/main.go" >}} to see how it all fits together. Similar to last time, I also wanted to test this implementation to make sure it works well with browsers and other web tools.
 
 ## Testing the Implementation
+First off, to start the server, you can run this:
+```go
+go run server/main.go
+```
+
 ### Handlers
 For this time, I've added a few more handlers to test different aspects of our HTTP server. It's more fun that way and there are just generally more things to test with HTTP/1.0, like status codes and headers.
 
@@ -403,8 +436,9 @@ mux.HandleFunc("/status/{status}", func(w http.ResponseWriter, r *http.Request) 
 
 
 ```shell
-$ curl -H "My-Custom-Header: Hello, world!" http://localhost:9000/headers
-{"Accept":["*/*"],"Host":["localhost:9000"],"My-Custom-Header":["Hello, world!"],"User-Agent":["curl/8.7.1"]}
+$ curl -I http://localhost:9000/status/404
+HTTP/1.0 404 Not Found
+
 ```
 
 #### /nothing
@@ -415,7 +449,9 @@ mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
 * **Description:** This handler does absolutely nothing. It doesn't write any headers or body.
 * **Testing Rationale:** Can be used to test the server's behavior when a handler doesn't explicitly send a response. It should still send a default 200 OK response with no body, as implemented in the `responseBodyWriter`.
 
-- TODO: add curl examples
+```shell
+$ curl http://localhost:9000/nothing
+```
 
 #### /echo
 ```go
@@ -428,7 +464,11 @@ mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 * **Description:** This handler echoes back the request body as the response body. 
 * **Testing Rationale:** Useful for testing how the server handles request bodies, especially with POST requests. Can be used to verify that the server correctly receives and processes the body data.
 
-- TODO: add curl examples
+
+```shell
+$ curl -X POST -d "This is some data to echo" http://localhost:9000/echo
+This is some data to echo
+```
 
 #### Serving up my blog
 ```go
@@ -436,12 +476,14 @@ mux.Handle("/", http.FileServer(http.Dir("public")))
 ```
 
 * **Description:** This handler serves static files from the "public" directory. It's a convenient way to serve HTML, CSS, JavaScript, and other assets.
-* **Testing Rationale:** Allows testing how the server handles GET requests for files. Can be used to verify that it correctly serves different file types with appropriate headers (Content-Type, Content-Length). 
+* **Testing Rationale:** Allows testing of how the server handles GET requests for files. Can be used to verify that it correctly serves different file types with appropriate headers (Content-Type, Content-Length). 
 
-- TODO: rendering my blog (screenshots)
+{{< image src="blog-screenshot.png" width="800px" class="center" >}}
+
+It is quite amazing to see an entire website work just fine with this small amount of code.
 
 ## Beyond HTTP/1.0
-While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP/1.1, HTTP/2, and HTTP/3 brought further enhancements. In my next article, we'll dive into the world of HTTP/1.1, exploring its advancements over HTTP/1.0; reusable connections, chunked encoding, and TLS will finally enter the scene.
+While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP/1.1, HTTP/2, and HTTP/3 brought further enhancements. In my next article, we'll dive into the world of HTTP/1.1, exploring its advancements over HTTP/1.0; reusable connections, chunked encoding, and TLS will finally enter the scene. From here on out, the focus was less on forming the semantics of HTTP and more on improving performance.
 
 ## Conclusion
-HTTP/1.0 marked a pivotal moment in the evolution of the web. By understanding its core principles and building a simple server, we gain valuable insights into the foundations of modern web communication. As you experiment and explore, remember that this is just the beginning – the web's journey is ongoing!
+HTTP/1.0 marked a pivotal moment in the evolution of the web. It created most of the semantics in HTTP that are still used today. As you experiment and explore, remember that this is just the beginning – the web's journey is ongoing!
