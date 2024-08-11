@@ -15,7 +15,6 @@ slug: "http1.0-from-scratch"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
-draft: true
 ---
 
 ## Introduction
