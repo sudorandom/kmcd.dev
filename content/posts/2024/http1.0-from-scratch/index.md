@@ -18,17 +18,15 @@ canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
 draft: true
 ---
 
-TODO: Add more links to specification sections and callbacks to the previous article.
-
 ## Introduction
-In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today.  
+In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial backbone. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today.
 
 HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
 
-- **Headers:** Metadata that added context and control to requests and responses.
-- **Methods:** A diverse set of actions (POST, HEAD, PUT, DELETE, etc.) beyond just retrieving documents.
-- **Status Codes:** Clear signals about the outcome of requests, paving the way for better error handling and redirection.
-- **Content Negotiation:** The ability to request specific formats, encoding or languages for content.
+- **Headers:** Metadata that added context and control to requests and responses ([RFC 1945 4.2](https://datatracker.ietf.org/doc/html/rfc1945#section-4.2)).
+- **Methods:** A diverse set of actions (POST, HEAD, PUT, DELETE, etc.) beyond just retrieving documents ([RFC 1945 8](https://datatracker.ietf.org/doc/html/rfc1945#section-8)).
+- **Status Codes:** Clear signals about the outcome of requests, paving the way for better error handling and redirection ([RFC 1945 6.1.1](https://datatracker.ietf.org/doc/html/rfc1945#section-6.1.1)).
+- **Content Negotiation:** The ability to request specific formats ([RFC 1945 10.5](https://datatracker.ietf.org/doc/html/rfc1945#section-10.5)), encoding ([RFC 1945 10.3](https://datatracker.ietf.org/doc/html/rfc1945#section-10.3)) or languages ([RFC 1945 D.2.5](https://datatracker.ietf.org/doc/html/rfc1945#appendix-D.2.5)) for content.
 
 In this article, we'll journey through the intricacies of HTTP/1.0 and craft a simple Go server that speaks this influential protocol.
 
@@ -342,36 +340,104 @@ func (r *responseBodyWriter) sendHeaders(statusCode int) {
 - `WriteHeader(statusCode int)` writes out the status code line and any headers that the handler has added
 - `Write(b []byte)` writes some data and can be called multiple times for streaming the body back to the client. Note that once you start writing the body, the headers will automatically be sent.
 
-## Testing the Implementation
-
-For this time, I've added a few more handlers to test different aspects of our HTTP server.
+And, finally, here's how to start the server, which looks very similar to the last time (and many Go tutorials):
 ```go
 func main() {
 	addr := "127.0.0.1:9000"
 	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.Dir("public")))
-	mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
-	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "application/json")
-		json.NewEncoder(w).Encode(r.Header)
-	})
-	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
-		io.Copy(w, r.Body)
-	})
+	// TODO: handlers go here
 	s := Server{
 		Addr:    addr,
 		Handler: mux,
 	}
-	log.Printf("Listening on %s", addr)
+	log.Printf("Starting web server: http://%s", addr)
 	if err := s.ServeAndListen(); err != nil {
 		log.Fatal(err)
 	}
 }
 ```
 
+That's it. We're done with our server! See the full source at Github: {{< github-link file="go/server/main.go" >}} to see how it all fits together. Similar to last time, I also wanted to test this implementation to make sure it works well with browsers and other web tools.
+
+## Testing the Implementation
+### Handlers
+For this time, I've added a few more handlers to test different aspects of our HTTP server. It's more fun that way and there are just generally more things to test with HTTP/1.0, like status codes and headers.
+
+#### /headers
+
+```go
+mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Add("content-type", "application/json")
+    json.NewEncoder(w).Encode(r.Header)
+})
+```
+
+* **Description:** This handler echoes back all the request headers in JSON format. It also sets the `Content-Type` header to `application/json` to inform the client about the response format.
+* **Testing Rationale:** Useful for verifying that the server correctly receives and parses request headers. Can be used to test sending various headers with different values and case variations.
+
+```shell
+$ curl -H "My-Custom-Header: Hello, world!" http://localhost:9000/headers
+{"Accept":["*/*"],"Host":["localhost:9000"],"My-Custom-Header":["Hello, world!"],"User-Agent":["curl/8.7.1"]}
+```
+
+You can even use [netcat](https://nc110.sourceforge.io/) to craft the HTTP request manually:
+```shell
+printf "GET /headers HTTP/1.0\r\nMy-Custom-Header: Hello from nc!\r\n" | nc localhost 9000
+```
+
+#### /status/{status}
+```go
+mux.HandleFunc("/status/{status}", func(w http.ResponseWriter, r *http.Request) {
+    status, err := strconv.ParseInt(r.PathValue("status"), 10, 64)
+    if err != nil {
+        w.WriteHeader(http.StatusBadRequest)
+        io.WriteString(w, fmt.Sprintf("error: %s", err))
+        return
+    }
+    w.WriteHeader(int(status))
+})
+```
+
+* **Description:** This handler allows you to request a specific HTTP status code by providing it in the URL path (e.g., `/status/404`). If the provided status is invalid, it returns a 400 Bad Request error.
+* **Testing Rationale:** Essential for testing how clients handle different status codes, especially error codes. Can be used to simulate various scenarios like successful requests, redirects, client errors, and server errors.
+
+
+```shell
+$ curl -H "My-Custom-Header: Hello, world!" http://localhost:9000/headers
+{"Accept":["*/*"],"Host":["localhost:9000"],"My-Custom-Header":["Hello, world!"],"User-Agent":["curl/8.7.1"]}
+```
+
+#### /nothing
+```go
+mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
+```
+
+* **Description:** This handler does absolutely nothing. It doesn't write any headers or body.
+* **Testing Rationale:** Can be used to test the server's behavior when a handler doesn't explicitly send a response. It should still send a default 200 OK response with no body, as implemented in the `responseBodyWriter`.
+
 - TODO: add curl examples
-- TODO: add telnet or nc examples
+
+#### /echo
+```go
+mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+    defer r.Body.Close()
+    io.Copy(w, r.Body)
+})
+```
+
+* **Description:** This handler echoes back the request body as the response body. 
+* **Testing Rationale:** Useful for testing how the server handles request bodies, especially with POST requests. Can be used to verify that the server correctly receives and processes the body data.
+
+- TODO: add curl examples
+
+#### Serving up my blog
+```go
+mux.Handle("/", http.FileServer(http.Dir("public")))
+```
+
+* **Description:** This handler serves static files from the "public" directory. It's a convenient way to serve HTML, CSS, JavaScript, and other assets.
+* **Testing Rationale:** Allows testing how the server handles GET requests for files. Can be used to verify that it correctly serves different file types with appropriate headers (Content-Type, Content-Length). 
+
 - TODO: rendering my blog (screenshots)
 
 ## Beyond HTTP/1.0
@@ -379,4 +445,3 @@ While HTTP/1.0 was a significant leap forward, the story doesn't end there. HTTP
 
 ## Conclusion
 HTTP/1.0 marked a pivotal moment in the evolution of the web. By understanding its core principles and building a simple server, we gain valuable insights into the foundations of modern web communication. As you experiment and explore, remember that this is just the beginning – the web's journey is ongoing!
-

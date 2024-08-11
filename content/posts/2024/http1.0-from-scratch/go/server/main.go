@@ -129,7 +129,9 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	}
 
 	w := &responseBodyWriter{
-		proto:   req.Proto,
+		// We hard-code this because this is a HTTP/1.0 server. Web servers will make requests with HTTP/1.1
+		// but we're saying that we only support HTTP/1.0.
+		proto:   "HTTP/1.0",
 		conn:    conn,
 		headers: make(http.Header),
 	}
@@ -233,20 +235,29 @@ func main() {
 	addr := "127.0.0.1:9000"
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("public")))
-	mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
-	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "application/json")
-		json.NewEncoder(w).Encode(r.Header)
-	})
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		io.Copy(w, r.Body)
 	})
+	mux.HandleFunc("/status/{status}", func(w http.ResponseWriter, r *http.Request) {
+		status, err := strconv.ParseInt(r.PathValue("status"), 10, 64)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, fmt.Sprintf("error: %s", err))
+			return
+		}
+		w.WriteHeader(int(status))
+	})
+	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("content-type", "application/json")
+		json.NewEncoder(w).Encode(r.Header)
+	})
+	mux.HandleFunc("/nothing", func(w http.ResponseWriter, r *http.Request) {})
 	s := Server{
 		Addr:    addr,
 		Handler: mux,
 	}
-	log.Printf("Listening on %s", addr)
+	log.Printf("Starting web server: http://%s", addr)
 	if err := s.ServeAndListen(); err != nil {
 		log.Fatal(err)
 	}
