@@ -122,6 +122,12 @@ sequenceDiagram
     end
 ```
 
+### Caching
+Now that request and response headers exist, it's possible to negotiate caching behavior, which is well-defined in the HTTP/1.0 spec. It defines which methods can be cached and which headers to use to define the behavior. While it's an optional feature for servers, it was very important in the early days of the web and I would say that it's even more important today.
+
+### Host Header
+One thing that goes overlooked is that goes overlooked is that `Host` header but, arguably, it's what made the early web possible. With that one header, one web server can host many different websites using the same IP public address and post. It made the cost of running a website on your domain more reasonable and it created an industry of reseller web hosts.
+
 ## Implementing an HTTP/1.0 Server in Go
 Enough theory! Let's roll up our sleeves and bring HTTP/1.0 to life.
 
