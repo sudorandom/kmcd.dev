@@ -299,10 +299,12 @@ pre {
     word-wrap: break-word;
   }
 
-  pre[class*="language-" ],
-  code[class*="language-"] {
-      white-space: pre-wrap;
-      word-break: break-word;
+  @media (min-width: 900px) {
+    pre[class*="language-" ],
+    code[class*="language-"] {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
   }
 
   code {

@@ -133,8 +133,9 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	req.Close = true // this is always true for HTTP/1.0
 
 	w := &responseBodyWriter{
-		// We hard-code this because this is a HTTP/1.0 server. Web servers will make requests with HTTP/1.1
-		// but we're saying that we only support HTTP/1.0.
+		// We hard-code this because this is a HTTP/1.0 server.
+		// Web servers will make requests with HTTP/1.1 but
+		// we're saying that we only support HTTP/1.0.
 		proto:   "HTTP/1.0",
 		conn:    conn,
 		headers: make(http.Header),
