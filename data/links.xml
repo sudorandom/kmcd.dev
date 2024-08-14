@@ -9,7 +9,7 @@
             <outline title="Adepts of 0xCC" text="Adepts of 0xCC" xmlUrl="https://adepts.of0x.cc/feed.xml" htmlUrl="https://adepts.of0x.cc/" type="rss"></outline>
             <outline title="benkuhn.net" text="benkuhn.net" xmlUrl="https://www.benkuhn.net/index.xml" htmlUrl="https://www.benkuhn.net/" type="rss"></outline>
             <outline title="Cool As Heck" text="Cool As Heck" xmlUrl="https://cool-as-heck.blog/index.xml" htmlUrl="https://cool-as-heck.blog" type="rss"></outline>
-            <outline title="Cory Dransfeldt" text="Cory Dransfeldt" xmlUrl="https://feedpress.me/coryd.json" htmlUrl="https://coryd.dev/feeds" type="rss"></outline>
+            <outline title="Cory Dransfeldt" text="Cory Dransfeldt" xmlUrl="https://coryd.dev/feeds/posts" htmlUrl="https://coryd.dev" type="rss"></outline>
             <outline title="Disconnect" text="Disconnect" xmlUrl="https://disconnect.blog/rss/" htmlUrl="https://disconnect.blog/" type="rss"></outline>
             <outline title="Jim Nielsen’s Blog" text="Jim Nielsen’s Blog" xmlUrl="https://blog.jim-nielsen.com/feed.xml" htmlUrl="https://blog.jim-nielsen.com" type="rss"></outline>
             <outline title="Kev Quirk" text="Kev Quirk" xmlUrl="https://kevquirk.com/feed" htmlUrl="https://kevquirk.com" type="rss"></outline>
