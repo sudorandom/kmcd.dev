@@ -125,7 +125,9 @@
     </div>
 
     {{- $toot := (partial "mastodon/load.html" .) -}}
-    <h2>Comments{{ with $toot.replies }}<small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</small>{{ end }}</h2>
+    {{ with $toot.replies }}
+    <h2>Comments <small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</small></h2>
+    {{ end }}
 
     {{ with $toot.replies}}
       {{- range . }}
