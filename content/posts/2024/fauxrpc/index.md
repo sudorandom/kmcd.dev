@@ -94,4 +94,4 @@ $ fauxrpc run --schema=https://demo.connectrpc.com --schema=./example.binpb
 ```
 
 ## Stay Tuned
-I'm actively developing FauxRPC and have many exciting features planned for the future. Stay tuned for updates and be sure to let us know your feedback and suggestions.
+I'm actively developing FauxRPC and have many exciting features planned for the future. This is early on for this project but it has come together as a coherent and useful program for me extremely quickly. So please try it out and let me know your feedback and suggestions. Stay tuned for updates!
