@@ -17,7 +17,7 @@ canonical_url: https://kmcd.dev/posts/fauxrpc/
 draft: true
 ---
 
-Introducing **[FauxRPC](https://github.com/sudorandom/fauxrpc)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a protobuf-based workflow, this tool could help.
+Introducing **[FauxRPC](https://github.com/sudorandom/fauxrpc)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a [protobuf-based workflow](/posts/api-contracts/), this tool could help.
 
 ## Why FauxRPC?
 * **Faster Development & Testing:** Work independently without relying on fully functional backend services.
