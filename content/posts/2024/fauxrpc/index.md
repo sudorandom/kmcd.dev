@@ -35,7 +35,15 @@ FauxRPC leverages your Protobuf definitions to generate fake services that mimic
 {{< /diagram >}}
 
 ## Get Started
-FauxRPC is available as an open-source project. Check out [the documentation](https://github.com/sudorandom/fauxrpc) and examples to get started. Here's an abbreviated version here:
+FauxRPC is available as an open-source project. Check out [the documentation](https://github.com/sudorandom/fauxrpc) and examples to get started. Here's an abbreviated version here but it may get out of date in time:
+
+### Install via source
+```
+go install github.com/sudorandom/fauxrpc/cmd/fauxrpc@latest
+```
+
+### Pre-built binaries
+Binaries are built for several platforms for each release. See the latest ones on [the releases page](https://github.com/sudorandom/fauxrpc/releases/latest).
 
 ### Use Descriptors
 Make an `example.proto` file (or use a file that already exists):
