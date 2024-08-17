@@ -1,5 +1,8 @@
 {{ if .Get "src" }}
-    {{ $image := ($.Page.Resources.GetMatch (.Get "src")).Fit (or (.Get "fit") "2000x1600 webp") }}
+    {{ $image := ($.Page.Resources.GetMatch (.Get "src")) }}
+    {{ if ne $image.MediaType.SubType "svg" }}
+    {{ $image := $image.Fit (or (.Get "fit") "2000x1600 webp") }}
+    {{ end }}
     <img src="{{ $image.Permalink }}"
          {{- if or (.Get "alt") (.Get "caption") }}
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
