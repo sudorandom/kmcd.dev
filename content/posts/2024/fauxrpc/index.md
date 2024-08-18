@@ -14,7 +14,6 @@ slug: "fauxrpc"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc/
-draft: true
 ---
 
 Introducing **[FauxRPC](https://github.com/sudorandom/fauxrpc)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a [protobuf-based workflow](/posts/api-contracts/), this tool could help.
@@ -35,7 +34,7 @@ FauxRPC leverages your Protobuf definitions to generate fake services that mimic
 {{< /diagram >}}
 
 ## Get Started
-FauxRPC is available as an open-source project. Check out [the documentation](https://github.com/sudorandom/fauxrpc) and examples to get started. Here's an abbreviated version here but it may get out of date in time:
+FauxRPC is available as an open-source project. Check out [the documentation](https://github.com/sudorandom/fauxrpc) and examples to get started. Here's a quick overview, but be sure to check the official documentation for the most up-to-date instructions:
 
 ### Install via source
 ```
@@ -195,7 +194,58 @@ With this new protobuf file, this is what FauxRPC might output now:
   "greeting": "Hello, TWXxF"
 }
 ```
-In essence, protovalidate constraints enable FauxRPC to generate more realistic and contextually relevant fake data, aligning it closer to the expected behavior of your actual services.
+This shows how protovalidate constraints enable FauxRPC to generate more realistic and contextually relevant fake data, aligning it closer to the expected behavior of your actual services. As another example, I will show one of Buf's services used to manage users, [buf.registry.owner.v1.UserService](https://buf.build/bufbuild/registry/docs/main:buf.registry.owner.v1#buf.registry.owner.v1.UserService). Here's what the `UserRef` message looks like:
+
+```protobuf
+message UserRef {
+  option (buf.registry.priv.extension.v1beta1.message).request_only = true;
+  oneof value {
+    option (buf.validate.oneof).required = true;
+    // The id of the User.
+    string id = 1 [(buf.validate.field).string.tuuid = true];
+    // The name of the User.
+    string name = 2 [(buf.validate.field).string = {
+      min_len: 2
+      max_len: 32
+      pattern: "^[a-z][a-z0-9-]*[a-z0-9]$"
+    }];
+  }
+}
+```
+
+So let's make our descriptors for this service, start the FauxRPC server and make our example request:
+
+```shell
+$ buf build buf.build/bufbuild/registry -o bufbuild.registry.binpb
+$ fauxrpc run --schema=./bufbuild.registry.binpb
+$ buf curl --http2-prior-knowledge http://127.0.0.1:6660/buf.registry.owner.v1.UserService/ListUsers
+{
+  "nextPageToken": "Food truck.",
+  "users": [
+    {
+      "id": "c4468393f926400d8880a264df9c284a",
+      "createTime": "2012-03-06T12:15:03.239463070Z",
+      "updateTime": "1990-10-29T13:12:31.224347086Z",
+      "name": "jexox",
+      "type": "USER_TYPE_STANDARD",
+      "description": "Tattooed taxidermy.",
+      "url": "http://www.productexploit.name/synergies/target"
+    },
+    {
+      "id": "0e4ca24f4ff54761b109daab0da1bea2",
+      "createTime": "1955-05-16T02:37:30.643378679Z",
+      "updateTime": "1923-08-28T04:28:43.330711919Z",
+      "name": "ya0",
+      "type": "USER_TYPE_STANDARD",
+      "state": "USER_STATE_INACTIVE",
+      "description": "Helvetica.",
+      "url": "https://www.centralengage.info/markets/scale/e-commerce/exploit",
+      "verificationStatus": "USER_VERIFICATION_STATUS_UNVERIFIED"
+    }
+  ]
+}
+```
+Hopefully, this gives you a good idea of what the output might look like. The better your validation rules, the better the FauxRPC data will be.
 
 ## What's left?
 FauxRPC is already great for some use cases but it's not "done" as there's more to do to make it better. I have plans to add the ability to configure stubs for each RPC method. This will allow you to define specific responses or behaviors for each RPC, giving you more control over the simulated service. I hope this will make it easier to iterate on protobuf designs without needing to actually implement services until later.
