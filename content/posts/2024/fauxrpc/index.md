@@ -16,7 +16,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc/
 ---
 
-Introducing **[FauxRPC](https://github.com/sudorandom/fauxrpc)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a [protobuf-based workflow](/posts/api-contracts/), this tool could help.
+I would like to introduce **[FauxRPC](http://fauxrpc.com/)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a [protobuf-based workflow](/posts/api-contracts/), this tool could help.
 
 ## Why FauxRPC?
 * **Faster Development & Testing:** Work independently without relying on fully functional backend services.
@@ -251,4 +251,4 @@ Hopefully, this gives you a good idea of what the output might look like. The be
 FauxRPC is already great for some use cases but it's not "done" as there's more to do to make it better. I have plans to add the ability to configure stubs for each RPC method. This will allow you to define specific responses or behaviors for each RPC, giving you more control over the simulated service. I hope this will make it easier to iterate on protobuf designs without needing to actually implement services until later.
 
 ## Stay Tuned
-I'm actively developing FauxRPC and have many exciting features planned for the future. This is early on for this project but it has come together as a coherent and useful program for me extremely quickly. So please try it out and let me know your feedback and suggestions. Stay tuned for updates!
+I made a [documentation website](http://fauxrpc.com/) to organize documentation. I think it looks pretty good for how quickly I threw it together. The code for FauxRPC lives on GitHub at [sudorandom/fauxrpc](github.com/sudorandom/fauxrpc). It's a little thin now but there's a lot that I can write about in there. I'm actively developing FauxRPC and have many exciting features planned for the future. This is early on for this project but it has come together as a coherent and useful program for me extremely quickly. So please try it out and let me know your feedback and suggestions. Stay tuned for updates!
