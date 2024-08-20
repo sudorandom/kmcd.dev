@@ -34,7 +34,7 @@ FauxRPC leverages your Protobuf definitions to generate fake services that mimic
 {{< /diagram >}}
 
 ## Get Started
-FauxRPC is available as an open-source project. Check out [the documentation](https://github.com/sudorandom/fauxrpc) and examples to get started. Here's a quick overview, but be sure to check the official documentation for the most up-to-date instructions:
+FauxRPC is available as an open-source project. Check out [the documentation](https://fauxrpc.com/docs/intro/) and examples to get started. Here's a quick overview, but be sure to check the official documentation for the most up-to-date instructions:
 
 ### Install via source
 ```
@@ -252,3 +252,5 @@ FauxRPC is already great for some use cases but it's not "done" as there's more 
 
 ## Stay Tuned
 I made a [documentation website](http://fauxrpc.com/) to organize documentation. I think it looks pretty good for how quickly I threw it together. The code for FauxRPC lives on GitHub at [sudorandom/fauxrpc](github.com/sudorandom/fauxrpc). It's a little thin now but there's a lot that I can write about in there. I'm actively developing FauxRPC and have many exciting features planned for the future. This is early on for this project but it has come together as a coherent and useful program for me extremely quickly. So please try it out and let me know your feedback and suggestions. Stay tuned for updates!
+
+*... and don't forget to [star the repo on GitHub](https://github.com/sudorandom/fauxrpc). It helps more than you know!*
