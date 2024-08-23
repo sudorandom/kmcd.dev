@@ -3,7 +3,6 @@
 {{ $prism := resources.Get "js/prism.js" }}
 {{ $secureJS := slice $main $menu $prism | resources.Concat "bundle.js" | resources.Minify | resources.Fingerprint "sha512" }}
 <script type="text/javascript" src="{{ $secureJS.RelPermalink }}" integrity="{{ $secureJS.Data.Integrity }}" defer></script>
-<script src="https://tinylytics.app/embed/Gsf2fC3pQDsyH5siKrEE.js" defer></script>
 
 {{ range $val := $.Site.Params.customJS }}
     {{ if gt (len $val) 0 }}
