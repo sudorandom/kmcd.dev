@@ -3,6 +3,7 @@
   max-width: 1000px;
   text-align: left;
   padding: 20px;
+  padding-top: 0;
   margin: 20px auto;
   @media #{$media-size-tablet} {
     max-width: 800px;

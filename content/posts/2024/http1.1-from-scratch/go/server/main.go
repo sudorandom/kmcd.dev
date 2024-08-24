@@ -102,7 +102,7 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	req.Proto = reqLine
 	req.ProtoMajor, req.ProtoMinor, found = parseProtocol(req.Proto)
 	if !found {
-		return true, errors.New("invalid proto")
+		return true, errors.New("invalid protocol")
 	}
 
 	// Parse headers
@@ -125,6 +125,9 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
 
+	if _, ok := req.Header["Host"]; !ok {
+		return true, errors.New("required 'Host' header not found")
+	}
 	req.Close = !isPersistent(req.Header.Get("Connection"))
 
 	// Unbound the limit after we've read the headers since the body can be any size

@@ -131,12 +131,90 @@ TODO: Basically, add the features:
 ## Testing
 Once our HTTP/1.1 server is implemented, we can test it using various methods:
 
-- Web Browsers: Any modern web browser can be used to send requests and interact with our server.
-- CLI Tools: Command-line tools like curl can be used to send raw HTTP requests and inspect responses.
-- Testing Frameworks: Consider using testing frameworks or libraries specifically designed for HTTP testing.
+### Web Browsers
+Any modern web browser can be used to send requests and interact with our server. If the server doesn't work with browsers then you're doing it wrong.
+
+### CLI Tools
+#### Keep-Alive
+With `curl`, I can test keep-alives! Here's an example showing the server keeping the connection open and handling two different requests:
+```shell
+$ curl --http1.1 -I http://127.0.0.1:9000 http://127.0.0.1:9000 -v
+*   Trying 127.0.0.1:9000...
+* Connected to 127.0.0.1 (127.0.0.1) port 9000
+> HEAD / HTTP/1.1
+> Host: 127.0.0.1:9000
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+< Last-Modified: Sat, 24 Aug 2024 16:06:15 GMT
+Last-Modified: Sat, 24 Aug 2024 16:06:15 GMT
+< Content-Type: text/html; charset=utf-8
+Content-Type: text/html; charset=utf-8
+< Accept-Ranges: bytes
+Accept-Ranges: bytes
+< Content-Length: 15663
+Content-Length: 15663
+<
+
+* Connection #0 to host 127.0.0.1 left intact
+* Found bundle for host: 0x600001098480 [serially]
+* Re-using existing connection with host 127.0.0.1
+> HEAD / HTTP/1.1
+> Host: 127.0.0.1:9000
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+< Last-Modified: Sat, 24 Aug 2024 16:06:15 GMT
+Last-Modified: Sat, 24 Aug 2024 16:06:15 GMT
+< Content-Type: text/html; charset=utf-8
+Content-Type: text/html; charset=utf-8
+< Accept-Ranges: bytes
+Accept-Ranges: bytes
+< Content-Length: 15663
+Content-Length: 15663
+<
+
+* Connection #0 to host 127.0.0.1 left intact
+```
+
+This output was a little much but I can see a few hints that the keep-alive logic is working. Here's a stripped down version with only the relevant parts for keep-alive:
+```shell
+* Connected to 127.0.0.1 (127.0.0.1) port 9000
+> HEAD / HTTP/1.1
+* Connection #0 to host 127.0.0.1 left intact
+* Re-using existing connection with host 127.0.0.1
+> HEAD / HTTP/1.1
+* Connection #0 to host 127.0.0.1 left intact
+```
+Notice how there's no request header saying that keep-alives should happen. That's because HTTP/1.1 servers will keep connections open for a short time by default.
+
+#### Host header enforcement
+Last time we used `nc` to test the server, so let's see what that looks like now:
+```shell
+$ printf "GET /headers HTTP/1.0\r\nMy-Custom-Header: Hello from nc!\r\n" | nc localhost 9000
+```
+
+With that command, we no longer get output and there's a new error log on the server:
+```plaintext
+2024/08/24 19:34:39 ERROR http error: required 'Host' header not found
+```
+This is intentional! The `nc` call I made before doesn't work because our server now requires the host header to be set. Let's see it again with the header set:
+```shell
+$ printf "GET /headers HTTP/1.0\r\nHost: localhost\r\n" | nc localhost 9000
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"Host":["localhost"]}
+```
+That's better! We get a response now as expected!
 
 ## Conclusion
-
 HTTP/1.1 has played a crucial role in shaping the modern web. It powers a wide range of applications, including:
 
 - **Web Browsing**: Every time you visit a website, HTTP/1.1 is at work behind the scenes, facilitating the communication between your browser and the server.

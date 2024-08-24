@@ -14,7 +14,6 @@ staticDir:
 
 author:
   name: "Kevin McDonald"
-  shortName: "Kevin"
 
 params:
   Subtitle: "Depth-first search into networking, programming, random tech topics."

@@ -1,30 +1,31 @@
 {{ define "main" }}
   <main class="post">
-    <h1 class="post-title">
-      <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-    </h1>
-    {{ with .Params.Description }}
-      <div class="post-excerpt">{{ . }}</div>
-    {{ end }}
-
-    <div class="post-info">
-      {{ partial "categories.html" . }}
-      {{ partial "tags.html" .Params.tags }}
-    </div>
-
     <div class="main-wrapper">
-    <div class="main-box">
-      <div class="post-info-2">
-        <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ .Site.Author.shortname }}</a></span>
-        <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
-        <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.FormatNumberCustom 0 }} words</span>
-        <span>
-          <i class="fa-solid fa-calendar-days"></i>
-          {{ if .Site.Params.dateformNum }}
-            {{ dateFormat .Site.Params.dateformNum .Date.Local }}
-          {{ else }}
-            {{ dateFormat "2006-01-02" .Date.Local }}
-          {{ end }}
+    <div class="post-header">
+      <div class="cover-outer cover-{{ or .Params.CoverPosition "bottom" }}"{{with (.Resources.Get .Params.Cover) -}}
+        {{- $cover := .Fill "960x420 Center webp q100" -}}
+        style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;"
+      {{- end }}>
+      <div class="cover-inner">
+        <h1 class="post-title">
+          <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+        </h1>
+        {{ with .Params.Description }}
+          <div class="post-excerpt">{{ . }}</div>
+        {{ end }}
+
+        <div class="post-info-2">
+          <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ .Site.Author.name }}</a></span>
+          <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
+          <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.FormatNumberCustom 0 }} words</span>
+          <span>
+            <i class="fa-solid fa-calendar-days"></i>
+            {{ if .Site.Params.dateformNum }}
+              {{ dateFormat .Site.Params.dateformNum .Date.Local }}
+            {{ else }}
+              {{ dateFormat "2006-01-02" .Date.Local }}
+            {{ end }}
+          </span>
 
           {{ if .Lastmod }}
           {{ if not (eq .Lastmod .Date )}}
@@ -33,24 +34,19 @@
             {{- end }}
           {{ end }}
           {{ end }}
-        {{ with .Page.Store.Get "toot" }}
-          <span><a href="{{ .status.url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
-        {{ end }}
-        <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
-      </div>
-
-      {{ $cover := (.Resources.Get .Params.Cover)}}
-      {{- if $cover -}}
-      {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
-      <figure>
-          <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
-          {{ with .Params.CoverCaption }}
-              <figcaption class="center">{{ . | markdownify }}</figcaption>
+          {{ with .Page.Store.Get "toot" }}
+            <span><a href="{{ .status.url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
           {{ end }}
-      </figure>
-    {{ else }}
-      <hr />
-    {{ end }}
+          <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-inner">
+    <div class="post-info">
+      {{ partial "categories.html" . }}
+      {{ partial "tags.html" .Params.tags }}
+    </div>
 
     <article>
       {{- if .Params.toc }}
@@ -85,6 +81,7 @@
       </div>
       </div>
       </div>
+    </div>
     </article>
 
     {{- with (.GetTerms "series") -}}

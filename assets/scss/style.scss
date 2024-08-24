@@ -14,21 +14,20 @@ main {
 }
 
 .post-info {
+    margin-top: 0;
+    opacity: unset;
+    font-size: 14px;
+    text-align:right;
+}
+
+.post-info-2 {
+    position: relative;
     margin-top: 10px;
     opacity: unset;
     font-size: 14px;
 }
 
-.post-info-2 {
-    text-align:right;
-    position: relative;
-    margin-top: 0;
-    margin-bottom: 10px;
-    opacity: unset;
-    font-size: 14px;
-}
-
-.post-info-2 span {
+.post-info-2 span+span {
     margin-left: 10px;
 }
 
@@ -41,6 +40,38 @@ main {
 .posts {
     padding: 20px;
     margin: 0 auto 20px;
+}
+
+.post-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.post-inner {
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.post-inner h1 {
+    margin-top: 0;
+    font-size: 1.7rem;
+}
+
+.post-inner h2 {
+    margin-top: 1em;
+}
+
+.post-inner-light {
+    [data-theme=dark] & {
+        background: #283745;
+    }
 }
 
 .index-posts {
@@ -391,6 +422,39 @@ ul.icons {
     [data-theme=dark] & {
         background: #283745;
     }
+}
+
+.cover-outer {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+    display: flex;
+}
+
+.cover-top {
+    align-items: start;
+}
+
+.cover-middle {
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cover-bottom {
+    align-items: end;
+}
+
+.cover-inner {
+    border-radius: 10px;
+    padding: 1em 2em 1em 2em;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
 }
 
 .prompt-outer {
