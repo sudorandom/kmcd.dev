@@ -8,36 +8,9 @@
         {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
         {{ end }}
 
-        <span id="tools">
-            <h2>Tools</h2>
-        </span>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <h3><a href="/http/">HTTP Version Tool</a></h3>
-                <p>
-                    See which version of HTTP your browser is using to connect to my website. My website supports HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3, so you can use this to see if your browser is using the latest and greatest. It also outputs some of the things your browser is sending, like user agent, your IP address and the ASN your internet traffic originates from, which tells me which ISP you are using.
-                </p>
-                <div class="project-icons">
-                    <a href="/posts/http-tool/"><i class="fa-solid fa-book"></i></a>
-                    <a href="/http/"><i class="fa-solid fa-globe"></i></a>
-                </div>
-            </div>
-        </div>
-
         <span id="ongoing-projects">
             <h2>Ongoing Projects</h2>
         </span>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
-                <p>
-                    {{ partial "blog_summary.html" }}
-                </p>
-                <div class="project-icons">
-                    <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
-                </div>
-            </div>
-        </div>
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://github.com/sudorandom/fauxrpc" target="_blank">FauxRPC</a></i></h3>
@@ -79,6 +52,33 @@
                     <a href="https://pkg.go.dev/github.com/sudorandom/unknownconnect-go" target="_blank"><i class="fa-brands fa-golang"></i></a>
                 </div>
                 </ul>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
+                <p>
+                    {{ partial "blog_summary.html" }}
+                </p>
+                <div class="project-icons">
+                    <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <span id="tools">
+            <h2>Tools</h2>
+        </span>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="/http/">HTTP Version Tool</a></h3>
+                <p>
+                    See which version of HTTP your browser is using to connect to my website. My website supports HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3, so you can use this to see if your browser is using the latest and greatest. It also outputs some of the things your browser is sending, like user agent, your IP address and the ASN your internet traffic originates from, which tells me which ISP you are using.
+                </p>
+                <div class="project-icons">
+                    <a href="/posts/http-tool/"><i class="fa-solid fa-book"></i></a>
+                    <a href="/http/"><i class="fa-solid fa-globe"></i></a>
+                </div>
             </div>
         </div>
 
