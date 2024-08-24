@@ -15,11 +15,8 @@
       <div class="prompt-box">
         <h2>{{ .Title }}</h2>
         {{ with $toot }}
-        <div class="button small mastodon previous">
-          <a href="{{ .status.url }}" target="_blank">
-            <span class="button__icon"><i class="fa-brands fa-mastodon"></i></span>
-            <span class="button__text">Discuss on Mastodon</span>
-          </a>
+        <div>
+          <a href="{{ .status.url }}" target="_blank">Discuss on Mastodon</a>
         </div>
         {{ end }}
       </div>
