@@ -22,14 +22,15 @@ The internet as we know it today wouldn't be possible without the continuous evo
 
 ## Introduction
 
-In our previous posts, we explored the early days of the web with HTTP/0.9 and HTTP/1.0. We saw how HTTP/0.9 laid the groundwork for basic web communication, and how HTTP/1.0 introduced headers and status codes, paving the way for a more structured web experience. Now, it's time to delve into HTTP/1.1, the version that truly shaped the modern web.
+In our previous posts, we explored the early days of the web with [HTTP/0.9](/posts/http0.9-from-scratch) and [HTTP/1.0](/posts/http1.0-from-scratch). We saw how HTTP/0.9 laid the groundwork for basic web communication, and how HTTP/1.0 introduced headers and status codes, paving the way for a more structured web experience. Now, it's time to delve into HTTP/1.1, the version that truly shaped the modern web.
 
-Despite the advent of HTTP/2 and HTTP/3, HTTP/1.1 remains a cornerstone of the internet. It's far from obsolete and continues to power a significant portion of web traffic. In fact, its robustness and widespread adoption suggest it may even outlive its successors.
+Despite the advent of HTTP/2 and HTTP/3, HTTP/1.1 remains a cornerstone of the internet. It's far from obsolete and continues to power a significant portion of web traffic. This is wild speculation from me but I think its robustness and widespread adoption as the assumed default means it may even outlive HTTP/2.
 
 The rapid release of HTTP/1.1, just months after HTTP/1.0, might lead some to believe that HTTP/1.0 was a failure. However, this rapid evolution is a testament to the success of HTTP/1.0 and the explosive growth of the web. HTTP/1.0 laid a solid foundation, and HTTP/1.1 built upon it to address the challenges of a rapidly expanding internet.
 
-## Key Improvements over HTTP/1.0
+Following the previous format, I'm going to talk about the new features a bit before implementing them in Go.
 
+## Key Improvements over HTTP/1.0
 HTTP/1.1 introduced several critical enhancements that significantly improved the performance, efficiency, and flexibility of web communication:
 
 ### Persistent Connections
@@ -110,7 +111,7 @@ Trailers provided a way to send additional metadata at the end of a message. Whi
 For the server, there's actually not that much new to add to enable HTTP/1.1 support.
 
 TODO: Basically, add the features:
-- Persistent Connections: support for Keep-Alive header, and based on that, don't close the connection. Add support for timeouts.
+- Persistent Connections: support for Connection header, and based on that, don't close the connection. Add support for timeouts.
 - Enforce the host header
 - Chunked transfer encoding: this one is fun
 

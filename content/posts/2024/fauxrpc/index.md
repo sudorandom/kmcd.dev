@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2", "http3", "connectrpc", "web", "testing"]
+tags: ["grpc", "protobuf", "api", "rpc", "webdev", "connectrpc", "web", "testing"]
 date: "2024-08-20T10:00:00Z"
 description: "I made a server that outputs nonsense."
 cover: "cover.jpg"

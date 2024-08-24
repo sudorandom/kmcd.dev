@@ -51,7 +51,21 @@ func (s *Server) ServeAndListen() error {
 
 func (s *Server) handleConnection(conn net.Conn) error {
 	defer conn.Close()
+	for {
+		shouldClose, err := s.handleRequest(conn)
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				return nil
+			}
+			return err
+		}
+		if shouldClose {
+			return nil
+		}
+	}
+}
 
+func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	// Limit headers to 1MB
 	limitReader := io.LimitReader(conn, 1*1024*1024).(*io.LimitedReader)
 	reader := bufio.NewReader(limitReader)
@@ -60,7 +74,7 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	// Read the request line: GET /path/to/index.html HTTP/1.0
 	reqLine, err := headerReader.ReadLine()
 	if err != nil {
-		return fmt.Errorf("read request line error: %w", err)
+		return true, fmt.Errorf("read request line error: %w", err)
 	}
 
 	req := new(http.Request)
@@ -69,26 +83,26 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	// Parse Method: GET/POST/PUT/DELETE/etc
 	req.Method, reqLine, found = strings.Cut(reqLine, " ")
 	if !found {
-		return errors.New("invalid method")
+		return true, errors.New("invalid method")
 	}
 	if !methodValid(req.Method) {
-		return errors.New("invalid method")
+		return true, errors.New("invalid method")
 	}
 
 	// Parse Request URI
 	req.RequestURI, reqLine, found = strings.Cut(reqLine, " ")
 	if !found {
-		return errors.New("invalid path")
+		return true, errors.New("invalid path")
 	}
 	if req.URL, err = url.ParseRequestURI(req.RequestURI); err != nil {
-		return fmt.Errorf("invalid path: %w", err)
+		return true, fmt.Errorf("invalid path: %w", err)
 	}
 
 	// Parse protocol version "HTTP/1.0"
 	req.Proto = reqLine
 	req.ProtoMajor, req.ProtoMinor, found = parseProtocol(req.Proto)
 	if !found {
-		return errors.New("invalid proto")
+		return true, errors.New("invalid proto")
 	}
 
 	// Parse headers
@@ -96,7 +110,7 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	for {
 		line, err := headerReader.ReadLineBytes()
 		if err != nil && err != io.EOF {
-			return err
+			return true, err
 		} else if err != nil {
 			break
 		}
@@ -106,10 +120,12 @@ func (s *Server) handleConnection(conn net.Conn) error {
 
 		k, v, ok := bytes.Cut(line, []byte{':'})
 		if !ok {
-			return errors.New("invalid header")
+			return true, errors.New("invalid header")
 		}
 		req.Header.Add(strings.ToLower(string(k)), strings.TrimLeft(string(v), " "))
 	}
+
+	req.Close = !isPersistent(req.Header.Get("Connection"))
 
 	// Unbound the limit after we've read the headers since the body can be any size
 	limitReader.N = math.MaxInt64
@@ -120,7 +136,7 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	defer cancelCtx()
 	contentLength, err := parseContentLength(req.Header.Get("Content-Length"))
 	if err != nil {
-		return err
+		return true, err
 	}
 	req.ContentLength = contentLength
 	if req.ContentLength == 0 {
@@ -130,13 +146,9 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	}
 
 	req.RemoteAddr = conn.RemoteAddr().String()
-	req.Close = true // this is always true for HTTP/1.0
 
 	w := &responseBodyWriter{
-		// We hard-code this because this is a HTTP/1.0 server.
-		// Web servers will make requests with HTTP/1.1 but
-		// we're saying that we only support HTTP/1.0.
-		proto:   "HTTP/1.0",
+		proto:   "HTTP/1.1",
 		conn:    conn,
 		headers: make(http.Header),
 	}
@@ -146,7 +158,7 @@ func (s *Server) handleConnection(conn net.Conn) error {
 	if !w.sentHeaders {
 		w.sendHeaders(http.StatusOK)
 	}
-	return nil
+	return req.Close, nil
 }
 
 type noBody struct{}
@@ -191,6 +203,16 @@ func methodValid(method string) bool {
 		return true
 	}
 	return false
+}
+
+func isPersistent(connVal string) bool {
+	switch connVal {
+	case "Keep-Alive", "":
+		return true
+	case "Close":
+		return false
+	}
+	return true
 }
 
 type responseBodyWriter struct {
