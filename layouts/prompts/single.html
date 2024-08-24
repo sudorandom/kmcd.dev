@@ -8,14 +8,11 @@
       <div class="post-excerpt">{{ . }}</div>
     {{ end }}
 
+    {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
     <div class="main-wrapper">
-    <div class="main-box">
+    <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;">
     <article>
-      {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
-      <figure>
-          <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
-      </figure>
-      <div class="post-content">
+      <div class="prompt-box">
         <h2>{{ .Title }}</h2>
         {{ with $toot }}
         <div class="button small mastodon previous">

@@ -36,7 +36,14 @@ HTTP/1.1 introduced several critical enhancements that significantly improved th
 ### Persistent Connections
 Unlike HTTP/1.0, where each request/response cycle required a new connection, HTTP/1.1 introduced persistent connections (Keep-Alive). This allowed multiple requests and responses to be sent over a single TCP connection, dramatically reducing overhead and latency.
 
-TODO: Diagram
+{{< diagram >}}
+{{< image src="reuse.svg" width="300px" class="center" >}}
+{{< /diagram >}}
+
+As a reminder, this is what HTTP/1.0 looks like, or if you decide not to reuse connections in HTTP/1.1; every request requires a new TCP connection:
+{{< diagram >}}
+{{< image src="noreuse.svg" width="300px" class="center" >}}
+{{< /diagram >}}
 
 ### Host Header
 The Host header, now mandatory, enabled virtual hosting, allowing multiple websites to be served from a single server. This was crucial for the scalability of the web, as it allowed for more efficient use of server resources.
@@ -102,10 +109,16 @@ And then the client will continue on with the raw PNG data.
 While HTTP/1.1 introduced many successful features, some didn't gain widespread adoption:
 
 #### Pipelining
-Pipelining allowed clients to send multiple requests without waiting for responses, potentially improving performance. However, its complexity and limited benefits led to its infrequent implementation.
+Pipelining allows clients to send multiple requests without waiting for responses, potentially improving performance by removing some latency. However, since requests need to be responded to in the same order they arrived at, the actual benefit is fairly limited. Add to the fact that earlier requests which hitting timeouts might impact later requests, the actual usage of this feature is pretty low.
+
+{{< diagram >}}
+{{< image src="pipelining.svg" height="500px" class="center" >}}
+{{< /diagram >}}
+
+Many servers support pipelining, but enough of them don't or don't support the feature well that many clients will avoiding utilizing the feature. This was a required feature in HTTP/1.1.
 
 #### Trailers
-Trailers provided a way to send additional metadata at the end of a message. While part of the HTTP/1.1 spec, trailers were not widely adopted and are now more associated with HTTP/2.
+Trailers provided a way to send additional metadata at the end of a message. This allows handlers on the server side to give statuses and other kinds of information like checksums at the end of a request instead of the beginning. While part of the HTTP/1.1 spec, trailers were not widely adopted in this version of HTTP and are now associated more with HTTP/2. Even in HTTP/2, trailers were never fully embraced by browsers, but I'm skipping ahead here!
 
 ## Building a Simple HTTP/1.1 Server
 For the server, there's actually not that much new to add to enable HTTP/1.1 support.

@@ -1,0 +1,25 @@
+# d2 content/posts/2024/http1.1-from-scratch/pipelining.d2 --sketch --theme 201 --pad=20 content/posts/2024/http1.1-from-scratch/pipelining.svg
+
+shape: sequence_diagram
+style: {
+  fill: transparent
+}
+
+client -> server: Establish TPC Connection
+
+client -> server: GET /image1.jpg {
+  style.font-color: pink
+  style.stroke: red
+}
+client -> server: GET /image2.jpg {
+  style.font-color: lightBlue
+  style.stroke: blue
+}
+server -> client: image1.jpg {
+  style.font-color: pink
+  style.stroke: red
+}
+server -> client: image2.jpg {
+  style.font-color: lightBlue
+  style.stroke: blue
+}

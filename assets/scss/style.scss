@@ -393,6 +393,29 @@ ul.icons {
     }
 }
 
+.prompt-outer {
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px 0 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    [data-theme=light] & {
+        background: #fafafa;
+    }
+    [data-theme=dark] & {
+        background: #1f2a35;
+    }
+}
+
+.prompt-box {
+    border-radius: 10px;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 1em 2em 1em 2em;
+    color: #fff;
+}
+
 .links-box h2 {
     margin-top: 0;
 }
