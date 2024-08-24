@@ -98,16 +98,6 @@ main {
     padding-left: 15px;
 }
 
-.post.on-list {
-    background: #fff;
-    cursor: pointer;
-    margin: 0;
-
-    [data-theme=light] & {
-        border-bottom: 1px black dashed;
-    }
-}
-
 .posts-footer {
     text-align: right;
     padding: 10px;
@@ -149,6 +139,13 @@ main {
 }
 
 .post.on-list {
+    background: #fff;
+    cursor: pointer;
+    margin: 0;
+
+    [data-theme=light] & {
+        border-bottom: 1px black dashed;
+    }
     [data-theme=dark] & {
         background: #1f2a35;
         border-bottom: 1px white dashed;
@@ -182,6 +179,10 @@ main {
 
 .post-row {
     display: flex;
+}
+
+.post-row:first-of-type {
+    padding-top: 10px
 }
 
 .page-title {
