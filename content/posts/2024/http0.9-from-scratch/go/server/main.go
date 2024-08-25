@@ -14,7 +14,7 @@ type Server struct {
 	Handler http.Handler
 }
 
-func (s *Server) ServeAndListen() error {
+func (s *Server) ListenAndServe() error {
 	if s.Handler == nil {
 		panic("http server started without a handler")
 	}
@@ -91,7 +91,7 @@ func main() {
 		}),
 	}
 	log.Printf("Listening on %s", addr)
-	if err := s.ServeAndListen(); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }

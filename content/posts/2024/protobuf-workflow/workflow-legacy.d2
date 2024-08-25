@@ -1,0 +1,12 @@
+# d2 content/posts/2024/protobuf-workflow/workflow-legacy.d2 --sketch --theme 200 --pad=20 content/posts/2024/protobuf-workflow/workflow-legacy.svg
+
+style: {
+  fill: transparent
+}
+
+define services, messages, enums  -> proto file: developer
+
+proto file -> generated code: protoc
+
+Generated code -> implement server logic: developer
+implement server logic -> use client to interact with services: developer of other service

@@ -24,7 +24,7 @@ type Server struct {
 	Handler http.Handler
 }
 
-func (s *Server) ServeAndListen() error {
+func (s *Server) ListenAndServe() error {
 	handler := s.Handler
 	if handler == nil {
 		handler = http.DefaultServeMux
@@ -265,7 +265,7 @@ func main() {
 		Handler: mux,
 	}
 	log.Printf("Starting web server: http://%s", addr)
-	if err := s.ServeAndListen(); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }

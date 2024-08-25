@@ -1,0 +1,9 @@
+.svg_lang_go {
+  width: 254.5px;
+  height: 225px;
+}
+.svg_lang_python,
+.svg_lang_rust {
+  width: 800px;
+  height: 800px;
+}

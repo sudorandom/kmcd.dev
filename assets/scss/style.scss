@@ -514,7 +514,12 @@ figure img {
     font-size:2em;
 }
 
+.diagram-wrapper {
+    text-align: center;
+}
+
 .diagram {
     background-color: #2e3440;
     border-radius: 8px;
+    display: inline-block;
 }

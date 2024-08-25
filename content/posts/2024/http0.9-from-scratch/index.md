@@ -98,7 +98,7 @@ type Server struct {
 }
 
 
-func (s *Server) ServeAndListen() error {
+func (s *Server) ListenAndServe() error {
 	if s.Handler == nil {
 		panic("http server started without a handler")
 	}
@@ -119,7 +119,7 @@ func (s *Server) ServeAndListen() error {
 }
 ```
 
-You can see here that our ServeAndListen() listens on the configured TCP port and then loops forever, accepting and handling new connections in separate goroutines. Now let's look at `s.handleConnection()`
+You can see here that our ListenAndServe() listens on the configured TCP port and then loops forever, accepting and handling new connections in separate goroutines. Now let's look at `s.handleConnection()`
 
 ```go
 func (s *Server) handleConnection(conn net.Conn) {
@@ -201,7 +201,7 @@ func main() {
 		}),
 	}
     log.Printf("Listening on %s", addr)
-	if err := s.ServeAndListen(); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }

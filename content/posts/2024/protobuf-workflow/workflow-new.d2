@@ -1,0 +1,43 @@
+# d2 content/posts/2024/protobuf-workflow/workflow-new.d2 --sketch --theme 200 --pad=20 content/posts/2024/protobuf-workflow/workflow-new.svg
+
+style: {
+  fill: transparent
+}
+
+define services, messages, enums  -> proto file: developer
+define services, messages, enums  -> proto file: json-to-protobuf
+define services, messages, enums  -> proto file: protobuf pal
+
+generated code {
+  icon: icons/buf.svg
+  style.font-color: black
+  style.fill: lightBlue
+}
+autoformating {
+  icon: icons/buf.svg
+  style.font-color: black
+  style.fill: lightBlue
+}
+lint checks {
+  icon: icons/buf.svg
+  style.font-color: black
+  style.fill: lightBlue
+}
+breaking change detection {
+  icon: icons/buf.svg
+  style.font-color: black
+  style.fill: lightBlue
+}
+mock server {
+  icon: icons/fauxrpc.png
+  style.fill: teal
+}
+proto file -> generated code: buf generate
+proto file -> autoformating: buf format
+proto file -> lint checks: buf lint
+proto file -> breaking change detection: buf breaking
+proto file -> mock server: FauxRPC
+
+generated code -> implement server logic: developer
+mock server <-> use client to interact with services: developer
+implement server logic <-> use client to interact with services: developer

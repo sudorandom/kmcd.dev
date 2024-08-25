@@ -137,7 +137,7 @@ We'll build a simple Go server from the ground up, handling requests and respons
 
 If you'd rather just dig into the code yourself, Go here: {{< github-link file="go/server/main.go" >}}. Some people (like me) learn better by just downloading the entire script and modifying it to see what breaks to get a better understanding.
 
-The heart of our HTTP/1.0 server is this Server struct, which encapsulates the server's address and the handler responsible for processing incoming requests. The `ServeAndListen()` method initiates the server, listens for connections, and handles each one concurrently, in a new goroutine.
+The heart of our HTTP/1.0 server is this Server struct, which encapsulates the server's address and the handler responsible for processing incoming requests. The `ListenAndServe()` method initiates the server, listens for connections, and handles each one concurrently, in a new goroutine.
 
 ```go
 type Server struct {
@@ -145,7 +145,7 @@ type Server struct {
 	Handler http.Handler
 }
 
-func (s *Server) ServeAndListen() error {
+func (s *Server) ListenAndServe() error {
 	handler := s.Handler
 	if handler == nil {
 		handler = http.DefaultServeMux
@@ -405,7 +405,7 @@ func main() {
 		Handler: mux,
 	}
 	log.Printf("Starting web server: http://%s", addr)
-	if err := s.ServeAndListen(); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -121,12 +121,64 @@ Many servers support pipelining, but enough of them don't or don't support the f
 Trailers provided a way to send additional metadata at the end of a message. This allows handlers on the server side to give statuses and other kinds of information like checksums at the end of a request instead of the beginning. While part of the HTTP/1.1 spec, trailers were not widely adopted in this version of HTTP and are now associated more with HTTP/2. Even in HTTP/2, trailers were never fully embraced by browsers, but I'm skipping ahead here!
 
 ## Building a Simple HTTP/1.1 Server
-For the server, there's actually not that much new to add to enable HTTP/1.1 support.
+For the server, there's actually not that much new to add to enable HTTP/1.1 support. We need:
 
-TODO: Basically, add the features:
-- Persistent Connections: support for Connection header, and based on that, don't close the connection. Add support for timeouts.
-- Enforce the host header
-- Chunked transfer encoding: this one is fun
+- Require the host header
+- Persistent Connections
+- Chunked transfer encoding
+
+### Require the host header
+This one is trivial. I just added a condition looking for the `Host` header:
+```go
+if _, ok := req.Header["Host"]; !ok {
+    return true, errors.New("required 'Host' header not found")
+}
+```
+Easy peasy.
+
+### Implementing Keep-Alive
+Implementing keep-alive is a bit more complicated and it requires some changes in how we handle the connection. If you recall [from before](/posts/http1.0-from-scratch) ({{< github-link file="../http1.0-from-scratch/go/server/main.go" >}}), we had a server with the following methods:
+```go
+ListenAndServe() error
+handleConnection(conn net.Conn) error
+```
+ListenAndServe() just has an infinite for loop, accepting new connections and spawning a new goroutine where it calls `handleConnection(conn)`. `handleConnection` would read a single response and close. Now we need `handleConnection` to loop as well, since that one connection can potentially handle an unlimited number of requests, not just one. So I moved all the code and added a loop to `handleConnection`. The new `handleConenction` function looks pretty simple now:
+
+```go
+func (s *Server) handleConnection(conn net.Conn) error {
+	defer conn.Close()
+	for {
+		shouldClose, err := s.handleRequest(conn)
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				return nil
+			}
+			return err
+		}
+		if shouldClose {
+			return nil
+		}
+	}
+}
+```
+
+Most of the code was moved to `handleRequest` without any modification except that now the code returns two things: a boolean saying if the connection should be closed and an error. The new boolean is there because some requests may decided to not keep the connection alive by setting a header that looks like `Connection: close`. Also, we have to handle if the error is an `EOF` error, because those are also normal now, because the client will eventually disconnect and that's not really an "error" we need to bubble up and log. So here's the biggest changes to `handleRequest` to support keep-alive:
+
+```go
+switch strings.ToLower(req.Header.Get("Connection")) {
+case "keep-alive", "":
+    req.Close = false
+case "close":
+    req.Close = true
+}
+```
+
+This code checks the "Connection" header to see if the connection should be closed after this request or not. The default behavior is to keep the connection alive. At the end of the function, it now returns `return req.Close, nil` so that requests get closed by `handleConnection`.
+
+### Chunked Encoding
+This is probably the most interesting part of implementing HTTP/1.1. I described before, Chunked encoding allows clients to send requests responses of unknown size. It is supported for both request and response bodies.
+
+{{< image src="conveyer.jpg" width="700px" class="center" >}}
 
 ## Testing
 Once our HTTP/1.1 server is implemented, we can test it using various methods:
@@ -135,6 +187,8 @@ Once our HTTP/1.1 server is implemented, we can test it using various methods:
 Any modern web browser can be used to send requests and interact with our server. If the server doesn't work with browsers then you're doing it wrong.
 
 ### CLI Tools
+I like testing this kind of thing with CLI tools because it gives the most flexibility.
+
 #### Keep-Alive
 With `curl`, I can test keep-alives! Here's an example showing the server keeping the connection open and handling two different requests:
 ```shell
@@ -215,11 +269,7 @@ Content-Type: application/json
 That's better! We get a response now as expected!
 
 ## Conclusion
-HTTP/1.1 has played a crucial role in shaping the modern web. It powers a wide range of applications, including:
-
-- **Web Browsing**: Every time you visit a website, HTTP/1.1 is at work behind the scenes, facilitating the communication between your browser and the server.
-- **APIs**: HTTP/1.1 is the foundation for RESTful APIs, enabling seamless communication between different software applications.
-- **Other Applications**: HTTP/1.1 is also used in various other applications, such as file transfer, software updates, and even IoT devices.
+HTTP/1.1 has played a crucial role in shaping the modern web. It powers a wide range of applications.
 
 As we've seen, HTTP/1.1's longevity and widespread adoption suggest it may outlive its successors, HTTP/2 and HTTP/3. Its key features, such as persistent connections, virtual hosting, and chunked transfer encoding, have significantly improved the performance, scalability, and flexibility of the web.
 

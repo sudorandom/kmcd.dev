@@ -24,7 +24,7 @@ type Server struct {
 	Handler http.Handler
 }
 
-func (s *Server) ServeAndListen() error {
+func (s *Server) ListenAndServe() error {
 	handler := s.Handler
 	if handler == nil {
 		handler = http.DefaultServeMux
@@ -128,7 +128,13 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	if _, ok := req.Header["Host"]; !ok {
 		return true, errors.New("required 'Host' header not found")
 	}
-	req.Close = !isPersistent(req.Header.Get("Connection"))
+
+	switch strings.ToLower(req.Header.Get("Connection")) {
+	case "keep-alive", "":
+		req.Close = false
+	case "close":
+		req.Close = true
+	}
 
 	// Unbound the limit after we've read the headers since the body can be any size
 	limitReader.N = math.MaxInt64
@@ -151,15 +157,15 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	req.RemoteAddr = conn.RemoteAddr().String()
 
 	w := &responseBodyWriter{
-		proto:   "HTTP/1.1",
+		req:     req,
 		conn:    conn,
 		headers: make(http.Header),
 	}
 
 	// Finally, call our http.Handler!
 	s.Handler.ServeHTTP(w, req.WithContext(ctx))
-	if !w.sentHeaders {
-		w.sendHeaders(http.StatusOK)
+	if err := w.flush(); err != nil {
+		return true, nil
 	}
 	return req.Close, nil
 }
@@ -208,66 +214,15 @@ func methodValid(method string) bool {
 	return false
 }
 
-func isPersistent(connVal string) bool {
-	switch connVal {
-	case "Keep-Alive", "":
-		return true
-	case "Close":
-		return false
-	}
-	return true
-}
-
-type responseBodyWriter struct {
-	proto       string
-	conn        net.Conn
-	sentHeaders bool
-	headers     http.Header
-}
-
-func (r *responseBodyWriter) Header() http.Header {
-	return r.headers
-}
-
-func (r *responseBodyWriter) Write(b []byte) (int, error) {
-	if !r.sentHeaders {
-		r.sendHeaders(http.StatusOK)
-	}
-	return r.conn.Write(b)
-}
-
-func (r *responseBodyWriter) WriteHeader(statusCode int) {
-	if r.sentHeaders {
-		slog.Warn(fmt.Sprintf("WriteHeader called twice, second time with: %d", statusCode))
-		return
-	}
-	r.sendHeaders(statusCode)
-}
-
-func (r *responseBodyWriter) sendHeaders(statusCode int) {
-	r.sentHeaders = true
-	io.WriteString(r.conn, r.proto)
-	r.conn.Write([]byte{' '})
-	io.WriteString(r.conn, strconv.FormatInt(int64(statusCode), 10))
-	r.conn.Write([]byte{' '})
-	io.WriteString(r.conn, http.StatusText(statusCode))
-	r.conn.Write([]byte{'\r', '\n'})
-	for k, vals := range r.headers {
-		for _, val := range vals {
-			io.WriteString(r.conn, k)
-			r.conn.Write([]byte{':', ' '})
-			io.WriteString(r.conn, val)
-			r.conn.Write([]byte{'\r', '\n'})
-		}
-	}
-	r.conn.Write([]byte{'\r', '\n'})
-}
-
 func main() {
 	addr := "127.0.0.1:9000"
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("public")))
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+		defer r.Body.Close()
+		io.Copy(w, r.Body)
+	})
+	mux.HandleFunc("/echo/chunked", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		io.Copy(w, r.Body)
 	})
@@ -290,7 +245,7 @@ func main() {
 		Handler: mux,
 	}
 	log.Printf("Starting web server: http://%s", addr)
-	if err := s.ServeAndListen(); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }
