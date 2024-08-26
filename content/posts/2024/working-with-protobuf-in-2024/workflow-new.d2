@@ -5,9 +5,16 @@ style: {
 }
 
 define services, messages, enums
+json-to-protobuf {
+  style.fill: darkBlue
+}
+protobuf pal {
+  style.fill: darkBlue
+}
 proto file
-define services, messages, enums -> proto file: json-to-protobuf
-define services, messages, enums -> proto file: protobuf pal
+define services, messages, enums -> proto file
+json-to-protobuf -> proto file
+protobuf pal -> proto file
 
 proto file -> buf tools
 
@@ -30,7 +37,7 @@ buf tools {
   }
 
   buf breaking {
-    label: "buf breaking\nbreaking change detection"
+    label: "buf breaking\nbreaking change\ndetection"
     
   }
 
