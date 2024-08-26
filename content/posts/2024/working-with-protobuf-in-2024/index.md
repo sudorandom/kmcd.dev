@@ -34,7 +34,7 @@ Let's visualize this traditional workflow to highlight these pain points:
 ### What's Missing?
 While this workflow gets the job done, it leaves a lot of room for improvement:
 
-- Error-Prone Manual Steps: The process often involves manual compilation and code generation, increasing the risk of human errors. Most people introduce a `Makefile` or a bash script to handle calling `protoc`. Surprisingly, this can also be error-prone.
+- Error-Prone Manual Steps: The process often involves manual compilation and code generation, increasing the risk of human errors. Most people introduce a `Makefile` or a bash script to handle calling `protoc`, but even this can be error-prone and difficult to maintain.
 - This workflow doesn't include a standardized way to handle protobuf dependencies. Traditionally, this involves the Makefile or bash script that I just mentioned to download protobufs from various online repositories or manually copying them between projects.
 - Lack of Consistency: Without proper tooling, it's challenging to maintain consistent formatting and styling across multiple .proto files.
 - Breaking Changes: Manually tracking changes to your protobufs and ensuring backward compatibility can be tedious and error-prone.
@@ -148,7 +148,9 @@ This enhanced workflow empowers developers to iterate faster, catch errors earli
 {{< image src="workflow-new.svg" width="900px" class="center" >}}
 {{< /diagram >}}
 
-Note that this workflow has one more "find issues and iterate" connections right after writing the protobuf file. That's because these new tools will help you find issues with your protobuf schemas earlier in a more automated way. Also note that with FauxRPC, frontend developers (or whatever is using the generated clients for the service) can **start working on their part before the backend developer is finished**. Frontend devs no longer have to come up with mock APIs (which rapidly get outdated with reality) just to get started on their frontend work.
+Note that this workflow has one more "find issues and iterate" connections right after writing the protobuf file. That's because these new tools will help you find issues with your protobuf schemas earlier in a more automated way.
+
+Also note that with FauxRPC, frontend developers (or whatever is using the generated clients for the service) can **start working on their part before the backend developer is finished with their work**. Frontend devs no longer have to come up with mock APIs (which rapidly get outdated with reality) just to get started on their frontend work. Integration work on another service which uses this protobuf can happen before the backend implementation is completed. Everyone can work in parallel and the better the schema is (with [protovalidate](https://github.com/bufbuild/protovalidate) constraints) the better the fake data will be.
 
 ### More ways to start making protobuf files
 Developers can still define services, messages, and enums directly in the .proto file. However, tools like JSON-to-Proto and Protobuf Pal provide visual aids and assistance in creating and editing .proto files, reducing errors and improving productivity.
