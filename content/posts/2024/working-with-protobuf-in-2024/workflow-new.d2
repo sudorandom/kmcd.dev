@@ -4,40 +4,65 @@ style: {
   fill: transparent
 }
 
-define services, messages, enums  -> proto file: developer
-define services, messages, enums  -> proto file: json-to-protobuf
-define services, messages, enums  -> proto file: protobuf pal
+define services, messages, enums
+proto file
+define services, messages, enums -> proto file: json-to-protobuf
+define services, messages, enums -> proto file: protobuf pal
 
-generated code {
+proto file -> buf tools
+
+buf tools {
+  label: ""
   icon: icons/buf.svg
+  icon.near: top-center
   style.font-color: black
   style.fill: lightBlue
+
+  grid-rows: 2
+  grid-columns: 2
+
+  buf lint {
+    label: "buf lint\nstyle checks"
+  }
+
+  buf format {
+    label: "buf format\nautoformatting"
+  }
+
+  buf breaking {
+    label: "buf breaking\nbreaking change detection"
+    
+  }
+
+  buf generate {
+    label: "buf generate\ngenerate code\n(with dependencies!)"
+  }
 }
-autoformating {
-  icon: icons/buf.svg
-  style.font-color: black
-  style.fill: lightBlue
+
+buf tools -> proto file: find issues\nand iterate {
+  style.stroke: orange
+  style.font-color: orange
+  style.stroke-dash: 2
 }
-lint checks {
-  icon: icons/buf.svg
-  style.font-color: black
-  style.fill: lightBlue
-}
-breaking change detection {
-  icon: icons/buf.svg
-  style.font-color: black
-  style.fill: lightBlue
-}
+
 mock server {
+  label: "FauxRPC\nstub server"
   icon: icons/fauxrpc.png
+  icon.near: bottom-center
   style.fill: teal
 }
-proto file -> generated code: buf generate
-proto file -> autoformating: buf format
-proto file -> lint checks: buf lint
-proto file -> breaking change detection: buf breaking
-proto file -> mock server: FauxRPC
+buf tools -> mock server
 
-generated code -> implement server logic: developer
-mock server <-> use client to interact with services: developer
-implement server logic <-> use client to interact with services: developer
+buf tools -> implement server logic
+implement server logic -> proto file: find issues\nand iterate {
+  style.stroke: orange
+  style.font-color: orange
+  style.stroke-dash: 2
+}
+mock server <-> use client to interact with services
+use client to interact with services <-> implement server logic
+use client to interact with services -> proto file: find issues\nand iterate {
+  style.stroke: orange
+  style.font-color: orange
+  style.stroke-dash: 2
+}
