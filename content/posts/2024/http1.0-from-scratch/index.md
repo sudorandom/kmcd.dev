@@ -15,6 +15,7 @@ slug: "http1.0-from-scratch"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http1.0-from-scratch/
+mastodonID: "112952960792401128"
 ---
 
 ## Introduction

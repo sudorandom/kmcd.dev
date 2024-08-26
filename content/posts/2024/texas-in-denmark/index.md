@@ -12,6 +12,7 @@ type: "posts"
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/texans-in-denmark/
+mastodonID: "112796418171681889"
 aliases: [
     "texas-in-denmark/",
 ]

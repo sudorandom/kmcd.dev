@@ -14,6 +14,7 @@ slug: "fauxrpc"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc/
+mastodonID: "112993780081264113"
 featured: true
 ---
 

@@ -15,6 +15,7 @@ slug: "grpc-the-bad-parts"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts/
+mastodonID: "112635868200899911"
 featured: true
 ---
 

@@ -14,6 +14,7 @@ slug: "http-tool"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http-tool/
+mastodonID: "112835242941123154"
 ---
 
 [Click here to see what version of HTTP your browser is using to load this website](/http/).

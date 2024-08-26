@@ -12,6 +12,7 @@ type: "posts"
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/leaving-texas/
+mastodonID: "112675821844461725"
 featured: false
 featuredTitle: "Life in Denmark"
 ---

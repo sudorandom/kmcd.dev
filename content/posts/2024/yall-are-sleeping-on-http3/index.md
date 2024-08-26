@@ -14,6 +14,7 @@ slug: "yall-are-sleeping-on-http3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/yall-are-sleeping-on-http3/
+mastodonID: "112914503879264792"
 ---
 
 ## Wake up call

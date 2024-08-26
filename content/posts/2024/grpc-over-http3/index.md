@@ -15,6 +15,7 @@ slug: "grpc-over-http3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-over-http3/
+mastodonID: "112755962973336440"
 ---
 
 ## Introduction
