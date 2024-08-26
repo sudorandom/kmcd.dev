@@ -4,7 +4,7 @@
     <div class="post-header">
       <div class="cover-outer cover-{{ or .Params.CoverPosition "bottom" }}"{{with (.Resources.Get .Params.Cover) -}}
         {{- $cover := .Fill "960x420 Center webp q100" -}}
-        style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;"
+        style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;background-position: center;"
       {{- end }}>
       <div class="cover-inner">
         <h1 class="post-title">

@@ -10,7 +10,7 @@
 
     {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
     <div class="main-wrapper">
-    <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;">
+    <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px; background-position: center;">
     <article>
       <div class="prompt-box">
         <h2>{{ .Title }}</h2>
