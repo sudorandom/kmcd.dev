@@ -148,7 +148,7 @@ This enhanced workflow empowers developers to iterate faster, catch errors earli
 {{< image src="workflow-new.svg" width="900px" class="center" >}}
 {{< /diagram >}}
 
-Note that this workflow has several one more "find issues and iterate" connections right after writing the protobuf file. That's because these new tools will help you find issues with your protobuf schemas earlier in a more automated way. Also note that with FauxRPC, frontend developers (or whatever is using the generated clients for the service) can **start working on their part before the backend developer is finished**. Frontend devs no longer have to come up with mock APIs (which rapidly get outdated with reality) just to get started on their frontend work.
+Note that this workflow has one more "find issues and iterate" connections right after writing the protobuf file. That's because these new tools will help you find issues with your protobuf schemas earlier in a more automated way. Also note that with FauxRPC, frontend developers (or whatever is using the generated clients for the service) can **start working on their part before the backend developer is finished**. Frontend devs no longer have to come up with mock APIs (which rapidly get outdated with reality) just to get started on their frontend work.
 
 ### More ways to start making protobuf files
 Developers can still define services, messages, and enums directly in the .proto file. However, tools like JSON-to-Proto and Protobuf Pal provide visual aids and assistance in creating and editing .proto files, reducing errors and improving productivity.
