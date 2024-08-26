@@ -51,15 +51,20 @@ mock server {
   icon.near: bottom-center
   style.fill: teal
 }
+
+buf tools -> generated code
+generated code -> implement server logic
+
 buf tools -> mock server
 
-buf tools -> implement server logic
 implement server logic -> proto file: find issues\nand iterate {
   style.stroke: orange
   style.font-color: orange
   style.stroke-dash: 2
 }
+
 mock server <-> use client to interact with services
+generated code -> use client to interact with services
 use client to interact with services <-> implement server logic
 use client to interact with services -> proto file: find issues\nand iterate {
   style.stroke: orange
