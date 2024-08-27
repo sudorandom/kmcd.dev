@@ -156,7 +156,7 @@ Note that this workflow has one more "find issues and iterate" connections right
 Also note that with FauxRPC, frontend developers (or whatever is using the generated clients for the service) can **start working on their part before the backend developer is finished with their work**. Frontend devs no longer have to come up with mock APIs (which rapidly get outdated with reality) just to get started on their frontend work. Integration work on another service which uses this protobuf can happen before the backend implementation is completed. Everyone can work in parallel and the better the schema is (with [protovalidate](https://github.com/bufbuild/protovalidate) constraints) the better the fake data will be.
 
 ### More ways to start making protobuf files
-Developers can still define services, messages, and enums directly in the .proto file. However, tools like JSON-to-Proto and Protobuf Pal provide visual aids and assistance in creating and editing .proto files, reducing errors and improving productivity.
+Developers can still define services, messages, and enums directly in the .proto file. However, tools like JSON-to-Proto and Protobuf Pal provide visual aids and assistance in creating and editing .proto files, reducing errors and improving productivity. I wouldn't recommend these tools all the time, but they are probably good for quickly getting a prototype going quickly.
 
 ### Automated Code Generation and Management
 Buf's `buf generate` command streamlines the code generation process with a set of declarative configuration files, ensuring consistency across different languages and platforms. Buf's dependency management capabilities eliminate the need for manual scripts to handle protobuf dependencies.
