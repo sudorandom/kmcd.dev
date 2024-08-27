@@ -76,6 +76,8 @@ $ buf curl -d '{"sentence":"Hello! I need some help, doc"}' https://demo.connect
 }
 ```
 
+You can use the buf CLI directly on the CLI (which is great when you're playing around or adding it to a continuous integration process) or [integrated into your code editor](https://buf.build/docs/editor-integration), which is where the real magic happens, anyway.
+
 ### Buf Schema Registry (BSR)
 [The Buf Schema Registry (BSR)](https://buf.build/docs/bsr/introduction) is the missing package manager for Protobufs, but it does a bit more than that. Not only does it allow you to push versioned schemas to one place, but it also has cool features like [automatically generated SDKs](https://buf.build/docs/bsr/generated-sdks/overview). The idea is that you can just import the package in your favorite language and magically you have your server stubs and clients in the language of your choice (as long as it's Go, Typescript/Javascript, Java/Kotlin, Swift, Python or Rust).
 
