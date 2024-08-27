@@ -34,9 +34,9 @@ Let's visualize this traditional workflow to highlight these pain points:
 ### What's Missing?
 While this workflow gets the job done, it leaves a lot of room for improvement:
 
-- Error-Prone Manual Steps: The process often involves manual compilation and code generation, increasing the risk of human errors. Most people introduce a `Makefile` or a bash script to handle calling `protoc`, but even this can be error-prone and difficult to maintain.
-- This workflow doesn't include a standardized way to handle protobuf dependencies. Traditionally, this involves the Makefile or bash script that I just mentioned to download protobufs from various online repositories or manually copying them between projects.
-- Lack of Consistency: Without proper tooling, it's challenging to maintain consistent formatting and styling across multiple .proto files.
+- Error-Prone Build Steps: The process often involves manual compilation and code generation, increasing the risk of human errors. Most people introduce a `Makefile` or a bash script to handle calling `protoc`, but even this can be error-prone and difficult to maintain. Some believe this doesn't exist or some magical build system "handles it for you", but I assure you, [ it exists](https://github.com/openconfig/gnmi/blob/master/compile_protos.sh) and it's [not hard to find](https://github.com/search?q=protoc+language%3Abash&type=code) plenty of examples of this.
+- This workflow doesn't include a standardized way to handle protobuf dependencies. Traditionally, this involves the Makefile or bash script that I just mentioned to download protobufs from various online repositories or manually copying them between projects. This is bad, but the Protobuf/gRPC projects don't really give much guidance on how to reuse protobufs, so people have just done it themselves in wildly different ways.
+- Lack of Consistency: Without proper tooling, it's challenging to maintain consistent formatting and styling across multiple `.proto` files.
 - Breaking Changes: Manually tracking changes to your protobufs and ensuring backward compatibility can be tedious and error-prone.
 - No Mocking or Prototyping: It takes a good amount of effort to make a gRPC service, even if you just want to use mock data.
 
@@ -46,7 +46,7 @@ Fortunately, the Protobuf ecosystem has evolved dramatically in the last few yea
 The Protobuf ecosystem has seen a surge of innovation in recent years, with many third-party tools emerging to address the limitations of the traditional workflow. Let's delve into some of these tools.
 
 ### JSON to Proto
-[JSON to Proto](https://json-to-proto.github.io/) is a fantastic online tool that simplifies the creation of protobuf definitions. You can paste in sample JSON data, and it will generate a corresponding `.proto` file for you. This is particularly useful when you're starting with existing JSON data or want to quickly prototype a protobuf schema. Learn more from [the Github repo](https://github.com/json-to-proto/json-to-proto.github.io).
+[JSON to Proto](https://json-to-proto.github.io/) is a online tool that simplifies the creation of protobuf definitions if you are brand new to protobufs. I wouldn't recommend using this for the long haul, but it can be a good way to get started quickly by pasting in sample JSON data, and the tool will generate a corresponding `.proto` file for you. This is particularly useful when you're starting with existing JSON data or want to quickly prototype a protobuf schema. Learn more from [the Github repo](https://github.com/json-to-proto/json-to-proto.github.io).
 
 {{< image src="json-to-proto.png" width="600px" class="center" >}}
 
@@ -56,7 +56,7 @@ The Protobuf ecosystem has seen a surge of innovation in recent years, with many
 ### Buf CLI
 [Buf](https://buf.build/) is a comprehensive toolkit designed to make working with protobufs a breeze.
 
-{{< image src="surprise.png" width="400px" class="center" >}}
+{{< image src="surprise.png" width="500px" class="center" >}}
 
 The Buf CLI offers several powerful features:
 
@@ -80,6 +80,9 @@ $ buf curl -d '{"sentence":"Hello! I need some help, doc"}' https://demo.connect
 [The Buf Schema Registry (BSR)](https://buf.build/docs/bsr/introduction) is the missing package manager for Protobufs, but it does a bit more than that. Not only does it allow you to push versioned schemas to one place, but it also has cool features like [automatically generated SDKs](https://buf.build/docs/bsr/generated-sdks/overview). The idea is that you can just import the package in your favorite language and magically you have your server stubs and clients in the language of your choice (as long as it's Go, Typescript/Javascript, Java/Kotlin, Swift, Python or Rust).
 
 With the BSR, you no longer need bespoke Makefile or bash scripts to pull down protobuf dependencies.
+
+## Testing
+This next set of tools are good for testing live gRPC endpoints. Obviously, [gRPCurl](https://github.com/fullstorydev/grpcurl) is an amazing tool for this, but let's discover some tools that are a bit newer to the scene.
 
 ### Buf Studio
 [Buf Studio](https://buf.build/studio) is an interactive web UI for all your gRPC and Protobuf services stored on the Buf Schema Registry. With Buf Studio you can craft gRPC/gRPC-Web/Connect requests using images on the buf registry. Buf Studio uses those protobuf schemas to support autocompletion of these requests, which is super cool. It can also use an agent that is built into the `Buf CLI` to proxy requests from internal networks, making this web-based tool a bit more flexible.

@@ -13,7 +13,6 @@ import (
 	"math"
 	"net"
 	"net/http"
-	"net/textproto"
 	"net/url"
 	"strconv"
 	"strings"
@@ -69,13 +68,14 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	// Limit headers to 1MB
 	limitReader := io.LimitReader(conn, 1*1024*1024).(*io.LimitedReader)
 	reader := bufio.NewReader(limitReader)
-	headerReader := textproto.NewReader(bufio.NewReader(reader))
+	// headerReader := textproto.NewReader(bufio.NewReader(reader))
 
 	// Read the request line: GET /path/to/index.html HTTP/1.0
-	reqLine, err := headerReader.ReadLine()
+	reqLineBytes, _, err := reader.ReadLine()
 	if err != nil {
 		return true, fmt.Errorf("read request line error: %w", err)
 	}
+	reqLine := string(reqLineBytes)
 
 	req := new(http.Request)
 	var found bool
@@ -108,7 +108,7 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	// Parse headers
 	req.Header = make(http.Header)
 	for {
-		line, err := headerReader.ReadLineBytes()
+		line, _, err := reader.ReadLine()
 		if err != nil && err != io.EOF {
 			return true, err
 		} else if err != nil {
@@ -148,10 +148,20 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		return true, err
 	}
 	req.ContentLength = contentLength
-	if req.ContentLength == 0 {
+	isChunked := req.Header.Get("Transfer-Encoding") == "chunked"
+	if req.ContentLength == 0 && !isChunked {
 		req.Body = noBody{}
 	} else {
-		req.Body = &bodyReader{reader: io.LimitReader(reader, req.ContentLength)}
+		if isChunked {
+			req.Body = &chunkedBodyReader{
+				reader: reader,
+			}
+		} else {
+			req.Body = &bodyReader{
+				reader: io.LimitReader(reader, req.ContentLength),
+			}
+		}
+
 	}
 
 	req.RemoteAddr = conn.RemoteAddr().String()
@@ -174,19 +184,6 @@ type noBody struct{}
 
 func (noBody) Read([]byte) (int, error) { return 0, io.EOF }
 func (noBody) Close() error             { return nil }
-
-type bodyReader struct {
-	reader io.Reader
-}
-
-func (r *bodyReader) Read(p []byte) (n int, err error) {
-	return r.reader.Read(p)
-}
-
-func (r *bodyReader) Close() error {
-	_, err := io.Copy(io.Discard, r.reader)
-	return err
-}
 
 func parseContentLength(headerval string) (int64, error) {
 	if headerval == "" {
@@ -220,7 +217,15 @@ func main() {
 	mux.Handle("/", http.FileServer(http.Dir("public")))
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
-		io.Copy(w, r.Body)
+		b, err := io.ReadAll(r.Body)
+		if err != nil {
+			w.WriteHeader(400)
+			fmt.Println("ERROR", err)
+			return
+		}
+		fmt.Println("READ BODY")
+		fmt.Println(string(b))
+		w.Write(b)
 	})
 	mux.HandleFunc("/echo/chunked", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
