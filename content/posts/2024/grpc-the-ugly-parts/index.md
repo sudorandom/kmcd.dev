@@ -101,7 +101,7 @@ Sharing protobuf definitions across multiple projects or repositories is a const
 
 {{< image src="build.png" width="600px" class="center" >}}
 
-Related to dependencies, I do want to call out that Google's "well-known" protobuf types get special privilege of being built into protoc. While these types are incredibly useful and are invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive.
+Related to dependencies, I do want to call out that Google's "well-known" protobuf types get special privilege of being built into protoc. While these types are incredibly useful and invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive.
 
 ### Required Fields
 The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
