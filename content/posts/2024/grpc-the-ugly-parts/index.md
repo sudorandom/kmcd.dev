@@ -67,6 +67,29 @@ You might have read this section and thought "well, this would increase the amou
 
 See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`.
 
+## Required Fields
+The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
+
+> Real-world practice has also shown that quite often, fields that originally seemed to be "required" turn out to be optional over time, hence the "required considered harmful" manifesto. In practice, you want to declare all fields optional to give yourself maximum flexibility for change.
+
+This is [echoed by the official style guide of protobufs](https://protobuf.dev/programming-guides/dos-donts/#add-required), where they recommend adding a comment indicating that a field is required. If we're talking about getting a message from A to B, I totally agree with this line of thinking. However, just because the fields that are considered "required" change over time doesn't mean required fields don't exist. There still needs to be code that enforces this requirement and I'd rather not write this code, to be honest. Therefore, I think the best way of handling required fields without writing a bunch of null checks everywhere is by using [protovalidate](https://github.com/bufbuild/protovalidate) or a similar library that has protobuf options that allow you to annotate which fields are required. Then there is code on the server and/or client that can enforce these requirements using a library. In my opinion, this has the best of both worlds: you can still declare required fields in a way that doesn't completely break message integrity.
+
+I don't like this:
+```protobuf
+message User {
+  int32 age = 1; // required.
+}
+```
+
+I do like this:
+```protobuf
+message User {
+  int32 age = 1 [(buf.validate.field).required = true];
+}
+```
+
+I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount. I've contributed to it. I now have two open source projects that use these field annotations to do useful work.
+
 ## Editor Support with Code Generation Sucks
 Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
 
@@ -104,29 +127,6 @@ Sharing protobuf definitions across multiple projects or repositories is a const
 {{< image src="build.png" width="600px" class="center" >}}
 
 Related to dependencies, I do want to call out that Google's "well-known" protobuf types get special privilege of being built into protoc. While these types are incredibly useful and invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive.
-
-### Required Fields
-The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
-
-> Real-world practice has also shown that quite often, fields that originally seemed to be "required" turn out to be optional over time, hence the "required considered harmful" manifesto. In practice, you want to declare all fields optional to give yourself maximum flexibility for change.
-
-This is [echoed by the official style guide of protobufs](https://protobuf.dev/programming-guides/dos-donts/#add-required), where they recommend adding a comment indicating that a field is required. If we're talking about getting a message from A to B, I totally agree with this line of thinking. However, just because the fields that are considered "required" change over time doesn't mean required fields don't exist. There still needs to be code that enforces this requirement and I'd rather not write this code, to be honest. Therefore, I think the best way of handling required fields without writing a bunch of null checks everywhere is by using [protovalidate](https://github.com/bufbuild/protovalidate) or a similar library that has protobuf options that allow you to annotate which fields are required. Then there is code on the server and/or client that can enforce these requirements using a library. In my opinion, this has the best of both worlds: you can still declare required fields in a way that doesn't completely break message integrity.
-
-I don't like this:
-```protobuf
-message User {
-  int32 age = 1; // required.
-}
-```
-
-I do like this:
-```protobuf
-message User {
-  int32 age = 1 [(buf.validate.field).required = true];
-}
-```
-
-I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount. I've contributed to it. I now have two open source projects that use these field annotations to do useful work.
 
 ## Documentation is Ugly
 I've never seen documentation generated from protobuf that wasn't super ugly. I think since gRPC has historically been a backend service, the backend devs never bothered to put any real effort into making pretty documentation output using a protoc plugin. I've solved this problem by [making a protoc plugin](https://github.com/sudorandom/protoc-gen-connect-openapi) that generates OpenAPI from given protobuf files. Then I use one of the many beautiful tools for displaying the OpenAPI spec. This was, by far, much easier than getting me to make a decent design.
