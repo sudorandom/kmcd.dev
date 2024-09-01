@@ -20,10 +20,10 @@ draft: true
 
 gRPC has undeniably become a powerful tool in the world of microservices, offering efficiency and performance benefits, but gRPC also has an ugly side. As someone who's spent a considerable amount of time with gRPC, I'd like to shed light on some of the uglier aspects of this technology.
 
-## Generated Code Is Ugly
-To get started, I have to talk about how the generated code from Protobuf definitions and gRPC services can be truly ugly. It's often verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
+## Generated Code
+To get started, I have to talk about how ugly the code generated from Protobuf definitions is. It has historically been verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
 
-#### C++ Influence on Enums
+### C++ Influence on Enums
 If you follow the style recommendations for protobuf, the names of enums are expected to be prefixed an upper-snake-case version of the enum name, like so:
 
 ```protobuf
@@ -36,7 +36,7 @@ enum FooBar {
 
 This is described better in the [buf lint rule](https://buf.build/docs/lint/rules#enum_value_prefix) for `ENUM_VALUE_PREFIX` but the style guide is like this because of C++ scoping rules with enums, which makes it impossible to have two enum values in the same package with the same enum value name. While this convention originated from C++ scoping rules, it affects protobuf's style guide across all languages. Why would scoping inside of the enum not be enough for the C++ compiler to generate unique names? Why is this flaw something that impacts the style guide and, in effect, all target languages? This is kind of ugly.
 
-## The generated code isn't even that fast
+### The generated code isn't even that fast
 One benefit of generated code is that you generate code that no sane human would write in order to get some performance optimizations. However, if you look at some of the generated code, you'll see runtime reflection used a lot for protobufs. Be warned that this will be a very Go-specific section because most of my experience with protobufs is in Go. However, the same strategy has been applied in most languages.
 
 Let's take a look at super simple example in Go. Here's the protobuf:
@@ -56,7 +56,7 @@ type Hello struct {
 }
 ```
 
-There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used. This is generally seen as slower, because it is slower. It's strange that type-specific serialization code isn't generated for Go. This can be mitigated by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will actually generate these specialized marshal and unmarshal functions. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can add 2-4% performance to protobuf marshalling/unmarshalling. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. This project needs more love and support.
+There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used. Reflection is generally seen as slower, because it is slower. It's strange that optimized, type-specific serialization code isn't generated for Go. You can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate these specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improved performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. This project needs more love and support.
 
 Note that there are [other efforts which claim outrageous improvements](https://medium.com/@octopus.dev/gremlin-77af6fee4193) over what the standard protobuf library does. They do make tradeoffs to achieve these performance gains, but sometimes the extra complexity is worth it.
 
@@ -66,6 +66,9 @@ You might have read this section and thought "well, this would increase the amou
 - `option optimize_for = LITE_RUNTIME;` - intended to run on a smaller runtime that omits features like descriptors and reflection.
 
 See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`.
+
+### Editor Support with Generated Code Sucks
+Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
 
 ## Required Fields
 The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
@@ -90,15 +93,12 @@ message User {
 
 I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount. I've contributed to it. I now have two open source projects that use these field annotations to do useful work.
 
-## Editor Support with Code Generation Sucks
-Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
-
 ## Failure to Launch
 While gRPC has undeniable advantages, its learning curve can be steep. Getting started with protobuf, understanding the tooling, and setting up the necessary infrastructure can be intimidating for newcomers, making the initial adoption hurdle higher than with simpler JSON-based APIs.
 
 {{< image src="learning-curve.png" width="600px" class="center" >}}
 
-The steep learning curve doesn't help when many people who use and rely on protobuf and gRPC actively don't want gRPC to extend to the frontend and think tools to help smooth out the transition from JSON to protobuf will lead to uninformed people encroaching on the backend domain, where only they are smart enough to work. This is elitist gate-keeping and is unfortunately prevalent in this industry.
+The steep learning curve doesn't help when many people who use and rely on protobuf and gRPC actively don't want gRPC to extend to the frontend and think that pushing in this direction will lead to uninformed people encroaching on the domain of the backend, where only they are smart enough to work. This is elitist gate-keeping and is unfortunately prevalent in this industry. I believe gRPC has as much of a place in web frontends as much as it does in microservices.
 
 I've learned a lot by helping others work with protobuf. You may see me on [Buf's slack channel](https://buf.build/links/slack) or on related discussions because I truly have gotten a lot out of it. Many article ideas have come directly from answering questions there. If I see a problem often enough, I may end up writing an article about it. I believe the protobuf and gRPC needs more of this attitude.
 
@@ -128,7 +128,7 @@ Sharing protobuf definitions across multiple projects or repositories is a const
 
 Related to dependencies, I do want to call out that Google's "well-known" protobuf types get special privilege of being built into protoc. While these types are incredibly useful and invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive.
 
-## Documentation is Ugly
+## Ugly Documentation
 I've never seen documentation generated from protobuf that wasn't super ugly. I think since gRPC has historically been a backend service, the backend devs never bothered to put any real effort into making pretty documentation output using a protoc plugin. I've solved this problem by [making a protoc plugin](https://github.com/sudorandom/protoc-gen-connect-openapi) that generates OpenAPI from given protobuf files. Then I use one of the many beautiful tools for displaying the OpenAPI spec. This was, by far, much easier than getting me to make a decent design.
 
 Let's look at a real example. This is a document generated using one of the few tools for generating documentation from protobuf, [protoc-gen-doc](https://github.com/pseudomuto/protoc-gen-doc):
