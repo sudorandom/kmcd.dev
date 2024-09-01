@@ -15,7 +15,6 @@ slug: "grpc-the-ugly-parts"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-ugly-parts/
-draft: true
 ---
 
 gRPC has undeniably become a powerful tool in the world of microservices, offering efficiency and performance benefits, but gRPC also has an ugly side. As someone who's spent a considerable amount of time with gRPC, I'd like to shed light on some of the uglier aspects of this technology.
@@ -24,7 +23,7 @@ gRPC has undeniably become a powerful tool in the world of microservices, offeri
 To get started, I have to talk about how ugly the code generated from protobuf definitions is. It has historically been verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
 
 ### C++ Influence on Enums
-If you follow the style recommendations for protobuf, the names of enums are expected to be prefixed an upper-snake-case version of the enum name, like so:
+If you follow the style recommendations from [Buf](https://buf.build/docs/best-practices/style-guide), the names of enums are expected to be prefixed an upper-snake-case version of the enum name, like so:
 
 ```protobuf
 enum FooBar {
@@ -34,7 +33,7 @@ enum FooBar {
 }
 ```
 
-This is described better in the [buf lint rule](https://buf.build/docs/lint/rules#enum_value_prefix) for `ENUM_VALUE_PREFIX` but the style guide is like this because of C++ scoping rules with enums, which makes it impossible to have two enum values in the same package with the same enum value name. While this convention originated from C++ scoping rules, it affects protobuf's style guide across all languages. Why would scoping inside of the enum not be enough for the C++ compiler to generate unique names? Why is this flaw something that impacts the style guide and, in effect, all target languages? This is kind of ugly.
+This is described better in the [buf lint rule](https://buf.build/docs/lint/rules#enum_value_prefix) for `ENUM_VALUE_PREFIX` but the style guide is like this because of C++ scoping rules with enums, which makes it impossible to have two enum values in the same package with the same enum value name. While this convention originated from C++ scoping rules, it affects how you want to design your protobuf files across all languages. Why would scoping inside of the enum not be enough for the C++ compiler to generate unique names? Why is this flaw something that impacts the style guide and, in effect, all target languages? To me, this is kind of ugly, because quirks of some language implementations are bubbling up in unintuitive ways.
 
 ### The generated code isn't even that fast
 One benefit of generated code is that you generate code that no sane human would write in order to get some performance optimizations. However, if you look at some of the generated code, you'll see runtime reflection used a lot for protobufs. Be warned that this will be a very Go-specific section because most of my experience with protobufs is in Go. However, the same strategy has been applied in most languages.
@@ -71,7 +70,7 @@ You might have read this section and thought "well, this would increase the amou
 - `option optimize_for = CODE_SIZE;` - smaller code
 - `option optimize_for = LITE_RUNTIME;` - intended to run on a smaller runtime that omits features like descriptors and reflection.
 
-See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`. Integrating `vtprotobuf`-like optimizations into the standard protobuf compiler could offer significant performance gains for Go and other languages.
+See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`. Integrating `vtprotobuf`-like optimizations into the standard protobuf compiler could offer significant performance gains for Go and there are potentially similar opportunities in other languages as well.
 
 ### Editor Support with Generated Code Sucks
 Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
