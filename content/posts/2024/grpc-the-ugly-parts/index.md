@@ -54,6 +54,12 @@ type Hello struct {
 
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
+
+// With these methods, contents are stripped
+func (*Hello) Reset()
+func (*Hello) String() string
+func (*Hello) ProtoMessage()
+func (*Hello) ProtoReflect() protoreflect.Message
 ```
 
 There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used. Reflection is generally seen as slower, because it is slower. It's strange that optimized, type-specific serialization code isn't generated for Go. You can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate these specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improved performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. This project needs more love and support.
