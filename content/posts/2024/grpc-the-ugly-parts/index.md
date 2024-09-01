@@ -113,7 +113,7 @@ I've learned a lot by helping others work with protobuf. You may see me on [Buf'
 The steep learning curve, coupled with some resistance from backend developers to help the adoption of gRPC in the frontend, has slowed its broader adoption in web development.
 
 ## gRPC Has a History
-gRPC's initial focus on microservices and its close ties to HTTP/2 hindered its widespread adoption in web development. Even with the advent of gRPC-Web, there's still a perception that it's not a first-class citizen in the frontend ecosystem. The lack of robust integration with popular frontend libraries like TanStack Query further solidifies this notion.
+gRPC's initial focus on microservices and its close ties to HTTP/2 hindered its widespread adoption in web development. Even with the [advent of gRPC-Web](https://grpc.io/blog/state-of-grpc-web/), there's still a perception that it's not a first-class citizen in the frontend ecosystem. The lack of robust integration with popular frontend libraries like [TanStack Query](https://tanstack.com/query/latest) further solidifies this notion to me.
 
 {{< image src="bad-blood.png" width="800px" class="center" >}}
 
