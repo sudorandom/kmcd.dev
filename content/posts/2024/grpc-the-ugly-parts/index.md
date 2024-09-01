@@ -22,7 +22,7 @@ gRPC has undeniably become a powerful tool in the world of microservices, offeri
 ## Generated Code
 To get started, I have to talk about how ugly the code generated from protobuf definitions is. It has historically been verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
 
-### C++ Influence on Enums
+### Language-specific Quirks
 If you follow the style recommendations from [Buf](https://buf.build/docs/best-practices/style-guide), the names of enums are expected to be prefixed an upper-snake-case version of the enum name, like so:
 
 ```protobuf
@@ -33,7 +33,7 @@ enum FooBar {
 }
 ```
 
-This is described better in the [buf lint rule description](https://buf.build/docs/lint/rules#enum_value_prefix) for `ENUM_VALUE_PREFIX` but the style guide is like this because of C++ scoping rules with enums, which makes it impossible to have two enum values in the same package with the same enum value name. While this convention originated from C++ scoping rules, it affects how you want to design your protobuf files across all languages. Why would scoping inside of the enum not be enough for the C++ compiler to generate unique names? Why is this flaw something that impacts the style guide and, in effect, all target languages? To me, this is kind of ugly, because quirks of some language implementations are bubbling up in unintuitive ways.
+This is described better in the [buf lint rule description](https://buf.build/docs/lint/rules#enum_value_prefix) for `ENUM_VALUE_PREFIX` but the style guide is like this because of C++ scoping rules with enums, which makes it impossible to have two enum values in the same package with the same enum value name. While this convention originated from C++ scoping rules, it affects how you should design all protobuf files. Why would scoping inside of the enum not be enough for the C++ compiler to generate unique names? Why is this flaw something that impacts the style guide and, in effect, all target languages? To me, this is kind of ugly, because quirks of some language implementations are bubbling up in unintuitive ways.
 
 ### The generated code isn't even that fast
 One benefit of generated code is that you generate code that no sane human would write in order to get some performance optimizations. However, if you look at some of the generated code, you'll see runtime reflection used a lot for protobufs. Be warned that this will be a very Go-specific section because most of my experience with protobufs is in Go. However, the same strategy has been applied in most languages.
