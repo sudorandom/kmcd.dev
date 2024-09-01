@@ -21,7 +21,7 @@ draft: true
 gRPC has undeniably become a powerful tool in the world of microservices, offering efficiency and performance benefits, but gRPC also has an ugly side. As someone who's spent a considerable amount of time with gRPC, I'd like to shed light on some of the uglier aspects of this technology.
 
 ## Generated Code
-To get started, I have to talk about how ugly the code generated from Protobuf definitions is. It has historically been verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
+To get started, I have to talk about how ugly the code generated from protobuf definitions is. It has historically been verbose, complex, and difficult to navigate. Even though it's not meant to be hand-edited, this can impact code readability and maintainability, especially when integrating gRPC into larger projects. This has actually improved a lot recently in most languages but even so, there are some rough edges.
 
 ### C++ Influence on Enums
 If you follow the style recommendations for protobuf, the names of enums are expected to be prefixed an upper-snake-case version of the enum name, like so:
@@ -62,7 +62,7 @@ func (*Hello) ProtoMessage()
 func (*Hello) ProtoReflect() protoreflect.Message
 ```
 
-There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used. Reflection is generally seen as slower, because it is slower. It's strange that optimized, type-specific serialization code isn't generated for Go. You can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate these specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improved performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. This project needs more love and support.
+There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used. Reflection is generally seen as slower, because it *is* slower. It's strange that optimized, type-specific serialization code isn't generated for Go. You can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate these specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improved performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. This project needs more love and support.
 
 Note that there are [other efforts which claim outrageous improvements](https://medium.com/@octopus.dev/gremlin-77af6fee4193) over what the standard protobuf library does. They do make tradeoffs to achieve these performance gains, but sometimes the extra complexity is worth it.
 
@@ -124,7 +124,7 @@ While [the gRPC project claims](https://grpc.io/docs/what-is-grpc/faq/#what-does
 
 {{< image src="google.png" width="600px" class="center" >}}
 
-There's always a lingering question about Google's long-term commitment to gRPC and Protobuf. Will they continue to invest in these open-source projects, or could they pull the plug if priorities shift? Remember that Google has [recently layed off much of the Flutter, Dart and Python teams](https://techcrunch.com/2024/05/01/google-lays-off-staff-from-flutter-dart-python-weeks-before-its-developer-conference/). The Protobuf community is growing, but would it be self-sustaining enough to survive such a scenario?
+There's always a lingering question about Google's long-term commitment to gRPC and protobuf. Will they continue to invest in these open-source projects, or could they pull the plug if priorities shift? Remember that Google has [recently layed off much of the Flutter, Dart and Python teams](https://techcrunch.com/2024/05/01/google-lays-off-staff-from-flutter-dart-python-weeks-before-its-developer-conference/). The protobuf community is growing, but would it be self-sustaining enough to survive such a scenario?
 
 ## It's Not Finished
 Others have said that gRPC is immature, not because of its age but by how developed the ecosystem is. I tend to agree, because it's missing features and tools that I would have expected from a mature ecosystem.
@@ -134,7 +134,7 @@ Sharing protobuf definitions across multiple projects or repositories is a const
 
 {{< image src="build.png" width="600px" class="center" >}}
 
-Related to dependencies, I do want to call out that Google's "well-known" protobuf types get special privilege of being built into protoc. While these types are incredibly useful and invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive.
+Related to dependencies, I do want to call out that [Google's "well-known" protobuf types](https://protobuf.dev/reference/protobuf/google.protobuf/) get special privilege of being built into protoc. While these types are incredibly useful and invaluable, their privilege makes it hard for other libraries of useful protobuf types to exist and thrive. Just building these protobuf definitions is a cop out for not having a real and consistent story for dependency management.
 
 ## Ugly Documentation
 I've never seen documentation generated from protobuf that wasn't super ugly. I think since gRPC has historically been a backend service, the backend devs never bothered to put any real effort into making pretty documentation output using a protoc plugin. I've solved this problem by [making a protoc plugin](https://github.com/sudorandom/protoc-gen-connect-openapi) that generates OpenAPI from given protobuf files. Then I use one of the many beautiful tools for displaying the OpenAPI spec. This was, by far, much easier than getting me to make a decent design.
@@ -147,9 +147,9 @@ Compare it to some of the OpenAPI tooling. This was generated using [Elements](h
 
 It's kind-of not fair to point at a single plugin and say that the default template doesn't look as good as OpenAPI alternatives, because you actually do have more flexibility with protoc-gen-doc. It allows you to specify your own template so it could look as beautiful as you want. However, this does line up with my point: the tooling is more finished and polished in the REST world than gRPC. This is a fixable problem, but we need to get frontend devs and designers excited about gRPC or backend engineers need to start sharpening their design skills.
 
-I do also want to note that OpenAPI/Swagger interfaces often have a way to test endpoints directly from the documentation website. This is completely missing from equivalent tools in the gRPC world. So not only is it prettier, it's more functional as well.
+I also want to note that OpenAPI/Swagger interfaces often have a way to test endpoints directly from the documentation website. This is completely missing from equivalent tools in the gRPC world. Additionally, with most OpenAPI documentation tools you can clearly see which fields are required and will display constraints on fields that have them. So not only is it prettier, it's more functional as well.
 
 ## Conclusion
-gRPC, while a powerful tool in many ways, still has room to grow.  The less-than-ideal aspects of generated code, coupled with the challenges of dependency management and evolving Protobuf schemas, can create friction for developers. The lack of intuitive editor integration and the historical focus on backend services have also hindered its wider adoption in web development.
+gRPC, while a powerful tool in many ways, still has room to grow.  The less-than-ideal aspects of generated code, coupled with the challenges of dependency management and evolving protobuf schemas, can create friction for developers. The lack of intuitive editor integration and the historical focus on backend services have also hindered its wider adoption in web development.
 
-However, I think the future of gRPC is bright and can be far less ugly. The community is actively addressing these challenges, developing tools like `protovalidate` and `protoc-gen-connect-openapi` to bridge gaps and enhance the developer experience. As gRPC matures and its ecosystem expands, we can anticipate improved tooling, better editor support, and a smoother integration into the frontend world.
+However, I think the future of gRPC is bright and can be far less ugly. The community is actively addressing these challenges, developing tools like [the buf CLI](https://buf.build/product/cli), [protovalidate](https://github.com/bufbuild/protovalidate) and [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi) to bridge the gaps and enhance the developer experience. As gRPC matures and its ecosystem expands, we can anticipate improved tooling, better editor support, and a smoother integration into the frontend world.
