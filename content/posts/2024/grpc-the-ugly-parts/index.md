@@ -143,9 +143,11 @@ Related to dependencies, I do want to call out that [Google's "well-known" proto
 I've never seen documentation generated from protobuf that wasn't super ugly. I think since gRPC has historically been a backend service, the backend devs never bothered to put any real effort into making pretty documentation output using a protoc plugin. I've solved this problem by [making a protoc plugin](https://github.com/sudorandom/protoc-gen-connect-openapi) that generates OpenAPI from given protobuf files. Then I use one of the many beautiful tools for displaying the OpenAPI spec. This was, by far, much easier than getting me to make a decent design. Another side benefit for generating OpenAPI from protobuf is the ability to tap into that ecosystem since there's more to it than just documentation.
 
 Let's look at a real example. This is a document generated using one of the few tools for generating documentation from protobuf, [protoc-gen-doc](https://github.com/pseudomuto/protoc-gen-doc):
+
 {{< image src="protoc-gen-doc.png" width="600px" class="center" >}}
 
 Compare it to some of the OpenAPI tooling. This was generated using [Elements](https://github.com/stoplightio/elements), but the there are many, many other alternatives that look equally as polished:
+
 {{< image src="elements.png" width="800px" class="center" >}}
 
 It's kind-of not fair to point at a single plugin and say that the default template doesn't look as good as OpenAPI alternatives, because you actually do have more flexibility with protoc-gen-doc. It allows you to specify your own template so it could look as beautiful as you want. However, this does line up with my point: the tooling is more finished and polished in the REST world than gRPC. This is a fixable problem, but we need to get frontend devs and designers excited about gRPC or backend engineers need to start sharpening their design skills.
