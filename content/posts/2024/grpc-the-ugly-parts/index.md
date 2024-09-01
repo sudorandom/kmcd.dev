@@ -79,6 +79,8 @@ The steep learning curve doesn't help when many people who use and rely on proto
 
 I've learned a lot by helping others work with protobuf. You may see me on [Buf's slack channel](https://buf.build/links/slack) or on related discussions because I truly have gotten a lot out of it. Many article ideas have come directly from answering questions there. If I see a problem often enough, I may end up writing an article about it. I believe the protobuf and gRPC needs more of this attitude.
 
+The steep learning curve, coupled with some resistance from backend developers to help the adoption of gRPC in the frontend, has slowed its broader adoption in web development.
+
 ## gRPC Has a History
 gRPC's initial focus on microservices and its close ties to HTTP/2 hindered its widespread adoption in web development. Even with the advent of gRPC-Web, there's still a perception that it's not a first-class citizen in the frontend ecosystem. The lack of robust integration with popular frontend libraries like TanStack Query further solidifies this notion.
 
@@ -108,7 +110,21 @@ The maintainers of protobuf learned some hard lessons with required fields. They
 
 > Real-world practice has also shown that quite often, fields that originally seemed to be "required" turn out to be optional over time, hence the "required considered harmful" manifesto. In practice, you want to declare all fields optional to give yourself maximum flexibility for change.
 
-This is [echoed by the official style guide of protobufs](https://protobuf.dev/programming-guides/dos-donts/#add-required), where they recommend adding a comment indicating that a field is required. If we're talking about getting a message from A to B, I totally agree with this line of thinking. However, just because which fields are "required" change over time doesn't mean they don't exist. There still needs to be code that enforces this requirement and I'd rather not write this code, to be honest. Therefore, I think the best way of handling required fields without writing a bunch of null checks everywhere is by using [protovalidate](https://github.com/bufbuild/protovalidate) or a similar library that has protobuf options that allow you to annotate which fields are required. Then there is code on the server and/or client that can enforce these requirements using a library. In my opinion, this has the best of both worlds: you can still declare required fields in a way that doesn't completely break message integrity.
+This is [echoed by the official style guide of protobufs](https://protobuf.dev/programming-guides/dos-donts/#add-required), where they recommend adding a comment indicating that a field is required. If we're talking about getting a message from A to B, I totally agree with this line of thinking. However, just because the fields that are considered "required" change over time doesn't mean required fields don't exist. There still needs to be code that enforces this requirement and I'd rather not write this code, to be honest. Therefore, I think the best way of handling required fields without writing a bunch of null checks everywhere is by using [protovalidate](https://github.com/bufbuild/protovalidate) or a similar library that has protobuf options that allow you to annotate which fields are required. Then there is code on the server and/or client that can enforce these requirements using a library. In my opinion, this has the best of both worlds: you can still declare required fields in a way that doesn't completely break message integrity.
+
+I don't like this:
+```protobuf
+message User {
+  int32 age = 1; // required.
+}
+```
+
+I do like this:
+```protobuf
+message User {
+  int32 age = 1 [(buf.validate.field).required = true];
+}
+```
 
 I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount. I've contributed to it. I now have two open source projects that use these field annotations to do useful work.
 
