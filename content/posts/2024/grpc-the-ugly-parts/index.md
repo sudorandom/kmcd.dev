@@ -65,10 +65,12 @@ You might have read this section and thought "well, this would increase the amou
 - `option optimize_for = CODE_SIZE;` - smaller code
 - `option optimize_for = LITE_RUNTIME;` - intended to run on a smaller runtime that omits features like descriptors and reflection.
 
-See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`.
+See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`. Integrating `vtprotobuf`-like optimizations into the standard protobuf compiler could offer significant performance gains for Go and other languages.
 
 ### Editor Support with Generated Code Sucks
 Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
+
+I do think that projects like [tRPC](https://trpc.io/) do flex some strengths of aligning technologies and being opinionated in a way that protobuf just can't. But I do hope that protobuf can at least get closer to what is being done here.
 
 ## Required Fields
 The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
