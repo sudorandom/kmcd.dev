@@ -77,9 +77,9 @@ You might have read this section and thought "well, this would increase the amou
 See the full description for optimize_for on the [official protobuf documentation](https://protobuf.dev/programming-guides/proto3/). While these options exist, they aren't actually used in most languages. In the future I would totally like to see most of `vtprotobuf` be rolled into the standard protobuf compiler for Go and be used if `optimize_for = SPEED`. Integrating `vtprotobuf`-like optimizations into the standard protobuf compiler could offer significant performance gains for Go and there are potentially similar opportunities in other languages as well.
 
 ### Editor Support with Generated Code Sucks
-Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
+Editor integration for protobuf code generation leaves a lot to be desired. It would be immensely helpful if editors could intelligently link generated code back to its protobuf source. This would provide a more seamless experience, but the tooling just isn't smart enough yet. Also, I think everyone needs to run with [Buf's editor support](https://buf.build/docs/editor-integration). Having a linter and autoformatter built into your editor is the expected from developers nowadays. And with protobuf, there are [extremely real reasons](https://buf.build/docs/lint/rules) to follow the advice of the linter.
 
-I do think that projects like [tRPC](https://trpc.io/) do flex some strengths of aligning technologies and being opinionated in a way that protobuf just can't. But I do hope that protobuf can at least get closer to what is being done here.
+Projects like [tRPC](https://trpc.io/) showcase the benefits of tight integration and opinionated design choices—something that protobuf, by its nature, can't fully replicate. However, I remain hopeful that the protobuf ecosystem can evolve to offer a similarly streamlined developer experience.
 
 ## Required Fields
 The maintainers of protobuf learned some hard lessons with required fields. They felt like they misstepped so badly, that they made a new version of protobuf, proto3, just to remove required fields from the spec. Why? The author of the "Required considered harmful" manifesto talks about this in a [lengthy hacker news comment](https://news.ycombinator.com/item?id=18190005), but the important bit is:
@@ -102,7 +102,7 @@ message User {
 }
 ```
 
-I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount. I've contributed to it. I now have two open source projects that use these field annotations to do useful work.
+I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount and have contributed to it. I think custom options for protobuf fields is an untapped superpower of the format.
 
 ## Failure to Launch
 While gRPC has undeniable advantages, its learning curve can be steep. Getting started with protobuf, understanding the tooling, and setting up the necessary infrastructure can be intimidating for newcomers, making the initial adoption hurdle higher than with simpler JSON-based APIs.
@@ -111,9 +111,9 @@ While gRPC has undeniable advantages, its learning curve can be steep. Getting s
 
 The steep learning curve doesn't help when many people who use and rely on protobuf and gRPC actively don't want gRPC to extend to the frontend and think that pushing in this direction will lead to uninformed people encroaching on the domain of the backend, where only they are smart enough to work. This is elitist gate-keeping and is unfortunately prevalent in this industry. I believe gRPC has as much of a place in web frontends as much as it does in microservices.
 
-I've learned a lot by helping others work with protobuf. You may see me on [Buf's slack channel](https://buf.build/links/slack) or on related discussions because I truly have gotten a lot out of it. Many article ideas have come directly from answering questions there. If I see a problem often enough, I may end up writing an article about it. I believe the protobuf and gRPC needs more of this attitude.
+I've learned a lot by helping others work with protobuf. You may see me on [Buf's slack channel](https://buf.build/links/slack) or on related discussions because I truly have gotten a lot out of it. Many article ideas have come directly from answering questions there. If I see a problem often enough, I may end up writing an article about it. I believe the protobuf and gRPC community needs more of this attitude.
 
-The steep learning curve, coupled with some resistance from backend developers to help the adoption of gRPC in the frontend, has slowed its broader adoption in web development.
+I believe the steep learning curve (which can be helped with tooling), coupled with some resistance from backend developers (which can be helped by... having empathy?), has slowed its broader adoption in web development.
 
 ## gRPC Has a History
 gRPC's initial focus on microservices and its close ties to HTTP/2 hindered its widespread adoption in web development. Even with the [advent of gRPC-Web](https://grpc.io/blog/state-of-grpc-web/), there's still a perception that it's not a first-class citizen in the frontend ecosystem. The lack of robust integration with popular frontend libraries like [TanStack Query](https://tanstack.com/query/latest) further solidifies this notion to me.
