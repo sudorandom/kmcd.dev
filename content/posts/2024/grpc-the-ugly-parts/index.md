@@ -102,7 +102,7 @@ message User {
 I'm a big fan of [protovalidate](https://github.com/bufbuild/protovalidate) and I've used it a good amount and have contributed to it. Generally, I think [custom options](https://protobuf.dev/programming-guides/proto3/#customoptions) for protobuf fields is an untapped superpower of protobufs.
 
 ## Failure to Launch
-While gRPC has undeniable advantages, its learning curve can be steep. Getting started with protobuf, understanding the tooling, and setting up the necessary infrastructure can be intimidating for newcomers, making the initial adoption hurdle higher than with simpler JSON-based APIs. Why is it steep? Well, it introduces non-idiomatic tooling to most languages. There are some examples though as there are a small few languages that make protobuf generation seamless. [Grpc.Tools](https://learn.microsoft.com/en-us/aspnet/core/grpc/basics) for .NET is one shining example, showing how tooling can be more integrated into standard language tooling. We need more of this.
+While gRPC has undeniable advantages, its learning curve can be steep. Getting started with protobuf, understanding the tooling, and setting up the necessary infrastructure can be intimidating for newcomers, making the initial adoption hurdle higher than with simpler JSON-based APIs. Why is it steep? Well, it introduces non-idiomatic tooling to most languages. There are some examples of language support that make protobuf generation seamless. [Grpc.Tools](https://learn.microsoft.com/en-us/aspnet/core/grpc/basics) for .NET is one shining example, showing how protobuf tooling can be more integrated into standard language tooling. We need more of this.
 
 {{< image src="learning-curve.png" width="600px" class="center" >}}
 
