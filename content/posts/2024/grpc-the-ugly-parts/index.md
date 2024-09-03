@@ -42,7 +42,7 @@ This is described better in the [buf lint rule description](https://buf.build/do
 ### The generated code isn't even that fast
 One benefit of generated code is that you can generate code that no sane human would write in order to get some performance optimizations. However, if you look at some of the code generated from protobuf you'll see runtime reflection used a lot. Why? In a way, I am saying the generated code *isn't ugly enough*. Let's look at a concrete example. Be warned that this will be a very Go-specific section because most of my experience with protobufs is in Go. However, the same strategy has been applied in most languages.
 
-Let's take a look at super simple example in Go. Here's the protobuf:
+Let's take a look at super a simple example in Go. Here's the protobuf:
 ```protobuf
 message Hello {
   string name = 1;
@@ -67,11 +67,11 @@ func (*Hello) ProtoMessage()
 func (*Hello) ProtoReflect() protoreflect.Message
 ```
 
-There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used to make serialization work. Reflection is generally seen as slower, because it *is* slower. I find it strange that optimized, type-specific serialization code isn't being generated for Go. However, you can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improved performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. [You may not like it, but this is what peak performance looks like](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/gen/flex_vtproto.pb.go#L573). Anyway, this project needs more love and support.
+There's actually no `Marshal()` or `Unmarshal()` functions defined specifically for this type. This means that runtime reflection is used to make serialization work. Reflection is generally seen as slower, because it *is* slower. I find it strange that optimized, type-specific serialization code isn't being generated for Go. That said, you can actually get this by using a separate protoc plugin called [vtprotobuf](https://github.com/planetscale/vtprotobuf) that will generate specialized marshal and unmarshal functions for each protobuf type. It also allows for using type-specific memory pools, which can also help reduce allocations and improve performance. From my [own testing](/posts/benchmarking-go-grpc/) just adding `vtprotobuf` with zero code changes can improve performance by 2-4%. This is essentially a "free" 2-4%, so it's super strange to me that this wouldn't be part of the standard compiler. [You may not like it, but this is what peak performance looks like](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/gen/flex_vtproto.pb.go#L573). Anyway, this project needs more love and support.
 
 Note that there are [other efforts which claim outrageous improvements](https://medium.com/@octopus.dev/gremlin-77af6fee4193) over what the standard protobuf library does. They do make tradeoffs to achieve these performance gains, but many times the extra complexity is worth it.
 
-You might have read this section and thought "well, this would increase the amount of code being generated and increase binary or package sizes and in some environments, you might not want that. That's true, that's why protobuf has an `optimize_for` option, so you can annotate one of the following:
+You might have read this section and thought "well, this would increase the amount of code being generated and increase binary or package sizes and in some environments, you might not want that. That's true amd that's why protobuf has an `optimize_for` option, so you can annotate one of the following:
 - `option optimize_for = SPEED;` - more verbose, faster code
 - `option optimize_for = CODE_SIZE;` - smaller code
 - `option optimize_for = LITE_RUNTIME;` - intended to run on a smaller runtime that omits features like descriptors and reflection.
