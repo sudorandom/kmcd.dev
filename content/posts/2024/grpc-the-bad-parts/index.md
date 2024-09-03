@@ -17,6 +17,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-bad-parts/
 mastodonID: "112635868200899911"
 featured: true
+featuredTitle: "Series: gRPC - the good, the bad and the ugly"
 ---
 
 gRPC, the high-performance RPC framework, has been super successful (if you work for Google) and has drastically changed the way we all deploy APIs (if you work for Google). gRPC and protobuf is an extremely performant contract-focused framework with extremely wide language support. But it's not without its downsides. Making an RPC framework that requires code generation and support in many programming languages is sure to get some things wrong. As gRPC approaches a decade of usage, it is important to reflect on what could have been better.

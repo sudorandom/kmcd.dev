@@ -15,7 +15,6 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc/
 mastodonID: "112993780081264113"
-featured: true
 ---
 
 I would like to introduce **[FauxRPC](http://fauxrpc.com/)**, a powerful tool that empowers you to accelerate development and testing by effortlessly generating fake implementations of gRPC, gRPC-Web, Connect, and REST services. If you have a [protobuf-based workflow](/posts/api-contracts/), this tool could help.
