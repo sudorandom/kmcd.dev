@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2", "http3"]
+tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2"]
 series: ["gRPC: the good and the bad"]
 date: "2024-07-02"
 description: "Not perfect, but still pretty awesome."
