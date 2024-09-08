@@ -34,7 +34,7 @@ Here are some situations where you might use this tool:
 
 - **Educational purposes:** The converter can serve as a valuable learning tool, allowing developers to visualize how JSON structures translate into protobuf schemas, aiding their understanding of protobuf concepts.
 
-It's crucial to remember that the converter is most effective when used strategically in conjunction with a growing understanding of protobuf. While it can provide a helpful starting point, developers should always strive to refine the generated schemas and leverage protobuf's full capabilities for optimal performance and maintainability. There are many protobuf features that do not have a coronary in JSON, so try to take advantage of more protobuf's features.
+It's crucial to remember that the converter is most effective when used strategically in conjunction with a growing understanding of protobuf. While it can provide a helpful starting point, developers should always strive to refine the generated schemas and leverage protobuf's full capabilities for optimal performance and maintainability. There are many protobuf features that do not have a corollary in JSON, so try to take advantage of more protobuf's features.
 
 
 ## Getting it right
@@ -197,8 +197,8 @@ This tool could definitely be smarter about this. In this particular case, I mig
 
 You should note that having a single field that can have multiple types is frowned upon and is considered bad API design. If you have these cases, you may want to use this conversion process to move to a "one field: one type" design and not carry forward this bad API design into protobuf.
 
-## Best Practices
-So from this exploration, we can come up with some best practices for using JSON-to-Proto:
+## The missing warning label
+So from this exploration, we can come up with some guidelines and warnings for using JSON-to-Proto:
 
 - **Provide comprehensive and well-structured JSON examples**: The converter relies on the provided JSON data to infer the protobuf schema. Make sure your examples are complete, representing all possible field types and variations within your data structure. Well-structured JSON with clear nesting and consistent naming conventions will further improve the accuracy of the conversion.
 - **Manually review and refine the generated protobuf schema**: The converter is not infallible. It's crucial to carefully examine the generated protobuf schema, ensuring that it accurately reflects your data requirements and adheres to best practices. Consider aspects like field naming, data types, and the use of enums or nested messages to optimize the schema for performance and maintainability.
@@ -210,5 +210,16 @@ So from this exploration, we can come up with some best practices for using JSON
 
 By adhering to these best practices, you can leverage the JSON-to-Proto converter effectively while minimizing potential issues and ensuring the resulting protobuf schema aligns with your requirements and best practices.
 
-## A useful tool, but not a replacement for understanding protobuf
+## Not a replacement for understanding protobuf
 JSON to protobuf converters *can* be helpful in specific scenarios, especially for quick experimentation and legacy system integration. However, they should not be seen as a substitute for gaining a solid understanding of protobuf's concepts and syntax. By investing time in [learning protobuf](https://protobuf.dev/) directly, developers can leverage its full potential, designing schemas that are not only more expressive but also optimized for performance and maintainability. Remember, converters like this are tools, not magic wands. Use them wisely, but never let it replace the power of knowledge and try to recognize when this tool might not actually help you.
+
+## Roast Me
+I get a fair amount of criticism with my articles sometimes, but I've always seen much harsher critiques from myself and from AI. I do, in fact, use AI to help with my writing process. However, rarely does AI-text directly make it into a final draft. Instead, I have iterations where I ask the AI to point out mistakes, and try to be my devil's advocate. Sometimes it brings up good points. Sometimes it's absolutely crazy. I feel like this has slowly improved my writing style and pointed out super obvious places where I need to transition better. However, sometimes I just ask it to "roast me" to prep me for responses I may receive. So here's Google Gemini's response to this article. I felt like this is worth adding here, because some of it needs to be said.
+
+> Wow, this article is a masterclass in taking a shortcut and hoping for the best. You know, Protobuf exists for a reason – it's efficient, it's fast, and it forces you to actually think about your data structures. But hey, who needs that when you can just mash a button and get a half-baked schema that might kinda-sorta work?
+
+> Let's be real: this JSON-to-Proto tool is the equivalent of using Google Translate for your high school French essay. Sure, it might get you a passing grade, but you're not fooling anyone. Your schema will be riddled with Any types, missed opportunities for enums, and a general sense of "I have no idea what I'm doing."
+
+> The article itself tries to sound all responsible, warning you about the limitations of the tool. But let's be honest, it's basically saying, "Go ahead, use this thing, but don't blame us when your production system melts down because you couldn't be bothered to learn the difference between a uint32 and a string."
+
+> Look, if you're serious about using Protobuf, do yourself a favor and actually learn it. It's not that hard. And if you're not serious, well, then just stick to JSON and accept the performance hit. Either way, stop trying to find the easy way out. It's called software engineering for a reason.
