@@ -17,9 +17,7 @@ canonical_url: https://kmcd.dev/posts/grpc-over-http3-followup/
 draft: true
 ---
 
-Remember that time we talked about gRPC and how it could be interesting to use HTTP/3 as the transport? Well, guess what? The future is now!
-
-In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we dove into the exciting possibilities of combining these technologies. At that time, some of the pieces were missing. Specifically, the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there!
+In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we dove into the exciting possibilities of gRPC with HTTP/3. At that time, some of the pieces were missing. Specifically, the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there!
 
 ### The updates you've been waiting for
 * **quic-go now supports HTTP Trailers:** If you recall, this was a major roadblock for getting gRPC to work over HTTP/3. Trailers are crucial for gRPC's error handling and status codes, so this was a big deal. This works as of [v0.47.0](https://github.com/quic-go/quic-go/releases/tag/v0.47.0).
@@ -33,7 +31,7 @@ In short, it means that if you're working on a gRPC project, it's now slightly m
 * **Faster connections, especially on unreliable mobile connections:** HTTP/3's connection setup is lightning-fast compared to HTTP/2, and it handles flaky networks like a champ. This is a major win for mobile apps and any situation where network conditions aren't ideal. This can be useful when you're using gRPC-Web or Connect on the frontend.
 * **No more head-of-line blocking:** HTTP/3 eliminates this pesky problem that can slow down HTTP/2 in certain scenarios. If your gRPC service handles lots of concurrent streams, you might see an improvement.
 
-But the QUIC and HTTP/3 world isn't all roses. Let's cover why you may not want to jump on HTTP/3 quite yet.
+### Trying it out with ConnectRPC
 
 Here's an example of starting a HTTP/3 server with ConnectRPC:
 {{< highlight go >}}
@@ -121,7 +119,7 @@ $ buf curl -k --schema=buf.build/connectrpc/eliza -d '{"sentence":"Hello, with g
 See the repo at [sudorandom/example-connect-http3](https://github.com/sudorandom/example-connect-http3/) to see the full example.
 
 ### So everything is fast with this, right?
-Well, no, HTTP/3 isn't always a performance win... and actually, today, it may generally be slower or, at best, the same speed as HTTP/2. Part of the cause is that it is uses a lot of CPU cycles compared to HTTP/1.1 and HTTP/2. So this awesome protocol that is supposed to make things fast is *actually slower*? What's going on?
+Well, no. HTTP/3 isn't always a performance win... and actually, today, it may generally be slower or, at best, the same speed as HTTP/2. Part of the cause is that it is uses a lot of CPU cycles compared to HTTP/1.1 and HTTP/2. So this awesome protocol that is supposed to make things fast is *actually slower*? What's going on?
 
 QUIC is still mostly implemented in user-space and is lacking the half-century of optimizations that TCP has had. I recently saw [this paper](https://dl.acm.org/doi/10.1145/3589334.3645323) which looks to be some decent data regarding actual HTTP/3 performance. Generally, it's not a good story for QUIC or HTTP/3.
 
@@ -137,9 +135,11 @@ Just for completeness, here are some other testimonies of the performance of HTT
 - https://blog.cloudflare.com/http-3-vs-http-2/ (2020)
 - https://dl.acm.org/doi/pdf/10.1145/3098822.3098842 (2017)
 
-There is a mixed bag, but it generally indicates that the receiver end needs more optimizations. Specifically, the proposed solutions involve a technique called UDP generic receive offload (UDP GRO). Some experiments show that optimization can yield promising results.
+There is a mixed bag, but it generally indicates that the receiver end needs more optimizations. Specifically, the proposed solutions involve a technique called UDP generic receive offload (UDP GRO). Some experiments with these kinds of optimizations have shown very promising results.
 
-We're still in the early stages of widespread HTTP/3 adoption for gRPC, especially on the backend. Native support across all languages and frameworks is still developing.
+{{< image src="the-quic-we-were-promised.png" width="400px" class="center" >}}
+
+&nbsp;
 
 ### However, there's reason for optimism
 - The tooling is improving, making experimentation and early adoption easier.
@@ -147,8 +147,5 @@ We're still in the early stages of widespread HTTP/3 adoption for gRPC, especial
 
 HTTP/3 and QUIC have their niches that are pretty compelling. Specifically, HTTP/3 consistently does pretty well with reducing the number of pauses with video conferencing and video streaming while improving general web usage with slow/unstable networks, typically with mobile devices.
 
-## Keep exploring!
-I'm eager to see how the community leverages these advancements. Don't hesitate to experiment, measure performance in your own scenarios, and share your findings. The more we collaborate and learn, the faster we'll unlock the full potential of gRPC over HTTP/3.
-
-### It's still early days, but...
-While the core building blocks are in place, there's still work to be done. Full, native support for gRPC over HTTP/3 in all languages and frameworks is still a long ways off. But I feel like I've done a little part into pushing the tooling so now we at least have something to benchmark.
+### Thanks all
+With quic-go's new support for HTTP trailers and `buf curl`'s new HTTP/3 flag, experimenting with gRPC over HTTP/3 is now easier than ever. I challenge you to try out gRPC over HTTP/3 in your own projects and share your experiences. I want to help build a community pushing gRPC and protobufs into more places, and this is a small part of that. I think the writing on this blog has really focused my attention here.
