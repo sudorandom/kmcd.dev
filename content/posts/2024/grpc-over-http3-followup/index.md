@@ -59,15 +59,29 @@ func main() {
 This example uses the HTTP/3 server from quic-go to provide HTTP/3. Now you can test it using `buf curl`. Here are examples with gRPC, gRPC-Web and Connect:
 
 ```shell
-$ buf curl --http3 -k --schema=buf.build/connectrpc/eliza -d '{"sentence":"Hello, with gRPC+h3"}' https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say --protocol=grpc
+$ buf curl --http3 -k \
+  --protocol=grpc \
+  --schema=buf.build/connectrpc/eliza \
+  -d '{"sentence":"Hello, with gRPC+h3"}' \
+  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
 {
   "sentence": "Hello, with gRPC+h3"
 }
-$ buf curl --http3 -k --schema=buf.build/connectrpc/eliza -d '{"sentence":"Hello, with gRPC-Web+h3"}' https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say --protocol=grpcweb
+
+$ buf curl --http3 -k \
+  --protocol=grpcweb \
+  --schema=buf.build/connectrpc/eliza \
+  -d '{"sentence":"Hello, with gRPC-Web+h3"}' \
+  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
 {
   "sentence": "Hello, with gRPC-Web+h3"
 }
-$ buf curl --http3 -k --schema=buf.build/connectrpc/eliza -d '{"sentence":"Hello, with Connect+h3"}' https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say --protocol=connect
+
+$ buf curl --http3 -k \
+  --protocol=connect \
+  --schema=buf.build/connectrpc/eliza \
+  -d '{"sentence":"Hello, with Connect+h3"}' \
+  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
 {
   "sentence": "Hello, with Connect+h3"
 }
@@ -110,7 +124,10 @@ func main() {
 With this code, you can now connect using any version of HTTP and with gRPC, gRPC-Web or Connect. The compatibility matrix is now all green:
 
 ```shell
-$ buf curl -k --schema=buf.build/connectrpc/eliza -d '{"sentence":"Hello, with gRPC+h2"}' https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say --protocol=grpc
+$ buf curl -k --protocol=grpc \
+  --schema=buf.build/connectrpc/eliza \
+  -d '{"sentence":"Hello, with gRPC+h2"}' \
+  https://127.0.0.1:6660/connectrpc.eliza.v1.ElizaService/Say
 {
   "sentence": "Hello, with gRPC+h2"
 }
