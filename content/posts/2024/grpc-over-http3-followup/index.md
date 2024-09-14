@@ -148,4 +148,4 @@ There is a mixed bag, but it generally indicates that the receiver end needs mor
 HTTP/3 and QUIC have their niches that are pretty compelling. Specifically, HTTP/3 consistently does pretty well with reducing the number of pauses with video conferencing and video streaming while improving general web usage with slow/unstable networks, typically with mobile devices.
 
 ### Thanks all
-With quic-go's new support for HTTP trailers and `buf curl`'s new HTTP/3 flag, experimenting with gRPC over HTTP/3 is now easier than ever. I challenge you to try out gRPC over HTTP/3 in your own projects and share your experiences. I want to help build a community pushing gRPC and protobufs into more places, and this is a small part of that. I think the writing on this blog has really focused my attention here.
+With quic-go's new support for HTTP trailers and `buf curl`'s new HTTP/3 flag, experimenting with gRPC over HTTP/3 is now easier than ever. I challenge you to try out gRPC over HTTP/3 in your own projects and share your experiences. I want to help build a community pushing gRPC and protobufs into more places, and this is a small part of that.
