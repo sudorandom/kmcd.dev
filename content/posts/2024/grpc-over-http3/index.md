@@ -4,7 +4,6 @@ tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2", "http3", "connectrpc
 date: "2024-07-09T10:00:00Z"
 description: "Turbocharging gRPC with HTTP/3"
 cover: "cover.jpg"
-coverPosition: "middle"
 images: ["/posts/grpc-over-http3/cover.jpg"]
 featured: ""
 featuredalt: ""
@@ -121,7 +120,7 @@ These arguments might have worked for HTTP/2 but they didn't hold up for HTTP/3.
 ## Experimentation
 When researching this topic, I discovered that HTTP/3 with gRPC is a bit of a complicated story. I covered this a bit in my [gRPC: The Good Parts](/posts/grpc-the-good-parts/) post but the gist is that no decision has been made to officially support HTTP/3 throughout the entire gRPC ecosystem. There is an [open issue](https://github.com/grpc/grpc/issues/19126) to discuss this and there is an [official proposal](https://github.com/grpc/proposal/blob/master/G2-http3-protocol.md) also discussing the idea. Some projects are closer to HTTP/3 than others, so here are the implementations that I have found where you can make gRPC over HTTP/3 work:
 
-- **C#**: [dotnet-grpc](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
+- **C#**: [grpc-dotnet](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/#grpc-with-http-3) is the pioneer here, already containing an implementation of an HTTP/3 transport for gRPC.
 - **Rust**: [Tonic with the Hyper transport](https://github.com/hyperium/tonic/issues/339) appears to be able to support this, although I'm not sure if there are good examples of this in the wild yet.
 - **Go**: [ConnectRPC](https://github.com/connectrpc/connect-go) for Go uses the standard library http.Handlers, so any http server implementation can be used, including the transport available in [quic-go](https://github.com/quic-go/quic-go).
 - **Cronet**: [Cronet](https://developer.android.com/develop/connectivity/cronet), designed primarily for mobile clients (Android and iOS), provides a way to utilize Chrome's network stack, including its QUIC and HTTP/3 support. This can be particularly useful for building gRPC clients with HTTP/3 capabilities in mobile environments.
