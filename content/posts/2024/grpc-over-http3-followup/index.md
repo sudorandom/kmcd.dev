@@ -1,5 +1,6 @@
 ---
 categories: ["article"]
+series: ["gRPC over HTTP&#47;3"]
 tags: ["grpc", "connectrpc", "rpc", "http3", "go", "golang", "quic-go", "buf"]
 date: "2024-09-17T10:00:00Z"
 description: "Followup on gRPC over HTTP/3."
@@ -136,7 +137,7 @@ Just for completeness, here are some other testimonies of the performance of HTT
 
 There is a mixed bag, but it generally indicates that the receiver end needs more optimizations. Specifically, the proposed solutions involve a technique called UDP generic receive offload (UDP GRO). Some experiments with these kinds of optimizations have shown very promising results.
 
-{{< image src="the-quic-we-were-promised.png" width="400px" class="center" >}}
+{{< image src="the-quic-we-were-promised.png" width="500px" class="center" >}}
 
 &nbsp;
 

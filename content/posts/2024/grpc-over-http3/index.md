@@ -1,6 +1,7 @@
 ---
 categories: ["article"]
 tags: ["grpc", "protobuf", "api", "rpc", "webdev", "http2", "http3", "connectrpc", "web"]
+series: ["gRPC over HTTP&#47;3"]
 date: "2024-07-09T10:00:00Z"
 description: "Turbocharging gRPC with HTTP/3"
 cover: "cover.jpg"
