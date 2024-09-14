@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "connectrpc", "rpc", "http3"]
+tags: ["grpc", "connectrpc", "rpc", "http3", "go", "golang", "quic-go", "buf"]
 date: "2024-09-17T10:00:00Z"
 description: "Followup on gRPC over HTTP/3."
 cover: "cover.jpg"
@@ -14,7 +14,6 @@ slug: "grpc-over-http3-followup"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-over-http3-followup/
-draft: true
 ---
 
 In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we dove into the exciting possibilities of gRPC with HTTP/3. At that time, some of the pieces were missing. Specifically, the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there!
