@@ -79,7 +79,7 @@ func main() {
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.2/server-single/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
 
-This example uses the HTTP/3 server from quic-go to provide HTTP/3. Now you can test it using `buf curl`. Here are examples with gRPC, gRPC-Web and Connect:
+This example uses the HTTP/3 server from quic-go to provide HTTP/3. Now you can test it using `buf curl`. Here's an example of using `buf curl` with gRPC:
 
 ```shell
 $ buf curl --http3 -k \
@@ -90,7 +90,10 @@ $ buf curl --http3 -k \
 {
   "sentence": "Hello, with gRPC+h3"
 }
+```
 
+With gRPC-Web:
+```shell
 $ buf curl --http3 -k \
   --protocol=grpcweb \
   --schema=buf.build/connectrpc/eliza \
@@ -99,7 +102,10 @@ $ buf curl --http3 -k \
 {
   "sentence": "Hello, with gRPC-Web+h3"
 }
+```
 
+With Connect:
+```shell
 $ buf curl --http3 -k \
   --protocol=connect \
   --schema=buf.build/connectrpc/eliza \
@@ -109,7 +115,7 @@ $ buf curl --http3 -k \
   "sentence": "Hello, with Connect+h3"
 }
 ```
-Note that if you don't use the `--http3` flag this doesn't work. That's because we've only started an HTTP/3 server. We can run HTTP/3 alongside HTTP/1.1 and HTTP/2:
+Note that if you don't use the `--http3` flag this doesn't work. That's because we've only started an HTTP/3 server. Using the following code, we can run HTTP/3 alongside HTTP/1.1 and HTTP/2:
 
 ```go
 func main() {
@@ -144,7 +150,7 @@ func main() {
 <a href="https://github.com/sudorandom/example-connect-http3/blob/v0.0.2/server-multi/main.go" target="_blank">See the full source at GitHub.</a>
 {{</ aside >}}
 
-With this code, you can now connect using any version of HTTP and with gRPC, gRPC-Web or Connect. The compatibility matrix is now all green:
+With this code, you can now connect using any version of HTTP and with gRPC, gRPC-Web or Connect.
 
 ```shell
 $ buf curl -k --protocol=grpc \
@@ -156,7 +162,14 @@ $ buf curl -k --protocol=grpc \
 }
 ```
 
-See the repo at [sudorandom/example-connect-http3](https://github.com/sudorandom/example-connect-http3/) to see the full example.
+The compatibility matrix is now all green when using ConnectRPC, with only a single exception (because HTTP/1.1 servers and clients typically don't support HTTP trailers):
+| Protocol | HTTP/1.1 | HTTP/2 | HTTP/3 |
+| -------- | -------- | ------ | ------ |
+| [gRPC](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md) | ❌ | ✅ | ✅ |
+| [gRPC-Web](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md) | ✅ | ✅ | ✅ |
+| [Connect](https://connectrpc.com/docs/protocol/) |  ✅ | ✅ | ✅ |
+
+See the repo at [sudorandom/example-connect-http3](https://github.com/sudorandom/example-connect-http3/) to see the full examples shown here as well as some example client code.
 
 ## So everything is fast with this, right?
 **Well, no.** HTTP/3 isn't always a performance win... and actually, today, it may generally be slower or, at best, the same speed as HTTP/2. Part of the cause is that it uses a lot of CPU cycles compared to HTTP/1.1 and HTTP/2. So this awesome protocol that is supposed to make things fast is *actually slower*? What's going on?
