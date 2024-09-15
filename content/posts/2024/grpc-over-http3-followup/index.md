@@ -28,7 +28,7 @@ If you recall, this was a major roadblock for getting gRPC to work over HTTP/3. 
 
 As you can see, I've contributed most of the work for this!
 
-{{< image src="success.png" width="500px" class="center" >}}
+{{< image src="quic-go.png" width="400px" class="center" >}}
 
 ```go
 go get -u github.com/quic-go/quic-go
@@ -40,6 +40,8 @@ This now enables HTTP/3 support for ConnectRPC for gRPC, gRPC-Web and Connect fo
 That's right, you can now easily test your gRPC services over HTTP/3 from the command line. This is a fantastic development for quick prototyping, debugging and having a simple tool to call gRPC services. You can use this as of [v1.41.0](https://github.com/bufbuild/buf/releases/tag/v1.41.0). Here are the related PRs:
 - https://github.com/bufbuild/buf/pull/3127 - Add `--http3` flag for gRPC-Web and Connect
 - https://github.com/bufbuild/buf/pull/3305 - Add `--http3` flag for gRPC
+
+{{< image src="buf-curl.png" width="500px" class="center" >}}
 
 [Upgrade](https://buf.build/docs/installation) to the new version today!
 
