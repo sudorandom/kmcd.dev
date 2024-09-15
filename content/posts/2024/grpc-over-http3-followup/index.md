@@ -17,13 +17,34 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-over-http3-followup/
 ---
 
-In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we dove into the exciting possibilities of gRPC with HTTP/3. At that time, some of the pieces were missing. Specifically, the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there!
+In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we explored the potential of gRPC with HTTP/3. At that time, some of the pieces were missing and I had to hack on forks of a few repos to make gRPC+HTTP/3 work with Go. The biggest blocker was that the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there and these hacks are no longer needed!
 
-### The updates you've been waiting for
-* **quic-go now supports HTTP Trailers:** If you recall, this was a major roadblock for getting gRPC to work over HTTP/3. Trailers are crucial for gRPC's error handling and status codes, so this was a big deal. This works as of [v0.47.0](https://github.com/quic-go/quic-go/releases/tag/v0.47.0).
-* **Buf's curl command has a new `--http3` flag:** That's right, you can now easily test your gRPC services over HTTP/3 from the command line. This is a fantastic development for quick prototyping, debugging and having a simple tool to call gRPC services. You can use this as of [v1.41.0](https://github.com/bufbuild/buf/releases/tag/v1.41.0).
+### quic-go now supports HTTP Trailers
+If you recall, this was a major roadblock for getting gRPC to work over HTTP/3. Trailers are crucial for gRPC's error handling and status codes, so this was a big deal. This works as of [v0.47.0](https://github.com/quic-go/quic-go/releases/tag/v0.47.0). Here are the related PRs:
+- https://github.com/quic-go/quic-go/pull/4581 - client support for trailers
+- https://github.com/quic-go/quic-go/pull/4630 - server support for trailers
+- https://github.com/quic-go/quic-go/pull/4656 - using declared trailer names for empty trailer entries at the start of the request
+- https://github.com/quic-go/quic-go/pull/4639 - disallow pseudo-headers from being used as a trailer
 
-I'm very happy to have contributed both of these features. Like I said in my [previous post about this topic](/posts/grpc-over-http3/), the Go version of ConnectRPC seemed so close to having full HTTP/3 support in all three protocols: Connect/gRPC-Web and the original gRPC; it just needed trailer support to push gRPC over the finish line. And with other gRPC implementations, like [grpc-dotnet](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/), I hope the addition of HTTP/3 to `buf curl` command can be useful as well.
+As you can see, I've contributed most of the work for this!
+
+{{< image src="success.png" width="500px" class="center" >}}
+
+```go
+go get -u github.com/quic-go/quic-go
+```
+
+This now enables HTTP/3 support for ConnectRPC for gRPC, gRPC-Web and Connect for both client and server. I would probably recommend deploying with a more established load balancer that has HTTP/3 support, but quic-go. I'll show you how to set up Go + HTTP/3 (via quic-go) + Connect a bit further down.
+
+### Buf's curl command has a new `--http3` flag
+That's right, you can now easily test your gRPC services over HTTP/3 from the command line. This is a fantastic development for quick prototyping, debugging and having a simple tool to call gRPC services. You can use this as of [v1.41.0](https://github.com/bufbuild/buf/releases/tag/v1.41.0). Here are the related PRs:
+- https://github.com/bufbuild/buf/pull/3127 - Add `--http3` flag for gRPC-Web and Connect
+- https://github.com/bufbuild/buf/pull/3305 - Add `--http3` flag for gRPC
+
+[Upgrade](https://buf.build/docs/installation) to the new version today!
+
+### Open Source
+I'm very happy to have contributed both of these features. Like I said in my [previous post about this topic](/posts/grpc-over-http3/), the Go version of ConnectRPC seemed *so close* to having full HTTP/3 support in all three protocols: Connect/gRPC-Web and the original gRPC; it just needed trailer support to push gRPC over the finish line. And with other gRPC implementations, like [grpc-dotnet](https://devblogs.microsoft.com/dotnet/http-3-support-in-dotnet-6/), I hope the addition of HTTP/3 to `buf curl` command can be useful as well.
 
 ### What does this mean for you?
 In short, it means that if you're working on a gRPC project, it's now slightly more viable to use HTTP/3 *today*... in specific contexts. Here's a recap of the benefits:
@@ -86,7 +107,7 @@ $ buf curl --http3 -k \
   "sentence": "Hello, with Connect+h3"
 }
 ```
-Note that if you don't the `--http3` flag this doesn't work. That's because we've only started an HTTP/3 server. We can run HTTP/3 alongside HTTP/1.1 and HTTP/2:
+Note that if you don't use the `--http3` flag this doesn't work. That's because we've only started an HTTP/3 server. We can run HTTP/3 alongside HTTP/1.1 and HTTP/2:
 
 ```go
 func main() {
@@ -135,8 +156,8 @@ $ buf curl -k --protocol=grpc \
 
 See the repo at [sudorandom/example-connect-http3](https://github.com/sudorandom/example-connect-http3/) to see the full example.
 
-### So everything is fast with this, right?
-Well, no. HTTP/3 isn't always a performance win... and actually, today, it may generally be slower or, at best, the same speed as HTTP/2. Part of the cause is that it is uses a lot of CPU cycles compared to HTTP/1.1 and HTTP/2. So this awesome protocol that is supposed to make things fast is *actually slower*? What's going on?
+## So everything is fast with this, right?
+**Well, no.** HTTP/3 isn't always a performance win... and actually, today, it may generally be slower or, at best, the same speed as HTTP/2. Part of the cause is that it uses a lot of CPU cycles compared to HTTP/1.1 and HTTP/2. So this awesome protocol that is supposed to make things fast is *actually slower*? What's going on?
 
 QUIC is still mostly implemented in user-space and is lacking the half-century of optimizations that TCP has had. I recently saw [this paper](https://dl.acm.org/doi/10.1145/3589334.3645323) which looks to be some decent data regarding actual HTTP/3 performance. Generally, it's not a good story for QUIC or HTTP/3.
 
@@ -159,10 +180,11 @@ There is a mixed bag, but it generally indicates that the receiver end needs mor
 &nbsp;
 
 ### However, there's reason for optimism
-- The tooling is improving, making experimentation and early adoption easier.
-- Performance optimizations are actively being researched and implemented.
+The tooling is improving, making experimentation and early adoption easier.
+
+Additionally, performance optimizations are actively being researched and implemented.
 
 HTTP/3 and QUIC have their niches that are pretty compelling. Specifically, HTTP/3 consistently does pretty well with reducing the number of pauses with video conferencing and video streaming while improving general web usage with slow/unstable networks, typically with mobile devices.
 
-### Thanks all
+## Thanks all
 With quic-go's new support for HTTP trailers and `buf curl`'s new HTTP/3 flag, experimenting with gRPC over HTTP/3 is now easier than ever. I challenge you to try out gRPC over HTTP/3 in your own projects and share your experiences. I want to help build a community pushing gRPC and protobufs into more places, and this is a small part of that.
