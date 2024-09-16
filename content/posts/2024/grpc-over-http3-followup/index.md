@@ -3,7 +3,7 @@ categories: ["article"]
 series: ["gRPC over HTTP&#47;3"]
 tags: ["grpc", "connectrpc", "rpc", "http3", "go", "golang", "quic-go", "buf"]
 date: "2024-09-17T10:00:00Z"
-description: "Followup on gRPC over HTTP/3."
+description: "Let's cover some recent updates!"
 cover: "cover.jpg"
 images: ["/posts/grpc-over-http3-followup/cover.jpg"]
 featured: ""
