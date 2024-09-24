@@ -1,0 +1,450 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI Documentation of gRPC Services
+  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi).
+paths:
+  /connectrpc.eliza.v1.ElizaService/Say:
+    get:
+      tags:
+        - connectrpc.eliza.v1.ElizaService
+      summary: Say
+      operationId: connectrpc.eliza.v1.ElizaService.Say.get
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+        - name: message
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayRequest'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayRequest'
+        - name: encoding
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/encoding'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/encoding'
+        - name: base64
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/base64'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/base64'
+        - name: compression
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/compression'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/compression'
+        - name: connect
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect-protocol-version'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connect-protocol-version'
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayResponse'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayResponse'
+    post:
+      tags:
+        - connectrpc.eliza.v1.ElizaService
+      summary: Say
+      operationId: connectrpc.eliza.v1.ElizaService.Say
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.SayRequest'
+          application/proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.SayRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayResponse'
+            application/proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.SayResponse'
+  /connectrpc.eliza.v1.ElizaService/Converse:
+    post:
+      tags:
+        - connectrpc.eliza.v1.ElizaService
+      summary: Converse
+      operationId: connectrpc.eliza.v1.ElizaService.Converse
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/connect+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/connect+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc-web:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc-web+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+          application/grpc-web+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/connect+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/connect+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/connect+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/connect+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc-web:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc-web+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+            application/grpc-web+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.ConverseResponse'
+  /connectrpc.eliza.v1.ElizaService/Introduce:
+    post:
+      tags:
+        - connectrpc.eliza.v1.ElizaService
+      summary: Introduce
+      operationId: connectrpc.eliza.v1.ElizaService.Introduce
+      parameters:
+        - name: Connect-Protocol-Version
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/connect-protocol-version'
+        - name: Connect-Timeout-Ms
+          in: header
+          schema:
+            $ref: '#/components/schemas/connect-timeout-header'
+      requestBody:
+        content:
+          application/connect+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/connect+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc-web:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc-web+proto:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+          application/grpc-web+json:
+            schema:
+              $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceRequest'
+        required: true
+      responses:
+        default:
+          description: Error
+          content:
+            application/connect+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/connect+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web+proto:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+            application/grpc-web+json:
+              schema:
+                $ref: '#/components/schemas/connect.error'
+        "200":
+          description: Success
+          content:
+            application/connect+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/connect+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc-web:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc-web+proto:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+            application/grpc-web+json:
+              schema:
+                $ref: '#/components/schemas/connectrpc.eliza.v1.IntroduceResponse'
+components:
+  schemas:
+    connectrpc.eliza.v1.ConverseRequest:
+      type: object
+      properties:
+        sentence:
+          type: string
+          title: sentence
+      title: ConverseRequest
+      additionalProperties: false
+    connectrpc.eliza.v1.ConverseResponse:
+      type: object
+      properties:
+        sentence:
+          type: string
+          title: sentence
+      title: ConverseResponse
+      additionalProperties: false
+    connectrpc.eliza.v1.IntroduceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+      title: IntroduceRequest
+      additionalProperties: false
+    connectrpc.eliza.v1.IntroduceResponse:
+      type: object
+      properties:
+        sentence:
+          type: string
+          title: sentence
+      title: IntroduceResponse
+      additionalProperties: false
+    connectrpc.eliza.v1.SayRequest:
+      type: object
+      properties:
+        sentence:
+          type: string
+          title: sentence
+      title: SayRequest
+      additionalProperties: false
+    connectrpc.eliza.v1.SayResponse:
+      type: object
+      properties:
+        sentence:
+          type: string
+          title: sentence
+      title: SayResponse
+      additionalProperties: false
+    connect-protocol-version:
+      type: number
+      title: Connect-Protocol-Version
+      enum:
+        - 1
+      description: Define the version of the Connect protocol
+      const: 1
+    connect-timeout-header:
+      type: number
+      title: Connect-Timeout-Ms
+      description: Define the timeout, in ms
+    encoding:
+      title: encoding
+      enum:
+        - proto
+        - json
+      description: Define which encoding or 'Message-Codec' to use
+    base64:
+      type: boolean
+      title: base64
+      description: Specifies if the message query param is base64 encoded, which may be required for binary data
+    compression:
+      title: compression
+      enum:
+        - identity
+        - gzip
+        - br
+      description: Which compression algorithm to use for this request
+    connect.error:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+            - CodeNotFound
+          enum:
+            - CodeCanceled
+            - CodeUnknown
+            - CodeInvalidArgument
+            - CodeDeadlineExceeded
+            - CodeNotFound
+            - CodeAlreadyExists
+            - CodePermissionDenied
+            - CodeResourceExhausted
+            - CodeFailedPrecondition
+            - CodeAborted
+            - CodeOutOfRange
+            - CodeInternal
+            - CodeUnavailable
+            - CodeDataLoss
+            - CodeUnauthenticated
+          description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+        message:
+          type: string
+          description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+        detail:
+          $ref: '#/components/schemas/google.protobuf.Any'
+      title: Connect Error
+      additionalProperties: true
+      description: 'Error type returned by Connect: https://connectrpc.com/docs/go/errors/#http-representation'
+    google.protobuf.Any:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          format: binary
+        debug:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+security: []
+tags:
+  - name: connectrpc.eliza.v1.ElizaService
