@@ -14,12 +14,11 @@ slug: "fauxrpc-testcontainers"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc-testcontainers/
-draft: true
 ---
 
-Testing gRPC services can be tricky. You often need a real server running, which can introduce complexity and slow down your tests. Enter **[FauxRPC](https://fauxrpc.com)** with **[Testcontainers](https://testcontainers.com/)**, a new Go package that simplifies gRPC mocking by leveraging the power of Testcontainers.
+Testing gRPC services can be tricky. You often need a real server running, which can introduce complexity and slow down your tests. Enter **[FauxRPC](https://fauxrpc.com)** + **[Testcontainers](https://testcontainers.com/)**, and small [Go package](https://github.com/sudorandom/fauxrpc/blob/main/testcontainers/testcontainers.go) that simplifies gRPC mocking by leveraging the power of Testcontainers.
 
-To address these challenges, we can leverage the power of [Testcontainers](https://testcontainers.com/), a library that lets you run throwaway, lightweight instances of common databases, web browsers, or any other application that can run in a Docker container. This allows you to easily integrate these dependencies into your automated tests, providing a consistent and reliable testing environment. By using Testcontainers, you can ensure that your tests are always running against a known and controlled version of your dependencies, avoiding inconsistencies and unexpected behavior while also simplifying test setup/teardown.
+To address challenges with testing while using gRPC services, we can leverage the power of [Testcontainers](https://testcontainers.com/), a library that lets you run throwaway, lightweight instances of common databases, web browsers, or any other application that can run in a Docker container. This allows you to easily integrate these dependencies into your automated tests, providing a consistent and reliable testing environment. By using Testcontainers, you can ensure that your tests are always running against a known and controlled version of your dependencies, avoiding inconsistencies and unexpected behavior while also simplifying test setup/teardown.
 
 While Testcontainers provides the infrastructure, [FauxRPC](https://fauxrpc.com) takes care of the mocking itself. FauxRPC is a tool that generates fake gRPC, gRPC-Web, Connect, and REST servers from your Protobuf definitions. By combining it with Testcontainers, you gain a lightweight, isolated environment for testing your gRPC clients without relying on a real server implementation. I've made a package to make this simpler using Go but the same could be done for other languages that Testcontainers supports.
 
@@ -96,13 +95,12 @@ Ultimately, the choice between mocking strategies depends on your specific needs
 ## What's Next
 Excited about the possibilities of FauxRPC Testcontainers? There's more to come! FauxRPC is still under active development and there's a lot more on the horizon! Here are a few features I'm exploring:
 
-- Stub Errors: The ability to declare that a method should yield an error would be very powerful for testing.
-- Rules using CEL: Fine-grained control over stub behavior using Common Expression Language (CEL) to define complex matching conditions and response generation logic. This will enable more dynamic and flexible stubbing scenarios.
+- Rules using CEL: Fine-grained control over stub behavior using Common Expression Language (CEL) to define complex matching conditions and response generation logic. This will enable more dynamic and flexible stubbing scenarios. Imaging having a rule saying: `req.Name == "Bob"` then return a specific stub user.
 - Request Logging: Detailed logging of requests and responses to facilitate debugging and troubleshooting during test execution.
 
 Have an idea for a new feature or a suggestion for improvement? We'd love to hear from you! [Open an issue](https://github.com/sudorandom/fauxrpc/issues) on the GitHub repository to share your thoughts or contribute to the project.
 
 ### References
-* **FauxRPC Testcontainers:** [github.com/sudorandom/fauxrpc/testcontainers](github.com/sudorandom/fauxrpc/testcontainers)
+* **FauxRPC Testcontainers:** [github.com/sudorandom/fauxrpc/testcontainers](https://github.com/sudorandom/fauxrpc/tree/main/testcontainers)
 * **FauxRPC:** [fauxrpc.com](https://fauxrpc.com)
 * **Testcontainers:** [testcontainers.com](https://testcontainers.com)
