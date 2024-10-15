@@ -16,7 +16,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc-testcontainers/
 ---
 
-Testing gRPC services can be tricky. You often need a real server running, which can introduce complexity and slow down your tests. Enter **[FauxRPC](https://fauxrpc.com)** + **[Testcontainers](https://testcontainers.com/)**, and small [Go package](https://github.com/sudorandom/fauxrpc/blob/main/testcontainers/testcontainers.go) that simplifies gRPC mocking by leveraging the power of Testcontainers.
+Testing gRPC services can be tricky. You often need a real server running, which can introduce complexity and slow down your tests. Enter **[FauxRPC](https://fauxrpc.com)** + **[Testcontainers](https://testcontainers.com/)**, and small [Go package](https://github.com/sudorandom/fauxrpc/blob/main/testcontainers/testcontainers.go) that simplifies gRPC mocking.
 
 To address challenges with testing while using gRPC services, we can leverage the power of [Testcontainers](https://testcontainers.com/), a library that lets you run throwaway, lightweight instances of common databases, web browsers, or any other application that can run in a Docker container. This allows you to easily integrate these dependencies into your automated tests, providing a consistent and reliable testing environment. By using Testcontainers, you can ensure that your tests are always running against a known and controlled version of your dependencies, avoiding inconsistencies and unexpected behavior while also simplifying test setup/teardown.
 
@@ -97,6 +97,7 @@ Excited about the possibilities of FauxRPC Testcontainers? There's more to come!
 
 - Rules using CEL: Fine-grained control over stub behavior using Common Expression Language (CEL) to define complex matching conditions and response generation logic. This will enable more dynamic and flexible stubbing scenarios. Imaging having a rule saying: `req.Name == "Bob"` then return a specific stub user.
 - Request Logging: Detailed logging of requests and responses to facilitate debugging and troubleshooting during test execution.
+- Improved documentation: I'm currently working on a refresh of [fauxrpc.com](https://fauxrpc.com/) that includes these new features.
 
 Have an idea for a new feature or a suggestion for improvement? We'd love to hear from you! [Open an issue](https://github.com/sudorandom/fauxrpc/issues) on the GitHub repository to share your thoughts or contribute to the project.
 
