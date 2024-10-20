@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["opinion", "monolith", "software", "code", "architecture", "microservices"]
+tags: ["opinion", "monolith", "architecture", "microservices", "devops", "maintainability", "bazel"]
 date: "2024-10-22T10:00:00Z"
 description: "Are monoliths cool again?"
 cover: "cover.jpg"
@@ -55,7 +55,7 @@ Now this is the process if everything goes well. There's several different point
 {{< image src="limes.png" width="500px" class="center" >}}
 
 #### Monolithic Codebase Alternative
-Because of the overheard in this process, some developers have leaned towards consolidating most of the code that powers microservices into a single repo. We refer to this type of code repository as a "monorepo". In our log4j scenario, it would help with several of these steps.
+Because of the overhead in this process, some developers have leaned towards consolidating most of the code that powers microservices into a single repo. We refer to this type of code repository as a "monorepo". In our log4j scenario, it would help with several of these steps.
 
 - **Single Update Point:** Modify the `log4j` dependency in one place, within the unified monorepo.
 - **Simplified Testing and Deployment:** Leverage the monorepo's integrated testing and deployment mechanisms. If this is a commonly used library, more automated tests will need to be ran, but these are tests that would have ran anyway, but just spread out amongst many different repositories.
