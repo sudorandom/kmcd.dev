@@ -93,7 +93,9 @@ To leverage the benefits of a monolithic codebase while avoiding the pitfalls of
 - **[Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules):** While not a dedicated monorepo tool, Git submodules can be used to manage dependencies on other Git repositories within a larger monorepo. However, they can be complex to use and may not be the best choice for all scenarios.
 - **Your own tooling:** Sometimes building a set of scripts to customize the build process using more traditional tooling may be better.
 
-The choice of tooling will highly depend on the language/languages your codebases are hosted in. Bazel excels at seamlessly handling polyglot repos no matter the language. Others, like Pants only support a handful of languages and if you're using another language you may need to use multiple tools to get the job done. In general though, the fewer languages the easier it is to integrate because there are always language-specific idiosyncrasies that pop up, even when using tools like Bazel which try to hide those differences from you.
+You should note that this list is by no means complete. There are a lot of options (I think I found around 10 Javascript tools before giving up my research). I also left out several tools don't have open source tooling or rely exclusively on paid hosting services.
+
+The choice of tooling will highly depend on the language/languages your codebases are hosted in. Bazel excels at seamlessly handling polyglot repos no matter the language. Others, like Pants only support a handful of languages and if you're using another language you may need to use multiple tools to get the job done. In general though, the fewer languages the easier it is to integrate because there are always language-specific idiosyncrasies that pop up, even when using tools like Bazel which try to hide those differences from you. Choose what makes sense for your team... and maybe try to get as far as you can using standard tooling before introducing extra build tools.
 
 ## Drawbacks of Monolithic Codebases
 You should consider some of the real drawbacks when working with a monolithic codebase.
