@@ -16,7 +16,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/call-of-the-monolith-codebase/
 ---
 
-As the microservices landscape continues to evolve, a sobering reality is setting in for many organizations: managing multiple repositories is becoming a significant hurdle. With scalability and flexibility come the challenges of complexity. But what if there's a simpler way? For organizations already entrenched in the microservices world, it's time to reconsider an old friend: the **monolithic codebase**.
+As the microservices landscape continues to evolve, a sobering reality is setting in for many organizations: managing many microservice repositories has become a significant hurdle. In the pursuit of scalability and flexibility offered by microservices, we may have inadvertently sacrificed maintainability, but now the pendulum is swinging back towards simpler code management while retaining the ability to deploy at scale. For organizations already entrenched in the microservices world, it's time to reconsider an old friend: the **monolithic codebase**.
 
 Devs at these organizations might have noticed that as the number of services grow, so does the complexity of managing multiple codebases, each with its own repository, build pipelines, etc. This explosion of the number of repos introduces significant overhead, including:
 
@@ -65,14 +65,14 @@ Because of the overhead in this process, some developers have leaned towards con
 As demonstrated by the `log4j` update scenario, managing numerous repositories can be a complex and time-consuming process. A monolithic codebase offers a compelling alternative by simplifying many aspects of development and maintenance. Let's explore some of its key advantages:
 
 - **Simplified Repository Management:** Instead of juggling 20 separate repositories, a monorepo consolidates everything into a single location. This significantly reduces the operational overhead associated with managing multiple codebases, build pipelines, and deployment processes. Imagine the time saved by not having to update `log4j` in 20 different places!
-- **Unified Codebase Governance:**  Implementing organization-wide changes, like security updates or coding standard enhancements, becomes significantly easier with a monorepo. A single update propagates across all services, ensuring consistency and reducing the risk of inconsistencies or oversights that can occur when managing multiple repositories.
-- **Improved Developer Experience:**  Developers can navigate the entire codebase more easily, reducing the cognitive load associated with context switching between different repositories. No more remembering which repo uses a specific Docker Compose scheme or wondering where a particular service is located. Everything is readily accessible in one place.
-- **Enhanced Code Reusability:**  With all services residing in a single repository, code sharing and reuse become more straightforward. Developers can easily identify and leverage existing components, reducing code duplication and promoting consistency across the application. This can be particularly beneficial for common libraries like `log4j`, where a single, well-maintained implementation can be used by all services.
+- **Unified Codebase Governance:** Implementing organization-wide changes, like security updates or coding standard enhancements, becomes significantly easier with a monorepo. A single update propagates across all services, ensuring consistency and reducing the risk of inconsistencies or oversights that can occur when managing multiple repositories.
+- **Improved Developer Experience:** Developers can navigate the entire codebase more easily, reducing the cognitive load associated with context switching between different repositories. No more remembering which repo uses a specific Docker Compose scheme or wondering where a particular service is located. Everything is readily accessible in one place.
+- **Enhanced Code Reusability:** With all services residing in a single repository, code sharing and reuse become more straightforward. Developers can easily identify and leverage existing components, reducing code duplication and promoting consistency across the application. This can be particularly beneficial for common libraries like `log4j`, where a single, well-maintained implementation can be used by all services.
 
 Furthermore, a monorepo can significantly streamline testing and deployment processes:
 
-- **Simplified Testing:**  Automated tests can be run across all affected services with a single command, ensuring that changes don't introduce unexpected regressions. In the `log4j` scenario, this means verifying the update's impact on all services simultaneously, rather than testing each microservice individually.
-- **Streamlined Deployment:**  Atomic deployments become possible, guaranteeing that all services are updated consistently. This eliminates the risk of partial deployments or version mismatches that can occur in a microservices architecture.
+- **Simplified Testing:** Automated tests can be run across all affected services with a single command, ensuring that changes don't introduce unexpected regressions. In the `log4j` scenario, this means verifying the update's impact on all services simultaneously, rather than testing each microservice individually.
+- **Streamlined Deployment:** Atomic deployments become possible, guaranteeing that all services are updated consistently. This eliminates the risk of partial deployments or version mismatches that can occur in a microservices architecture.
 - **Easier Rollbacks:** If an issue arises after deployment, rolling back to a previous version becomes simpler with a monorepo. A single rollback operation can revert all services to a known good state, minimizing downtime and disruption. With microservices that all have different versions, it's hard to know what a good combination of versions for each service actually is.
 
 Note that while the codebase may be monolithic, many developer teams are now deploying as microservices but developing as if it is a monolith. This promises the best of both worlds: the simplified and streamlined experience of a single repo with the scalability properties of microservices.
@@ -85,11 +85,11 @@ However, it's important to acknowledge that monolithic codebases are not without
 To leverage the benefits of a monolithic codebase while avoiding the pitfalls of tight coupling and decreased maintainability, consider the following tools:
 
 ### Modular Monorepo Tools
-- **[Bazel](https://bazel.build:/)** A build tool and ecosystem that supports large, multi-language monorepos; created by Google.
-- **[Pants](https://www.pantsbuild.org:/)** A build system for monorepos, focusing on performance and scalability.
-- **[Buck](https://buck2.build:/)** A fast and scalable build tool developed by Facebook, designed to handle large, complex monorepos with ease.
-- **[Service Weaver](https://serviceweaver.dev/)** Service weaver has a very different take on monorepos. It's more than just a build tool, and is more of a framework that allows for monorepos with monolithic or microservice deployment. Because it is opinionated, other kinds of build tools aren't needed as much. Also, this is only supported for Go.
-- **Your own tooling** Sometimes building a set of scripts to customize the build process using more traditional tooling may be better.
+- **[Bazel](https://bazel.build:/):** A build tool and ecosystem that supports large, multi-language monorepos; created by Google.
+- **[Pants](https://www.pantsbuild.org:/):** A build system for monorepos, focusing on performance and scalability.
+- **[Buck](https://buck2.build:/):** A fast and scalable build tool developed by Facebook, designed to handle large, complex monorepos with ease.
+- **[Service Weaver](https://serviceweaver.dev/):** Service weaver has a very different take on monorepos. It's more than just a build tool, and is more of a framework that allows for monorepos with monolithic or microservice deployment. Because it is opinionated, other kinds of build tools aren't needed as much. Also, this is only supported for Go.
+- **Your own tooling:** Sometimes building a set of scripts to customize the build process using more traditional tooling may be better.
 
 The choice of tooling will highly depend on the language/languages your codebases are hosted in. Bazel excels at seamlessly handling polyglot repos no matter the language. Others, like Pants only support a handful of languages and if you're using another language you may need to use multiple tools to get the job done. In general though, the fewer languages the easier it is to integrate because there are always language-specific idiosyncrasies that pop up, even when using tools like Bazel which try to hide those differences from you.
 
@@ -98,7 +98,7 @@ You should consider some of the real drawbacks when working with a monolithic co
 
 - **Increased Build Times:** As the codebase grows, build times can become significantly longer, especially if not properly optimized. This can slow down development and deployment cycles.
 - **Merge Conflicts:** With many developers working on the same codebase, merge conflicts can become more frequent and complex, requiring more time and effort to resolve.
-- **Tight Coupling:**  If not carefully managed, a monorepo can lead to tight coupling between different parts of the application, making it harder to modify or refactor individual components without affecting others.
+- **Tight Coupling:** If not carefully managed, a monorepo can lead to tight coupling between different parts of the application, making it harder to modify or refactor individual components without affecting others.
 - **Learning Curve:** For developers accustomed to working with microservices and separate repositories, there can be a learning curve associated with navigating and understanding a large, monolithic codebase.
 - **Access Control:** Managing access control and permissions can be more challenging in a monorepo, as developers potentially have access to the entire codebase, even if they only work on a specific part of it.
 
@@ -116,7 +116,7 @@ Since Bazel is a popular choice for managing monorepos, it's worth noting some o
 ## Mitigating the Drawbacks
 It's important to note that many of these drawbacks can be mitigated with careful planning and the right tools and practices:
 
-- **Modular Design:**  Employing modular design principles and clear code organization can help minimize tight coupling and improve build times.
+- **Modular Design:** Employing modular design principles and clear code organization can help minimize tight coupling and improve build times.
 - **Code Ownership:** Establish clear code ownership and access control policies to manage permissions and prevent unauthorized modifications.
 - **Continuous Integration and Continuous Deployment (CI/CD):** Implement robust CI/CD pipelines to automate builds, tests, and deployments, helping to identify and address issues early on.
 - **Invest in Training:** Provide adequate training and support to help developers learn Bazel and its best practices.
