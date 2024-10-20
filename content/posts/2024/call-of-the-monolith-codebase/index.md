@@ -111,7 +111,6 @@ Since Bazel is a popular choice for managing monorepos, it's worth noting some o
 
 - **Steep Learning Curve:** Bazel has a reputation for having a steep learning curve, especially for developers unfamiliar with build systems like [Make](https://makefiletutorial.com/) or [CMake](https://cmake.org/). Its configuration language, Starlark, can also take time to master.
 - **Limited IDE Support:** While IDE support for Bazel is improving, it's still not as comprehensive as for other build systems. This can make debugging and code navigation more challenging.
-- **Build Cache Invalidation:** Bazel's build cache is designed to speed up builds by reusing previous build outputs. However, if the cache is not properly invalidated, it can lead to incorrect builds and unexpected behavior.
 - **Performance Issues:** While Bazel is generally performant, it can sometimes experience performance issues, especially with very large codebases or complex build configurations.
 - **Community Support:** While Bazel has a growing community, it's still smaller than the communities for other build systems like Maven, Gradle, or default tooling from languages like Rust, Go, etc. This can make it harder to find help or resources when encountering issues.
 
