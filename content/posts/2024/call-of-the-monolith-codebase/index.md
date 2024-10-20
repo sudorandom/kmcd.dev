@@ -91,6 +91,8 @@ To leverage the benefits of a monolithic codebase while avoiding the pitfalls of
 - **[Service Weaver](https://serviceweaver.dev/)** Service weaver has a very different take on monorepos. It's more than just a build tool, and is more of a framework that allows for monorepos with monolithic or microservice deployment. Because it is opinionated, other kinds of build tools aren't needed as much. Also, this is only supported for Go.
 - **Your own tooling** Sometimes building a set of scripts to customize the build process using more traditional tooling may be better.
 
+The choice of tooling will highly depend on the language/languages your codebases are hosted in. Bazel excels at seamlessly handling polyglot repos no matter the language. Others, like Pants only support a handful of languages and if you're using another language you may need to use multiple tools to get the job done. In general though, the fewer languages the easier it is to integrate because there are always language-specific idiosyncrasies that pop up, even when using tools like Bazel which try to hide those differences from you.
+
 ## Drawbacks of Monolithic Codebases
 You should consider some of the real drawbacks when working with a monolithic codebase.
 
@@ -107,7 +109,7 @@ Since Bazel is a popular choice for managing monorepos, it's worth noting some o
 - **Limited IDE Support:** While IDE support for Bazel is improving, it's still not as comprehensive as for other build systems. This can make debugging and code navigation more challenging.
 - **Build Cache Invalidation:** Bazel's build cache is designed to speed up builds by reusing previous build outputs. However, if the cache is not properly invalidated, it can lead to incorrect builds and unexpected behavior.
 - **Performance Issues:** While Bazel is generally performant, it can sometimes experience performance issues, especially with very large codebases or complex build configurations.
-- **Community Support:** While Bazel has a growing community, it's still smaller than the communities for other build systems like Maven or Gradle. This can make it harder to find help or resources when encountering issues.
+- **Community Support:** While Bazel has a growing community, it's still smaller than the communities for other build systems like Maven, Gradle, or default tooling from languages like Rust, Go, etc. This can make it harder to find help or resources when encountering issues.
 
 {{< image src="bazel.png" width="500px" class="center" >}}
 
