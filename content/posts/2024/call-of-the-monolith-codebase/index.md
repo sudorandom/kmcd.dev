@@ -84,11 +84,13 @@ However, it's important to acknowledge that monolithic codebases are not without
 ## Tooling for a Successful Monolithic Codebase
 To leverage the benefits of a monolithic codebase while avoiding the pitfalls of tight coupling and decreased maintainability, consider the following tools:
 
-### Modular Monorepo Tools
 - **[Bazel](https://bazel.build:/):** A build tool and ecosystem that supports large, multi-language monorepos; created by Google.
 - **[Pants](https://www.pantsbuild.org:/):** A build system for monorepos, focusing on performance and scalability.
 - **[Buck](https://buck2.build:/):** A fast and scalable build tool developed by Facebook, designed to handle large, complex monorepos with ease.
 - **[Service Weaver](https://serviceweaver.dev/):** Service weaver has a very different take on monorepos. It's more than just a build tool, and is more of a framework that allows for monorepos with monolithic or microservice deployment. Because it is opinionated, other kinds of build tools aren't needed as much. Also, this is only supported for Go.
+- **[Lerna](https://lerna.js.org/):** A popular and mature tool for managing JavaScript monorepos, especially useful for managing multiple packages within a single repository.
+- **[Turbo](https://turbo.build/):** High-performance build system for JavaScript/TypeScript monorepos, known for its speed and efficient caching mechanisms.
+- **[Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules):** While not a dedicated monorepo tool, Git submodules can be used to manage dependencies on other Git repositories within a larger monorepo. However, they can be complex to use and may not be the best choice for all scenarios.
 - **Your own tooling:** Sometimes building a set of scripts to customize the build process using more traditional tooling may be better.
 
 The choice of tooling will highly depend on the language/languages your codebases are hosted in. Bazel excels at seamlessly handling polyglot repos no matter the language. Others, like Pants only support a handful of languages and if you're using another language you may need to use multiple tools to get the job done. In general though, the fewer languages the easier it is to integrate because there are always language-specific idiosyncrasies that pop up, even when using tools like Bazel which try to hide those differences from you.
