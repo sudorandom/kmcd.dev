@@ -24,14 +24,17 @@
             {{ end }}
             <div class="main-heading">
             <div class="posts-header">
-                <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
+                <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
             </div>
 
-            {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
+            {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
             <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
                 <div class="post-row">
                     <h3>
-                        <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
+                        <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+                        {{- with .Date -}}
+                        <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
+                        {{- end -}}
                     </h3>
                     <div class="post-meta">
                     </div>
@@ -44,22 +47,19 @@
                     </span>
                 </div>
             </div>
-            {{ end }}
             <div class="posts-footer"></div>
+            {{ end }}
 
             <div class="main-heading">
             <div class="posts-header">
-                <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
+                <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
             </div>
 
-            {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+            {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
             <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
                 <div class="post-row">
                     <h3>
-                        <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                        {{- with .Date -}}
-                        <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                        {{- end -}}
+                        <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
                     </h3>
                     <div class="post-meta">
                     </div>

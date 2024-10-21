@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["opinion", "monolith", "architecture", "microservices", "devops", "maintainability", "bazel"]
+tags: ["opinion", "monolith", "architecture", "microservices", "programming", "maintainability", "bazel"]
 date: "2024-10-22T10:00:00Z"
 description: "Are monoliths cool again?"
 cover: "cover.jpg"
@@ -28,10 +28,10 @@ Devs at these organizations might have noticed that as the number of services gr
 To further illustrate the challenges of managing multiple repositories in a microservices architecture, let's delve into the process of updating a commonly used library across all microservice repos.
 
 - **Discovery:**
-    - Identify the need to update `log4j` due to [a security vulnerability](https://blog.cloudflare.com/inside-the-log4j2-vulnerability-cve-2021-44228/).
+    - Identify the need to update `log4j` due to [a security vulnerability](https://blog.cloudflare.com/inside-the-log4j2-vulnerability-cve-2021-44228/). Maybe you hear about this from dependabot spamming you, maybe another security scanner picked up that your repo is using a log4j, maybe your devs see it at the top of hacker news or maybe you just have a grumpy security operations team reviewing every CVE and deciding if anything the company uses is vulnerable. Hopfully it's all of the above if the vulnerability is really severe.
     - Determine the versions currently in use across all 20 microservices.
 - **Planning:**
-    - Coordinate with multiple team leads to schedule the update.
+    - Coordinate with multiple team leads to schedule the update. Depending on how "mono" the "monolith" is, you may have several teams sharing the same codebase.
     - Ensure compatibility with each microservice's specific dependencies.
 - **Execution:**
     1. **Update Dependency:**
@@ -49,10 +49,12 @@ To further illustrate the challenges of managing multiple repositories in a micr
 #### Challenges Encountered
 Now this is the process if everything goes well. There's several different points where this process can increase the complexity of our simple task:
 
-- **Version Inconsistencies:** Different microservices were using various versions of `log4j`, requiring tailored updates.
-- **Dependency Conflicts:** Updates in some microservices revealed hidden dependencies on outdated libraries.
+- **Version Inconsistencies:** Different microservices were using various versions of `log4j`, requiring tailored updates. Maybe some repos were on a previous major version and you'll need to update a lot of code in order to upgrade to the latest version. Or you may consider backporting the fix and maintaining patches or a fork of this repository.
+- **Dependency Conflicts:** Updates in some microservices revealed hidden dependencies on outdated libraries. Maybe the latest version of log4j pulls in a new version of apache commons. Maybe another dependency, for some reason, doesn't work with the latest version. This kind of thing does happen and can be a real pain to resolve.
 
 {{< image src="limes.png" width="500px" class="center" >}}
+
+With all of this tedious work you should remember that this type of update is *the simplest kind of change to make*. Now just imagine trying to be proactive and keep all of your services up-to-date and to not let the least loved ones get left behind.
 
 #### Monolithic Codebase Alternative
 Because of the overhead in this process, some developers have leaned towards consolidating most of the code that powers microservices into a single repo. We refer to this type of code repository as a "monorepo". In our log4j scenario, it would help with several of these steps.
@@ -75,7 +77,7 @@ Furthermore, a monorepo can significantly streamline testing and deployment proc
 - **Streamlined Deployment:** Atomic deployments become possible, guaranteeing that all services are updated consistently. This eliminates the risk of partial deployments or version mismatches that can occur in a microservices architecture.
 - **Easier Rollbacks:** If an issue arises after deployment, rolling back to a previous version becomes simpler with a monorepo. A single rollback operation can revert all services to a known good state, minimizing downtime and disruption. With microservices that all have different versions, it's hard to know what a good combination of versions for each service actually is.
 
-Note that while the codebase may be monolithic, many developer teams are now deploying as microservices but developing as if it is a monolith. This promises the best of both worlds: the simplified and streamlined experience of a single repo with the scalability properties of microservices.
+Note that while the codebase may be monolithic, many developer teams are still deploying as microservices. This promises the best of both worlds: the simplified and streamlined experience of a single repo with the scalability properties of microservices.
 
 {{< image src="assimilate.png" width="500px" class="center" >}}
 
