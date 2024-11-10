@@ -14,23 +14,17 @@ slug: "fauxrpc-protovalidate"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc-protovalidate/
-draft: true
 ---
 
-[FauxRPC](https://fauxrpc.com/), a tool for generating fake gRPC servers, now integrates with [protovalidate](https://github.com/bufbuild/protovalidate), a library for defining validation rules in your Protobuf definitions. This means faster debugging, increased reliability, and a smoother development experience.
+[FauxRPC](https://fauxrpc.com/), a tool for generating fake gRPC servers, now integrates with [protovalidate](https://github.com/bufbuild/protovalidate), which lets you define validation rules in your Protobuf definitions. This means faster debugging, increased reliability, and a smoother development experience.
 
-Now every request processed by FauxRPC will be automatically validated against your protovalidate rules. Not only will you get high quality data validation in your application, but now you can have this validation before you even write your application logic! This leads to:
-
-* **Faster debugging:** Identify and resolve data issues early on, saving you precious development time.
-* **Increased reliability:** Ensure your RPCs only work with valid data, preventing unexpected behavior and crashes.
-* **Improved developer experience:** Get clear and concise error messages that pinpoint the source of any validation problems.
-* **Greater consistency:** Enforce data integrity across your entire application.
+Now every request processed by FauxRPC will be automatically validated against your protovalidate rules. Not only will you get high quality data validation in your application, but now you can have this validation before you even write your application logic! Let's walk through how this new feature works.
 
 ## How it works
 
-Simply define your validation rules using protovalidate's constraint annotations within your Protobuf definitions. Fauxrpc will take care of the rest, automatically validating each request against these rules. If a request fails validation, a detailed error message will be returned, guiding you towards a quick resolution.
+First, define your validation rules using protovalidate's constraint annotations within your Protobuf definitions. For guidance, you should reference [the protovalidate documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/README.md). Fauxrpc will take care of the rest, automatically validating each request against these rules. If a request fails validation, a detailed error message will be returned, guiding you toward quickly fixing the issue.
 
-### Example
+For this example, we're going to use a simple service where you can call with a name and it will return a greeting. Here's what that would look like in protobuf:
 
 **greet.proto**
 ```protobuf
@@ -52,6 +46,8 @@ service GreetService {
   rpc Greet(GreetRequest) returns (GreetResponse) {}
 }
 ```
+
+The `buf.validate.field` annotations are from protovalidate. The section `(buf.validate.field).string = {min_len: 3, max_len: 20}` ensures that the `name` field is between 3 and 20 characters. `(buf.validate.field).string.example = "Hello, user!"` is declaring what an example response might look like. This mostly serves as documentation but it also influences other tools, including [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi) and, now, FauxRPC! We'll see how FauxRPC uses both of these constraints in a second. First, let's start up the FauxRPC server.
 
 To use protovalidate with FauxRPC, we need to leverage another tool that's extremely helpful for working with protobuf definitions. This is because we used protovalidate, a dependency. Usually dependencies are hard to deal with in protobuf because the default protobuf tooling just doesn't manage dependencies at all. However, the [Buf CLI](https://buf.build/product/cli) and the [BSR](https://buf.build/product/bsr) can help us here.
 
@@ -98,7 +94,7 @@ $ buf curl --http2-prior-knowledge -d '{}' http://127.0.0.1:6660/greet.v1.GreetS
 }
 ```
 
-Oh, duh! We hit the constraint, so our empty object `{}` isn't good enough anymore. We need a name and it needs to have between 3 and 20 characters. Let's try once more:
+Oh, duh! We hit the length constraint we added for the `name` field, so our empty object `{}` isn't good enough anymore. We need a name and it needs to have between 3 and 20 characters. Let's try once more:
 
 ```shell
 $ buf curl --http2-prior-knowledge -d '{"name": "Bob"}' http://127.0.0.1:6660/greet.v1.GreetService/Greet
@@ -106,11 +102,11 @@ $ buf curl --http2-prior-knowledge -d '{"name": "Bob"}' http://127.0.0.1:6660/gr
   "greeting": "Hello, user!"
 }
 ```
-Sweet we got a response! And the response is populated using our example annotation. This will allow us to stand up a fake service with a few simple commands that has request validation built in and will use the constraints to make realistic fake data.
+Great, we received a response! And the response is populated using our `(buf.validate.field).string.example` annotation. This will allow us to stand up a fake service with a few simple commands that has request validation built in and will use the constraints to make realistic fake data.
 
-I hope this example shows the power of mixing protovalidate with FauxRPC.
+This shows how protovalidate uses protovalidate constraints both for input validation and fake data generation.
 
-As an aside, I am personally excited and anxious to eventually have [Typescript Support for protovalidate](https://github.com/bufbuild/protovalidate/issues/67). That would allow us to use protovalidate for both clean frontend UX and robust server side validation.
+On a related note, I am personally excited to eventually have [Typescript Support for protovalidate](https://github.com/bufbuild/protovalidate/issues/67). That would allow us to use protovalidate for both clean frontend UX and robust server side validation. In my eyes, this would completely solve the problem of having duplicate and inconsistent validation rules between the frontend and backend. Backend needs these rules to ensure system reliability and consistency. Frontend needs these rules for better UX.
 
 ## Benefits for you
 
