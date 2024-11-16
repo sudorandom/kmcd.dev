@@ -45,7 +45,7 @@ params:
     - name: "mastodon"
       url: "https://infosec.exchange/@sudorandom"
     - name: "bluesky"
-      url: "https://bsky.app/profile/sudorandom.bsky.social"
+      url: "https://bsky.app/profile/kmcd.dev"
     - name: "linkedin"
       url: "https://linkedin.com/in/sudorandom"
     - name: "github"
