@@ -1,0 +1,42 @@
+# d2 content/posts/2024/mixing-cel-and-protobuf-for-fun/diagram.d2 --sketch --theme 201 content/posts/2024/mixing-cel-and-protobuf-for-fun/diagram.svg
+
+style: {
+    fill: transparent
+  }
+  
+  Descriptors.label: Your Protobuf Schema
+  Descriptors.shape: document
+  Descriptors -> FauxRPC
+
+  Stubs.label: Collection of stub\n(YAML or JSON)
+  Stubs.shape: document
+  Stubs -> FauxRPC
+
+  FauxRPC.shape: oval
+  FauxRPC -> Microservices: gRPC {
+    style: {
+      bold: true
+    }
+  }
+  FauxRPC -> Web Frontend: gRPC-Web {
+    style: {
+      bold: true
+    }
+  }
+  FauxRPC -> Web Frontend: Connect {
+    style: {
+      bold: true
+    }
+  }
+  FauxRPC -> API Client: REST {
+    style: {
+      bold: true
+    }
+  }
+  Unit Tests.label: Unit Tests\ntestcontainers
+  FauxRPC -> Unit Tests {
+    style: {
+      bold: true
+    }
+  }
+  

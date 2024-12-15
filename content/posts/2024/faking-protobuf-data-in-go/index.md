@@ -184,5 +184,4 @@ $ buf curl --schema=buf.build/connectrpc/eliza \
 }
 ```
 
-
 There are other functions to help generate specific fields. Please reference the [reference documentation](https://pkg.go.dev/github.com/sudorandom/fauxrpc) for more information on that.
