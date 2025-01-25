@@ -14,6 +14,7 @@ slug: "mixing-cel-and-protobuf-for-fun"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/mixing-cel-and-protobuf-for-fun/
+mastodonID: "113667606724498331"
 ---
 
 Protobufs offer a structured approach to data definition, but testing gRPC services built with them can be a hurdle. By leveraging FauxRPC and CEL, you can accelerate development cycles, enhance test coverage, and ensure the reliability of your microservices.

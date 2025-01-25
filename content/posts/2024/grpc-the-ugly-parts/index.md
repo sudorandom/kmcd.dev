@@ -15,6 +15,7 @@ slug: "grpc-the-ugly-parts"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-the-ugly-parts/
+mastodonID: "113071872657900094"
 ---
 
 gRPC has undeniably become a powerful tool in the world of microservices, offering efficiency and performance benefits, but gRPC also has an ugly side. As someone who's spent a considerable amount of time with gRPC, I'd like to shed light on some of the uglier aspects of this technology. I've already talked about the [good](/posts/grpc-the-good-parts) and [bad](/posts/grpc-the-bad-parts) parts of gRPC, now let's talk about the ugly.

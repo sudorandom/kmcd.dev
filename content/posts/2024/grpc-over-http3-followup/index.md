@@ -15,6 +15,7 @@ slug: "grpc-over-http3-followup"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-over-http3-followup/
+mastodonID: "113152321775044578"
 ---
 
 In my previous post, "[gRPC Over HTTP/3](/posts/grpc-over-http3/)," we explored the potential of gRPC with HTTP/3. At that time, some of the pieces were missing and I had to hack on forks of a few repos to make gRPC+HTTP/3 work with Go. The biggest blocker was that the quic-go HTTP/3 implementation didn't have support for HTTP trailers. But now things have recently changed there and these hacks are no longer needed!

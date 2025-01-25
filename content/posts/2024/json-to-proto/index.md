@@ -14,6 +14,7 @@ slug: "json-to-proto"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/json-to-proto/
+mastodonID: "113112700400869306"
 ---
 
 In the world of data serialization and communication protocols, protocol buffers (protobuf) have gained a lot popularity due to their efficiency and performance advantages over formats like JSON and the usage of gRPC. However, the learning curve associated with protobuf's syntax and concepts can be a deterrent for developers, especially those already comfortable with the ubiquitous JSON format. On top of that, converting a lot of APIs from JSON to protobuf can be really time-consuming.

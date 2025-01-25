@@ -14,6 +14,7 @@ slug: "call-of-the-monolith-codebase"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/call-of-the-monolith-codebase/
+mastodonID: "113350513645286780"
 ---
 
 As the microservices landscape continues to evolve, a sobering reality is setting in for many organizations: managing many microservice repositories has become a significant hurdle. In the pursuit of scalability and flexibility offered by microservices, we may have inadvertently sacrificed maintainability, but now the pendulum is swinging back towards simpler code management while retaining the ability to deploy at scale. For organizations already entrenched in the microservices world, it's time to reconsider an old friend: the **monolithic codebase**.

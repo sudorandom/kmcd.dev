@@ -14,6 +14,7 @@ slug: "working-with-protobuf-in-2024"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/working-with-protobuf-in-2024/
+mastodonID: "113033416973824417"
 ---
 
 Protocol Buffers (protobuf), Google's brainchild for efficient data serialization, have become an indispensable tool in the modern software development landscape. They offer a compact and efficient way to structure data for storage or transmission, making them ideal for applications like gRPC services, data storage, and inter-service communication. gRPC is even branching into the frontend of the web, with gRPC-Web and ConnectRPC. This means that the traditional protobuf workflow can sometimes feel a bit dated and cumbersome with tooling that isn't quite made to be easy to use and, worse, can be easy to use incorrectly. In this article, we'll explore some modern tools that address these pain points, making protobuf development more enjoyable and productive. But first, let's recap how the "traditional" protobuf workflow typically works.

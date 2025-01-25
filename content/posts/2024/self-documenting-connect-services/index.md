@@ -14,6 +14,7 @@ slug: "self-documenting-connect-services"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/self-documenting-connect-services/
+mastodonID: "113197627641199319"
 ---
 
 As some of you may know, I've created a plugin for protoc called [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). This plugin converts protobuf files into [OpenAPI specifications](https://swagger.io/specification/) for [the Connect protocol](https://connectrpc.com/docs/protocol/). This protocol is very similar to gRPC but for unary RPCs it follows many more traditions that you'd expect from an HTTP-based API, like using HTTP status codes appropriately, using the normal `Content-Encoding` header to specify compression and avoiding putting extra framing inside of the body. Because of this, we can document it more readily with other specifications like OpenAPI.

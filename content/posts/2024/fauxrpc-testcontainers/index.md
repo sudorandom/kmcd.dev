@@ -14,6 +14,7 @@ slug: "fauxrpc-testcontainers"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc-testcontainers/
+mastodonID: "113309691706773397"
 ---
 
 Testing gRPC services can be tricky. You often need a real server running, which can introduce complexity and slow down your tests. Enter **[FauxRPC](https://fauxrpc.com)** + **[Testcontainers](https://testcontainers.com/)**, and small [Go package](https://github.com/sudorandom/fauxrpc/blob/main/testcontainers/testcontainers.go) that simplifies gRPC mocking.
