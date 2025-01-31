@@ -14,7 +14,6 @@ slug: "barcode-scanner"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/barcode-scanner/
-draft: true
 ---
 
 I have a confession. I've become *that* person. I recently got my hands on the **[5100 Laser 1D Wireless Barcode Scanner](https://tera-digital.com/products/5100-laser-1d-wireless-barcode-scanner-wholesale)**, and I'm officially obsessed. My wife and I have started increasing our book collection, so keeping track of books that we have is starting to get a bit tedious. Spreadsheets, handwritten lists, trying to type in those ridiculously long [ISBNs](https://en.wikipedia.org/wiki/ISBN)... it was annoying.
