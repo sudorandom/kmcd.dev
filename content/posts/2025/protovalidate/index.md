@@ -199,6 +199,10 @@ You've probably realized by now that I'm a big fan of protovalidate. So it's no 
 
 ### FauxRPC
 [`FauxRPC`](https://fauxrpc.com/) is my project that is a self-mocking protobuf driven server that supports gRPC/gRPC-Web/ConnectRPC/REST. Not only will it enforce protovalidate annotations on requests made to it but it also uses these annotations to generate more realistic mock data automatically. I feel like this really shows off the power of contract-driven APIs. I actually generated the examples above using FauxRPC!
+```bash
+$ buf build ssh://git@github.com/sudorandom/kmcd.dev.git#branch=main,subdir=content/posts/2025/protovalidate -o protovalidate-example.binpb
+$ fauxrpc run --schema protovalidate-example.binpb
+```
 
 ## Run in the web
 Currently, protovalidate doesn't run on a web frontend, at least [not yet](https://github.com/bufbuild/protovalidate/issues/67). I feel like this is the last piece that can finally unite input validation in the frontend and backend. I mentioned at the start of this article about how the frontend developers have to duplicate many of the rules that already exist in the backend. However, once a typescript version of protovalidate exists suddenly all of this work is completely handled simply by adding some protobuf annotations.
