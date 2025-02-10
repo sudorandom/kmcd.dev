@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package example;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum TrafficLight {
+  UNKNOWN = 0;
+  RED = 1;
+  YELLOW = 2;
+  GREEN = 3;
+}
+
+message User {
+  // Name of the user, must be between 3 and 50 characters.
+  string name = 1 [
+    (buf.validate.field).string = {
+      min_len: 3
+      max_len: 50
+    },
+    (buf.validate.field).required = true
+  ];
+
+  // Age of the user, must be between 0 and 150.
+  int32 age = 2 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 150
+  }];
+
+  // Email address of the user, must be a valid email format.
+  string email = 3 [(buf.validate.field).string.email = true];
+
+  // Favorite traffic light color.
+  TrafficLight favorite_light = 4 [(buf.validate.field).enum.defined_only = true];
+
+  // Account ID, must be greater than 0.
+  int64 account_id = 6 [(buf.validate.field).int64.gt = 0];
+
+  // List of tags, must have at least 1 tag and at most 5, each tag at least 2 characters long.
+  repeated string tags = 7 [
+    (buf.validate.field).repeated = {
+      min_items: 1
+      max_items: 2
+      unique: true
+    },
+    (buf.validate.field).repeated.items.string.min_len = 4
+  ];
+
+  // Avatar image, maximum size is 1MB.
+  bytes avatar = 8 [(buf.validate.field).bytes.max_len = 1024];
+
+  // Timestamp of when the user was created, this field is required.
+  google.protobuf.Timestamp created_at = 9 [(buf.validate.field).required = true];
+}
+
+message Address {
+  // Street address, this field is required.
+  string street = 1 [(buf.validate.field).required = true];
+
+  // Postal code, must be a valid US postal code format.
+  string postal_code = 2 [(buf.validate.field).string.pattern = "^\\d{5}(?:-\\d{4})?$"];
+
+  // City of residence, must only contain letters, spaces, and hyphens.
+  string city = 5 [(buf.validate.field).string.pattern = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$"];
+}
+
+message Profile {
+  // User information, this field is required.
+  User user = 1 [(buf.validate.field).required = true];
+
+  // Address information.
+  Address address = 2;
+}
+
+service ExampleService {
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse) {}
+}
+
+message CreateProfileRequest {
+  Profile profile = 1 [(buf.validate.field).required = true];
+}
+
+message CreateProfileResponse {}
