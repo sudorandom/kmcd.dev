@@ -1,0 +1,24 @@
+# d2 content/posts/2025/protovalidate/diagram.d2 --sketch --theme 201 content/posts/2025/protovalidate/diagram.svg
+direction: right
+style: {
+    fill: transparent
+}
+
+input: User Input
+input.shape: person
+frontend-validation: {
+    label: validation
+    frontend: Frontend
+}
+backend-validation: {
+    label: validation
+    backend: Backend
+}
+attacker: Attacker
+attacker.shape: person
+database: Database
+
+input -> frontend-validation
+frontend-validation.frontend -> backend-validation
+attacker -> backend-validation
+backend-validation.backend -> database

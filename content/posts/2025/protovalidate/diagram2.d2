@@ -1,0 +1,40 @@
+# d2 content/posts/2025/protovalidate/diagram2.d2 --sketch --theme 201 content/posts/2025/protovalidate/diagram2.svg
+direction: right
+style: {
+    fill: transparent
+}
+
+input: User Input
+input.shape: person
+frontend-validation: {
+    label: validation
+    frontend: Frontend
+}
+backend-validation: {
+    label: validation
+    backend: Backend
+}
+attacker: Attacker
+attacker.shape: person
+database: Database
+protovalidate {
+    near: top-center
+    style {
+        fill: "#FFA500"
+        font-size: 28
+        font-color: "#000000"
+    }
+}
+protovalidate.style.animated: true
+
+input -> frontend-validation
+frontend-validation.frontend -> backend-validation
+attacker -> backend-validation
+backend-validation.backend -> database
+
+protovalidate -> frontend-validation {
+    style.animated: true
+}
+protovalidate -> backend-validation {
+    style.animated: true
+}
