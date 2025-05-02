@@ -213,7 +213,7 @@ $ fauxrpc run --schema protovalidate-example.binpb
 ```
 
 ## Run in the web
-Currently, protovalidate doesn't run on a web frontend, at least [not yet](https://github.com/bufbuild/protovalidate/issues/67). I feel like this is the last piece that can finally unite input validation in the frontend and backend. I mentioned at the start of this article about how the frontend developers have to duplicate many of the rules that already exist in the backend. However, once a typescript version of protovalidate exists suddenly all of this work is completely handled simply by adding some protobuf annotations.
+Currently, protovalidate doesn't run on a web frontend, at least <del>[not yet](https://github.com/bufbuild/protovalidate/issues/67)</del> Update: [Now you can!](https://github.com/bufbuild/protovalidate/issues/67#issuecomment-2846982958). I feel like this is the last piece that can finally unite input validation in the frontend and backend. I mentioned at the start of this article about how the frontend developers have to duplicate many of the rules that already exist in the backend. However, once a typescript version of protovalidate exists suddenly all of this work is completely handled simply by adding some protobuf annotations.
 
 The potential of this library is incredible. I feel like we can have a world where types are defined in one place and used in any number of languages.
 
