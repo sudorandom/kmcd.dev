@@ -15,12 +15,14 @@
         {{ range $pages }}
             {{ $cover := (.Resources.Get (or .Params.Cover .Params.Featured))}}
             {{- if $cover -}}
-            {{ $cover = $cover.Fit "800x800 Center webp q100" }}
-            <div class="grid-item">
-                <a href="{{.Permalink}}">
-                    <img src="{{ $cover.Permalink }}" alt="{{.Title}}">
-                </a>
-            </div>
+                {{- if ne $cover.MediaType.SubType "svg" -}}
+                    {{- $cover = $cover.Fit "800x800 Center webp q100" -}}
+                {{- end -}}
+                <div class="grid-item">
+                    <a href="{{.Permalink}}">
+                        <img src="{{ $cover.Permalink }}" alt="{{.Title}}">
+                    </a>
+                </div>
             {{end}}
         {{ end }}
     </main>

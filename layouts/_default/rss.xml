@@ -26,7 +26,9 @@
                 {{ `<![CDATA[ ` | safeHTML }}
                 {{ $cover := (.Resources.Get .Params.Cover)}}
                 {{- if $cover -}}
-                  {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
+                   {{- if ne $cover.MediaType.SubType "svg" -}}
+                        {{- $cover = $cover.Fit "1520x600 Center webp q100" -}}
+                    {{- end -}}
                   {{- `<p> <img hspace="5" src="` | safeHTML -}}
                   {{ $cover.Permalink }}
                   {{ `" />` | safeHTML }} </p>

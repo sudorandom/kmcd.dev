@@ -1,0 +1,23 @@
+<svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Wordseq</title>
+  <defs>
+    <linearGradient id="wordseqGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366F1; stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A855F7; stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899; stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <text
+    x="50%"
+    y="50%"
+    dy=".35em"
+    font-family="Bungee, Arial, sans-serif"
+    font-size="48"
+    font-weight="bold"
+    fill="url(#wordseqGradient)"
+    text-anchor="middle"
+  >
+    wordseq
+  </text>
+</svg>

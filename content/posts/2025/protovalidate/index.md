@@ -25,13 +25,81 @@ Input validation is a consistent problem in the web services industry. Usually t
 - On the frontend, many of the constraints and rules from the backend are often replicated. This is usually done for UX (User eXperience) reasons. You don't want to wait until you submit a large form with many inputs before realizing you messed up. It's often way better to highlight issues before users try to submit. Often, these constraints are communicated by hand-written documentation that is often not kept up-to-date or not at all, forcing frontend developers to duplicate backend validation logic.
 
 {{< diagram >}}
-{{< image src="diagram.svg" width="800px" class="center" >}}
+{{< markdown >}}
+```d2
+direction: right
+style: {
+    fill: transparent
+}
+
+input: User Input
+input.shape: person
+frontend-validation: {
+    label: validation
+    frontend: Frontend
+}
+backend-validation: {
+    label: validation
+    backend: Backend
+}
+attacker: Attacker
+attacker.shape: person
+database: Database
+
+input -> frontend-validation
+frontend-validation.frontend -> backend-validation
+attacker -> backend-validation
+backend-validation.backend -> database
+```
+{{< /markdown >}}
 {{< /diagram >}}
 
 This is where [protovalidate](https://github.com/bufbuild/protovalidate) comes in. Protovalidate allows you to specify constraints beside your protobuf-defined API and type definitions. I [talked before about API contracts](https://kmcd.dev/posts/api-contracts/), but protovalidate goes a step above what protobuf offers by default. In addition to the cross-language type safety that protobuf offers, protovalidate allows you to define additional constraints for each field. So now the answer to many input validation questions can be answered by directly looking at this file or by using a protovalidate library written for several languages. Now both the frontend and backend logic can be powered by the same declarative schema.
 
 {{< diagram >}}
-{{< image src="diagram2.svg" width="800px" class="center" >}}
+{{< markdown >}}
+```d2
+direction: right
+style: {
+    fill: transparent
+}
+
+input: User Input
+input.shape: person
+frontend-validation: {
+    label: validation
+    frontend: Frontend
+}
+backend-validation: {
+    label: validation
+    backend: Backend
+}
+attacker: Attacker
+attacker.shape: person
+database: Database
+protovalidate {
+    near: top-center
+    style {
+        fill: "#FFA500"
+        font-size: 28
+        font-color: "#000000"
+    }
+}
+protovalidate.style.animated: true
+
+input -> frontend-validation
+frontend-validation.frontend -> backend-validation
+attacker -> backend-validation
+backend-validation.backend -> database
+
+protovalidate -> frontend-validation {
+    style.animated: true
+}
+protovalidate -> backend-validation {
+    style.animated: true
+}
+```
+{{< /markdown >}}
 {{< /diagram >}}
 
 ## Why protovalidate?

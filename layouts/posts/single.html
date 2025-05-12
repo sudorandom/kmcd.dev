@@ -2,9 +2,19 @@
   <main class="post">
     <div class="main-wrapper">
     <div class="post-header">
-      <div class="cover-outer cover-{{ or .Params.CoverPosition "bottom" }}"{{with (.Resources.Get .Params.Cover) -}}
-        {{- $cover := .Fill "960x420 Center webp q100" -}}
-        style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px;background-position: center;"
+      <div class="cover-outer cover-{{ or .Params.CoverPosition "bottom" }}"
+      {{- with (.Resources.Get .Params.Cover) -}}
+        {{- $cover := . }}
+        {{- $additionalStyles := "" }}
+        {{- $minHeight := "300" }}
+        {{- if eq .MediaType.SubType "svg" -}}
+          {{- $additionalStyles = "background-repeat: no-repeat; background-size: contain;" -}}
+        {{- else -}}
+          {{- $cover = $cover.Fill "960x420 Center webp q100" -}}
+          {{- $minHeight = $cover.Height -}}
+          {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
+        {{- end -}}
+        style="background-image: url('{{ $cover.RelPermalink }}'); min-height: {{ $minHeight }}px; background-position: center; {{ $additionalStyles | safeCSS }}"
       {{- end }}>
       <div class="cover-inner">
         <h1 class="post-title">

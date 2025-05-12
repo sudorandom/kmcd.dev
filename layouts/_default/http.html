@@ -13,13 +13,15 @@
         <div class="main-box">
             {{ $cover := (.Resources.Get .Params.Cover)}}
             {{- if $cover -}}
-            {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
-            <figure>
-                <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
-                {{ with .Params.CoverCaption }}
-                    <figcaption class="center">{{ . | markdownify }}</figcaption>
-                {{ end }}
-            </figure>
+                {{- if ne .MediaType.SubType "svg" -}}
+                    {{ $cover = $cover.Fill "1520x600 Center webp q100" }}
+                {{- end -}}
+                <figure>
+                    <img src="{{ $cover.RelPermalink }}" alt="{{ $cover.Title }}" />
+                    {{ with .Params.CoverCaption }}
+                        <figcaption class="center">{{ . | markdownify }}</figcaption>
+                    {{ end }}
+                </figure>
             {{ end }}
 
             <article>
