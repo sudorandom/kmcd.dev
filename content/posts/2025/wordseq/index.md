@@ -2,7 +2,7 @@
 categories: ["article"]
 tags: ["gamedev", "react", "wordseq", "typescript", "go", "games"]
 date: "2025-05-15T10:00:00Z"
-description: "wordseq; yet another daily word puzzle game"
+description: "Taking a peek under the covers of making a daily puzzle games"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
 featured: ""

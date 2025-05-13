@@ -26,7 +26,7 @@
     {{ partial "pagination-single.html" . }}
     {{- with $toot -}}
       {{ with .replies}}
-        <h2>Replies<small>({{ (math.Sub (partial "mastodon/comment.count.html" $toot ) 1) }})</h2>
+        <h2>Replies<small>(0)</h2>
         {{- range . }}
           <div class="main-wrapper">
             <div class="toot-box">

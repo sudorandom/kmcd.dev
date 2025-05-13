@@ -47,11 +47,11 @@
 
 
 {{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
-{{ with resources.Get "scss/main.scss" | resources.ToCSS $options | resources.Fingerprint }}
+{{ with resources.Get "scss/main.scss" | css.Sass $options | resources.Fingerprint }}
     <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
 {{ end }}
 
-{{ with resources.Get "scss/style.scss" | resources.ToCSS $options | resources.Fingerprint }}
+{{ with resources.Get "scss/style.scss" | css.Sass $options | resources.Fingerprint }}
     <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
 {{ end }}
 

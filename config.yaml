@@ -6,16 +6,16 @@ IsMultiLingual: false
 defaultContentLanguage: en
 enableGitInfo: true
 
-paginate: 50
+pagination:
+  pagerSize: 50
 
 staticDir: 
  - "static"
  - "data"
 
-author:
-  name: "Kevin McDonald"
-
 params:
+  author:
+    name: "Kevin McDonald"
   Subtitle: "Depth-first search into networking, programming, random tech topics."
   Description: "Depth-first search into networking, programming, web development and random tech topics by a bored software engineer."
   homeSubtitle: "Depth-first search into networking, programming, random tech topics."

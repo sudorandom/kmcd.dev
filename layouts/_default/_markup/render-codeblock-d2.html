@@ -6,10 +6,10 @@
 {{- $apiEndpoint := "http://localhost:7001/render" }}
 
 {{- $opts := dict "method" "post" "body" $inner }}
-{{- with resources.GetRemote $apiEndpoint $opts }}
+{{- with try (resources.GetRemote $apiEndpoint $opts) }}
   {{- with .Err }}
     {{- errorf "The %q code block render hook was unable to get the remote diagram. See %s. %s" $renderHookName $position . }}
-  {{- else }}
+  {{- else with .Value }}
       <div style="min-width: 400px; width: 100%">
     {{- .Content | safeHTML -}}
       </div>

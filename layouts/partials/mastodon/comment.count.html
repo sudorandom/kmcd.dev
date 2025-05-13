@@ -1,5 +1,0 @@
-{{- $count := 1 -}}
-{{ range .replies }}
-    {{ $count = (math.Add $count (partial "mastodon/comment.count.html" .)) }}
-{{ end }}
-{{- return $count -}}
