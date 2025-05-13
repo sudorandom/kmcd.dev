@@ -1,5 +1,4 @@
 {{ define "main" }}
-  {{- $toot := (partial "mastodon/load.html" .) -}}
   <main class="post">
     <h1 class="post-title">
       Daily Prompt: {{ dateFormat "2006-01-02" .Date.Local }}
@@ -14,28 +13,11 @@
     <article>
       <div class="prompt-box">
         <h2>{{ .Title }}</h2>
-        {{ with $toot }}
-        <div>
-          <a href="{{ .status.url }}" target="_blank">Discuss on Mastodon</a>
-        </div>
-        {{ end }}
       </div>
       </div>
       </div>
     </article>
     {{ partial "pagination-single.html" . }}
-    {{- with $toot -}}
-      {{ with .replies}}
-        <h2>Replies<small>(0)</h2>
-        {{- range . }}
-          <div class="main-wrapper">
-            <div class="toot-box">
-              {{ partial "mastodon/comment.html" . }}
-            </div>
-          </div>
-        {{- end -}}
-      {{ end }}
-    {{- end -}}
   </main>
 
 {{ end }}
