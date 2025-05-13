@@ -16,6 +16,8 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/protovalidate/
 ---
 
+> Since writing this article, ECMAScript support for protovalidate was created and has had its first release with a new library called [protovalidate-es](https://github.com/bufbuild/protovalidate-es)! Finally, an easy way to share validation rules across backend, frontend and to all kinds of other clients and message-based systems is here.
+
 User input can be absolute garbage. I can't be trusted to type my name correctly half of the time, so it's obvious that we need to validate input to catch the most obvious mistakes. Zip codes don't include letters, number of pets can't be negative and Hitachi Rail Italy Driverless Metro is not a model of car.
 
 Input validation is a consistent problem in the web services industry. Usually there are constraints that are defined at multiple levels:
