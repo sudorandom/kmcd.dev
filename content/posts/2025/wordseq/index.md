@@ -9,7 +9,7 @@ featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "I made a game"
+title: "I made a daily word game"
 slug: "wordseq"
 type: "posts"
 devtoSkip: true
@@ -19,17 +19,17 @@ draft: true
 
 Ever stare at a word so long it stops looking like a word? Like naming a variable ‘data’ for the 8th time and suddenly wondering what ‘data’ even means?
 
-I made a game that dives headfirst into that vibe.
+That effect is called [semantic satiation](https://en.wikipedia.org/wiki/Semantic_satiation). I made a game that dives headfirst into that theme.
 
 In `wordseq`, you swap letters to form words, but the deeper you go, the more the grid feels like a linguistic fever dream. One moment you're proud to find "plop", the next you're doubting if "plop" was ever a real word or just a sound effect from a comic book. You win by dragging yourself back to meaning. Enjoy the victory while you can, because there's a new puzzle tomorrow.
 
-I'm excited to share a look behind the scenes of my new daily word puzzle game, `wordseq`. If you haven't tried it yet, you can [play the latest puzzle here!](https://wordseq.com). `wordseq` is a game where you swap adjacent letters to form new words, aiming to find the longest possible sequence.
+I'm excited to share a look behind the scenes of my new daily word puzzle game, `wordseq`. If you haven't tried it yet, you can [play the latest puzzle here!](https://wordseq.com). `wordseq` is a game where you swap adjacent letters to form new words, aiming to find the longest possible sequence. Here's what it looks like to play the game (by a super unrealistically fast player).
 
 {{< diagram >}}
 {{< image src="gameplay.gif" class="center" alt="wordseq gameplay" >}}
 {{< /diagram >}}
 
-One of the most challenging and rewarding aspects of building `wordseq` was developing the system that generates the daily puzzles. My goal was to create levels that are not just solvable, but also consistently engaging, fair, and offer that satisfying "aha!" moment.
+One of the most challenging and rewarding aspects of building `wordseq` was developing the system that generates the daily puzzles. My goal was to create levels that are not just solvable, but also consistently engaging, fair, and offer that satisfying "aha!" moment where the answer you've been looking for hits you in the face. Conversely, I want to avoid the "Huh, is this actually the solution?" moments.
 
 In this post, we'll explore the intricate process of generating these daily puzzles. We'll cover everything from initial grid creation and word validation to ensuring puzzles are solvable and use interesting vocabulary, leveraging techniques like concurrency in Go and smart dictionary management.
 
@@ -85,6 +85,155 @@ Crafting a "good" `wordseq` puzzle involves several steps and considerations. We
 * **It starts with Randomness:** The process starts by generating a grid (e.g., 5x5) filled with random letters. However, just picking letters completely at random can lead to grids full of very rare letters (like Q, Z, X, J) which makes forming words difficult or leads to trivial "write-offs" where those letters are ignored. To combat this, the generator uses **approximate letter frequency** (based on English language letter usage) to populate the grid. This creates a more balanced and natural distribution of letters, similar to what you might find in a Scrabble bag.
 
 * **Initial Validation:** Before any moves are possible, the generator verifies that the starting grid contains no valid words matching the puzzle's target length. This ensures the puzzle begins only with the player's first action and avoids potential confusion where the initial state might seem like part of the solution, or where swapping back to the original layout could be misinterpreted as finding a word.
+
+This check involves looking for rows in each row and column, like this:
+
+{{< d2 width="500px" >}}
+style: {
+  fill: transparent
+}
+
+classes: {
+  SELECTED: {style.fill: "#2b9464"}
+}
+
+Grid0: {
+  label: ""
+  grid-gap: 1 # Minimal gap between cells
+  grid-rows: 4
+
+  # Row 0
+  "0,0": r
+  "0,1": i
+  "0,2": r
+  "0,3": n
+  # Row 1
+  "1,0": y
+  "1,1": r
+  "1,2": s
+  "1,3": m
+  # Row 2
+  "2,0": t
+  "2,1": r
+  "2,2": o
+  "2,3": i
+  # Row 3
+  "3,0": e
+  "3,1": v
+  "3,2": d
+  "3,3": o
+}
+
+Grid0."0,0" -> Grid0."0,3": "" {
+  style: {
+    stroke: "#5555FF"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid0."1,0" -> Grid0."1,3": "" {
+  style: {
+    stroke: "#5555FF"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid0."2,0" -> Grid0."2,3": "" {
+  style: {
+    stroke: "#5555FF"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid0."3,0" -> Grid0."3,3": "" {
+  style: {
+    stroke: "#5555FF"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid1: {
+  label: ""
+  grid-gap: 1 # Minimal gap between cells
+  grid-rows: 4
+
+  # Row 0
+  "0,0": r
+  "0,1": i
+  "0,2": r
+  "0,3": n
+  # Row 1
+  "1,0": y
+  "1,1": r
+  "1,2": s
+  "1,3": m
+  # Row 2
+  "2,0": t
+  "2,1": r
+  "2,2": o
+  "2,3": i
+  # Row 3
+  "3,0": e
+  "3,1": v
+  "3,2": d
+  "3,3": o
+}
+
+Grid1."0,0" -> Grid1."3,0": "" {
+  style: {
+    stroke: "#FF5555"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid1."0,1" -> Grid1."3,1": "" {
+  style: {
+    stroke: "#FF5555"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid1."0,2" -> Grid1."3,2": "" {
+  style: {
+    stroke: "#FF5555"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+Grid1."0,3" -> Grid1."3,3": "" {
+  style: {
+    stroke: "#FF5555"
+    stroke-width: 2
+  }
+  target-arrowhead: {
+    shape: arrow
+  }
+}
+
+{{< /d2 >}}
+
+It is important to note that words spent going upwards and to the left aren't seen as words. The game would be far too complex if that were the case.
 
 ### Step 2: Building the Exploration Tree - Finding All Possibilities
 
@@ -160,7 +309,6 @@ S0 -> S0_M3
 {{< /d2 >}}
 
 * **Validating Swaps (The Big Dictionary):** For each potential swap, it temporarily performs the swap and then checks if the new grid configuration forms at least one new word that spans the length of the grid (horizontally or vertically). This check uses a **large, comprehensive dictionary**. The reason for this large dictionary is critical for player experience: if a player sees a word on the grid and forms it, the game *must* recognize it, even if it's a bit uncommon. It's incredibly frustrating for a game to not accept a word you know is valid!
-
 
 {{< d2 width="700px" >}}
 direction: right
@@ -396,7 +544,7 @@ This is where the two-dictionary approach comes into play:
 
 ### Step 5: Concurrency
 
-Generating a single grid, building its exploration tree, and then validating it against all these criteria can take time. To find enough high-quality puzzles for daily release, I needed to process *many* initial random grids. Doing this sequentially was fairly slow, so I ended up splitting up the work by using go routines. This greatly improved the throughput. It's honestly so nice to have a highly parallelize-able, CPU-bound problem to work with. It's a nice break from the world of the web where I/O is typically the bottleneck.
+Generating a single grid, building its exploration tree, and then validating it against all these criteria can take time. To find enough high-quality puzzles for daily release, I needed to process *many* initial random grids. Doing this sequentially was fairly slow, so I ended up splitting up the work by using go routines. This greatly improved the throughput. It's honestly so nice to have a highly parallelizable, CPU-bound problem to work with. It's a nice break from the world of the web where I/O is typically the bottleneck.
 
 ### Step 6: Outputting the Puzzle Data
 
@@ -411,8 +559,6 @@ Once a grid and its exploration tree pass all the filters, it's deemed a "good" 
     ["h","l","l","a"]
   ],
   "wordLength": 4,
-  "requiredMinTurns": 1,
-  "requiredMaxTurns": 1,
   "maxDepthReached": 1,
   "explorationTree": [
     {
@@ -452,12 +598,14 @@ There's always more refinement that can be done with the dictionary. The small d
 
 On the frontend side, I feel like I'm getting close to a decent interface. I want to build an "infinite mode" where you can play random levels (identified by an ID so you can link them and go back to those puzzles later). I actually think this wouldn't be too crazy with the way the components are laid out now.
 
+I'm also contemplating how hard it might be to implement a Danish version as I am learning Danish.
+
 ## Conclusion
 
 Building the level generator for `wordseq` has been a fascinating journey into algorithms, data structures, and the subtle art of puzzle design. It's a complex system, but seeing it produce fun and challenging puzzles each day is incredibly rewarding.
 
 I hope this peek behind the curtain was interesting!
-* **Play wordseq daily:** [wordseq.com](https://wordseq.com)
-* I'd love to hear your **feedback** on the puzzles or any thoughts you have on level generation. Drop a comment below or find me on [Blue Sky](https://bsky.app/profile/kmcd.dev) or [Mastodon](https://infosec.exchange/@sudorandom)!
+* **Play wordseq daily:** [wordseq.com](https://wordseq.com "wordseq")
+* I'd love to hear your **feedback** on the puzzles or any thoughts you have on level generation. Drop a comment below or find me on [Blue Sky](https://bsky.app/profile/kmcd.dev "kmcd.dev on bluesky") or [Mastodon](https://infosec.exchange/@sudorandom "@sudorandom on infosec.exchange, mastodon")!
 
 Thanks for reading!

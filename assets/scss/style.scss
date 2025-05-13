@@ -519,12 +519,17 @@ figure img {
 }
 
 .diagram {
-    // background-color: #2e3440;
+    background-color: #2e3440;
     border-radius: 8px;
     display: inline-block;
 }
 
 .d2-diagram-wrapper {
+    [data-theme=light] & {
+        margin: 4px;
+        background-color: #2e3440;
+        border-radius: 8px;
+    }
     text-align: center;
 }
 
