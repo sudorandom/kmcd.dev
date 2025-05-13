@@ -519,7 +519,15 @@ figure img {
 }
 
 .diagram {
-    background-color: #2e3440;
+    // background-color: #2e3440;
     border-radius: 8px;
+    display: inline-block;
+}
+
+.d2-diagram-wrapper {
+    text-align: center;
+}
+
+.d2-diagram {
     display: inline-block;
 }

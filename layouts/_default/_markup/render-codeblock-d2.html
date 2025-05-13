@@ -10,7 +10,7 @@
   {{- with .Err }}
     {{- errorf "The %q code block render hook was unable to get the remote diagram. See %s. %s" $renderHookName $position . }}
   {{- else }}
-      <div style="width: 600px">
+      <div style="min-width: 400px; width: 100%">
     {{- .Content | safeHTML -}}
       </div>
   {{- end }}

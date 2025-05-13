@@ -1,7 +1,7 @@
-<div class="diagram-wrapper">
-    <span class="diagram"
+<div class="d2-diagram-wrapper">
+    <span class="d2-diagram"
         style="{{- with .Get "width" }} width:{{ . }};{{ end -}}
               {{- with .Get "height" }} height:{{ . }};{{ end -}}">
-        {{- .Inner | safeHTML }}
+        {{- (printf "```d2\n%s\n```" .Inner) | markdownify -}}
     </span>
 </div>
