@@ -2,7 +2,7 @@
 categories: ["article"]
 tags: ["gamedev", "react", "wordseq", "typescript", "go", "games"]
 date: "2025-05-15T10:00:00Z"
-description: "Taking a peek under the covers of making a daily puzzle games"
+description: "Taking a peek under the covers of making a daily puzzle game"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
 featured: ""
@@ -17,9 +17,9 @@ canonical_url: https://kmcd.dev/posts/wordseq/
 draft: true
 ---
 
-Ever stare at a word so long it stops looking like a word? Like naming a variable ‘data’ for the 8th time and suddenly wondering what ‘data’ even means?
+Ever stare at a word so long it stops looking like a word? Like naming a variable `data` for the 8th time and suddenly wondering what `data` even means?
 
-That effect is called [semantic satiation](https://en.wikipedia.org/wiki/Semantic_satiation). I made a game that dives headfirst into that theme.
+That effect is called [semantic satiation](https://en.wikipedia.org/wiki/Semantic_satiation). I made a game that dives headfirst into the theme.
 
 In `wordseq`, you swap letters to form words, but the deeper you go, the more the grid feels like a linguistic fever dream. One moment you're proud to find "plop", the next you're doubting if "plop" was ever a real word or just a sound effect from a comic book. You win by dragging yourself back to meaning. Enjoy the victory while you can, because there's a new puzzle tomorrow.
 
@@ -45,6 +45,8 @@ Before we dive into generation, here's a quick overview of how to play `wordseq`
 * **The Goal:** The objective is to find the longest possible sequence of valid words by making these swaps. This is what we call the "optimal path."
 * **Difficulty Levels:** `wordseq` offers 'normal', 'hard', and 'impossible' modes, which influence parameters like grid size, word length, and the complexity of the solution paths the generator aims for.
 
+To better understand how these swaps lead to word formation, let's look at the visual feedback provided to the player during gameplay.
+
 ### Movement
 Here is what the movement looks like.
 
@@ -53,7 +55,7 @@ Bad move, results in no new words. Don't you like the little wiggle? It's the sm
 {{< image src="bad-move.gif" width="400px" class="center" alt="letters wiggling and turning red" >}}
 {{< /diagram >}}
 
-Non-optimal move, a move that sets you up to fail. You may think that you made a clever move and discovered a word just slightly askew, but there are many times where there's another word that you need find first to best set up the longest sequence. You will be greeted by a not-as-scary orange color. Usually you will want to undo your move and look for another:
+Non-optimal move, a move that sets you up to fail. You may think that you made a clever move and discovered a word just slightly askew, but there are many times where there's another word that you need to find first to best set up the longest sequence. You will be greeted by a not-as-scary orange color. Usually you will want to undo your move and look for another:
 {{< diagram >}}
 {{< image src="non-optimal-move.gif" width="400px" class="center" alt="letters swapping and a newly completed word turning orange" >}}
 {{< /diagram >}}
@@ -544,11 +546,11 @@ This is where the two-dictionary approach comes into play:
 
 ### Step 5: Concurrency
 
-Generating a single grid, building its exploration tree, and then validating it against all these criteria can take time. To find enough high-quality puzzles for daily release, I needed to process *many* initial random grids. Doing this sequentially was fairly slow, so I ended up splitting up the work by using go routines. This greatly improved the throughput. It's honestly so nice to have a highly parallelizable, CPU-bound problem to work with. It's a nice break from the world of the web where I/O is typically the bottleneck.
+Generating a single grid, building its exploration tree, and then validating it against all these criteria can take time. To find enough high-quality puzzles for daily release, I needed to process *many* initial random grids. Doing this sequentially was quite slow, so I ended up splitting up the work by using go routines. This greatly improved the throughput. It's honestly so nice to have a highly parallelizable, CPU-bound problem to work with. It's a nice break from the world of the web where I/O is typically the bottleneck.
 
 ### Step 6: Outputting the Puzzle Data
 
-Once a grid and its exploration tree pass all the filters, it's deemed a "good" puzzle. The generator then outputs JSON with the details about a puzzle. Here's a trivial example with a single possible move for illustration purposes:
+Once a grid and its exploration tree pass all the filters, it's deemed a "good" puzzle. The generator then outputs JSON with the details about a puzzle. To illustrate this, consider a simplified example with a single possible move for illustration purposes:
 
 ```json
 {
@@ -586,7 +588,7 @@ This JSON file is then what the React frontend loads each day to power the game 
 * **Dictionaries are Key:** The quality and scope of your dictionaries profoundly impact both gameplay fairness and puzzle quality. The two-dictionary system was vital.
 * **Iterative Refinement:** Level generation isn't something you get right on the first try. It requires constant tweaking of parameters, testing, and playing the generated levels yourself.
 * **Concurrency is Your Friend:** For computationally heavy tasks like this, leveraging concurrency (like Go offers) is almost essential for practical generation times.
-* **Define "Good" as early as you can:** Having clear criteria for what constitutes a good puzzle (solvable, right length, good words) helps guide the entire generation logic. I was lucky to have my wife, who's a daily word game solver as a test user. Her feedback was (and is) invaluable. Making a game is an iterative process. A lot of times you legitimately don't know if the game you're making is fun. Who knows, maybe I made a game only my wife loves. And honestly? If she’s the only one who loves it, that still feels like a win. (But I do hope you’ll enjoy it too.)
+* **Define "Good" as early as you can:** Having clear criteria for what constitutes a good puzzle (solvable, right length, good words) helps guide the entire generation logic. I was lucky to have my wife, who's a daily word game solver as a test user. Her feedback was (and is) invaluable. Making a game is an iterative process. A lot of times you legitimately don't know if the game you're making is fun. Who knows, maybe I made a game only my wife loves. And honestly? If she’s the only one who loves it, that still feels like a win. (But I do hope you'll enjoy it too.)
 * **Tools to help testing are worth it:** I didn't mention this yet, but I have some tooling now to make testing a lot easier. Not only do I get clear display of the solutions (cheap mode!) but I can push a button and have the game played for me. This has helped a lot when I needed to get to certain game states quickly.
 * **Data structures and Game Design:** I really love how this game relies heavily on computer science fundamentals and data structures. At the end of the day this is just a non-obvious tree traversal with a UI on top of it.
 
