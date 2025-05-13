@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -25,7 +24,7 @@ func handleRenderRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, output)
+	w.Write([]byte(output))
 }
 
 func renderText(content string) (string, error) {
@@ -47,7 +46,12 @@ func renderText(content string) (string, error) {
 
 func main() {
 	const addr = "127.0.0.1:7001"
+	http.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ok"))
+	})
 	http.HandleFunc("POST /render", handleRenderRequest)
 	log.Printf("Starting server on: http://%s", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		log.Fatalf("http: %s", err)
+	}
 }

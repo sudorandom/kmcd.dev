@@ -22,6 +22,8 @@ jobs:
         with:
           hugo-version: '0.147.3'
           extended: true
+      - name: Install D2 CLI
+        run: curl -fsSL https://d2lang.com/install.sh | sh -s --
       - name: Build
         run: make build
       - name: deploy
