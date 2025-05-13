@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["gamedev", "react", "wordseq", "typescript", "go", "games"]
-date: "2025-05-15T10:00:00Z"
+date: "2025-05-14T10:00:00Z"
 description: "Taking a peek under the covers of making a daily puzzle game"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
@@ -14,7 +14,6 @@ slug: "wordseq"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/wordseq/
-draft: true
 ---
 
 Ever stare at a word so long it stops looking like a word? Like naming a variable `data` for the 8th time and suddenly wondering what `data` even means?
