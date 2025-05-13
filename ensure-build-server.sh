@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 go install ./cmd/kmcd-render
 killall kmcd-render | true
