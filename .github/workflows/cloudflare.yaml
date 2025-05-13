@@ -25,11 +25,18 @@ jobs:
       - name: Install D2 CLI
         run: curl -fsSL https://d2lang.com/install.sh | sh -s --
       - name: Build
-        run: |
-          make build
+        run: make build
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=kmcd-dev ./live
+      - name: Build
+        run: make build-future
+      - name: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy --project-name=kmcd-dev-future ./future
