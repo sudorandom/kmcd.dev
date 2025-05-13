@@ -27,12 +27,9 @@ jobs:
       - name: Build
         run: |
           make build
-          git status
-          ls -la
-          ls -la public
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=kmcd-dev ./public
+          command: pages deploy --project-name=kmcd-dev ./live
