@@ -25,7 +25,11 @@ jobs:
       - name: Install D2 CLI
         run: curl -fsSL https://d2lang.com/install.sh | sh -s --
       - name: Build
-        run: make build
+        run: |
+          make build
+          git status
+          ls -la
+          ls -la public
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
