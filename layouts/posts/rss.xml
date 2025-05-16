@@ -37,8 +37,12 @@
                 ]]>
             </description>
             {{ $content := .Content -}}
-            {{- $content = replaceRE "<svg.*</svg>" "" $content -}}
-            {{- $content = replaceRE `-moz-tab-size:\d;-o-tab-size:\d;tab-size:\d;?` "" $content -}}
+            {{- /* Remove SVGs as they can be verbose and sometimes problematic in RSS */ -}}
+            {{- $content = replaceRE `<svg.*?</svg>` "" $content -}} {{/* Added non-greedy ? and ensure global replace if SVGs can span lines and this is intended */}}
+            {{- /* Remove specific CSS tab-size properties */ -}}
+            {{- $content = replaceRE "-moz-tab-size:\\d;-o-tab-size:\\d;tab-size:\\d;?" "" $content -}}
+            {{- /* Replace ]]> within content to prevent premature CDATA termination */ -}}
+            {{- $content = replace $content "]]>" "]]&gt;" -}}
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
         </item>
         {{ end }}

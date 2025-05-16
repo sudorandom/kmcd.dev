@@ -3,13 +3,13 @@
   xmlns:content="http://purl.org/rss/1.0/modules/content/"
   xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>{{ if eq  .Title  .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{.}} on {{ end }}{{ .Site.Title }}{{ end }}</title>
+        <title>kmcd.dev</title>
         <link>{{ .Permalink }}</link>
-        <description>Recent content {{ if ne  .Title  .Site.Title }}{{ with .Title }}in {{.}} {{ end }}{{ end }}on {{ .Site.Title }}</description>
+        <description>Recent content on kmcd.dev</description>
         <generator>Hugo -- gohugo.io</generator>{{ with .Site.LanguageCode }}
-        <language>{{.}}</language>{{end}}{{ with .Site.Params.Author.email }}
-        <managingEditor>{{.}}{{ with $.Site.Params.Author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Params.Author.email }}
-        <webMaster>{{.}}{{ with $.Site.Params.Author.name }} ({{.}}){{end}}</webMaster>{{end}}{{ with .Site.Copyright }}
+        <language>{{.}}</language>{{end}}{{ with .Site.Author.email }}
+        <managingEditor>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</managingEditor>{{end}}{{ with .Site.Author.email }}
+        <webMaster>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</webMaster>{{end}}{{ with .Site.Copyright }}
         <copyright>{{.}}</copyright>{{end}}{{ if not .Date.IsZero }}
         <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
         {{ with .OutputFormats.Get "RSS" -}}
@@ -20,7 +20,7 @@
             <title>{{ .Title }}</title>
             <link>{{ if .Params.Url }}{{.Params.Url}}{{else}}{{.Permalink}}{{end}}</link>
             <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-            {{ with .Site.Params.Author.email }}<author>{{.}}{{ with $.Site.Params.Author.name }} ({{.}}){{end}}</author>{{end}}
+            {{ with .Site.Author.email }}<author>{{.}}{{ with $.Site.Author.name }} ({{.}}){{end}}</author>{{end}}
             <guid>{{ .Permalink }}</guid>
             <description>
                 {{ `<![CDATA[ ` | safeHTML }}
@@ -37,8 +37,12 @@
                 ]]>
             </description>
             {{ $content := .Content -}}
-            {{- $content = replaceRE "<svg.*</svg>" "" $content -}}
-            {{- $content = replaceRE `-moz-tab-size:\d;-o-tab-size:\d;tab-size:\d;?` "" $content -}}
+            {{- /* Remove SVGs as they can be verbose and sometimes problematic in RSS */ -}}
+            {{- $content = replaceRE `<svg.*?</svg>` "" $content -}} {{/* Added non-greedy ? and ensure global replace if SVGs can span lines and this is intended */}}
+            {{- /* Remove specific CSS tab-size properties */ -}}
+            {{- $content = replaceRE "-moz-tab-size:\\d;-o-tab-size:\\d;tab-size:\\d;?" "" $content -}}
+            {{- /* Replace ]]> within content to prevent premature CDATA termination */ -}}
+            {{- $content = replace $content "]]>" "]]&gt;" -}}
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
         </item>
         {{ end }}
