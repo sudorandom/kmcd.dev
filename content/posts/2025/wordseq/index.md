@@ -89,7 +89,7 @@ Crafting a "good" `wordseq` puzzle involves several steps and considerations. We
 
 This check involves looking for rows in each row and column, like this:
 
-{{< d2 style="max-width:500px" >}}
+{{< d2 style="max-width:800px" >}}
 style: {
   fill: transparent
 }

@@ -1,8 +1,9 @@
 <div class="d2-diagram-wrapper">
-    <span class="d2-diagram"
-        style="{{- with .Get "width" }} width:{{ . }};{{ end -}}
+    <div class="d2-diagram"
+        style="min-width: 500px; max-width: 800px; margin-left: auto; margin-right: auto;
+              {{- with .Get "width" }} width:{{ . }};{{- else -}}100%{{- end -}}
               {{- with .Get "height" }} height:{{ . }};{{ end -}}
               {{- with .Get "style" }}{{ . }}{{ end -}}">
         {{- (printf "```d2\n%s\n```" .Inner) | markdownify -}}
-    </span>
+    </div>
 </div>
