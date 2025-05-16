@@ -89,7 +89,7 @@ Crafting a "good" `wordseq` puzzle involves several steps and considerations. We
 
 This check involves looking for rows in each row and column, like this:
 
-{{< d2 style="max-width:800px" >}}
+{{< d2 >}}
 style: {
   fill: transparent
 }
@@ -311,7 +311,7 @@ S0 -> S0_M3
 
 * **Validating Swaps (The Big Dictionary):** For each potential swap, it temporarily performs the swap and then checks if the new grid configuration forms at least one new word that spans the length of the grid (horizontally or vertically). This check uses a **large, comprehensive dictionary**. The reason for this large dictionary is critical for player experience: if a player sees a word on the grid and forms it, the game *must* recognize it, even if it's a bit uncommon. It's incredibly frustrating for a game to not accept a word you know is valid!
 
-{{< d2 style="max-width:700px" >}}
+{{< d2 >}}
 direction: right
 style: {
     fill: transparent
