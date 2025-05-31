@@ -2,14 +2,14 @@
 categories: ["article"]
 tags: ["http", "protocols", "api", "webdev", "go"]
 date: "2025-06-04T10:00:00Z"
-description: "Why we need another HTTP Verb?"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "Using the QUERY HTTP Method in Go"
+title: "HTTP QUERY and Go"
+description: "We need another HTTP verb. I'll explain why."
 slug: "http-query"
 type: "posts"
 devtoSkip: true
