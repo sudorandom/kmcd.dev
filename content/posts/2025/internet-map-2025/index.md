@@ -17,7 +17,7 @@ type: "posts"
 canonical_url: https://kmcd.dev/posts/internet-map-2025
 ---
 
-For the past couple of years, I've been creating visualizations of the internet's physical infrastructure. This project pieces together data from a few sources, but to me it's compelling to see this data together. These maps show the undersea fiber optic cables that form the backbone of global connectivity and the Internet Exchange Points (IXPs) where networks meet. This year, I'm thrilled to announce a major evolution of the project. Instead of static images and pre-rendered videos, the Internet Map is now a fully interactive, animated map that you can see online.
+For the past couple of years, I've been creating visualizations of the internet's physical infrastructure. This project pieces together data from a few sources, and for me, seeing this data visualized together is compelling. These maps show the undersea fiber optic cables that form the backbone of global connectivity and the Internet Exchange Points (IXPs) where networks meet. This year, I'm thrilled to announce a major evolution of the project. Instead of static images and pre-rendered videos, the Internet Map is now a fully interactive, animated map that you can see online.
 
 You can explore the new map live at [**map.kmcd.dev**](https://map.kmcd.dev).
 
@@ -56,18 +56,18 @@ This creates a powerful win-win scenario:
 
 This economic incentive is the engine that drives the growth you see on the map. ISPs flock to the IXPs where the big content providers are, which in turn attracts more content providers, creating a feedback loop of ever-increasing capacity and value. This is why a handful of cities have become global hubs with staggering traffic volumes, while others remain smaller, regional nodes.
 
-{{< d2 width="600px" >}}
+{{< d2 >}}
 direction: down
 
 content_providers: "Content & Services" {
   netflix: "Netflix" {
-    icon: "https://www.vectorlogo.zone/logos/netflix/netflix-icon.svg"
+    icon: "images/icons/netflix-icon.svg"
   }
   google: "Google" {
-    icon: "https://www.vectorlogo.zone/logos/google/google-icon.svg"
+    icon: "images/icons/google-icon.svg"
   }
   aws: "AWS Cloud" {
-    icon: "https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-icon.svg"
+    icon: "images/icons/amazon_aws-icon.svg"
   }
 }
 
@@ -133,10 +133,11 @@ The growth in a city like São Paulo is remarkable and shows the increasing inve
 
 ### How It's Made: The New Tech Stack
 
-The transition to an interactive map required a complete overhaul of the technology stack. The previous versions relied on generating static SVG images and using [timecut](https://www.npmjs.com/package/timecut) to render an MP4 video of the animation. While effective, it wasn't a true user-facing interactive experience.
+The transition to an interactive map required a complete overhaul of the technology stack. The previous versions, which relied on generating static SVG images, faced several challenges. It was difficult to dynamically size the lines representing cables and find the right balance of detail for country borders; too much detail slowed the map down, while too little looked simplistic when zoomed in.
 
-The Go scripts that gather and process the data were largely unchanged. I only had to add some fields to the resulting JSON output to expose slightly more data. These JSON files contain per-year statistics, city data, and cable geometries. A new JavaScript-based front end built with the **[Leaflet.js](https://leafletjs.com/)** library loads this data asynchronously. This architecture allows the browser to dynamically render cables and cities, handle user interaction, and play the year-by-year animation smoothly, providing a much richer and more informative experience. Before switching to Leaflet, I struggled with several challenges. It was difficult to dynamically size lines and find the right balance for country borders; too much detail would slow the map down, while too little would look simplistic when zoomed in. So, instead, the solution is a tile-based methodology where tiles at different levels of detail can be fetched dynamically as users zoom in. It's the same concept used by Google Maps. I was faced with a choice: implement this highly complex tiling logic myself or use a well-supported library. Since the project's focus was on data visualization rather than building a tile engine from scratch, I opted for the more direct path.
+The solution was to adopt a tile-based methodology, where map tiles at different levels of detail are fetched dynamically as a user zooms—the same concept used by Google Maps. I was faced with a choice: implement this highly complex tiling logic myself or use a well-supported library. Since the project's focus was on data visualization, I opted for the more direct path by using [Leaflet](https://leafletjs.com/), a powerful library for creating dynamic and interactive maps.
 
+The back-end Go scripts that gather and process the data from sources like [TeleGeography](https://telegeography.com/) and [PeeringDB](https://www.peeringdb.com/) were largely unchanged, only needing a few new fields in the JSON output to power the new front end.
 
 {{< diagram >}}
 {{< image src="expand.png" alt="Map of the Internet" >}}

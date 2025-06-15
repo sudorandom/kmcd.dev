@@ -5,8 +5,12 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 )
+
+// setts from the assets directory can be referenced
+const d2WorkingDirectory = "assets"
 
 func handleRenderRequest(w http.ResponseWriter, r *http.Request) {
 	requestBody, err := io.ReadAll(r.Body)
@@ -37,6 +41,8 @@ func renderText(content string) (string, error) {
 		"-",
 	)
 	command.Stdin = bytes.NewBuffer([]byte(content))
+	command.Dir = d2WorkingDirectory
+	command.Stderr = os.Stderr
 	output, err := command.Output()
 	if err != nil {
 		return "", err
