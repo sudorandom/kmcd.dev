@@ -29,23 +29,23 @@ The new version lets you take control. You can pan, zoom, and step through time 
 </a>
 {{< /diagram >}}
 
-### What You're Looking At
+## What You're Looking At
 
 The map visualizes two critical components of the internet's physical layer.
 
-#### A Note on What You're Seeing (and Not Seeing)
+### A Note on What You're Seeing (and Not Seeing)
 It's important to note that this map visualizes publicly available data, which doesn't capture the full picture of global connectivity. The city peering information, for instance, is sourced from [PeeringDB](https://www.peeringdb.com/), which tracks publicly advertised connections at IXPs. A vast amount of internet traffic also flows through private peering arrangements and paid transit links that are not publicly documented and therefore do not appear here.
 
 Similarly, the map focuses on the *intercontinental* backbone of submarine cables. It does not show the incredibly dense web of terrestrial fiber optic cables that run under our streets and alongside major roads. While that data would be fascinating, visualizing it would be overwhelming, and acquiring a complete dataset is nearly impossible as network providers rarely share this proprietary information.
 
-#### Submarine Cables
+### Submarine Cables
 The lines snaking across the ocean floors are [submarine communications cables](https://en.wikipedia.org/wiki/Submarine_communications_cable). These bundles of fiber optic strands are the high-speed data arteries that connect continents. Laying and maintaining them is a modern marvel of engineering, involving everything from specialized cable-laying ships to underwater robots for repairs. As you explore the map, you can see how the web of these cables has become denser over time, enabling the global, real-time communication we now take for granted. By the start of 2025, the network has grown to **599** cables, spanning a staggering **1,602,092 kilometers**.
 
 {{< diagram >}}
 {{< image src="alwayshasbeen.png" alt="Map of the Internet" >}}
 {{< /diagram >}}
 
-##### A Physical Target: Vulnerabilities and Sabotage
+#### A Physical Target: Vulnerabilities and Sabotage
 
 While these cables are heavily armored, especially in shallower coastal waters where most damage occurs, their isolation on the seabed makes them vulnerable. For decades, the most common threat has been accidental damage from fishing trawlers and dragged anchors. However, in recent years, a more alarming trend has emerged: intentional sabotage. The increasing frequency of suspicious cable cuts suggests that these vital arteries of communication are becoming targets in geopolitical conflicts, a reality that may have brought many new visitors to this map.
 
@@ -67,7 +67,7 @@ Here are just a few of the many recent incidents:
 
 These examples represent only a fraction of such incidents, which have escalated in frequency and impact in recent years.
 
-#### Internet Exchange Points (IXPs)
+### Internet Exchange Points (IXPs)
 The circles on the map represent cities with [Internet Exchange Points](https://www.cloudflare.com/learning/cdn/glossary/internet-exchange-point-ixp/). If submarine cables are the interstate highways of the internet, then IXPs are the bustling, hyper-connected metropolitan areas where all the traffic is headed.
 
 An IXP is a physical data center, or a set of connected data centers, where many different networks can physically plug into each other to exchange traffic directly. This process is called "peering."
@@ -123,7 +123,7 @@ transit -> consumers {
 }
 {{< /d2 >}}
 
-### The World in 2025: A Snapshot
+## The World in 2025: A Snapshot
 The animation and data now extend to 2025, revealing significant ongoing investment. In this year alone, **31 new cables** were added (or are promised very soon), stretching over **144,320 kilometers**, enough to circle the earth *three and a half times*.
 
 Some of the longest and most impactful new cables of 2025 include:
@@ -134,7 +134,7 @@ Some of the longest and most impactful new cables of 2025 include:
 * **[TPU](https://www.submarinenetworks.com/en/systems/trans-pacific/tpu) (13,470 km):** A Google-owned cable system connecting the U.S. with Taiwan and the Philippines, bolstering trans-Pacific capacity.
 * **[JUNO](https://www.submarinenetworks.com/en/systems/trans-pacific/juno) (11,710 km):** A cable system by Seren Juno Network connecting Japan to the U.S., utilizing advanced technology to offer a high number of fiber pairs and enhance communication resiliency.
 
-### Regional Peering Powerhouses
+## Regional Peering Powerhouses
 
 Looking at the total peering capacity reveals a clear global hierarchy. Europe remains the undisputed leader, with an incredible **1.5 Pbit/s** of capacity. Asia and North America follow with robust networks of their own, while South America shows impressive growth.
 
@@ -158,7 +158,7 @@ This massive regional capacity is concentrated in a few key metropolitan hubs. T
 
 The growth in a city like São Paulo is remarkable and shows the increasing investment in internet infrastructure in South America, directly supported by new cables like Firmina.
 
-### How It's Made: The New Tech Stack
+## How It's Made: The New Tech Stack
 
 The transition to an interactive map required a complete overhaul of the technology stack. The previous versions, which relied on generating static SVG images, faced several challenges. It was difficult to dynamically size the lines representing cables and find the right balance of detail for country borders; too much detail slowed the map down, while too little looked simplistic when zoomed in.
 
@@ -177,7 +177,7 @@ Beyond the core technology, I also wanted to incorporate a few small details to 
 - **Relative City Sizing**: The size of each city circle is relative to its total peering bandwidth, giving an immediate visual sense of where the major hubs of connectivity are concentrated.
 - **Interactive Highlighting**: Hovering over or clicking on any cable or city highlights it and brings it to the forefront. This small detail makes it much easier to focus on and explore individual parts of the network.
 
-### Closing Thoughts
+## Closing Thoughts
 
 This project continues to be a fascinating exploration of the physical reality of our digital world. By making the map interactive, I hope to provide a more powerful tool for anyone curious about the immense and intricate infrastructure that underpins our daily lives. As global data demand soars, the growth of these subsea cables and peering exchanges will only become more critical. Explore the map, watch the internet grow, and see for yourself how the world gets connected.
 

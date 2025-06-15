@@ -1,0 +1,29 @@
+@media print {
+  /* Select your header element.
+     This might be <header>, or a div with a specific ID or class like #site-header or .main-header */
+  header {
+    display: none !important; /* Hides the header */
+  }
+
+  /* You can also hide other elements you don't want in the print version */
+  nav {
+    display: none !important;
+  }
+
+  footer {
+    display: none !important;
+  }
+
+  main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    width: 100% !important; /* Ensure it uses full width */
+    float: none !important; /* Reset any floats */
+  }
+
+  body {
+    background-image: none !important;
+    background-color: #fff !important; /* White background */
+    color: #000 !important; /* Black text for readability */
+  }
+}
