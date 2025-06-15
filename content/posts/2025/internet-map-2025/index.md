@@ -33,12 +33,39 @@ The new version lets you take control. You can pan, zoom, and step through time 
 
 The map visualizes two critical components of the internet's physical layer.
 
+#### A Note on What You're Seeing (and Not Seeing)
+It's important to note that this map visualizes publicly available data, which doesn't capture the full picture of global connectivity. The city peering information, for instance, is sourced from [PeeringDB](https://www.peeringdb.com/), which tracks publicly advertised connections at IXPs. A vast amount of internet traffic also flows through private peering arrangements and paid transit links that are not publicly documented and therefore do not appear here.
+
+Similarly, the map focuses on the *intercontinental* backbone of submarine cables. It does not show the incredibly dense web of terrestrial fiber optic cables that run under our streets and alongside major roads. While that data would be fascinating, visualizing it would be overwhelming, and acquiring a complete dataset is nearly impossible as network providers rarely share this proprietary information.
+
 #### Submarine Cables
 The lines snaking across the ocean floors are [submarine communications cables](https://en.wikipedia.org/wiki/Submarine_communications_cable). These bundles of fiber optic strands are the high-speed data arteries that connect continents. Laying and maintaining them is a modern marvel of engineering, involving everything from specialized cable-laying ships to underwater robots for repairs. As you explore the map, you can see how the web of these cables has become denser over time, enabling the global, real-time communication we now take for granted. By the start of 2025, the network has grown to **599** cables, spanning a staggering **1,602,092 kilometers**.
 
 {{< diagram >}}
 {{< image src="alwayshasbeen.png" alt="Map of the Internet" >}}
 {{< /diagram >}}
+
+##### A Physical Target: Vulnerabilities and Sabotage
+
+While these cables are heavily armored, especially in shallower coastal waters where most damage occurs, their isolation on the seabed makes them vulnerable. For decades, the most common threat has been accidental damage from fishing trawlers and dragged anchors. However, in recent years, a more alarming trend has emerged: intentional sabotage. The increasing frequency of suspicious cable cuts suggests that these vital arteries of communication are becoming targets in geopolitical conflicts, a reality that may have brought many new visitors to this map.
+
+Here are just a few of the many recent incidents:
+
+- **[The Balticconnector Pipeline and Cable Damage (October 2023)](https://jamestown.org/program/strangers-on-a-seabed-sino-russian-collaboration-on-undersea-cable-sabotage-operations/)**: The Balticconnector gas pipeline and two telecom cables between Finland and Estonia were damaged by a dragged anchor from the Hong Kong-flagged ship *Newnew Polar Bear*. China later admitted its vessel was responsible but claimed it was an accident.
+
+- **[The C-Lion1 and BCS East-West Interlink Cuts (November 2024)](https://www.cbsnews.com/news/undersea-cables-cut-europe-finland-germany-hint-russia-sabotage/)**: Two key telecom cables in the Baltic Sea, C-Lion1 (Finland-Germany) and BCS East-West Interlink (Lithuania-Sweden), were severed. The Chinese-owned cargo ship *Yi Peng 3* was the primary suspect after it was observed making anomalous movements in the area.
+
+- **[The Christmas Day Baltic Cable Cuts (December 2024)](https://apnews.com/article/nato-france-russia-baltic-cables-ships-damage-764964a275530915c2cc5af1125ec125)**: On Christmas Day 2024, the Estlink 2 power cable and other telecom cables between Finland and Estonia were damaged by a dragged anchor. Finnish authorities seized the suspected vessel, the oil tanker *Eagle S*, which was identified as part of Russia's "shadow fleet".
+
+- **[The Matsu Islands Blackout (February 2023)](https://www.vice.com/en/article/taiwan-internet-cables-matsu-china/)**: Two undersea cables connecting Taiwan to its outlying Matsu Islands were severed by Chinese vessels, leaving the 14,000 residents with severely disrupted internet for over 50 days. The incident highlighted the societal impact of such disruptions and was seen as part of a broader pressure campaign by China.
+
+- **[The Trans-Pacific Express Cable Cut (January 2025)](https://www.twz.com/news-features/taiwan-coast-guard-blames-chinese-owned-ship-for-cutting-undersea-communications-cable)**: The major Trans-Pacific Express international cable was cut near Taiwan, with suspicion falling on the Chinese-owned cargo ship *Shunxin 39*. The vessel had a history of using multiple identities to evade tracking and sailed erratically over the cable's location before the incident.
+
+- **[The Red Sea Cable Disruption (February 2024)](https://www.csis.org/analysis/red-sea-cable-damage-reveals-soft-underbelly-global-economy)**: Three critical cables in the Red Sea were severed by the anchor of the sinking cargo ship *Rubymar*, which had been struck by a Houthi missile. The incident disrupted a significant portion of Europe-Asia data traffic and highlighted the vulnerability of infrastructure in contested maritime chokepoints.
+
+- **[The Gulf of St. Lawrence Sabotage (December 2023 & 2024)](https://www.cbc.ca/news/canada/nova-scotia/bell-subsea-fibre-optic-cable-newfoundland-1.7461963)**: A subsea cable connecting Nova Scotia and Newfoundland was deliberately cut in December 2023 and again in December 2024. Evidence showed an "angle grinder cut" through the steel-wrapped cable, confirming sabotage, though the perpetrator and motive remain unknown.
+
+These examples represent only a fraction of such incidents, which have escalated in frequency and impact in recent years.
 
 #### Internet Exchange Points (IXPs)
 The circles on the map represent cities with [Internet Exchange Points](https://www.cloudflare.com/learning/cdn/glossary/internet-exchange-point-ixp/). If submarine cables are the interstate highways of the internet, then IXPs are the bustling, hyper-connected metropolitan areas where all the traffic is headed.
@@ -78,7 +105,7 @@ consumers: "Internet Users" {
 ixp: "Internet Exchange Point\n(e.g., DE-CIX Frankfurt)" {
   shape: cloud
 }
-content_providers -> ixp: "Direct Peering\n(Often free)"
+content_providers -> ixp: "Direct Peering\n(Often free / cheaper)"
 ixp -> consumers
 
 transit: "Paid Transit Provider" {
@@ -142,6 +169,13 @@ The back-end Go scripts that gather and process the data from sources like [Tele
 {{< diagram >}}
 {{< image src="expand.png" alt="Map of the Internet" >}}
 {{< /diagram >}}
+
+Beyond the core technology, I also wanted to incorporate a few small details to improve the user experience and make the map feel more intuitive and personal:
+
+- **Personalized View**: The map automatically geolocates your region and centers the initial view there. My hope is that the map feels familiar and relevant the moment you open it, no matter where you are in the world.
+- **Persistent 'About' Section**: The 'About this map' panel remembers its state. If you close it, it stays closed on subsequent visits and refreshes until you decide to open it again.
+- **Relative City Sizing**: The size of each city circle is relative to its total peering bandwidth, giving an immediate visual sense of where the major hubs of connectivity are concentrated.
+- **Interactive Highlighting**: Hovering over or clicking on any cable or city highlights it and brings it to the forefront. This small detail makes it much easier to focus on and explore individual parts of the network.
 
 ### Closing Thoughts
 

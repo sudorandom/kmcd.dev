@@ -19,7 +19,6 @@ devtoId: 1831151
 devtoPublished: false
 devtoSkip: false
 canonical_url: https://kmcd.dev/posts/internet-map-2024/
-featured: true
 ---
 
 I recently updated my [Map of the Internet visualization](/posts/internet-map-2023/) that shows all of the undersea Internet cables that run along the bottom of the oceans and seas and the Internet exchange points that offer peering. Together these show a pretty good view of the physical aspects of the internet. This time, I generated a video that shows the evolution of our current internet along with some interesting stats from each year. Enjoy:
