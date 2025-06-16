@@ -119,8 +119,33 @@
     <div class="main-wrapper">
       <div class="main-box">
           <h3>See Also</h3>
+          {{ $currentPage := . }}
+          {{ $currentSeriesTerms := .GetTerms "series" }}
+          {{ $currentSeriesName := "" }}
+          {{ if $currentSeriesTerms }}
+            {{/* Assuming a post is primarily associated with its first series for this check */}}
+            {{ $currentSeriesName = (index $currentSeriesTerms 0).Name }}
+          {{ end }}
+
+          {{ $filteredRelatedPages := slice }}
+          {{ range .Site.RegularPages.Related . }}
+            {{ $isSameSeries := false }}
+            {{ if $currentSeriesName }}
+              {{ $relatedPageSeriesTerms := .GetTerms "series" }}
+              {{ if $relatedPageSeriesTerms }}
+                {{ $relatedPageSeriesName := (index $relatedPageSeriesTerms 0).Name }}
+                {{ if eq $relatedPageSeriesName $currentSeriesName }}
+                  {{ $isSameSeries = true }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+
+            {{ if not $isSameSeries }}
+              {{ $filteredRelatedPages = $filteredRelatedPages | append . }}
+            {{ end }}
+          {{ end }}
           <ul>
-          {{ range .Site.RegularPages.Related . | first 4 }}
+          {{ range $filteredRelatedPages | first 4 }}
           <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
           {{ end }}
           <li><a href="/random/">Go to a random page</a> <a href="/random/" aria-label="Go to a random page"><i class="fa-solid fa-dice"></i></a></li>
