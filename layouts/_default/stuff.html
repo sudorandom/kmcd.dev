@@ -14,10 +14,19 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://map.kmcd.dev" target="_blank">Internet Infrastructure Map</a></h3>
+                {{ $internetMapImg := ($.Page.Resources.GetMatch "internet-map-screenshot.webp") }}
+                {{ if $internetMapImg }}
+                    {{ $resizedInternetMapImg := $internetMapImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://map.kmcd.dev" target="_blank">
+                            <img src="{{ $resizedInternetMapImg.Permalink }}" alt="Screenshot of Internet Infrastructure Map" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     An interactive map of the Internet, showing the evolution of undersea cables and internet exchanges with year-by-year animation and detailed statistics. Explore the map live at <a href="https://map.kmcd.dev" target="_blank">map.kmcd.dev</a>.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/internet-map-2025/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://map.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
                 </div>
@@ -26,11 +35,20 @@
 
         <div class="projects-wrapper">
             <div class="projects-box">
-                <h3><a href="https://wordseq.com" target="_blank">wordseq</a></i></h3>
+                <h3><a href="https://wordseq.com" target="_blank">wordseq</a></h3>
+                {{ $wordseqImg := ($.Page.Resources.GetMatch "wordseq-screenshot.webp") }}
+                {{ if $wordseqImg }}
+                    {{ $resizedWordseqImg := $wordseqImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://wordseq.com" target="_blank">
+                            <img src="{{ $resizedWordseqImg.Permalink }}" alt="Screenshot of wordseq game" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     `wordseq` is a daily word puzzle game where players swap adjacent letters to form words, aiming for the longest sequence. It blends engaging gameplay with a unique level generation system built using Go, React, and TypeScript, featuring some fun graph traversal mixed with a two-dictionary filtering approach for optimal puzzle quality and word recognition.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/wordseq/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://wordseq.com" target="_blank"><i class="fa-solid fa-globe"></i></a>
                 </div>
@@ -38,11 +56,20 @@
         </div>
         <div class="projects-wrapper">
             <div class="projects-box">
-                <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></i></h3>
+                <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></h3>
+                {{ $fauxrpcImg := ($.Page.Resources.GetMatch "fauxrpc-screenshot.webp") }}
+                {{ if $fauxrpcImg }}
+                    {{ $resizedFauxrpcImg := $fauxrpcImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://fauxrpc.com" target="_blank">
+                            <img src="{{ $resizedFauxrpcImg.Permalink }}" alt="Screenshot or logo of FauxRPC" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     Easily start a fake gRPC/gRPC-Web/Connect/REST server from protobufs. This project is still in early development but there's enough progress that I'm actually really hopeful for it. I've even created a <a href="https://fauxrpc.com" target="_blank">documentation website</a> for it.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="https://github.com/sudorandom/fauxrpc" target="_blank"><i class="fa-brands fa-github"></i></a>
                     <a href="/posts/fauxrpc/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://fauxrpc.com" target="_blank"><i class="fa-solid fa-globe"></i></a>
@@ -51,13 +78,22 @@
         </div>
         <div class="projects-wrapper">
             <div class="projects-box">
-                <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></i></h3>
+                <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></h3>
+                {{ $protocGenImg := ($.Page.Resources.GetMatch "protoc-gen-connect-openapi-screenshot.webp") }}
+                {{ if $protocGenImg }}
+                    {{ $resizedProtocGenImg := $protocGenImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">
+                            <img src="{{ $resizedProtocGenImg.Permalink }}" alt="Logo or diagram for protoc-gen-connect-openapi" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     Generate OpenAPI specifications from protobuf that matches <a href="https://connectrpc.com/">Connect
                         RPC</a>. Born from my own needs and frustrations gluing together existing tooling in non-ideal
                     ways.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/protoc-gen-connect-openapi/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-github"></i></a>
                     <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank"><i class="fa-brands fa-golang"></i></a>
@@ -67,10 +103,19 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
+                {{ $kmcdDevImg := ($.Page.Resources.GetMatch "kmcd-dev-screenshot.webp") }}
+                {{ if $kmcdDevImg }}
+                    {{ $resizedKmcdDevImg := $kmcdDevImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://kmcd.dev" target="_blank">
+                            <img src="{{ $resizedKmcdDevImg.Permalink }}" alt="Screenshot of kmcd.dev website" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     {{ partial "blog_summary.html" }}
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
@@ -82,10 +127,19 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="/http/">HTTP Version Tool</a></h3>
+                {{ $httpToolImg := ($.Page.Resources.GetMatch "http-version-tool-screenshot.webp") }}
+                {{ if $httpToolImg }}
+                    {{ $resizedHttpToolImg := $httpToolImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="/http/">
+                            <img src="{{ $resizedHttpToolImg.Permalink }}" alt="Screenshot of HTTP Version Tool" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     See which version of HTTP your browser is using to connect to my website. My website supports HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3, so you can use this to see if your browser is using the latest and greatest. It also outputs some of the things your browser is sending, like user agent, your IP address and the ASN your internet traffic originates from, which tells me which ISP you are using.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/http-tool/"><i class="fa-solid fa-book"></i></a>
                     <a href="/http/"><i class="fa-solid fa-globe"></i></a>
                 </div>
@@ -98,6 +152,15 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
+                {{ $evepraisalImg := ($.Page.Resources.GetMatch "evepraisal-screenshot.webp") }}
+                {{ if $evepraisalImg }}
+                    {{ $resizedEvepraisalImg := $evepraisalImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="/posts/evepraisal.com/">
+                            <img src="{{ $resizedEvepraisalImg.Permalink }}" alt="Screenshot of evepraisal.com" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     Evepraisal was an extremely popular bulk-price estimator for Eve Online. It started as a tool to
                     help pirates evaluate cargo-scan results but it evolve into a tool that helped shape Eve Online's
@@ -105,7 +168,7 @@
                         href="/posts/lessons-from-a-decades-long-project/">ongoing maintenance</a> and my detatchment
                     from the game I eventually <a href="/posts/goodbye-evepraisal/">shut it down</a>.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/evepraisal.com/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://github.com/evepraisal/go-evepraisal" target="_blank"><i class="fa-brands fa-github"></i></a>
                 </div>
@@ -115,12 +178,21 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
+                {{ $slPyImg := ($.Page.Resources.GetMatch "softlayer-python-screenshot.webp") }}
+                {{ if $slPyImg }}
+                    {{ $resizedSlPyImg := $slPyImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://github.com/softlayer/softlayer-python" target="_blank">
+                            <img src="{{ $resizedSlPyImg.Permalink }}" alt="Screenshot or logo for softlayer-python" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     A set of Python libraries that assist in calling the SoftLayer API. Has a CLI, general API and
                     specialized code to help with more complicated workflows. This became the most popular ways to
                     interact with SoftLayer APIs.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/softlayer-python/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://github.com/softlayer/softlayer-python" target="_blank"><i class="fa-brands fa-github"></i></a>
                 </div>
@@ -128,12 +200,21 @@
 
             <div class="projects-box">
                 <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
+                {{ $swftpImg := ($.Page.Resources.GetMatch "swftp-screenshot.webp") }}
+                {{ if $swftpImg }}
+                    {{ $resizedSwftpImg := $swftpImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://github.com/softlayer/swftp" target="_blank">
+                            <img src="{{ $resizedSwftpImg.Permalink }}" alt="Screenshot or logo for swftp" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
                 <p>
                     An FTP and SFTP interface for OpenStack Object Storage (swift) built in Twisted Python. I'm unsure
                     how much the project is still used but it was critical for moving a lot of data from legacy systems
                     onto SoftLayer/IBM's Object Storage product.
                 </p>
-                <div class="project-icons">
+                <div class="project-icons" style="clear: right;">
                     <a href="/posts/swftp/"><i class="fa-solid fa-book"></i></a>
                     <a href="https://github.com/softlayer/swftp" target="_blank"><i class="fa-brands fa-github"></i></a>
                 </div>
