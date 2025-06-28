@@ -49,7 +49,7 @@ In this server:
 1.  We use `mux.HandleFunc("QUERY /data", queryHandler)` to directly associate the `queryHandler` with our custom **QUERY** HTTP method for the `/data` path.
 2.  The `queryHandler` reads the request body, where the complex query parameters would reside.
 
-Congratulations, we've made an API with an endpoint no browser can use. So useful. Since we can't test with a browser, let's write a client to pair with this server.
+Congratulations, we've made an API that uses the QUERY method. Now let's write a client to pair with this server.
 
 ### Client-Side, also with Go
 
