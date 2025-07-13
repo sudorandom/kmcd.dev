@@ -14,7 +14,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://map.kmcd.dev" target="_blank">Internet Infrastructure Map</a></h3>
-                {{ $internetMapImg := ($.Page.Resources.GetMatch "internet-map-screenshot.webp") }}
+                {{ $internetMapImg := (resources.Get "images/screenshots/internet-map.png") }}
                 {{ if $internetMapImg }}
                     {{ $resizedInternetMapImg := $internetMapImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -36,7 +36,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://wordseq.com" target="_blank">wordseq</a></h3>
-                {{ $wordseqImg := ($.Page.Resources.GetMatch "wordseq-screenshot.webp") }}
+                {{ $wordseqImg := (resources.Get "images/screenshots/wordseq.png") }}
                 {{ if $wordseqImg }}
                     {{ $resizedWordseqImg := $wordseqImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -57,7 +57,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></h3>
-                {{ $fauxrpcImg := ($.Page.Resources.GetMatch "fauxrpc-screenshot.webp") }}
+                {{ $fauxrpcImg := (resources.Get "images/screenshots/fauxrpc.png") }}
                 {{ if $fauxrpcImg }}
                     {{ $resizedFauxrpcImg := $fauxrpcImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -79,7 +79,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></h3>
-                {{ $protocGenImg := ($.Page.Resources.GetMatch "protoc-gen-connect-openapi-screenshot.webp") }}
+                {{ $protocGenImg := (resources.Get "images/screenshots/protoc-gen-connect-openapi.png") }}
                 {{ if $protocGenImg }}
                     {{ $resizedProtocGenImg := $protocGenImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -103,7 +103,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
-                {{ $kmcdDevImg := ($.Page.Resources.GetMatch "kmcd-dev-screenshot.webp") }}
+                {{ $kmcdDevImg := (resources.Get "images/screenshots/kmcd.dev.png") }}
                 {{ if $kmcdDevImg }}
                     {{ $resizedKmcdDevImg := $kmcdDevImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -127,7 +127,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="/http/">HTTP Version Tool</a></h3>
-                {{ $httpToolImg := ($.Page.Resources.GetMatch "http-version-tool-screenshot.webp") }}
+                {{ $httpToolImg := (resources.Get "images/screenshots/http.png") }}
                 {{ if $httpToolImg }}
                     {{ $resizedHttpToolImg := $httpToolImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -152,7 +152,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
-                {{ $evepraisalImg := ($.Page.Resources.GetMatch "evepraisal-screenshot.webp") }}
+                {{ $evepraisalImg := (resources.Get "images/screenshots/evepraisal.png") }}
                 {{ if $evepraisalImg }}
                     {{ $resizedEvepraisalImg := $evepraisalImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -178,7 +178,7 @@
         <div class="projects-wrapper">
             <div class="projects-box">
                 <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
-                {{ $slPyImg := ($.Page.Resources.GetMatch "softlayer-python-screenshot.webp") }}
+                {{ $slPyImg := (resources.Get "softlayer-python.webp") }}
                 {{ if $slPyImg }}
                     {{ $resizedSlPyImg := $slPyImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
@@ -200,7 +200,7 @@
 
             <div class="projects-box">
                 <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
-                {{ $swftpImg := ($.Page.Resources.GetMatch "swftp-screenshot.webp") }}
+                {{ $swftpImg := (resources.Get "swftp.webp") }}
                 {{ if $swftpImg }}
                     {{ $resizedSwftpImg := $swftpImg.Resize "400x webp" }}
                     <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
