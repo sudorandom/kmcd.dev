@@ -7,7 +7,7 @@
     <div class="container">
         <header class="header">
             <nav class="nav">
-                <div class="nav-left">
+                <div class="nav-left" style="margin-top: 1rem;">
                     <a class="nav-item" href="{{ .Site.BaseURL }}"><i class="fa-solid fa-arrow-left"></i> Back to kmcd.dev</a>
                 </div>
             </nav>
@@ -16,72 +16,68 @@
 
     <div class="main-wrapper">
         <div class="main-box">
-            <article>
-                <div class="post-content">
-                <!-- HTTP Version Detection Results - Dynamically Populated -->
-                <div id="loading-state" hidden>
-                    <div style="background-color: #2a2a2a; border: 2px solid #888888; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <div class="spinner" style="margin: 0 auto 1rem auto;"></div>
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #888888;">Detecting HTTP Version...</h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Please wait while we analyze your connection.</p>
+            <!-- HTTP Version Detection Results - Dynamically Populated -->
+            <div id="loading-state" hidden>
+                <div style="background-color: #2a2a2a; border: 2px solid #888888; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div class="spinner" style="margin: 0 auto 1rem auto;"></div>
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #888888;">Detecting HTTP Version...</h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Please wait while we analyze your connection.</p>
+                </div>
+            </div>
+            <div id="http10-header" hidden>
+                <div style="background-color: #2a1f1f; border: 2px solid #ff6b6b; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #ff6b6b;">🐌 You are using <a href="#http10" style="color: #ff6b6b; text-decoration: underline; margin-left:10px">HTTP/1.0</a></h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The original HTTP protocol from 1996. I see you have an eye for vintage software.</p>
+                    <div style="text-align: right;">
+                        <a href="#http10" class="button" style="margin-top: 1rem; background-color: #ff6b6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/1.0</a>
                     </div>
                 </div>
-                <div id="http10-header" hidden>
-                    <div style="background-color: #2a1f1f; border: 2px solid #ff6b6b; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #ff6b6b;">🐌 You are using <a href="#http10" style="color: #ff6b6b; text-decoration: underline; margin-left:10px">HTTP/1.0</a></h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The original HTTP protocol from 1996</p>
-                    </div>
-                </div>
+            </div>
 
-                <div id="http11-header" hidden>
-                    <div style="background-color: #2a241f; border: 2px solid #ffa726; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #ffa726;">📡 You are using <a href="#http11" style="color: #ffa726; text-decoration: underline; margin-left:10px">HTTP/1.1</a></h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The most widely used HTTP version</p>
+            <div id="http11-header" hidden>
+                <div style="background-color: #2a241f; border: 2px solid #ffa726; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #ffa726;">📡 You are using <a href="#http11" style="color: #ffa726; text-decoration: underline; margin-left:10px">HTTP/1.1</a></h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The most widely used HTTP version. It's the reliable workhorse of the internet, but it's starting to show its age.</p>
+                    <div style="text-align: right;">
+                        <a href="#http11" class="button" style="margin-top: 1rem; background-color: #ffa726; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/1.1</a>
                     </div>
                 </div>
+            </div>
 
-                <div id="http2-header" hidden>
-                    <div style="background-color: #1f2328; border: 2px solid #42a5f5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #42a5f5;">🚀 You are using <a href="#http2" style="color: #42a5f5; text-decoration: underline; margin-left:10px">HTTP/2</a></h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Modern binary protocol with multiplexing</p>
-                    </div>
-                    <div style="background-color: #1e2a35; border-left: 4px solid #42a5f5; padding: 1rem; margin-bottom: 1rem;">
-                        <p style="margin: 0; color: #cccccc;">
-                            <strong style="color: #42a5f5;">💡 Dynamic Tip:</strong> If you refresh this page, there's a chance you might connect with HTTP/3 instead! This is caused by the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Alt-Svc" style="color: #42a5f5;">Alt-Svc header</a> or the <a href="https://blog.cloudflare.com/speeding-up-https-and-http-3-negotiation-with-dns" style="color: #42a5f5;">HTTPS DNS Entry</a> being read by your browser.
-                        </p>
+            <div id="http2-header" hidden>
+                <div style="background-color: #1f2328; border: 2px solid #42a5f5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #42a5f5;">🚀 You are using <a href="#http2" style="color: #42a5f5; text-decoration: underline; margin-left:10px">HTTP/2</a></h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">A major upgrade that's faster and more efficient. If you refresh this page, there's a chance you might connect with HTTP/3 instead! This is caused by the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Alt-Svc" style="color: #42a5f5;">Alt-Svc header</a> or the <a href="https://blog.cloudflare.com/speeding-up-https-and-http-3-negotiation-with-dns" style="color: #42a5f5;">HTTPS DNS Entry</a> being read by your browser.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="#http2" class="button" style="margin-top: 1rem; background-color: #42a5f5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/2</a>
                     </div>
                 </div>
+            </div>
 
-                <div id="http3-header" hidden>
-                    <div style="background-color: #1f2a1f; border: 2px solid #66bb6a; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #66bb6a;">✨ You are using <a href="#http3" style="color: #66bb6a; text-decoration: underline; margin-left:10px">HTTP/3</a></h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Congratulations! You're using the latest HTTP version with QUIC</p>
-                    </div>
-                    <div style="background-color: #1e352a; border-left: 4px solid #66bb6a; padding: 1rem; margin-bottom: 1rem;">
-                        <p style="margin: 0; color: #cccccc;">
-                            <strong style="color: #66bb6a;">🎉 Cutting Edge:</strong> You're experiencing the fastest HTTP protocol available, built on UDP with QUIC for optimal performance!
-                        </p>
+            <div id="http3-header" hidden>
+                <div style="background-color: #1f2a1f; border: 2px solid #66bb6a; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #66bb6a;">✨ You are using <a href="#http3" style="color: #66bb6a; text-decoration: underline; margin-left:10px">HTTP/3</a></h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Congratulations! You're on the cutting edge, using the fastest and most modern HTTP protocol available.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="#http3" class="button" style="margin-top: 1rem; background-color: #66bb6a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/3</a>
                     </div>
                 </div>
+            </div>
 
-                <div id="httpunknown-header" hidden>
-                    <div style="background-color: #2a1f2a; border: 2px solid #ab47bc; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h2 style="margin: 0; font-size: 1.8rem; color: #ab47bc;">❓ You are using <span class="data-http-version" style="color: #ab47bc; margin-left:10px">???</span></h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Unknown or custom HTTP version detected</p>
-                    </div>
-                    <div style="background-color: #2a1f35; border-left: 4px solid #ab47bc; padding: 1rem; margin-bottom: 1rem;">
-                        <p style="margin: 0; color: #cccccc;">
-                            <strong style="color: #ab47bc;">🤔 Mystery Protocol:</strong> This is awkward! You appear to be using a version of HTTP that this page doesn't recognize. It could be that the detection is broken, a new version was released, or you're testing with custom parameters. Regardless, congrats for finding this edge case!
-                        </p>
-                    </div>
+            <div id="httpunknown-header" hidden>
+                <div style="background-color: #2a1f2a; border: 2px solid #ab47bc; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; font-size: 1.8rem; color: #ab47bc;">❓ You are using <span class="data-http-version" style="color: #ab47bc; margin-left:10px">???</span></h2>
+                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Well, this is unexpected. You're using a version of HTTP that this page doesn't recognize. Maybe you're from the future, or maybe something's a little off. Either way, consider me impressed!
+                    </p>
                 </div>
+            </div>
 
-                <!-- Dynamic indicator -->
-                <div id="dynamic-indicator" hidden style="background-color: #1f2835; border-left: 4px solid #42a5f5; padding: 1rem; margin-bottom: 1rem;">
-                    <p style="margin: 0; color: #cccccc;"><strong style="color: #42a5f5;">🔄 This content is dynamically generated</strong> based on your actual HTTP connection. Try refreshing the page or opening it in different browsers to see how the protocol varies!</p>
-                </div>
-                </div>
-            </article>
+            <!-- Dynamic indicator -->
+            <div id="dynamic-indicator" hidden style="background-color: #1f2835; border-left: 4px solid #42a5f5; padding: 1rem; margin-bottom: 1rem;">
+                <p style="margin: 0; color: #cccccc;"><strong style="color: #42a5f5;">🔄 This content is dynamically generated</strong> based on your actual HTTP connection. Try refreshing the page or opening it in different browsers to see how the protocol varies!</p>
+            </div>
         </div>
     </div>
 
@@ -146,29 +142,40 @@
     </div>
 
     <div class="main-wrapper">
-        <div class="main-box" style="background-color: #2a2a2a; border: 2px solid #888888; border-radius: 8px;">
-            <h3 id="http09" style="color: #888888; margin-top: 0;">📜 HTTP/0.9</h3>
+        <div class="main-box" style="background-color: #1f2a1f; border: 2px solid #66bb6a; border-radius: 8px;">
+            <h3 id="http3" style="color: #66bb6a; margin-top: 0;">✨ HTTP/3</h3>
             <p style="color: #cccccc;">
-                The simplest protocol, HTTP/0.9, had no headers, status codes, or even different request methods. A request was a single line, and the server's response was just the HTML file.
+                HTTP/3 improves upon HTTP/2 by using QUIC, a new transport protocol built on UDP. This finally eliminates head-of-line blocking entirely and allows for zero round-trip time (0-RTT) connection resumption.
             </p>
+            <p style="color: #cccccc;">
+                This could lead to seamless network switching in the future, for example, moving from Wi-Fi to cellular without a noticeable interruption.
+            </p>
+            <p style="color: #cccccc;">
+                Browsers can discover HTTP/3 support in two main ways:
+            </p>
+            <ul style="color: #cccccc;">
+                <li><strong>Alternative Service (<code>Alt-Svc</code>) header:</strong> The server can send an <code>Alt-Svc</code> header in an HTTP/1.1 or HTTP/2 response to indicate that HTTP/3 is available on a specific host and port.</li>
+                <li><strong>HTTPS DNS record:</strong> A newer method involves a special <code>HTTPS</code> DNS record that signals HTTP/3 support directly, allowing a browser to connect using HTTP/3 on the very first request.</li>
+            </ul>
             <ul>
-                <li><a href="https://http.dev/0.9" target="_blank" style="color: #ff6b6b;">http.dev/0.9</a></li>
+                <li><a href="https://http.dev/3" target="_blank" style="color: #66bb6a;">http.dev/3</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9114" target="_blank" style="color: #66bb6a;">RFC 9114</a></li>
             </ul>
         </div>
     </div>
 
     <div class="main-wrapper">
-        <div class="main-box" style="background-color: #2a1f1f; border: 2px solid #ff6b6b; border-radius: 8px;">
-            <h3 id="http10" style="color: #ff6b6b; margin-top: 0;">🐌 HTTP/1.0</h3>
+        <div class="main-box" style="background-color: #1f2328; border: 2px solid #42a5f5; border-radius: 8px;">
+            <h3 id="http2" style="color: #42a5f5; margin-top: 0;">🚀 HTTP/2</h3>
             <p style="color: #cccccc;">
-                This version brought many of the features we recognize today, including request methods (like GET and POST), HTTP headers for passing metadata, and status codes to indicate the outcome of a request.
+                HTTP/2 introduced a binary encoding format, making it more compact and efficient to parse. Its biggest feature was multiplexing, which allows multiple requests and responses to be sent in parallel over a single connection using "streams".
             </p>
             <p style="color: #cccccc;">
-                However, it required a new TCP connection for every single request, which was inefficient and slow.
+                This solved the head-of-line blocking at the HTTP level, but the problem still existed at the TCP level.
             </p>
             <ul>
-                <li><a href="https://http.dev/1.0" target="_blank" style="color: #ff6b6b;">http.dev/1.0</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc1945" target="_blank" style="color: #ff6b6b;">RFC 1945</a></li>
+                <li><a href="https://http.dev/2" target="_blank" style="color: #42a5f5;">http.dev/2</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7540" target="_blank" style="color: #42a5f5;">RFC 7540</a></li>
             </ul>
         </div>
     </div>
@@ -191,40 +198,29 @@
     </div>
 
     <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2328; border: 2px solid #42a5f5; border-radius: 8px;">
-            <h3 id="http2" style="color: #42a5f5; margin-top: 0;">🚀 HTTP/2</h3>
+        <div class="main-box" style="background-color: #2a1f1f; border: 2px solid #ff6b6b; border-radius: 8px;">
+            <h3 id="http10" style="color: #ff6b6b; margin-top: 0;">🐌 HTTP/1.0</h3>
             <p style="color: #cccccc;">
-                HTTP/2 introduced a binary encoding format, making it more compact and efficient to parse. Its biggest feature was multiplexing, which allows multiple requests and responses to be sent in parallel over a single connection using "streams".
+                This version brought many of the features we recognize today, including request methods (like GET and POST), HTTP headers for passing metadata, and status codes to indicate the outcome of a request.
             </p>
             <p style="color: #cccccc;">
-                This solved the head-of-line blocking at the HTTP level, but the problem still existed at the TCP level.
+                However, it required a new TCP connection for every single request, which was inefficient and slow.
             </p>
             <ul>
-                <li><a href="https://http.dev/2" target="_blank" style="color: #42a5f5;">http.dev/2</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc7540" target="_blank" style="color: #42a5f5;">RFC 7540</a></li>
+                <li><a href="https://http.dev/1.0" target="_blank" style="color: #ff6b6b;">http.dev/1.0</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc1945" target="_blank" style="color: #ff6b6b;">RFC 1945</a></li>
             </ul>
         </div>
     </div>
 
     <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2a1f; border: 2px solid #66bb6a; border-radius: 8px;">
-            <h3 id="http3" style="color: #66bb6a; margin-top: 0;">✨ HTTP/3</h3>
+        <div class="main-box" style="background-color: #2a2a2a; border: 2px solid #888888; border-radius: 8px;">
+            <h3 id="http09" style="color: #888888; margin-top: 0;">📜 HTTP/0.9</h3>
             <p style="color: #cccccc;">
-                HTTP/3 improves upon HTTP/2 by using QUIC, a new transport protocol built on UDP. This finally eliminates head-of-line blocking entirely and allows for zero round-trip time (0-RTT) connection resumption.
+                The simplest protocol, HTTP/0.9, had no headers, status codes, or even different request methods. A request was a single line, and the server's response was just the HTML file.
             </p>
-            <p style="color: #cccccc;">
-                This could lead to seamless network switching in the future, for example, moving from Wi-Fi to cellular without a noticeable interruption.
-            </p>
-            <p style="color: #cccccc;">
-                Browsers can discover HTTP/3 support in two main ways:
-            </p>
-            <ul style="color: #cccccc;">
-                <li><strong>Alternative Service (<code>Alt-Svc</code>) header:</strong> The server can send an <code>Alt-Svc</code> header in an HTTP/1.1 or HTTP/2 response to indicate that HTTP/3 is available on a specific host and port.</li>
-                <li><strong>HTTPS DNS record:</strong> A newer method involves a special <code>HTTPS</code> DNS record that signals HTTP/3 support directly, allowing a browser to connect using HTTP/3 on the very first request.</li>
-            </ul>
             <ul>
-                <li><a href="https://http.dev/3" target="_blank" style="color: #66bb6a;">http.dev/3</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc9114" target="_blank" style="color: #66bb6a;">RFC 9114</a></li>
+                <li><a href="https://http.dev/0.9" target="_blank" style="color: #ff6b6b;">http.dev/0.9</a></li>
             </ul>
         </div>
     </div>
