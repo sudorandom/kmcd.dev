@@ -14,16 +14,8 @@ jobs:
       deployments: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '^1.24.3'
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: '0.147.3'
-          extended: true
-      - name: Install D2 CLI
-        run: curl -fsSL https://d2lang.com/install.sh | sh -s --
+      - name: Setup environment
+        uses: jdxcode/mise-action@v1
       - name: Build
         run: make build
       - name: deploy
