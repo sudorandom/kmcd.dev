@@ -16,6 +16,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment
         uses: jdx/mise-action@v2
+        with:
+          experimental: true
       - name: Build
         run: make build
       - name: deploy
