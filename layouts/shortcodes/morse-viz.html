@@ -1,0 +1,49 @@
+{{/*
+  Shortcode to visualize Morse code.
+  Usage: {{< morse-viz ".... . .-.. .-.. --- / .-- --- .-. .-.. -.." "HELLO WORLD" >}}
+  - Dots (.) and underscores (_) are signals.
+  - Letters are separated by a space.
+  - Words are separated by a " / ".
+  - Second argument (optional): full word/phrase to display on the left inside the box.
+*/}}
+<div class="morse-viz">
+  <div class="morse-container morse-viz-flex" style="display: flex; align-items: center; gap: 1.5rem;">
+    {{ $fullWord := .Get 1 }}
+    {{ if $fullWord }}
+      <span class="morse-label">{{ $fullWord }}</span>
+    {{ end }}
+    <div class="morse-viz-signals" style="display: flex; align-items: center;">
+      {{ $words := split (.Get 0) " / " }}
+      {{ range $wordIndex, $word := $words }}
+        {{/* Add a word space before the second word onwards */}}
+        {{ if gt $wordIndex 0 }}
+          <div class="morse-wspace" title="inter-word space"></div>
+        {{ end }}
+
+        {{ $letters := split $word " " }}
+        {{ range $letterIndex, $letter := $letters }}
+          {{/* Add a letter space before the second letter onwards */}}
+          {{ if gt $letterIndex 0 }}
+            <div class="morse-lspace" title="inter-character space"></div>
+          {{ end }}
+          <div class="morse-char">
+            <span style="display: flex; align-items: center;">
+              {{ range $signalIndex, $signal := split $letter "" }}
+                {{/* Add an intra-character space before the second signal onwards */}}
+                {{ if gt $signalIndex 0 }}
+                  <span class="morse-ispace" title="intra-character space"></span>
+                {{ end }}
+                
+                {{ if eq $signal "." }}
+                  <span class="morse-dit" title="dit"></span>
+                {{ else if eq $signal "-" }}
+                  <span class="morse-dah" title="dah"></span>
+                {{ end }}
+              {{ end }}
+            </span>
+          </div>
+        {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</div>

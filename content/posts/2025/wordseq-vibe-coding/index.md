@@ -1,29 +1,29 @@
 ---
 categories: ["article"]
 tags: ["gamedev", "react", "typescript", "ai", "llm", "vibe-coding", "wordseq", "gemini", "chatgpt", "jules"]
-date: "2025-05-30T10:00:00Z" # Placeholder date - updated slightly
+date: "2025-07-22T10:00:00Z"
 description: "A skeptical look at AI-driven development, and how 'vibe coding' helped and hindered the UI for my game, wordseq."
-cover: "cover-vibe-coding.png" # Placeholder image
-images: [] # Add any relevant new images here
+cover: "cover.png"
+images: ["/posts/wordseq-vibe-coding/cover.png"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 title: "Vibe Coding: My Skeptical Foray into AI for Game UI (and Why I Still Reached for the Reins)"
-slug: "vibe-coding-ai-skepticism-wordseq-ui" # Updated slug
+slug: "wordseq-vibe-coding"
 type: "posts"
 draft: true
 ---
 
-Let's be honest, the current frenzy around AI feels a bit like a gold rush, and I've been watching from the sidelines with a healthy dose of skepticism. I mean, I have been using AI as a glorified search engine for a while now, but it seems like entire industries are rushing to rip out their foundations and replace them with something shiny and new, without fully understanding the long-term implications. It often feels like swapping out a foundation of concrete for what might turn out to be asbestos.
+Let's be honest, the current frenzy around AI feels a bit like a gold rush, and I've been watching from the sidelines with a healthy dose of skepticism. I mean, I have been using AI as a glorified search engine for a while now, but it seems like entire industries are rushing to rip out their foundations and replace them with something shiny and new, without fully understanding the long-term implications. It often feels like swapping out a foundation of concrete for what might turn out to be asbestos. That said, I've learned that I shouldn't speak on things unless I have a decent mount of experience with it.
 
-My general take? AI is neat for 'smarter' autocomplete, a helpful assistant for well-defined, small-scale tasks. But the idea of it independently architecting complex systems, or people using it to build things they fundamentally don't understand, strikes me as not only irresponsible but potentially dangerous. You can't just prompt your way to a robust, maintainable, and ethically sound application if you don't grasp the underlying principles.
+AI is neat for "smarter" autocomplete and as a helpful assistant for well-defined, small-scale tasks. But the idea of it independently architecting complex systems, or people using it to build things they fundamentally don't understand, strikes me as not only irresponsible but potentially dangerous. You can't just prompt your way to a robust, maintainable, and ethically sound application if you don't grasp the underlying principles.
 
-However, despite this skepticism, the challenge of crafting a polished UI for my daily word game, [wordseq](https://wordseq.com), nudged me to dip a toe into these waters. After diving deep into the Go code for puzzle generation (which I wrote about [here](./wordseq)), it was time to build the face of the game. Could AI at least help me get the *look* and *feel* right, even if I didn't trust it with game puzzle generation?
+However, despite this skepticism, the challenge of crafting a polished UI for my daily word game, [wordseq](https://wordseq.com), nudged me to dip a toe into these waters. After diving deep into the Go code for puzzle generation (which I wrote about [here](https://www.google.com/search?q=./wordseq)), it was time to build the face of the game. Could AI at least help me get the *look* and *feel* right, even if I didn't trust it with game puzzle generation?
 
-So I started vibe coding. Vibe coding is less about expecting AI to write flawless, complex applications from scratch, and more about using it to rapidly get the *vibe* right. Getting AI to translate a mental image into a tangible starting point. My overall impression from this experiment? AI is indeed pretty decent at getting that raw material into the air. But give it too complex of a target, or ask it to make sound architectural decisions, and it will completely fall apart.
+So I started vibe coding. Vibe coding is less about expecting AI to write flawless, complex applications from scratch, and more about using it to rapidly get the *vibe* right. Getting AI to translate a mental image into a tangible starting point. My overall impression from this experiment? AI is indeed pretty decent at getting that raw material into the air. But give it too complex a target or ask it to make sound architectural decisions, and it will completely fall apart.
 
-For `wordseq`'s frontend, built with React and TypeScript, I experimented primarily with **Gemini** and **ChatGPT**, and also gave **Jules** a try. My goal was to see if these tools could accelerate development, especially on the UI front where my own design skills are... not great. I'm a backend developer after all.
+For `wordseq`'s frontend, built with React and TypeScript, I experimented primarily with **Gemini** and **ChatGPT**, and also gave **Jules** a try. My goal was to see if these tools could accelerate development, especially on the UI front where my own design skills are... not great. I'm a backend developer, after all.
 
 ## Hitting the Ground Running
 
@@ -45,20 +45,19 @@ For instance, generating the initial letter tiles, the input area, and the visua
 {{< image src="herding-robots.png" width="600px" class="center" alt="A metaphor for trying to guide multiple AIs, perhaps illustrated as a person trying to herd chaotic, individualistic robots." >}}
 {{< /diagram >}}
 
+However, the honeymoon phase of rapid visual progress usually ended when complexity ramped up, or when I started to "dig under the vibes" to see what was actually holding it all together. Hint: it was a mess of insane nonsense, terrible technical decisions, brittle assumptions, and leaky abstractions.
 
 * **State Management Nightmares:** As `wordseq`'s game logic became more involved (tracking sequences, optimal paths, undo states), the AI's suggestions for managing this state in React often became convoluted, inefficient, or just plain wrong. The initial "vibe" might have looked good, but the underlying structure was often a house of cards.
 * **Nuance Deafness:** Explaining very specific interactions or conditional rendering logic that depended on multiple factors felt like trying to teach calculus to a toddler. The AI would often miss key details or introduce subtle bugs.
 * **The "Close, But No Cigar" (and often questionable) Code:** A lot of the generated code *looked* plausible on the surface, but wouldn't quite work, or worse, would work but in a completely nonsensical or unmaintainable way. This meant a significant amount of time was spent not just debugging, but completely re-working the code to be more reasonable. This is where the time-saving aspect started to look very shaky.
 
-However, the honeymoon phase of rapid visual progress usually ended when complexity ramped up, or when I started to "dig under the vibes" to see what was actually holding it all together. Hint: it was insane nonsense, terrible technical decisions, brittle assumptions, leaky abstraction, etc.
-
 {{< diagram >}}
-{{< image src="slop.png" width="600px" class="center" alt="" >}}
+{{< image src="slop.png" width="600px" class="center" alt="An illustration showing a polished UI panel being propped up by a chaotic mess of tangled wires, duct tape, and mismatched parts labeled 'AI-Generated Underpinnings'." >}}
 {{< /diagram >}}
 
 This led to a crucial realization, reinforcing my initial skepticism: **to effectively use AI to help me write React, I had to learn a good amount of React myself.** I needed to be able to understand the AI's suggestions, identify their (often severe) flaws, and ultimately guide it – or, more often, correct and heavily refactor its output – to arrive at sensible solutions. It was less "AI writing code for me" and more "me sifting through AI-generated chaos and leading it on a very tight leash."
 
-Some AIs were better than others at grasping context or maintaining coherence over longer interactions, but the fundamental pattern was the same. The process of iterating with the AI, then "doing the work" to understand its often bizarre choices and refactor them, probably took a lot longer for complex features compared to me just knuckling down, deepening my React knowledge, and applying myself directly.
+Some AIs were better than others at grasping context or maintaining coherence over longer interactions, but the fundamental pattern was the same. Anecdotally, I found Gemini was often better at generating initial component structures, while ChatGPT was more useful for iterative refinement of smaller functions. The process of iterating with the AI, then "doing the work" to understand its often bizarre choices and refactor them, probably took a lot longer for complex features than if I had just knuckled down, deepening my React knowledge, and applying myself directly.
 
 ## Was "Vibe Coding" Worth It, Given the Skepticism?
 
@@ -67,7 +66,7 @@ So, the million-dollar question: was this AI-assisted "vibe coding" approach wor
 **Pros:**
 
 * **Better Initial Aesthetics:** The game looks more professional than if I'd done all the UI from scratch under the same time pressure. The "vibe" was achieved.
-* **Rapid Prototyping of Visuals:** Great for quickly getting visual ideas on the screen, a genuine flurry of "raw material."
+* **Rapid Prototyping of Visuals:** Great for quickly getting visual ideas on the screen, a genuine flurry of raw material.
 * **Forced Learning (Deep Dives):** Ironically, having to unravel and fix the AI's "insane decisions" pushed me to understand React and web fundamentals at a deeper level than if I'd just muddled through on my own with simpler components.
 
 **Cons:**
@@ -86,12 +85,12 @@ However, my core skepticism remains largely intact, if not reinforced. They are 
 
 Moving forward with `wordseq`, I feel more confident in my own React abilities, partly thanks to having to "teach" and extensively correct the AI. I'm now better equipped to tackle more complex UI features, like the "infinite mode" I'm planning, or even potentially a Danish version of the game – and I'll be doing so with a much clearer understanding of when and how (and how *little*) to involve AI.
 
-The "vibe" is set, and the foundation is much prettier thanks to some initial AI collaboration. Now, the serious, human-led craftsmanship continues, building on that aesthetic start but ensuring the structure underneath is solid and sensible.
+The "vibe" is set, and the foundation is much prettier thanks to some initial AI collaboration. Now, the serious, human-led craftsmanship continues, building on that aesthetic start but ensuring the structure underneath is solid, sensible, and ready for what's next.
 
 ---
 What are your experiences using AI for coding? Are you all-in on the hype, a fellow skeptic, or somewhere in between? Has it been a magical accelerator, a frustrating time-sink, or a source of "insane decisions" you've had to fix? I'd love to hear your thoughts!
 
-* **Play wordseq daily:** [wordseq.com](https://wordseq.com "wordseq")
-* Find me on [Blue Sky](https://bsky.app/profile/kmcd.dev "kmcd.dev on bluesky") or [Mastodon](https://infosec.exchange/@sudorandom "@sudorandom on infosec.exchange, mastodon")!
+* **Play wordseq daily:** [wordseq.com](https://wordseq.com)
+* Find me on [Blue Sky](https://bsky.app/profile/kmcd.dev) or [Mastodon](https://infosec.exchange/@sudorandom)!
 
 Thanks for reading!
