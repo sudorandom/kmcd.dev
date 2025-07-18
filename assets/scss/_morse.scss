@@ -152,3 +152,88 @@
     background: none;
   }
 }
+
+.morse-table {
+  display: flex;
+  justify-content: center; /* Center the columns */
+  flex-wrap: wrap;
+  gap: 20px; /* Space between columns */
+  margin: 25px auto; /* Center the whole table and add vertical margin */
+  max-width: 100%;
+
+  .morse-column {
+    flex: 1; /* Allow columns to grow and shrink */
+    min-width: 250px; /* Minimum width for each column */
+    max-width: 300px; /* Maximum width for each column */
+    border: 1px solid $light-table-color; /* Add a border to each column */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Hide overflowing content */
+
+    @media (prefers-color-scheme: dark) {
+      border: 1px solid $dark-table-color;
+    }
+
+    [data-theme=dark] & {
+      border: 1px solid $dark-table-color;
+    }
+
+    [data-theme=light] & {
+      border: 1px solid $light-table-color;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse; /* Collapse borders within the table */
+      margin: 0; /* Remove default table margin */
+
+      th,
+      td {
+        padding: 10px 15px; /* Adjust padding */
+        text-align: left;
+        border-bottom: 1px solid $light-table-color; /* Only bottom border for rows */
+
+        @media (prefers-color-scheme: dark) {
+          border-bottom: 1px solid $dark-table-color;
+        }
+
+        [data-theme=dark] & {
+          border-bottom: 1px solid $dark-table-color;
+        }
+
+        [data-theme=light] & {
+          border-bottom: 1px solid $light-table-color;
+        }
+      }
+
+      th {
+        background-color: $light-table-color; /* Header background */
+        color: $light-color; /* Header text color */
+
+        @media (prefers-color-scheme: dark) {
+          background-color: $dark-table-color;
+          color: $dark-color;
+        }
+
+        [data-theme=dark] & {
+          background-color: $dark-table-color;
+          color: $dark-color;
+        }
+
+        [data-theme=light] & {
+          background-color: $light-table-color;
+          color: $light-color;
+        }
+      }
+
+      tr:last-child td {
+        border-bottom: none; /* No bottom border for the last row */
+      }
+
+      td:nth-child(2) {
+        font-weight: bold;
+        font-size: 1.2em;
+        font-family: monospace; /* Use monospace for morse code for better alignment */
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 ---
 categories: ["article"]
-tags: []
+tags: ["morse+code", "technology", "history", "telegraph", "side+project", "binary"]
 date: "2025-07-22T10:00:00Z"
-description: ""
+description: "Explore the history of Morse code, from its dits and dahs to the first transatlantic cable. Discover how this elegant system was the original binary and test your own skills with an interactive speed typer."
 cover: "cover.png"
 images: ["/posts/morse/cover.png"]
 featured: ""
@@ -12,10 +12,9 @@ linktitle: ""
 title: "Morse Code"
 slug: "morse"
 type: "posts"
-draft: true
 ---
 
-I'm continuing my journey into discovering more about older technology by making silly games. This time, I made a website that allows you to test your speed skills in the most useful skill ever! Morse code! Now you can test your skills with writing and interpreting morse code! And it even gives you your (likely abysmal) words per minute (wpm). (Plus, it's great practice for [Keep Talking and Nobody Explodes](https://keeptalkinggame.com/))
+I'm continuing my journey into discovering more about older technology by making silly games. This time, I made a website that allows you to test your speed skills in the most useful skill ever! Morse code! Now you can test your skills in writing and interpreting morse code! And it even gives you your (likely abysmal) words per minute (wpm). (Plus, it's great practice for [Keep Talking and Nobody Explodes](https://keeptalkinggame.com/))
 
 Head over to [https://morse.kmcd.dev](https://morse.kmcd.dev) and try the [Morse Speed Typer](https://morse.kmcd.dev) today! And if you need to brush up on your skills, check out the [learning page](https://morse.kmcd.dev/learn).
 
@@ -23,7 +22,7 @@ Head over to [https://morse.kmcd.dev](https://morse.kmcd.dev) and try the [Morse
 
 ## What is Morse Code?
 
-Morse code is a character encoding system used in telecommunication that represents letters, numbers, and punctuation marks as sequences of short and long signals. These signals, often called **dots** (or "dits") and **dashes** (or "dahs"), can be transmitted in various ways, such as through sound, light flashes, or electrical pulses.
+Morse code is a character encoding system used in telecommunication that represents letters, numbers, and punctuation marks as sequences of short and long signals. These signals, often called **dots** (or "dits") and **dashes** (or "dahs"), can be transmitted in various ways, such as through sound, light flashes, or electrical pulses. A simple and universally recognized example is the distress signal SOS, which is represented as `... --- ...`.
 
 Developed in the 1830s by Samuel Morse and Alfred Vail, it revolutionized long-distance communication. Before we had fiber optics and satellites, we had the simple, elegant language of dits and dahs clicking away across telegraph wires.
 
@@ -43,11 +42,23 @@ This precise rhythm is what allows a trained operator to "read" the code by ear.
 
 ---
 
+## The Morse Alphabet
+
+Just like in modern data compression, Morse code was designed with efficiency in mind. The most frequently used letters in the English language (like E and T) are assigned the shortest Morse code sequences, while less common letters have longer, more complex patterns. This clever design allowed for faster and more efficient communication.
+
+{{< morse_table >}}
+
+---
+
 ## The Original Binary Code
+
+{{< diagram width="500px" >}}
+{{< image src="operators.png" alt="Illustration of telegraph operators" >}}
+{{< /diagram >}}
 
 Long before computers used 1s and 0s, Morse code was encoding information using just two states: a short signal and a long signal (or, more fundamentally, "signal on" and "signal off"). In this sense, Morse code is one of the earliest forms of a **binary code**.
 
-Just as modern computers use a standardized system like ASCII or Unicode to map binary digits to characters, Morse code provides a map from dits and dahs to the letters of the alphabet. It's a brilliant, early example of how complex information, human language, can be broken down into simple, transmittable units.
+Just as modern computers use a standardized system like ASCII or Unicode to map binary digits to characters, Morse code provides a map from dits and dahs to the letters of the alphabet. It's a brilliant, early example of how complex information like human language can be broken down into simple, transmittable units.
 
 ---
 
@@ -68,7 +79,7 @@ Morse code has a rich history filled with interesting trivia and conventions.
     {{< morse-viz "--... ...--" "73" >}}
     {{< morse-viz "---.. ---.." "88" >}}
 
-* **What hath God wrought!** On May 24, 1844, this was the first official message sent by Samuel Morse on the telegraph line between Washington, D.C., and Baltimore. The phrase, from the Book of Numbers, was suggested by Annie Ellsworth, the daughter of a friend. The message in Morse is:
+* **What hath God wrought!** On May 24, 1844, this was the first official message sent by Samuel Morse on the telegraph line between Washington, D.C., and Baltimore. The phrase, from the Book of Numbers, was suggested by Annie Ellsworth, the daughter of a friend. Here’s the message in Morse:
 
     {{< morse-viz ".-- .... .- -" "WHAT" >}}
     {{< morse-viz ".... .- - ...." "HATH" >}}
@@ -87,13 +98,19 @@ Suddenly, the 10-day journey of a message became a matter of minutes. The world 
 
 That single wire, painstakingly laid over 150 years ago, was the ancestor of the incredible web of cables that powers our internet today. Instead of one copper wire carrying a few words per minute in Morse code, we now have hundreds of undersea fiber-optic cables carrying terabits of data every second. They are the backbone of our modern world, transmitting everything from video calls to this very article.
 
-To see the stunning evolution from that first transatlantic wire to the dense global network of today, **explore this [interactive map of modern undersea fiber-optic cables](https://map.kmcd.dev/)**. It’s the direct legacy of the dits and dahs that first conquered the ocean.
+To see the stunning evolution from that first transatlantic wire to the dense global network of today, **explore this [interactive map of modern undersea fiber-optic cables](https://map.kmcd.dev/)**. It’s the direct legacy of the dits and dahs that first conquered the ocean. If you've been following my side projects, you might have seen this link coming.
+
+{{< diagram width="500px" >}}
+<a href="https://map.kmcd.dev" target="_blank">
+{{< image src="map.png" alt="Map of the Internet" >}}
+</a>
+{{< /diagram >}}
 
 ---
 
 ## The Enduring Echo of Dits and Dahs
 
-From revolutionizing global communication on telegraph wires to its enduring legacy in maritime and amateur radio, Morse code is far more than a historical artifact. It stands as a powerful testament to human ingenuity. It was the original binary that paved the way for the digital world we navigate today. The simple, rhythmic language of dits and dahs demonstrates a foundational principle: that complex information can be broken down, transmitted, and understood through a simple, elegant system.
+From revolutionizing global communication on telegraph wires to its enduring legacy in maritime and amateur radio, Morse code is far more than a historical artifact. It stands as a powerful testament to human ingenuity. It embodies the fundamental principle that any complex idea, from a simple greeting to a national headline, can be distilled into a simple, universal language.
 
 So while it may no longer be the backbone of our global network, learning Morse code offers a unique connection to the history of technology. It’s a chance to appreciate the rhythm and precision that started it all.
 
