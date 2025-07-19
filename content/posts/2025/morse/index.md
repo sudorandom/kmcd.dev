@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["morse+code", "technology", "history", "telegraph", "side+project", "binary"]
+tags: ["morse-code", "technology", "history", "telegraph", "side+project", "binary"]
 date: "2025-07-22T10:00:00Z"
 description: "Explore the history of Morse code, from its dits and dahs to the first transatlantic cable. Discover how this elegant system was the original binary and test your own skills with an interactive speed typer."
 cover: "cover.png"
@@ -17,6 +17,12 @@ type: "posts"
 I'm continuing my journey into discovering more about older technology by making silly games. This time, I made a website that allows you to test your speed skills in the most useful skill ever! Morse code! Now you can test your skills in writing and interpreting morse code! And it even gives you your (likely abysmal) words per minute (wpm). (Plus, it's great practice for [Keep Talking and Nobody Explodes](https://keeptalkinggame.com/))
 
 Head over to [https://morse.kmcd.dev](https://morse.kmcd.dev) and try the [Morse Speed Typer](https://morse.kmcd.dev) today! And if you need to brush up on your skills, check out the [learning page](https://morse.kmcd.dev/learn).
+
+{{< diagram width="500px" >}}
+<a href="https://morse.kmcd.dev" target="_blank">
+{{< image src="screenshot.png" alt="Screenshot of morse.kmcd.dev" >}}
+</a>
+{{< /diagram >}}
 
 ---
 
