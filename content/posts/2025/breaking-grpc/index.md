@@ -24,7 +24,7 @@ The encoding you use (binary protobuf or transcoded JSON) dramatically changes t
 
 First, a quick refresher on how each format represents data. Consider this simple protobuf message:
 
-```proto
+```protobuf
 syntax = "proto3";
 
 package my_service.v1;
@@ -81,7 +81,7 @@ This option lets you explicitly set the JSON key for a field, decoupling it from
 
 Let's revise our `User` message. Suppose we want to rename `name` to `full_name` for clarity in our Go or Python code, but we can't break existing JSON clients that rely on the `"name"` key.
 
-```proto
+```protobuf
 syntax = "proto3";
 
 package my_service.v1;
