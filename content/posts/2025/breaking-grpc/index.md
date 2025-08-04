@@ -56,8 +56,6 @@ When a gRPC gateway or library transcodes this message to JSON, it produces a st
 
 Since JSON clients are coupled to these names, changing them will inevitably break the integration. **JSON clients are coupled to field names, not field numbers.** This fundamental difference is the source of many potential compatibility issues.
 
------
-
 ## Analyzing API Changes: Breaking vs. Non-Breaking
 
 Let's look at common changes you might make to a `.proto` file and see their impact on each encoding.
@@ -125,8 +123,6 @@ breaking:
 ```
 
 By integrating `buf breaking` into your CI/CD pipeline, you can automatically prevent developers from merging changes that would break any of your consumers, whether they speak protobuf or JSON.
-
------
 
 ## Conclusion
 
