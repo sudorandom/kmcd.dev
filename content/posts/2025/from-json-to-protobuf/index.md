@@ -108,7 +108,8 @@ Any JSON object is mapped to a new, nested Protobuf `message` type. The name of 
 ```json
 {
   "user_id": 12345,
-  "UserName": "joe"
+  "UserName": "joe",
+  "ENROLLED": true
 }
 ```
 
@@ -120,7 +121,9 @@ package my_package;
 message UserProfile {
   int64 user_id = 1 [json_name = "user_id"];
   string user_name = 2 [json_name = "UserName"];
+  bool enrolled = 3 [json_name = "ENROLLED"];
 }
+
 ```
 
 This is where the tool gets clever with its handling of naming conventions. Notice how `UserName` is converted to `user_name` in the Protobuf file but keeps its original name in the JSON with a `json_name` option. This ensures the generated Protobuf still works seamlessly with your existing JSON data, a powerful feature for maintaining compatibility.
