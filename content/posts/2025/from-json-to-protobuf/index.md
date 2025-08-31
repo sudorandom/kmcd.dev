@@ -35,7 +35,7 @@ Use this as an educational tool. _Understand your protobufs before you ship_.
 ## How it works
 The magic of this tool lies in its straightforward approach to translating the flexible world of JSON into the structured world of Protobuf. It does this by applying a series of simple rules and heuristics to the input data. The core of this process is type mapping, where the tool identifies each JSON data type (a string, number, boolean, or object) and converts it to a suitable Protobuf counterpart.
 
-#### JSON String → Protobuf string
+### JSON String → Protobuf string
 All JSON strings are converted to the Protobuf `string` type.
 
 ```json
@@ -50,13 +50,13 @@ syntax = "proto3";
 package my_package;
 
 message UserProfile {
-  string joe = 1;
+  string username = 1;
 }
 ```
 
 This is a straightforward mapping. The tool recognizes the string value `"joe"` and translates the field to the corresponding `string` type in Protobuf, a simple and direct conversion that works for text of all kinds.
 
-#### JSON Number → Protobuf int64 or double
+### JSON Number → Protobuf int64 or double
 
 The converter maps integer numbers to `int64` and floating-point numbers to `double`. The use of `int64` and `double` is a safe choice to ensure both large numbers and decimal values are handled correctly.
 
@@ -79,7 +79,7 @@ message UserProfile {
 
 ```
 
-#### JSON Boolean → Protobuf bool
+### JSON Boolean → Protobuf bool
 JSON boolean values (`true` and `false`) are converted to the Protobuf `bool` type.
 
 ```json
@@ -102,7 +102,7 @@ message UserProfile {
 
 Like strings, booleans have a direct Protobuf equivalent. The tool sees the `true` and `false` values and maps them directly to a `bool` type, making this a simple and lossless conversion.
 
-#### JSON Object → Protobuf message
+### JSON Object → Protobuf message
 Any JSON object is mapped to a new, nested Protobuf `message` type. The name of the new message is derived from the object's field name. I've been using objects for all of my examples since they are essentially required at the top level. However, there's something interesting to note about the attribute names. If the JSON attributes don't match in terms of capitalization and underscore usage that protojson uses, json-to-proto.kmcd.dev will add a `json_name` annotation to make it match up correctly.
 
 ```json
@@ -128,7 +128,7 @@ message UserProfile {
 
 This is where the tool gets clever with its handling of naming conventions. Notice how `UserName` is converted to `user_name` in the Protobuf file but keeps its original name in the JSON with a `json_name` option. This ensures the generated Protobuf still works seamlessly with your existing JSON data, a powerful feature for maintaining compatibility.
 
-#### JSON Array → Protobuf repeated
+### JSON Array → Protobuf repeated
 
 A JSON array is converted into a `repeated` field in Protobuf. The type of the elements within the `repeated` field is inferred from the data contained in the array.
 
