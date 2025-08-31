@@ -1,7 +1,4 @@
-.PHONY: rss run
-
-rss:
-	curl -k -u kevin https://rss.local.squirrels.dk/v1/export > data/links.xml
+.PHONY: run
 
 run:
 	./ensure-build-server.sh

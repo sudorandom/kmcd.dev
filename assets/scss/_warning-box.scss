@@ -1,0 +1,19 @@
+/* Warning Box */
+.warning-box {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.warning-box {
+    background-color: #fff3cd;
+    color: #664d03;
+    border-color: #ffc107;
+}
+
+[data-theme='dark'] .warning-box {
+    background-color: #4d3c0c;
+    color: #ffecb3;
+    border-color: #ffc107;
+}
