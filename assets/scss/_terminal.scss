@@ -1,0 +1,54 @@
+.terminal {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 15px;
+
+    .terminal-line {
+        margin-bottom: 10px;
+    }
+
+    .terminal-prompt {
+        color: var(--green); // Using existing color variable
+    }
+
+    .terminal-command {
+        color: var(--primary);
+    }
+
+    .terminal-output {
+        padding-left: 15px;
+        margin-bottom: 20px;
+        color: var(--secondary);
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        a {
+            color: var(--links);
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .project-list, .post-list {
+        li {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Courier New', Courier, monospace !important;
+}

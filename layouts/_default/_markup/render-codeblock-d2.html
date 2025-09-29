@@ -10,51 +10,25 @@
   $opts = merge $opts (dict "headers" (dict "Accept" "image/svg+xml, image/png;q=0.9"))
 */ -}}
 
-{{- $tryWrappedResult := try (resources.GetRemote $apiEndpoint $opts) -}}
+{{- $fetchedResource := resources.GetRemote $apiEndpoint $opts }}
 
-{{- if $tryWrappedResult.Err -}}
-  {{- /* Case 1: ANY error from GetRemote (network, DNS, HTTP 4xx/5xx, etc.). $tryWrappedResult.Err has the details. */ -}}
-  {{- $errMsg := printf "Render hook %q: error fetching remote diagram from %s: %s. Position: %s" $renderHookName $apiEndpoint $tryWrappedResult.Err $position -}}
-  {{- errorf $errMsg -}} {{/* Fails the build */}}
-{{- else -}}
-  {{- /* Case 2: GetRemote was successful at the transport layer (e.g., HTTP 2xx), and $tryWrappedResult.Value is the resource. */ -}}
-  {{- $fetchedResource := $tryWrappedResult.Value -}}
-
-  {{- if not $fetchedResource -}}
-    {{- /* Should ideally not happen if .Err was nil, but as a safeguard if GetRemote could return nil value without error. */ -}}
-    {{- $errMsg := printf "Render hook %q: GetRemote for %s returned a nil resource despite no error from 'try'. Position: %s" $renderHookName $apiEndpoint $position -}}
-    {{- errorf $errMsg -}} {{/* Fails the build */}}
-  {{- else -}}
-    {{- $diagramContent := $fetchedResource.Content -}}
-    {{- if eq (len (trim $diagramContent " \n\r\t")) 0 -}}
-      {{- /* HTTP 2xx (or other success), but the content is empty. */ -}}
-      {{- $errMsg := printf "Render hook %q: API at %s returned successful response but with empty content. Position: %s" $renderHookName $apiEndpoint $position -}}
-      {{- errorf $errMsg -}}
-    {{- else -}}
-      {{- /* Successfully fetched non-empty diagram content. */ -}}
-      {{- $uniqueID := $inner | sha256 -}} {{/* Generate unique ID from D2 content for filename */}}
-      {{- $fileExtension := "" -}}
-
-      {{- with $fetchedResource.MediaType -}} {{/* Try to get file extension from Content-Type header of the Resource */}}
-        {{- $fileExtension = .SubType -}}
-        {{- if eq $fileExtension "svg+xml" -}}{{- $fileExtension = "svg" -}}{{- end -}}
-        {{- $knownExtensions := slice "svg" "png" "jpeg" "jpg" "gif" "webp" -}}
-        {{- if not (in $knownExtensions $fileExtension) -}}
-          {{- warnf "D2 Render Hook (%s): Unexpected media subtype '%s' (full type '%s') from API for diagram. Defaulting to 'svg'. Check API's Content-Type header." $position .SubType .Type -}}
-          {{- $fileExtension = "svg" -}} {{/* Fallback for unknown types */}}
-        {{- end -}}
-      {{- else -}}
-        {{- warnf "D2 Render Hook (%s): API response from %s for diagram did not include a Content-Type header or it was unparseable. Defaulting to 'svg' extension." $position $apiEndpoint -}}
-        {{- $fileExtension = "svg" -}} {{/* Default if no Content-Type header */}}
-      {{- end -}}
-
-      {{- $assetPath := printf "d2-diagrams/%s.%s" $uniqueID $fileExtension -}}
-
-      {{- /* Create a new Hugo asset from the fetched diagram content */ -}}
-      {{- $imageAsset := resources.FromString $assetPath $diagramContent -}}
-
-      {{- /* Output an <img> tag referencing the new asset */ -}}
-      <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="width:100%; height:auto; display:block;" />
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{- with $fetchedResource }}
+  {{- $diagramContent := .Content }}
+  {{- if eq (len (trim $diagramContent " \n\r\t")) 0 }}
+    {{- $errMsg := printf "Render hook %q: API at %s returned successful response but with empty content. Position: %s" $renderHookName $apiEndpoint $position }}
+    {{- warnf $errMsg }}
+  {{- else }}
+    {{- $uniqueID := $inner | sha256 }}
+    {{- $fileExtension := "svg" }}
+    {{- with .MediaType }}
+      {{- $fileExtension = .SubType }}
+      {{- if eq $fileExtension "svg+xml" }}{{- $fileExtension = "svg" }}{{- end }}
+    {{- end }}
+    {{- $assetPath := printf "d2-diagrams/%s.%s" $uniqueID $fileExtension }}
+    {{- $imageAsset := resources.FromString $assetPath $diagramContent }}
+    <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="width:100%; height:auto; display:block;" />
+  {{- end }}
+{{- else }}
+  {{- $errMsg := printf "Render hook %q: failed to fetch remote diagram from %s. Position: %s" $renderHookName $apiEndpoint $position }}
+  {{- warnf $errMsg }}
+{{- end }}

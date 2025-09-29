@@ -8,76 +8,72 @@
 {{ end }}
 
 {{ define "main" }}
-    <main role="main">
-        <div class="main-heading">
-            {{ with .Content }}
-                {{ . }}
-            {{ end }}
+    <main role="main" class="terminal">
+        <div class="terminal-line">
+            <span class="terminal-prompt">root@kmcd.dev:~$</span> <span class="terminal-command">whoami</span>
         </div>
-        <!-- Start Posts -->
-        {{ if .Site.Params.showPosts }}
-            {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
-            {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
-            {{ $PageContext := . }}
-            {{ if .IsHome }}
-                {{ $PageContext = .Site }}
-            {{ end }}
-            <div class="main-heading">
-            <div class="posts-header">
-                <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
-            </div>
+        <div class="terminal-output">
+            {{ .Site.Params.author.name }}<br>
+            {{ .Site.Params.homeSubtitle }}
+        </div>
 
-            {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
-            <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                <div class="post-row">
-                    <h3>
-                        <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                        {{- with .Date -}}
-                        <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                        {{- end -}}
-                    </h3>
-                    <div class="post-meta">
-                    </div>
-                </div>
-                <div class="post-row">
-                    <span class="post-tags">
-                    {{ range .Params.tags }}
-                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
-                    {{ end }}
-                    </span>
-                </div>
-            </div>
-            <div class="posts-footer"></div>
-            {{ end }}
+        <div class="terminal-line">
+            <span class="terminal-prompt">root@kmcd.dev:~$</span> <span class="terminal-command">cat /etc/motd</span>
+        </div>
+        <div class="terminal-output">
+            {{ .Content }}
+        </div>
 
-            <div class="main-heading">
-            <div class="posts-header">
-                <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
-            </div>
-
-            {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
-            <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                <div class="post-row">
-                    <h3>
-                        <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                    </h3>
-                    <div class="post-meta">
-                    </div>
-                </div>
-                <div class="post-row">
-                    <span class="post-tags">
-                    {{ range .Params.tags }}
-                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
-                    {{ end }}
-                    </span>
-                </div>
-            </div>
+        {{ if .Site.Data.projects }}
+        <div class="terminal-line">
+            <span class="terminal-prompt">root@kmcd.dev:~$</span> <span class="terminal-command">ls -l projects/</span>
+        </div>
+        <div class="terminal-output">
+            <ul class="project-list">
+            {{ range .Site.Data.projects }}
+                <li><a href="{{ .url }}">{{ .name }}</a>: {{ .description }}</li>
             {{ end }}
-            <div class="posts-footer">
-                Didn't find what you want? Check out <a href="/posts/">the archive</a> for more.
-            </div>
-            </div>
+            </ul>
+        </div>
         {{ end }}
-        <!-- End Posts -->
+
+        {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+        {{ $notHidden := where $pages ".Params.hidden" "ne" true }}
+        {{ $featured := where $notHidden ".Params.featured" true | first 3 }}
+
+        {{ if $featured }}
+        <div class="terminal-line">
+            <span class="terminal-prompt">root@kmcd.dev:~$</span> <span class="terminal-command">cat featured_posts.log</span>
+        </div>
+        <div class="terminal-output">
+            <ul class="post-list">
+            {{ range $featured }}
+                <li>
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    <small>{{ .Date.Format "2006-01-02" }}</small>
+                </li>
+            {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+
+        {{ $latest := $notHidden | first 5 }}
+        {{ if $latest }}
+        <div class="terminal-line">
+            <span class="terminal-prompt">root@kmcd.dev:~$</span> <span class="terminal-command">tail -n 5 /var/log/posts.log</span>
+        </div>
+        <div class="terminal-output">
+            <ul class="post-list">
+            {{ range $latest }}
+                 <li>
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    <small>{{ .Date.Format "2006-01-02" }}</small>
+                </li>
+            {{ end }}
+            </ul>
+            <p><a href="/posts/">... view all posts</a></p>
+        </div>
+        {{ end }}
+
     </main>
 {{ end }}
