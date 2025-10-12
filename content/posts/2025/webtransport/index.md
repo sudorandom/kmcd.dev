@@ -98,7 +98,9 @@ Speaking of afterthoughts, the most reliable and supported implementation of Web
 > If your project relies on WebTransport support, what can you do?
 > I’m glad you asked. First, I would like to hear about your use case. Second, please consider sponsoring the maintenance and future development of the project. It’s best to reach out to me via email.
 
-Still, the project continues to see activity, thanks to community interest and Marten’s persistence. This is yet another reminder that much of the modern web still runs on unpaid passion.
+Still, the project continues to see activity, thanks to community interest and Marten’s persistence. This is yet another reminder that much of the modern web still runs on unpaid passion. This isn't the first time that I've used his project. You may recall that I ended up contributing trailer support for quic-go so that gRPC could work over HTTP/3. You can read more about this in .
+
+Still, the project continues to see activity, thanks to community interest and Marten’s persistence. This is yet another reminder that much of the modern web still runs on unpaid passion. My own experience with the underlying quic-go library highlights its importance to the ecosystem. I previously contributed trailer support to it, which was a critical step in enabling [gRPC Over HTTP/3](/posts/grpc-over-http3/), a journey I detailed in a previous series.
 
 ## So what?
 So where are we now? WebTransport is stable in Chrome, supported in Firefox, and inching toward production-readiness. It’s not quite universal, but it’s mature enough to experiment with for internal apps, native clients, closed ecosystems or if you just don't care about Safari users.
