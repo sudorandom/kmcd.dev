@@ -19,7 +19,7 @@ draft: true
 
 WebSockets have powered real-time web apps for over a decade, but they’re starting to show their age. Let's talk about WebTransport, a shiny new API built on HTTP/3 and QUIC that promises to fix WebSocket’s biggest limitations and finally bring full-duplex gRPC to the browser.
 
-> **TL;DR:** WebTransport is a new web API built on HTTP/3 and QUIC that finally makes full-duplex, low-latency, bidirectional communication possible in the browser. It could be the successor to WebSockets — and maybe even unlock full gRPC streaming — once Safari decides to join the party.
+> **TL;DR:** WebTransport is a new web API built on HTTP/3 and QUIC that finally makes full-duplex, low-latency, bidirectional communication possible in the browser. It could be the successor to WebSockets (and maybe even unlock full gRPC streaming) once Safari decides to join the party.
 
 ## The Caveats of gRPC-Web
 
@@ -311,4 +311,4 @@ WebTransport isn’t just “WebSockets but faster.” It’s a shift toward giv
 
 WebTransport presents a clear and powerful evolution for real-time web communication. Its native support for multiple streams and unreliable data transfer makes it a technically superior successor to WebSockets for many use cases, especially as a transport for full-duplex gRPC.
 
-However, its future is not yet certain. The lack of official adoption by the gRPC-Web team and the absence of support in Safari are significant roadblocks. This lack of forward movement has led some to speculate that gRPC-Web itself may be an abandoned project. For now, WebTransport remains a technology of the near future—viable for controlled environments and internal tools, but not yet ready for the mainstream web. The next critical step will be to pair these powerful backend capabilities with a web-based client to truly demonstrate the end-to-end potential.
+However, its future is not yet certain. The lack of official adoption by the gRPC-Web team and the absence of support in Safari are significant roadblocks. This lack of forward movement has led some to speculate that gRPC-Web itself may be an abandoned project. For now, WebTransport remains a technology of the near future. It is viable for controlled environments and internal tools, but not yet ready for the mainstream web. The next step will is to write a web-based client to demonstrate that this concept actually works!
