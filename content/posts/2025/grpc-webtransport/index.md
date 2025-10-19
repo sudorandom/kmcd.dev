@@ -1,23 +1,23 @@
 ---
 categories: ["article"]
-tags: ["webtransport", "http3", "grpc"]
+tags: ["webtransport", "http3", "grpc", "go"]
 date: "2025-10-15T10:00:00Z"
-description: "WebSockets finally have a challenger"
+description: "A hands-on experiment exploring how WebTransport over HTTP/3 could enable full-duplex gRPC streaming in the browser and why it’s not quite there yet."
 cover: "cover.png"
-images: ["/posts/webtransport/cover.png"]
+images: ["/posts/grpc-webtransport/cover.png"]
 featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "Is WebTransport the future, the present or neither?"
-slug: "webtransport"
+title: "Attempting gRPC Streaming with WebTransport"
+slug: "grpc-webtransport"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/webtransport/
+canonical_url: https://kmcd.dev/posts/grpc-webtransport/
 draft: true
 ---
 
-WebSockets have powered real-time web apps for over a decade, but they’re starting to show their age. Let's talk about WebTransport, a shiny new API built on HTTP/3 and QUIC. It's currently **an IETF draft proposal**, meaning the standard is still evolving, but it promises to fix WebSockets' biggest limitations and finally bring full-duplex gRPC to the browser.
+WebSockets have powered real-time web apps for over a decade, but they’re starting to show their age. Let's talk about WebTransport, a shiny new API built on HTTP/3 and QUIC. It's currently an **IETF draft proposal** ([spec](https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-overview)), meaning the standard is still evolving, but it promises to fix WebSockets' biggest limitations and finally bring full-duplex gRPC to the browser. You can follow its browser implementation status and API details on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/API/WebTransport).
 
 > **TL;DR:** WebTransport is a new web API that aims to make full-duplex, low-latency communication possible in the browser. As an unfinished IETF draft, it's still subject to change, which can create implementation challenges. However, it's poised to be the successor to WebSockets (and unlock full gRPC streaming) once the standard solidifies and Safari joins the party.
 
@@ -94,9 +94,9 @@ So where are we now? WebTransport is stable in Chrome, supported in Firefox, and
 
 If your users are internal or your browser matrix doesn’t include Safari, you can start experimenting with WebTransport today.
 
-## Let's Try It: A Go Example
+## Let's Try It: An Experiment in Go
 
-Let's demonstrate how WebTransport works with a simple client-server application written in Go, using the `github.com/quic-go/webtransport-go` library. The server will echo whatever the client sends, and the client will send a message with the current timestamp each second until it's manually stopped. If you've ever written a small WebSocket client and server, this will look very familiar.
+To put this all to the test, let's build a simple experiment: a client-server application in Go that uses WebTransport to stream messages. The server will echo whatever the client sends, and the client will send a timestamped message each second. If you've ever written a small WebSocket app, this will look very familiar.
 
 ### The Server
 
@@ -275,13 +275,15 @@ func run() error {
 
 In principle, this example demonstrates how easily you can implement WebTransport with the right libraries. The API is clean and familiar, showing its potential as a foundation for a gRPC transport layer. However, as is common with evolving standards, the principle and the practice can sometimes diverge.
 
-## The Issue
+## The Results: A Roadblock
 
-I had an issue where I could not actually use this on real browsers. It appears that the draft version of WebTransport that quic-go is built on is no longer supported by browsers. This outlines the issue with the WebTransport project being unfunded. No one is putting in the effort to keep it up-to-date with the latest RFC draft, so it has functionally broken.
+Here's where our experiment hit the wall. I couldn't get the Go example to work with modern browsers.
 
-I've tried other solutions, like the implementation in rust: [wtransport](https://github.com/BiagioFesta/wtransport) and it works just fine. Go is now behind here. I took a small stab at updating the implementation but it has become obvious that I need more time to get my head around the details of WebTransport for both the old draft and the new so I can make appropriate updates. I didn't want to wait that long to publish this article, so here we are.
+It appears the `quic-go/webtransport-go` implementation is based on an older draft of the WebTransport spec, which browsers no longer support. This is a direct consequence of the project being unfunded: without active maintenance, it's fallen out of sync with the evolving standard, rendering it functionally broken for our experiment.
 
-To give slightly more information about the issue with `quic-go/webtransport`, here are the logs from the server. After negotiating the WebSocket connection, the browser rejects our request.
+I've tried other solutions, like the Rust implementation [wtransport](https://github.com/BiagioFesta/wtransport), and it works just fine, confirming the issue is with the Go library, not the concept.
+
+The server logs confirm this incompatibility. After the initial connection, the browser rejects the session:
 ```
 2025/10/17 21:40:09 Adding connection ID 17db7129.
 2025/10/17 21:40:09 server 	<- &wire.PingFrame{}
@@ -335,4 +337,4 @@ WebTransport isn’t just “WebSockets but faster.” It’s a shift toward giv
 
 WebTransport presents a clear and powerful evolution for real-time web communication. Its native support for multiple streams and unreliable data transfer makes it a technically superior successor to WebSockets for many use cases, especially as a transport for full-duplex gRPC.
 
-However, its future is not yet certain. The lack of official adoption by the gRPC-Web team and the absence of support in Safari are significant roadblocks. Furthermore, the maintenance state of key libraries, like `quic-go` for Go developers, adds another layer of uncertainty. As we've seen, when a core implementation falls out of sync with browser drafts, it can render the technology unusable. This lack of forward movement has led some to speculate that gRPC-Web itself may be an abandoned project. For now, WebTransport remains a technology of the near future. It is viable for controlled environments and internal tools, but not yet ready for the mainstream web. The next step will be to write a web-based client to demonstrate that this concept actually works!
+However, its future is not yet certain. The lack of official adoption by the gRPC-Web team and the absence of support in Safari are significant roadblocks. Furthermore, the maintenance state of key libraries, like `quic-go` for Go developers, adds another layer of uncertainty. As we've seen, when a core implementation falls out of sync with browser drafts, it can render the technology unusable. This lack of forward movement has led some to speculate that gRPC-Web itself may be an abandoned project. For now, WebTransport remains a technology of the near future. It is viable for controlled environments and internal tools, but not yet ready for the mainstream web. The technology is promising, but as our experiment shows, its real-world use depends on the entire ecosystem—from browser vendors to library maintainers—staying in sync.
