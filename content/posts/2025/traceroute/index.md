@@ -255,6 +255,11 @@ for ttl := 1; ttl <= 64; ttl++ {
 The following code combines all the steps into a complete, runnable traceroute program, including the crucial validation logic to ensure we only process replies to the probes we sent.
 
 {{% render-code file="go/traceroute.go" language="go" %}}
+{{< aside >}}
+See the full source at Github: {{< github-link file="go/traceroute.go" >}}.
+{{</ aside >}}
+
+This script combines the previous steps into a fully functioning (although not fully featured) traceroute utility. Now it's time to use it.
 
 ### Running the Code
 
