@@ -204,6 +204,8 @@ R3 -> R1 {style: {stroke: "#4CAF50"; stroke-width: 2}}
 R1 -> Client {style: {stroke: "#4CAF50"; stroke-width: 2}}
 ```
 
+For dealing with the complexities of inconsistent and asymmetric routes, tools like [mtr](https://www.bitwizard.nl/mtr/) (My Traceroute) continuously repeat traceroutes, providing real-time statistics and a clearer picture of network performance over time.
+
 ## Building a Traceroute in Go
 
 We can build a functional traceroute tool in Go using the `golang.org/x/net/icmp` package, which provides access to the low-level networking primitives required. The process involves setting up a "listener" to receive ICMP messages, then looping to send probes with an incrementally higher TTL.
@@ -385,7 +387,7 @@ While this implementation demonstrates the core logic of traceroute, a productio
 - **ASN Lookup**: By querying the Autonomous System Number (ASN) of each IP, the tool could identify the specific ISP or organization that owns a router. This enables the visualization of the AS-Path to show how traffic hands off between different entities, for example: `Comcast` → `Tata Communications` → `Google`. Visualizing these organizational jumps is often more insightful than viewing a raw list of IP addresses.
 - **Geo-location**: Beyond simple IP and ASN lookups, more advanced tools can be used to geo-locate routers. By examining router hostnames (which often contain location codes), querying WHOIS databases for IP ranges, and consulting resources like PeeringDB or Internet BGP tables, it's possible to infer the physical location and network ownership of each hop, providing richer diagnostic information.
 - **Concurrency**: To speed up the process, multiple probes could be sent concurrently using goroutines rather than sequentially.
-- **Advanced Formatting**: Production tools often send multiple probes per hop and display statistics like average latency and packet loss. Multiple probes would reveal that there may be multiple paths that you are taking, as internet routing can be very dynamic.
+- **Multiple Probes**: Production tools often send multiple probes per hop and display statistics like average latency and packet loss. Multiple probes would reveal that there may be multiple paths that you are taking, as internet routing can be very dynamic.
 
 These features are excellent next steps for expanding this simple tool into a more powerful network diagnostic utility, but this is left as an exercise for the audience.
 
