@@ -340,3 +340,11 @@ While this implementation demonstrates the core logic of traceroute, a productio
 - **Advanced Formatting**: Production tools often send multiple probes per hop and display statistics like average latency and packet loss. Multiple probes would reveal that there may be multiple paths that you are taking, as internet routing can be very dynamic.
 
 These features are excellent next steps for expanding this simple tool into a more powerful network diagnostic utility, but this is left as an exercise for the audience.
+
+## References
+
+- [Varonis: What is Traceroute and How Does it Work?](https://www.varonis.com/blog/what-is-traceroute)
+- [GeeksforGeeks: What is Traceroute?](https://www.geeksforgeeks.org/what-is-traceroute/)
+- [Wikipedia: Traceroute](https://en.wikipedia.org/wiki/Traceroute)
+- [Cloudflare: What is Traceroute?](https://www.cloudflare.com/learning/network-layer/what-is-traceroute/)
+- [Go Package: `golang.org/x/net/icmp`](https://pkg.go.dev/golang.org/x/net/icmp)
