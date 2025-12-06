@@ -14,5 +14,4 @@ build-future:
 
 cover:
   python3 scripts/generate_cover_art.py /tmp/cover-art-raw.png --style=random --network
-  go tool primitive -i /tmp/cover-art-raw.png -o /tmp/cover-primitive.svg -n 100 -m 0
-  magick /tmp/cover-primitive.svg -resize 1200x630! cover.png
+  go tool primitive -i /tmp/cover-art-raw.png -o cover.svg -n 100 -m $(awk 'BEGIN{srand(); print int(rand()*9)}')

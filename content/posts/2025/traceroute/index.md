@@ -3,12 +3,12 @@ categories: ["article"]
 tags: ["networking", "icmp", "udp"]
 date: "2025-12-09T10:00:00Z"
 description: "Map your route through the Internet"
-cover: "cover.png"
-images: ["/posts/traceroute/cover.png"]
+cover: "cover.svg"
+images: ["/posts/traceroute/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "Building a Traceroute Tool from Scratch in Go"
+title: "Traceroute Tool from Scratch in Go"
 slug: "traceroute"
 type: "posts"
 devtoSkip: true

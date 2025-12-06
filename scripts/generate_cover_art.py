@@ -4,34 +4,29 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageColor
 import random
 import argparse
-import colorsys
 import heapq
 
 # --- Configuration ---
 WIDTH, HEIGHT = 1200, 630
-GRID_SPACING = 30
+GRID_SPACING = 60
 MIN_WIRES = 0
 MAX_WIRES = 4
-MIN_COMPONENTS = 25
+MIN_COMPONENTS = 15
 MAX_COMPONENTS = 40
 COMPONENT_MIN_SIZE = 15
-COMPONENT_MAX_SIZE = 60
+COMPONENT_MAX_SIZE = 100
 
 # --- Color Palettes ---
 PALETTES = [
-    # Monochromatic schemes for coherence
     ["#d8f3dc", "#b7e4c7", "#95d5b2", "#74c69d", "#52b788", "#40916c", "#2d6a4f"], # Green
     ["#fde2e4", "#fad2e1", "#fbc3d4", "#f9b4c8", "#f8a5bc", "#f796b0", "#f687a3"], # Pink/Red
-    # Previous monochromatic palettes
     ["#ADD8E6", "#87CEEB", "#6495ED", "#4169E1", "#1E90FF"], # Blue
     ["#F2E7FE", "#E6CCFB", "#D1ACF6", "#BB8CEF", "#A36EE8"], # Purple
     ["#FFFAD3", "#FFECB3", "#FFDD88", "#FFCE5A", "#FFBF2B"], # Yellow/Orange
-    # New monochromatic palettes
     ["#FFCDD2", "#EF9A9A", "#E57373", "#EF5350", "#F44336"], # Red
     ["#F5F5F5", "#E0E0E0", "#BDBDBD", "#9E9E9E", "#757575"], # Grey
     ["#D7CCC8", "#BCAAA4", "#A1887F", "#8D6E63", "#795548"], # Brown
     ["#E0F7FA", "#B2EBF2", "#80DEEA", "#4DD0E1", "#00BCD4"], # Cyan
-    # Requested monochromatic palettes
     ["#C5CAE9", "#9FA8DA", "#7986CB", "#5C6BC0", "#3F51B5"], # Indigo/Blue
     ["#A8DADC", "#83C5BE", "#6D9F9D", "#548A85", "#3C756F"], # Teal
 ]
@@ -94,6 +89,12 @@ def generate_art(output_path, style='grid', seed=None, add_network=False):
             jitter_y = random.randint(-jitter_amount, jitter_amount)
             grid_points.append((x + jitter_x, y + jitter_y))
 
+    # Determine Component Points
+    num_components = random.randint(MIN_COMPONENTS, MAX_COMPONENTS)
+    component_points = []
+    for _ in range(num_components):
+        component_points.append(random.choice(grid_points))
+
     # 3. --- Draw Wires based on Style ---
     num_wires = random.randint(MIN_WIRES, MAX_WIRES)
 
@@ -126,12 +127,28 @@ def generate_art(output_path, style='grid', seed=None, add_network=False):
             else:
                 draw.line([start_point, end_point], fill=color, width=width)
 
-    # 4. --- Draw Components ---
-    num_components = random.randint(MIN_COMPONENTS, MAX_COMPONENTS)
-    component_points = []
-    for _ in range(num_components):
-        point = random.choice(grid_points)
-        component_points.append(point)
+    # 4. --- Draw Network Overlay ---
+    if add_network and len(component_points) > 1:
+        # Connect each component to its N nearest neighbors
+        for i, p1 in enumerate(component_points):
+            distances = []
+            for j, p2 in enumerate(component_points):
+                if i == j: continue
+                dist = np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+                distances.append((dist, p2))
+
+            num_neighbors = random.randint(0, 4)
+            if len(distances) < num_neighbors:
+                num_neighbors = len(distances)
+                
+            neighbors = heapq.nsmallest(num_neighbors, distances)
+
+            for dist, neighbor_point in neighbors:
+                if dist < WIDTH / 3.5: # Limit connection distance
+                    draw.line([p1, neighbor_point], fill=random.choice(palette), width=random.randint(8, 15))
+
+    # 5. --- Draw Components ---
+    for point in component_points: # Iterate over pre-generated points
         size = random.randint(COMPONENT_MIN_SIZE, COMPONENT_MAX_SIZE)
         color = random.choice(palette)
 
@@ -186,26 +203,6 @@ def generate_art(output_path, style='grid', seed=None, add_network=False):
             p2 = (point[0] + random.randint(-size, size), point[1] + random.randint(-size, size))
             p3 = (point[0] + random.randint(-size, size), point[1] + random.randint(-size, size))
             draw.polygon([p1, p2, p3], fill=color)
-    
-    # 5. --- Draw Network Overlay ---
-    if add_network and len(component_points) > 1:
-        # Connect each component to its N nearest neighbors
-        for i, p1 in enumerate(component_points):
-            distances = []
-            for j, p2 in enumerate(component_points):
-                if i == j: continue
-                dist = np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
-                distances.append((dist, p2))
-
-            num_neighbors = random.randint(0, 4)
-            if len(distances) < num_neighbors:
-                num_neighbors = len(distances)
-                
-            neighbors = heapq.nsmallest(num_neighbors, distances)
-
-            for dist, neighbor_point in neighbors:
-                if dist < WIDTH / 3.5: # Limit connection distance
-                    draw.line([p1, neighbor_point], fill=random.choice(palette), width=random.randint(8, 15))
 
     # 6. --- Post-processing with OpenCV ---
     frame = np.array(img)

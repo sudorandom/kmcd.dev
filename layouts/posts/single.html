@@ -8,7 +8,7 @@
         {{- $additionalStyles := "" }}
         {{- $minHeight := "300" }}
         {{- if eq .MediaType.SubType "svg" -}}
-          {{- $additionalStyles = "background-repeat: no-repeat; background-size: contain;" -}}
+          {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
         {{- else -}}
           {{- $cover = $cover.Fill "960x420 Center webp q100" -}}
           {{- $minHeight = $cover.Height -}}
