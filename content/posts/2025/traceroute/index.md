@@ -56,9 +56,9 @@ Unlike what the name suggests, TTL does not represent actual time. It represents
 
 Traceroute uses this mechanism to map the network:
 
-1. Hop 1: It sends a packet with a TTL of 1. The very first router receives it, decreases the TTL to 0, drops the packet, and replies with "Time Exceeded." We have now identified the first router.
-2. Hop 2: It sends a new packet with a TTL of 2. The first router passes it along (TTL becomes 1). The second router receives it, decreases TTL to 0, drops it, and replies "Time Exceeded." We have identified the second router.
-3. Repeat: It continues increasing the TTL by 1 until the packet finally reaches the destination server and receives a standard reply.
+1. **Hop 1**: It sends a packet with a TTL of 1. The very first router receives it, decreases the TTL to 0, drops the packet, and replies with "Time Exceeded." We have now identified the first router.
+2. **Hop 2**: It sends a new packet with a TTL of 2. The first router passes it along (TTL becomes 1). The second router receives it, decreases TTL to 0, drops it, and replies "Time Exceeded." We have identified the second router.
+3. **Repeat**: It continues increasing the TTL by 1 until the packet finally reaches the destination server and receives a standard reply.
 
 ### Probe Methods: ICMP, UDP, and TCP
 
@@ -296,7 +296,7 @@ Destination reached.
 
 Microsoft.com seems to block ICMP traffic, so we see a lot of timeouts after a certain point:
 ```shell
-sudo go run traceroute.go microsoft.com
+$ sudo go run traceroute.go microsoft.com
 Traceroute to microsoft.com (13.107.246.35)
 1       10.5.0.1        110.333709ms
 2       5.104.76.1      114.67925ms
