@@ -1,8 +1,8 @@
 ---
 categories: ["article"]
 tags: ["networking", "icmp", "udp"]
-date: "2025-12-10T10:00:00Z"
-description: "How you can map your route through the Internet"
+date: "2025-12-09T10:00:00Z"
+description: "Map your route through the Internet"
 cover: "cover.png"
 images: ["/posts/traceroute/cover.png"]
 featured: ""
@@ -14,7 +14,6 @@ slug: "traceroute"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/traceroute/
-draft: true
 ---
 
 Traceroute is a network diagnostic utility that maps the path that packets take across an IP network. It provides a list of the intermediate routers a packet traverses on its way to a final destination, along with the time taken for each "hop." This information is crucial for diagnosing network latency and identifying points of failure. Personally, I think it is super cool that there's a way to figure out the route that your packets are taking.
