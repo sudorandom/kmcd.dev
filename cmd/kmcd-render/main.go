@@ -2,10 +2,11 @@ package main
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"os/exec"
 )
 
@@ -28,6 +29,7 @@ func handleRenderRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "image/svg+xml")
 	w.Write([]byte(output))
 }
 
@@ -36,16 +38,23 @@ func renderText(content string) (string, error) {
 	command := exec.Command(
 		"d2",
 		"--sketch",
-		"--theme", "201",
-		"--pad", "20",
+		"--theme",
+		"201",
+		"--pad",
+		"20",
 		"-",
 	)
 	command.Stdin = bytes.NewBuffer([]byte(content))
 	command.Dir = d2WorkingDirectory
-	command.Stderr = os.Stderr
+	var stderr bytes.Buffer
+	command.Stderr = &stderr
 	output, err := command.Output()
 	if err != nil {
-		return "", err
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return "", fmt.Errorf("d2 execution failed: %s\n%s", err, stderr.String())
+		}
+		return "", fmt.Errorf("d2 command failed: %w", err)
 	}
 	return string(output), nil
 }

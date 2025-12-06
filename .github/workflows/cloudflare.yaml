@@ -19,7 +19,7 @@ jobs:
         with:
           experimental: true
       - name: Build
-        run: make build
+        run: just build
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
@@ -27,7 +27,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=kmcd-dev ./live
       - name: Build
-        run: make build-future
+        run: just build-future
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
