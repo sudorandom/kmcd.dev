@@ -5,7 +5,6 @@ date: "2025-09-22T10:00:00Z"
 description: "A gentle introduction to the world of web APIs."
 cover: "cover.jpg"
 images: ["/posts/what-is-a-web-api/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

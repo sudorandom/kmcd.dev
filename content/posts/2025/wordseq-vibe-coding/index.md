@@ -5,7 +5,6 @@ date: "2025-07-22T10:00:00Z"
 description: "A skeptical look at AI-driven development, and how 'vibe coding' helped and hindered the UI for my game, wordseq."
 cover: "cover.png"
 images: ["/posts/wordseq-vibe-coding/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

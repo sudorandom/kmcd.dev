@@ -5,7 +5,6 @@ date: "2024-08-20T10:00:00Z"
 description: "I made a server that outputs nonsense."
 cover: "cover.jpg"
 images: ["/posts/fauxrpc/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

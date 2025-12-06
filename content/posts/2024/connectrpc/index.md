@@ -6,7 +6,6 @@ date: "2024-03-05"
 description: "Unleash the power of gRPC: ConnectRPC breaks down barriers, enabling frictionless communication between gRPC, gRPC-Web, and any HTTP client."
 cover: "cover.jpg"
 images: ["/posts/connectrpc/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

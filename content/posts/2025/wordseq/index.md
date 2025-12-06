@@ -5,7 +5,6 @@ date: "2025-05-14T10:00:00Z"
 description: "Taking a peek under the covers of making a daily puzzle game"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -6,7 +6,6 @@ date: "2024-09-17T10:00:00Z"
 description: "Let's cover some recent updates!"
 cover: "cover.jpg"
 images: ["/posts/grpc-over-http3-followup/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

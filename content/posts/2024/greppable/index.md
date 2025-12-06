@@ -5,7 +5,6 @@ date: "2024-04-16"
 description: "Meaningful names help make code searchable so think twice before naming everything 'entity'"
 cover: "cover.jpg"
 images: ["/posts/greppable/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

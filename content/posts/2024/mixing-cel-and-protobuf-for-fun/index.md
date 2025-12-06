@@ -5,7 +5,6 @@ date: "2024-12-17T10:00:00Z"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/mixing-cel-and-protobuf-for-fun/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

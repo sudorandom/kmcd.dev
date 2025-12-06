@@ -5,7 +5,6 @@ date: "2025-09-22T10:00:00Z"
 description: "Why I love asking candidates to explain how the internet works."
 cover: "cover.jpeg"
 images: ["/posts/favorite-interview-question/cover.jpeg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

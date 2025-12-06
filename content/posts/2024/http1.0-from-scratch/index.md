@@ -6,7 +6,6 @@ date: "2024-08-13"
 description: "Laying the Foundation: Building the Web with HTTP/1.0."
 cover: "cover.jpg"
 images: ["/posts/http1.0-from-scratch/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

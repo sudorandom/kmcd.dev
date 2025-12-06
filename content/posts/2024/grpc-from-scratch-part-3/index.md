@@ -6,7 +6,6 @@ date: "2024-05-07"
 description: "Let's look under the hood of gRPC by getting into the weeds of protocol buffers."
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-3/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2023-09-10"
 description: "Frank talk about the rollercoaster of productivity."
 cover: ""
 images: []
-featured: ""
 linktitle: ""
 title: "The Rollercoaster of Productivity in Side Projects"
 slug: "productivity"

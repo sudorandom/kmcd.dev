@@ -5,7 +5,6 @@ date: "2025-07-15T10:00:00Z"
 description: "Or How I Got Thousands of Mastodon Users to Whistle at Their Screens"
 cover: "cover.png"
 images: ["/posts/can-you-hack-a-phone-with-your-voice/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2024-10-22T10:00:00Z"
 description: "Are monoliths cool again?"
 cover: "cover.jpg"
 images: ["/posts/call-of-the-monolith-codebase/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

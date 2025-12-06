@@ -5,7 +5,6 @@ date: "2024-02-25"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/inspecting-protobuf-messages/social.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

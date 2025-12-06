@@ -5,7 +5,6 @@ date: "2025-09-02T10:00:00Z"
 description: "A Tool to Ease Your Schema Journey"
 cover: "cover.png"
 images: ["/posts/from-json-to-protobuf/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

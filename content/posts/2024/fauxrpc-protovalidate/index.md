@@ -5,7 +5,6 @@ date: "2024-11-12T10:00:00Z"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/fauxrpc-protovalidate/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2025-01-27T10:00:00Z"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/barcode-scanner/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2024-05-23"
 description: "Find out why the name of this website changed"
 cover: "cover.jpg"
 images: ["/posts/why-im-rebranding/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

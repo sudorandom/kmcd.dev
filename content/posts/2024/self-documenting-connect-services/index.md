@@ -5,7 +5,6 @@ date: "2024-09-25T10:00:00Z"
 description: "gRPC can be pretty, too."
 cover: "cover.jpg"
 images: ["/posts/self-documenting-connect-services/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

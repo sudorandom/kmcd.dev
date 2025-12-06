@@ -4,7 +4,6 @@ tags: ["eve-online", "gaming", "evepraisal", "programming", "python", "golang", 
 date: "2023-07-24"
 description: "Saying goodbye to an amazing long-running project; evepraisal price checking utility for the MMORPG game Eve Online"
 cover: "cover.jpg"
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

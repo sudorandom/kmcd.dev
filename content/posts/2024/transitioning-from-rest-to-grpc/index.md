@@ -5,7 +5,6 @@ date: "2024-07-16"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/transitioning-from-rest-to-grpc/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

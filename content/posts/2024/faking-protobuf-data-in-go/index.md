@@ -5,7 +5,6 @@ date: "2024-09-03"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/faking-protobuf-data-in-go/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

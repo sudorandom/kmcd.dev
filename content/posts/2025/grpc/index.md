@@ -5,7 +5,6 @@ date: "2025-05-11T10:00:00Z"
 description: "performance, protocols, pain points, progress"
 cover: "cover.jpg"
 images: ["/posts/grpc/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -6,7 +6,6 @@ date: "2024-09-03"
 description: "The seedy underbelly of gRPC."
 cover: "cover.jpg"
 images: ["/posts/grpc-the-ugly-parts/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

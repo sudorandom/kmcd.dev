@@ -4,7 +4,6 @@ tags: ["http", "protocols", "api", "webdev", "go"]
 date: "2025-06-04T10:00:00Z"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

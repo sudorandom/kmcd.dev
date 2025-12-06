@@ -5,7 +5,6 @@ date: "2024-07-23T10:00:00Z"
 description: "Find out if your browser using the latest and greatest."
 cover: "cover.png"
 images: ["/posts/http-tool/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

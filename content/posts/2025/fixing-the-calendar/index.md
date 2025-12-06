@@ -5,7 +5,6 @@ date: "2025-09-22T10:00:00Z"
 description: "Can our calendar be better?"
 cover: "cover.jpg"
 images: ["/posts/fixing-the-calendar/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

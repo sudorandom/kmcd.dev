@@ -5,7 +5,6 @@ date: "2024-08-27T10:00:00Z"
 description: "Tools and tricks for developing with protobuf."
 cover: "cover.jpg"
 images: ["/posts/working-with-protobuf-in-2024/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

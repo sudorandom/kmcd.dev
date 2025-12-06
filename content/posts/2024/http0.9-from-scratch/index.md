@@ -6,7 +6,6 @@ date: "2024-07-30"
 description: "Building the foundation with HTTP/0.9"
 cover: "cover.jpg"
 images: ["/posts/http1.0-from-scratch/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

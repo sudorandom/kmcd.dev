@@ -5,7 +5,6 @@ date: "2024-05-14"
 description: "An update about the state of the blog."
 cover: "cover.jpg"
 images: ["/posts/blog-update/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

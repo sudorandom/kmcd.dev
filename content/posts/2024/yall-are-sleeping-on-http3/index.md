@@ -5,7 +5,6 @@ date: "2024-08-06T10:00:00Z"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/yall-are-sleeping-on-http3/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2025-08-05T10:00:00Z"
 description: "How to avoid breaking gRPC clients."
 cover: "cover.webp"
 images: ["/posts/breaking-grpc/cover.webp"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

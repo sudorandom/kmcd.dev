@@ -6,7 +6,6 @@ date: "2024-08-27"
 description: "When the web became whole."
 cover: "cover.jpg"
 images: ["/posts/http1.1-from-scratch/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

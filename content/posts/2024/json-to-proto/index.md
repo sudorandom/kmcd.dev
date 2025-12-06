@@ -5,7 +5,6 @@ date: "2024-09-10T10:00:00Z"
 description: "Deep dive into a small Protobuf tool"
 cover: "cover.jpg"
 images: ["/posts/json-to-proto/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

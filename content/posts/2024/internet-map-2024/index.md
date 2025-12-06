@@ -7,7 +7,6 @@ date: "2024-04-23"
 description: "Map of the Internet including undersea cables and internet exchanges."
 cover: "cover.png"
 images: ["posts/internet-map-2024/the-internet-map-small.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

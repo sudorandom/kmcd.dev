@@ -6,7 +6,6 @@ date: "2024-02-17"
 description: "Last part we created a simple gRPC client. Let's take it a bit further. Let's implement a simple gRPC server in go."
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-2/social.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

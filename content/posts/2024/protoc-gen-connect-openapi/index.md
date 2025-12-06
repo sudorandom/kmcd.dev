@@ -6,7 +6,6 @@ date: "2024-02-20"
 description: ""
 cover: "cover.jpg"
 images: ["/posts/protoc-gen-connect-openapi/social.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

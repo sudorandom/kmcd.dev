@@ -5,7 +5,6 @@ date: "2024-10-15"
 description: "Effortless gRPC Mocking in Go"
 cover: "cover.jpg"
 images: ["/posts/fauxrpc-testcontainers/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -5,7 +5,6 @@ date: "2025-10-15T10:00:00Z"
 description: "A hands-on experiment exploring how WebTransport over HTTP/3 could enable full-duplex gRPC streaming in the browser and why it’s not quite there yet, at least not with Go."
 cover: "cover.png"
 images: ["/posts/grpc-webtransport/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

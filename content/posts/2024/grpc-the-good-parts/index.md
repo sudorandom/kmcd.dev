@@ -6,7 +6,6 @@ date: "2024-07-02"
 description: "Not perfect, but still pretty awesome."
 cover: "cover.png"
 images: ["/posts/grpc-the-good-parts/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

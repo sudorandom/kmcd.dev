@@ -6,7 +6,6 @@ date: "2024-07-09T10:00:00Z"
 description: "Turbocharging gRPC with HTTP/3"
 cover: "cover.jpg"
 images: ["/posts/grpc-over-http3/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

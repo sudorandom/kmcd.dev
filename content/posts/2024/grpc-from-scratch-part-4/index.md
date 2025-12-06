@@ -6,7 +6,6 @@ date: "2024-07-23"
 description: "We have more work to do with protobuf encoding!"
 cover: "cover.jpg"
 images: ["/posts/grpc-from-scratch-part-4/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

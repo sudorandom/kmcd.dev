@@ -7,7 +7,6 @@ date: "2023-08-01"
 description: "Journey into the depths of the Internet with this incredible map showcasing undersea cables and internet exchanges."
 cover: "geo-mercator-apac.png"
 images: ["posts/internet-map-2023/geo-mercator-na.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

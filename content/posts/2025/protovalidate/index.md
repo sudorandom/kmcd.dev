@@ -5,7 +5,6 @@ date: "2025-02-11T10:00:00Z"
 description: "Effortless input validation for Protobuf! Protovalidate lets you define rules directly in your .proto files."
 cover: "cover.jpg"
 images: ["/posts/protovalidate/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

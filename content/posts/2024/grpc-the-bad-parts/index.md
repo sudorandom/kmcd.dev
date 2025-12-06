@@ -6,7 +6,6 @@ date: "2024-06-18"
 description: "gRPC isn't perfect but who is?"
 cover: "cover.jpg"
 images: ["/posts/grpc-the-bad-parts/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

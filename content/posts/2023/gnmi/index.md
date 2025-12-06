@@ -6,7 +6,6 @@ date: "2023-11-04"
 description: "gNMI is better than SNMP and more people need to know about it."
 cover: "cover.jpg"
 images: ["/posts/gnmi/cover.jpg"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

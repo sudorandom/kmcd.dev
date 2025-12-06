@@ -5,7 +5,6 @@ date: "2025-12-09T10:00:00Z"
 description: "Map your route through the Internet"
 cover: "cover.png"
 images: ["/posts/traceroute/cover.png"]
-featured: ""
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
@@ -47,6 +46,50 @@ This tells us that `google.com` is reachable and provides the round-trip time fo
 ### From `ping` to `traceroute`
 
 While `ping` tells you *if* you can reach a destination, `traceroute` tells you *how* you get there. Traceroute builds upon this ICMP foundation but uses a different ICMP message in a clever way. Instead of just checking for the final "Echo Reply," it intentionally triggers **`ICMP Time Exceeded`** messages from intermediate routers to map out the entire path. This is achieved by manipulating the Time-To-Live (TTL) field within the IP packet header.
+
+### IP and ICMP Packet Formats
+
+To fully grasp how `traceroute` works, it's beneficial to understand the basic structure of the packets it manipulates. Both IP and ICMP have distinct headers and data sections.
+
+#### IPv4 Packet Format
+
+All network traffic on the internet is encapsulated within IP packets. The IP header contains crucial information for routing, including source and destination IP addresses, and, most importantly for `traceroute`, the Time-To-Live (TTL) field.
+
+```mermaid
+packet
+0-3: "Version"
+4-7: "IHL"
+8-15: "Type of Service (TOS)"
+16-31: "Total Length"
+32-47: "Identification"
+48-50: "Flags"
+51-63: "Fragment Offset"
+64-71: "TTL"
+72-79: "Protocol"
+80-95: "Header Checksum"
+96-127: "Source IP Address"
+128-159: "Destination IP Address"
+160-191: "Options & Padding"
+192-223: "Data (Variable Length)"
+```
+
+While a deep dive into every field is beyond the scope of this article, it's crucial to observe the Time-To-Live (TTL) field, which is central to how traceroute operates.
+
+#### ICMP Packet Format
+
+ICMP messages, including the Echo Request/Reply used by `ping` and the Time Exceeded messages used by `traceroute`, are themselves encapsulated within an IP packet's payload. The ICMP header specifies the message type (e.g., Echo Request, Echo Reply, Time Exceeded) and a code, along with a checksum for integrity. For Echo messages, it also includes an identifier and sequence number.
+
+```mermaid
+packet
+0-7: "Type (e.g., 8=Request, 0=Reply)"
+8-15: "Code (e.g., 0)"
+16-31: "Checksum"
+32-47: "Identifier (BE) / (Varies by Type)"
+48-63: "Sequence Number (BE) / (Varies by Type)"
+64-95: "Data Payload (variable length)"
+```
+
+Crucially, since ICMP messages are encapsulated within IP packets, it is the *enclosing IP packet* that carries the TTL field and other IP header information, not the ICMP message itself. The ICMP header defines the specific control message, while the IP header handles its transport.
 
 ## How does traceroute work?
 
