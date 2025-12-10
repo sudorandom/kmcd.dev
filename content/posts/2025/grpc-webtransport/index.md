@@ -308,30 +308,6 @@ The server logs confirm this incompatibility. After the initial connection, the 
 
 The key message in the logs is CERTIFICATE_VERIFY_FAILED. In plain English, the browser and server failed to agree on the security handshake, which is a classic symptom of protocol incompatibility between a client and server running different draft versions of a standard.
 
-## A Universal gRPC Proxy?
-
-One powerful idea is a proxy that can terminate all three types of gRPC connections:
-
-1.  **Standard gRPC:** From other backend services.
-2.  **gRPC-Web:** From current web browsers.
-3.  **gRPC + WebTransport:** From modern browsers and native clients.
-
-This proxy would inspect the incoming connection and route the gRPC calls to the appropriate backend service.
-
-```mermaid
-graph LR
-    A[gRPC Client] --> P{Universal Proxy};
-    B[gRPC-Web Client] --> P;
-    C[gRPC+WebTransport Client] --> P;
-    P --> S[gRPC Backend];
-```
-
-Such a proxy would allow you to write your services in standard gRPC and let the proxy handle the complexity of supporting different client types. This would be similar to gRPC-Web's proxy-based design.
-
-It could be built from scratch or it could leverage existing functionality in a project like [Vanguard](https://github.com/connectrpc/vanguard-go), which I've used to enable support for gRPC, gRPC Web, ConnectRPC and REST in [FauxRPC](https://fauxrpc.com) or [Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/other_protocols/grpc), which can already terminate and translate gRPC and/or gRPC-Web connections.
-
-Building such a proxy could bridge the gap between legacy browsers and future protocols. This would be a practical path while the standards catch up. But if I'm going to write this in Go, I need the WebTransport library to catch up to the latest WebTransport draft.
-
 ## Final Thoughts
 
 WebTransport isn’t just “WebSockets but faster.” It’s a shift toward giving web developers the same transport-level flexibility backend engineers have enjoyed for years. Once it’s universally supported (and if the gRPC ecosystem embraces it), we could finally see browser apps communicating with backend systems using the same rich streaming semantics as microservices.

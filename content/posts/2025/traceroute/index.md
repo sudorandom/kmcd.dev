@@ -367,14 +367,14 @@ You will often see rows of asterisks like this (`* * *`). This usually doesn't m
 
 You might ask if `sudo` is strictly necessary. This is a common point of confusion for developers new to network programming in Go, as tools like the standard `traceroute` on macOS and Linux can often run without `sudo` by sending UDP packets. While sending UDP packets is unprivileged, listening for the returning ICMP `Time Exceeded` errors is a privileged operation that often requires elevated permissions or specific system configurations (like modifying `net.ipv4.ping_group_range`).
 
-Our code simplifies this by using `icmp.ListenPacket("ip4:icmp", ...)`, which creates a powerful **raw ICMP socket**. This approach requires `sudo` because listening directly to the entire ICMP protocol is a privileged operation, but it saves us from writing more complex, OS-specific code, making it ideal for a tutorial.
+Our code simplifies this by using `icmp.ListenPacket("ip4:icmp", ...)`, which creates a powerful **raw ICMP socket**. This approach requires `sudo` because listening directly to the entire ICMP protocol is a privileged operation, but it saves us from writing more complex, OS-specific code. This feels more appropriate for this tutorial.
 
 
 ## Conclusion
 
 Traceroute is a powerful diagnostic tool that unveils the very path our data takes across the vast, complex network of the internet. By cleverly manipulating the Time-To-Live (TTL) field in IP packets, it turns a bug-like feature (routers discarding expired packets) into a mechanism for discovery. We've explored how this process works, from sending probes with incremental TTLs to interpreting the `ICMP Time Exceeded` messages that allow us to map the network hop-by-hop.
 
-In this article, we demonstrated how to build a functional traceroute tool from scratch in Go. Our implementation uses ICMP echo requests, much like the `ping` utility, but listens for intermediate router replies in addition to the final destination's echo reply. While we focused on ICMP, we also discussed alternative probing methods using UDP and TCP, each with its own way of determining when the final destination is reached.
+We demonstrated how to build a functional traceroute tool from scratch in Go. Our implementation uses ICMP echo requests, much like the `ping` utility, but listens for intermediate router replies in addition to the final destination's echo reply. While we focused on ICMP, we also discussed alternative probing methods using UDP and TCP, each with its own way of determining when the final destination is reached.
 
 Building a tool like this from the ground up demystifies the magic behind everyday network diagnostics and gives us a deeper appreciation for the protocols that govern the internet. The journey of a single packet is a fascinating one, and with a little bit of Go, we've built a window to observe it.
 
@@ -389,7 +389,7 @@ While this implementation demonstrates the core logic of traceroute, a productio
 - **Concurrency**: To speed up the process, multiple probes could be sent concurrently using goroutines rather than sequentially.
 - **Multiple Probes**: Production tools often send multiple probes per hop and display statistics like average latency and packet loss. Multiple probes would reveal that there may be multiple paths that you are taking, as internet routing can be very dynamic.
 
-These features are excellent next steps for expanding this simple tool into a more powerful network diagnostic utility, but this is left as an exercise for the audience.
+These features are excellent next steps for expanding this simple tool into a more powerful network diagnostic utility, but this is left as an exercise for the audience. And until then, just use [mtr](https://www.bitwizard.nl/mtr/), which has most of these features!
 
 ## References
 
