@@ -17,11 +17,11 @@ canonical_url: https://kmcd.dev/posts/traceroute/
 
 Traceroute is a network diagnostic utility that maps the path that packets take across an IP network. It provides a list of the intermediate routers a packet traverses on its way to a final destination, along with the time taken for each "hop." This information is crucial for diagnosing network latency and identifying points of failure. Personally, I think it is super cool that there's a way to figure out the route that your packets are taking.
 
-This article explores how traceroute works and demonstrates how to build a simple version from scratch using Go.
+In this article, I'll dig into how traceroute works and show you how to build a simple version from scratch using Go.
 
 ## ICMP: The Internet's Control Protocol
 
-Before diving into traceroute, it's helpful to understand the protocol that powers it: **ICMP (Internet Control Message Protocol)**. ICMP is a network-layer protocol used by network devices to send error messages and operational information. It's *not* used for exchanging data, but rather for diagnostics, control, and error reporting. In fact, many routers and devices will heavily throttle ICMP traffic to protect their CPU usage, as generating these error messages is computationally expensive compared to simply forwarding packets.
+Before diving into traceroute, we need to understand the protocol that powers it: **ICMP (Internet Control Message Protocol)**. ICMP is a network-layer protocol used by network devices to send error messages and operational information. It's *not* for exchanging data, but for diagnostics, control, and error reporting. In fact, many routers and devices will heavily throttle ICMP traffic to protect their CPU usage, since generating these error messages is computationally expensive compared to simply forwarding packets.
 
 ### The Classic Use Case: `ping`
 
@@ -45,11 +45,11 @@ This tells us that `google.com` is reachable and provides the round-trip time fo
 
 ### From `ping` to `traceroute`
 
-While `ping` tells you *if* you can reach a destination, `traceroute` tells you *how* you get there. Traceroute builds upon this ICMP foundation but uses a different ICMP message in a clever way. Instead of just checking for the final "Echo Reply," it intentionally triggers **`ICMP Time Exceeded`** messages from intermediate routers to map out the entire path. This is achieved by manipulating the Time-To-Live (TTL) field within the IP packet header.
+While `ping` tells you *if* you can reach a destination, `traceroute` tells you *how* you get there. It builds on the same ICMP foundation but uses a different ICMP message in a clever way. Instead of just checking for the final "Echo Reply," it intentionally triggers **`ICMP Time Exceeded`** messages from intermediate routers to map out the path. This is all done by manipulating the Time-To-Live (TTL) field in the IP packet header.
 
 ### IP and ICMP Packet Formats
 
-To fully grasp how `traceroute` works, it's beneficial to understand the basic structure of the packets it manipulates. Both IP and ICMP have distinct headers and data sections.
+To fully understand how `traceroute` works, we should understand the basic structure of IP and ICMP packets.
 
 #### IPv4 Packet Format
 
@@ -73,7 +73,7 @@ packet
 192-223: "Data (Variable Length)"
 ```
 
-While a deep dive into every field is beyond the scope of this article, it's crucial to observe the Time-To-Live (TTL) field, which is central to how traceroute operates.
+Mostly, I want you to note the Time-To-Live (TTL) field, which is central to how traceroute operates. We'll touch more on TTLs a little bit later. But first, let's look at the structure of ICMP packets.
 
 #### ICMP Packet Format
 
@@ -135,7 +135,7 @@ Here's a diagram of the OSI model, showing where traceroute fits in:
 | 2: Data Link             |                  |
 | 1: Physical              |                  |
 
-While the core TTL mechanism and ICMP `Time Exceeded` messages clearly place traceroute's fundamental operation at Layer 3, it's important to note that the probe packets themselves can originate from Layer 4 protocols. As discussed in the "Probe Methods" section, `traceroute` often utilizes UDP or TCP packets. In these cases, the probe *originates* at Layer 4 (Transport Layer) but relies on the Layer 3 IP header's TTL for its diagnostic function. This effectively makes `traceroute` a cross-layer diagnostic tool, leveraging capabilities from both Layer 3 and Layer 4 to achieve its results.
+While the core TTL mechanism and ICMP `Time Exceeded` messages clearly place traceroute's fundamental operation at Layer 3, it's important to note that the probe packets themselves can originate from Layer 4 protocols. As discussed in the "Probe Methods" section, `traceroute` often utilizes UDP or TCP packets. In these cases, the probe *originates* at Layer 4 (Transport Layer) but relies on the Layer 3 IP header's TTL for its diagnostic function. This makes `traceroute` a tool that crosses over a couple OSI layer boundaries, sending probes with Layer 3 or Layer 4 and utilizing ICMP's time exceeded errors from Layer 3.
 
 #### TTL Exhaustion
 
@@ -316,7 +316,7 @@ sudo go run traceroute.go google.com
 
 Here are some of my runs (from a VPN):
 ```shell
-$ ≻ sudo go run traceroute.go kmcd.dev
+$ sudo go run traceroute.go kmcd.dev
 Traceroute to kmcd.dev (172.64.80.1)
 1       10.5.0.1        88.094958ms
 2       87.249.138.252  88.137959ms
@@ -372,11 +372,11 @@ Our code simplifies this by using `icmp.ListenPacket("ip4:icmp", ...)`, which cr
 
 ## Conclusion
 
-Traceroute is a powerful diagnostic tool that unveils the very path our data takes across the vast, complex network of the internet. By cleverly manipulating the Time-To-Live (TTL) field in IP packets, it turns a bug-like feature (routers discarding expired packets) into a mechanism for discovery. We've explored how this process works, from sending probes with incremental TTLs to interpreting the `ICMP Time Exceeded` messages that allow us to map the network hop-by-hop.
+Traceroute is a powerful diagnostic tool that reveals the path our data takes across the internet. By cleverly using the Time-To-Live (TTL) field in IP packets, it turns an error-reporting mechanism into a tool for discovery. We've walked through how this works, from sending probes with an ever-increasing TTL to interpreting the `ICMP Time Exceeded` messages that let us map the network hop-by-hop.
 
-We demonstrated how to build a functional traceroute tool from scratch in Go. Our implementation uses ICMP echo requests, much like the `ping` utility, but listens for intermediate router replies in addition to the final destination's echo reply. While we focused on ICMP, we also discussed alternative probing methods using UDP and TCP, each with its own way of determining when the final destination is reached.
+Using this knowledge, we built a functional traceroute tool from scratch in Go. Our implementation uses ICMP echo requests, just like the `ping` utility, and listens for replies from intermediate routers as well as the final destination. While we focused on ICMP, we also touched on alternative probing methods using UDP and TCP.
 
-Building a tool like this from the ground up demystifies the magic behind everyday network diagnostics and gives us a deeper appreciation for the protocols that govern the internet. The journey of a single packet is a fascinating one, and with a little bit of Go, we've built a window to observe it.
+Building a tool like this from the ground up really demystifies the magic behind everyday network diagnostics and gives a deeper appreciation for the protocols that run the internet. The journey of a single packet is a fascinating one, and with a little bit of Go, we've built a window to watch it.
 
 ## Next Steps
 
