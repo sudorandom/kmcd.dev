@@ -1,0 +1,131 @@
+{{ $glob := .Get 0 }}
+{{ $images := .Page.Resources.Match $glob }}
+
+{{ if not $images }}
+  {{ errorf "No images found for slideshow with glob '%s' in %s. Ensure images are in the same folder as the content file." $glob .Page.Path }}
+  {{ return }}
+{{ end }}
+
+{{ $galleryID := printf "gallery-%s" (substr (md5 (printf "%s-%s" .Page.Permalink $glob)) 0 8) }}
+
+<div id="{{ $galleryID }}" class="slideshow-container">
+  <style>
+  #{{ $galleryID }} {
+    position: relative;
+    margin: auto;
+    max-width: 700px;
+  }
+
+  #{{ $galleryID }} .mySlides {
+    display: none;
+  }
+
+  #{{ $galleryID }} .mySlides figure {
+    margin: 0;
+    width: 100%;
+  }
+
+  #{{ $galleryID }} .mySlides img {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f0f0f0; /* Add a light background for SVGs */
+  }
+
+  #{{ $galleryID }} .prev, #{{ $galleryID }} .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    transform: translateY(-50%);
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0,0,0,0.2);
+    border: none;
+  }
+
+  #{{ $galleryID }} .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  
+  #{{ $galleryID }} .prev:hover, #{{ $galleryID }} .next:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+  </style>
+
+  {{ range $images }}
+  <div class="mySlides">
+    <figure>
+            <a href="{{ .Permalink }}"
+                title="Click to view larger image"
+                class="spotlight"
+                data-preload="true"
+                data-download="true"
+                data-progress="true"
+                data-infinite="true"
+                data-spinner="true"
+                data-autofit="true"
+                data-fit="cover"
+            >
+                <img src="{{ .RelPermalink }}" loading="lazy" alt="{{ .Title | default "Gallery image" }}" />
+            </a>    </figure>
+  </div>
+  {{ end }}
+
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
+</div>
+
+<script>
+(function() {
+  const gallery = document.getElementById('{{ $galleryID }}');
+  if (!gallery) return;
+
+  const slides = gallery.getElementsByClassName("mySlides");
+  const prevButton = gallery.getElementsByClassName("prev")[0];
+  const nextButton = gallery.getElementsByClassName("next")[0];
+  
+  if (slides.length === 0) return;
+
+  let slideIndex = 1;
+  let slideTimeout;
+
+  function plusSlides(n) {
+    clearTimeout(slideTimeout);
+    showSlides(slideIndex += n);
+  }
+
+  function showSlides(n) {
+    if (n > slides.length) { slideIndex = 1; }
+    if (n < 1) { slideIndex = slides.length; }
+
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+
+    if (slides.length > 0) {
+        slides[slideIndex - 1].style.display = "block";
+    }
+
+    slideTimeout = setTimeout(() => {
+      plusSlides(1);
+    }, 4000); // Change image every 4 seconds
+  }
+
+  if (prevButton) {
+    prevButton.addEventListener('click', () => plusSlides(-1));
+  }
+  if (nextButton) {
+    nextButton.addEventListener('click', () => plusSlides(1));
+  }
+  
+  showSlides(slideIndex);
+})();
+</script>

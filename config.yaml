@@ -110,9 +110,9 @@ markup:
   goldmark:
     renderHooks:
       image:
-        enableDefault: true
+        useEmbedded: "fallback"
       link:
-        enableDefault: true
+        useEmbedded: "fallback"
   highlight:
     anchorLineNos: false
     codeFences: true

@@ -15,29 +15,36 @@
     {{- $promptCover := (partial "prompts/load-cover.html" .).Filter $filters -}}
     <meta property="og:image" content="{{ $promptCover.Permalink }}"/>
 {{ else }}
-    {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
+        {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- $page := . -}}
-    {{- $images := (first 3 (.Resources.ByType "image")) -}}
-    {{- with (.Resources.Get .Params.Cover) -}}
-        {{ $images = append $images (slice .)}}
-    {{- end -}}
-    {{- range $images -}}
-    {{ $img := . }}
-    {{ if ne $img.MediaType.SubType "svg" }}
-      {{ $filters := slice
+    {{- with .Resources.Get .Params.cover -}}
+      {{ $img := . }}
+      {{ $processedImg := "" }}
+
+      {{ if eq $img.MediaType.SubType "svg" }}
+          {{ $opts := dict "method" "POST" "body" $img.Content }}
+          {{ $pngResource := resources.GetRemote "http://127.0.0.1:7001/svg-to-png" $opts }}
+          {{ $processedImg = resources.FromString (printf "socials/%s.png" $img.Name) $pngResource.Content }}
+      {{ else }}
+          {{ $processedImg = $img }}
+      {{ end }}
+
+      {{/* Square image for some platforms */}}
+      {{ $squareFilters := slice
         (images.Process "fill 570x517 Center png q95")
         (images.Padding 135 30 30  "#1F2A35")
         (images.Text $page.Title (dict
-            "size" 45
+            "size" 36
             "x" 40
             "y" 60
             "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
           }}
-      {{ $squareImg := $img.Filter $filters }}
+      {{ $squareImg := $processedImg.Filter $squareFilters }}
       <meta property="og:image" content="{{ $squareImg.Permalink }}"/>
 
-      {{ $filters := slice
+      {{/* Rectangular image for other platforms */}}
+      {{ $rectFilters := slice
           (images.Process "fill 1200x560 Center png q95")
           (images.Padding 70 0 0 0 "#1F2A35")
           (images.Text $page.Title (dict
@@ -46,13 +53,10 @@
               "y" 10
               "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
         }}
-      {{ $socialimg := $img.Filter $filters }}
+      {{ $socialimg := $processedImg.Filter $rectFilters }}
       <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
     {{ else }}
-      <meta property="og:image" content="{{ $img.Permalink }}"/>
-    {{ end }}
-    {{ else }}
-    <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
+      <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
     {{ end }}
 {{ end }}
 
