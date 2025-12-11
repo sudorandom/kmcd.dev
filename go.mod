@@ -4,7 +4,10 @@ go 1.24.0
 
 toolchain go1.24.3
 
-tool github.com/fogleman/primitive
+tool (
+	github.com/fogleman/primitive
+	github.com/playwright-community/playwright-go/cmd/playwright
+)
 
 require (
 	github.com/disintegration/imaging v1.6.2

@@ -18,8 +18,8 @@ jobs:
         uses: jdx/mise-action@v2
         with:
           experimental: true
-      - name: Install Playwright driver
-        run: npx playwright install --with-deps
+      - name: Install Playwright driver (via Go module)
+        run: go tool playwright install --with-deps
       - name: Build
         run: just build
       - name: deploy
