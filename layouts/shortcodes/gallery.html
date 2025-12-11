@@ -14,23 +14,41 @@
     position: relative;
     margin: auto;
     max-width: 700px;
+    aspect-ratio: 1200 / 630;
+    background-color: #f0f0f0;
+    overflow: hidden;
   }
 
   #{{ $galleryID }} .mySlides {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  #{{ $galleryID }} .mySlides.slide-active {
+    opacity: 1;
   }
 
   #{{ $galleryID }} .mySlides figure {
     margin: 0;
     width: 100%;
+    height: 100%;
+  }
+
+  #{{ $galleryID }} .mySlides a {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   #{{ $galleryID }} .mySlides img {
     width: 100%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #f0f0f0; /* Add a light background for SVGs */
+    height: 100%;
+    object-fit: contain;
   }
 
   #{{ $galleryID }} .prev, #{{ $galleryID }} .next {
@@ -48,6 +66,7 @@
     user-select: none;
     background-color: rgba(0,0,0,0.2);
     border: none;
+    z-index: 10;
   }
 
   #{{ $galleryID }} .next {
@@ -83,6 +102,29 @@
   <button class="next">&#10095;</button>
 </div>
 
+<noscript>
+  <style>
+    #{{ $galleryID }} .mySlides {
+      position: static;
+      opacity: 1;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+    #{{ $galleryID }} .prev, #{{ $galleryID }} .next {
+      display: none;
+    }
+    #{{ $galleryID }} {
+      aspect-ratio: auto;
+      background-color: transparent;
+    }
+    #{{ $galleryID }} .mySlides img {
+      position: static;
+      height: auto;
+      object-fit: initial;
+    }
+  </style>
+</noscript>
+
 <script>
 (function() {
   const gallery = document.getElementById('{{ $galleryID }}');
@@ -107,11 +149,11 @@
     if (n < 1) { slideIndex = slides.length; }
 
     for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
+      slides[i].classList.remove('slide-active');
     }
 
     if (slides.length > 0) {
-        slides[slideIndex - 1].style.display = "block";
+        slides[slideIndex - 1].classList.add('slide-active');
     }
 
     slideTimeout = setTimeout(() => {
