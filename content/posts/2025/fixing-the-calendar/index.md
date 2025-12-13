@@ -61,12 +61,12 @@ To see the difference, compare a perfect 13th-month calendar month with our curr
 | 26 | 27 | 28 | 29 | 30 | 31 | |
 
 
-The appeal is its deterministic nature. The 10th of *any* month is always a Wednesday. Annoying date-based math for things like budgets, sprints, and payroll just becomes simple. It’s a clean API for time.
+The appeal is its deterministic nature. The 10th of *any* month is always a Wednesday. Annoying date arithmetic for things like budgets, sprints, and payroll just becomes simple. It’s a clean API for time.
 
 ### Where My Dream Falls Apart
 Of course, for all its elegance on paper, this system slams into a wall of bitter reality.
 
-The entire global economy runs on four quarters. `13` is a prime number, meaning you can't divide it cleanly into equal quarters. This would necessitate creating awkward `3-3-3-4` month quarters, which ultimately reintroduces the very inconsistency we were attempting to eliminate.
+The entire global economy runs on four quarters. `13` is a prime number, meaning you can't divide it cleanly into equal quarters. While individuals don't live their lives in quarters, corporations do. This would necessitate creating awkward `3-3-3-4` month quarters for financial reporting, which ultimately reintroduces the very inconsistency we were attempting to eliminate. Economic reality kills calendar idealism.
 
 Implementing such a calendar change would be a monumental undertaking, akin to Y2K on a global scale but vastly more complex due to deeply embedded legal, civil, and international coordination challenges. Every piece of software, every legal contract, and every database on Earth would require extensive rewriting. The associated cost would be unfathomable and would ultimately outweigh any benefits that we'd gain.
 
@@ -99,7 +99,7 @@ The system is built and standardized; we just don't use it as our default. Here�
 | **2026-W04** | 19/01 | 20/01 | 21/01 | 22/01 | 23/01 | 24/01 | 25/01 |
 | **2026-W05** | 26/01 | 27/01 | 28/01 | 29/01 | 30/01 | 31/01 | 01/02 |
 
-Note that week 1 of 2026 starts in December of 2025. This might seem confusing, but it’s a deliberate design choice. The ISO 8601 standard prioritizes a consistent, unbroken 7-day week. To do this, it defines the first week of the year as the one containing the first Thursday. This means a year's first week can start in the previous calendar year. It's a trade-off: the Gregorian calendar breaks weekday consistency at the year's boundary, while the week-date system prioritizes the weekly cycle *over* the year boundary. In practice, you often stop caring which 'year' a Monday belongs to, because your planning horizon is almost always weeks ahead, not abstract year boundaries.
+Note that week 1 of 2026 starts in December of 2025. This might seem confusing, but it’s a deliberate design choice. Rule of thumb: **The first week of the year is the week that has the year's first Thursday in it.** This is the standard definition and explains why the week can straddle years—it ensures the majority of the week belongs to the new year. It's a trade-off: the Gregorian calendar breaks weekday consistency at the year's boundary, while the week-date system prioritizes the weekly cycle *over* the year boundary. In practice, you often stop caring which 'year' a Monday belongs to, because your planning horizon is almost always weeks ahead, not abstract year boundaries.
 
 ### Addressing the Concerns
 This idea has its own set of hurdles, but they feel more like matters of habit than hard blockers.
@@ -110,13 +110,11 @@ Months are poor seasonal anchors anyway. "December" is winter here in Copenhagen
 
 We can create new narratives. The argument that we need months for "chapter breaks" in our year assumes we're incapable of making new patterns. We could easily create new milestones around 10-week blocks or the four 13-week quarters. The narrative doesn't disappear; it just gets refactored.
 
-The migration can be an evolution, not a revolution. Here's the shift in thinking. The migration doesn't have to be a revolution; it can be an **evolution**. As I've learned living in Denmark, using week numbers for planning is completely normal. It coexists with the standard calendar. I've had people invite me to events in "week 45." The first time, I had to look it up. The fifth time, I also had to look it up. But I assume that with enough usage I will build an intuition.
+As I've learned living in Denmark, using week numbers for planning is completely normal. It coexists with the standard calendar. I've had people invite me to events in "week 45." The first time, I had to look it up. The fifth time, I also had to look it up. But I assume that with enough usage I will build an intuition.
 
-## The Migration Path
+## The Migration Path: An Evolution
 
-The end result of this thought exercise is a clear personal commitment: I'm going to lean into using week numbers more in my own life. This isn't a radical proposition; in countries like Denmark and much of Europe, using week numbers for scheduling is completely normal. The migration doesn't have to be a revolution; it’s about consciously adopting a better system that already exists in parallel.
-
-It’s an evolutionary change, and here’s how you can start:
+The end result of this thought exercise is a new year years goal for myself: I'm going to lean into using week numbers more in my own life. This isn't a radical proposition; it's about consciously adopting a better system that already exists in parallel. It’s an evolutionary change, and here’s how you can start:
 
 **Add Week Numbers to Your Calendar.** Most digital calendars support this as a display option. Making the week number visible is the first step to making it intuitive. Try it for three months.
 
