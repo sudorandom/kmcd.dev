@@ -59,7 +59,7 @@ It's also worth noting that the resulting images from `primitive` are SVGs. Beca
 
 This new process feels right. With this setup, I may decide to use `primitive` on different kinds of source images if a post is about something visual, but for now I'm pretty happy with how this has turned out. It's more personal, and there's a fun element of surprise in seeing what the code comes up with each time. It feels less like a shortcut and more like my own little art machine.
 
-Here's a gallery of the art this process has helped create.
+Here's a gallery of the art this process has helped create. Note that not all of these images look amazing. I plan on generating images until I find one that I like well enough.
 
 {{< gallery "example-*.svg" >}}
 
