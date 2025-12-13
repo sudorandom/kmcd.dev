@@ -82,16 +82,7 @@
   {{ range $images }}
   <div class="mySlides">
     <figure>
-      <a href="{{ .Permalink }}"
-          class="spotlight"
-          data-preload="true"
-          data-download="true"
-          data-progress="true"
-          data-infinite="true"
-          data-spinner="true"
-          data-autofit="true"
-          data-fit="cover"
-      >
+      <a href="{{ .Permalink }}">
           <img src="{{ .RelPermalink }}" loading="lazy" alt="{{ .Title | default "Gallery image" }}" />
       </a>
   </figure>
@@ -130,7 +121,7 @@
   const gallery = document.getElementById('{{ $galleryID }}');
   if (!gallery) return;
 
-  const slides = gallery.getElementsByClassName("mySlides");
+  const slides = Array.from(gallery.getElementsByClassName("mySlides"));
   const prevButton = gallery.getElementsByClassName("prev")[0];
   const nextButton = gallery.getElementsByClassName("next")[0];
   
@@ -150,10 +141,12 @@
 
     for (let i = 0; i < slides.length; i++) {
       slides[i].classList.remove('slide-active');
+      slides[i].style.pointerEvents = 'none';
     }
 
     if (slides.length > 0) {
         slides[slideIndex - 1].classList.add('slide-active');
+        slides[slideIndex - 1].style.pointerEvents = 'auto';
     }
 
     slideTimeout = setTimeout(() => {
@@ -169,5 +162,33 @@
   }
   
   showSlides(slideIndex);
+
+  const images = [
+    {{ range $index, $image := $images }}
+    {
+      src: "{{ .Permalink }}",
+      title: "{{ .Title | default "Gallery image" }}"
+    },
+    {{ end }}
+  ];
+
+  gallery.addEventListener('click', (e) => {
+    const clickedSlide = e.target.closest('.mySlides');
+    if (!clickedSlide) return;
+
+    const slideIndex = slides.findIndex(slide => slide === clickedSlide);
+
+    if (slideIndex > -1) {
+      e.preventDefault();
+      Spotlight.show(images, {
+        index: slideIndex + 1
+      });
+    }
+  });
+
+  gallery.addEventListener('spotlight:change', ({detail}) => {
+    slideIndex = detail.index;
+    showSlides(slideIndex);
+  });
 })();
 </script>
