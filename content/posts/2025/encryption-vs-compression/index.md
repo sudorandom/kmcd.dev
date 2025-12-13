@@ -16,29 +16,29 @@ canonical_url: https://kmcd.dev/posts/encryption-vs-compression/
 draft: true
 ---
 
-Compression shrinks data, encryption obfuscates it. The order you apply them isn’t trivial. Get it wrong and you waste CPU, storage, and bandwidth.
+Compression shrinks data, encryption obfuscates it. The order you apply them isn't simple. Get it wrong and you waste CPU, storage, and bandwidth.
 
 {{< bigtext >}}**Always compress first, then encrypt.**{{< /bigtext >}}
 
-In backups, data pipelines, secure transport, or any place where performance matters, picking the wrong order will waste a lot of resources needlessly. I often ask this exact question during interviews. The question reveals more than just memorization of trivia; it shows whether they possess a fundamental understanding of how compression and encryption actually work under the hood.
+In backups, data pipelines, secure transport, or any place where performance matters, picking the wrong order will waste a lot of resources needlessly. I often ask this exact question during interviews. The question reveals more than just memorization of trivia; it shows whether they truly understand how compression and encryption work.
 
 ### Why the order matters
 
-The reason "encrypt then compress" is a terrible idea comes down to the opposing goals of the two operations.
+The reason "encrypt then compress" is a terrible idea is due to the opposing goals of the two operations.
 
-**Compression tools are pattern-finders.** A tool like `gzip` hunts for repeated sequences in your file—like a recurring log message or timestamp—and replaces those long strings with tiny references. It thrives on order and predictability.
+**Compression tools are pattern-finders.** A tool like `gzip` hunts for repeated sequences in your file, like a recurring log message or timestamp, and replaces those long strings with tiny references. It works best with order and predictability.
 
 **Encryption tools are pattern-destroyers.** The goal of a strong encryption algorithm (like AES) is to scramble your orderly data into high-entropy, random-looking noise. A perfectly encrypted file should have no predictable patterns.
 
-So, if you **encrypt first**, you're feeding random noise to a compression tool that thrives on patterns. It finds none, gives up, and the file barely shrinks (or it might even get slightly larger).
+So, if you **encrypt first**, you're feeding random noise to a compression tool that thrives on patterns. It finds none, gives up, and the file barely shrinks (or might even get slightly larger).
 
 But if you **compress first**, the algorithm gets to work on the raw, patterned data. It shrinks it way down. *Then* you encrypt the much smaller result.
 
-### Let's get hands-on
+### Let's try it out
 
-Talk is cheap, so let's run a small experiment to demonstrate what happens when you get the order wrong. We’ll run both pipelines side by side so you can see exactly how the output sizes change. We can prove this in about thirty seconds with standard command-line tools you probably already have installed. We'll use `gzip` for compression and `gpg` for encryption. For the `gpg` commands, you'll be prompted for a passphrase—just use something simple like "test" for this demo.
+Instead of just talking about it, let's run a small experiment to demonstrate what happens when you get the order wrong. We'll run both pipelines side by side so you can see how the output sizes change. We can prove this in about thirty seconds with standard command-line tools you likely already have installed. We'll use `gzip` for compression and `gpg` for encryption.
 
-First, we need some data to play with. Log files are a perfect candidate since they're so repetitive. Instead of using a real system log, we'll generate our own super-compressible file.
+First, we need some data to play with. Log files are perfect candidates since they're so repetitive. Instead of using a real system log, we'll generate our own super-compressible file.
 
 ```bash
 # Create a dummy log file that's roughly 6MB.
@@ -50,16 +50,23 @@ ls -lh log.txt
 # Output: -rw-r--r--@ 1 kevin  staff   5.9M Dec 12 17:13 log.txt
 ```
 
-With our `log.txt` ready, it's time to experiment.
+With `log.txt` ready, it's time to experiment.
 
 #### The Wrong Way: Encrypt → Compress
 
-Here, we'll encrypt the file and *then* try to compress the result. But there's a gotcha: modern `gpg` is smart and compresses data by default. We have to tell it not to with the `--compress-algo none` flag to truly see the wrong way in action.
+Here, we'll encrypt the file and *then* try to compress the result. But there's a catch: modern `gpg` is smart and compresses data by default. We have to tell it not to with the `--compress-algo none` flag to truly see the wrong way in action.
 
 **What you run**
 ```bash
 # 1. Encrypt the log file (with GPG's internal compression DISABLED)
-gpg --compress-algo none --symmetric --output encrypted_first.gpg log.txt
+gpg \
+  --batch --yes \
+  --pinentry-mode loopback \
+  --passphrase "test" \
+  --compress-algo none \
+  --symmetric \
+  --output encrypted_first.gpg \
+  log.txt
 
 # 2. Now, try to compress the encrypted file
 gzip -c encrypted_first.gpg > encrypted_then_compressed.gz
@@ -80,7 +87,7 @@ ls -l log.txt encrypted_first.gpg encrypted_then_compressed.gz
 # -rw-r--r--@ 1 kevin  staff  6202017 Dec 12 18:14 encrypted_then_compressed.gz
 ```
 
-The file size didn't reduce with this setup; it ***actually went UP*** by 2 kilobytes.
+The file size didn't reduce with this setup; it ***actually increased*** by 2 kilobytes.
 
 **Encryption produces high-entropy data, so compression has nothing to work with.**
 
@@ -97,7 +104,13 @@ Now, let's do it correctly. We'll compress the file first, then encrypt the much
 gzip -c log.txt > compressed_first.gz
 
 # 2. Encrypt the compressed file
-gpg --symmetric --output compressed_then_encrypted.gpg compressed_first.gz
+gpg \
+  --batch --yes \
+  --pinentry-mode loopback \
+  --passphrase "test" \
+  --symmetric \
+  --output compressed_then_encrypted.gpg \
+  compressed_first.gz
 ```
 
 **What you see**
@@ -110,9 +123,9 @@ ls -lh log.txt compressed_first.gz compressed_then_encrypted.gpg
 ```
 
 **Why it matters**
-Now *that's* what we expected to see. The `compressed_then_encrypted.gpg` file is tiny (15 KB!). We have the same data, but it's small *and* secret.
+Now that's what we expected to see. The `compressed_then_encrypted.gpg` file is tiny (15 KB!). We have the same data, but it's small *and* secret.
 
-**Compress raw data first to capture patterns — encryption preserves the smaller size.**
+**Compress raw data first to capture patterns, and encryption preserves the smaller size.**
 
 #### Final Results
 
@@ -185,35 +198,35 @@ Getting the order right saved us over 99% of the disk space.
 
 ### Security Implications
 
-Hopefully you are convinced that "Compress then Encrypt" is the rule to use in all cases, right? Almost. There's one huge exception where this exact sequence can create a subtle but powerful security hole.
+Hopefully, you're convinced that "Compress then Encrypt" is the rule to use in all cases, right? Almost. There's one major exception where this exact sequence can create a subtle but powerful security hole.
 
-When an attacker can influence data that gets compressed and then encrypted, they can create a "compression oracle" to slowly guess secret information. Compression leaks information because matching patterns in the data cause it to shrink more, so the final size becomes a side-channel that reveals details about the original content. This is the foundation of two infamous attacks: CRIME and BREACH.
+When an attacker can influence data that gets compressed and then encrypted, they can create a "compression oracle" to slowly guess secret information. Compression leaks information because matching patterns in the data cause it to shrink more, so the final size becomes a side-channel that reveals details about the original content. This forms the basis of two infamous attacks: CRIME and BREACH.
 
 #### CRIME: The Attack That Killed TLS Compression
 
-The **CRIME** attack went after compression that was happening directly at the TLS layer—the 'S' in HTTPS.
+The **CRIME** attack went after compression that was happening directly at the TLS layer, the 'S' in HTTPS.
 
 1. **The Attack:** CRIME allowed an attacker to steal secret authentication cookies. They'd trick a victim's browser into sending requests containing their cookie, and they would inject their own guesses for the cookie's value into the request. By watching the size of the final encrypted response from the server, they could see when their guess matched a character in the real cookie, because the compressed size would shrink just a tiny bit. They could repeat this to uncover the secret, one character at a time.
 
-2. **The Impact:** The fallout was immediate and total. Everyone realized that letting the TLS protocol itself handle compression was a footgun waiting to go off. It was quickly disabled in all major browsers and is now **explicitly forbidden in the TLS 1.3 specification.** It's gone for good.
+2. **The Impact:** The consequences were immediate and severe. Everyone realized that letting the TLS protocol itself handle compression was a footgun waiting to go off. It was quickly disabled in all major browsers and is now **forbidden in the TLS 1.3 specification.** It's gone for good.
 
 #### BREACH: The Attack That Won't Go Away
 
-**BREACH** is CRIME's younger, more stubborn sibling. It targets compression at the HTTP level (the `gzip` or `brotli` your web server uses), not the TLS layer.
+BREACH is CRIME's younger, more persistent sibling. It targets compression at the HTTP level (the `gzip` or `brotli` your web server uses), not the TLS layer.
 
-1. **The Attack:** The principle is the same. An attacker tricks a browser into sending repeated requests, but this time they are trying to guess a secret embedded in the HTML of the response body, like a hidden CSRF token. If the response contains both the secret and some input from the attacker (like a reflected search term), they can once again watch the compressed size to build a compression oracle.
+1. **The Attack:** The idea is the same. An attacker tricks a browser into sending repeated requests, but this time they are trying to guess a secret embedded in the HTML of the response body, like a hidden CSRF token. If the response contains both the secret and some input from the attacker (like a reflected search term), they can once again watch the compressed size to build a compression oracle.
 
    BREACH only works when the response includes **both** attacker-controlled input and a secret *in the same compressed payload*. If your application never mixes these, the attack isn't possible.
 
-2. **The Impact:** We can't just turn off HTTP compression—the performance hit to the web would be catastrophic. So, the burden of stopping BREACH falls on application developers, with a few key strategies:
+2. **The Impact:** We can't just turn off HTTP compression, as the performance hit to the web would be catastrophic. So, stopping BREACH falls on application developers, with a few key strategies:
 
-    - **SameSite Cookies:** Using `SameSite=Strict` on your session cookies is a powerful defense as it prevents the browser from sending them on any cross-site requests, blocking the core attack vector. While many applications must use `SameSite=Lax` for practical navigation, it also significantly reduces the risk by withholding cookies on cross-origin subrequests, thwarting the most common BREACH scenarios.
+    Using `SameSite=Strict` on your session cookies is a strong defense as it prevents the browser from sending them on any cross-site requests, blocking the main attack vector. While many applications must use `SameSite=Lax` for practical navigation, it also significantly reduces the risk by withholding cookies on cross-origin subrequests, preventing the most common BREACH scenarios.
 
-    - **Separation is Key:** The best defense is to never mix secrets and user-controllable data in the same compressed response.
+    The best defense is to never mix secrets and user-controllable data in the same compressed response.
 
-    - **Add Randomness:** Obscure the true length by adding a random number of bytes to the response, making the compression ratio useless to an attacker.
+    Obscure the true length by adding a random number of bytes to the response, making the compression ratio useless to an attacker.
 
-    - **Rate-Limiting:** Slow down attackers so the thousands of requests needed for the attack become impractical.
+    Use rate-limiting to slow down attackers so the thousands of requests needed for the attack become impractical.
 
 ### Further Reading
 
