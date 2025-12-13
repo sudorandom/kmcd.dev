@@ -106,11 +106,9 @@ This idea has its own set of hurdles, but they feel more like matters of habit t
 
 The fiscal quarter problem is solved. Remember how the 13-month calendar failed because 13 is a prime number? The week-based system fixes this beautifully. A 52-week year divides perfectly into four 13-week quarters. This is already a common practice in many industries (often called a 4-4-5 calendar) because it makes financial reporting and year-over-year comparisons much more consistent. Far from being a problem, this is a major advantage.
 
-Months are poor seasonal anchors anyway. "December" is winter here in Copenhagen but high summer in Cape Town. Tying months to seasons is just a Northern Hemisphere bias.
+Months are poor seasonal anchors anyway. "December" is winter here in Copenhagen but high summer in Cape Town. Tying months to seasons is just a Northern Hemisphere bias. We can create new narratives. The argument that we need months for "chapter breaks" in our year assumes we're incapable of making new patterns. We could easily create new milestones around 10-week blocks or the four 13-week quarters. The narrative doesn't disappear; it just gets refactored.
 
-We can create new narratives. The argument that we need months for "chapter breaks" in our year assumes we're incapable of making new patterns. We could easily create new milestones around 10-week blocks or the four 13-week quarters. The narrative doesn't disappear; it just gets refactored.
-
-As I've learned living in Denmark, using week numbers for planning is completely normal. It coexists with the standard calendar. I've had people invite me to events in "week 45." The first time, I had to look it up. The fifth time, I also had to look it up. But I assume that with enough usage I will build an intuition.
+As I've learned living in Denmark, using week numbers for planning can be completely normal. It coexists with the standard calendar. I've had people invite me to events in "week 45." The first time, I had to look it up. The fifth time, I also had to look it up. But I assume that with enough usage I will build an intuition.
 
 ## The Migration Path: An Evolution
 
@@ -127,20 +125,20 @@ Look, this isn't a fast change. It's not supposed to be. But by pushing for a be
 
 For those interested in a deeper dive into the topics discussed, here are some of the resources used in researching this article:
 
-*   **On the History of the Roman and Gregorian Calendars:**
-    *   The Editors of Encyclopaedia Britannica. ["Roman Republican calendar"](https://www.britannica.com/science/Roman-republican-calendar). *Britannica*.
-    *   ["The Origin of the Month Names"](https://www.almanac.com/content/origin-month-names). *Almanac.com*.
+- **On the History of the Roman and Gregorian Calendars:**
+  - The Editors of Encyclopaedia Britannica. ["Roman Republican calendar"](https://www.britannica.com/science/Roman-republican-calendar). *Britannica*.
+  - ["The Origin of the Month Names"](https://www.almanac.com/content/origin-month-names). *Almanac.com*.
 
-*   **On Proposed Alternative Calendars:**
-    *   ["International Fixed Calendar"](https://en.wikipedia.org/wiki/International_Fixed_Calendar). *Wikipedia*.
-    *   Aldrich, Jeremy. ["The International Fixed Calendar"](https://jeremy-aldrich.com/the-international-fixed-calendar/).
+- **On Proposed Alternative Calendars:**
+  - ["International Fixed Calendar"](https://en.wikipedia.org/wiki/International_Fixed_Calendar). *Wikipedia*.
+  - Aldrich, Jeremy. ["The International Fixed Calendar"](https://jeremy-aldrich.com/the-international-fixed-calendar/).
 
-*   **On the ISO 8601 Week-Date System:**
-    *   ["ISO week date"](https://en.wikipedia.org/wiki/ISO_week_date). *Wikipedia*.
+- **On the ISO 8601 Week-Date System:**
+  - ["ISO week date"](https://en.wikipedia.org/wiki/ISO_week_date). *Wikipedia*.
 
-*   **On Lunar vs. Solar Calendars:**
-    *   Taylor, Elise. ["What Is the Difference Between a Lunar & a Solar Calendar?"](https://sciencing.com/what-is-the-difference-between-a-lunar-a-solar-calendar-13710243.html). *Sciencing*.
+- **On Lunar vs. Solar Calendars:**
+  - Taylor, Elise. ["What Is the Difference Between a Lunar & a Solar Calendar?"](https://sciencing.com/what-is-the-difference-between-a-lunar-a-solar-calendar-13710243.html). *Sciencing*.
 ---
 
-*   **On the 4-4-5 Calendar:**
-    *   ["4-4-5 Calendar"](https://en.wikipedia.org/wiki/4-4-5_calendar). *Wikipedia*.
+- **On the 4-4-5 Calendar:**
+  - ["4-4-5 Calendar"](https://en.wikipedia.org/wiki/4-4-5_calendar). *Wikipedia*.
