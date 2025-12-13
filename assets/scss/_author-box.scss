@@ -5,6 +5,7 @@
 
 .author-box-image {
     margin-right: 1.5rem;
+    flex-shrink: 0;
 }
 
 .author-profile-image {
@@ -19,4 +20,14 @@
 
 .author-box-text p:last-child {
     margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .author-box-content {
+        flex-direction: column;
+    }
+    .author-box-image {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+    }
 }
