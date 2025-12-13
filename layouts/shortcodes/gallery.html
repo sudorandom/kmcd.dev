@@ -82,19 +82,19 @@
   {{ range $images }}
   <div class="mySlides">
     <figure>
-            <a href="{{ .Permalink }}"
-                title="Click to view larger image"
-                class="spotlight"
-                data-preload="true"
-                data-download="true"
-                data-progress="true"
-                data-infinite="true"
-                data-spinner="true"
-                data-autofit="true"
-                data-fit="cover"
-            >
-                <img src="{{ .RelPermalink }}" loading="lazy" alt="{{ .Title | default "Gallery image" }}" />
-            </a>    </figure>
+      <a href="{{ .Permalink }}"
+          class="spotlight"
+          data-preload="true"
+          data-download="true"
+          data-progress="true"
+          data-infinite="true"
+          data-spinner="true"
+          data-autofit="true"
+          data-fit="cover"
+      >
+          <img src="{{ .RelPermalink }}" loading="lazy" alt="{{ .Title | default "Gallery image" }}" />
+      </a>
+  </figure>
   </div>
   {{ end }}
 

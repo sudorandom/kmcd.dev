@@ -1,105 +1,105 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1200" height="630">
-<rect x="0" y="0" width="1200" height="630" fill="#433935" />
+<rect x="0" y="0" width="1200" height="630" fill="#4b4961" />
 <g transform="scale(1.000000) translate(0.5 0.5)">
-<polygon fill="#d4c0b9" fill-opacity="0.501961" points="531,326 -16,191 416,607" />
-<polygon fill="#000000" fill-opacity="0.501961" points="804,621 1215,645 1198,-16" />
-<polygon fill="#d1cdcb" fill-opacity="0.501961" points="117,43 388,197 558,40" />
-<polygon fill="#000000" fill-opacity="0.501961" points="668,548 368,202 676,-16" />
-<polygon fill="#dcd8d6" fill-opacity="0.501961" points="875,645 628,645 529,467" />
-<polygon fill="#000000" fill-opacity="0.501961" points="170,381 410,177 185,153" />
-<polygon fill="#000000" fill-opacity="0.501961" points="837,156 376,-3 1117,-16" />
-<polygon fill="#b5a5a1" fill-opacity="0.501961" points="526,471 156,615 389,236" />
-<polygon fill="#8d5a48" fill-opacity="0.501961" points="625,366 990,90 1000,473" />
-<polygon fill="#000000" fill-opacity="0.501961" points="521,461 1215,460 812,609" />
-<polygon fill="#000000" fill-opacity="0.501961" points="532,477 626,645 289,645" />
-<polygon fill="#9e9795" fill-opacity="0.501961" points="-1,170 182,58 177,313" />
-<polygon fill="#8e5d4b" fill-opacity="0.501961" points="910,131 671,474 672,136" />
-<polygon fill="#552c1d" fill-opacity="0.501961" points="242,455 240,302 6,307" />
-<polygon fill="#000000" fill-opacity="0.501961" points="1047,2 560,-8 437,249" />
-<polygon fill="#a9a2a0" fill-opacity="0.501961" points="309,-16 439,169 547,53" />
-<polygon fill="#000204" fill-opacity="0.501961" points="627,7 490,504 675,388" />
-<polygon fill="#c0aca6" fill-opacity="0.501961" points="521,440 425,255 203,286" />
-<polygon fill="#000000" fill-opacity="0.501961" points="68,492 4,645 -16,413" />
-<polygon fill="#000001" fill-opacity="0.501961" points="1198,645 930,550 1212,59" />
-<polygon fill="#000001" fill-opacity="0.501961" points="439,282 480,146 221,220" />
-<polygon fill="#716865" fill-opacity="0.501961" points="419,498 20,518 279,645" />
-<polygon fill="#c6bdba" fill-opacity="0.501961" points="230,121 504,117 329,176" />
-<polygon fill="#595351" fill-opacity="0.501961" points="399,6 31,55 -16,237" />
-<polygon fill="#000000" fill-opacity="0.501961" points="326,242 190,57 250,306" />
-<polygon fill="#000000" fill-opacity="0.501961" points="-15,307 87,303 -16,201" />
-<polygon fill="#ccbab5" fill-opacity="0.501961" points="494,492 510,385 435,550" />
-<polygon fill="#000000" fill-opacity="0.501961" points="204,43 357,-7 201,-5" />
-<polygon fill="#000000" fill-opacity="0.501961" points="469,285 518,417 559,241" />
-<polygon fill="#b4988f" fill-opacity="0.501961" points="230,279 193,141 230,203" />
-<polygon fill="#bfb9b7" fill-opacity="0.501961" points="434,577 533,593 485,600" />
-<polygon fill="#685f5b" fill-opacity="0.501961" points="941,586 1042,534 1155,540" />
-<polygon fill="#000000" fill-opacity="0.501961" points="332,645 328,572 601,613" />
-<polygon fill="#000000" fill-opacity="0.501961" points="974,133 654,130 897,62" />
-<polygon fill="#000000" fill-opacity="0.501961" points="1208,525 764,629 1215,645" />
-<polygon fill="#ac8678" fill-opacity="0.501961" points="533,238 470,266 397,256" />
-<polygon fill="#7b5547" fill-opacity="0.501961" points="671,169 943,458 684,459" />
-<polygon fill="#000000" fill-opacity="0.501961" points="178,277 191,149 235,307" />
-<polygon fill="#998c88" fill-opacity="0.501961" points="949,570 897,600 832,597" />
-<polygon fill="#aea8a6" fill-opacity="0.501961" points="179,163 98,207 175,304" />
-<polygon fill="#beb4b1" fill-opacity="0.501961" points="583,552 525,462 724,567" />
-<polygon fill="#7f7a79" fill-opacity="0.501961" points="529,70 343,-1 203,46" />
-<polygon fill="#000000" fill-opacity="0.501961" points="998,381 1051,178 1159,205" />
-<polygon fill="#9e9c9b" fill-opacity="0.501961" points="14,228 200,296 90,304" />
-<polygon fill="#8f827d" fill-opacity="0.501961" points="262,298 229,554 409,583" />
-<polygon fill="#000000" fill-opacity="0.501961" points="6,398 -16,629 50,645" />
-<polygon fill="#5b3c31" fill-opacity="0.501961" points="242,533 243,304 -16,305" />
-<polygon fill="#45322c" fill-opacity="0.501961" points="815,217 1137,-16 1215,111" />
-<polygon fill="#cdc3bf" fill-opacity="0.501961" points="437,161 344,174 510,102" />
-<polygon fill="#c4b3ad" fill-opacity="0.501961" points="332,264 510,401 462,301" />
-<polygon fill="#050809" fill-opacity="0.501961" points="244,279 199,105 433,250" />
-<polygon fill="#000103" fill-opacity="0.501961" points="827,620 828,486 492,424" />
-<polygon fill="#7d645c" fill-opacity="0.501961" points="831,489 829,607 860,604" />
-<polygon fill="#8a7c77" fill-opacity="0.501961" points="195,49 212,168 169,146" />
-<polygon fill="#000000" fill-opacity="0.501961" points="544,503 388,569 600,598" />
-<polygon fill="#080a0b" fill-opacity="0.501961" points="767,133 552,-16 516,94" />
-<polygon fill="#514a48" fill-opacity="0.501961" points="207,645 298,542 17,530" />
-<polygon fill="#b0a09a" fill-opacity="0.501961" points="239,305 249,418 517,431" />
-<polygon fill="#6c6665" fill-opacity="0.501961" points="572,645 869,641 740,575" />
-<polygon fill="#a37d70" fill-opacity="0.501961" points="826,465 844,454 842,529" />
-<polygon fill="#6a6562" fill-opacity="0.501961" points="1098,545 1159,539 1215,493" />
-<polygon fill="#060808" fill-opacity="0.501961" points="997,228 1009,557 1215,494" />
-<polygon fill="#020608" fill-opacity="0.501961" points="533,368 504,252 414,267" />
-<polygon fill="#b9b2b0" fill-opacity="0.501961" points="437,575 476,593 410,582" />
-<polygon fill="#111314" fill-opacity="0.501961" points="-16,78 161,-16 -1,-4" />
-<polygon fill="#101010" fill-opacity="0.501961" points="1052,-16 1215,2 1135,64" />
-<polygon fill="#000001" fill-opacity="0.501961" points="464,549 526,407 567,422" />
-<polygon fill="#000000" fill-opacity="0.501961" points="353,-8 562,-1 546,51" />
-<polygon fill="#524a47" fill-opacity="0.501961" points="218,61 -16,190 164,-2" />
-<polygon fill="#48403d" fill-opacity="0.501961" points="1215,95 987,-16 1132,145" />
-<polygon fill="#897d79" fill-opacity="0.501961" points="960,563 915,590 1019,565" />
-<polygon fill="#a69e9b" fill-opacity="0.501961" points="298,163 513,92 224,108" />
-<polygon fill="#b68d7f" fill-opacity="0.501961" points="498,252 544,232 556,244" />
-<polygon fill="#726764" fill-opacity="0.501961" points="330,640 321,516 103,512" />
-<polygon fill="#0d0f0f" fill-opacity="0.501961" points="810,595 510,457 503,279" />
-<polygon fill="#afa8a5" fill-opacity="0.501961" points="547,592 496,593 541,605" />
-<polygon fill="#53352a" fill-opacity="0.501961" points="1039,222 894,49 1083,94" />
-<polygon fill="#694538" fill-opacity="0.501961" points="1157,200 1100,145 1074,181" />
-<polygon fill="#000000" fill-opacity="0.501961" points="82,301 -5,304 -16,201" />
-<polygon fill="#070909" fill-opacity="0.501961" points="1160,521 845,593 843,455" />
-<polygon fill="#000000" fill-opacity="0.501961" points="205,-16 201,42 383,-16" />
-<polygon fill="#000000" fill-opacity="0.501961" points="86,512 -16,511 -16,417" />
-<polygon fill="#000000" fill-opacity="0.501961" points="1197,234 1215,180 1059,103" />
-<polygon fill="#000102" fill-opacity="0.501961" points="1013,-15 992,70 717,4" />
-<polygon fill="#635a57" fill-opacity="0.501961" points="-16,202 57,258 169,32" />
-<polygon fill="#aaa19e" fill-opacity="0.501961" points="294,86 467,141 510,95" />
-<polygon fill="#0e0f0f" fill-opacity="0.501961" points="254,152 254,275 580,230" />
-<polygon fill="#936555" fill-opacity="0.501961" points="672,132 731,132 673,153" />
-<polygon fill="#47291e" fill-opacity="0.501961" points="-16,433 189,516 8,298" />
-<polygon fill="#b19388" fill-opacity="0.501961" points="231,231 230,283 244,281" />
-<polygon fill="#0a0d0e" fill-opacity="0.501961" points="546,40 586,280 471,153" />
-<polygon fill="#000304" fill-opacity="0.501961" points="181,291 226,274 179,157" />
-<polygon fill="#6d4c40" fill-opacity="0.501961" points="668,460 1001,453 865,131" />
-<polygon fill="#564a46" fill-opacity="0.501961" points="1147,142 1007,69 1009,6" />
-<polygon fill="#b09d97" fill-opacity="0.501961" points="315,269 415,256 295,346" />
-<polygon fill="#000203" fill-opacity="0.501961" points="606,624 333,571 325,645" />
-<polygon fill="#938581" fill-opacity="0.501961" points="473,520 242,383 414,562" />
-<polygon fill="#2b2a2a" fill-opacity="0.501961" points="37,645 27,537 163,644" />
-<polygon fill="#47413f" fill-opacity="0.501961" points="317,641 30,506 30,590" />
-<polygon fill="#000102" fill-opacity="0.501961" points="415,170 486,131 450,171" />
+<rect fill="#ffffff" fill-opacity="0.501961" x="733" y="208" width="329" height="274" />
+<rect fill="#000000" fill-opacity="0.501961" x="0" y="0" width="909" height="185" />
+<rect fill="#cf7aff" fill-opacity="0.501961" x="382" y="212" width="351" height="195" />
+<rect fill="#d7bcde" fill-opacity="0.501961" x="903" y="99" width="261" height="261" />
+<rect fill="#000002" fill-opacity="0.501961" x="351" y="455" width="434" height="175" />
+<rect fill="#000000" fill-opacity="0.501961" x="1004" y="406" width="196" height="224" />
+<rect fill="#10112b" fill-opacity="0.501961" x="601" y="0" width="225" height="251" />
+<rect fill="#f7e7ff" fill-opacity="0.501961" x="771" y="241" width="205" height="265" />
+<rect fill="#ae6fff" fill-opacity="0.501961" x="437" y="197" width="133" height="272" />
+<rect fill="#b26dff" fill-opacity="0.501961" x="336" y="160" width="124" height="87" />
+<rect fill="#478c6b" fill-opacity="0.501961" x="96" y="317" width="330" height="226" />
+<rect fill="#000002" fill-opacity="0.501961" x="1057" y="369" width="143" height="261" />
+<rect fill="#220040" fill-opacity="0.501961" x="294" y="342" width="134" height="145" />
+<rect fill="#000b00" fill-opacity="0.501961" x="0" y="0" width="111" height="630" />
+<rect fill="#000f0d" fill-opacity="0.501961" x="648" y="369" width="82" height="88" />
+<rect fill="#b379ff" fill-opacity="0.501961" x="537" y="228" width="150" height="156" />
+<rect fill="#00050f" fill-opacity="0.501961" x="223" y="566" width="588" height="64" />
+<rect fill="#000002" fill-opacity="0.501961" x="719" y="220" width="72" height="46" />
+<rect fill="#001d14" fill-opacity="0.501961" x="190" y="185" width="156" height="114" />
+<rect fill="#f8e7ff" fill-opacity="0.501961" x="732" y="278" width="147" height="144" />
+<rect fill="#c2b6ce" fill-opacity="0.501961" x="901" y="158" width="141" height="296" />
+<rect fill="#51a671" fill-opacity="0.501961" x="90" y="264" width="153" height="251" />
+<rect fill="#000002" fill-opacity="0.501961" x="799" y="0" width="183" height="58" />
+<rect fill="#a86bf4" fill-opacity="0.501961" x="315" y="147" width="60" height="49" />
+<rect fill="#12132b" fill-opacity="0.501961" x="534" y="438" width="221" height="179" />
+<rect fill="#000002" fill-opacity="0.501961" x="973" y="475" width="86" height="143" />
+<rect fill="#916fa4" fill-opacity="0.501961" x="809" y="540" width="153" height="74" />
+<rect fill="#4f4666" fill-opacity="0.501961" x="753" y="165" width="142" height="53" />
+<rect fill="#000002" fill-opacity="0.501961" x="1133" y="337" width="67" height="69" />
+<rect fill="#0e0f20" fill-opacity="0.501961" x="727" y="0" width="199" height="132" />
+<rect fill="#000004" fill-opacity="0.501961" x="769" y="486" width="47" height="20" />
+<rect fill="#9f6fea" fill-opacity="0.501961" x="458" y="189" width="43" height="298" />
+<rect fill="#060a1c" fill-opacity="0.501961" x="544" y="185" width="160" height="33" />
+<rect fill="#897690" fill-opacity="0.501961" x="1012" y="72" width="188" height="232" />
+<rect fill="#c47ff7" fill-opacity="0.501961" x="290" y="319" width="66" height="30" />
+<rect fill="#040214" fill-opacity="0.501961" x="0" y="0" width="138" height="292" />
+<rect fill="#362c32" fill-opacity="0.501961" x="1112" y="0" width="88" height="140" />
+<rect fill="#9b86a4" fill-opacity="0.501961" x="951" y="42" width="97" height="131" />
+<rect fill="#000012" fill-opacity="0.501961" x="229" y="283" width="60" height="56" />
+<rect fill="#84d5ab" fill-opacity="0.501961" x="391" y="484" width="72" height="22" />
+<rect fill="#000000" fill-opacity="0.501961" x="846" y="512" width="43" height="48" />
+<rect fill="#54a570" fill-opacity="0.501961" x="215" y="430" width="94" height="153" />
+<rect fill="#0c0d25" fill-opacity="0.501961" x="402" y="0" width="195" height="173" />
+<rect fill="#a16def" fill-opacity="0.501961" x="494" y="225" width="121" height="201" />
+<rect fill="#b4a6c2" fill-opacity="0.501961" x="1001" y="193" width="102" height="181" />
+<rect fill="#000006" fill-opacity="0.501961" x="770" y="207" width="82" height="17" />
+<rect fill="#1b2e3a" fill-opacity="0.501961" x="621" y="395" width="118" height="80" />
+<rect fill="#9b67e6" fill-opacity="0.501961" x="368" y="178" width="108" height="102" />
+<rect fill="#050716" fill-opacity="0.501961" x="110" y="0" width="196" height="215" />
+<rect fill="#f5d8ff" fill-opacity="0.501961" x="746" y="197" width="47" height="12" />
+<rect fill="#aa6fff" fill-opacity="0.501961" x="657" y="262" width="89" height="84" />
+<rect fill="#5ba77d" fill-opacity="0.501961" x="132" y="233" width="68" height="178" />
+<rect fill="#f0e2fe" fill-opacity="0.501961" x="685" y="215" width="44" height="14" />
+<rect fill="#00000d" fill-opacity="0.501961" x="371" y="323" width="34" height="43" />
+<rect fill="#b19ac5" fill-opacity="0.501961" x="844" y="164" width="138" height="18" />
+<rect fill="#ddd3e9" fill-opacity="0.501961" x="809" y="230" width="112" height="184" />
+<rect fill="#090a18" fill-opacity="0.501961" x="1029" y="438" width="171" height="190" />
+<rect fill="#e6dfe1" fill-opacity="0.501961" x="890" y="506" width="14" height="52" />
+<rect fill="#fadeff" fill-opacity="0.501961" x="785" y="187" width="40" height="11" />
+<rect fill="#bab0c2" fill-opacity="0.501961" x="799" y="442" width="190" height="51" />
+<rect fill="#010a19" fill-opacity="0.501961" x="697" y="355" width="32" height="61" />
+<rect fill="#ac6dff" fill-opacity="0.501961" x="411" y="248" width="27" height="112" />
+<rect fill="#fef2ff" fill-opacity="0.501961" x="745" y="298" width="26" height="148" />
+<rect fill="#c499e2" fill-opacity="0.501961" x="797" y="517" width="27" height="40" />
+<rect fill="#352857" fill-opacity="0.501961" x="417" y="388" width="36" height="81" />
+<rect fill="#08021f" fill-opacity="0.501961" x="322" y="232" width="37" height="86" />
+<rect fill="#090f28" fill-opacity="0.501961" x="698" y="227" width="99" height="27" />
+<rect fill="#00000c" fill-opacity="0.501961" x="832" y="187" width="69" height="24" />
+<rect fill="#efd4ff" fill-opacity="0.501961" x="817" y="178" width="39" height="11" />
+<rect fill="#c1bbc9" fill-opacity="0.501961" x="952" y="254" width="99" height="175" />
+<rect fill="#b5b5d1" fill-opacity="0.501961" x="343" y="498" width="49" height="15" />
+<rect fill="#a38fb2" fill-opacity="0.501961" x="941" y="429" width="30" height="122" />
+<rect fill="#141328" fill-opacity="0.501961" x="722" y="473" width="67" height="144" />
+<rect fill="#ffe7ff" fill-opacity="0.501961" x="355" y="314" width="28" height="11" />
+<rect fill="#a168e0" fill-opacity="0.501961" x="352" y="352" width="30" height="27" />
+<rect fill="#f9c9ff" fill-opacity="0.501961" x="251" y="344" width="39" height="10" />
+<rect fill="#2a633a" fill-opacity="0.501961" x="68" y="487" width="171" height="143" />
+<rect fill="#ffeeff" fill-opacity="0.501961" x="719" y="209" width="35" height="9" />
+<rect fill="#000000" fill-opacity="0.501961" x="0" y="498" width="61" height="132" />
+<rect fill="#090418" fill-opacity="0.501961" x="286" y="366" width="27" height="72" />
+<rect fill="#b978ff" fill-opacity="0.501961" x="406" y="405" width="22" height="21" />
+<rect fill="#000000" fill-opacity="0.501961" x="812" y="502" width="30" height="21" />
+<rect fill="#67ae89" fill-opacity="0.501961" x="199" y="381" width="83" height="79" />
+<rect fill="#110e31" fill-opacity="0.501961" x="738" y="215" width="38" height="54" />
+<rect fill="#000000" fill-opacity="0.501961" x="909" y="0" width="101" height="23" />
+<rect fill="#eddff7" fill-opacity="0.501961" x="845" y="215" width="64" height="26" />
+<rect fill="#0c091b" fill-opacity="0.501961" x="348" y="410" width="65" height="82" />
+<rect fill="#01020a" fill-opacity="0.501961" x="291" y="559" width="62" height="71" />
+<rect fill="#9b64e2" fill-opacity="0.501961" x="303" y="139" width="31" height="21" />
+<rect fill="#c6becf" fill-opacity="0.501961" x="836" y="379" width="92" height="130" />
+<rect fill="#104a2b" fill-opacity="0.501961" x="0" y="301" width="100" height="189" />
+<rect fill="#1e1e36" fill-opacity="0.501961" x="512" y="94" width="253" height="108" />
+<rect fill="#c192ff" fill-opacity="0.501961" x="293" y="296" width="19" height="23" />
+<rect fill="#50886b" fill-opacity="0.501961" x="168" y="462" width="155" height="108" />
+<rect fill="#b4acbb" fill-opacity="0.501961" x="1022" y="302" width="45" height="94" />
+<rect fill="#9d80b9" fill-opacity="0.501961" x="807" y="545" width="53" height="36" />
+<rect fill="#915ccc" fill-opacity="0.501961" x="310" y="305" width="14" height="93" />
+<rect fill="#1b1a2e" fill-opacity="0.501961" x="522" y="451" width="238" height="144" />
+<rect fill="#121126" fill-opacity="0.501961" x="376" y="524" width="159" height="91" />
+<rect fill="#000008" fill-opacity="0.501961" x="967" y="536" width="39" height="77" />
 </g>
 </svg>

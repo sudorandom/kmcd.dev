@@ -1,105 +1,105 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1200" height="630">
-<rect x="0" y="0" width="1200" height="630" fill="#353541" />
+<rect x="0" y="0" width="1200" height="630" fill="#301f34" />
 <g transform="scale(1.000000) translate(0.5 0.5)">
-<polygon fill="#ffffff" fill-opacity="0.501961" points="548,119 456,357 774,359" />
-<polygon fill="#ffffff" fill-opacity="0.501961" points="1015,244 895,69 783,229" />
-<polygon fill="#eeeeea" fill-opacity="0.501961" points="723,233 724,437 458,221" />
-<polygon fill="#f5f5ed" fill-opacity="0.501961" points="502,136 423,-16 358,94" />
-<polygon fill="#00000f" fill-opacity="0.501961" points="19,-16 505,360 -16,319" />
-<polygon fill="#000000" fill-opacity="0.501961" points="1215,268 701,-16 1211,-1" />
-<polygon fill="#9e9e9a" fill-opacity="0.501961" points="1073,158 903,428 1101,470" />
-<polygon fill="#9b9b91" fill-opacity="0.501961" points="677,395 881,407 762,645" />
-<polygon fill="#00000d" fill-opacity="0.501961" points="-16,2 328,-16 486,340" />
-<polygon fill="#ffffff" fill-opacity="0.501961" points="481,358 629,357 483,204" />
-<polygon fill="#edede8" fill-opacity="0.501961" points="981,119 810,130 899,277" />
-<polygon fill="#000017" fill-opacity="0.501961" points="391,-16 821,-13 822,249" />
-<polygon fill="#ffffff" fill-opacity="0.501961" points="503,210 603,128 601,252" />
-<polygon fill="#000008" fill-opacity="0.501961" points="448,519 6,626 776,645" />
-<polygon fill="#000000" fill-opacity="0.501961" points="1070,441 831,615 1212,645" />
-<polygon fill="#9f9f9a" fill-opacity="0.501961" points="854,645 846,533 595,545" />
-<polygon fill="#10102d" fill-opacity="0.501961" points="720,354 753,78 992,537" />
-<polygon fill="#161634" fill-opacity="0.501961" points="483,80 480,592 131,402" />
-<polygon fill="#000000" fill-opacity="0.501961" points="7,645 -16,503 226,540" />
-<polygon fill="#0b0b26" fill-opacity="0.501961" points="1038,166 834,309 991,351" />
-<polygon fill="#00000e" fill-opacity="0.501961" points="1015,-7 1215,-6 1206,645" />
-<polygon fill="#ffffff" fill-opacity="0.501961" points="721,256 713,168 735,176" />
-<polygon fill="#000021" fill-opacity="0.501961" points="717,226 604,81 605,234" />
-<polygon fill="#7c7c77" fill-opacity="0.501961" points="186,512 372,442 240,604" />
-<polygon fill="#8c8c81" fill-opacity="0.501961" points="603,399 453,548 604,539" />
-<polygon fill="#00001a" fill-opacity="0.501961" points="536,162 463,93 657,111" />
-<polygon fill="#f4f4f1" fill-opacity="0.501961" points="898,259 979,211 800,203" />
-<polygon fill="#a4a49e" fill-opacity="0.501961" points="913,328 1072,383 913,401" />
-<polygon fill="#ddddd6" fill-opacity="0.501961" points="472,124 474,32 441,16" />
-<polygon fill="#fbfbf8" fill-opacity="0.501961" points="504,158 556,181 473,109" />
-<polygon fill="#04040d" fill-opacity="0.501961" points="-3,216 -16,-7 462,-16" />
-<polygon fill="#c7c7c5" fill-opacity="0.501961" points="365,24 407,130 474,94" />
-<polygon fill="#c5c5bd" fill-opacity="0.501961" points="435,377 389,434 503,352" />
-<polygon fill="#070726" fill-opacity="0.501961" points="699,415 622,338 693,632" />
-<polygon fill="#0e0e20" fill-opacity="0.501961" points="1215,146 968,-16 971,212" />
-<polygon fill="#eaeae6" fill-opacity="0.501961" points="875,101 824,220 823,134" />
-<polygon fill="#07071d" fill-opacity="0.501961" points="1092,263 1116,345 1023,355" />
-<polygon fill="#9f9f9c" fill-opacity="0.501961" points="1092,212 1070,350 1004,231" />
-<polygon fill="#06061c" fill-opacity="0.501961" points="868,442 1099,484 861,597" />
-<polygon fill="#c0c0bc" fill-opacity="0.501961" points="182,432 238,486 305,500" />
-<polygon fill="#0f0f1f" fill-opacity="0.501961" points="823,129 1071,-5 353,-16" />
-<polygon fill="#616157" fill-opacity="0.501961" points="186,442 125,311 -16,407" />
-<polygon fill="#81817b" fill-opacity="0.501961" points="1168,529 1047,357 1102,348" />
-<polygon fill="#7b7b77" fill-opacity="0.501961" points="711,633 696,465 816,639" />
-<polygon fill="#b4b4b3" fill-opacity="0.501961" points="520,241 717,430 728,232" />
-<polygon fill="#c2c2bf" fill-opacity="0.501961" points="969,133 895,87 969,221" />
-<polygon fill="#080825" fill-opacity="0.501961" points="711,566 606,359 608,538" />
-<polygon fill="#16162c" fill-opacity="0.501961" points="289,496 93,288 472,357" />
-<polygon fill="#6d6d68" fill-opacity="0.501961" points="864,564 723,404 863,397" />
-<polygon fill="#f2f2f0" fill-opacity="0.501961" points="607,140 528,170 475,369" />
-<polygon fill="#e3e3dc" fill-opacity="0.501961" points="374,544 303,503 338,539" />
-<polygon fill="#dfdfdb" fill-opacity="0.501961" points="604,549 673,551 715,583" />
-<polygon fill="#000006" fill-opacity="0.501961" points="8,511 -16,630 302,632" />
-<polygon fill="#202039" fill-opacity="0.501961" points="724,404 730,117 929,321" />
-<polygon fill="#b3b3b4" fill-opacity="0.501961" points="556,455 486,361 510,422" />
-<polygon fill="#b2b2aa" fill-opacity="0.501961" points="341,460 419,398 388,443" />
-<polygon fill="#8c8c88" fill-opacity="0.501961" points="955,455 913,327 1053,468" />
-<polygon fill="#040418" fill-opacity="0.501961" points="521,539 708,579 694,645" />
-<polygon fill="#ffffff" fill-opacity="0.501961" points="715,227 733,243 725,167" />
-<polygon fill="#101029" fill-opacity="0.501961" points="327,164 453,107 534,178" />
-<polygon fill="#a8a8a2" fill-opacity="0.501961" points="964,258 922,225 983,307" />
-<polygon fill="#aaaaa1" fill-opacity="0.501961" points="1083,456 1126,488 1148,545" />
-<polygon fill="#aeaeaa" fill-opacity="0.501961" points="408,11 368,104 368,34" />
-<polygon fill="#595951" fill-opacity="0.501961" points="1215,568 1152,507 1127,645" />
-<polygon fill="#dadad8" fill-opacity="0.501961" points="182,428 206,456 146,421" />
-<polygon fill="#6c6c68" fill-opacity="0.501961" points="316,583 189,564 239,479" />
-<polygon fill="#87877d" fill-opacity="0.501961" points="707,239 823,198 771,235" />
-<polygon fill="#202037" fill-opacity="0.501961" points="290,502 504,174 296,52" />
-<polygon fill="#c1c1bf" fill-opacity="0.501961" points="1037,237 1009,290 1018,364" />
-<polygon fill="#141428" fill-opacity="0.501961" points="539,163 642,100 464,20" />
-<polygon fill="#ecece0" fill-opacity="0.501961" points="990,218 1018,244 953,212" />
-<polygon fill="#000012" fill-opacity="0.501961" points="236,472 222,517 145,445" />
-<polygon fill="#000018" fill-opacity="0.501961" points="1071,349 1027,303 1025,359" />
-<polygon fill="#e7e7e5" fill-opacity="0.501961" points="484,346 483,222 639,358" />
-<polygon fill="#10102a" fill-opacity="0.501961" points="479,365 416,588 542,459" />
-<polygon fill="#07071e" fill-opacity="0.501961" points="940,231 1015,345 988,227" />
-<polygon fill="#00000f" fill-opacity="0.501961" points="1061,302 1088,345 1085,273" />
-<polygon fill="#151526" fill-opacity="0.501961" points="1161,250 1215,137 762,6" />
-<polygon fill="#eeeeeb" fill-opacity="0.501961" points="601,536 644,550 603,552" />
-<polygon fill="#1e1e34" fill-opacity="0.501961" points="605,228 599,-16 721,233" />
-<polygon fill="#040412" fill-opacity="0.501961" points="1106,491 883,629 1146,645" />
-<polygon fill="#e8e8e6" fill-opacity="0.501961" points="821,216 883,252 825,155" />
-<polygon fill="#747473" fill-opacity="0.501961" points="1130,343 1112,426 911,374" />
-<polygon fill="#0a0a18" fill-opacity="0.501961" points="1115,407 1215,581 1200,229" />
-<polygon fill="#000014" fill-opacity="0.501961" points="302,516 275,550 373,555" />
-<polygon fill="#929290" fill-opacity="0.501961" points="999,315 1048,176 1083,211" />
-<polygon fill="#191930" fill-opacity="0.501961" points="913,262 820,242 905,558" />
-<polygon fill="#53534d" fill-opacity="0.501961" points="156,326 149,532 -16,332" />
-<polygon fill="#131328" fill-opacity="0.501961" points="414,586 477,370 317,493" />
-<polygon fill="#0f0f32" fill-opacity="0.501961" points="492,359 647,364 547,446" />
-<polygon fill="#c7c7c7" fill-opacity="0.501961" points="422,125 363,89 472,93" />
-<polygon fill="#000003" fill-opacity="0.501961" points="1154,533 1079,429 1133,472" />
-<polygon fill="#17172e" fill-opacity="0.501961" points="1015,364 937,242 855,276" />
-<polygon fill="#f4f4f3" fill-opacity="0.501961" points="601,147 496,241 603,237" />
-<polygon fill="#151528" fill-opacity="0.501961" points="408,-16 -16,156 163,328" />
-<polygon fill="#16162d" fill-opacity="0.501961" points="522,165 510,216 365,101" />
-<polygon fill="#bebebe" fill-opacity="0.501961" points="607,313 725,439 720,229" />
-<polygon fill="#0f0f22" fill-opacity="0.501961" points="969,42 1030,238 974,211" />
-<polygon fill="#b0b0af" fill-opacity="0.501961" points="943,113 833,122 967,219" />
-<polygon fill="#1b1b35" fill-opacity="0.501961" points="864,397 732,400 723,243" />
+<g transform="translate(166 196) rotate(232) scale(241 545)"><rect fill="#712ae1" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(888 504) rotate(209) scale(203 205)"><rect fill="#2f76ff" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(688 45) rotate(68) scale(108 288)"><rect fill="#ff4000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(714 602) rotate(19) scale(175 118)"><rect fill="#ff8231" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1157 320) rotate(220) scale(216 129)"><rect fill="#ee3b00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(418 462) rotate(402) scale(441 629)"><rect fill="#051201" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1001 524) rotate(300) scale(131 95)"><rect fill="#1c49a9" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(828 612) rotate(291) scale(61 57)"><rect fill="#da5e12" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1136 539) rotate(109) scale(244 173)"><rect fill="#000000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(61 439) rotate(103) scale(150 105)"><rect fill="#3c3c8f" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(289 231) rotate(150) scale(89 56)"><rect fill="#9c24fe" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(544 58) rotate(376) scale(59 170)"><rect fill="#000c06" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1014 130) rotate(239) scale(302 496)"><rect fill="#000900" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(205 266) rotate(149) scale(266 82)"><rect fill="#7d1ec8" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1084 365) rotate(323) scale(88 25)"><rect fill="#f53700" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(580 129) rotate(154) scale(82 35)"><rect fill="#ff4100" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(66 602) rotate(204) scale(163 103)"><rect fill="#000000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(321 3) rotate(156) scale(191 222)"><rect fill="#314474" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(765 82) rotate(225) scale(35 78)"><rect fill="#e35b4e" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(143 59) rotate(58) scale(132 424)"><rect fill="#360862" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1110 275) rotate(157) scale(29 170)"><rect fill="#cf3100" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(621 27) rotate(10) scale(81 185)"><rect fill="#cf3100" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(690 127) rotate(246) scale(49 28)"><rect fill="#6e68fc" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(499 68) rotate(200) scale(116 174)"><rect fill="#091106" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(178 367) rotate(-32) scale(110 60)"><rect fill="#010f00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(864 423) rotate(209) scale(80 88)"><rect fill="#3f69e7" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(348 132) rotate(84) scale(106 112)"><rect fill="#575cb2" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(929 590) rotate(77) scale(103 142)"><rect fill="#17306c" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(701 228) rotate(133) scale(96 220)"><rect fill="#0d1a08" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1166 219) rotate(93) scale(64 29)"><rect fill="#c72a00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1034 291) rotate(82) scale(14 65)"><rect fill="#ff4000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1003 369) rotate(316) scale(130 79)"><rect fill="#031000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(874 30) rotate(115) scale(133 80)"><rect fill="#030a00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1018 423) rotate(136) scale(78 12)"><rect fill="#ab35d9" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1103 81) rotate(224) scale(252 199)"><rect fill="#050703" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(346 201) rotate(348) scale(43 24)"><rect fill="#001500" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(624 140) rotate(315) scale(50 13)"><rect fill="#7d6cfa" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(241 191) rotate(-32) scale(130 138)"><rect fill="#731db7" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(395 89) rotate(108) scale(144 67)"><rect fill="#4f469e" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(674 76) rotate(61) scale(48 152)"><rect fill="#d03400" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(0 389) rotate(150) scale(90 143)"><rect fill="#1e3a60" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(146 570) rotate(315) scale(13 154)"><rect fill="#550b99" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1077 420) rotate(324) scale(139 49)"><rect fill="#010d00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(777 430) rotate(210) scale(57 238)"><rect fill="#0a1604" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(33 6) rotate(505) scale(121 47)"><rect fill="#000000" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(686 554) rotate(112) scale(46 88)"><rect fill="#da6741" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1126 308) rotate(159) scale(126 98)"><rect fill="#a42900" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(732 91) rotate(248) scale(15 53)"><rect fill="#6954b6" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1056 332) rotate(111) scale(36 47)"><rect fill="#000e10" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(48 609) rotate(71) scale(152 137)"><rect fill="#000200" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(841 281) rotate(201) scale(328 152)"><rect fill="#1d1e1a" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1155 409) rotate(65) scale(46 16)"><rect fill="#bf2a00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(539 119) rotate(194) scale(36 178)"><rect fill="#161c27" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1031 502) rotate(212) scale(67 54)"><rect fill="#2a4aa0" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(695 31) rotate(288) scale(55 208)"><rect fill="#9b2900" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(732 102) rotate(99) scale(11 63)"><rect fill="#f45626" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(602 595) rotate(290) scale(116 43)"><rect fill="#060c03" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(232 559) rotate(313) scale(112 272)"><rect fill="#0a0909" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(108 276) rotate(117) scale(225 80)"><rect fill="#62159b" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1130 595) rotate(219) scale(174 277)"><rect fill="#000700" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(801 492) rotate(300) scale(154 40)"><rect fill="#385bc4" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(737 4) rotate(209) scale(24 19)"><rect fill="#0032a0" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(104 422) rotate(197) scale(29 90)"><rect fill="#4d449c" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1190 390) rotate(236) scale(95 49)"><rect fill="#8e5d3b" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(701 156) rotate(67) scale(31 9)"><rect fill="#6e61e6" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(297 0) rotate(179) scale(187 92)"><rect fill="#2c3057" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1192 225) rotate(2) scale(22 70)"><rect fill="#000200" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(929 617) rotate(-25) scale(142 64)"><rect fill="#1a306a" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(730 128) rotate(183) scale(52 38)"><rect fill="#0d1507" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(92 93) rotate(149) scale(280 55)"><rect fill="#3f1069" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(889 469) rotate(240) scale(69 134)"><rect fill="#3456bd" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1073 269) rotate(170) scale(33 18)"><rect fill="#000d18" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1098 235) rotate(220) scale(49 26)"><rect fill="#c83400" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(570 120) rotate(106) scale(65 23)"><rect fill="#ef3d00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(797 20) rotate(135) scale(61 73)"><rect fill="#8b3f34" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(132 434) rotate(194) scale(26 78)"><rect fill="#030c00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(459 3) rotate(319) scale(58 73)"><rect fill="#020800" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1085 347) rotate(302) scale(83 15)"><rect fill="#cd3500" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(201 352) rotate(147) scale(141 56)"><rect fill="#171712" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(799 629) rotate(19) scale(104 115)"><rect fill="#91462c" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(557 82) rotate(77) scale(11 22)"><rect fill="#6055d3" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(38 500) rotate(76) scale(61 113)"><rect fill="#2e2967" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1038 296) rotate(103) scale(18 37)"><rect fill="#e03900" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(71 25) rotate(140) scale(182 41)"><rect fill="#1d013e" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(421 136) rotate(379) scale(12 103)"><rect fill="#121701" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(55 222) rotate(125) scale(203 68)"><rect fill="#51107e" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(632 339) rotate(304) scale(249 311)"><rect fill="#222020" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1174 273) rotate(429) scale(123 26)"><rect fill="#8f2400" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(243 281) rotate(177) scale(26 26)"><rect fill="#7632db" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1074 202) rotate(316) scale(8 36)"><rect fill="#d43500" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(492 125) rotate(290) scale(116 115)"><rect fill="#1d1a1a" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(991 512) rotate(210) scale(81 118)"><rect fill="#2b428c" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1025 1) rotate(-81) scale(143 368)"><rect fill="#080807" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(465 597) rotate(281) scale(105 307)"><rect fill="#0f0e0e" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(753 89) rotate(281) scale(11 38)"><rect fill="#3142b8" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1044 395) rotate(37) scale(8 42)"><rect fill="#7024b4" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(348 57) rotate(69) scale(80 172)"><rect fill="#41357d" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(677 118) rotate(417) scale(21 20)"><rect fill="#6153c0" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(1175 186) rotate(33) scale(8 34)"><rect fill="#a72a00" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
+<g transform="translate(746 571) rotate(110) scale(40 106)"><rect fill="#b45737" fill-opacity="0.501961" x="-0.5" y="-0.5" width="1" height="1" /></g>
 </g>
 </svg>

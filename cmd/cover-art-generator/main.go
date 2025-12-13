@@ -388,21 +388,37 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 
 		switch {
 		case shapeChoice < 0.15: // Rectangle
+			dc.Push()
+			dc.RotateAbout(gg.Radians(rnd.Float64()*180), point.X, point.Y)
 			dc.DrawRectangle(point.X-size/2, point.Y-size/2, size, size)
+			dc.Pop()
 		case shapeChoice < 0.30: // Ellipse
-			dc.DrawEllipse(point.X, point.Y, size/2, size/2)
+			dc.Push()
+			rx := size / 2
+			ry := rx * (rnd.Float64()*0.7 + 0.3) // 30% to 100% of rx
+			dc.RotateAbout(gg.Radians(rnd.Float64()*180), point.X, point.Y)
+			dc.DrawEllipse(point.X, point.Y, rx, ry)
+			dc.Pop()
 		case shapeChoice < 0.45: // Pie Slice
+			dc.Push()
+			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
 			start := rnd.Float64() * 360
 			end := start + rnd.Float64()*255 + 45
 			dc.DrawEllipticalArc(point.X, point.Y, size/2, size/2, gg.Radians(start), gg.Radians(end))
 			dc.LineTo(point.X, point.Y)
 			dc.ClosePath()
+			dc.Pop()
 		case shapeChoice < 0.60: // Hexagon
-			dc.DrawRegularPolygon(6, point.X, point.Y, size/2, gg.Radians(-30))
+			dc.DrawRegularPolygon(6, point.X, point.Y, size/2, gg.Radians(rnd.Float64()*60))
 		case shapeChoice < 0.70: // Star
+			dc.Push()
+			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
 			points := rnd.Intn(3) + 5 // 5, 6, or 7 points
 			drawStar(dc, float64(points), point.X, point.Y, size/2)
+			dc.Pop()
 		case shapeChoice < 0.85: // Right Triangle
+			dc.Push()
+			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
 			p1 := point
 			quadrant := rnd.Intn(4) + 1
 			var p2, p3 Point
@@ -424,6 +440,7 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 			dc.LineTo(p2.X, p2.Y)
 			dc.LineTo(p3.X, p3.Y)
 			dc.ClosePath()
+			dc.Pop()
 		case shapeChoice < 0.95: // Parabola
 			dc.SetHexColor(color)
 			dc.SetLineWidth(float64(rnd.Intn(3) + 1))
