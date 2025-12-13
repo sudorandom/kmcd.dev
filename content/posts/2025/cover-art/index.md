@@ -13,7 +13,6 @@ slug: "cover-art"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/cover-art/
-draft: true
 ---
 
 I felt guilty using AI-generated art for my blog.
