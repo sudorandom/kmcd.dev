@@ -1,0 +1,22 @@
+.author-box-content {
+    display: flex;
+    align-items: center;
+}
+
+.author-box-image {
+    margin-right: 1.5rem;
+}
+
+.author-profile-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.author-box-text p {
+    margin: 0 0 1rem;
+}
+
+.author-box-text p:last-child {
+    margin-bottom: 0;
+}

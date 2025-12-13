@@ -89,10 +89,40 @@
       <div class="post-content">
         {{ .Content }}
       </div>
-      </div>
+    </article>
+    </div>
+    </div>
+    </div>
+
+    <div class="main-wrapper">
+      <div class="main-box">
+        <h3>About the Author</h3>
+          <div class="author-box-content">
+              <div class="author-box-image">
+                  {{- $image := resources.Get "images/me.png" -}}
+                  {{- with $image -}}
+                  {{- $profile := .Fill "150x150 Center" -}}
+                <img src="{{ $profile.RelPermalink }}" alt="A picture of {{ $.Site.Params.author.name }}" class="author-profile-image">
+                  {{- end -}}
+              </div>
+              <div class="author-box-text">
+                  <p>
+                      Hi, I'm <strong>{{ $.Site.Params.author.name }}</strong>. I'm a backend engineer doing a depth-first search into networking, Go, and internet infrastructure.
+                  </p>
+                  {{- $url := .Permalink -}}
+                  {{- if .Params.canonical_url -}}
+                      {{- $url = .Params.canonical_url -}}
+                  {{- end -}}
+                  <p>
+                      If you liked this post, please consider sharing it on 
+                      <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ .Title | urlquery }}" target="_blank" rel="noopener">Hacker News</a>, 
+                      <a href="https://lobste.rs/stories/new?url={{ $url }}&title={{ .Title | urlquery }}" target="_blank" rel="noopener">Lobsters</a>, or 
+                      <a href="https://www.reddit.com/submit?url={{ $url }}&title={{ .Title | urlquery }}" target="_blank" rel="noopener">Reddit</a>. And follow this blog <a href="/posts/index.xml" target="_blank" aria-label="RSS Feed for posts">with RSS</a> <a href="/posts/index.xml" target="_blank" aria-label="RSS Feed for posts"><i class="fa-solid fa-rss"></i></a>
+                  </p>
+              </div>
+          </div>
       </div>
     </div>
-    </article>
 
     {{- with (.GetTerms "series") -}}
     {{- range . -}}

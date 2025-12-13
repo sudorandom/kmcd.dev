@@ -13,7 +13,7 @@
         <div class="main-wrapper">
             <div class="main-box main-box">
                 <figure style="float:left;padding:10px;">
-                    {{ $meimg := ($.Page.Resources.GetMatch "me.jpg").Resize "200x webp" }}
+                    {{ $meimg := (resources.Get "images/me.png").Resize "300x webp" }}
                     <img src="{{ $meimg.Permalink }}" style="border-radius:10px;" width="$meimg.Width"
                         height="$meimg.Width" alt="Me, Kevin McDonald" />
                 </figure>
