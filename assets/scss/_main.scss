@@ -1,7 +1,5 @@
 html {
   box-sizing: border-box;
-  line-height: 1.6;
-  letter-spacing: 0.06em;
   scroll-behavior: smooth;
 }
 
@@ -14,10 +12,10 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Roboto",
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Roboto",
     "Segoe UI", Helvetica, Arial, sans-serif;
   font-display: auto;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.54;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -75,6 +73,7 @@ h6 {
 h1 {
   font-size: 2.625rem;
   font-family: "Poetsen One", sans-serif;
+  font-weight: 800;
 }
 
 h2 {
