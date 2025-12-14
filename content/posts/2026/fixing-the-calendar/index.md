@@ -13,7 +13,6 @@ slug: "fixing-the-calendar"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fixing-the-calendar/
-draft: true
 ---
 
 The calendar we all live by is a shambling mess. It has arbitrary month lengths, misnamed months, and rules so absurd we rely on nursery rhymes just to remember them. For something that structures our lives, it is clunky and illogical. This post is my attempt to design something that actually makes sense.

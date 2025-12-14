@@ -13,7 +13,6 @@ slug: "encryption-vs-compression"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/encryption-vs-compression/
-draft: true
 ---
 
 Compression shrinks data, encryption obfuscates it. The order you apply them isn't simple. Get it wrong and you waste CPU, storage, and bandwidth.
@@ -249,4 +248,6 @@ BREACH is CRIME's younger, more persistent sibling. It targets compression at th
 **The Theory**
 
 - **Shannon Entropy:** The mathematical concept explaining why encrypted data (high entropy) cannot be compressed.
-    [https://en.wikipedia.org/wiki/Entropy\_(information\_theory)](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))
+    [https://en.wikipedia.org/wiki/Entropy_(information_theory)](https://en.wikipedia.org/wiki/Entropy_(information_theory))
+- **Why can't I compress an encrypted file?** This article explains why encrypted data is difficult to compress.
+    [https://math.stackexchange.com/questions/4858088/why-cant-i-compress-an-encrypted-file](https://math.stackexchange.com/questions/4858088/why-cant-i-compress-an-encrypted-file)
