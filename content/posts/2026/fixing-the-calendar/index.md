@@ -117,7 +117,7 @@ The end result of this thought exercise is a new year years goal for myself: I'm
 
 **Start Using Weeks in Planning.** In your next meeting invite, add the week number. "Let's sync up in Week 45." Will people look at you weird when you ask that? Probably. But notice how often months stop mattering in your planning.
 
-Look, this isn't a fast change. It's not supposed to be. But by pushing for a better standard that *already exists*, we can start the slow process of deprecating the mess we have now.
+By pushing for a better standard that *already exists*, maybe you can start the slow process of deprecating using months in favor of weeks in your own life. Happy week 1, everyone!
 
 ---
 ## References & Further Reading
