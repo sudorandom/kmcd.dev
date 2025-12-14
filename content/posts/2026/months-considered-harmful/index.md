@@ -2,17 +2,17 @@
 categories: ["article"]
 tags: ["thoughts", "calendar", "standards", "time"]
 date: "2026-01-01T10:00:00Z"
-description: "Are months considered harmful?"
+description: "Can months be fixed?"
 cover: "cover.svg"
-images: ["/posts/fixing-the-calendar/cover.svg"]
+images: ["/posts/months-considered-harmful/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "Fixing the Gregorian Calendar"
-slug: "fixing-the-calendar"
+title: "Months Considered Harmful"
+slug: "months-considered-harmful"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/fixing-the-calendar/
+canonical_url: https://kmcd.dev/posts/months-considered-harmful/
 ---
 
 The calendar we all live by is a shambling mess. It has arbitrary month lengths, misnamed months, and rules so absurd we rely on nursery rhymes just to remember them. For something that structures our lives, it is clunky and illogical. This post is my attempt to design something that actually makes sense.
@@ -44,20 +44,20 @@ To see the difference, compare a perfect 13th-month calendar month with our curr
 
 **"Perfect" Month**
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
-|---|---|---|---|---|---|---|
-| 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| 8 | 9 | 10 | 11 | 12 | 13 | 14 |
-| 15 | 16 | 17 | 18 | 19 | 20 | 21 |
-| 22 | 23 | 24 | 25 | 26 | 27 | 28 |
+|-----|-----|-----|-----|-----|-----|-----|
+|  1  |  2  |  3  |  4  |  5  |  6  |  7  |
+|  8  |  9  |  10 |  11 |  12 |  13 |  14 |
+|  15 |  16 |  17 |  18 |  19 |  20 |  21 |
+|  22 |  23 |  24 |  25 |  26 |  27 |  28 |
 
 **January 2026**
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
-|---|---|---|---|---|---|---|
-| | | | 1 | 2 | 3 | 4 |
-| 5 | 6 | 7 | 8 | 9 | 10 | 11 |
-| 12 | 13 | 14 | 15 | 16 | 17 | 18 |
-| 19 | 20 | 21 | 22 | 23 | 24 | 25 |
-| 26 | 27 | 28 | 29 | 30 | 31 | |
+|-----|-----|-----|-----|-----|-----|-----|
+|     |     |     |  1  |  2  |  3  |  4  |
+|  5  |  6  |  7  |  8  |  9  |  10 |  11 |
+|  12 |  13 |  14 |  15 |  16 |  17 |  18 |
+|  19 |  20 |  21 |  22 |  23 |  24 |  25 |
+|  26 |  27 |  28 |  29 |  30 |  31 |     |
 
 
 The appeal is its deterministic nature. The 10th of *any* month is always a Wednesday. Annoying date arithmetic for things like budgets, sprints, and payroll just becomes simple. It’s a clean API for time.
