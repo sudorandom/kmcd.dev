@@ -8,7 +8,7 @@ images: ["/posts/whois-from-scratch/cover.svg"]
 featuredalt: "A diagram showing a client and server communicating via WHOIS"
 featuredpath: "date"
 linktitle: ""
-title: "Whois is dead, long live RDAP"
+title: "WHOIS is dead, long live RDAP"
 slug: "whois-from-scratch"
 type: "posts"
 devtoSkip: true
