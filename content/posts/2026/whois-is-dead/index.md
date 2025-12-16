@@ -79,7 +79,6 @@ go run ./whois-server
 
 With the server running, standard tools can now interact with it:
 
-
 ```bash
 telnet localhost 43
 # Trying ::1...
@@ -105,11 +104,9 @@ Our server works for the domains stored in its local `records` map, but the real
 
 This leads to concepts like **"thin" and "thick" lookups**. A "thick" registry (like `.org`) holds all the data, and one query is enough. A "thin" registry (like `.com`) only knows which registrar manages a domain (e.g., GoDaddy, Namecheap). A `whois` client querying a "thin" registry gets a referral and must make a second query to the correct registrar's WHOIS server to get the full details.
 
-This system is brittle, relying on parsing unstructured text to find the referral server. An even bigger problem is that some domains do not support WHOIS at all. The brittleness of parsing free-form text was a key driver to replace it with a modern protocol that uses structured data like JSON.
+This system is brittle, relying on parsing unstructured text to find the referral server. Classic `whois` clients, such as the [`rfc1036/whois`](https://github.com/rfc1036/whois/blob/next/whois.c), handle this by scanning each line of text for known referral markers using functions like `find_referral_server_iana`. This approach works but is fragile, because every registry formats output differently. The brittleness of parsing free-form text was a key driver to replace it with a modern protocol that uses structured data like JSON.
 
 ### RDAP: The Modern Successor
-
-The WHOIS protocol is a relic. It is insecure, unstructured, and ill-equipped for the modern internet.
 
 The push to replace it began in earnest back in 2013, when an ICANN Expert Working Group recommended scrapping WHOIS entirely. They proposed a system that would keep information secret from most users, disclosing data only for specific "permissible purposes" like legal actions or trademark enforcement. Notably, **journalism was excluded** from this list, despite WHOIS historically being a key tool for investigative reporting.
 
@@ -134,9 +131,9 @@ curl -L https://rdap.verisign.com/com/v1/domain/google.com
 
 The response is a clean, predictable JSON object, which is far easier to parse than the free-form text of WHOIS.
 
-### The `.dev` Black Hole
+### Why `.dev` domains don't work
 
-This is not a theoretical transition. Many modern top-level domains (TLDs), like Google's `.dev`, have skipped WHOIS entirely. They **only** provide registration data via RDAP.
+This is not a theoretical transition. Many modern top-level domains (TLDs), like Google's `.dev`, have effectively abandoned WHOIS entirely since they are no longer required to support it. They **only** provide registration data via RDAP.
 
 If you try to look up a `.dev` domain with a standard `whois` client, you get a generic response from IANA pointing you to the `.dev` registry's information, which is useless for finding the owner of a specific domain like `kmcd.dev`.
 
@@ -153,7 +150,17 @@ $ whois kmcd.dev
 # source:       IANA
 ```
 
-To look up these domains without manually using `curl` and parsing JSON, we can build a bridge.
+While `whois` doesn't show much for `kmcd.dev`, `rdap` seems to have everything that you can normally get with whois:
+
+```shell
+rdap kmcd.dev
+```
+
+{{< details-md summary="Output" >}}
+{{% render-code file="kmcd-rdap.txt" language="text" %}}
+{{< /details-md >}}
+
+Even though `rdap` works, it isn't installed by default on most systems. I'm probably going to forget to install it on my new laptop, or just default to `whois` out of habit. Muscle memory—and availability—are hard to beat. So I figured that one way to get the old `whois` command working again is by making a proxy that speaks the WHOIS protocol to the client and will fetch the data using RDAP.
 
 ### Building a WHOIS-to-RDAP Proxy
 
@@ -203,11 +210,13 @@ whois -h localhost kmcd.dev
 
 ### Conclusion
 
-The WHOIS protocol's simplicity makes it an excellent case study in basic network programming. Its limitations in the real world, however, highlight the need for modern, structured protocols like RDAP. Modern TLDs like `.dev` have abandoned WHOIS entirely, creating an information gap for legacy tools.
+WHOIS is simple and approachable, but it belongs to a smaller and more trusting internet. Building a WHOIS server from scratch is useful because it makes those assumptions obvious. The protocol’s minimalism is what makes it easy to learn, and it is also what limits it.
 
-A WHOIS-to-RDAP proxy is a practical solution to bridge this gap. By accepting traditional WHOIS requests and translating them to RDAP queries, it makes modern domain information accessible to older clients.
+As the internet grew, the cracks became impossible to ignore. WHOIS depends on unstructured text, inconsistent formatting, and informal conventions between registries and registrars. Clients are expected to scrape meaning out of free-form output and follow referrals that may or may not exist. That approach does not scale, and it does not age well.
 
-The implementations in this article are basic, but they demonstrate the core mechanics of both protocols and provide a foundation for building more robust networking tools.
+RDAP is what replacing that system actually looks like. Queries move over HTTPS. Responses are structured and predictable. Discovery is standardized instead of implied. The fact that some modern TLDs never supported WHOIS at all says more than any deprecation notice.
+
+A WHOIS-to-RDAP proxy makes the transition easier to see. Old tools still function, but only by leaning on a protocol that was designed for the current internet. At that point, WHOIS is no longer the system of record. It is just the interface.
 
 ### References
 

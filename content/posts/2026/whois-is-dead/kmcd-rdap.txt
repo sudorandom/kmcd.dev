@@ -1,0 +1,91 @@
+Domain:
+  Domain Name: kmcd.dev
+  Handle: E04E36511-DEV
+  Status: client transfer prohibited
+  Conformance: rdap_level_0
+  Conformance: icann_rdap_response_profile_1
+  Conformance: icann_rdap_technical_implementation_guide_1
+  Notice:
+    Title: RDAP Terms of Service
+    Description: By querying our Domain Database as part of the RDAP pilot program (RDAP Domain Database), you are agreeing to comply with these terms and acknowledging that your information will be used in accordance with Charleston Road Registry's Privacy Policy (https://www.registry.google/about/privacy.html), so please read the terms and Privacy Policy carefully.
+    Description: Any information provided is 'as is' without any guarantee of accuracy.
+    Description: Please do not misuse the RDAP Domain Database. It is intended solely for query-based access on an experimental basis and should not be used for or relied upon for any other purpose.
+    Description: Don't use the RDAP Domain Database to allow, enable, or otherwise support the transmission of mass unsolicited, commercial advertising or solicitations.
+    Description: Don't access our RDAP Domain Database through the use of high volume, automated electronic processes that send queries or data to the systems of Charleston Road Registry or any ICANN-accredited registrar.
+    Description: You may only use the information contained in the RDAP Domain Database for lawful purposes.
+    Description: Do not compile, repackage, disseminate, or otherwise use the information contained in the RDAP Domain Database in its entirety, or in any substantial portion, without our prior written permission.
+    Description: We may retain certain details about queries to our RDAP Domain Database for the purposes of detecting and preventing misuse.
+    Description: We reserve the right to restrict or deny your access to the RDAP Domain Database if we suspect that you have failed to comply with these terms.
+    Description: We reserve the right to modify or discontinue our participation in the RDAP pilot program and suspend or terminate access to the RDAP Domain Database at any time and for any reason in our sole discretion.
+    Description: Reminder that underlying Registrant data may be requested via ICANN's RDRS service (https://rdrs.icann.org/).
+    Description: We reserve the right to modify this agreement at any time.
+    Link: https://pubapi.registry.google/rdap/help/tos
+    Link: https://www.registry.google/policies/rdap-terms/
+  Notice:
+    Title: Status Codes
+    Description: For more information on domain status codes, please visit https://icann.org/epp
+    Link: https://icann.org/epp
+  Notice:
+    Title: RDDS Inaccuracy Complaint Form
+    Description: URL of the ICANN RDDS Inaccuracy Complaint Form: https://icann.org/wicf
+    Link: https://icann.org/wicf
+  Link: https://pubapi.registry.google/rdap/domain/kmcd.dev
+  Link: https://rdap.cloudflare.com/rdap/v1/domain/kmcd.dev
+  Event:
+    Action: registration
+    Actor: cloudflare
+    Date: 2024-05-18T19:33:01.182Z
+  Event:
+    Action: expiration
+    Date: 2034-05-18T19:33:01.182Z
+  Event:
+    Action: last update of RDAP database
+    Date: 2025-12-16T22:15:17.386Z
+  Event:
+    Action: last changed
+    Date: 2025-10-08T17:07:04.569Z
+  Secure DNS:
+    Zone Signed: true
+    Delegation Signed: true
+    DSData:
+      Key Tag: 2371
+      Algorithm: 13
+      Digest: 321F88BA26AB76AE885C06671798645ADF4D06448F52D67D627641FA28392AF7
+      DigestType: 2
+  Entity:
+    Handle: 1910
+    Public ID:
+      Type: IANA Registrar ID
+      Identifier: 1910
+    Remark:
+      Title: Incomplete Data
+      Type: object truncated due to unexplainable reasons
+      Description: Summary data only. For complete data, send a specific query for the object.
+    Link: https://pubapi.registry.google/rdap/entity/1910
+    Link: None
+    Role: registrar
+    vCard version: 4.0
+    vCard fn: CloudFlare, Inc.
+    Entity:
+      Status: active
+      Role: abuse
+      vCard version: 4.0
+      vCard fn: Abuse Team
+      vCard tel: tel:+1.4153197517
+      vCard email: registrar-abuse@cloudflare.com
+  Nameserver:
+    Nameserver: chuck.ns.cloudflare.com
+    Handle: 13F5B5F1_HOW-GOOGLE
+    Remark:
+      Title: Incomplete Data
+      Type: object truncated due to unexplainable reasons
+      Description: Summary data only. For complete data, send a specific query for the object.
+    Link: https://pubapi.registry.google/rdap/nameserver/chuck.ns.cloudflare.com
+  Nameserver:
+    Nameserver: oaklyn.ns.cloudflare.com
+    Handle: 40ADE79A0-GOOGLE
+    Remark:
+      Title: Incomplete Data
+      Type: object truncated due to unexplainable reasons
+      Description: Summary data only. For complete data, send a specific query for the object.
+    Link: https://pubapi.registry.google/rdap/nameserver/oaklyn.ns.cloudflare.com
