@@ -1,0 +1,21 @@
+Domain Name: EXAMPLE.COM
+Registry Domain ID: 2977467_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.iana.org
+Registrar URL: http://www.iana.org
+Updated Date: 2020-04-20T22:24:06Z
+Creation Date: 1995-08-14T04:00:00Z
+Registry Expiry Date: 2021-08-13T04:00:00Z
+Registrar: RESERVED-IANA
+Registrar IANA ID: 376
+Registrar Abuse Contact Email: abuse@iana.org
+Registrar Abuse Contact Phone: +1.7038600720
+Domain Status: clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited
+Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited
+Domain Status: clientUpdateProhibited https://icann.org/epp#clientUpdateProhibited
+Name Server: A.IANA-SERVERS.NET
+Name Server: B.IANA-SERVERS.NET
+DNSSEC: unsigned
+URL of the ICANN WHOIS Data Problem Reporting System: http://wdprs.internic.net/
+>>> Last update of WHOIS database: 2020-04-20T22:24:06Z <<<
+
+For more information on IANA WHOIS services, please visit http://www.iana.org/whois/

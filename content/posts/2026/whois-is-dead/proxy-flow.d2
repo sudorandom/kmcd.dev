@@ -1,0 +1,11 @@
+direction: right
+
+style {
+  stroke-width: 2
+  font-size: 14
+}
+
+Client -> Proxy: WHOIS query (domain)
+Proxy -> RDAP Server: HTTPS GET (domain)
+RDAP Server -> Proxy: JSON response
+Proxy -> Client: Formatted Text Response

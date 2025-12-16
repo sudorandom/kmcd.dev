@@ -1,0 +1,94 @@
+Domain:
+  Domain Name: {{.LDHName}}
+  Handle: {{.Handle}}
+  {{- range .Status}}
+  Status: {{.}}
+  {{- end}}
+  {{- range .Conformance}}
+  Conformance: {{.}}
+  {{- end}}
+  {{- range .Notices}}
+  Notice:
+    Title: {{.Title}}
+    {{- range .Description}}
+    Description: {{.}}
+    {{- end}}
+	{{- range .Links}}
+    Link: {{.Href}}
+    {{- end}}
+  {{- end}}
+  {{- range .Links}}
+  Link: {{.Href}}
+  {{- end}}
+  {{- range .Events}}
+  Event:
+    Action: {{.Action}}
+	{{- if .Actor}}
+    Actor: {{.Actor}}
+	{{- end}}
+    Date: {{.Date.Format "2006-01-02T15:04:05.000Z"}}
+  {{- end}}
+  {{- with .SecureDNS}}
+  Secure DNS:
+    Zone Signed: {{.ZoneSigned}}
+    Delegation Signed: {{.DelegationSigned}}
+	{{- range .DSData}}
+    DSData:
+      Key Tag: {{.KeyTag}}
+      Algorithm: {{.Algorithm}}
+      Digest: {{.Digest}}
+      DigestType: {{.DigestType}}
+	{{- end}}
+  {{- end}}
+  {{- range .Entities}}
+  Entity:
+    Handle: {{.Handle}}
+	{{- range .PublicIDs}}
+    Public ID:
+      Type: {{.Type}}
+      Identifier: {{.Identifier}}
+	{{- end}}
+	{{- range .Remarks}}
+    Remark:
+      Title: {{.Title}}
+      Type: {{.Type}}
+	  {{- range .Description}}
+      Description: {{.}}
+	  {{- end}}
+	{{- end}}
+	{{- range .Links}}
+    Link: {{.Href}}
+	{{- end}}
+    Role: {{range $i, $role := .Roles}}{{if $i}}, {{end}}{{$role}}{{end}}
+	{{- if .VCardArray.GetField "fn"}}
+    vCard version: 4.0
+    vCard fn: {{.VCardArray.GetField "fn"}}
+	{{- end}}
+	{{- range .Entities}}
+    Entity:
+	  {{- range .Status}}
+      Status: {{.}}
+	  {{- end}}
+      Role: {{range $i, $role := .Roles}}{{if $i}}, {{end}}{{$role}}{{end}}
+      vCard version: 4.0
+      vCard fn: {{.VCardArray.GetField "fn"}}
+      vCard tel: {{.VCardArray.GetField "tel"}}
+      vCard email: {{.VCardArray.GetField "email"}}
+	{{- end}}
+  {{- end}}
+  {{- range .Nameservers}}
+  Nameserver:
+    Nameserver: {{.LDHName}}
+    Handle: {{.Handle}}
+	{{- range .Remarks}}
+    Remark:
+      Title: {{.Title}}
+      Type: {{.Type}}
+	  {{- range .Description}}
+      Description: {{.}}
+	  {{- end}}
+	{{- end}}
+	{{- range .Links}}
+    Link: {{.Href}}
+	{{- end}}
+  {{- end}}

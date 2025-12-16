@@ -1,0 +1,71 @@
+details {
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+details > summary {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+[data-theme=light] {
+    details {
+        background-color: #eaeaea; // $light-background-secondary
+    }
+    details:hover {
+        background-color: #dfdfdf;
+    }
+    details > summary {
+        color: #007bff; // Primary color for light theme
+    }
+}
+
+[data-theme=dark] {
+    details {
+        background-color: #3b5065; // $dark-background-secondary
+    }
+    details:hover {
+        background-color: #4a6580;
+    }
+    details > summary {
+        color: #a2a2dd; // $dark-color-secondary for dark theme
+    }
+}
+
+.details-github-link {
+  float: right;
+  text-decoration: none;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  // Make the svg inside the link inherit the color
+  svg {
+    fill: currentColor;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    margin-right: 0.25rem;
+  }
+}
+
+[data-theme=light] {
+    .details-github-link {
+        color: #222; // $light-color
+        &:hover {
+            color: #007bff; // $primary-color
+        }
+    }
+}
+
+[data-theme=dark] {
+    .details-github-link {
+        color: white; // $dark-color
+        &:hover {
+            color: #a2a2dd; // $dark-color-secondary
+        }
+    }
+}

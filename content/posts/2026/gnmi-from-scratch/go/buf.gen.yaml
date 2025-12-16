@@ -1,0 +1,17 @@
+version: v2
+inputs:
+  - git_repo: https://github.com/openconfig/gnmi.git
+    branch: v0.14.1
+    subdir: proto
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: "github.com/sudorandom/kmcd.dev/gnmi/gen"
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.11
+    out: .
+    opt: paths=import
+  - remote: buf.build/connectrpc/go:v1.19.1
+    out: .
+    opt: paths=import

@@ -1,5 +1,5 @@
 [tools]
-go = "1.24.3"
+go = "1.25.5"
 hugo-extended = "0.152.2"
 "go:oss.terrastruct.com/d2" = "v0.7.0"
 just = "1.42.4"

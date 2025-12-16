@@ -1,0 +1,101 @@
+Domain:
+  Domain Name: kmcd.dev
+  Handle: E04E36511-DEV
+  Status: client transfer prohibited
+  Conformance: rdap_level_0
+  Conformance: icann_rdap_technical_implementation_guide_0
+  Conformance: icann_rdap_response_profile_0
+  Notice:
+    Title: Cloudflare Registrar
+    Description: Cloudflare provides more than 13 million domains with the tools to give their global users a faster, more secure, and more reliable internet experience.
+    Description: Register your domain name at https://www.cloudflare.com/registrar/
+    Link: https://www.cloudflare.com/registrar/
+  Notice:
+    Title: Terms of Use
+    Description: Data in the Cloudflare Registrar WHOIS database is provided to you by Cloudflare under the terms and conditions at https://www.cloudflare.com/domain-registration-agreement/.
+    Description: By submitting this query, you agree to abide by these terms.
+    Link: https://www.cloudflare.com/domain-registration-agreement/
+  Notice:
+    Title: EPP Status Codes
+    Description: For more information on domain status codes, please visit https://icann.org/epp.
+    Link: https://icann.icann.org/epp
+  Notice:
+    Title: Whois Inaccuracy Complaint Form
+    Description: URL of the ICANN Whois Inaccuracy Complaint Form: https://www.icann.org/wicf.
+    Link: https://www.icann.org/wicf
+  Event:
+    Action: registration
+    Date: 2024-05-18T19:33:01.000Z
+  Event:
+    Action: last changed
+    Date: 2024-05-23T20:08:26.329Z
+  Event:
+    Action: expiration
+    Date: 2034-05-18T19:33:01.000Z
+  Event:
+    Action: registrar expiration
+    Date: 2034-05-18T19:33:01.000Z
+  Secure DNS:
+    Zone Signed: false
+    Delegation Signed: true
+    DSData:
+      Key Tag: 2371
+      Algorithm: 13
+      Digest: 321F88BA26AB76AE885C06671798645ADF4D06448F52D67D627641FA28392AF7
+      DigestType: 2
+  Entity:
+    Handle: 1910
+    Public ID:
+      Type: IANA Registrar ID
+      Identifier: 1910
+    Role: registrar
+    vCard version: 4.0
+    vCard fn: Cloudflare, Inc.
+    Entity:
+      Role: abuse
+      vCard version: 4.0
+      vCard fn: Cloudflare Registrar Abuse
+      vCard tel: tel:+1.4153197517
+      vCard email: registrar-abuse@cloudflare.com
+  Entity:
+    Handle:
+    Remark:
+      Title: DATA REDACTED
+      Type: object redacted due to authorization
+      Description: Some of the data in this object has been removed
+    Role: registrant
+    vCard version: 4.0
+    vCard fn: DATA REDACTED
+  Entity:
+    Handle:
+    Remark:
+      Title: DATA REDACTED
+      Type: object redacted due to authorization
+      Description: Some of the data in this object has been removed
+    Role: administrative
+    vCard version: 4.0
+    vCard fn: DATA REDACTED
+  Entity:
+    Handle:
+    Remark:
+      Title: DATA REDACTED
+      Type: object redacted due to authorization
+      Description: Some of the data in this object has been removed
+    Role: technical
+    vCard version: 4.0
+    vCard fn: DATA REDACTED
+  Entity:
+    Handle:
+    Remark:
+      Title: DATA REDACTED
+      Type: object redacted due to authorization
+      Description: Some of the data in this object has been removed
+    Role: billing
+    vCard version: 4.0
+    vCard fn: DATA REDACTED
+  Nameserver:
+    Nameserver: chuck.ns.cloudflare.com
+    Handle:
+  Nameserver:
+    Nameserver: oaklyn.ns.cloudflare.com
+    Handle:

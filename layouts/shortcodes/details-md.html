@@ -1,6 +1,6 @@
 <details>
     <summary>
-        {{ (.Get "summary") | markdownify }} (click to expand)
+        {{ (.Get "summary") | markdownify }}  (click to expand)
         {{- with .Get "github_file" -}}
             {{- $path := printf "%s%s" $.Page.File.Dir . -}}
             {{- $ghPath := printf "%s/blob/main/content/%s" $.Site.Params.GitUrl $path -}}
@@ -9,5 +9,5 @@
             </a>
         {{- end -}}
     </summary>
-    {{ .Inner | safeHTML }}
+    {{ .Inner | markdownify }}
 </details>
