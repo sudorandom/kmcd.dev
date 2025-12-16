@@ -16,7 +16,9 @@ canonical_url: https://kmcd.dev/posts/whois-from-scratch/
 draft: true
 ---
 
-The `whois` command is dead. For decades, it was a fundamental tool for network reconnaissance, but its time has passed. The protocol was officially sunset for all generic top-level domains in early 2025, replaced by a modern, secure, and structured successor: [RDAP](https://about.rdap.org/).
+The `whois` protocol is dead. For decades, it was a fundamental tool for network reconnaissance, but its time has passed. The protocol was officially sunset for all generic top-level domains in early 2025, replaced by a modern, secure, and structured successor: [RDAP](https://about.rdap.org/).
+
+{{< image src="whois-dead.png" width="500px" class="center" >}}
 
 So why talk about it now? To pay our respects. The WHOIS protocol, in all its simplistic, text-based glory, is a perfect case study for basic network programming and a window into an earlier era of the internet. To memorialize this piece of internet history, we will build a tiny implementation from scratch and, in the process, understand why its death was necessary.
 
@@ -173,7 +175,7 @@ Proxy -> Client: Formatted Text Response
 
 This approach makes RDAP-only domains accessible to legacy tools that only speak the classic WHOIS protocol. Although, let's be real, you should probably just use the existing `rdap` command for anything serious.
 
-{{< image src="rdap-me-up.png" width="500px" class="center" >}}
+{{< image src="rdap-me-up.png" width="300px" class="center" >}}
 
 Here is the implementation of our proxy server:
 
