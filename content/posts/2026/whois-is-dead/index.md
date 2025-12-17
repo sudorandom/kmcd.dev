@@ -46,7 +46,7 @@ Investigative journalists use historical WHOIS data to map state-sponsored disin
 
 ### How WHOIS Works
 
-The WHOIS protocol, defined in ~~[RFC 920](https://www.rfc-editor.org/rfc/rfc920)~~ [RFC 3912](https://www.rfc-editor.org/rfc/rfc3912), is a simple exchange over a TCP connection on port 43.
+The WHOIS protocol, defined in [RFC 3912](https://www.rfc-editor.org/rfc/rfc3912), is a simple exchange over a TCP connection on port 43.
 
 1. The client opens a TCP socket to a WHOIS server on port 43.
 2. The client sends the query: a single line of text like `example.com`, terminated by a carriage return and line feed (`<CR><LF>`).
