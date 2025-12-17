@@ -1,11 +1,11 @@
 ---
 categories: ["article"]
-tags: ["go", "networking", "whois", "protocol"]
+tags: ["go", "networking", "whois", "rdap", "protocol"]
 date: "2026-01-13T10:00:00Z"
 description: "WHOIS is dead. To memorialize this piece of internet history, let's build a tiny implementation from scratch."
 cover: "cover.svg"
 images: ["/posts/whois-from-scratch/cover.svg"]
-featuredalt: "A diagram showing a client and server communicating via WHOIS"
+featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 title: "WHOIS is dead, long live RDAP"
