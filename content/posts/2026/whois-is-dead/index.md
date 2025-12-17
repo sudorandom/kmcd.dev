@@ -16,7 +16,7 @@ canonical_url: https://kmcd.dev/posts/whois-from-scratch/
 draft: true
 ---
 
-The `whois` protocol is dead. For decades, it was a fundamental tool for network reconnaissance, but its time has passed. The protocol was officially sunset for all generic top-level domains in early 2025, replaced by a new kid in town: [RDAP](https://about.rdap.org/).
+The `whois` protocol is dead. For decades, it was a fundamental tool for network reconnaissance, but its time has passed. The protocol was officially sunset for all generic top-level domains in early 2025, replaced by the more modern, web-based protocol, [RDAP](https://about.rdap.org/).
 
 {{< image src="whois-dead.png" width="500px" class="center" >}}
 
@@ -24,9 +24,9 @@ So why talk about WHOIS now? To pay our respects. Because the WHOIS protocol is 
 
 #### What is WHOIS?
 
-WHOIS is the "caller ID" of the internet. It answers the fundamental question: "Who owns this?"
+Think of WHOIS as the internet's public directory. Its primary job is to resolve a domain name into a set of administrative details.
 
-When you run a WHOIS query for `example.com`, you are asking for the administrative metadata behind that address. A typical response provides the name of the Registrar that sold the domain (e.g., Namecheap, GoDaddy), the Name Servers responsible for translating the domain into an IP, and critical Dates. Specifically, you receive when the domain was created and when it will expire. Historically, this also included the full contact details of the owner, though privacy laws like GDPR have largely pushed that data behind redaction services.
+When you query `example.com`, you aren't asking for the website content; you are asking for the paper trail. A standard response returns the **Registrar** (the vendor, such as Namecheap or GoDaddy), the **Name Servers** (which direct traffic), and key dates regarding the domain's creation and expiration. In the early days of the web, this output also listed the owner's full name, address, and phone number. Today, privacy regulations like GDPR have largely forced that personal information behind generic "Redacted for Privacy" placeholders.
 
 ### Who provides this data?
 
@@ -36,28 +36,26 @@ WHOIS data is a requirement enforced by ICANN (Internet Corporation for Assigned
 
 While often used by developers to check if a cool side project name is taken, WHOIS is critical infrastructure for maintaining the internet's health.
 
-However, its utility has changed. Since the introduction of GDPR and widespread privacy redaction services, you rarely see the actual owner's name or email address anymore. The "Who" in WHOIS is often hidden. So why is it still useful?
+Despite these redactions, the protocol remains vital for security. ICANN mandates that every domain record must publicly display an abuse contact email and phone number. This provides a direct line for network operators to report domains hosting malware, phishing schemes, or spam.
 
-Even with privacy redaction, ICANN requires a valid "Abuse Contact Email" and phone number to be visible. Network operators rely on this field to alert registrars when a domain is hosting malware or spam.
+Security researchers have also pivoted their tactics. instead of looking for a specific person, they look for digital fingerprints. If a cluster of 500 suspicious domains appears on the network, registered simultaneously via the same obscure Name Server and Registrar, it strongly suggests a coordinated botnet. You don't need to know the name of the attacker to know the assets are connected.
 
-Researchers have adapted to the privacy changes. They no longer look for a name; they look for patterns. If 500 suspicious domains were all registered at the exact same second, using the same obscure Name Server, and the same Registrar, they are likely part of the same botnet. We don't need to know who they are to know they are connected.
-
-Investigative journalists use historical WHOIS data to map state-sponsored disinformation campaigns. For modern investigations, RDAP introduces "tiered access," theoretically allowing vetted professionals to request unredacted data for legitimate purposes, though this process is still maturing. Also, a new initiative called [RDRS](https://www.icann.org/rdrs-en) aims to standardize access to nonpublic registration data.
+Investigative journalists use historical WHOIS data to map state-sponsored disinformation campaigns. For modern investigations, RDAP introduces "tiered access," theoretically allowing vetted professionals to request unredacted data for legitimate purposes, though this process is still maturing. Also, a new initiative called [RDRS](https://www.icann.org/rdrs-en) aims to standardize access to nonpublic registration data for legitimate purposes.
 
 ### How WHOIS Works
 
-The WHOIS protocol, defined in [RFC 3912](https://www.rfc-editor.org/rfc/rfc3912), is a simple exchange over a TCP connection on port 43.
+The WHOIS protocol, defined in [RFC 3912](https://www.rfc-editor.org/rfc/rfc3912), is a simple exchange over a TCP connection.
 
-1. The client opens a TCP socket to a WHOIS server on port 43.
-2. The client sends the query: a single line of text like `example.com`, terminated by a carriage return and line feed (`<CR><LF>`).
-3. The server sends back a stream of plain text containing the registration data.
-4. The server closes the connection.
+1. **CONNECT**: The client opens a TCP socket to a WHOIS server (on port 43).
+2. **ASK**: The client sends the query: a single line of text like `example.com`, terminated by a carriage return and line feed (`<CR><LF>`).
+3. **RESPONSE**: The server streams back the registration data as plain text.
+4. **DISCONNECT**: The server kills the connection.
 
 There are no headers, no authentication, and no complex data formats (more on that later). It is quite literally one of the simplest protocols imaginable. This simplicity makes it a good candidate for a small project to demonstrate basic networking concepts.
 
 ### Building a WHOIS Server
 
-Let's put that theory into code. Because the protocol is so trivial, we can implement a functional server in Go using a few lines of code and the Go standard library. We can then verify that it works using the tools already installed on your machine, like telnet or the whois command itself.
+Let's turn theory into code. Because the protocol is so trivial, we can implement a functional server in Go using a few lines of code and the Go standard library. We can then verify that it works using the tools already installed on your machine, like telnet or the whois command itself.
 
 #### WHOIS Server Implementation
 
@@ -107,7 +105,7 @@ The push to replace it began back in 2013, when an ICANN Expert Working Group re
 
 After years of debate and voting, the transition became official. On January 28, 2025, WHOIS was officially sunset for generic Top-Level Domains (gTLDs). Registries are no longer required to support it, and the industry has shifted its focus to RDAP (Registration Data Access Protocol).
 
-RDAP performs the same function as WHOIS but it uses HTTPS and returns structured JSON instead of raw text.
+RDAP performs the same function as WHOIS but it uses HTTPS and returns JSON instead of plain text.
 
 | Feature    | WHOIS                               | RDAP                                    |
 |------------|-------------------------------------|-----------------------------------------|
@@ -128,9 +126,9 @@ The response is a structured JSON object that is far easier to parse than the fr
 
 ### Why `.dev` domains don't work
 
-Many modern top-level domains (TLDs), like Google's `.dev`, have effectively abandoned WHOIS since they are no longer required to support it. They **only** provide registration data via RDAP.
+If you try to run a legacy WHOIS lookup against a modern TLD like `.dev`, you will likely hit a dead end. Google, along with many newer registries, has effectively deprecated port 43. They are not required to support the old text-based protocol, so they don't.
 
-If you try to look up a `.dev` domain with a standard `whois` client, you get a generic response from IANA pointing you to the `.dev` registry's information, which is useless for finding details about a specific domain like `kmcd.dev`.
+Instead, querying a `.dev` domain via the command line often returns a generic placeholder from IANA. It tells you who manages the `.dev` registry, but it won't tell you anything about the specific domain you asked for (like `kmcd.dev`).
 
 ```shell
 $ whois kmcd.dev
@@ -145,7 +143,7 @@ $ whois kmcd.dev
 # source:       IANA
 ```
 
-While `whois` doesn't show much for `kmcd.dev`, `rdap` seems to have everything that you can normally get with WHOIS:
+To get the actual data, you are supposed to use `rdap`. As shown below, the `rdap` command retrieves the full registration details you would expect:
 
 ```shell
 rdap kmcd.dev
@@ -155,11 +153,11 @@ rdap kmcd.dev
 {{% render-code file="kmcd-rdap.txt" language="text" %}}
 {{< /details-md >}}
 
-Even though `rdap` works, it isn't installed by default on most systems. Many people are probably going to forget to install `rdap` or will just default to `whois` out of habit. Muscle memory—and availability—are hard to beat. So I figured that one way to get the old `whois` command working again is by making a proxy that speaks the WHOIS protocol to the client and will fetch the data using RDAP.
+Even though `rdap` works, it isn't installed by default on most systems. Many people are probably going to forget to install `rdap` or will just default to `whois` out of habit. I figured that one way to get the old `whois` command working again is by making a proxy that speaks the WHOIS protocol to the client and will fetch the data using RDAP.
 
 ### Building a WHOIS-to-RDAP Proxy
 
-Let's build a smarter WHOIS server that acts as a proxy. It will listen for WHOIS queries on port 43. When it receives a query, it will make an HTTPS request to the appropriate RDAP server, parse the structured JSON response, format the key details into a human-readable text format, and send that text back to the original WHOIS client. Simple, no?
+Now, I will walk you through a WHOIS server that acts as a proxy to other RDAP servers. It will listen for WHOIS queries on port 43 and when it receives a query, it will make an HTTPS request to the appropriate RDAP server, parse the JSON response, format the important details into a human-readable text format, and send that text back to the original WHOIS client. Simple, no?
 
 {{< d2 width="500px" >}}
 
@@ -203,15 +201,15 @@ whois -h localhost kmcd.dev
 {{% render-code file="whois-proxy-output.txt" language="text" %}}
 {{< /details-md >}}
 
-### Conclusion
+### Closing Thoughts
 
-WHOIS is simple and approachable, but it belongs to a smaller and more trusting internet. It relies on unstructured text, inconsistent formatting, and informal conventions, an approach that simply does not scale in the modern era.
+WHOIS is simple and approachable, but it belongs to a smaller and more trusting Internet. It relies on unstructured text, inconsistent formatting, informal conventions, and an unencrypted transport. It is out-of-place in the modern Internet.
 
-RDAP is the inevitable successor because it fixes the exact problems that made WHOIS brittle: transport, structure, discovery and security.
+RDAP is the natural evolution of WHOIS. It fixes the exact problems that made WHOIS brittle: structure, discovery and security.
 
-By wrapping the new standard in the old interface, we bridged the gap between the past and present. We get the structured power of RDAP without losing the muscle-memory efficiency of the command line.
+By wrapping the new standard in the old interface, we bridged the gap between the past and present. With the WHOIS-to-RDAP proxy, we get the structured power of RDAP without losing the muscle-memory and intuitive naming of the `whois` command.
 
-This was a small, intentionally simple project, but it is a useful lens on how internet infrastructure evolves. Protocols rarely disappear overnight. They get replaced, translated, and slowly pushed out of the critical path.
+This was a toy project made to learn about both WHOIS and RDAP, but this acts as a useful lens on how internet protocols evolve and illustrates many features of modern web APIs that we take for granted today.
 
 ### References
 
