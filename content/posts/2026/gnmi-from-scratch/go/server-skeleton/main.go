@@ -9,9 +9,11 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	"gnmi-scratch/gen/gnmi/v1/gnmiv1"
-	"gnmi-scratch/gen/gnmi/v1/gnmiv1connect"
+	gnmiv1 "github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi"
+	gnmiv1connect "github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi/gnmiconnect"
 )
+
+var _ gnmiv1connect.GNMIHandler = (*gnmiServer)(nil)
 
 type gnmiServer struct{}
 
@@ -27,10 +29,14 @@ func (s *gnmiServer) Subscribe(ctx context.Context, stream *connect.BidiStream[g
 	return connect.NewError(connect.CodeUnimplemented, nil)
 }
 
+func (s *gnmiServer) Set(context.Context, *connect.Request[gnmiv1.SetRequest]) (*connect.Response[gnmiv1.SetResponse], error) {
+	panic("unimplemented")
+}
+
 func main() {
 	server := &gnmiServer{}
 	mux := http.NewServeMux()
-	path, handler := gnmiv1connect.NewGNMIServiceHandler(server)
+	path, handler := gnmiv1connect.NewGNMIHandler(server)
 	mux.Handle(path, handler)
 	log.Println("Starting gNMI server on :8080...")
 	err := http.ListenAndServe("localhost:8080", h2c.NewHandler(mux, &http2.Server{}))

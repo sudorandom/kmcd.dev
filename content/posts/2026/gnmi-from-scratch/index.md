@@ -2,13 +2,13 @@
 categories: ["article"]
 tags: ["go", "gnmi", "connectrpc", "grpc", "networking", "telemetry"]
 date: "2026-01-06T10:00:00Z"
-description: "Building a gNMI server and client from scratch in Go using ConnectRPC."
+description: "Building a gNMI server from scratch in Go using ConnectRPC."
 cover: "cover.svg"
 images: ["/posts/gnmi-from-scratch/cover.svg"]
 featuredalt: "A diagram showing a client and server communicating via gNMI"
 featuredpath: "date"
 linktitle: ""
-title: "gNMI From Scratch"
+title: "gNMI Server From Scratch"
 slug: "gnmi-from-scratch"
 type: "posts"
 devtoSkip: true
@@ -16,9 +16,9 @@ canonical_url: https://kmcd.dev/posts/gnmi-from-scratch/
 draft: true
 ---
 
-The gRPC Network Management Interface (gNMI) is a powerful standard for streaming telemetry and configuration management on network devices. While many excellent libraries and agents exist, building a small gNMI server and client from scratch is a fantastic way to understand the protocol's mechanics deeply.
+The gRPC Network Management Interface (gNMI) is a powerful standard for streaming telemetry and configuration management on network devices. While many excellent libraries and agents exist, building a small gNMI server from scratch is a fantastic way to understand the protocol's mechanics deeply.
 
-In this post, we'll do just that. We'll implement a basic gNMI server and client in Go, using the modern and flexible [ConnectRPC](https://connectrpc.com/) framework instead of native gRPC-go.
+In this post, we'll do just that. We'll implement a basic gNMI server in Go, using the modern and flexible [ConnectRPC](https://connectrpc.com/) framework instead of native gRPC-go.
 
 ### Why build it from scratch?
 
@@ -38,11 +38,26 @@ Finally, it's built on Go's standard `net/http` package, which is widely used an
 
 ### The Plan
 
-1. **Define the Test Environment:** Outline the tools we'll use to test our implementations.
+1. **Define the Test Environment:** Outline the tools we'll use to test our server.
 2. **Explore the Protobufs:** Look at the core `gnmi.proto` messages.
 3. **Build a Server:** Implement the `gNMI` service using ConnectRPC, serving mock CPU and memory metrics.
-4. **Build a Client:** Write a simple client to `Get` data and `Subscribe` to a stream of updates.
-5. **Discuss Limitations:** Review what's missing for a production-ready system.
+4. **Discuss Limitations:** Review what's missing for a production-ready system.
+
+### A Note on gRPC Reflection
+
+gRPC Reflection is a service that allows clients to query a server's gRPC services at runtime. Instead of requiring clients to have a local copy of the `.proto` files, reflection allows them to discover the available services, methods, and message types directly from the server.
+
+This is incredibly useful for ad-hoc testing with tools like `grpcurl` and `buf curl`, as it removes the need to manually specify the location of the Protobuf schema files for every command.
+
+ConnectRPC provides a simple way to add reflection to a server. In our `main` function, we can add the following:
+
+```go
+reflector := grpcreflect.NewStaticReflector(gnmiv1connect.GNMIName)
+mux.Handle(grpcreflect.NewHandlerV1(reflector))
+mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+```
+
+With this, our server will now advertise its services, making it much easier to explore and test.
 
 ---
 
@@ -50,13 +65,7 @@ Finally, it's built on Go's standard `net/http` package, which is widely used an
 
 Before we write code, let's define our testing strategy.
 
-We will use `gNMIc`, a versatile gNMI client, to validate our server's behavior. It's a key tool for testing gNMI compliance.
-
-Another useful tool is `FauxRPC`, which can create mock gRPC (and Connect) servers. This is great for testing our client against a predictable server without needing our own implementation running.
-
-For more advanced scenarios, `containerlab` can spin up a virtual network of devices, allowing us to test our client or server in a more realistic topology.
-
-For this post, we'll focus on using `gNMIc` to test the server we build.
+We will use a few tools to test our server's behavior. Because ConnectRPC can serve traffic over standard HTTP, we can use `curl` for basic checks. For gRPC-specific interactions, we can use `grpcurl` or `gNMIc`, a versatile gNMI client for testing gNMI compliance.
 
 ---
 
@@ -76,7 +85,7 @@ We'll focus on `Capabilities`, `Get`, and the streaming `Subscribe` RPC.
 
 A few key messages to understand:
 
-- **`Path`**: Represents a path to a data element in a tree-like data model (e.g., `/system/cpu/utilization`).
+- **`Path`**: Represents a path to a data element in a tree-like data model. In gNMI, a path is structured as a sequence of `PathElem` messages, each typically containing a `name` field. For example, the path `/system/cpu/utilization` would be represented in JSON as `{"elem": [{"name": "system"}, {"name": "cpu"}, {"name": "utilization"}]}`.
 - **`TypedValue`**: A wrapper for the actual value, which can be a string, int, bool, etc.
 - **`Notification`**: A container for an update, containing a timestamp, a path, and a set of updated values.
 - **`SubscribeRequest`**: Sent by the client to initiate or modify a subscription. It specifies paths and a subscription mode (`ONCE`, `POLL`, or `STREAM`).
@@ -88,19 +97,20 @@ A few key messages to understand:
 
 ### Step 1: Code Generation with `buf`
 
-First, let's set up our project to generate the necessary Go code from the `gnmi.proto` file. The most reliable way to do this with `buf` is to create a `buf.yaml` file to define our dependencies, and a `buf.gen.yaml` to configure the output.
+First, let's set up our project to generate the necessary Go code from the `gnmi.proto` file. While `buf` supports fetching dependencies from the Buf Schema Registry, the `openconfig/gnmi` repository has some complex import paths. A more reliable and self-contained approach is to vendor the required `.proto` files directly into our project.
 
-This approach correctly resolves the import paths within the `openconfig/gnmi` repository and is the standard practice for `buf`-based projects.
+1.  **Vendor the Protobuf files.** Create a `proto` directory. Inside, we'll place `gnmi.proto` and its dependency `gnmi_ext.proto`. We will also strip the `go_package` option from the files so that we can use `buf`'s `managed` mode to generate idiomatic Go packages.
 
-1.  Create a `buf.yaml` file in your project root. This tells `buf` about our dependency on `openconfig/gnmi` from the Buf Schema Registry.
+2.  **Configure `buf` for local generation.** Create a `buf.yaml` file that tells `buf` to use our local `proto` directory as the root for discovery.
 
     ```yaml
     version: v1
-    deps:
-      - buf.build/openconfig/gnmi:v0.14.1
+    name: buf.build/kmcd/gnmi-from-scratch
+    roots:
+      - proto
     ```
 
-2.  Create the `buf.gen.yaml` file. This uses `managed mode` to prefix our generated Go code with our module path, and places the output in a `gnmi/gen` directory.
+3.  **Define the generation output.** Create a `buf.gen.yaml` file. This uses `managed mode` to automatically prefix our generated Go code with our module path, and places the output in a `gnmi/gen` directory.
 
     ```yaml
     version: v2
@@ -115,13 +125,13 @@ This approach correctly resolves the import paths within the `openconfig/gnmi` r
         out: gnmi/gen
     ```
 
-Now, run `buf generate` against the dependency:
+Now, run `buf generate`:
 
 ```bash
-buf generate buf.build/openconfig/gnmi
+buf generate
 ```
 
-This will fetch the dependency, resolve its imports, and create the Go files in the `gnmi/gen` directory.
+This will use our local `proto` files, generate Go code according to the `buf.gen.yaml` configuration, and place the output in the `gnmi/gen` directory.
 
 ---
 
@@ -180,8 +190,127 @@ Now, we'll fill in the RPC methods with our mock logic. `Capabilities` will retu
 {{% render-code file="go/server/main.go" language="go" %}}
 {{< /details-md >}}
 
-Now run this server. You can test it with `gNMIc`:
+Now run this server.
 
+### A Note on gRPC Reflection
+
+gRPC Reflection is a service that allows clients to query a server's gRPC services at runtime. Instead of requiring clients to have a local copy of the `.proto` files, reflection allows them to discover the available services, methods, and message types directly from the server.
+
+This is incredibly useful for ad-hoc testing with tools like `grpcurl` and `buf curl`, as it removes the need to manually specify the location of the Protobuf schema files for every command.
+
+ConnectRPC provides a simple way to add reflection to a server. In our `main` function, we can add the following:
+
+```go
+reflector := grpcreflect.NewStaticReflector(gnmiv1connect.GNMIName)
+mux.Handle(grpcreflect.NewHandlerV1(reflector))
+mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+```
+
+With this, our server will now advertise its services, making it much easier to explore and test.
+
+---
+
+### Our Testing Toolkit
+
+Before we write code, let's define our testing strategy.
+
+We will use a few tools to test our server's behavior. Because our server speaks standard gRPC and the Connect protocol, and now has reflection enabled, we can use a variety of tools to interact with it.
+
+#### `grpcurl`
+
+`grpcurl` is a command-line tool that lets you interact with gRPC servers. It's like `curl`, but for gRPC. With reflection enabled, we no longer need to specify the `--import-path` and `--proto` flags.
+
+**Capabilities**
+```bash
+grpcurl -plaintext localhost:8080 gnmi.gNMI/Capabilities
+```
+
+**Get**
+```bash
+grpcurl -plaintext -d '{
+    "path": [{
+        "elem": [
+            {"name": "system"},
+            {"name": "cpu"},
+            {"name": "utilization"}
+        ]
+    }]
+}' localhost:8080 gnmi.gNMI/Get
+```
+
+**Subscribe**
+```bash
+grpcurl -plaintext -d '{
+    "subscribe": {
+        "subscription": [{
+            "path": {
+                "elem": [
+                    {"name": "system"},
+                    {"name": "memory"},
+                    {"name": "state"},
+                    {"name": "used"}
+                ]
+            },
+            "mode": "STREAM"
+        }]
+    }
+}' localhost:8080 gnmi.gNMI/Subscribe
+```
+
+#### `buf curl`
+
+`buf curl` is part of the `buf` CLI and can be used to send requests to a Connect, gRPC, or gRPC-Web server.
+
+**Capabilities**
+```bash
+buf curl --protocol grpc \
+    -X POST \
+    --http2-prior-knowledge \
+    http://localhost:8080/gnmi.gNMI/Capabilities
+```
+
+**Get**
+```bash
+buf curl --protocol grpc \
+    -d '{
+        "path": [{
+            "elem": [
+                {"name": "system"},
+                {"name": "cpu"},
+                {"name": "utilization"}
+            ]
+        }]
+    }' \
+    -X POST \
+    --http2-prior-knowledge \
+    http://localhost:8080/gnmi.gNMI/Get
+```
+
+**Subscribe**
+```bash
+buf curl --protocol grpc \
+    -d '{
+        "subscribe": {
+            "subscription": [{
+                "path": {
+                    "elem": [
+                        {"name": "system"},
+                        {"name": "memory"},
+                        {"name": "state"},
+                        {"name": "used"}
+                    ]
+                },
+                "mode": "STREAM"
+            }]
+        }
+    }' \
+    -X POST \
+    --http2-prior-knowledge \
+    http://localhost:8080/gnmi.gNMI/Subscribe
+```
+
+#### gNMIc
+You can also use a gNMI-specific client like `gNMIc`.
 ```bash
 # Test Capabilities
 gnmic -a localhost:8080 --insecure capabilities
@@ -192,63 +321,6 @@ gnmic -a localhost:8080 --insecure get --path "/system/cpu/utilization"
 # Test Subscribe
 gnmic -a localhost:8080 --insecure subscribe --path "/system/memory/state/used" --stream-mode stream --stream-sample-interval 2s
 ```
-
----
-
-### Step 3: Building the gNMI Client
-
-With the server running, let's build a client to interact with it.
-
-#### Client Responsibilities
-
-The client's job is simpler. It needs to connect to the server's address and create a gNMI client stub using the code generated by Connect. From there, it can call RPCs by building request messages, sending them to the server, and processing the responses.
-
-#### Core Components
-
-First, we create a new client from the generated `gnmiv1connect` package, pointing it at our server's address.
-
-```go
-client := gnmiv1connect.NewGNMIServiceClient(
-    http.DefaultClient,
-    "http://localhost:8080",
-)
-```
-
-Calling a unary RPC like `Get` is straightforward. We create a request object, wrap it in a `connect.Request`, and pass it to the client method.
-
-```go
-getReq := &gnmiv1.GetRequest{
-    Path: []*gnmiv1.Path{getPath}, // where getPath is a *gnmiv1.Path
-    Encoding: gnmiv1.Encoding_JSON_IETF,
-}
-getResp, err := client.Get(ctx, connect.NewRequest(getReq))
-```
-
-Calling a streaming RPC like `Subscribe` involves getting a stream object from the client, sending an initial request on it, and then entering a loop to receive responses.
-
-```go
-stream := client.Subscribe(ctx)
-stream.Send(subReq) // where subReq is a *gnmiv1.SubscribeRequest
-
-for stream.Receive() {
-    resp := stream.Msg()
-    // ... process response ...
-}
-```
-
-#### Program Skeleton
-
-A skeleton for the client would establish a connection and prepare to make calls, but might only log that the calls were made without processing the results.
-
-{{% render-code file="go/client-skeleton/main.go" language="go" %}}
-
-#### Complete Implementation
-
-Finally, here is the complete client code that builds the `Get` and `Subscribe` requests and processes their responses.
-
-{{< details-md summary="client/main.go" github_file="go/client/main.go" >}}
-{{% render-code file="go/client/main.go" language="go" %}}
-{{< /details-md >}}
 
 ---
 

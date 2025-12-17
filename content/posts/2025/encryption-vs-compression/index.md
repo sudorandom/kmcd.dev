@@ -15,7 +15,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/encryption-vs-compression/
 ---
 
-Compression shrinks data, encryption obfuscates it. The order you apply them isn't simple. Get it wrong and you waste CPU, storage, and bandwidth.
+Compression shrinks data, encryption obfuscates it. Should you compress or encrypt first? If you get this wrong and you will waste CPU, storage, and bandwidth. Pick wisely.
 
 {{< bigtext >}}**Always compress first, then encrypt.**{{< /bigtext >}}
 
