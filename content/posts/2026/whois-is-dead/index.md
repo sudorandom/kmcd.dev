@@ -13,7 +13,6 @@ slug: "whois-from-scratch"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/whois-from-scratch/
-draft: true
 ---
 
 The `whois` protocol is dead. For decades, it was a fundamental tool for network reconnaissance, but its time has passed. The protocol was officially sunset for all generic top-level domains in early 2025, replaced by the more modern, web-based protocol, [RDAP](https://about.rdap.org/).
