@@ -227,6 +227,16 @@ BREACH is CRIME's younger, more persistent sibling. It targets compression at th
 
     Use rate-limiting to slow down attackers so the thousands of requests needed for the attack become impractical.
 
+    At this point, you might be thinking: "Wait, HTTP/2 and HTTP/3 use header compression (HPACK and QPACK). If my secrets are in headers, doesn't that bring back the BREACH risk?" *That is a concern here*. Headers like `Authorization`, `Cookie`, `Set-Cookie`, or `X-Auth-Token` often contain high-value secrets and are prime targets for a compression oracle. To handle this, HTTP/2 and HTTP/3 protocols include a specific "sensitive" flag. When a header is marked this way, the compressor is told to treat the value as a literal rather than adding it to the dynamic compression table. This prevents the value from being used as a reference point for future matches and prevents the side-channel without forcing us to disable compression for the entire connection.
+
+## Final thoughts
+
+What started as an interesting little interview question lead us to discussing real security concerns with mixing compression and encryption.
+
+In most cases, the rule is unequivocal: **compress first, then encrypt**. Whether you are archiving logs or moving backups, compressing patterned data before it becomes random noise saves significant time and money.
+
+The only real exception is when you are handling interactive traffic. If an attacker can control part of a message that contains a secret, the compressed size actually leaks information. For static archives, this isn't an issue. But for live web protocols, you either have to use modern safeguards like sensitive header flags or disable compression entirely for those specific payloads.
+
 ### Further Reading
 
 **The Specifications**
