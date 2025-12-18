@@ -229,6 +229,8 @@ BREACH is CRIME's younger, more persistent sibling. It targets compression at th
 
     At this point, you might be thinking: "Wait, HTTP/2 and HTTP/3 use header compression (HPACK and QPACK). If my secrets are in headers, doesn't that bring back the BREACH risk?" *That is a concern here*. Headers like `Authorization`, `Cookie`, `Set-Cookie`, or `X-Auth-Token` often contain high-value secrets and are prime targets for a compression oracle. To handle this, HTTP/2 and HTTP/3 protocols include a specific "sensitive" flag. When a header is marked this way, the compressor is told to treat the value as a literal rather than adding it to the dynamic compression table. This prevents the value from being used as a reference point for future matches and prevents the side-channel without forcing us to disable compression for the entire connection.
 
+{{< image src="oracle.png" class="center" >}}
+
 ## Final thoughts
 
 What started as an interesting little interview question lead us to discussing real security concerns with mixing compression and encryption.
@@ -241,7 +243,7 @@ The only real exception is when you are handling interactive traffic. If an atta
 
 **The Specifications**
 
-- **RFC 1952 (GZIP):** The technical format for the compression used in the example above.
+- **RFC 1952 (GZIP):** Specification for GZIP compression, used in examples above.
     [https://datatracker.ietf.org/doc/html/rfc1952](https://datatracker.ietf.org/doc/html/rfc1952)
 - **RFC 8446 (TLS 1.3):** Note section 1.2, which explicitly removes support for compression to mitigate the attacks mentioned above.
     [https://datatracker.ietf.org/doc/html/rfc8446](https://datatracker.ietf.org/doc/html/rfc8446)
@@ -259,5 +261,5 @@ The only real exception is when you are handling interactive traffic. If an atta
 
 - **Shannon Entropy:** The mathematical concept explaining why encrypted data (high entropy) cannot be compressed.
     [https://en.wikipedia.org/wiki/Entropy_(information_theory)](https://en.wikipedia.org/wiki/Entropy_(information_theory))
-- **Why can't I compress an encrypted file?** This article explains why encrypted data is difficult to compress.
+- **Why can't I compress an encrypted file?** This Math StackExchange question/answer asks and answers why encrypted data is difficult to compress.
     [https://math.stackexchange.com/questions/4858088/why-cant-i-compress-an-encrypted-file](https://math.stackexchange.com/questions/4858088/why-cant-i-compress-an-encrypted-file)
