@@ -17,7 +17,10 @@
                         {{ range .Pages }}
                             <li class="post-item">
                                 <a href="{{.Permalink}}">
-                                    <span class="post-title">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title }}</span>
+                                    <span class="post-title-with-reading-time">
+                                        <span class="post-title">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title }}</span>
+                                        <span class="reading-time">{{ .ReadingTime }} min read</span>
+                                    </span>
                                     <span class="post-day">
                                         {{ if .Site.Params.dateformShort }}
                                             {{ .Date.Format .Site.Params.dateformShort }}

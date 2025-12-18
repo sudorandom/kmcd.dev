@@ -1,3 +1,8 @@
+.post-title-with-reading-time {
+    display: inline-flex;
+    align-items: baseline;
+}
+
 .posts {
   width: 100%;
   max-width: 1000px;
@@ -80,5 +85,13 @@
       margin-left: 1em;
       @include dimmed;
     }
+  }
+  .reading-time {
+    font-size: 0.8rem;
+    font-style: italic;
+    @include dimmed;
+    margin-left: 1em;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 }

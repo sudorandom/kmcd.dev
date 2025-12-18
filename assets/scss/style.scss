@@ -165,6 +165,11 @@ main {
     font-weight: lighter;
 }
 
+.post.on-list small.reading-time {
+    white-space: nowrap;
+    margin-left: 1em;
+}
+
 .post.on-list:hover {
     [data-theme=dark] & {
         background: rgb(40, 55, 69);

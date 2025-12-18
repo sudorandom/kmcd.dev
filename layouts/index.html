@@ -35,6 +35,7 @@
                         {{- with .Date -}}
                         <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
                         {{- end -}}
+                        <small class="reading-time">{{ .ReadingTime }} min read</small>
                     </h3>
                     <div class="post-meta">
                     </div>
