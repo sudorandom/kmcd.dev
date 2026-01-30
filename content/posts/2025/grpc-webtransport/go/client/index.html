@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>WebTransport over HTTP/3 test</title>
+	</head>
+	<body>
+		<h1>WebTransport over HTTP/3 test</h1>
+		<script type="text/javascript">
+			let transport;
+			const url = "https://localhost:4434/webtransport";
+
+			function add_log(text) {
+				const log = document.createElement("p");
+				log.textContent = text;
+				document.body.appendChild(log);
+			}
+
+			async function main() {
+				add_log(`Opening a WebTransport session at ${url}`);
+				try {
+					transport = new WebTransport(url);
+					add_log("Session opened");
+				} catch (e) {
+					add_log(`Failed to open session: ${e}`);
+					return;
+				}
+
+				transport.closed
+					.then(() => {
+						add_log("Session closed");
+					})
+					.catch((e) => {
+						add_log(`Session closed with error: ${e}`);
+					});
+
+				await transport.ready;
+				add_log("Session ready");
+
+				const stream = await transport.createBidirectionalStream();
+				add_log("Bidirectional stream created");
+
+				const writer = stream.writable.getWriter();
+				const encoder = new TextEncoder();
+				const data = "Hello, WebTransport!";
+				add_log(`Sending: ${data}`);
+				writer.write(encoder.encode(data));
+
+				const reader = stream.readable.getReader();
+				const decoder = new TextDecoder();
+				const { value } = await reader.read();
+				add_log(`Received: ${decoder.decode(value)}`);
+			}
+			main();
+		</script>
+	</body>
+</html>

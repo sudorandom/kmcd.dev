@@ -18,11 +18,15 @@ import (
 	"strings"
 )
 
+var nlcf = []byte{0x0d, 0x0a}
+
+// Server is a simple HTTP/1.1 server.
 type Server struct {
 	Addr    string
 	Handler http.Handler
 }
 
+// ListenAndServe starts the server.
 func (s *Server) ListenAndServe() error {
 	handler := s.Handler
 	if handler == nil {
@@ -68,9 +72,7 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	// Limit headers to 1MB
 	limitReader := io.LimitReader(conn, 1*1024*1024).(*io.LimitedReader)
 	reader := bufio.NewReader(limitReader)
-	// headerReader := textproto.NewReader(bufio.NewReader(reader))
 
-	// Read the request line: GET /path/to/index.html HTTP/1.0
 	reqLineBytes, _, err := reader.ReadLine()
 	if err != nil {
 		return true, fmt.Errorf("read request line error: %w", err)
@@ -80,7 +82,6 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 	req := new(http.Request)
 	var found bool
 
-	// Parse Method: GET/POST/PUT/DELETE/etc
 	req.Method, reqLine, found = strings.Cut(reqLine, " ")
 	if !found {
 		return true, errors.New("invalid method")
@@ -89,7 +90,6 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		return true, errors.New("invalid method")
 	}
 
-	// Parse Request URI
 	req.RequestURI, reqLine, found = strings.Cut(reqLine, " ")
 	if !found {
 		return true, errors.New("invalid path")
@@ -98,14 +98,12 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		return true, fmt.Errorf("invalid path: %w", err)
 	}
 
-	// Parse protocol version "HTTP/1.0"
 	req.Proto = reqLine
 	req.ProtoMajor, req.ProtoMinor, found = parseProtocol(req.Proto)
 	if !found {
 		return true, errors.New("invalid protocol")
 	}
 
-	// Parse headers
 	req.Header = make(http.Header)
 	for {
 		line, _, err := reader.ReadLine()
@@ -136,7 +134,6 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		req.Close = true
 	}
 
-	// Unbound the limit after we've read the headers since the body can be any size
 	limitReader.N = math.MaxInt64
 
 	ctx := context.Background()
@@ -161,7 +158,6 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 				reader: io.LimitReader(reader, req.ContentLength),
 			}
 		}
-
 	}
 
 	req.RemoteAddr = conn.RemoteAddr().String()
@@ -172,7 +168,6 @@ func (s *Server) handleRequest(conn net.Conn) (bool, error) {
 		headers: make(http.Header),
 	}
 
-	// Finally, call our http.Handler!
 	s.Handler.ServeHTTP(w, req.WithContext(ctx))
 	if err := w.flush(); err != nil {
 		return true, nil
@@ -189,7 +184,6 @@ func parseContentLength(headerval string) (int64, error) {
 	if headerval == "" {
 		return 0, nil
 	}
-
 	return strconv.ParseInt(headerval, 10, 64)
 }
 
@@ -211,20 +205,262 @@ func methodValid(method string) bool {
 	return false
 }
 
+type bodyReader struct {
+	reader io.Reader
+}
+
+func (r *bodyReader) Read(p []byte) (n int, err error) {
+	return r.reader.Read(p)
+}
+
+func (r *bodyReader) Close() error {
+	_, err := io.Copy(io.Discard, r.reader)
+	return err
+}
+
+type chunkedBodyReader struct {
+	reader *bufio.Reader
+	n      int64 // bytes left in current chunk
+	err    error
+}
+
+func (r *chunkedBodyReader) Read(p []byte) (n int, err error) {
+	if r.err != nil {
+		return 0, r.err
+	}
+	if r.n == 0 {
+		r.n, r.err = r.readChunkSize()
+		if r.err != nil {
+			return 0, r.err
+		}
+	}
+	if r.n == 0 {
+		return 0, io.EOF
+	}
+	if int64(len(p)) > r.n {
+		p = p[0:r.n]
+	}
+	n, err = r.reader.Read(p)
+	r.n -= int64(n)
+	if r.n == 0 && err == nil {
+		// Read trailing \r\n
+		b, err := r.reader.ReadByte()
+		if err != nil {
+			r.err = err
+			return n, err
+		}
+		if b != '\r' {
+			r.err = errors.New("missing \r after chunk")
+			return n, r.err
+		}
+		b, err = r.reader.ReadByte()
+		if err != nil {
+			r.err = err
+			return n, err
+		}
+		if b != '\n' {
+			r.err = errors.New("missing \n after chunk")
+			return n, r.err
+		}
+	}
+	r.err = err
+	return n, err
+}
+
+func (r *chunkedBodyReader) readChunkSize() (int64, error) {
+	line, err := r.readLine()
+	if err != nil {
+		return 0, err
+	}
+	// chunkSize is hex
+	n, err := strconv.ParseInt(strings.TrimSpace(string(line)), 16, 64)
+	if err != nil {
+		return 0, err
+	}
+	if n == 0 {
+		// Read trailers
+		for {
+			line, err := r.readLine()
+			if err != nil {
+				return 0, err
+			}
+			if len(line) == 0 {
+				break
+			}
+		}
+	}
+	return n, nil
+}
+
+func (r *chunkedBodyReader) readLine() (string, error) {
+	var line []byte
+	for {
+		b, err := r.reader.ReadByte()
+		if err != nil {
+			return "", err
+		}
+		if b == '\n' {
+			break
+		}
+		line = append(line, b)
+	}
+	return strings.TrimRight(string(line), "\r"), nil
+}
+
+func (r *chunkedBodyReader) Close() error {
+	_, err := io.Copy(io.Discard, r)
+	return err
+}
+
+type responseBodyWriter struct {
+	req             *http.Request
+	conn            net.Conn
+	sentHeaders     bool
+	headers         http.Header
+	chunkedEncoding bool
+	bodyBuffer      *bytes.Buffer
+}
+
+func (r *responseBodyWriter) Header() http.Header {
+	return r.headers
+}
+
+func (r *responseBodyWriter) Write(b []byte) (int, error) {
+	if !r.sentHeaders {
+		if r.headers.Get("Content-Type") == "" {
+			r.headers.Set("Content-Type", http.DetectContentType(b))
+		}
+		r.WriteHeader(http.StatusOK)
+	}
+
+	if r.chunkedEncoding {
+		chunkSize := fmt.Sprintf("%x\r\n", len(b))
+		if _, err := r.conn.Write([]byte(chunkSize)); err != nil {
+			return 0, err
+		}
+	}
+
+	n, err := r.conn.Write(b)
+	if err != nil {
+		return n, err
+	}
+
+	if r.chunkedEncoding {
+		if _, err := r.conn.Write(nlcf); err != nil {
+			return n, err
+		}
+	}
+
+	return n, nil
+}
+
+func (r *responseBodyWriter) Flush() {
+	if !r.sentHeaders {
+		r.WriteHeader(http.StatusOK)
+	}
+	if flusher, ok := r.conn.(interface{ Flush() error }); ok {
+		flusher.Flush()
+	}
+}
+
+func (r *responseBodyWriter) flush() error {
+	if r.chunkedEncoding {
+		if _, err := r.conn.Write([]byte("0\r\n\r\n")); err != nil {
+			return err
+		}
+	}
+
+	r.writeBufferedBody()
+
+	return nil
+}
+
+func (r *responseBodyWriter) WriteHeader(statusCode int) {
+	if r.sentHeaders {
+		slog.Warn(fmt.Sprintf("WriteHeader called twice, second time with: %d", statusCode))
+		return
+	}
+
+	r.writeHeader(r.conn, r.req.Proto, r.headers, statusCode)
+	r.sentHeaders = true
+	r.writeBufferedBody()
+}
+
+func (r *responseBodyWriter) writeBufferedBody() {
+	if r.bodyBuffer != nil {
+		_, err := r.conn.Write(r.bodyBuffer.Bytes())
+		if err != nil {
+			slog.Error("Error writing buffered body", "err", err)
+		}
+		r.bodyBuffer = nil
+	}
+}
+
+func (r *responseBodyWriter) writeHeader(conn io.Writer, proto string, headers http.Header, statusCode int) error {
+	_, clSet := r.headers["Content-Length"]
+	_, teSet := r.headers["Transfer-Encoding"]
+	if !clSet && !teSet {
+		r.chunkedEncoding = true
+		r.headers.Set("Transfer-Encoding", "chunked")
+	}
+
+	if r.req.Close {
+		r.headers.Set("Connection", "close")
+	} else {
+		r.headers.Set("Connection", "keep-alive")
+	}
+
+	if _, err := io.WriteString(conn, proto); err != nil {
+		return err
+	}
+	if _, err := conn.Write([]byte{' '}); err != nil {
+		return err
+	}
+	if _, err := io.WriteString(conn, strconv.FormatInt(int64(statusCode), 10)); err != nil {
+		return err
+	}
+	if _, err := conn.Write([]byte{' '}); err != nil {
+		return err
+	}
+	if _, err := io.WriteString(conn, http.StatusText(statusCode)); err != nil {
+		return err
+	}
+	if _, err := conn.Write(nlcf); err != nil {
+		return err
+	}
+	for k, vals := range headers {
+		for _, val := range vals {
+			if _, err := io.WriteString(conn, k); err != nil {
+				return err
+			}
+			if _, err := conn.Write([]byte{':', ' '}); err != nil {
+				return err
+			}
+			if _, err := io.WriteString(conn, val); err != nil {
+				return err
+			}
+			if _, err := conn.Write(nlcf); err != nil {
+				return err
+			}
+		}
+	}
+	if _, err := conn.Write(nlcf); err != nil {
+		return err
+	}
+	return nil
+}
+
 func main() {
 	addr := "127.0.0.1:9000"
 	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.Dir("public")))
+	mux.Handle("/", http.FileServer(http.Dir(".")))
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		b, err := io.ReadAll(r.Body)
 		if err != nil {
 			w.WriteHeader(400)
-			fmt.Println("ERROR", err)
 			return
 		}
-		fmt.Println("READ BODY")
-		fmt.Println(string(b))
 		w.Write(b)
 	})
 	mux.HandleFunc("/echo/chunked", func(w http.ResponseWriter, r *http.Request) {

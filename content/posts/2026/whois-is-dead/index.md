@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["go", "networking", "whois", "rdap", "protocol"]
-date: "2026-01-13T10:00:00Z"
+date: "2026-01-06T10:00:00Z"
 description: "WHOIS is dead. To memorialize this piece of internet history, let's build a tiny implementation from scratch."
 cover: "cover.svg"
 images: ["/posts/whois-from-scratch/cover.svg"]

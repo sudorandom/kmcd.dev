@@ -13,11 +13,40 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	gnmiv1 "github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi"
-	gnmiv1connect "github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi/gnmiconnect"
+	"github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi"
+	"github.com/sudorandom/kmcd.dev/gnmi/gen/gnmi/gnmiconnect"
 )
 
-var _ gnmiv1connect.GNMIHandler = (*gnmiServer)(nil)
+var _ gnmiconnect.GNMIHandler = (*gnmiServer)(nil)
+
+var targetCPUUsagePath = &gnmi.Path{
+	Elem: []*gnmi.PathElem{
+		{Name: "system"},
+		{Name: "cpu"},
+		{Name: "state"},
+		{Name: "used"},
+	},
+}
+
+func pathsMatch(subPath, targetPath *gnmi.Path) bool {
+	if subPath == nil || targetPath == nil {
+		return false
+	}
+
+	subElems := subPath.GetElem()
+	targetElems := targetPath.GetElem()
+
+	if len(subElems) > len(targetElems) {
+		return false
+	}
+
+	for i := range subElems {
+		if subElems[i].GetName() != targetElems[i].GetName() {
+			return false
+		}
+	}
+	return true
+}
 
 type gnmiServer struct {
 	// In a real server, you'd have a data store, cache, etc.
@@ -25,12 +54,12 @@ type gnmiServer struct {
 
 func (s *gnmiServer) Capabilities(
 	ctx context.Context,
-	req *connect.Request[gnmiv1.CapabilityRequest],
-) (*connect.Response[gnmiv1.CapabilityResponse], error) {
+	req *connect.Request[gnmi.CapabilityRequest],
+) (*connect.Response[gnmi.CapabilityResponse], error) {
 	// A real server would list its supported models and encodings.
-	resp := &gnmiv1.CapabilityResponse{
-		SupportedModels:    []*gnmiv1.ModelData{},
-		SupportedEncodings: []gnmiv1.Encoding{gnmiv1.Encoding_JSON},
+	resp := &gnmi.CapabilityResponse{
+		SupportedModels:    []*gnmi.ModelData{},
+		SupportedEncodings: []gnmi.Encoding{gnmi.Encoding_JSON},
 		GNMIVersion:        "0.7.0",
 	}
 	return connect.NewResponse(resp), nil
@@ -38,33 +67,34 @@ func (s *gnmiServer) Capabilities(
 
 func (s *gnmiServer) Get(
 	ctx context.Context,
-	req *connect.Request[gnmiv1.GetRequest],
-) (*connect.Response[gnmiv1.GetResponse], error) {
+	req *connect.Request[gnmi.GetRequest],
+) (*connect.Response[gnmi.GetResponse], error) {
 	// This is a simplified Get. A real one would parse paths and fetch data.
 	// We'll just return a mock CPU value if asked.
-	notification := &gnmiv1.Notification{
+	cpuUsage := time.Now().Second() % 100 // Simulate CPU usage
+	notification := &gnmi.Notification{
 		Timestamp: time.Now().UnixNano(),
-		Update: []*gnmiv1.Update{
+		Update: []*gnmi.Update{
 			{
-				Path: req.Msg.GetPath()[0], // Assume one path for simplicity
-				Val: &gnmiv1.TypedValue{
-					Value: &gnmiv1.TypedValue_JsonVal{
-						JsonVal: []byte(`{"openconfig-system:cpu": {"utilization": 42.5}}`),
+				Path: targetCPUUsagePath, // Assume one path for simplicity
+				Val: &gnmi.TypedValue{
+					Value: &gnmi.TypedValue_IntVal{
+						IntVal: int64(cpuUsage),
 					},
 				},
 			},
 		},
 	}
 
-	resp := &gnmiv1.GetResponse{
-		Notification: []*gnmiv1.Notification{notification},
+	resp := &gnmi.GetResponse{
+		Notification: []*gnmi.Notification{notification},
 	}
 	return connect.NewResponse(resp), nil
 }
 
 func (s *gnmiServer) Subscribe(
 	ctx context.Context,
-	stream *connect.BidiStream[gnmiv1.SubscribeRequest, gnmiv1.SubscribeResponse],
+	stream *connect.BidiStream[gnmi.SubscribeRequest, gnmi.SubscribeResponse],
 ) error {
 	log.Println("Client connected for subscription")
 	// A real server would manage multiple subscription requests from the stream.
@@ -75,7 +105,11 @@ func (s *gnmiServer) Subscribe(
 	}
 
 	// Assuming a STREAM subscription
-	path := req.GetSubscribe().GetSubscription()[0].GetPath()
+	subPath := req.GetSubscribe().GetSubscription()[0].GetPath()
+
+	// Determine if the subscribed path is a prefix of the target CPU path.
+	shouldSendCPUUpdates := pathsMatch(subPath, targetCPUUsagePath)
+
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
 
@@ -85,37 +119,42 @@ func (s *gnmiServer) Subscribe(
 			log.Println("Client disconnected.")
 			return ctx.Err()
 		case <-ticker.C:
-			update := &gnmiv1.Update{
-				Path: path,
-				Val: &gnmiv1.TypedValue{
-					Value: &gnmiv1.TypedValue_JsonVal{
-						JsonVal: []byte(fmt.Sprintf(`{"used": %d}`, time.Now().Second()*100)),
+			if shouldSendCPUUpdates {
+				cpuUsage := time.Now().Second() % 100 // Simulate CPU usage
+				update := &gnmi.Update{
+					Path: targetCPUUsagePath, // Return the full path of the metric
+					Val: &gnmi.TypedValue{
+						Value: &gnmi.TypedValue_IntVal{
+							IntVal: int64(cpuUsage),
+						},
 					},
-				},
-			}
-			notification := &gnmiv1.Notification{
-				Timestamp: time.Now().UnixNano(),
-				Update:    []*gnmiv1.Update{update},
-			}
-			resp := &gnmiv1.SubscribeResponse{
-				Response: &gnmiv1.SubscribeResponse_Update{Update: notification},
-			}
-			if err := stream.Send(resp); err != nil {
-				log.Printf("Failed to send update: %v", err)
-				return err
+				}
+				notification := &gnmi.Notification{
+					Timestamp: time.Now().UnixNano(),
+					Update:    []*gnmi.Update{update},
+				}
+				resp := &gnmi.SubscribeResponse{
+					Response: &gnmi.SubscribeResponse_Update{Update: notification},
+				}
+				if err := stream.Send(resp); err != nil {
+					log.Printf("Failed to send update: %v", err)
+					return err
+				}
+			} else {
+				log.Printf("Subscribed path %v does not match target CPU path, not sending updates.", subPath)
 			}
 		}
 	}
 }
 
-func (s *gnmiServer) Set(_ context.Context, _ *connect.Request[gnmiv1.SetRequest]) (*connect.Response[gnmiv1.SetResponse], error) {
+func (s *gnmiServer) Set(_ context.Context, _ *connect.Request[gnmi.SetRequest]) (*connect.Response[gnmi.SetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("gNMI.Set is not implemented"))
 }
 
 func main() {
 	server := &gnmiServer{}
 	mux := http.NewServeMux()
-	path, handler := gnmiv1connect.NewGNMIHandler(server)
+	path, handler := gnmiconnect.NewGNMIHandler(server)
 	mux.Handle(path, handler)
 	reflector := grpcreflect.NewStaticReflector("gnmi.gNMI")
 	mux.Handle(grpcreflect.NewHandlerV1(reflector))
