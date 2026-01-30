@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebTransport Client</title>
+</head>
+<body>
+    <h1>WebTransport Client</h1>
+    <p>Check the browser's developer console for output.</p>
+    <script>
+        const url = 'https://localhost:4433/webtransport';
+
+        async function run() {
+            console.log('Connecting to', url);
+            let transport;
+            try {
+                transport = new WebTransport(url);
+                await transport.ready;
+                console.log('Connection ready.');
+            } catch (e) {
+                console.error('Connection failed:', e);
+                return;
+            }
+
+            transport.closed.then(() => {
+                console.log('Connection closed.');
+            }).catch((e) => {
+                console.error('Connection closed with error:', e);
+            });
+
+            try {
+                const stream = await transport.createBidirectionalStream();
+                console.log('Bidirectional stream created.');
+
+                // Start writing and reading data
+                write_data(stream.writable);
+                read_data(stream.readable);
+
+            } catch (e) {
+                console.error('Failed to create stream:', e);
+            }
+        }
+
+        async function write_data(writable) {
+            const encoder = new TextEncoder();
+            const writer = writable.getWriter();
+
+            const intervalId = setInterval(() => {
+                const msg = `Hello! The time is now ${new Date().toISOString()}`;
+                const data = encoder.encode(msg);
+                try {
+                    writer.write(data);
+                    console.log('Wrote:', msg);
+                } catch (e) {
+                    console.error('Error writing data:', e);
+                    clearInterval(intervalId); // Stop trying to write
+                }
+            }, 1000);
+        }
+
+        async function read_data(readable) {
+            const decoder = new TextDecoder();
+            const reader = readable.getReader();
+
+            try {
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        console.log('Reader closed.');
+                        break;
+                    }
+                    const text = decoder.decode(value);
+                    console.log('Read:', text);
+                }
+            } catch (e) {
+                console.error('Error reading data:', e);
+            }
+        }
+
+        run();
+    </script>
+</body>
+</html>

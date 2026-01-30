@@ -14,7 +14,7 @@ slug: "http0.9-from-scratch"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http0.9-from-scratch/
-featured: false
+featured: true
 featuredTitle: "Series: HTTP From Scratch"
 mastodonID: "112873688944970601"
 ---

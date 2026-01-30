@@ -85,13 +85,37 @@ We'll focus on `Capabilities`, `Get`, and the streaming `Subscribe` RPC.
 
 A few key messages to understand:
 
+### gNMI Path Rules
+
+gNMI paths are crucial for identifying specific data elements within a hierarchical data model. While we've seen simple examples like `/system/cpu/utilization`, gNMI paths support more advanced constructs to allow for flexible data selection and filtering. Understanding these rules is vital when querying devices or specifying data for subscriptions.
+
+**Path Prefixes:**
+A path can have a prefix, which specifies a common base path for all elements in a request. This can simplify queries by avoiding repetition. For example, if a `GetRequest` has a prefix of `/system/interfaces`, then a path of `interface[name=eth0]/state/counters` would resolve to `/system/interfaces/interface[name=eth0]/state/counters`.
+
+**Wildcards in Path Elements:**
+gNMI supports the use of wildcards to match multiple elements.
+
+*   **Single-level Wildcard (`*` or unnamed `PathElem`):** Matches any single path element. For example, `/system/interfaces/interface[*]/state/counters` would match counters for all interfaces. In the protobuf `Path` message, this is represented by a `PathElem` with an empty `name` field.
+*   **Multi-level Wildcard (`...` or `...` as the last `PathElem`):** Matches zero or more path elements recursively. This is typically used at the end of a path to subscribe to all data under a particular subtree. For example, `/system/interfaces/...` would match all data under the `/system/interfaces` subtree.
+
+**Key-Value Pairs for Lists:**
+In OpenConfig and other YANG-based models, lists are often identified by one or more key values. gNMI paths represent these keys as `key: "value"` pairs within a `PathElem`. For example, `interface[name=eth0]` identifies a specific interface named "eth0" within a list of interfaces. Multiple keys can be specified, e.g., `interface[name=eth0][subinterface=0]`.
+
+**Wildcard Key Values:**
+You can also use wildcards for key values to select all instances of a list. For example, `interface[name=*]` would select all interfaces, regardless of their name.
+
+**Important Note:**
+While these path rules offer powerful querying capabilities, implementing a full-featured path parsing and matching engine is complex and often a distraction when building a simple gNMI server to understand the protocol basics. For this tutorial, we will focus on explicit, non-wildcard paths for clarity and simplicity. However, it's essential to be aware of these features when interacting with production gNMI agents.
+
+**References for gNMI Path Details:**
+*   [gNMI Specification - Paths Section](https://github.com/openconfig/gnmi/blob/master/proto/gnmi/gnmi.proto#L115-L163) (refer to the `Path` and `PathElem` message definitions)
+*   [OpenConfig gNMI Documentation - Path Conventions](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#231-paths)
+
 - **`Path`**: Represents a path to a data element in a tree-like data model. In gNMI, a path is structured as a sequence of `PathElem` messages, each typically containing a `name` field. For example, the path `/system/cpu/utilization` would be represented in JSON as `{"elem": [{"name": "system"}, {"name": "cpu"}, {"name": "utilization"}]}`.
 - **`TypedValue`**: A wrapper for the actual value, which can be a string, int, bool, etc.
 - **`Notification`**: A container for an update, containing a timestamp, a path, and a set of updated values.
 - **`SubscribeRequest`**: Sent by the client to initiate or modify a subscription. It specifies paths and a subscription mode (`ONCE`, `POLL`, or `STREAM`).
 - **`SubscribeResponse`**: Sent by the server to the client. It can contain a `Notification` with data or a synchronization message.
-
-
 
 ---
 

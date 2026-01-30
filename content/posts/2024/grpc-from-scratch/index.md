@@ -15,7 +15,7 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-from-scratch/
 mastodonID: "112277287224227663"
-featured: true
+featured: false
 featuredTitle: "Series: gRPC From Scratch"
 ---
 
