@@ -275,3 +275,9 @@ While we have a working client, it is strictly a "happy path" implementation:
 Getting this far, I have a renewed and massive respect for the `net/http` maintainers. We started this series with hex dumps and now have a client struct that respects `io.Closer`. The "happy path" alone is a journey through specifications, bit-masking, and subtle concurrency bugs. Handling real-world network conditions, multiplexing, and flow control is a monumental task that makes you appreciate the standard library on a new level.
 
 For now, I'm happy with this victory. We've built a real, working HTTP/2 client.
+
+### Next Steps
+
+Now that we've implemented a decent amount of HTTP/2, I think the next step is to delve into QUIC and HTTP/3. I mentioned earlier that HTTP/2 solves the head-of-line blocking issue. That's only partially true. Yes, at the application layer HTTP/2 doesn't have a head-of-line blocking issue but since HTTP/2 is built on top of TCP, it inherits sequential packet ordering. This is normally an amazing feature of TCP but in this case it actually hinders us. Since HTTP/2 can have multiple un-related streams of data on the same connection, packet loss only impacting packets on stream A will block data for stream B. The only way around this is to make significant updates to TCP (not going to happen) or completely abandon TCP altogether.
+
+This, along with 0-RTT connection resumption are things that just aren't possible to side-step using HTTP/2. This is why QUIC and HTTP/3 were created. But you'll have to wait a bit longer before seeing me implement that from scratch.
