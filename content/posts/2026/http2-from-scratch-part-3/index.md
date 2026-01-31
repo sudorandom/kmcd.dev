@@ -169,7 +169,7 @@ I want you to notice a few things here. We successfully make it through the init
 
 ### What's Next?
 
-We've made a huge leap. We can now make requests and parse simple responses. However, as you just saw, our HPACK decoder is incomplete. In this part, we've focused on decoding **Indexed Header Fields** that refer exclusively to the **Static Table**. This means our client will successfully decode common headers like `:method: GET` or `:path: /`. We also need to stop manually encoding our headers.
+We've made a huge leap. We can now make requests and parse simple responses. However, as you just saw, our HPACK decoder is incomplete. In this part, we've focused on decoding **Indexed Header Fields** that refer exclusively to the **Static Table**. This means our client will successfully decode common headers like `:method: GET` or `:path: /` but will completely fail on any string literal or any reference to the **Dynamic Table**.
 
 In the next and final part covering HTTP/2, we will complete our HPACK implementation and adapt our client to use the `http.Request` and `http.Response` types.
 

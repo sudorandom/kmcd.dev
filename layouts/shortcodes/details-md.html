@@ -5,7 +5,7 @@
             {{- $path := printf "%s%s" $.Page.File.Dir . -}}
             {{- $ghPath := printf "%s/blob/main/%s" $.Site.Params.GitUrl $path -}}
             <a href="{{ $ghPath }}" target="_blank" rel="noopener noreferrer" class="details-github-link" title="View on GitHub">
-                {{- partial "svg.html" (dict "name" "github") -}} View on GitHub
+                {{- partial "svg.html" (dict "name" "github") -}} <span>View on GitHub</span>
             </a>
         {{- end -}}
     </summary>
