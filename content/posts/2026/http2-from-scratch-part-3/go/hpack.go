@@ -89,78 +89,19 @@ var StaticTable = []HeaderField{
 }
 
 var (
-	staticTableMap     = make(map[HeaderField]int)
-	staticTableNameMap = make(map[string]int)
+	staticTableMap = make(map[HeaderField]int)
 )
 
 func init() {
 	for i, hf := range StaticTable {
 		staticTableMap[hf] = i + 1
 	}
-	// For name-only, we want the lowest index.
-	// Iterate in reverse to set the lowest index for each name.
-	for i := len(StaticTable) - 1; i >= 0; i-- {
-		hf := StaticTable[i]
-		staticTableNameMap[hf.Name] = i + 1
-	}
 }
 
-type DynamicTable struct {
-	headers []HeaderField
-	size    uint32
-	maxSize uint32
-}
-
-func NewDynamicTable(maxSize uint32) *DynamicTable {
-	return &DynamicTable{
-		maxSize: maxSize,
-	}
-}
-
-func (d *DynamicTable) header(i int) (HeaderField, bool) {
-	if i < 0 || i >= len(d.headers) {
-		return HeaderField{}, false
-	}
-	return d.headers[i], true
-}
-
-func (d *DynamicTable) Add(h HeaderField) {
-	// As per RFC 7541 section 4.1, the size of an entry is the sum of its name's length, its value's length, and 32 octets of overhead.
-	size := uint32(len(h.Name) + len(h.Value) + 32)
-	for d.size+size > d.maxSize {
-		// Evict the oldest entry
-		if len(d.headers) == 0 {
-			return // Should not happen if maxSize > 0
-		}
-		last := d.headers[len(d.headers)-1]
-		d.size -= uint32(len(last.Name) + len(last.Value) + 32)
-		d.headers = d.headers[:len(d.headers)-1]
-	}
-	d.headers = append([]HeaderField{h}, d.headers...)
-	d.size += size
-}
-
-func (d *DynamicTable) SetMaxSize(size uint32) {
-	d.maxSize = size
-	for d.size > d.maxSize {
-		// Evict the oldest entry
-		if len(d.headers) == 0 {
-			return // Should not happen
-		}
-		last := d.headers[len(d.headers)-1]
-		d.size -= uint32(len(last.Name) + len(last.Value) + 32)
-		d.headers = d.headers[:len(d.headers)-1]
-	}
-}
-
-type HPACKDecoder struct {
-	dynamicTable *DynamicTable
-}
+type HPACKDecoder struct{}
 
 func NewHPACKDecoder() *HPACKDecoder {
-	return &HPACKDecoder{
-		dynamicTable: NewDynamicTable(4096),
-	}
+	return &HPACKDecoder{}
 }
 
 func (h *HPACKDecoder) Header(i int) (HeaderField, bool) {
@@ -171,9 +112,7 @@ func (h *HPACKDecoder) Header(i int) (HeaderField, bool) {
 	if staticIndex < len(StaticTable) {
 		return StaticTable[staticIndex], true
 	}
-
-	dynamicIndex := i - len(StaticTable) - 1
-	return h.dynamicTable.header(dynamicIndex)
+	return HeaderField{}, false
 }
 
 func (h *HPACKDecoder) Decode(payload []byte) error {

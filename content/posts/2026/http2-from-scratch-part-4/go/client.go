@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"crypto/tls"
 	"encoding/binary"
 	"fmt"
-	"log"
+	"io"
+	"net/http"
 )
 
 const (
@@ -30,34 +32,46 @@ const (
 	FlagEndHeaders uint8 = 0x04 // For HEADERS/PUSH_PROMISE/CONTINUATION
 )
 
-func main() {
+type Client struct {
+	addr     string
+	hpackDec *HPACKDecoder
+	hpackEnc *HPACKEncoder
+}
+
+func NewClient(addr string) *Client {
+	return &Client{
+		addr:     addr,
+		hpackDec: NewHPACKDecoder(4096),
+		hpackEnc: NewHPACKEncoder(4096),
+	}
+}
+
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	// 1. Setup TLS with ALPN
 	config := &tls.Config{
 		NextProtos: []string{"h2"},
 	}
 
-	conn, err := tls.Dial("tcp", Server, config)
+	conn, err := tls.Dial("tcp", c.addr, config)
 	if err != nil {
-		log.Fatalf("Failed to connect: %v", err)
+		return nil, fmt.Errorf("failed to connect: %w", err)
 	}
-	defer conn.Close()
+	defer conn.Close() // Close connection after Do returns
 
 	state := conn.ConnectionState()
 	if state.NegotiatedProtocol != "h2" {
-		log.Fatalf("Server did not negotiate HTTP/2: %s", state.NegotiatedProtocol)
+		return nil, fmt.Errorf("server did not negotiate HTTP/2: %s", state.NegotiatedProtocol)
 	}
 
-	fmt.Printf("Connected to %s using %s\n", Server, state.NegotiatedProtocol)
+	fmt.Printf("Connected to %s using %s\n", c.addr, state.NegotiatedProtocol)
 
 	// 2. Send Connection Preface
 	if _, err = conn.Write([]byte(Preface)); err != nil {
-		log.Fatalf("Failed to send preface: %v", err)
+		return nil, fmt.Errorf("failed to send preface: %w", err)
 	}
 	fmt.Println("Preface sent.")
 
-	// 3. Initial Handshake Loop
-	hpackDec := NewHPACKDecoder()
-
+	// 3. Initial Handshake Loop (using the Client's hpackDec)
 	// Send our initial empty settings
 	mySettings := []byte{0, 0, 0, FrameSettings, 0, 0, 0, 0, 0}
 	conn.Write(mySettings)
@@ -66,9 +80,9 @@ func main() {
 	mySettingsAcked := false
 
 	for !serverSettingsAcked || !mySettingsAcked {
-		frame, err := ReadFrame(conn)
+		frame, err := ReadFrame(conn) // ReadFrame needs the raw conn
 		if err != nil {
-			log.Fatalf("Handshake read error: %v", err)
+			return nil, fmt.Errorf("handshake read error: %w", err)
 		}
 
 		fmt.Printf("<<< [Handshake] Frame Type=%d, Flags=%d, Stream=%d\n",
@@ -88,20 +102,24 @@ func main() {
 		case FrameWindowUpdate:
 			fmt.Println("<<< Server provided flow control window")
 		case FrameGoAway:
-			log.Fatalf("Server sent GOAWAY during handshake")
+			return nil, fmt.Errorf("server sent GOAWAY during handshake")
 		}
 	}
 
-	// 4. Send the Request (GET /)
-	authority := "kmcd.dev"
-	requestPayload := []byte{
-		HpackMethodGet,
-		HpackPathRoot,
-		HpackSchemeHttps,
-		HpackAuthority,
-		byte(len(authority)), // The length prefix for the string literal
+	// Now the actual request sending logic from previous Do method
+	headers := []HeaderField{
+		{Name: ":method", Value: req.Method},
+		{Name: ":scheme", Value: req.URL.Scheme},
+		{Name: ":authority", Value: req.URL.Host},
+		{Name: ":path", Value: req.URL.Path},
 	}
-	requestPayload = append(requestPayload, []byte(authority)...)
+	for name, values := range req.Header {
+		for _, value := range values {
+			headers = append(headers, HeaderField{Name: name, Value: value})
+		}
+	}
+
+	requestPayload := c.hpackEnc.Encode(headers)
 
 	header := make([]byte, 9)
 	payloadLen := len(requestPayload)
@@ -112,17 +130,18 @@ func main() {
 	header[4] = FlagEndStream | FlagEndHeaders
 	binary.BigEndian.PutUint32(header[5:9], 1)
 
-	if _, err = conn.Write(append(header, requestPayload...)); err != nil {
-		log.Fatalf("Failed to send request: %v", err)
+	if _, err := conn.Write(append(header, requestPayload...)); err != nil {
+		return nil, fmt.Errorf("failed to send request: %w", err)
 	}
 	fmt.Println(">>> Sent HEADERS (Stream 1)")
 
-	// 5. Main Processing Loop
+	// Read response (using the conn local to Do)
+	var respHeaders []HeaderField
+	var respBody []byte
 	for {
-		frame, err := ReadFrame(conn)
+		frame, err := ReadFrame(conn) // ReadFrame needs the raw conn
 		if err != nil {
-			log.Printf("Connection closed: %v", err)
-			break
+			return nil, fmt.Errorf("connection closed: %w", err)
 		}
 
 		fmt.Printf("<<< Frame Type=%d, Flags=%d, Stream=%d\n",
@@ -130,26 +149,47 @@ func main() {
 
 		switch frame.Header.Type {
 		case FrameData:
+			respBody = append(respBody, frame.Payload...)
 			fmt.Printf("      [DATA] %s\n", string(frame.Payload))
 		case FrameHeaders:
 			fmt.Println("      [HEADERS] Decoding...")
-			if err := hpackDec.Decode(frame.Payload); err != nil {
-				log.Printf("HPACK Error: %v", err)
+			headers, err := c.hpackDec.Decode(frame.Payload)
+			if err != nil {
+				return nil, fmt.Errorf("hpack error: %w", err)
 			}
+			respHeaders = append(respHeaders, headers...)
 		case FrameGoAway:
 			lastStream := binary.BigEndian.Uint32(frame.Payload[0:4]) & 0x7FFFFFFF
 			errCode := binary.BigEndian.Uint32(frame.Payload[4:8])
-			fmt.Printf("!!! GOAWAY: Last Stream %d, Error Code %d\n", lastStream, errCode)
-			return
+			return nil, fmt.Errorf("GOAWAY: Last Stream %d, Error Code %d", lastStream, errCode)
 		case FrameWindowUpdate:
 			fmt.Println("      [WINDOW_UPDATE]")
 		}
 
-		// Use the global constants for the exit condition
 		isEndFrame := frame.Header.Type == FrameData || frame.Header.Type == FrameHeaders
 		if isEndFrame && (frame.Header.Flags&FlagEndStream != 0) {
-			fmt.Println("Stream finished. Exiting.")
+			fmt.Println("Stream finished.")
 			break
 		}
 	}
+
+	// Build http.Response
+	httpResp := &http.Response{
+		StatusCode: 200, // Hardcoded for now
+		Proto:      "HTTP/2.0",
+		ProtoMajor: 2,
+		ProtoMinor: 0,
+		Header:     make(http.Header),
+		Body:       io.NopCloser(bytes.NewReader(respBody)),
+	}
+
+	for _, h := range respHeaders {
+		httpResp.Header.Add(h.Name, h.Value)
+		if h.Name == ":status" {
+			fmt.Sscanf(h.Value, "%d", &httpResp.StatusCode)
+		}
+	}
+	httpResp.Status = fmt.Sprintf("%d %s", httpResp.StatusCode, http.StatusText(httpResp.StatusCode))
+
+	return httpResp, nil
 }

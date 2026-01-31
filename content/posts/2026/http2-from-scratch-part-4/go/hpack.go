@@ -1,21 +1,30 @@
 package main
 
 import (
+	"bytes"
+	"encoding/binary"
 	"fmt"
+	"io"
+
+	"golang.org/x/net/http2/hpack"
 )
 
 // RFC 7541: HPACK: Header Compression for HTTP/2
 // https://datatracker.ietf.org/doc/html/rfc7541
 
 const (
-	// HPACK Static Table Indices (Masked with 0x80 for Indexed Header Fields)
-	// See RFC 7541 Appendix A
-	HpackMethodGet   uint8 = 0x82 // Index 2: :method: GET
-	HpackPathRoot    uint8 = 0x84 // Index 4: :path: /
-	HpackSchemeHttps uint8 = 0x87 // Index 7: :scheme: https
+	// Masks for HPACK header field types
+	maskIndexed            = 0x80 // 10000000
+	maskLiteralIncremental = 0xc0 // 11000000
+	maskDynamicTableSize   = 0xe0 // 11100000
+	maskLiteral            = 0xf0 // 11110000
 
-	// 0x40 is the mask for Literal Header Field with Incremental Indexing
-	HpackAuthority uint8 = 0x40 | 1 // Index 1: :authority
+	// Patterns for HPACK header field types
+	patternIndexed            = 0x80 // 10000000
+	patternLiteralIncremental = 0x40 // 01000000
+	patternDynamicTableSize   = 0x20 // 00100000
+	patternLiteralNever       = 0x10 // 00010000
+	patternLiteral            = 0x00 // 00000000
 )
 
 // HeaderField represents a header field with a name and value.
@@ -95,12 +104,9 @@ var (
 func init() {
 	for i, hf := range StaticTable {
 		staticTableMap[hf] = i + 1
-	}
-	// For name-only, we want the lowest index.
-	// Iterate in reverse to set the lowest index for each name.
-	for i := len(StaticTable) - 1; i >= 0; i-- {
-		hf := StaticTable[i]
-		staticTableNameMap[hf.Name] = i + 1
+		if _, ok := staticTableNameMap[hf.Name]; !ok {
+			staticTableNameMap[hf.Name] = i + 1
+		}
 	}
 }
 
@@ -116,7 +122,7 @@ func NewDynamicTable(maxSize uint32) *DynamicTable {
 	}
 }
 
-func (d *DynamicTable) header(i int) (HeaderField, bool) {
+func (d *DynamicTable) At(i int) (HeaderField, bool) {
 	if i < 0 || i >= len(d.headers) {
 		return HeaderField{}, false
 	}
@@ -124,13 +130,8 @@ func (d *DynamicTable) header(i int) (HeaderField, bool) {
 }
 
 func (d *DynamicTable) Add(h HeaderField) {
-	// As per RFC 7541 section 4.1, the size of an entry is the sum of its name's length, its value's length, and 32 octets of overhead.
 	size := uint32(len(h.Name) + len(h.Value) + 32)
-	for d.size+size > d.maxSize {
-		// Evict the oldest entry
-		if len(d.headers) == 0 {
-			return // Should not happen if maxSize > 0
-		}
+	for d.size+size > d.maxSize && len(d.headers) > 0 {
 		last := d.headers[len(d.headers)-1]
 		d.size -= uint32(len(last.Name) + len(last.Value) + 32)
 		d.headers = d.headers[:len(d.headers)-1]
@@ -141,11 +142,7 @@ func (d *DynamicTable) Add(h HeaderField) {
 
 func (d *DynamicTable) SetMaxSize(size uint32) {
 	d.maxSize = size
-	for d.size > d.maxSize {
-		// Evict the oldest entry
-		if len(d.headers) == 0 {
-			return // Should not happen
-		}
+	for d.size > d.maxSize && len(d.headers) > 0 {
 		last := d.headers[len(d.headers)-1]
 		d.size -= uint32(len(last.Name) + len(last.Value) + 32)
 		d.headers = d.headers[:len(d.headers)-1]
@@ -156,9 +153,9 @@ type HPACKDecoder struct {
 	dynamicTable *DynamicTable
 }
 
-func NewHPACKDecoder() *HPACKDecoder {
+func NewHPACKDecoder(maxSize uint32) *HPACKDecoder {
 	return &HPACKDecoder{
-		dynamicTable: NewDynamicTable(4096),
+		dynamicTable: NewDynamicTable(maxSize),
 	}
 }
 
@@ -166,58 +163,183 @@ func (h *HPACKDecoder) Header(i int) (HeaderField, bool) {
 	if i <= 0 {
 		return HeaderField{}, false
 	}
-	staticIndex := i - 1
-	if staticIndex < len(StaticTable) {
-		return StaticTable[staticIndex], true
+	if i <= len(StaticTable) {
+		return StaticTable[i-1], true
 	}
-
-	dynamicIndex := i - len(StaticTable) - 1
-	return h.dynamicTable.header(dynamicIndex)
+	return h.dynamicTable.At(i - len(StaticTable) - 1)
 }
 
-func (h *HPACKDecoder) Decode(payload []byte) error {
-	fmt.Printf("Decoding %d bytes\n", len(payload))
-	for len(payload) > 0 {
-		b := payload[0]
-		if b&128 == 128 { // Indexed Header Field
-			index, n := decodeInt(payload, 7)
+func (h *HPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
+	var headers []HeaderField
+	r := bytes.NewReader(payload)
+	for r.Len() > 0 {
+		b, _ := r.ReadByte()
+		if b&maskIndexed == patternIndexed { // Indexed Header Field
+			index, n := decodeInt(b, r, 7)
 			if n < 0 {
-				return fmt.Errorf("failed to decode integer")
+				return nil, fmt.Errorf("failed to decode integer")
 			}
-			payload = payload[n:]
 			header, ok := h.Header(index)
 			if !ok {
-				return fmt.Errorf("invalid header index: %d", index)
+				return nil, fmt.Errorf("invalid header index: %d", index)
 			}
+			headers = append(headers, header)
 			fmt.Printf("  [Header] %s: %s\n", header.Name, header.Value)
+		} else if b&maskLiteralIncremental == patternLiteralIncremental { // Literal Header Field with Incremental Indexing
+			index, n := decodeInt(b, r, 6)
+			if n < 0 {
+				return nil, fmt.Errorf("failed to decode integer")
+			}
+			header, err := h.decodeLiteralHeader(r, index, true)
+			if err != nil {
+				return nil, err
+			}
+			headers = append(headers, header)
+			fmt.Printf("  [Header] %s: %s\n", header.Name, header.Value)
+		} else if b&maskLiteral == patternLiteral || b&maskLiteral == patternLiteralNever { // Literal Header Field without or never indexed
+			index, n := decodeInt(b, r, 4)
+			if n < 0 {
+				return nil, fmt.Errorf("failed to decode integer")
+			}
+			header, err := h.decodeLiteralHeader(r, index, false)
+			if err != nil {
+				return nil, err
+			}
+			headers = append(headers, header)
+			fmt.Printf("  [Header] %s: %s\n", header.Name, header.Value)
+		} else if b&maskDynamicTableSize == patternDynamicTableSize { // Dynamic Table Size Update
+			size, n := decodeInt(b, r, 5)
+			if n < 0 {
+				return nil, fmt.Errorf("failed to decode integer")
+			}
+			h.dynamicTable.SetMaxSize(uint32(size))
 		} else {
-			// Other header field types (literal, etc.) not implemented yet
-			return fmt.Errorf("not implemented: literal header field")
+			return nil, fmt.Errorf("not implemented: unknown header field type %08b", b)
 		}
 	}
-	return nil
+	return headers, nil
 }
 
-// decodeInt decodes a variable-length integer from a byte slice.
-// It returns the decoded integer and the number of bytes consumed.
-// See RFC 7541 section 5.1 for details.
-func decodeInt(payload []byte, n int) (int, int) {
-	if len(payload) == 0 {
-		return 0, -1
+func (h *HPACKDecoder) decodeLiteralHeader(r *bytes.Reader, index int, addToDynamicTable bool) (HeaderField, error) {
+	var name string
+	var err error
+	if index > 0 {
+		header, ok := h.Header(index)
+		if !ok {
+			return HeaderField{}, fmt.Errorf("invalid header index: %d", index)
+		}
+		name = header.Name
+	} else {
+		name, err = h.decodeString(r)
+		if err != nil {
+			return HeaderField{}, err
+		}
 	}
+	value, err := h.decodeString(r)
+	if err != nil {
+		return HeaderField{}, err
+	}
+	header := HeaderField{Name: name, Value: value}
+	if addToDynamicTable {
+		h.dynamicTable.Add(header)
+	}
+	return header, nil
+}
+
+func (h *HPACKDecoder) decodeString(r *bytes.Reader) (string, error) {
+	b, _ := r.ReadByte()
+	huffman := b&128 == 128
+	length, n := decodeInt(b, r, 7)
+	if n < 0 {
+		return "", fmt.Errorf("failed to decode integer")
+	}
+	if r.Len() < length {
+		return "", io.ErrUnexpectedEOF
+	}
+	data := make([]byte, length)
+	r.Read(data)
+	if huffman {
+		return hpack.HuffmanDecodeToString(data)
+	}
+	return string(data), nil
+}
+
+func decodeInt(b byte, r *bytes.Reader, n int) (int, int) {
 	mask := (1 << n) - 1
-	i := int(payload[0]) & mask
+	i := int(b) & mask
 	if i < mask {
 		return i, 1
 	}
 
-	m := 0
-	for j, b := range payload[1:] {
-		i += int(b&127) << m
+	var m uint = 0
+	bytesRead := 1
+	var val uint64
+	for {
+		b, err := r.ReadByte()
+		if err != nil {
+			return 0, -bytesRead
+		}
+		bytesRead++
+		val |= uint64(b&127) << m
 		m += 7
 		if b&128 == 0 {
-			return i, j + 2
+			break
 		}
 	}
-	return 0, -1 // Not enough bytes
+	return i + int(val), bytesRead
+}
+
+type HPACKEncoder struct {
+	dynamicTable *DynamicTable
+}
+
+func NewHPACKEncoder(maxSize uint32) *HPACKEncoder {
+	return &HPACKEncoder{
+		dynamicTable: NewDynamicTable(maxSize),
+	}
+}
+
+func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
+	var buf bytes.Buffer
+	for _, hf := range headers {
+		// 1. Find a match in static table
+		if index, ok := staticTableMap[hf]; ok {
+			encodeInt(&buf, index, 7, 0x80)
+			continue
+		}
+
+		// 2. Find a name match in static table
+		if index, ok := staticTableNameMap[hf.Name]; ok {
+			encodeInt(&buf, index, 6, 0x40)
+			encodeString(&buf, hf.Value)
+			e.dynamicTable.Add(hf)
+			continue
+		}
+
+		// 3. Literal with literal name
+		encodeInt(&buf, 0, 6, 0x40)
+		encodeString(&buf, hf.Name)
+		encodeString(&buf, hf.Value)
+		e.dynamicTable.Add(hf)
+	}
+	return buf.Bytes()
+}
+
+func encodeInt(buf *bytes.Buffer, i int, n int, pattern byte) {
+	mask := (1 << n) - 1
+	if i < mask {
+		buf.WriteByte(pattern | byte(i))
+	} else {
+		buf.WriteByte(pattern | byte(mask))
+		i -= mask
+		varint := make([]byte, binary.MaxVarintLen64)
+		c := binary.PutUvarint(varint, uint64(i))
+		buf.Write(varint[:c])
+	}
+}
+
+func encodeString(buf *bytes.Buffer, s string) {
+	// no huffman for now
+	encodeInt(buf, len(s), 7, 0x00)
+	buf.WriteString(s)
 }

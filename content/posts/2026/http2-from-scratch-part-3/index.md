@@ -28,7 +28,7 @@ In HTTP/1.1, headers are human-readable text. This is great for debugging but in
 At its core, HPACK uses two tables to translate between full headers and small integer indices:
 
 1.  **Static Table**: A predefined, read-only table containing 61 of the most common headers. For example, `{':method', 'GET'}` is entry #2. Every HTTP/2 client and server knows this table.
-2.  **Dynamic Table**: A small, temporary table that is specific to a single connection. If you send a header that's not in the static table (like a custom `x-request-id`), it can be added to the dynamic table. On the next request, you can just send its index instead of the full header again.
+2.  **Dynamic Table**: A small, temporary table that is specific to a single connection. In a full HPACK implementation, if you send a header that's not in the static table (like a custom `x-request-id`), it can be added to the dynamic table. On the next request, you can just send its index instead of the full header again. For this part, we will focus solely on the Static Table.
 
 Our journey into HPACK will start with the basics. We'll implement a decoder that understands the static table and indexed headers. We'll leave the dynamic table handling for the next article.
 
@@ -88,9 +88,9 @@ We want to send the following headers for a `GET /` request:
 Looking at the static table in RFC 7541, Appendix A:
 - `{':method', 'GET'}` is at index 2.
 - `{':path', '/'}` is at index 4.
-- `{':scheme', 'https}` is at index 7.
+- `{':scheme', 'https'}` is at index 7.
 
-The `:authority` header doesn't have a perfect match with both name and value. However, its *name* is at index 1. This means we have to send it as a **Literal Header Field**. This type of header representation has a prefix indicating how it should be handled. For now, we will use "Literal Header Field with Incremental Indexing" (prefix `0100`), which tells the server to use this header and add it to the dynamic table. We will do this manually for now, but in the future we will want create code to manage this for us.
+The `:authority` header doesn't have a perfect match for both name and value. However, its *name* is at index 1. This means we have to send it as a **Literal Header Field**. This type of header representation has a prefix indicating how it should be handled. For now, we will use "Literal Header Field with Incremental Indexing" (prefix `0100`), which tells the server to use this header and add it to the dynamic table. We will do this manually for now, but in the future we will want to create code to manage this for us.
 
 Our `client.go` assembles this payload:
 
@@ -143,10 +143,34 @@ Here is the full `client.go` script.
 See the full client implementation: {{< github-link file="go/client.go" >}}.
 {{</ aside >}}
 
-Running this client produces a full HTTP/2 interaction. We send our request and get back headers and data from the server, all parsed by our own code.
+Running this client produces a full HTTP/2 interaction. We send our request and get back headers and data from the server, all parsed by our own code. Here's what it looks like when we run it (body truncated to reduce noise):
+
+```text
+go run .
+Connected to kmcd.dev:443 using h2
+Preface sent.
+<<< [Handshake] Frame Type=4, Flags=0, Stream=0
+>>> Sent SETTINGS ACK
+<<< [Handshake] Frame Type=8, Flags=0, Stream=0
+<<< Server provided flow control window
+<<< [Handshake] Frame Type=4, Flags=1, Stream=0
+<<< Server ACK'd our settings
+>>> Sent HEADERS (Stream 1)
+<<< Frame Type=1, Flags=4, Stream=1
+      [HEADERS] Decoding...
+Decoding 705 bytes
+  [Header] :status: 200
+2026/01/31 14:36:00 HPACK Error: not implemented: literal header field
+<<< Frame Type=0, Flags=0, Stream=1
+      [DATA] <!doctype html><html lang=en>[...snipped...]</html>
+<<< Frame Type=0, Flags=1, Stream=1
+      [DATA]
+```
+
+I want you to notice a few things here. We successfully make it through the initial handshake. The server sends us headers and we decode only a single header, the `:status` pseudo-header that tells us that the response is a `200` but the next header doesn't exist in the status table and is sent as a string literal and since our code doesn't yet handle string literals we have to stop processing the headers at this point. This will be improved later. Finally, I want you to notice that we have successfully received the DATA frame. We actually receive two of them: one that contains the data and another that says that we have received all of the data for the request. This is a significant improvement. We are **very close** to a fully functioning client!
 
 ### What's Next?
 
-We've made a huge leap. We can now make requests and parse simple responses. However, our HPACK decoder is incomplete. It only understands indexed header fields. What happens when the server sends a header that isn't in our static table, like a unique `date` or `etag`? Our client will return an error.
+We've made a huge leap. We can now make requests and parse simple responses. However, as you just saw, our HPACK decoder is incomplete. In this part, we've focused on decoding **Indexed Header Fields** that refer exclusively to the **Static Table**. This means our client will successfully decode common headers like `:method: GET` or `:path: /`. We also need to stop manually encoding our headers.
 
-In the next part, we will implement the decoding of **Literal Header Fields**. This will involve parsing string lengths and reading string values. We'll also start to properly manage the dynamic table, bringing us even closer to a complete HTTP/2 client.
+In the next and final part covering HTTP/2, we will complete our HPACK implementation and adapt our client to use the `http.Request` and `http.Response` types.
