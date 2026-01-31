@@ -120,11 +120,11 @@ For now, the most important thing is that we simply **acknowledge** these settin
 We can now update our client to read the header, read the payload based on the length we just parsed, and log what we found. This is where the binary nature of the protocol becomes visible in your terminal.
 
 {{% render-code file="go/parser.go" language="go" %}}
-{{< aside >}}
 See the full parser implementation: {{< github-link file="go/parser.go" >}}.
-{{</ aside >}}
 
 Running this against `kmcd.dev` will show you exactly what Cloudflare or your server expects. You'll see a `Type: 4` frame with a specific length. This is the first time our code is truly listening to an HTTP/2 server.
+
+See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
 
 ### What’s Next?
 

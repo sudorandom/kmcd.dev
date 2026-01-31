@@ -48,8 +48,11 @@ Server: cloudflare
 This response is a [301 status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/301), telling you to use the HTTPS version of the website, because plain-text HTTP is for heathens. But regardless, this is extremely insightful and cuts out many of the complexities that tooling can add. You can read every byte, understand every header, and even type the requests by hand. However, this transparency comes at a cost.
 
 For completeness, here is a similar setup using HTTPS via the openssl CLI client:
-```http
+```shell
 $ openssl s_client -connect kmcd.dev:443 -servername kmcd.dev
+```
+{{< details-md summary="openssl command output" >}}
+```http
 CONNECTED(00000006)
 depth=2 C = US, O = Google Trust Services LLC, CN = GTS Root R4
 verify return:1
@@ -139,6 +142,7 @@ alt-svc: h3=":443"; ma=86400
 0
 
 ```
+{{< /details-md >}}
 
 The response has been trimmed for brevity, but this shows that you can use a TLS-wrapped socket to access HTTPS websites using a plain-text interface similar to telnet. This shows how the "S" in "HTTPS" is simply HTTP wrapped with TLS.
 
@@ -180,10 +184,13 @@ If the server receives this string successfully, it will speak HTTP/2 from then 
 
 The following script is the starting point for our project. It uses the `crypto/tls` package to handle the encryption but stops right at the moment the HTTP/2 state machine should take over. We define the mandatory preface and configure our TLS dialer to negotiate for the "h2" protocol.
 
+{{< details-md summary="go/client.go" github_file="go/client.go" >}}
 {{% render-code file="go/client.go" language="go" %}}
-{{< aside >}}
+{{< /details-md >}}
+
 See the full source at Github: {{< github-link file="go/client.go" >}}.
-{{</ aside >}}
+
+See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
 
 This is actually quite amazing. A lot of hard work is being done to give us a TLS-wrapped connection and we've also used TLS to negotiate the HTTP/2 protocol for us. TLS is a complex protocol in its own right, so we’ll rely on Go’s `crypto/tls` package and focus entirely on `HTTP/2` from this point forward.
 

@@ -69,10 +69,10 @@ The `decodeInt` function handles HPACK's specific integer encoding. It parses th
 
 With this, our decoder can parse headers that are in the static table. The `hpack.go` file contains the full static table definition.
 
+
+{{< details-md summary="go/hpack.go" github_file="go/hpack.go" >}}
 {{% render-code file="go/hpack.go" language="go" %}}
-{{< aside >}}
-See the full HPACK implementation: {{< github-link file="go/hpack.go" >}}.
-{{</ aside >}}
+{{< /details-md >}}
 
 ### Manually Encoding Our First Request
 
@@ -137,15 +137,14 @@ This gives us a working end-to-end client that makes a real HTTP/2 request and p
 
 Here is the full `client.go` script.
 
+{{< details-md summary="go/client.go" github_file="go/client.go" >}}
 {{% render-code file="go/client.go" language="go" %}}
-{{< aside >}}
-See the full client implementation: {{< github-link file="go/client.go" >}}.
-{{</ aside >}}
+{{< /details-md >}}
 
 Running this client produces a full HTTP/2 interaction. We send our request and get back headers and data from the server, all parsed by our own code. Here's what it looks like when we run it (body truncated to reduce noise):
 
-```text
-go run .
+```shell
+$ go run .
 Connected to kmcd.dev:443 using h2
 Preface sent.
 <<< [Handshake] Frame Type=4, Flags=0, Stream=0
@@ -167,6 +166,8 @@ Decoding 705 bytes
 ```
 
 I want you to notice a few things here. We successfully make it through the initial handshake. The server sends us headers and we decode only a single header, the `:status` pseudo-header that tells us that the response is a `200` but the next header doesn't exist in the status table and is sent as a string literal and since our code doesn't yet handle string literals we have to stop processing the headers at this point. This will be improved later. Finally, I want you to notice that we have successfully received the DATA frame. We actually receive two of them: one that contains the data and another that says that we have received all of the data for the request. This is a significant improvement. We are **very close** to a fully functioning client!
+
+See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
 
 ### What's Next?
 

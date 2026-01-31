@@ -87,9 +87,7 @@ func (h *HPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
 }
 ```
 
-{{< aside >}}
 See the full updated HPACK logic: {{< github-link file="go/hpack.go" >}}.
-{{</ aside >}}
 
 ### Writing an Encoder
 
@@ -241,6 +239,8 @@ func (rb *responseBody) Close() error {
 }
 ```
 
+See the full updated client code: {{< github-link file="go/client.go" >}}.
+
 ### The Result
 
 With this refactor, our `main.go` transforms from a mess of magical hex values into clean, idiomatic Go:
@@ -262,6 +262,7 @@ func main() {
     fmt.Printf("Body Length: %d bytes\n", len(body))
 }
 ```
+See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
 
 ### Limitations
 
