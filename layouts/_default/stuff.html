@@ -34,69 +34,6 @@
         </div>
         <div class="projects-wrapper">
             <div class="projects-box">
-                <h3><a href="https://phreak.kmcd.dev" target="_blank">phreak.kmcd.dev</a></h3>
-                {{ $phreakBoxImg := (resources.Get "images/screenshots/phreak.png") }}
-                {{ if $phreakBoxImg }}
-                    {{ $resizedPhreakBoxImg := $phreakBoxImg.Resize "400x webp" }}
-                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
-                        <a href="https://phreak.kmcd.dev" target="_blank">
-                            <img src="{{ $resizedPhreakBoxImg.Permalink }}" alt="Screenshot of phreak.kmcd.dev" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
-                        </a>
-                    </figure>
-                {{ end }}
-                <p>
-                    <code>phreak.kmcd.dev</code> is a web-based old-school phone phreaking simulator that allows users to test their skills at whistling the legendary 2600Hz tone that was famously used to manipulate telephone systems.
-                </p>
-                <div class="project-icons" style="clear: right;">
-                    <a href="/posts/can-you-hack-a-phone-with-your-voice/"><i class="fa-solid fa-book"></i></a>
-                    <a href="https://phreak.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <h3><a href="https://morse.kmcd.dev" target="_blank">morse.kmcd.dev</a></h3>
-                {{ $morseSpeedTyperImg := (resources.Get "images/screenshots/morse-speed-typer.png") }}
-                {{ if $morseSpeedTyperImg }}
-                    {{ $resizedMorseSpeedTyperImg := $morseSpeedTyperImg.Resize "400x webp" }}
-                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
-                        <a href="https://morse.kmcd.dev" target="_blank">
-                            <img src="{{ $resizedMorseSpeedTyperImg.Permalink }}" alt="Screenshot of morse.kmcd.dev game" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
-                        </a>
-                    </figure>
-                {{ end }}
-                <p>
-                    <code>morse.kmcd.dev</code> is a typing game that challenges players to type Morse code as quickly as possible. It features a clean interface, making it a fun way to improve your morse code skills.
-                </p>
-                <div class="project-icons" style="clear: right;">
-                    <a href="/posts/morse/"><i class="fa-solid fa-book"></i></a>
-                    <a href="https://morse.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <h3><a href="https://wordseq.com" target="_blank">wordseq</a></h3>
-                {{ $wordseqImg := (resources.Get "images/screenshots/wordseq.png") }}
-                {{ if $wordseqImg }}
-                    {{ $resizedWordseqImg := $wordseqImg.Resize "400x webp" }}
-                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
-                        <a href="https://wordseq.com" target="_blank">
-                            <img src="{{ $resizedWordseqImg.Permalink }}" alt="Screenshot of wordseq game" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
-                        </a>
-                    </figure>
-                {{ end }}
-                <p>
-                    <code>wordseq</code> is a daily word puzzle game where players swap adjacent letters to form words, aiming for the longest sequence. It blends engaging gameplay with a unique level generation system built using Go, React, and TypeScript, featuring some fun graph traversal mixed with a two-dictionary filtering approach for optimal puzzle quality and word recognition.
-                </p>
-                <div class="project-icons" style="clear: right;">
-                    <a href="/posts/wordseq/"><i class="fa-solid fa-book"></i></a>
-                    <a href="https://wordseq.com" target="_blank"><i class="fa-solid fa-globe"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="projects-wrapper">
-            <div class="projects-box">
                 <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></h3>
                 {{ $fauxrpcImg := (resources.Get "images/screenshots/fauxrpc.png") }}
                 {{ if $fauxrpcImg }}
@@ -158,6 +95,69 @@
                 </p>
                 <div class="project-icons" style="clear: right;">
                     <a href="https://github.com/sudorandom/kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://phreak.kmcd.dev" target="_blank">phreak.kmcd.dev</a></h3>
+                {{ $phreakBoxImg := (resources.Get "images/screenshots/phreak.png") }}
+                {{ if $phreakBoxImg }}
+                    {{ $resizedPhreakBoxImg := $phreakBoxImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://phreak.kmcd.dev" target="_blank">
+                            <img src="{{ $resizedPhreakBoxImg.Permalink }}" alt="Screenshot of phreak.kmcd.dev" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    <code>phreak.kmcd.dev</code> is a web-based old-school phone phreaking simulator that allows users to test their skills at whistling the legendary 2600Hz tone that was famously used to manipulate telephone systems.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="/posts/can-you-hack-a-phone-with-your-voice/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://phreak.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://morse.kmcd.dev" target="_blank">morse.kmcd.dev</a></h3>
+                {{ $morseSpeedTyperImg := (resources.Get "images/screenshots/morse-speed-typer.png") }}
+                {{ if $morseSpeedTyperImg }}
+                    {{ $resizedMorseSpeedTyperImg := $morseSpeedTyperImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://morse.kmcd.dev" target="_blank">
+                            <img src="{{ $resizedMorseSpeedTyperImg.Permalink }}" alt="Screenshot of morse.kmcd.dev game" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    <code>morse.kmcd.dev</code> is a typing game that challenges players to type Morse code as quickly as possible. It features a clean interface, making it a fun way to improve your morse code skills.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="/posts/morse/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://morse.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
+                <h3><a href="https://wordseq.com" target="_blank">wordseq</a></h3>
+                {{ $wordseqImg := (resources.Get "images/screenshots/wordseq.png") }}
+                {{ if $wordseqImg }}
+                    {{ $resizedWordseqImg := $wordseqImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://wordseq.com" target="_blank">
+                            <img src="{{ $resizedWordseqImg.Permalink }}" alt="Screenshot of wordseq game" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    <code>wordseq</code> is a daily word puzzle game where players swap adjacent letters to form words, aiming for the longest sequence. It blends engaging gameplay with a unique level generation system built using Go, React, and TypeScript, featuring some fun graph traversal mixed with a two-dictionary filtering approach for optimal puzzle quality and word recognition.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="/posts/wordseq/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://wordseq.com" target="_blank"><i class="fa-solid fa-globe"></i></a>
                 </div>
             </div>
         </div>
