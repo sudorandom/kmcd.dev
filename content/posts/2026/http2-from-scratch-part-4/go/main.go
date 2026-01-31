@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	client := NewClient(Server)
+	client := NewClient()
 
 	req, err := http.NewRequest("GET", "https://kmcd.dev/", nil)
 	if err != nil {

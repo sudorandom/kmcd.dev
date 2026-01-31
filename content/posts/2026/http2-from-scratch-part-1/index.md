@@ -13,8 +13,7 @@ slug: "http2-from-scratch-part-1"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http2-from-scratch-part-1/
-draft: false
-series: ["HTTP From Scratch"]
+series: ["HTTP from Scratch"]
 ---
 
 If you have ever opened a terminal and manually typed an HTTP/1.1 request, you know there is a certain beauty in its simplicity. You send a few lines of plain text and the server responds with more text. It is human-readable and easy to debug, but it is also remarkably inefficient for the modern web. If you haven't done that, I'm hoping I can get you to use telnet this way for the first time today.

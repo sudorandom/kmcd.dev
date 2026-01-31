@@ -25,6 +25,9 @@ const (
 	patternDynamicTableSize   = 0x20 // 00100000
 	patternLiteralNever       = 0x10 // 00010000
 	patternLiteral            = 0x00 // 00000000
+
+	HuffmanFlagMask         = 0x80
+	IntegerContinuationMask = 0x80
 )
 
 // HeaderField represents a header field with a name and value.
@@ -248,7 +251,7 @@ func (h *HPACKDecoder) decodeLiteralHeader(r *bytes.Reader, index int, addToDyna
 
 func (h *HPACKDecoder) decodeString(r *bytes.Reader) (string, error) {
 	b, _ := r.ReadByte()
-	huffman := b&128 == 128
+	huffman := b&HuffmanFlagMask == HuffmanFlagMask
 	length, n := decodeInt(b, r, 7)
 	if n < 0 {
 		return "", fmt.Errorf("failed to decode integer")
@@ -282,7 +285,7 @@ func decodeInt(b byte, r *bytes.Reader, n int) (int, int) {
 		bytesRead++
 		val |= uint64(b&127) << m
 		m += 7
-		if b&128 == 0 {
+		if b&IntegerContinuationMask == 0 {
 			break
 		}
 	}
@@ -304,20 +307,20 @@ func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
 	for _, hf := range headers {
 		// 1. Find a match in static table
 		if index, ok := staticTableMap[hf]; ok {
-			encodeInt(&buf, index, 7, 0x80)
+			encodeInt(&buf, index, 7, patternIndexed)
 			continue
 		}
 
 		// 2. Find a name match in static table
 		if index, ok := staticTableNameMap[hf.Name]; ok {
-			encodeInt(&buf, index, 6, 0x40)
+			encodeInt(&buf, index, 6, patternLiteralIncremental)
 			encodeString(&buf, hf.Value)
 			e.dynamicTable.Add(hf)
 			continue
 		}
 
 		// 3. Literal with literal name
-		encodeInt(&buf, 0, 6, 0x40)
+		encodeInt(&buf, 0, 6, patternLiteralIncremental)
 		encodeString(&buf, hf.Name)
 		encodeString(&buf, hf.Value)
 		e.dynamicTable.Add(hf)
@@ -340,6 +343,6 @@ func encodeInt(buf *bytes.Buffer, i int, n int, pattern byte) {
 
 func encodeString(buf *bytes.Buffer, s string) {
 	// no huffman for now
-	encodeInt(buf, len(s), 7, 0x00)
+	encodeInt(buf, len(s), 7, 0x00) // This is patternLiteral. We are encoding a raw string.
 	buf.WriteString(s)
 }

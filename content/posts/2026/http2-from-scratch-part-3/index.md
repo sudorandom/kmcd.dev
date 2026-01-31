@@ -13,8 +13,7 @@ slug: "http2-from-scratch-part-3"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http2-from-scratch-part-3/
-draft: true
-series: ["HTTP From Scratch"]
+series: ["HTTP from Scratch"]
 ---
 
 In the last two posts, we established a raw TCP connection, navigated the TLS handshake with ALPN to select "h2", and built a parser that can read the 9-byte frames of an HTTP/2 connection. We have a synchronized, acknowledged connection. Now it's time to do what we came for: request a web page.

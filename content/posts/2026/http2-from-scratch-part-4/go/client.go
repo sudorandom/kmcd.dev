@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 const (
@@ -32,17 +33,25 @@ const (
 	FlagEndHeaders uint8 = 0x04 // For HEADERS/PUSH_PROMISE/CONTINUATION
 )
 
-type Client struct {
-	addr     string
-	hpackDec *HPACKDecoder
-	hpackEnc *HPACKEncoder
+// responseBody implements io.ReadCloser. It reads from the response body
+// buffer and closes the underlying connection when Close is called.
+type responseBody struct {
+	*bytes.Reader
+	conn io.Closer
 }
 
-func NewClient(addr string) *Client {
+func (rb *responseBody) Close() error {
+	fmt.Println("Closing response body and underlying connection.")
+	return rb.conn.Close()
+}
+
+type Client struct {
+	Timeout time.Duration
+}
+
+func NewClient() *Client {
 	return &Client{
-		addr:     addr,
-		hpackDec: NewHPACKDecoder(4096),
-		hpackEnc: NewHPACKEncoder(4096),
+		Timeout: 30 * time.Second,
 	}
 }
 
@@ -52,21 +61,31 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		NextProtos: []string{"h2"},
 	}
 
-	conn, err := tls.Dial("tcp", c.addr, config)
+	hpackDec := NewHPACKDecoder(4096)
+	hpackEnc := NewHPACKEncoder(4096)
+
+	port := "443"
+	if req.URL.Port() != "" {
+		port = req.URL.Port()
+	}
+
+	conn, err := tls.Dial("tcp", req.URL.Hostname()+":"+port, config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect: %w", err)
 	}
-	defer conn.Close() // Close connection after Do returns
+	// Do NOT defer conn.Close(). The response body wrapper will be responsible for it.
 
 	state := conn.ConnectionState()
 	if state.NegotiatedProtocol != "h2" {
+		conn.Close() // Close connection if h2 is not negotiated
 		return nil, fmt.Errorf("server did not negotiate HTTP/2: %s", state.NegotiatedProtocol)
 	}
 
-	fmt.Printf("Connected to %s using %s\n", c.addr, state.NegotiatedProtocol)
+	fmt.Printf("Connected to %s using %s\n", req.URL.Host, state.NegotiatedProtocol)
 
 	// 2. Send Connection Preface
 	if _, err = conn.Write([]byte(Preface)); err != nil {
+		conn.Close()
 		return nil, fmt.Errorf("failed to send preface: %w", err)
 	}
 	fmt.Println("Preface sent.")
@@ -82,6 +101,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	for !serverSettingsAcked || !mySettingsAcked {
 		frame, err := ReadFrame(conn) // ReadFrame needs the raw conn
 		if err != nil {
+			conn.Close()
 			return nil, fmt.Errorf("handshake read error: %w", err)
 		}
 
@@ -102,15 +122,24 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		case FrameWindowUpdate:
 			fmt.Println("<<< Server provided flow control window")
 		case FrameGoAway:
+			conn.Close()
 			return nil, fmt.Errorf("server sent GOAWAY during handshake")
 		}
 	}
 
 	// Now the actual request sending logic from previous Do method
+	authority := req.URL.Host
+	if authority == "" {
+		authority = req.Host // Fallback if URL.Host is empty
+	}
+	scheme := "https"
+	if req.URL.Scheme != "" {
+		scheme = req.URL.Scheme
+	}
 	headers := []HeaderField{
 		{Name: ":method", Value: req.Method},
-		{Name: ":scheme", Value: req.URL.Scheme},
-		{Name: ":authority", Value: req.URL.Host},
+		{Name: ":scheme", Value: scheme},
+		{Name: ":authority", Value: authority},
 		{Name: ":path", Value: req.URL.Path},
 	}
 	for name, values := range req.Header {
@@ -119,7 +148,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		}
 	}
 
-	requestPayload := c.hpackEnc.Encode(headers)
+	requestPayload := hpackEnc.Encode(headers)
 
 	header := make([]byte, 9)
 	payloadLen := len(requestPayload)
@@ -131,6 +160,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	binary.BigEndian.PutUint32(header[5:9], 1)
 
 	if _, err := conn.Write(append(header, requestPayload...)); err != nil {
+		conn.Close()
 		return nil, fmt.Errorf("failed to send request: %w", err)
 	}
 	fmt.Println(">>> Sent HEADERS (Stream 1)")
@@ -141,6 +171,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	for {
 		frame, err := ReadFrame(conn) // ReadFrame needs the raw conn
 		if err != nil {
+			conn.Close()
 			return nil, fmt.Errorf("connection closed: %w", err)
 		}
 
@@ -150,17 +181,19 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		switch frame.Header.Type {
 		case FrameData:
 			respBody = append(respBody, frame.Payload...)
-			fmt.Printf("      [DATA] %s\n", string(frame.Payload))
+			fmt.Printf("      [DATA] Length=%d\n", len(frame.Payload))
 		case FrameHeaders:
 			fmt.Println("      [HEADERS] Decoding...")
-			headers, err := c.hpackDec.Decode(frame.Payload)
+			headers, err := hpackDec.Decode(frame.Payload)
 			if err != nil {
+				conn.Close()
 				return nil, fmt.Errorf("hpack error: %w", err)
 			}
 			respHeaders = append(respHeaders, headers...)
 		case FrameGoAway:
 			lastStream := binary.BigEndian.Uint32(frame.Payload[0:4]) & 0x7FFFFFFF
 			errCode := binary.BigEndian.Uint32(frame.Payload[4:8])
+			conn.Close()
 			return nil, fmt.Errorf("GOAWAY: Last Stream %d, Error Code %d", lastStream, errCode)
 		case FrameWindowUpdate:
 			fmt.Println("      [WINDOW_UPDATE]")
@@ -180,7 +213,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		ProtoMajor: 2,
 		ProtoMinor: 0,
 		Header:     make(http.Header),
-		Body:       io.NopCloser(bytes.NewReader(respBody)),
+		Body:       &responseBody{bytes.NewReader(respBody), conn},
 	}
 
 	for _, h := range respHeaders {

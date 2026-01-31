@@ -8,14 +8,12 @@ images: ["/posts/http2-from-scratch-part-2/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "HTTP/2 From
-Scratch: Part 2"
+title: "HTTP/2 From Scratch: Part 2"
 slug: "http2-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http2-from-scratch-part-2/
-draft: false
-series: ["HTTP From Scratch"]
+series: ["HTTP from Scratch"]
 ---
 
 In the previous post, we successfully performed the TLS handshake and sent our 24-byte connection preface. To the server, we now look like a valid HTTP/2 client. But as soon as that preface is sent, the server starts talking back in a language we haven't yet taught our Go code to understand.
