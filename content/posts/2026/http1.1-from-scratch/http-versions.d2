@@ -1,0 +1,61 @@
+# d2 content/posts/2026/http1.1-from-scratch/http-versions.d2 --sketch --theme 200 --pad=20 content/posts/2026/http1.1-from-scratch/http-versions.svg
+
+# Combined diagram for HTTP/1.0 vs HTTP/1.1 connection reuse
+style: {
+  fill: transparent
+}
+
+"HTTP/1.0": {
+  shape: sequence_diagram
+  
+  c1: client
+  s1: server
+
+  connection_1: {
+    c1 -> s1: GET /image1.jpg {
+      style.font-color: pink
+      style.stroke: red
+    }
+    s1 -> c1: image1.jpg {
+      style.font-color: pink
+      style.stroke: red
+    }
+  }
+  
+  connection_2: {
+    c1 -> s1: GET /image2.jpg {
+      style.font-color: lightBlue
+      style.stroke: blue
+    }
+    s1 -> c1: image2.jpg {
+      style.font-color: lightBlue
+      style.stroke: blue
+    }
+  }
+}
+
+"HTTP/1.1": {
+  shape: sequence_diagram
+
+  c2: client
+  s2: server
+
+  connection_1: {
+    c2 -> s2: GET /image1.jpg {
+      style.font-color: pink
+      style.stroke: red
+    }
+    s2 -> c2: image1.jpg {
+      style.font-color: pink
+      style.stroke: red
+    }
+    c2 -> s2: GET /image2.jpg {
+      style.font-color: lightBlue
+      style.stroke: blue
+    }
+    s2 -> c2: image2.jpg {
+      style.font-color: lightBlue
+      style.stroke: blue
+    }
+  }
+}

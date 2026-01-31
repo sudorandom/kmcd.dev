@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["go", "http2", "protocols", "networking"]
-date: "2026-02-06T10:00:00Z"
+date: "2026-02-11T10:00:00Z"
 description: "Re-building the web in Go to learn more about it"
 cover: "cover.svg"
 images: ["/posts/http2-from-scratch-part-1/cover.svg"]
@@ -13,13 +13,13 @@ slug: "http2-from-scratch-part-1"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http2-from-scratch-part-1/
-draft: true
+draft: false
 series: ["HTTP From Scratch"]
 ---
 
-If you have ever opened a terminal and manually typed an HTTP/1.1 request, you know there is a certain beauty in its simplicity. You send a few lines of plain text, the server responds with more text, and the connection closes. It is human-readable and easy to debug, but it is also remarkably inefficient for the modern web. If you haven't done that, I'm hoping I can get you to use telnet this way for the first time today.
+If you have ever opened a terminal and manually typed an HTTP/1.1 request, you know there is a certain beauty in its simplicity. You send a few lines of plain text and the server responds with more text. It is human-readable and easy to debug, but it is also remarkably inefficient for the modern web. If you haven't done that, I'm hoping I can get you to use telnet this way for the first time today.
 
-As we move toward more complex applications, the limitations of text-based protocols become obvious. In this series, we are going to stop using the high-level abstractions provided by the Go standard library (mostly) and build an HTTP/2 implementation from the ground up. This is the way that I've learned best, so maybe you can join me on this journey.
+As applications have grown more complex and require many disparate streams of data, we seem to have reached the limit to what a text-based protocol can do. In this series, we are going to stop using the high-level abstractions provided by the Go standard library (mostly) and build an HTTP/2 implementation from the ground up. This is the way that I've learned best, so maybe you can join me on this journey.
 
 ### The Simplicity of the Past
 
@@ -157,11 +157,7 @@ Before we dive into the binary world of HTTP/2, it’s worth noting that HTTP/1.
 
 In the original HTTP/1.0 days, every single request required a brand-new TCP handshake. HTTP/1.1 changed the default behavior to "Keep-Alive," allowing a single TCP connection to stay open for multiple subsequent requests. This saved the "tax" of the initial handshake for every image or script.
 
-Then came Pipelining. The idea was brilliant on paper: instead of waiting for a response before sending the next request, a client could fire off three or four requests in a row.
-
-    The Catch: While you could send requests in a batch, the server was strictly required to send the responses back in the exact same order they were received.
-
-If the first request in the "pipe" was a slow database query and the second was a tiny static file, the static file was still stuck waiting for the database—the classic "Head-of-Line Blocking" problem. Because of buggy implementations in middleboxes and browsers, pipelining never saw widespread adoption and is disabled by default in almost every modern browser. It was a valiant attempt at concurrency that ultimately proved the need for a more radical shift in how we frame data.
+Then came Pipelining. The idea was brilliant on paper: instead of waiting for a response before sending the next request, a client could fire off three or four requests in a row. While you could send requests in a batch, the server was strictly required to send the responses back in the exact same order they were received. If the first request in the "pipe" was a slow database query and the second was a tiny static file, the static file was still stuck waiting for the database; the classic "Head-of-Line Blocking" problem. Because of buggy implementations in middleware and browsers, pipelining never saw widespread adoption and is disabled by default in almost every modern browser for `HTTP/1`. It was a valiant attempt at concurrency that ultimately proved the need for a more radical shift in how we frame data.
 
 ### Entering the Binary World
 
@@ -179,7 +175,7 @@ Once the encrypted tunnel is established, the client must send a connection pref
 PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n
 ```
 
-If the server receives this string and will speak HTTP/2 from then on. It will respond with its own settings. If it does not, it will likely drop the connection. This prevents a modern client from sending binary data to an old server that is still expecting plain text.
+If the server receives this string successfully, it will speak HTTP/2 from then on. It will respond with its own settings. If it does not, it will likely drop the connection. This prevents a modern client from sending binary data to an old server that is still expecting plain text.
 
 ### The Implementation in Go
 
@@ -190,7 +186,7 @@ The following script is the starting point for our project. It uses the `crypto/
 See the full source at Github: {{< github-link file="go/client.go" >}}.
 {{</ aside >}}
 
-This is actually quite amazing. A lot of hard work is being done to give us a TLS-wrapped connection and we've also used TLS to negotiate the HTTP/2 protocol for us. I'm not focused on TLS in this article so I feel like it's 'fine' to re-use Go's TLS libraries even though this isn't technically 'from scratch'.
+This is actually quite amazing. A lot of hard work is being done to give us a TLS-wrapped connection and we've also used TLS to negotiate the HTTP/2 protocol for us. TLS is a complex protocol in its own right, so we’ll rely on Go’s `crypto/tls` package and focus entirely on `HTTP/2` from this point forward.
 
 ### What Happens Next
 

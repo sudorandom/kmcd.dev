@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["go", "http2", "protocols", "networking"]
-date: "2026-02-13T10:00:00Z"
+date: "2026-02-18T10:00:00Z"
 description: "Diving into the binary framing layer and byte-shifting in Go"
 cover: "cover.svg"
 images: ["/posts/http2-from-scratch-part-2/cover.svg"]
@@ -14,13 +14,13 @@ slug: "http2-from-scratch-part-2"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http2-from-scratch-part-2/
-draft: true
+draft: false
 series: ["HTTP From Scratch"]
 ---
 
 In the previous post, we successfully performed the TLS handshake and sent our 24-byte connection preface. To the server, we now look like a valid HTTP/2 client. But as soon as that preface is sent, the server starts talking back in a language we haven't yet taught our Go code to understand.
 
-While HTTP/1.1 communicated in lines of text separated by newlines, HTTP/2 communicates in **frames**. Every single interaction from here on out—settings, headers, data, and heartbeats—happens inside a frame. To progress, we need to build a parser that can slice into these binary packets and make sense of the bits inside.
+While HTTP/1.1 communicated in lines of text separated by newlines, HTTP/2 communicates in **frames**. Every single interaction from here on out (settings, headers, data, and keepalive pings) happens inside of a frame. To progress, we need to build a parser that can slice into these binary packets and make sense of the bits inside.
 
 ### The Anatomy of a Frame
 
@@ -40,7 +40,7 @@ packet-beta
 
 The header fields serve specific purposes:
 
-* **Length:** The size of the frame payload (up to  bytes).
+* **Length:** The size of the frame payload (up to 16,383 bytes by default).
 * **Type:** The specific purpose of the frame (e.g., `0x0` for DATA, `0x1` for HEADERS).
 * **Flags:** Boolean modifiers that change how the frame is processed.
 * **Stream Identifier:** A unique ID that links the frame to a specific request-response lifecycle.
@@ -68,9 +68,9 @@ Before we write the parser, we need to get comfortable with Bit Shifting. In Go,
 
 Think of it like a conveyor belt. To turn three separate bytes into one 24-bit integer, we take the first byte and slide it 16 places to the left, move the second byte 8 places to the left, and then lay them all on top of each other using the OR operator.
 
-In Go, `uint32(data[0]) << 16` tells the compiler to take an 8-bit byte, treat it as a 32-bit number, and move its value to the "high" end of the bucket.
+In Go, `uint32(data[0]) << 16` tells the compiler to take an 8-bit byte, treat it as a 32-bit number, and move its value to the "high" end of the bucket. `HTTP/2` always uses network byte order (big-endian). Go’s `binary.BigEndian` makes this explicit when reconstructing integers.
 
-This is a large topic, so please dig into other resources until you feel comfortable before moving on. I recommend [Chapter 27: Enum, Iota & Bitmask](https://www.practical-go-lessons.com/chap-27-enum-iota-and-bitmask) from [Practical Go Lessons](https://www.practical-go-lessons.com/).
+Bitwise operations take some getting used to, so it’s worth spending time with them if this feels unfamiliar. I recommend [Chapter 27: Enum, Iota & Bitmask](https://www.practical-go-lessons.com/chap-27-enum-iota-and-bitmask) from [Practical Go Lessons](https://www.practical-go-lessons.com/).
 
 ### Parsing the Bytes
 
@@ -115,7 +115,7 @@ title SETTINGS Parameter (6 Bytes)
 
 ```
 
-For now, the most important thing is that we simply **acknowledge** these settings. HTTP/2 requires that when you receive a SETTINGS frame, you must send back a SETTINGS frame with the `ACK` flag set (bit `0x1`). If you don't, the server will eventually assume the client is unresponsive and close the connection.
+For now, the most important thing is that we simply **acknowledge** these settings. HTTP/2 requires that when you receive a SETTINGS frame, the client must send back a SETTINGS frame with the `ACK` flag set (bit `0x1`). If you don't, the server will eventually assume the client is unresponsive and close the connection.
 
 ### Putting it into Practice
 

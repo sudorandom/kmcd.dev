@@ -17,7 +17,7 @@ canonical_url: https://kmcd.dev/posts/http1.1-from-scratch/
 draft: false
 ---
 
-HTTP/1.1 has become synonymous with "HTTP/1" because it made several steps towards enabling the scale that the web was starting to experience in the late 1990s. It took the foundational concepts we explored in [HTTP/0.9](/posts/http0.9-from-scratch) and [HTTP/1.0](/posts/http1.0-from-scratch) and made several advancements and adjustments enable the web to scale for almost two decades.
+HTTP/1.1 has become synonymous with "HTTP/1" because it made several steps towards enabling the scale that the web was starting to experience in the late 1990s. It took the foundational concepts we explored in [HTTP/0.9](/posts/http0.9-from-scratch) and [HTTP/1.0](/posts/http1.0-from-scratch) and made several advancements and adjustments that enable the web to scale for almost two decades.
 
 While newer protocols like `HTTP/2` and `HTTP/3` have since arrived with their own improvements, HTTP/1.1 remains a non-negotiable requirement... well, almost. There are a few who believe that it is time to [kill HTTP/1.1](https://http1mustdie.com/) and some believe it would immediately [reduce bot traffic](https://markmcb.com/web/selectively_disabling_http_1/). It has historically been the default transport for the web and the protocol that servers and clients fall back on. Its simplicity and power are why, even now, a massive portion of internet traffic flows over HTTP/1.1.
 
@@ -29,12 +29,12 @@ HTTP/1.1 wasn't just a bump in the version number; it was a targeted response to
 
 ### Persistent Connections (Keep-Alive)
 
-This is probably the most important performance improvement in HTTP/1.1. In HTTP/1.0, every single request required a new, separate TCP connection. Setting up a TCP connection is a multi-step handshake process that introduces significant latency. For a typical website that requires dozens of resources (CSS, JavaScript, images), this overhead added up quickly. And this was before the web was encrypted, so using wrapping requests with TLS for "secure pages" would add two more round trips too this.
+This is probably the most important performance improvement in HTTP/1.1. In HTTP/1.0, every single request required a new, separate TCP connection. Setting up a TCP connection is a multi-step handshake process that introduces significant latency. For a typical website that requires dozens of resources (CSS, JavaScript, images), this overhead added up quickly. And this was before the web was encrypted, so wrapping requests in TLS for "secure pages" would add two more round trips too this.
 
 HTTP/1.1 introduced persistent connections by default. This allows the browser to send multiple requests over a single TCP connection, eliminating the repeated connection setup cost.
 
 {{< diagram >}}
-{{< image src="reuse.svg" width="300px" class="center" title="HTTP/1.1 reuses a single TCP connection for multiple requests." >}}
+{{< image src="http-versions.svg" width="800px" class="center" title="HTTP/1.1 reuses a single TCP connection for multiple requests." >}}
 {{< /diagram >}}
 
 A client or server can signal that they wish to close the connection after a request by sending the `Connection: close` header. Otherwise, the connection is assumed to be "kept alive".
