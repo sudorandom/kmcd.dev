@@ -190,8 +190,6 @@ The following script is the starting point for our project. It uses the `crypto/
 
 See the full source at Github: {{< github-link file="go/client.go" >}}.
 
-See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
-
 This is actually quite amazing. A lot of hard work is being done to give us a TLS-wrapped connection and we've also used TLS to negotiate the HTTP/2 protocol for us. TLS is a complex protocol in its own right, so we’ll rely on Go’s `crypto/tls` package and focus entirely on `HTTP/2` from this point forward.
 
 ### What Happens Next

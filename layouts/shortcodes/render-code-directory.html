@@ -1,0 +1,11 @@
+{{- $path := .Get "path" -}}
+{{- $language := .Get "language" | default "go" -}}
+{{- $out := "" -}}
+{{- range .Page.Resources.Match $path -}}
+    {{- $resourcePath := .Name -}}
+    {{- $fullPath := .Name -}}
+    {{- $shortcode := printf "{{< details-md summary=%q github_file=%q >}}\n{{%% render-code file=%q language=%q %%}}\n{{< /details-md >}}" $resourcePath $fullPath $resourcePath $language -}}
+    {{- $out = printf "%s\n%s" $out $shortcode -}}
+{{- end -}}
+{{- .Page.RenderString (printf "%s" $out) -}}
+

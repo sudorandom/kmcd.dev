@@ -338,8 +338,9 @@ The command pipes a manually created chunked body into `curl`. `curl` sends it t
 
 ## Conclusion
 
-See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
-
 HTTP/1.1 was and still is an amazing protocol. It introduced connections re-use, virtual hosting, and streaming request and response bodies. The design choices made in HTTP/1.1 were so robust that they remain deeply embedded in the internet's infrastructure today.
 
 If HTTP/1.1 was so great, why was HTTP/2 created? And what's the deal with HTTP/3? Stay tuned for the next post in this series where we start looking at `HTTP/2`.
+
+See all of the code mentioned in this article here:
+{{< render-code-directory path="go/*.go" language="go" >}}

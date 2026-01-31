@@ -3,7 +3,7 @@
         {{ (.Get "summary") | markdownify }}  (click to expand)
         {{- with .Get "github_file" -}}
             {{- $path := printf "%s%s" $.Page.File.Dir . -}}
-            {{- $ghPath := printf "%s/blob/main/content/%s" $.Site.Params.GitUrl $path -}}
+            {{- $ghPath := printf "%s/blob/main/%s" $.Site.Params.GitUrl $path -}}
             <a href="{{ $ghPath }}" target="_blank" rel="noopener noreferrer" class="details-github-link" title="View on GitHub">
                 {{- partial "svg.html" (dict "name" "github") -}} View on GitHub
             </a>

@@ -167,10 +167,11 @@ Decoding 705 bytes
 
 I want you to notice a few things here. We successfully make it through the initial handshake. The server sends us headers and we decode only a single header, the `:status` pseudo-header that tells us that the response is a `200` but the next header doesn't exist in the status table and is sent as a string literal and since our code doesn't yet handle string literals we have to stop processing the headers at this point. This will be improved later. Finally, I want you to notice that we have successfully received the DATA frame. We actually receive two of them: one that contains the data and another that says that we have received all of the data for the request. This is a significant improvement. We are **very close** to a fully functioning client!
 
-See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
-
 ### What's Next?
 
 We've made a huge leap. We can now make requests and parse simple responses. However, as you just saw, our HPACK decoder is incomplete. In this part, we've focused on decoding **Indexed Header Fields** that refer exclusively to the **Static Table**. This means our client will successfully decode common headers like `:method: GET` or `:path: /`. We also need to stop manually encoding our headers.
 
 In the next and final part covering HTTP/2, we will complete our HPACK implementation and adapt our client to use the `http.Request` and `http.Response` types.
+
+See all of the code mentioned in this article here:
+{{< render-code-directory path="go/*.go" language="go" >}}

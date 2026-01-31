@@ -262,7 +262,6 @@ func main() {
     fmt.Printf("Body Length: %d bytes\n", len(body))
 }
 ```
-See all of the code mentioned in this article here: {{< github-link file="go" name="full source" >}}.
 
 ### Limitations
 
@@ -282,3 +281,6 @@ For now, I'm happy with this victory. We've built a real, working HTTP/2 client.
 Now that we've implemented a decent amount of HTTP/2, I think the next step is to delve into QUIC and HTTP/3. I mentioned earlier that HTTP/2 solves the head-of-line blocking issue. That's only partially true. Yes, at the application layer HTTP/2 doesn't have a head-of-line blocking issue but since HTTP/2 is built on top of TCP, it inherits sequential packet ordering. This is normally an amazing feature of TCP but in this case it actually hinders us. Since HTTP/2 multiplexes many independent streams over a single TCP connection, packet loss affecting stream A will still block delivery for stream B. The only way around this is to make significant updates to TCP (not going to happen) or completely abandon TCP altogether.
 
 This, along with 0-RTT connection resumption (sending data before the handshake completes), are things that just aren't possible to side-step using HTTP/2. This is why QUIC and HTTP/3 were created. But you'll have to wait a bit longer before seeing me implement that from scratch.
+
+See all of the code mentioned in this article here:
+{{< render-code-directory path="go/*.go" language="go" >}}
