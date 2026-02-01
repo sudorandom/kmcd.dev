@@ -25,7 +25,7 @@
         {{ end }}
 
         <div class="post-info-2">
-          <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ .Site.Author.name }}</a></span>
+          <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ or .Params.Author .Site.Params.Author.Name }}</a></span>
           <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
           <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.FormatNumberCustom 0 }} words</span>
           <span>
