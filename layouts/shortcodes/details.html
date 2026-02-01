@@ -1,4 +1,4 @@
-<details>
+<details {{ if .Get "open" }}open{{ end }}>
     <summary>
         {{ (.Get "summary") | markdownify }} (click to expand)
         {{- with .Get "github_file" -}}

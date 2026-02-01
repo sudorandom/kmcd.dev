@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/sudorandom/kmcd.dev/faking-protobuf-data-in-go/gen;gen";
+
+message User {
+  // A username with reasonable length constraints
+  string username = 1 [(buf.validate.field).string = {
+    min_len: 3
+    max_len: 20
+  }];
+
+  // An email address
+  string email = 2 [(buf.validate.field).string = {email: true}];
+
+  // Age with explicit bounds
+  int32 age = 3 [(buf.validate.field).int32 = {
+    gte: 18
+    lte: 120
+  }];
+}

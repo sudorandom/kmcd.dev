@@ -1,0 +1,4 @@
+[tools]
+go = "latest"
+"go:github.com/sudorandom/fauxrpc/cmd/fauxrpc" = "latest"
+
