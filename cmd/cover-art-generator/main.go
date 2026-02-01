@@ -28,8 +28,8 @@ const (
 	GRID_SPACING       = 60
 	MIN_WIRES          = 0
 	MAX_WIRES          = 4
-	MIN_COMPONENTS     = 7
-	MAX_COMPONENTS     = 20
+	MIN_COMPONENTS     = 4
+	MAX_COMPONENTS     = 10
 	COMPONENT_MIN_SIZE = 30
 	COMPONENT_MAX_SIZE = 400
 )
@@ -276,6 +276,16 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 		componentPoints = append(componentPoints, gridPoints[rnd.Intn(len(gridPoints))])
 	}
 
+	// New: Separate points for basic and advanced shapes
+	rnd.Shuffle(len(componentPoints), func(i, j int) {
+		componentPoints[i], componentPoints[j] = componentPoints[j], componentPoints[i]
+	})
+
+	numAdvancedShapes := min(rnd.Intn(4), len(componentPoints)) // 0 to 3
+
+	advancedComponentPoints := componentPoints[:numAdvancedShapes]
+	basicComponentPoints := componentPoints[numAdvancedShapes:]
+
 	// 3. --- Draw Wires based on Style ---
 	numWires := rnd.Intn(MAX_WIRES-MIN_WIRES+1) + MIN_WIRES
 
@@ -342,10 +352,10 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 	dc.Fill()
 
 	// 4. --- Draw Network Overlay ---
-	if addNetwork && len(componentPoints) > 1 {
-		for _, p1 := range componentPoints {
+	if addNetwork && len(basicComponentPoints) > 1 { // Changed len(componentPoints) to len(basicComponentPoints)
+		for _, p1 := range basicComponentPoints {
 			var neighbors []Neighbor
-			for _, p2 := range componentPoints {
+			for _, p2 := range basicComponentPoints { // Changed componentPoints to basicComponentPoints
 				if p1.X == p2.X && p1.Y == p2.Y {
 					continue
 				}
@@ -376,9 +386,10 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 	dc.Fill()
 
 	// 5. --- Draw Components ---
-	for _, point := range componentPoints {
-		// Apply a random jitter around the base size, ensuring it stays within defined bounds
-		jitter := (rnd.Float64()*2 - 1) * (componentSizeRange * 0.15) // +/- 15% of the range
+
+	// First, draw basic components
+	for _, point := range basicComponentPoints {
+		jitter := (rnd.Float64()*2 - 1) * (componentSizeRange * 0.15)
 		size := baseComponentSize + jitter
 		size = math.Max(float64(COMPONENT_MIN_SIZE), math.Min(float64(COMPONENT_MAX_SIZE), size))
 		color := palette[rnd.Intn(len(palette))]
@@ -387,19 +398,19 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 		shapeChoice := rnd.Float64()
 
 		switch {
-		case shapeChoice < 0.15: // Rectangle
+		case shapeChoice < 0.20: // Rectangle
 			dc.Push()
 			dc.RotateAbout(gg.Radians(rnd.Float64()*180), point.X, point.Y)
 			dc.DrawRectangle(point.X-size/2, point.Y-size/2, size, size)
 			dc.Pop()
-		case shapeChoice < 0.30: // Ellipse
+		case shapeChoice < 0.40: // Ellipse
 			dc.Push()
 			rx := size / 2
-			ry := rx * (rnd.Float64()*0.7 + 0.3) // 30% to 100% of rx
+			ry := rx * (rnd.Float64()*0.7 + 0.3)
 			dc.RotateAbout(gg.Radians(rnd.Float64()*180), point.X, point.Y)
 			dc.DrawEllipse(point.X, point.Y, rx, ry)
 			dc.Pop()
-		case shapeChoice < 0.45: // Pie Slice
+		case shapeChoice < 0.60: // Pie Slice
 			dc.Push()
 			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
 			start := rnd.Float64() * 360
@@ -408,15 +419,15 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 			dc.LineTo(point.X, point.Y)
 			dc.ClosePath()
 			dc.Pop()
-		case shapeChoice < 0.60: // Hexagon
+		case shapeChoice < 0.75: // Hexagon
 			dc.DrawRegularPolygon(6, point.X, point.Y, size/2, gg.Radians(rnd.Float64()*60))
-		case shapeChoice < 0.70: // Star
+		case shapeChoice < 0.85: // Star
 			dc.Push()
 			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
-			points := rnd.Intn(3) + 5 // 5, 6, or 7 points
+			points := rnd.Intn(3) + 5
 			drawStar(dc, float64(points), point.X, point.Y, size/2)
 			dc.Pop()
-		case shapeChoice < 0.85: // Right Triangle
+		case shapeChoice < 0.95: // Right Triangle
 			dc.Push()
 			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
 			p1 := point
@@ -441,20 +452,6 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 			dc.LineTo(p3.X, p3.Y)
 			dc.ClosePath()
 			dc.Pop()
-		case shapeChoice < 0.95: // Parabola
-			dc.SetHexColor(color)
-			dc.SetLineWidth(float64(rnd.Intn(3) + 1))
-			flip := rnd.Float64() < 0.5
-			for xLocal := -size; xLocal <= size; xLocal++ {
-				yLocal := math.Pow(xLocal/size, 2) * size
-				if flip {
-					dc.LineTo(point.X+xLocal, point.Y-size+yLocal)
-				} else {
-					dc.LineTo(point.X-size+yLocal, point.Y+xLocal)
-				}
-			}
-			dc.Stroke()
-			continue // Use continue to not fill
 		default: // Random Triangle
 			p1 := Point{X: point.X + rnd.Float64()*size*2 - size, Y: point.Y + rnd.Float64()*size*2 - size}
 			p2 := Point{X: point.X + rnd.Float64()*size*2 - size, Y: point.Y + rnd.Float64()*size*2 - size}
@@ -465,6 +462,71 @@ func generateArt(style string, seed int64, addNetwork bool) image.Image {
 			dc.ClosePath()
 		}
 		dc.Fill()
+	}
+
+	// Now, draw advanced components on top
+	for _, point := range advancedComponentPoints {
+		jitter := (rnd.Float64()*2 - 1) * (componentSizeRange * 0.15)
+		size := baseComponentSize + jitter
+		size = math.Max(float64(COMPONENT_MIN_SIZE), math.Min(float64(COMPONENT_MAX_SIZE), size))
+		color := palette[rnd.Intn(len(palette))]
+		dc.SetHexColor(color)
+
+		shapeChoice := rnd.Float64()
+
+		switch {
+		case shapeChoice < 0.25: // Arc
+			dc.SetHexColor(color)
+			dc.SetLineWidth(float64(rnd.Intn(3) + 4))
+			startAngle := gg.Radians(rnd.Float64() * 360)
+			endAngle := startAngle + gg.Radians(rnd.Float64()*270+90)
+			dc.DrawArc(point.X, point.Y, size/2, startAngle, endAngle)
+			dc.Stroke()
+			continue
+		case shapeChoice < 0.50: // Hyperbola
+			dc.SetHexColor(color)
+			dc.SetLineWidth(float64(rnd.Intn(3) + 4))
+			dc.Push()
+			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
+			for yLocal := -size; yLocal <= size; yLocal += 2 {
+				xLocal := (size / 2) * math.Sqrt(1+math.Pow(yLocal/(size/2), 2))
+				dc.LineTo(point.X+xLocal, point.Y+yLocal)
+			}
+			dc.NewSubPath()
+			for yLocal := -size; yLocal <= size; yLocal += 2 {
+				xLocal := -(size / 2) * math.Sqrt(1+math.Pow(yLocal/(size/2), 2))
+				dc.LineTo(point.X+xLocal, point.Y+yLocal)
+			}
+			dc.Pop()
+			dc.Stroke()
+			continue
+		case shapeChoice < 0.70: // Fractal Tree
+			dc.SetHexColor(color)
+			dc.SetLineWidth(float64(rnd.Intn(4) + 4)) // Further increased width
+			dc.Push()
+			startAngle := -90.0 + (rnd.Float64()*40 - 20)
+			branchAngle := 20.0 + rnd.Float64()*25
+			initialLength := size*0.3 + rnd.Float64()*(size*0.3)
+			maxDepth := 4 + rnd.Intn(3)
+			dc.RotateAbout(gg.Radians(rnd.Float64()*360), point.X, point.Y)
+			drawFractalTree(dc, point.X, point.Y, startAngle, initialLength, branchAngle, maxDepth, rnd)
+			dc.Pop()
+			continue
+		default: // Parabola
+			dc.SetHexColor(color)
+			dc.SetLineWidth(float64(rnd.Intn(4) + 5))
+			flip := rnd.Float64() < 0.5
+			for xLocal := -size; xLocal <= size; xLocal++ {
+				yLocal := math.Pow(xLocal/size, 2) * size
+				if flip {
+					dc.LineTo(point.X+xLocal, point.Y-size+yLocal)
+				} else {
+					dc.LineTo(point.X-size+yLocal, point.Y+xLocal)
+				}
+			}
+			dc.Stroke()
+			continue
+		}
 	}
 
 	// 6. --- Post-processing (on the raster image) ---
@@ -489,6 +551,25 @@ func drawStar(dc *gg.Context, points, centerX, centerY, outerRadius float64) {
 		dc.LineTo(x, y)
 	}
 	dc.ClosePath()
+}
+
+func drawFractalTree(dc *gg.Context, x1, y1, angle, length, branchAngle float64, depth int, rnd *rand.Rand) {
+	if depth == 0 {
+		return
+	}
+
+	x2 := x1 + math.Cos(gg.Radians(angle))*length
+	y2 := y1 + math.Sin(gg.Radians(angle))*length
+
+	dc.DrawLine(x1, y1, x2, y2)
+	dc.Stroke()
+
+	// Randomness for more organic look
+	lengthFactor := 0.75 + rnd.Float64()*0.1 // 0.75-0.85
+	angleFactor := rnd.Float64()*15 - 7.5    // -7.5 to 7.5 degrees jitter
+
+	drawFractalTree(dc, x2, y2, angle-branchAngle+angleFactor, length*lengthFactor, branchAngle, depth-1, rnd)
+	drawFractalTree(dc, x2, y2, angle+branchAngle+angleFactor, length*lengthFactor, branchAngle, depth-1, rnd)
 }
 
 func addVignette(img image.Image) image.Image {
