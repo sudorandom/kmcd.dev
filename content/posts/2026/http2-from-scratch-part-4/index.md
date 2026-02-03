@@ -62,23 +62,23 @@ func (h *HPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
     for r.Len() > 0 {
         b, _ := r.ReadByte()
         
-        // 1. Indexed Header Field (starts with 1xxxxxxx)
+        // Indexed Header Field (starts with 1xxxxxxx)
         if b&maskIndexed == patternIndexed { 
             // ... fetch from Static or Dynamic table ...
         
-        // 2. Literal with Incremental Indexing (starts with 01xxxxxx)
-        //    (Read the header, then ADD it to the Dynamic Table)
+        // Literal with Incremental Indexing (starts with 01xxxxxx)
+        // (Read the header, then ADD it to the Dynamic Table)
         } else if b&maskLiteralIncremental == patternLiteralIncremental { 
             header, _ := h.decodeLiteralHeader(r, 6, true)
             headers = append(headers, header)
 
-        // 3. Literal without Indexing (starts with 0000xxxx or 0001xxxx)
-        //    (Read the header, do NOT add to Dynamic Table)
+        // Literal without Indexing (starts with 0000xxxx or 0001xxxx)
+        // (Read the header, do NOT add to Dynamic Table)
         } else if b&maskLiteral == patternLiteral { 
              header, _ := h.decodeLiteralHeader(r, 4, false)
              headers = append(headers, header)
 
-        // 4. Dynamic Table Size Update (starts with 001xxxxx)
+        // Dynamic Table Size Update (starts with 001xxxxx)
         } else if b&maskDynamicTableSize == patternDynamicTableSize { 
             // ... update max size ...
         }
@@ -87,7 +87,9 @@ func (h *HPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
 }
 ```
 
-See the full updated HPACK logic: {{< github-link file="go/hpack.go" >}}.
+{{< details-md summary="full hpack.go" github_file="go/hpack.go" >}}
+{{% render-code file="go/hpack.go" language="go" %}}
+{{< /details-md >}}
 
 ### Writing an Encoder
 
@@ -105,13 +107,13 @@ This simple logic covers 90% of use cases without needing complex state tracking
 func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
     var buf bytes.Buffer
     for _, hf := range headers {
-        // 1. Try to find a full match (Name + Value)
+        // Try to find a full match (Name + Value)
         if index, ok := staticTableMap[hf]; ok {
             encodeInt(&buf, index, 7, patternIndexed)
             continue
         }
 
-        // 2. Try to find a Name match
+        // Try to find a Name match
         if index, ok := staticTableNameMap[hf.Name]; ok {
             encodeInt(&buf, index, 6, patternLiteralIncremental) // Literal with Incremental Indexing
             encodeString(&buf, hf.Value)
@@ -119,7 +121,7 @@ func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
             continue
         }
 
-        // 3. Send as a full literal
+        // Send as a full literal
         encodeInt(&buf, 0, 6, patternLiteralIncremental)
         encodeString(&buf, hf.Name)
         encodeString(&buf, hf.Value)
@@ -149,7 +151,7 @@ func NewClient() *Client {
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
     // ... Connection and Handshake logic ...
 
-    // 1. Convert http.Request to HPACK HeaderFields
+    // Convert http.Request to HPACK HeaderFields
     authority := req.URL.Host
     if authority == "" {
         authority = req.Host // Fallback for robustness
@@ -162,17 +164,19 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
     }
     // ... append req.Header ...
 
-    // 2. Encode and send the HEADERS frame
+    // Encode and send the HEADERS frame
     // ...
 
-    // 3. Read Loop and a Subtle Bug
+    // Read Loop and a Subtle Bug
     // ...
     
     return httpResp, nil
 }
 ```
 
-After sending our request, we enter a loop to read the server's response. This is where I hit a classic Go concurrency bug. My first implementation had a `defer conn.Close()` right after dialing the connection.
+This part was mostly straightforward. We convert to and from the `HeaderField` type. We make sure the we use the host in the request as the `:authority` value. But there is one thing that wasted more time than I'd like to admit.
+
+After sending our request, we enter a loop to read the server's response. This is where I hit an annoying Go concurrency bug that wasted my time. My first implementation had a `defer conn.Close()` right after dialing the connection. I figured "Why not close the connection? This toy client will only issue a single request per connection". Here's what I was doing:
 
 ```go
 // The WRONG way
@@ -185,11 +189,11 @@ defer conn.Close() // Problem!
 return &http.Response{ Body: io.NopCloser(bytes.NewReader(bodyBytes)) }, nil
 ```
 
-The problem? `defer` executes when the function (`Do`) returns. But the user of our client needs to read the response `Body` *after* `Do` has returned. The connection was being closed before they had a chance to read it!
+The problem? `defer` executes when the function (`Do`) returns. But the user of our client needs to read the response `Body` *after* `Do` has returned. The connection was being closed before they had a chance to read it! The old version of the client would read the full response body in-line. Switching to act more like `http.Client` significantly changed when the response body is read and, in turn, changed the lifecycle of the underlying connection.
 
 The fix is to remove the `defer` and instead wrap the connection itself in a custom `io.ReadCloser` that we assign to the `http.Response.Body`. When the user calls `resp.Body.Close()`, it's now our responsibility to close the underlying network connection. This is the standard pattern used by Go's own `net/http` client.
 
-Here's the read loop that replaces the `...` above. I spent a good hour debugging why it would sometimes hang, only to realize I was mishandling the `END_STREAM` flag.
+Here's the read loop that replaces the `...` above.
 
 ```go
 // The Read Loop
@@ -239,7 +243,9 @@ func (rb *responseBody) Close() error {
 }
 ```
 
-See the full updated client code: {{< github-link file="go/client.go" >}}.
+{{< details-md summary="full client.go" github_file="go/client.go" >}}
+{{% render-code file="go/client.go" language="go" %}}
+{{< /details-md >}}
 
 ### The Result
 

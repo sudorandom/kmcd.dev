@@ -119,17 +119,17 @@ For now, the most important thing is that we simply **acknowledge** these settin
 
 We can now update our client to read the header, read the payload based on the length we just parsed, and log what we found. This is where the binary nature of the protocol becomes visible in your terminal.
 
+{{< details-md open="true" summary="full parser.go" github_file="go/parser.go" >}}
 {{% render-code file="go/parser.go" language="go" %}}
-See the full parser implementation: {{< github-link file="go/parser.go" >}}.
+{{< /details-md >}}
 
 Running this against `kmcd.dev` will show you exactly what Cloudflare or your server expects. You'll see a `Type: 4` frame with a specific length. This is the first time our code is truly listening to an HTTP/2 server.
 
 ### What’s Next?
 
-We can now read the frame header and the raw payload, but the payload itself is still a mystery of compressed bytes. In the next post, we will tackle the most complex part of the HTTP/2 specification: **HPACK**.
+We can now read the frame header and the raw payload, but the raw payload represents a HEADERS frame and we have no idea how to actually parse that yet. In the next post, we will tackle the most complex part of the HTTP/2 specification: **HPACK**.
 
 We need to learn how to compress and decompress headers using a stateful table, which is the only way we will ever be able to send a real `GET` request and get a real response.
 
 See all of the code mentioned in this article here:
 {{< render-code-directory path="go/*.go" language="go" >}}
-

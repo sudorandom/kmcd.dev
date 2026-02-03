@@ -22,14 +22,14 @@ type Frame struct {
 
 // ReadFrame reads a header and then the corresponding payload from the connection.
 func ReadFrame(r io.Reader) (Frame, error) {
-	// 1. Read the 9-byte header
+	// Read the 9-byte header
 	headerBuf := make([]byte, 9)
 	_, err := io.ReadFull(r, headerBuf)
 	if err != nil {
 		return Frame{}, fmt.Errorf("reading header: %w", err)
 	}
 
-	// 2. Parse the header fields using bit-shifting
+	// Parse the header fields using bit-shifting
 	header := FrameHeader{
 		Length:   uint32(headerBuf[0])<<16 | uint32(headerBuf[1])<<8 | uint32(headerBuf[2]),
 		Type:     headerBuf[3],
@@ -37,7 +37,7 @@ func ReadFrame(r io.Reader) (Frame, error) {
 		StreamID: binary.BigEndian.Uint32(headerBuf[5:9]) & 0x7FFFFFFF,
 	}
 
-	// 3. Read the payload based on the Length field
+	// Read the payload based on the Length field
 	payload := make([]byte, header.Length)
 	if header.Length > 0 {
 		_, err = io.ReadFull(r, payload)

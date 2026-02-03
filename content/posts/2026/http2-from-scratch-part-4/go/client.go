@@ -56,7 +56,7 @@ func NewClient() *Client {
 }
 
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
-	// 1. Setup TLS with ALPN
+	// Setup TLS with ALPN
 	config := &tls.Config{
 		NextProtos: []string{"h2"},
 	}
@@ -83,14 +83,14 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 
 	fmt.Printf("Connected to %s using %s\n", req.URL.Host, state.NegotiatedProtocol)
 
-	// 2. Send Connection Preface
+	// Send Connection Preface
 	if _, err = conn.Write([]byte(Preface)); err != nil {
 		conn.Close()
 		return nil, fmt.Errorf("failed to send preface: %w", err)
 	}
 	fmt.Println("Preface sent.")
 
-	// 3. Initial Handshake Loop (using the Client's hpackDec)
+	// Initial Handshake Loop (using the Client's hpackDec)
 	// Send our initial empty settings
 	mySettings := []byte{0, 0, 0, FrameSettings, 0, 0, 0, 0, 0}
 	conn.Write(mySettings)

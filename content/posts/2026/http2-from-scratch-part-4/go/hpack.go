@@ -305,13 +305,13 @@ func NewHPACKEncoder(maxSize uint32) *HPACKEncoder {
 func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
 	var buf bytes.Buffer
 	for _, hf := range headers {
-		// 1. Find a match in static table
+		// Find a match in static table
 		if index, ok := staticTableMap[hf]; ok {
 			encodeInt(&buf, index, 7, patternIndexed)
 			continue
 		}
 
-		// 2. Find a name match in static table
+		// Find a name match in static table
 		if index, ok := staticTableNameMap[hf.Name]; ok {
 			encodeInt(&buf, index, 6, patternLiteralIncremental)
 			encodeString(&buf, hf.Value)
@@ -319,7 +319,7 @@ func (e *HPACKEncoder) Encode(headers []HeaderField) []byte {
 			continue
 		}
 
-		// 3. Literal with literal name
+		// Literal with literal name
 		encodeInt(&buf, 0, 6, patternLiteralIncremental)
 		encodeString(&buf, hf.Name)
 		encodeString(&buf, hf.Value)
