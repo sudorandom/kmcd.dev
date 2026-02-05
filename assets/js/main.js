@@ -6,13 +6,13 @@
  *
  */
 const themeToggle = document.querySelector(".theme-toggle");
-const chosenTheme = window.localStorage && window.localStorage.getItem("theme");
-const chosenThemeIsDark = chosenTheme == "dark";
-const chosenThemeIsLight = chosenTheme == "light";
-
 
 // Detect the color scheme the operating system prefers.
 function detectOSColorTheme() {
+  const chosenTheme = window.localStorage && window.localStorage.getItem("theme");
+  const chosenThemeIsDark = chosenTheme == "dark";
+  const chosenThemeIsLight = chosenTheme == "light";
+
   if (chosenThemeIsDark) {
     document.documentElement.setAttribute("data-theme", "dark");
   } else if (chosenThemeIsLight) {
@@ -26,20 +26,15 @@ function detectOSColorTheme() {
 
 // Switch the theme.
 function switchTheme(e) {
-  if (chosenThemeIsDark) {
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+
+  if (currentTheme === "dark") {
     localStorage.setItem("theme", "light");
-  } else if (chosenThemeIsLight) {
-    localStorage.setItem("theme", "dark");
   } else {
-    if (document.documentElement.getAttribute("data-theme") == "dark") {
-      localStorage.setItem("theme", "light");
-    } else {
-      localStorage.setItem("theme", "dark");
-    }
+    localStorage.setItem("theme", "dark");
   }
 
   detectOSColorTheme();
-  window.location.reload();
 }
 
 // Event listener
