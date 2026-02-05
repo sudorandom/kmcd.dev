@@ -11,6 +11,16 @@ const isMobileMenu = () => {
   menu && menu.classList.toggle("hidden", isMobile());
 };
 
+const debounce = (func, wait) => {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+};
+
 isMobileMenu();
 
 menuTrigger &&
@@ -19,4 +29,4 @@ menuTrigger &&
     () => menu && menu.classList.toggle("hidden")
   );
 
-window.addEventListener("resize", isMobileMenu);
+window.addEventListener("resize", debounce(isMobileMenu, 150));
