@@ -574,26 +574,74 @@ func drawFractalTree(dc *gg.Context, x1, y1, angle, length, branchAngle float64,
 
 func addVignette(img image.Image) image.Image {
 	bounds := img.Bounds()
-	width, height := float64(bounds.Dx()), float64(bounds.Dy())
+	width, height := bounds.Dx(), bounds.Dy()
+	halfW, halfH := float64(width)/2, float64(height)/2
+	invHalfW, invHalfH := 1.0/halfW, 1.0/halfH
 
 	// Create a new image to draw the vignette on
 	resultImg := image.NewNRGBA(bounds)
 
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+	// Precompute y-factors for the fade calculation
+	// fade = 1 - 0.9 * (dx^2 + dy^2) / 2
+	// fade = 1 - 0.45 * dx^2 - 0.45 * dy^2
+	yFactors := make([]float64, height)
+	for y := 0; y < height; y++ {
+		dy := (float64(y) - halfH) * invHalfH
+		yFactors[y] = 0.45 * dy * dy
+	}
+
+	// Fast path for NRGBA (common case)
+	if nrgba, ok := img.(*image.NRGBA); ok {
+		srcPix := nrgba.Pix
+		dstPix := resultImg.Pix
+		srcStride := nrgba.Stride
+		dstStride := resultImg.Stride
+
+		for y := 0; y < height; y++ {
+			yFac := yFactors[y]
+			srcRowStart := (bounds.Min.Y + y - nrgba.Rect.Min.Y) * srcStride
+			dstRowStart := (bounds.Min.Y + y - resultImg.Rect.Min.Y) * dstStride
+
+			for x := 0; x < width; x++ {
+				dx := (float64(x) - halfW) * invHalfW
+				val := yFac + 0.45*dx*dx
+				fade := 1.0 - val
+				if fade < 0 {
+					fade = 0
+				}
+
+				srcOffset := srcRowStart + (bounds.Min.X + x - nrgba.Rect.Min.X)*4
+				dstOffset := dstRowStart + (bounds.Min.X + x - resultImg.Rect.Min.X)*4
+
+				// Apply fade directly to components.
+				// Note: Original code used RGBA() which premultiplies alpha, then scaled.
+				// Here we scale the raw components. For opaque images (which these are),
+				// the result is identical.
+				dstPix[dstOffset] = uint8(float64(srcPix[srcOffset]) * fade)
+				dstPix[dstOffset+1] = uint8(float64(srcPix[srcOffset+1]) * fade)
+				dstPix[dstOffset+2] = uint8(float64(srcPix[srcOffset+2]) * fade)
+				dstPix[dstOffset+3] = srcPix[srcOffset+3]
+			}
+		}
+		return resultImg
+	}
+
+	// Slow path (fallback)
+	for y := 0; y < height; y++ {
+		yFac := yFactors[y]
+		for x := 0; x < width; x++ {
 			// Get original color
-			r, g, b, a := img.At(x, y).RGBA()
+			r, g, b, a := img.At(bounds.Min.X+x, bounds.Min.Y+y).RGBA()
 
-			// Calculate distance from center, normalized to [0, 1]
-			dx := (float64(x) - width/2) / (width / 2)
-			dy := (float64(y) - height/2) / (height / 2)
-			dist := math.Sqrt(dx*dx+dy*dy) / math.Sqrt(2) // Divide by sqrt(2) to ensure it's in [0, 1] for corners
-
-			// Simple quadratic fade
-			fade := math.Max(0, 1-dist*dist*0.9)
+			dx := (float64(x) - halfW) * invHalfW
+			val := yFac + 0.45*dx*dx
+			fade := 1.0 - val
+			if fade < 0 {
+				fade = 0
+			}
 
 			// Apply the fade
-			resultImg.SetNRGBA(x, y, color.NRGBA{
+			resultImg.SetNRGBA(bounds.Min.X+x, bounds.Min.Y+y, color.NRGBA{
 				R: uint8((float64(r>>8) * fade)),
 				G: uint8((float64(g>>8) * fade)),
 				B: uint8((float64(b>>8) * fade)),
