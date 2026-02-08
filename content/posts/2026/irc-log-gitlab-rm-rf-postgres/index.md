@@ -1,5 +1,5 @@
 ---
-title: "IRC Log: rm -rf"
+title: "IRC Log: rm -rf /var/opt/gitlab/postgresql/data"
 date: 2026-03-09T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, rm, incident]

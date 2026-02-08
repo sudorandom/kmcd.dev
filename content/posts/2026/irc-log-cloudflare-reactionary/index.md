@@ -1,12 +1,10 @@
 ---
-title: "IRC Log: Reactionaries"
+title: "IRC Log: Reactionary"
 date: 2026-03-02T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, react, incident]
 series: [irc-logs]
 ---
-
-**Context:** The Global Control Plane has gone dark. Coffee is being consumed at unsafe rates.
 
 {{< chat >}}
 {{< chat-server time="14:15:00" >}}PagerDutyBot: SEV-0: GLOBAL CONTROL PLANE UNREACHABLE. API ERROR RATE > 95%.{{< /chat-server >}}
