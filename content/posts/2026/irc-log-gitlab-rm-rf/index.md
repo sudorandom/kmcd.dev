@@ -1,8 +1,9 @@
 ---
 title: "IRC Log: rm -rf"
-date: 2026-03-09T02:00:00-05:00
+date: 2026-03-09T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, rm, incident]
+series: [irc-logs]
 ---
 
 # The Incident Log: January 31, 2017

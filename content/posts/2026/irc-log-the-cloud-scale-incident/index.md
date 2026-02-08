@@ -1,11 +1,9 @@
 ---
 title: "IRC Log: The Cloud Scale Incident"
 date: 2026-02-23T10:00:00Z
-description: ""
 cover: "cover.svg"
-draft: false
-toc: false
 tags: [humor, irc, aws, vibe-coding]
+series: [irc-logs]
 ---
 
 An archived log from the #dev-help channel on the Freenode (RIP) afterlife network.

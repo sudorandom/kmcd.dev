@@ -1,8 +1,9 @@
 ---
 title: "IRC Log: Reactionaries"
-date: 2026-03-02T02:00:00-05:00
+date: 2026-03-02T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, react, incident]
+series: [irc-logs]
 ---
 
 **Context:** The Global Control Plane has gone dark. Coffee is being consumed at unsafe rates.

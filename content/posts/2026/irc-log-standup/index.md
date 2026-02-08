@@ -1,9 +1,9 @@
 ---
-title: "IRC Log: The Remote Standup"
+title: "IRC Log: Standup"
 date: 2026-02-09T10:00:00Z
-description: ""
 cover: "cover.svg"
 tags: [humor, irc, engineering, standup]
+series: [irc-logs]
 ---
 
 The lead is at a conference, so standup is happening in `#engineering-team`. It went about as well as expected.

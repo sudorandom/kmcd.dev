@@ -1,9 +1,9 @@
 ---
 title: "IRC Log: The AI Omnipotence Incident"
 date: 2026-02-16T10:00:00Z
-description: ""
 cover: "cover.svg"
 tags: [humor, irc, ai, catastrophe]
+series: [irc-logs]
 ---
 
 An archived log from the day `lazy_dev` decided typing was too hard.
