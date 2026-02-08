@@ -1,0 +1,5 @@
+{{ $time := .Get "time" }}
+<div class="chat-line">
+  {{ if $time }}<span class="chat-timestamp">[{{ $time }}]</span>{{ end }}
+  <span class="chat-server">*** {{ .Inner | markdownify }}</span>
+</div>

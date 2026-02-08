@@ -1,0 +1,8 @@
+{{ $from := .Get "from" }}
+{{ $time := .Get "time" }}
+{{ $colorKey := substr (sha256 $from) 0 1 }}
+<div class="chat-line">
+  {{ if $time }}<span class="chat-timestamp">[{{ $time }}]</span>{{ end }}
+  <span class="chat-user chat-color-{{ $colorKey }}">&lt;{{ $from }}&gt;</span>
+  <span class="chat-message">{{ .Inner | markdownify }}</span>
+</div>

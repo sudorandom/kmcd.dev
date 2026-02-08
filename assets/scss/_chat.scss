@@ -1,0 +1,142 @@
+.chat-log {
+  font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+  background-color: #222;
+  color: #eee;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  border: 1px solid #444;
+
+  [data-theme=light] & {
+      background-color: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+  }
+}
+
+.chat-line {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 2px;
+  width: 100%;
+}
+
+.chat-timestamp {
+  color: #777;
+  margin-right: 8px;
+  user-select: none;
+  font-size: 0.85em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.chat-user {
+    font-weight: bold;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.chat-line > .chat-user {
+    margin-right: 8px;
+}
+
+.chat-server {
+    color: #4caf50; /* Green */
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.chat-message {
+    flex-grow: 1;
+    word-break: break-word; /* Ensure long URLs or words don't overflow */
+
+    /* Force p tags from markdownify to behave */
+    & > p {
+        margin: 0;
+        display: inline;
+    }
+    
+    /* In case markdownify adds a p tag, we want the span itself to behave */
+    display: block; 
+}
+
+.chat-action {
+    color: #e040fb; /* Purple */
+    font-style: italic;
+    flex-grow: 1;
+    
+    [data-theme=light] & {
+        color: #9c27b0;
+    }
+
+    & > p {
+        margin: 0;
+        display: inline;
+    }
+}
+
+.chat-join {
+    color: #4caf50;
+    font-style: italic;
+    flex-grow: 1;
+}
+
+.chat-leave {
+    color: #ff5722; /* Deep Orange */
+    font-style: italic;
+    flex-grow: 1;
+}
+
+/* User Colors - using a palette that works on dark bg */
+/* Adapted for light/dark themes where necessary */
+
+$chat-colors: (
+  0: #ef5350, // Red 400
+  1: #ec407a, // Pink 400
+  2: #ab47bc, // Purple 400
+  3: #7e57c2, // Deep Purple 400
+  4: #5c6bc0, // Indigo 400
+  5: #42a5f5, // Blue 400
+  6: #29b6f6, // Light Blue 400
+  7: #26c6da, // Cyan 400
+  8: #26a69a, // Teal 400
+  9: #66bb6a, // Green 400
+  a: #9ccc65, // Light Green 400
+  b: #d4e157, // Lime 400
+  c: #ffee58, // Yellow 400
+  d: #ffca28, // Amber 400
+  e: #ffa726, // Orange 400
+  f: #ff7043  // Deep Orange 400
+);
+
+$chat-colors-light: (
+  0: #d32f2f, // Red 700
+  1: #c2185b, // Pink 700
+  2: #7b1fa2, // Purple 700
+  3: #512da8, // Deep Purple 700
+  4: #303f9f, // Indigo 700
+  5: #1976d2, // Blue 700
+  6: #0288d1, // Light Blue 700
+  7: #0097a7, // Cyan 700
+  8: #00796b, // Teal 700
+  9: #388e3c, // Green 700
+  a: #689f38, // Light Green 700
+  b: #afb42b, // Lime 700
+  c: #fbc02d, // Yellow 700
+  d: #ffa000, // Amber 700
+  e: #f57c00, // Orange 700
+  f: #e64a19  // Deep Orange 700
+);
+
+@each $key, $val in $chat-colors {
+  .chat-color-#{$key} {
+    color: $val;
+    [data-theme=light] & {
+        color: map-get($chat-colors-light, $key);
+    }
+  }
+}

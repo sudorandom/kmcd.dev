@@ -1,0 +1,14 @@
+{{ $type := .Get "type" | default "action" }}
+{{ $from := .Get "from" }}
+{{ $time := .Get "time" }}
+{{ $colorKey := substr (md5 $from) 0 1 }}
+<div class="chat-line">
+  {{ if $time }}<span class="chat-timestamp">[{{ $time }}]</span>{{ end }}
+  {{ if eq $type "join" }}
+    <span class="chat-join">*** <span class="chat-user chat-color-{{ $colorKey }}">{{ $from }}</span> has joined</span>
+  {{ else if eq $type "leave" }}
+    <span class="chat-leave">*** <span class="chat-user chat-color-{{ $colorKey }}">{{ $from }}</span> has left</span>
+  {{ else }}
+    <span class="chat-action">* <span class="chat-user chat-color-{{ $colorKey }}">{{ $from }}</span> {{ .Inner | markdownify }}</span>
+  {{ end }}
+</div>
