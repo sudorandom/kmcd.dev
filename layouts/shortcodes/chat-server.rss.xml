@@ -1,0 +1,5 @@
+{{ $time := .Get "time" }}
+<div>
+  {{ if $time }}<font color="#777777">[{{ $time }}]</font> {{ end }}
+  <font color="#4caf50"><b>*** {{ .Inner | markdownify }}</b></font>
+</div>
