@@ -1,8 +1,15 @@
 {{ $from := .Get "from" }}
 {{ $time := .Get "time" }}
 {{ $colorKey := substr (sha256 $from) 0 1 }}
-<div class="chat-line">
-  {{ if $time }}<span class="chat-timestamp">[{{ $time }}]</span>{{ end }}
-  <span class="chat-user chat-color-{{ $colorKey }}">&lt;{{ $from }}&gt;</span>
-  <span class="chat-message">{{ .Inner | markdownify }}</span>
+{{ $colors := dict
+  "0" "#ef5350" "1" "#ec407a" "2" "#ab47bc" "3" "#7e57c2"
+  "4" "#5c6bc0" "5" "#42a5f5" "6" "#29b6f6" "7" "#26c6da"
+  "8" "#26a69a" "9" "#66bb6a" "a" "#9ccc65" "b" "#d4e157"
+  "c" "#ffee58" "d" "#ffca28" "e" "#ffa726" "f" "#ff7043"
+}}
+{{ $userColor := index $colors $colorKey }}
+<div class="chat-line" style="display: flex; flex-direction: row; align-items: baseline; margin-bottom: 2px; width: 100%;">
+  {{ if $time }}<span class="chat-timestamp" style="color: #777; margin-right: 8px; user-select: none; font-size: 0.85em; flex-shrink: 0; white-space: nowrap;">[{{ $time }}]</span>{{ end }}
+  <span class="chat-user chat-color-{{ $colorKey }}" style="font-weight: bold; flex-shrink: 0; white-space: nowrap; margin-right: 8px; color: {{ $userColor }};">&lt;{{ $from }}&gt;</span>
+  <span class="chat-message" style="flex-grow: 1; word-break: break-word; display: block;">{{ .Inner | markdownify }}</span>
 </div>

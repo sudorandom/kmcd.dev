@@ -1,5 +1,5 @@
 {{ $time := .Get "time" }}
-<div class="chat-line">
-  {{ if $time }}<span class="chat-timestamp">[{{ $time }}]</span>{{ end }}
-  <span class="chat-server">*** {{ .Inner | markdownify }}</span>
+<div class="chat-line" style="display: flex; flex-direction: row; align-items: baseline; margin-bottom: 2px; width: 100%;">
+  {{ if $time }}<span class="chat-timestamp" style="color: #777; margin-right: 8px; user-select: none; font-size: 0.85em; flex-shrink: 0; white-space: nowrap;">[{{ $time }}]</span>{{ end }}
+  <span class="chat-server" style="color: #4caf50; font-weight: bold; flex-grow: 1;">*** {{ .Inner | markdownify }}</span>
 </div>
