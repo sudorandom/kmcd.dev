@@ -21,6 +21,12 @@ For the 2026 edition of the map, I didn’t just want to show where the cables a
 
 You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
+{{< diagram >}}
+<a href="https://map.kmcd.dev" target="_blank">
+{{< image src="screenshot.png" alt="Map of the Internet" >}}
+</a>
+{{< /diagram >}}
+
 ---
 
 ### How the Internet Routes Traffic
@@ -29,11 +35,68 @@ Previous versions of the map focused on the physical infrastructure—the cables
 
 BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that holds the internet together. For a deeper dive, [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
 
-When you load a webpage, your request doesn't just "know" the path. Your ISP’s routers consult the global BGP routing table to decide the best next hop.
+When you load a webpage, your request doesn't just "know" the path. Your ISP’s routers consult the global BGP routing table to decide the best next hop. Visualized, it looks a little bit like this:
+
+{{< d2 >}}
+direction: right
+
+# Styles
+classes: {
+  bgp_peer: {
+    shape: rectangle
+    style: {border-radius: 5}
+  }
+}
+
+# The Observer
+Observer: Router {
+  shape: cylinder
+}
+
+# The Destination
+Destination: Google\nAS15169\n(8.8.8.0/24) {
+  shape: cloud
+}
+
+# --- Extracting Paths from your Log ---
+
+# Path: 8283 15169 (Best)
+AS8283: Netstream\nAS8283 {class: bgp_peer; style: {stroke: "#2ecc71"; stroke-width: 2}}
+Observer -> AS8283: "Best >"
+AS8283 -> Destination
+
+# Path: 7018 15169 (AT&T)
+AS7018: AT&T\nAS7018 {class: bgp_peer}
+Observer -> AS7018
+AS7018 -> Destination
+
+# Path: 20130 6939 15169 (Via Hurricane Electric)
+AS20130: AS20130 {class: bgp_peer}
+HE: Hurricane Electric\nAS6939
+Observer -> AS20130
+AS20130 -> HE
+HE -> Destination
+
+# Path: 3333 1257 15169 (RIPE -> Tele2 -> Google)
+AS3333: RIPE NCC\nAS3333 {class: bgp_peer}
+Tele2: Tele2\nAS1257
+Observer -> AS3333
+AS3333 -> Tele2
+Tele2 -> Destination
+
+# Path: 49788 12552 15169
+AS49788: AS49788 {class: bgp_peer}
+AS12552: AS12552
+Observer -> AS49788
+AS49788 -> AS12552
+AS12552 -> Destination
+{{< /d2 >}}
+
+These routes are critical for the internet to function, but they also change very often.
 
 #### Measuring Logical Dominance
 
-In the 2026 edition of the map, I've used BGP data to estimate the "Logical Dominance" of cities: essentially, how many IP addresses are "homed" in a particular location. It represents the percentage of the global routing table originated by networks operating in that city.
+In the 2026 edition of the map, I've used BGP data to estimate the "Logical Dominance" of cities: essentially, how many IP addresses are "homed" in a particular location. My goal was to represent the percentage of the global routing table originated by networks operating in each city.
 
 I have a series of scripts that reconstructs the internet's "logical map" for every year between 2010 and 2026. This allows the map to visualize not just where the cables land, but where the *logical* weight of the internet resides based on real historical data.
 
