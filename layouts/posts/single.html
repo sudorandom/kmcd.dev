@@ -10,8 +10,12 @@
         {{- if eq .MediaType.SubType "svg" -}}
           {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
         {{- else -}}
-          {{- $cover = $cover.Fill "960x420 Center webp q100" -}}
-          {{- $minHeight = $cover.Height -}}
+          {{- if eq .MediaType.SubType "png" -}}
+             {{- $cover = $cover.Fill "2560x1080 Center png" -}}
+          {{- else -}}
+             {{- $cover = $cover.Fill "2560x1080 Center webp q100" -}}
+          {{- end -}}
+          {{- $minHeight = "250" -}}
           {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
         {{- end -}}
         style="background-image: url('{{ $cover.RelPermalink }}'); min-height: {{ $minHeight }}px; background-position: center; {{ $additionalStyles | safeCSS }}"

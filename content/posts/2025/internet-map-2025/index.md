@@ -7,7 +7,6 @@ date: "2025-06-16"
 description: "An all-new interactive map of the Internet, showing the evolution of undersea cables and internet exchanges with year-by-year animation and detailed statistics."
 cover: "cover.png"
 images: ["posts/internet-map-2025/cover.png"]
-featured: true
 featuredalt: "A screenshot of the new interactive internet map, showing undersea cables and peering cities across Europe."
 featuredpath: "date"
 linktitle: ""

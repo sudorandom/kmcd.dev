@@ -1,0 +1,12 @@
+Connecting to wss://ris-live.ripe.net/v1/ws/?client=kmcd-internet-map...
+Connected! Streaming global BGP updates...
+------------------------------------------------
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::b1 prefixes:[2804:70c0::/32]]] | Path: [58057 6939 22381 1031 263444 22381 270746]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::aa,fe80::8a7e:25ff:fed3:420b prefixes:[2a13:9404::/32]]] | Path: [6939 215120 34689]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::aa,fe80::470:71ff:fec5:b6ad prefixes:[2a14:7c0:1740::/48 2a10:ccc7:b110::/44]]] | Path: [196621 6939 215120 214497 6204 215120 214497]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::aa,fe80::224:38ff:fea4:a907 prefixes:[2a14:7c0:1740::/48 2a10:ccc7:b110::/44]]] | Path: [29691 6939 215120 214497 6204 215120 214497]
+[22:52:35] Prefix: [map[next_hop:91.206.52.177 prefixes:[2a10:ccc7:b110::/44 2a14:7c0:1740::/48]]] | Path: [58057 6939 215120 214497 6204 215120 214497]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::b1 prefixes:[2803:5d10::/32]]] | Path: [58057 6939 3356 28343 272053]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::aa,fe80::8a7e:25ff:fed3:420b prefixes:[2a14:7c0:1740::/48 2a10:ccc7:b110::/44]]] | Path: [6939 215120 214497]
+[22:52:35] Prefix: [map[next_hop:2001:7f8:24::aa,fe80::470:71ff:fec5:b6ad prefixes:[2a13:9404::/32]]] | Path: [196621 6939 215120 34689]
+2026/02/09 22:52:35 read: websocket: close 1000 (normal)
