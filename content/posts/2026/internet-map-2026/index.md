@@ -199,7 +199,7 @@ One of the most requested features for the map has been a way to export the curr
 
 Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Also, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
 
-Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail.
+Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All of the images above used this export!
 
 ### The Data
 
