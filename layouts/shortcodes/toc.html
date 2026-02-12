@@ -1,4 +1,8 @@
-<aside>
-    <h4>Table of Contents</h4>
-    {{ .Page.TableOfContents }}
-</aside>
+<details>
+    <summary>
+        {{ "**Table of Contents**" | markdownify }} (click to expand)
+    </summary>
+    <aside>
+        {{ .Page.TableOfContents }}
+    </aside>
+</details>

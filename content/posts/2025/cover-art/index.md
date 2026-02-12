@@ -47,11 +47,9 @@ func drawStar(dc *gg.Context, points, centerX, centerY, outerRadius float64) {
 
 The output is a chaotic but structured smattering of shapes and lines.
 
-{{< figure src="process-before.png" width="700px" >}}
-
 To transform this into something with more visual interest, I turned to `primitive`. This library attempts to recreate the input image using a limited number of geometric shapes. It smooths out the chaos, turning the harsh lines into a stylized, abstract vector piece.
 
-{{< figure src="process-after.svg" width="700px" >}}
+{{< compare before="process-before.png" after="process-after.svg" caption="Before and after applying the `primitive` transformation." >}}
 
 It's also worth noting that the resulting images from `primitive` are SVGs. Because they're vector-based, they are often much smaller than their raster counterparts (PNG, JPG) and scale perfectly to any size. This means they look crisp on everything from a mobile phone to a 4K monitor without increasing the file size.
 

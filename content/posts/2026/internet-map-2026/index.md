@@ -5,8 +5,8 @@ keywords: ["interactive internet map", "live internet map", "internet infrastruc
 series: ["Internet Map"]
 date: "2026-03-12T10:00:00Z"
 description: "Mapping global internet infrastructure and routing dominance over time"
-cover: "cover.png"
-images: ["posts/internet-map-2026/cover.png"]
+cover: "cover.svg"
+images: ["posts/internet-map-2026/cover.svg"]
 featured: true
 linktitle: ""
 title: "Visualizing the Internet (2026)"
@@ -23,7 +23,7 @@ You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 {{< diagram >}}
 <a href="https://map.kmcd.dev" target="_blank">
-{{< image src="screenshot.png" alt="Map of the Internet" >}}
+{{< image src="map.svg" alt="Map of the Internet" >}}
 </a>
 {{< /diagram >}}
 
@@ -180,13 +180,16 @@ When I layered IP dominance onto the physical map, many additional cities became
 
 In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, additional cities began to “light up.” These are places with substantial address space and large originating networks, even if they do not host a major public exchange.
 
-{{< figure src="usa.png" link="usa.png" alt="United States" attrlink="usa.png" description="United States on the map.">}}
+{{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after)." >}}
 
 The physical meeting points of networks only tell us a part of the story of Internet infrastructure. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant logical weight without being major public peering hubs. The IP dominance layer exposes that distinction.
 
+{{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after)." >}}
+
 This effect, however, was not uniform. One of the most striking and baffling patterns on the map is just how much China is under-represented compared to its actual internet footprint.
 
-{{< figure src="china.png" link="china.png" alt="China" attrlink="china.png" description="China on the map." caption="Note that Hong Kong is the city with the large peering presence, not mainland China.">}}
+{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after). Note that Hong Kong is the city with the large peering presence, not mainland China." >}}
+
 
 The Chinese internet is giant: it has massive cable landings, dense domestic fiber networks, and a scale of internal activity that rivals any other region. Yet, when you switch to the logical layer, much of that presence simply vanishes. It is as if a massive portion of the internet has chosen to stay in the shadows. This blackout is likely due to the Great Firewall's peering restrictions, creating a localized intranet that barely touches the public BGP table. So from the perspective of the global routing firehose, parts of the country appear remarkably dark.
 

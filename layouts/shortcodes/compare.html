@@ -1,0 +1,55 @@
+{{ $before_src := .Get "before" }}
+{{ $after_src := .Get "after" }}
+{{ $caption := .Get "caption" }}
+{{ $class := .Get "class" }}
+
+{{ $before_original := .Page.Resources.GetMatch $before_src }}
+{{ $after_original := .Page.Resources.GetMatch $after_src }}
+
+{{ $before_image := "" }}
+{{ $after_image := "" }}
+
+{{ if $before_original }}
+    {{ if eq $before_original.MediaType.SubType "svg" }}
+        {{ $before_image = $before_original }}
+    {{ else }}
+        {{ $before_image = $before_original.Resize "1200x" }}
+    {{ end }}
+{{ end }}
+
+{{ if $after_original }}
+    {{ if eq $after_original.MediaType.SubType "svg" }}
+        {{ $after_image = $after_original }}
+    {{ else }}
+        {{ $after_image = $after_original.Resize "1200x" }}
+    {{ end }}
+{{ end }}
+
+{{ $before_final := "" }}
+{{ if $before_image }}
+    {{ $before_final = $before_image.Permalink }}
+{{ else }}
+    {{ $before_final = $before_src | relURL }}
+{{ end }}
+
+{{ $after_final := "" }}
+{{ if $after_image }}
+    {{ $after_final = $after_image.Permalink }}
+{{ else }}
+    {{ $after_final = $after_src | relURL }}
+{{ end }}
+
+<figure class="compare-container {{ $class }}">
+    <div class="compare-wrapper">
+        <div class="compare-after">
+            <img src="{{ $after_final }}" alt="After">
+        </div>
+        <div class="compare-before">
+            <img src="{{ $before_final }}" alt="Before">
+        </div>
+        <input type="range" class="compare-slider" min="0" max="100" value="50" autocomplete="off" aria-label="Percentage of before image shown">
+    </div>
+    {{ with $caption }}
+    <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
+</figure>

@@ -1,0 +1,55 @@
+{{ $before_src := .Get "before" }}
+{{ $after_src := .Get "after" }}
+{{ $caption := .Get "caption" }}
+
+{{ $before_original := .Page.Resources.GetMatch $before_src }}
+{{ $after_original := .Page.Resources.GetMatch $after_src }}
+
+{{ $before_image := "" }}
+{{ $after_image := "" }}
+
+{{ if $before_original }}
+    {{ if eq $before_original.MediaType.SubType "svg" }}
+        {{ $before_image = $before_original }}
+    {{ else }}
+        {{ $before_image = $before_original.Resize "1200x" }}
+    {{ end }}
+{{ end }}
+
+{{ if $after_original }}
+    {{ if eq $after_original.MediaType.SubType "svg" }}
+        {{ $after_image = $after_original }}
+    {{ else }}
+        {{ $after_image = $after_original.Resize "1200x" }}
+    {{ end }}
+{{ end }}
+
+{{ $before_final := "" }}
+{{ if $before_image }}
+    {{ $before_final = $before_image.Permalink }}
+{{ else }}
+    {{ $before_final = $before_src | relURL }}
+{{ end }}
+
+{{ $after_final := "" }}
+{{ if $after_image }}
+    {{ $after_final = $after_image.Permalink }}
+{{ else }}
+    {{ $after_final = $after_src | relURL }}
+{{ end }}
+
+<figure>
+    <div style="display: flex; gap: 10px;">
+        <div style="flex: 1;">
+            <p><strong>Before:</strong></p>
+            <img src="{{ $before_final }}" alt="Before" style="max-width: 100%; height: auto;">
+        </div>
+        <div style="flex: 1;">
+            <p><strong>After:</strong></p>
+            <img src="{{ $after_final }}" alt="After" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+    {{ with $caption }}
+    <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
+</figure>

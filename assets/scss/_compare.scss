@@ -1,0 +1,112 @@
+.compare-container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  user-select: none;
+
+  .compare-wrapper {
+    position: relative;
+    line-height: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .compare-after {
+    width: 100%;
+    display: block;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .compare-before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+    border-right: 2px solid white;
+    
+    img {
+      height: 100%;
+      width: auto;
+      max-width: none;
+      display: block;
+    }
+  }
+
+  .compare-slider {
+    position: absolute;
+    -webkit-appearance: none;
+    appearance: none;
+    width: calc(100% + 40px);
+    height: 100%;
+    background: transparent;
+    outline: none;
+    margin: 0;
+    top: 0;
+    left: -20px;
+    z-index: 3;
+    cursor: ew-resize;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border: 2px solid #333;
+      border-radius: 50%;
+      cursor: ew-resize;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 8 3 12 7 16'%3E%3C/polyline%3E%3Cpolyline points='17 8 21 12 17 16'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    &::-moz-range-thumb {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border: 2px solid #333;
+      border-radius: 50%;
+      cursor: ew-resize;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 8 3 12 7 16'%3E%3C/polyline%3E%3Cpolyline points='17 8 21 12 17 16'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  figcaption {
+    line-height: 1.5;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+}
+
+[data-theme=dark] {
+  .compare-container {
+    .compare-before {
+      border-right-color: #a2a2dd;
+    }
+    .compare-slider {
+        &::-webkit-slider-thumb {
+            background-color: #3b5065;
+            border-color: #a2a2dd;
+            color: white;
+        }
+        &::-moz-range-thumb {
+            background-color: #3b5065;
+            border-color: #a2a2dd;
+            color: white;
+        }
+    }
+    figcaption {
+      color: #ccc;
+    }
+  }
+}

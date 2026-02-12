@@ -1,4 +1,5 @@
 <figure{{ with .Get "class" }} class="md__image {{ . }}"{{ end }}>
+    {{- $src := .Get "src" -}}
     {{- if .Get "link" -}}
         <a href="{{ .Page.Permalink }}{{ .Get "link" }}"
             {{ with .Get "target" }} target="{{ . }}"{{ end }}
@@ -15,22 +16,26 @@
             data-autofit="true"
             data-fit="cover">
     {{- else -}}
-        <a href="{{ .Page.Permalink }}{{ .Get "src" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
+        <a href="{{ .Page.Permalink }}{{ $src }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }} class="spotlight" data-download="true">
     {{- end -}}
 
-    {{ $original := .Page.Resources.GetMatch (.Get "src") }}
+    {{ $original := .Page.Resources.GetMatch $src }}
     {{ $image := "" }}
-    {{ if eq $original.MediaType.SubType "svg" }}
-        {{ $image = $original }}
-    {{ else }}
-        {{ $resizeString := "" }}
-        {{ with .Get "width" }}
-            {{ $cleanedWidth := replace . "px" "" }}
-            {{ $resizeString = printf "%sx" $cleanedWidth }}
+    {{ $isSVG := hasSuffix $src ".svg" }}
+    {{ if $original }}
+        {{ if eq $original.MediaType.SubType "svg" }}
+            {{ $image = $original }}
+            {{ $isSVG = true }}
         {{ else }}
-            {{ $resizeString = "1200x" }}
+            {{ $resizeString := "" }}
+            {{ with .Get "width" }}
+                {{ $cleanedWidth := replace . "px" "" }}
+                {{ $resizeString = printf "%sx" $cleanedWidth }}
+            {{ else }}
+                {{ $resizeString = "1200x" }}
+            {{ end }}
+            {{ $image = $original.Resize $resizeString }}
         {{ end }}
-        {{ $image = $original.Resize $resizeString }}
     {{ end }}
 
     {{ $imgWidth := 0 }}
@@ -38,10 +43,19 @@
     {{ with .Get "width" }}
         {{ $cleanedWidth := replace . "px" "" | int }}
         {{ $imgWidth = $cleanedWidth }}
-        {{ $imgHeight = div (mul $imgWidth 630) 1200 }}
+        {{ if not $isSVG }}
+            {{ $imgHeight = div (mul $imgWidth 630) 1200 }}
+        {{ end }}
     {{ end }}
 
-    <img src="{{ $image.Permalink }}"
+    {{ $finalSrc := "" }}
+    {{ if $image }}
+        {{ $finalSrc = $image.Permalink }}
+    {{ else }}
+        {{ $finalSrc = $src | relURL }}
+    {{ end }}
+
+    <img src="{{ $finalSrc }}"
          {{- if or (.Get "alt") (.Get "caption") }}
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
          {{- end -}}
