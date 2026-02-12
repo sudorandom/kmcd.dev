@@ -1,0 +1,128 @@
+.terminal-session {
+  font-family: 'Fira Code', Consolas, Monaco, 'Ubuntu Mono', monospace;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  border: 1px solid #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  [data-theme=light] & {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.terminal-line {
+  display: block;
+  white-space: pre !important;
+
+  p {
+    margin: 0;
+    display: inline;
+    white-space: pre !important;
+  }
+}
+
+.terminal-thought {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 4px 20px;
+  margin: 12px auto;
+  width: fit-content;
+  color: #aaa;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: 1.4;
+
+  [data-theme=light] & {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #666;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.terminal-prompt {
+  color: #569cd6;
+  font-weight: bold;
+  user-select: none;
+  margin-right: 8px;
+
+  [data-theme=light] & {
+    color: #005cc5;
+  }
+}
+
+.terminal-user {
+  color: #4ec9b0;
+  [data-theme=light] & {
+    color: #22863a;
+  }
+}
+
+.terminal-host {
+  color: #ce9178;
+  [data-theme=light] & {
+    color: #032f62;
+  }
+}
+
+.terminal-dir {
+  color: #dcdcaa;
+  [data-theme=light] & {
+    color: #e36209;
+  }
+}
+
+.terminal-command {
+  color: #d4d4d4;
+  [data-theme=light] & {
+    color: #333;
+  }
+}
+
+.terminal-output {
+  color: #cccccc;
+  [data-theme=light] & {
+    color: #666;
+  }
+}
+
+/* Terminal Colors */
+.t-black   { color: #000000; }
+.t-red     { color: #cd3131; }
+.t-green   { color: #0dbc79; }
+.t-yellow  { color: #e5e510; }
+.t-blue    { color: #2472c8; }
+.t-magenta { color: #bc3fbc; }
+.t-cyan    { color: #11a8cd; }
+.t-white   { color: #e5e5e5; }
+
+.t-bright-black   { color: #666666; }
+.t-bright-red     { color: #f14c4c; }
+.t-bright-green   { color: #23d18b; }
+.t-bright-yellow  { color: #f5f543; }
+.t-bright-blue    { color: #3b8eea; }
+.t-bright-magenta { color: #d670d6; }
+.t-bright-cyan    { color: #29b8db; }
+.t-bright-white   { color: #e5e5e5; }
+
+[data-theme=light] {
+  .t-black   { color: #000000; }
+  .t-red     { color: #a31515; }
+  .t-green   { color: #008000; }
+  .t-yellow  { color: #795e26; }
+  .t-blue    { color: #0000ff; }
+  .t-magenta { color: #af00db; }
+  .t-cyan    { color: #005f73; }
+  .t-white   { color: #555555; }
+}

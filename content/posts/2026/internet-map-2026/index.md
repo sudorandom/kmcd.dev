@@ -1,6 +1,6 @@
 ---
 categories: ["article", "project", "dataviz"]
-tags: ["dataviz", "internet-map", "internet", "networking", "fiber-optics", "map", "world", "infrastructure", "peeringdb", "leaflet", "javascript"]
+tags: ["dataviz", "internet-map", "internet", "networking", "bgp", "fiber-optics", "map", "world", "infrastructure", "peeringdb", "leaflet", "javascript"]
 keywords: ["interactive internet map", "live internet map", "internet infrastructure map", "internet visualized", "global internet map", "internet exchange map", "internet exchange point map", "internet map of the world", "ixp map", "internet node map", "internet hub locations", "submarine cable map"]
 series: ["Internet Map"]
 date: "2026-03-12T10:00:00Z"
