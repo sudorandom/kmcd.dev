@@ -196,16 +196,13 @@ The Chinese internet is giant: it has massive cable landings, dense domestic fib
 
 ### The Data
 
-One of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and various archival sources for historical data.
+One of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and historical data is curated from various sources including **submarinenetworks.com** and archived maps.
 
 You can access these directly to build your own visualizations or analyze the growth of global bandwidth.
 
-- [`all_cables.json`](https://map.kmcd.dev/data/all_cables.json): **The Core Map Data.** A GeoJSON FeatureCollection containing all submarine cables. Each feature includes properties like `name`, `rfs_year` (Ready for Service), `decommission_year`, `owners`, and `landing_points`. This follows the standard [GeoJSON format](https://geojson.org/). You can drop this file directly into tools like QGIS, Mapbox Studio, or Google Earth to visualize the cable paths immediately.
-- [`perYearCableStats.json`](https://map.kmcd.dev/data/perYearCableStats.json): Aggregated statistics for cables by year, including total count, total length added, and the longest cables deployed in that specific year.
-- [`perYearCityData.json`](https://map.kmcd.dev/data/perYearCityData.json): Data for each city by year, tracking total peering capacity and added capacity. This drives the varying sizes of the city circles on the map.
-- [`yearlyTopCities.json`](https://map.kmcd.dev/data/yearlyTopCities.json): A leaderboard listing the top 5 cities by peering capacity for every year in the dataset.
-- [`perYearRegionStats.json`](https://map.kmcd.dev/data/perYearRegionStats.json): Regional aggregation of peering capacity statistics, useful for seeing how connectivity shifted from North America/Europe to Asia and Africa over time.
-- [`year-summaries.json`](https://map.kmcd.dev/data/year-summaries.json): Brief textual descriptions of notable events or milestones for specific years (e.g., the dot-com boom, the 2008 cable cuts), displayed in the map's footer.
-- [`city-dominance/{year}.json`](https://map.kmcd.dev/data/city-dominance/2026.json): Detailed per-city breakdown for a specific year, including total IP dominance, physical cable capacity, and the top 10 most influential ASNs.
+- [`all_cables.json`](https://map.kmcd.dev/data/all_cables.json): **The Core Map Data.** A GeoJSON FeatureCollection containing all submarine cables. Each feature includes properties like `name`, `rfs_year` (Ready for Service), `decommission_year`, `owners`, and `landing_points`. This follows the standard [GeoJSON format](https://geojson.org/).
+- [`year-summaries.json`](https://map.kmcd.dev/data/year-summaries.json): Brief textual descriptions of notable events or milestones for specific years, displayed in the footer.
+- [`city-dominance/{year}.json`](https://map.kmcd.dev/data/city-dominance/2026.json): Per-year JSON files (e.g., 2026.json) with detailed city-level peering capacity, regional information, and coordinates. Used for rendering city markers and calculating regional statistics.
+- [`meta.json`](https://map.kmcd.dev/data/meta.json): Metadata including the minimum and maximum years covered by the visualization.
 
 **[Explore the Map »](https://map.kmcd.dev)**
