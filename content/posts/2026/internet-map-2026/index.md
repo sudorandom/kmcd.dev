@@ -193,9 +193,17 @@ This effect, however, was not uniform. One of the most striking and baffling pat
 
 The Chinese internet is giant: it has massive cable landings, dense domestic fiber networks, and a scale of internal activity that rivals any other region. Yet, when you switch to the logical layer, much of that presence simply vanishes. It is as if a massive portion of the internet has chosen to stay in the shadows. This blackout is likely due to the Great Firewall's peering restrictions, creating a localized intranet that barely touches the public BGP table. So from the perspective of the global routing firehose, parts of the country appear remarkably dark.
 
+### Better Exports
+
+One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.
+
+Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Also, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
+
+Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail.
+
 ### The Data
 
-One of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and historical data is curated from various sources including **submarinenetworks.com** and archived maps.
+Another one of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and historical data is curated from various sources including **submarinenetworks.com** and archived maps.
 
 You can access these directly to build your own visualizations, analyze the growth of global bandwidth, or double check my numbers.
 
