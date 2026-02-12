@@ -106,7 +106,7 @@ To visualize this layer, we need access to routing tables. There are essentially
 
 #### Actually be a Router
 
-The most direct method is to operate a router capable of speaking BGP and convince an ISP or network to "peer" with you. This involves setting up a BGP daemon (like BIRD or GoBGP), listening on TCP port 179, and handling the complex binary protocol. This requires significant trust, configuration, and usually your own Autonomous System Number (ASN). We aren't doing this today. That requires trust, coordination, and your own ASN, things I don't have.
+The most direct method is to operate a router capable of speaking BGP and convince an ISP or network to "peer" with you. This involves setting up a BGP daemon (like BIRD or GoBGP), listening on TCP port 179, and handling the complex binary protocol. This requires significant trust, configuration, and usually your own Autonomous System Number (ASN). We aren't doing this today. I'm not [Jared Mauch](https://arstechnica.com/tech-policy/2022/08/man-who-built-isp-instead-of-paying-comcast-50k-expands-to-hundreds-of-homes/).
 
 #### Query a Looking Glass
 
