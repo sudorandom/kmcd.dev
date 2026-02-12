@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["protobuf", "grpc", "testing"]
-date: "2026-03-12"
+date: "2026-03-26T10:00:00Z"
 description: "Stop hand-writing test fixtures"
 cover: "cover.svg"
 images: ["/posts/faking-protobuf-data-in-go/cover.svg"]
