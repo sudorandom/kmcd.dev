@@ -21,6 +21,8 @@ For the 2026 edition, I wanted to answer a harder question: where does the inter
 
 The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space (weighted by prefix length) originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 is still extremely relevant to the Internet, even in 2026.
 
+In short: this shows which cities control the largest share of the internet’s reachable address space.
+
 You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 {{< diagram >}}
@@ -154,12 +156,24 @@ I even had to add some safety checks to prevent "IP swallowing." For instance, t
 To handle any address space that remains unattributed, I duplicate those IPs across every city where the network maintains a physical peering presence. Even if a network doesn't announce every prefix from every point due to paid transit or internal long-haul links, this approach ensures that major connectivity hubs are credited for the logical weight they represent in the routing topology.
 
 So... to recap, the data sources used for the 2026 map include:
-*   **Infrastructure:** TeleGeography, submarinenetworks.com, and historical archive maps.
-*   **Peering:** PeeringDB.
-*   **BGP Routing:** University of Oregon Route Views, RIPE RIS, and CAIDA BGP Stream.
-*   **IP Attribution:** RFC 8805 Geofeeds, AWS/Google Cloud IP ranges, BGP Communities, APNIC WHOIS database and historical RIR delegation statistics
+- **Infrastructure:** TeleGeography, submarinenetworks.com, and historical archive maps.
+- **Peering:** PeeringDB.
+- **BGP Routing:** University of Oregon Route Views historical RIB archives.
+- **IP Attribution:** RFC 8805 Geofeeds, AWS/Google Cloud IP ranges, BGP Communities, APNIC WHOIS database and historical RIR delegation statistics.
 
-Okay, IP attribution got to be pretty complex. Next, let's see what came from this effort.
+When making this pipeline, I've had many engineering challenges, but here are the ones worth mentioning:
+
+##### The Local Cache**
+
+Downloading 15 years of archives is slow. I threw together a quick file-based cache to avoid hitting the network repeatedly. It was the simplest code I wrote but easily the most valuable, turning 30-minute download waits into near-instant local reads.
+
+##### RAM remains stubbornly finite
+
+Loading millions of IP prefixes, whois records, PeeringDB entries and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out of memory errors I built a custom **on-disk Trie data structure** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
+
+##### From Spaghetti to Pipeline
+
+While investigating all of these different datasources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was definitely enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable.
 
 #### What Changed When IP Dominance Was Added
 
