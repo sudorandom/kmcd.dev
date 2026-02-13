@@ -145,7 +145,7 @@ For this edition, I processed over 15 years of BGP snapshots and PeeringDB archi
 
 #### Finding the Truth in the Noise
 
-Mapping a BGP prefix to a specific city is notoriously difficult. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution was a "Hierarchy of Truth"—a prioritized engine that attributes prefixes based on the best available data.
+Mapping a BGP prefix to a specific city is notoriously difficult. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution uses prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
 
 I start with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those aren't available, I look for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
 
