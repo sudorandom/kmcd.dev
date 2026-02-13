@@ -1,0 +1,11 @@
+{{ $color := .Get 0 }}
+{{ $hex := "#d4d4d4" }}
+{{ if eq $color "black" }}{{ $hex = "#000000" }}{{ end }}
+{{ if eq $color "red" }}{{ $hex = "#cd3131" }}{{ end }}
+{{ if eq $color "green" }}{{ $hex = "#0dbc79" }}{{ end }}
+{{ if eq $color "yellow" }}{{ $hex = "#e5e510" }}{{ end }}
+{{ if eq $color "blue" }}{{ $hex = "#2472c8" }}{{ end }}
+{{ if eq $color "magenta" }}{{ $hex = "#bc3fbc" }}{{ end }}
+{{ if eq $color "cyan" }}{{ $hex = "#11a8cd" }}{{ end }}
+{{ if eq $color "white" }}{{ $hex = "#e5e5e5" }}{{ end }}
+<span style="color: {{ $hex }};">{{ .Inner | safeHTML }}</span>

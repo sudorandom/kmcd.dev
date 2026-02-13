@@ -1,0 +1,154 @@
+$ telnet route-views.routeviews.org 23
+**********************************************************************
+
+                    RouteViews BGP Route Viewer
+                    route-views.routeviews.org
+
+ RouteViews data is archived on https://archive.routeviews.org
+
+ This hardware is part of a grant by the NSF.
+
+ Please contact help@routeviews.org if you have questions, or
+ if you wish to contribute your view.
+
+ This router has views of full routing tables from several ASes.
+
+ The current list of all RouteViews peers is at
+   https://www.routeviews.org/peers/peering-status.html
+
+ NOTE: If you are using macOS and seeing the error message
+ "no default Kerberos realm" when logging in, you may want to
+ add "default unset autologin" to your ~/.telnetrc
+
+ To login, use the username "rviews".
+
+**********************************************************************
+
+
+User Access Verification
+
+Username: rviews
+route-views>show ip bgp 8.8.8.8
+BGP routing table entry for 8.8.8.0/24, version 941738530
+Paths: (16 available, best #15, table default)
+  Not advertised to any peer
+  Refresh Epoch 1
+  4826 15169
+    114.31.199.16 from 114.31.199.16 (114.31.199.16)
+      Origin IGP, localpref 100, valid, external
+      Community: 4826:5203 4826:6510 4826:52032
+      path 7F168F059710 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  57866 15169
+    37.139.139.17 from 37.139.139.17 (37.139.139.17)
+      Origin IGP, metric 0, localpref 100, valid, external
+      Community: 57866:200 65102:56393 65103:1 65104:31
+      unknown transitive attribute: flag 0xE0 type 0x20 length 0x30
+        value 0000 E20A 0000 0065 0000 00C8 0000 E20A
+              0000 0066 0000 DC49 0000 E20A 0000 0067
+              0000 0001 0000 E20A 0000 0068 0000 001F
+
+      path 7F15A63304E8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  6939 15169
+    64.71.137.241 from 64.71.137.241 (216.218.253.53)
+      Origin IGP, localpref 100, valid, external
+      path 7F1555102CB8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  20130 6939 15169
+    140.192.8.16 from 140.192.8.16 (140.192.8.16)
+      Origin IGP, localpref 100, valid, external
+      path 7F1588A8BD60 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3333 1257 15169
+    193.0.0.56 from 193.0.0.56 (193.0.0.56)
+      Origin IGP, localpref 100, valid, external
+      Community: 1257:50 1257:51 1257:3528
+      path 7F16B16DD098 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  7018 15169
+    12.0.1.63 from 12.0.1.63 (12.0.1.63)
+      Origin IGP, localpref 100, valid, external
+      Community: 7018:2500 7018:37232
+      path 7F1626828FD8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  20912 15169
+    77.39.192.30 from 77.39.192.30 (77.39.192.1)
+      Origin IGP, localpref 100, valid, external
+      Community: 20912:65002 20912:65022
+      path 7F15D19801C0 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3356 15169
+    4.68.4.46 from 4.68.4.46 (4.69.184.201)
+      Origin IGP, metric 0, localpref 100, valid, external
+      Community: 3356:3 3356:86 3356:576 3356:666 3356:901 3356:2012
+      path 7F1679EB7640 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3549 3356 15169
+    208.51.134.254 from 208.51.134.254 (67.16.168.191)
+      Origin IGP, metric 0, localpref 100, valid, external
+      Community: 3356:3 3356:22 3356:86 3356:575 3356:666 3356:901 3356:2011 3549:2581 3549:30840
+      path 7F16C7D32728 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  101 15169
+    209.124.176.223 from 209.124.176.223 (209.124.176.224)
+      Origin IGP, localpref 100, valid, external
+      Community: 101:20400 101:22200 101:24100
+      path 7F1648388978 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  1351 15169
+    132.198.255.253 from 132.198.255.253 (132.198.255.253)
+      Origin IGP, localpref 100, valid, external
+      path 7F15C90D61B8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3257 15169
+    89.149.178.10 from 89.149.178.10 (213.200.83.26)
+      Origin IGP, metric 10, localpref 100, valid, external
+      Community: 3257:8052 3257:30306 3257:50001 3257:54900 3257:54901
+      path 7F154665E650 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  2497 15169
+    202.232.0.2 from 202.232.0.2 (58.138.96.254)
+      Origin IGP, localpref 100, valid, external
+      path 7F1660B0A1C8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 2
+  3303 15169
+    217.192.89.50 from 217.192.89.50 (138.187.128.158)
+      Origin IGP, localpref 100, valid, external
+      Community: 3303:1004 3303:1007 3303:3067
+      path 7F16E10C0508 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  8283 15169
+    94.142.247.3 from 94.142.247.3 (94.142.247.3)
+      Origin IGP, localpref 100, valid, external, best
+      Community: 8283:1 8283:101 8283:102
+      unknown transitive attribute: flag 0xE0 type 0x20 length 0x30
+        value 0000 205B 0000 0000 0000 0001 0000 205B
+              0000 0005 0000 0001 0000 205B 0000 0005
+              0000 0002 0000 205B 0000 0008 0000 001A
+
+      path 7F16DC0E5B28 RPKI State valid
+      rx pathid: 0, tx pathid: 0x0
+  Refresh Epoch 1
+  49788 12552 15169
+    91.218.184.60 from 91.218.184.60 (91.218.184.60)
+      Origin IGP, localpref 100, valid, external
+      Community: 12552:10000 12552:14000 12552:14100 12552:14101 12552:24000
+      Extended Community: 0x43:100:0
+      path 7F15CAD0C378 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+route-views>⏎

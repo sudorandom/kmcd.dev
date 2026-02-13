@@ -1,0 +1,1 @@
+<div style="display: block; white-space: pre-wrap; color: #cccccc; margin: 0; padding: 0;">{{- replace .Inner " " "&nbsp;" | safeHTML -}}</div>

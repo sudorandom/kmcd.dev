@@ -1,0 +1,1 @@
+<div style="display: block; white-space: pre-wrap; color: #cd3131; margin: 0; padding: 0;">{{- .Inner | safeHTML -}}</div>

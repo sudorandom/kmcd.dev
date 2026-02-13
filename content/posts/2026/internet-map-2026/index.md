@@ -17,7 +17,9 @@ canonical_url: https://kmcd.dev/posts/internet-map-2026
 
 For the past few years, I’ve been trying to make the physical reality of the internet visible with my Internet Infrastructure Map. I update the map each year, but I don’t want to just pull the latest data and call it a day.
 
-For the 2026 edition of the map, I didn’t just want to show where the cables are or where open peering exchanges are located. I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m closer to answering it. The result is a concept that I'm calling “Logical Dominance” of major cities around the world. In practical terms, Logical Dominance measures the percentage of the global routing table originated by networks in each city.
+For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m closer to answering it. 
+
+The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space (weighted by prefix length) originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 is still extremely relevant to the Internet, even in 2026.
 
 You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
@@ -31,7 +33,7 @@ You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 ### How the Internet Routes Traffic
 
-Previous versions of the map focused on the physical infrastructure: the cables and exchange points. However, the physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
+Previous versions of the map focused on physical infrastructure: cables and exchange points. However, the physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
 
 BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that holds the internet together. For a deeper dive, [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
 
@@ -92,87 +94,72 @@ AS49788 -> AS12552
 AS12552 -> Destination
 {{< /d2 >}}
 
-These routes are critical for the internet to function, but they change thousands of times per second.
-
-#### Measuring Logical Dominance
-
-In the 2026 edition of the map, I use BGP data to estimate the "Logical Dominance" of cities: essentially, how many IP addresses are "homed" in a particular location. My goal was to represent the percentage of the global routing table originated by networks operating in each city.
-
-I built a series of scripts that reconstruct the internet’s “logical map” for every year from 2010 to 2026. This allows the map to visualize not just where the cables land, but where the *logical* weight of the internet resides based on real historical data.
+These routes change thousands of times per second.
 
 #### Sources of BGP Data
 
-To visualize this layer, we need access to routing tables. There are four main ways to get this data. I explored all of them, but for historical analysis, most aren't appropriate. I'm still going to talk about them here because... well, it's interesting!
-
-#### Actually be a Router
-
-The most direct method is to operate a router capable of speaking BGP and convince an ISP or network to "peer" with you. This involves setting up a BGP daemon (like BIRD or GoBGP), listening on TCP port 179, and handling the complex binary protocol. This requires significant trust, configuration, and usually your own Autonomous System Number (ASN). We aren't doing this today. I'm not [Jared Mauch](https://arstechnica.com/tech-policy/2022/08/man-who-built-isp-instead-of-paying-comcast-50k-expands-to-hundreds-of-homes/).
+To visualize this layer, we need access to routing tables. I explored four ways to get this data, each with its own trade-offs between real-time visibility and historical context.
 
 #### Query a Looking Glass
 
-We can connect to public routers provided by research projects like the [University of Oregon Route Views](http://www.routeviews.org/). These allow you to telnet in (TCP port 23) and run standard CLI commands like `show ip bgp` to see exactly what a backbone router sees.
+We can connect to public routers via projects like [University of Oregon Route Views](http://www.routeviews.org/). These allow you to telnet in and run standard CLI commands like `show ip bgp` to see exactly what a backbone router sees. 
 
-Here is a trivial Go program that automates this interaction, logging into a Route Views server to query the path to Google's DNS (`8.8.8.8`). This code will feel extremely familiar to network engineers who did shell automation before there were APIs for these things:
-
-{{< details-md summary="view routes from routeviews.org" github_file="go/routeviews/main.go" >}}
-{{% render-code file="go/routeviews/main.go" language="go" %}}
+{{< details-md summary="BGP routes for 8.8.8.8" github_file="routeviews-log.txt" >}}
+{{% render-code file="routeviews-log.txt" language="shell" %}}
 {{< /details-md >}}
 
-Here's the resulting output:
-
-{{< details-md summary="BGP routes for 8.8.8.8" github_file="go/routeviews/output.txt" >}}
-{{% render-code file="go/routeviews/output.txt" language="shell" %}}
-{{< /details-md >}}
-
-The output tells us that every path eventually terminates at **AS [15169](https://www.peeringdb.com/asn/15169)**, Google's Autonomous System number. While many networks peer directly with Google, the routing table also shows transit paths. For example, AS [20130](https://www.peeringdb.com/asn/20130) reaches Google by sending traffic through Hurricane Electric ([6939](https://www.peeringdb.com/asn/6939)).
-
-While this is perfect for debugging today's internet, it doesn't help much for my project because it lacks historical data. As much as I might want to, I can’t telnet into 2012 to check what the routing table looked like 14 years ago.
+Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today's internet, it lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
 
 #### Subscribe to a Stream
 
-For real-time visualization, we can use **RIPE RIS Live**. Instead of polling a router, this service aggregates BGP data from collectors around the world and streams it over a public WebSocket. With this, we can watch the internet "breathe" in real-time as routes are announced and withdrawn.
+For real-time views, services like **RIPE RIS Live** aggregate BGP data from global collectors and stream it over a public WebSocket. You can watch the internet "breathe" as routes are announced and withdrawn thousands of times per second. This is fascinating for a live dashboard, but useless for backfilling history.
 
-Here is a Go program that connects to the RIS Live firehose and prints out route announcements as they propagate across the globe:
-
-{{< details-md summary="stream_bgp.go" github_file="go/stream_bgp/main.go" >}}
-{{% render-code file="go/stream_bgp/main.go" language="go" %}}
+Here's an example script consuming this stream:
+{{< details-md summary="go/stream_bgp/main.go" github_file="go/stream_bgp/main.go" >}}
+{{% render-code file="go/stream_bgp/main.go" language="shell" %}}
 {{< /details-md >}}
 
-This gives you a view of the internet's routing logic changing in real-time, often thousands of times per second.
-
-Here's example output:
-{{< details-md summary="BGP route stream" github_file="go/stream_bgp/output.txt" >}}
+The output looks like this:
+{{< details-md summary="Websocket Stream Output" github_file="go/stream_bgp/output.txt" >}}
 {{% render-code file="go/stream_bgp/output.txt" language="shell" %}}
 {{< /details-md >}}
- 
-The output above captures just one second of the global BGP firehose. Each line is a JSON-encoded `UPDATE` message that identifies the specific IP block being announced and the AS Path, which is the path that traffic must travel through to reach your final destination. The rapid-fire timestamps show the internet "breathing" in real-time as thousands of routers constantly negotiate the most efficient paths across the globe.
-
-Again, this is fascinating for a live dashboard, but useless for backfilling history.
 
 #### Download Historical Snapshots
 
-Finally, for deep analysis and building the logical dominance model (with backfilled data), I was left with the only option: downloading and processing raw **RIB (Routing Information Base)** files. These are massive snapshots of the entire routing table as seen by a backbone router at a specific moment in time.
+To build the historical model, I processed raw **RIB (Routing Information Base)** files. These are snapshots of the entire routing table as seen by a backbone router at a specific moment in time. Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the internet at any point in the past. 
 
-Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the internet at any point in the past. Several research projects maintain these archives for decades:
+I specifically fetch snapshots from February 1st at 12:00 UTC for every year in my timeline. To ensure a comprehensive view, I aggregate data from multiple global collectors maintained by the [University of Oregon Route Views](http://archive.routeviews.org/) project.
 
-*   **[University of Oregon Route Views](http://archive.routeviews.org/):** The most comprehensive archive, with MRT-formatted dumps dating back to the late 1990s from collectors globally.
-*   **[RIPE RIS (Routing Information Service)](https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris/ris-raw-data/):** Provides high-fidelity snapshots from a dense network of collectors, primarily in Europe and the Middle East.
-*   **[CAIDA BGP Stream](https://bgpstream.caida.org/):** A framework for analyzing both real-time and historical BGP data from various sources.
+Other excellent resources for this kind of data include:
+
+*   **[RIPE RIS (Routing Information Service)](https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris/ris-raw-data/):** Provides high-fidelity snapshots from a dense network of collectors, primarily in Europe.
+*   **[CAIDA BGP Stream](https://bgpstream.caida.org/):** A framework for analyzing both real-time and historical data from various sources.
 
 ---
 
-### Showing BGP on the map
-For this map, I processed over 15 years of these snapshots to build the logical dominance model.
+### Showing BGP on the Map
 
-Reconstructing the historical "logical" map was the hardest part of the project. I wanted to push the timeline back further, but reliable archival data for physical peering effectively vanishes before 2010.
+For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the logical dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
 
-Even covering the last 15 years required building a translation layer to handle massive schema drift in the PeeringDB archives. My scripts normalize three distinct eras of data formats to get a consistent timeline:
+#### Finding the Truth in the Noise
 
-- **2018–2026** (JSON): The modern standard.
-- **2016–2018** (SQLite v2): A transitional format.
-- **2010–2016** (SQLite v1): The "Legacy" era. This was the most difficult to process, as it used a completely different schema (e.g., peerParticipants) that had to be manually mapped to modern concepts.
+Mapping a BGP prefix to a specific city is notoriously difficult. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution was a "Hierarchy of Truth"—a prioritized engine that attributes prefixes based on the best available data.
 
-By combining the peering data with the BGP routing tables from Route Views, the map can finally calculate "Logical Dominance" for the last 15 years.
+I start with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those aren't available, I look for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
+
+When those fail, I look at the network itself. I can map IPs to the city of the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. My final fallback is a year-aware **WHOIS** ingestion. This tool now automatically switches data sources based on the year. For historical snapshots, it uses RIR delegation statistics appropriate to that year. For current data, it parses the full [APNIC database](https://www.apnic.net/manage-ip/using-whois/) for high-resolution city mapping.
+
+I even had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for AU. I also learned to automatically downgrade any match with a mask length < 16 to a country-level attribution to avoid the "headquarters bias" common in registration data.
+
+To handle any address space that remains unattributed, I duplicate those IPs across every city where the network maintains a physical peering presence. Even if a network doesn't announce every prefix from every point due to paid transit or internal long-haul links, this approach ensures that major connectivity hubs are credited for the logical weight they represent in the routing topology.
+
+So... to recap, the data sources used for the 2026 map include:
+*   **Infrastructure:** TeleGeography, submarinenetworks.com, and historical archive maps.
+*   **Peering:** PeeringDB.
+*   **BGP Routing:** University of Oregon Route Views, RIPE RIS, and CAIDA BGP Stream.
+*   **IP Attribution:** RFC 8805 Geofeeds, AWS/Google Cloud IP ranges, BGP Communities, APNIC WHOIS database and historical RIR delegation statistics
+
+Okay, IP attribution got to be pretty complex. Next, let's see what came from this effort.
 
 #### What Changed When IP Dominance Was Added
 
@@ -182,16 +169,17 @@ In earlier versions, visibility depended heavily on registered Internet Exchange
 
 {{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after)." >}}
 
-The physical meeting points of networks only tell us a part of the story of Internet infrastructure. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant logical weight without being major public peering hubs. The IP dominance layer exposes that distinction.
+The physical meeting points of networks only tell us a part of the story. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant weight without being major public peering hubs. The IP dominance layer exposes that distinction.
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after)." >}}
 
-This effect, however, was not uniform. One of the most striking and baffling patterns on the map is just how much China is under-represented compared to its actual internet footprint.
+This effect, however, was not uniform. One of the most striking patterns on the map is just how much China is under-represented in global routing tables relative to its actual footprint.
 
-{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after). Note that Hong Kong is the city with the large peering presence, not mainland China." >}}
+{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after). Note how the 'before' view over-attributes weight to Hong Kong, while the 'after' view distributes it to mainland hubs." >}}
 
+The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP "firehose" often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt.
 
-The Chinese internet is giant: it has massive cable landings, dense domestic fiber networks, and a scale of internal activity that rivals any other region. Yet, when you switch to the logical layer, much of that presence simply vanishes. It is as if a massive portion of the internet has chosen to stay in the shadows. This blackout is likely due to the Great Firewall's peering restrictions, creating a localized intranet that barely touches the public BGP table. So from the perspective of the global routing firehose, parts of the country appear remarkably dark.
+Initially, this caused a "flooding" effect: because I attribute IPs to the cities where they are announced, a single China Telecom node in Hong Kong would suddenly appear to "own" a staggering percentage of the global internet. To fix this, I had to implement specific logic for China-based networks. I used pattern matching to parse provincial hints and city names from the APNIC WHOIS database—mapping "CHINANET-BJ" to Beijing or "CHINANET-GD" to Guangdong—and then distributed the logical weight of these massive blocks across major domestic hubs. This prevents a few international peering points from unfairly skewing the map and provides a much more accurate (if still technically "logical") view of where that weight actually lives.
 
 ### Better Exports
 
