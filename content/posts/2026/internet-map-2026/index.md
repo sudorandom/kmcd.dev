@@ -26,9 +26,7 @@ In short: this shows which cities control the largest share of the internet’s 
 You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 {{< diagram >}}
-<a href="https://map.kmcd.dev" target="_blank">
-{{< image src="map.svg" alt="Map of the Internet" >}}
-</a>
+{{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
 {{< /diagram >}}
 
 ---
