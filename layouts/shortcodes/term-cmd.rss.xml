@@ -1,10 +1,1 @@
-<div style="display: block; white-space: pre-wrap; margin: 0; padding: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;">
-  <span style="color: #569cd6; font-weight: bold; margin-right: 8px;">
-    {{- if .Get "prompt" -}}
-      {{ .Get "prompt" }}
-    {{- else -}}
-      <span style="color: #4ec9b0;">{{ .Get "user" | default "kevin" }}</span>@<span style="color: #ce9178;">{{ .Get "host" | default "kmcd.dev" }}</span>:<span style="color: #dcdcaa;">{{ .Get "dir" | default "~" }}</span>$
-    {{- end -}}
-  </span>
-  <span style="color: #d4d4d4;">{{- .Inner | safeHTML -}}</span>
-</div>
+<span style="display: block; white-space: pre-wrap; margin: 0; padding: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;"><font color="#569cd6"><b>{{- if .Get "prompt" -}}{{ .Get "prompt" }}{{- else -}}<font color="#4ec9b0">{{ .Get "user" | default "kevin" }}</font>@<font color="#ce9178">{{ .Get "host" | default "kmcd.dev" }}</font>:<font color="#dcdcaa">{{ .Get "dir" | default "~" }}</font>${{- end -}}</b></font>&nbsp;<font color="#d4d4d4">{{- .Inner | safeHTML -}}</font></span>

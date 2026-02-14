@@ -1,3 +1,1 @@
-<div style="display: block; text-align: center; font-style: italic; background-color: #252525; border-radius: 20px; padding: 4px 20px; margin: 12px auto; width: fit-content; color: #aaa; font-size: 0.85rem; border: 1px solid #333; line-height: 1.4; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;">
-  {{- .Inner | markdownify -}}
-</div>
+<span style="display: block; text-align: center; font-style: italic; background-color: #252525; border-radius: 20px; padding: 4px 20px; margin: 12px auto; width: fit-content; color: #aaa; font-size: 0.85rem; border: 1px solid #333; line-height: 1.4; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;">{{- .Inner | markdownify -}}</span>
