@@ -216,6 +216,21 @@ figure {
     margin-top: 5px;
     opacity: 0.8;
 
+    a {
+      color: #2798aa;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    [data-theme=dark] & {
+      a {
+        color: #77e3f4;
+      }
+    }
+
     &.left {
       text-align: left;
     }

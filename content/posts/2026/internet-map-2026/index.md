@@ -19,7 +19,7 @@ For the past few years, I’ve been trying to make the physical reality of the i
 
 For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m closer to answering it. 
 
-The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space (weighted by prefix length) originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 is still extremely relevant to the Internet, even in 2026.
+The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 is still extremely relevant to the Internet, even in 2026.
 
 In short: this shows which cities control the largest share of the internet’s reachable address space.
 
@@ -28,8 +28,6 @@ You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 {{< diagram >}}
 {{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
 {{< /diagram >}}
-
----
 
 ### How the Internet Routes Traffic
 
@@ -149,7 +147,7 @@ I start with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org
 
 When those fail, I look at the network itself. I can map IPs to the city of the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. My final fallback is a year-aware **WHOIS** ingestion. This tool now automatically switches data sources based on the year. For historical snapshots, it uses RIR delegation statistics appropriate to that year. For current data, it parses the full [APNIC database](https://www.apnic.net/manage-ip/using-whois/) for high-resolution city mapping.
 
-I even had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for AU. I also learned to automatically downgrade any match with a mask length < 16 to a country-level attribution to avoid the "headquarters bias" common in registration data.
+I even had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for AU.
 
 To handle any address space that remains unattributed, I duplicate those IPs across every city where the network maintains a physical peering presence. Even if a network doesn't announce every prefix from every point due to paid transit or internal long-haul links, this approach ensures that major connectivity hubs are credited for the logical weight they represent in the routing topology.
 
@@ -161,19 +159,20 @@ So... to recap, the data sources used for the 2026 map include:
 
 When making this pipeline, I've had many engineering challenges, but here are the ones worth mentioning:
 
-##### The Local Cache**
+#### The Local Cache
 
 Downloading 15 years of archives is slow. I threw together a quick file-based cache to avoid hitting the network repeatedly. It was the simplest code I wrote but easily the most valuable, turning 30-minute download waits into near-instant local reads.
 
-##### RAM remains stubbornly finite
+#### RAM remains stubbornly finite
 
-Loading millions of IP prefixes, whois records, PeeringDB entries and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out of memory errors I built a custom **on-disk Trie data structure** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
+Loading millions of IP prefixes, WHOIS records, PeeringDB entries and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out of memory errors I built a custom **on-disk Trie data structure** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
-##### From Spaghetti to Pipeline
+#### From Spaghetti to Pipeline
 
-While investigating all of these different datasources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was definitely enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable.
+While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was definitely enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable.
 
-#### What Changed When IP Dominance Was Added
+
+### What Changed When IP Dominance Was Added
 
 When I layered IP dominance onto the physical map, many additional cities became visible.
 
@@ -193,11 +192,14 @@ The Chinese internet is giant, but it presents a unique attribution challenge. B
 
 Initially, this caused a "flooding" effect: because I attribute IPs to the cities where they are announced, a single China Telecom node in Hong Kong would suddenly appear to "own" a staggering percentage of the global internet. To fix this, I had to implement specific logic for China-based networks. I used pattern matching to parse provincial hints and city names from the APNIC WHOIS database—mapping "CHINANET-BJ" to Beijing or "CHINANET-GD" to Guangdong—and then distributed the logical weight of these massive blocks across major domestic hubs. This prevents a few international peering points from unfairly skewing the map and provides a much more accurate (if still technically "logical") view of where that weight actually lives.
 
+
 ### UX and Rendering
 
-I've made several UX improvements to how the map handles data density and rendering performance. I've grouped together close-by cities to reduce visual clutter; you can zoom in to see them split out individually. Rendering is also more efficient now, as the map will avoid rendering cities that aren't currently visible in the viewport.
+I've made several UX improvements to how the map handles data density and rendering performance. Because the BGP data introduced many more cities, the map became significantly more cluttered, especially when zoomed out. To help with this, I've grouped together close-by cities to reduce visual clutter. This grouping is dynamic so you can actually zoom in to see each city split out individually like before. This also slightly improves performance since there's fewer shapes to render.
 
-The visual size of cities on the map also now dynamically reflects their importance. Their size depends on a weighted combination of aggregate peering and IP dominance, contributing 80% and 20% to the size calculation respectively.
+I made another performance improvement by changing the map to only render cities that are visible in the viewport. When you pan over to another region the cities will pop in.
+
+The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. The reasoning behind this is that peering bandwidth is much more of a signal that there's more Internet activity than IP space being advertised.
 
 ### Better Exports
 

@@ -524,7 +524,13 @@ figure img {
 }
 
 .diagram {
-    background-color: #2e3440;
+    [data-theme=light] & {
+        background-color: #fafafa;
+        border: 1px solid #ddd;
+    }
+    [data-theme=dark] & {
+        background-color: #2e3440;
+    }
     border-radius: 8px;
     display: inline-block;
     max-width: 100%;
@@ -533,6 +539,11 @@ figure img {
 .d2-diagram-wrapper {
     [data-theme=light] & {
         margin: 4px;
+        background-color: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+    [data-theme=dark] & {
         background-color: #2e3440;
         border-radius: 8px;
     }

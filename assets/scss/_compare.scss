@@ -85,6 +85,15 @@
     text-align: center;
     font-size: 0.9rem;
     color: #666;
+
+    a {
+      color: #2798aa;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 }
 
@@ -107,6 +116,10 @@
     }
     figcaption {
       color: #ccc;
+
+      a {
+        color: #77e3f4;
+      }
     }
   }
 }

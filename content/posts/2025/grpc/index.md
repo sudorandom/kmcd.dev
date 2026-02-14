@@ -1,426 +1,163 @@
 ---
 categories: ["article"]
-tags: ["grpc", "protobuf", "api", "webdev"]
-date: "2025-05-11T10:00:00Z"
-description: "Protovalidate, HTTP/3, Head-of-Line blocking, and why strict schemas save sanity."
+tags: ["grpc", "protobuf", "connectrpc", "buf", "fauxrpc"]
+date: "2025-06-12T10:00:00Z"
+description: "Why standard gRPC hurts in the browser, and how the modern stack (Connect, Buf, FauxRPC) fixes the developer experience."
 cover: "cover.jpg"
-images: ["/posts/grpc/cover.jpg"]
+images: ["/posts/modern-grpc/cover.jpg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "A Deep Dive into gRPC and Protobuf"
-slug: "grpc"
+title: "Modern gRPC: Connect, Buf, and the End of Fragility"
+slug: "modern-grpc"
 type: "posts"
 devtoSkip: true
-canonical_url: https://kmcd.dev/posts/grpc/
+canonical_url: https://kmcd.dev/posts/modern-grpc/
 draft: true
 ---
 
 {{< toc >}}
 
-## **I. Introduction: What Fresh Hell is gRPC?**
+## **I. The gRPC Paradox: Great Tech, Terrible UX**
 
-If you've built APIs long enough, you've felt this tension:
+If you have used standard gRPC in anger, you know the cycle:
 
-- JSON is flexible… until it isn’t.
-- REST is simple… until versioning and performance get ugly.
-- Microservices are clean… until they need to talk to each other 10,000 times per second.
+1. **The Honeymoon:** You define a Protobuf schema. It feels clean. You dream of type-safe nirvana.
+2. **The Reality:** You try to call it from a browser. You realize you need `grpc-web` and an Envoy proxy sidecar just to make a `POST` request.
+3. **The Debugging:** You try to `curl` your endpoint. You can't. You download distinct CLI tools (`grpcurl`) just to see if your server is alive.
+4. **The Ops:** Your load balancer doesn't understand HTTP/2 frames.
 
-gRPC is a contract-first RPC framework built on HTTP/2 and Protocol Buffers.
+gRPC is a masterpiece of engineering, but for a long time, its Developer Experience (DX) felt like it was designed strictly for server-to-server communication inside a Google datacenter.
 
-It is not:
-- “Just faster REST”
-- “JSON but binary”
-- “Only for Google-scale systems”
-
-It *is*:
-- A schema-driven API system
-- A code generator
-- A high-performance transport layer
-- A governance mechanism for distributed systems
-
-Born from Google’s internal RPC system (Stubby) and later open-sourced under the CNCF, gRPC was designed for environments where services evolve in lockstep and performance matters.
+The industry has evolved. We have moved beyond "raw" gRPC. We are entering the era of **Schema-Driven Development** powered by tools that actually like developers.
 
 ---
 
-## **II. The Mental Model: Contract → Code → Transport**
+## **II. ConnectRPC: gRPC for the Rest of Us**
 
-Instead of starting with transport details, start with the real flow:
+The biggest friction point in gRPC has always been the transport. Standard gRPC requires HTTP/2 trailers and specific framing that browsers (and many corporate firewalls) hate.
 
-1. You define a `.proto` schema.
-2. Code is generated for clients and servers.
-3. The client calls a method like a local function.
-4. The framework serializes the message.
-5. It travels over HTTP/2.
-6. The server deserializes and executes.
-7. A response returns the same way.
+**ConnectRPC** (by the creators of Buf) changes the mental model.
 
-Under the hood:
+It allows a single server to speak three protocols simultaneously on the same port:
+1. **gRPC:** For your backend microservices.
+2. **gRPC-Web:** For legacy browser clients.
+3. **Connect:** A simple, HTTP/1.1 friendly protocol that supports JSON.
 
-```d2
-direction: right
+### **A. The "cURL-ability" Factor**
 
-Client -> GeneratedStub: Call SayHello()
-GeneratedStub -> HTTP2: Serialize + frame
-HTTP2 -> ServerTransport: Stream over connection
-ServerTransport -> GeneratedServer: Deserialize
-GeneratedServer -> Implementation: Invoke handler
-Implementation -> GeneratedServer: Return response
-GeneratedServer -> HTTP2: Serialize + trailer
-HTTP2 -> GeneratedStub: Receive stream
-GeneratedStub -> Client: Return result
-```
+With standard gRPC, you cannot use Postman or cURL without significant friction. With Connect, your gRPC handler is just a POST endpoint handling JSON.
 
-Notice what’s missing:
-- No manual routing
-- No JSON string parsing
-- No reflection-based field lookups
-
-That’s deliberate.
-
----
-
-## **III. Protocol Buffers: The Real Star**
-
-Most people think they’re adopting gRPC.
-
-They’re actually adopting **Protocol Buffers**.
-
-Protobuf is:
-- A schema language (IDL)
-- A binary wire format
-- A cross-language contract system
+**The Schema:**
 
 ```protobuf
-syntax = "proto3";
-
-package greet.v1;
-
 service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply);
 }
-
-message HelloRequest {
-  string name = 1;
-}
-
-message HelloReply {
-  string message = 1;
-}
 ```
 
-From this single file you generate:
-- Go server interfaces
-- TypeScript clients
-- Java stubs
-- Python models
-- Even OpenAPI specs
-
-One file. Multiple languages. Guaranteed alignment.
-
-That’s not serialization. That’s governance.
-
----
-
-### **A. Field Numbers and Binary Efficiency**
-
-Protobuf does not transmit field names — only numeric tags.
-
-```protobuf
-string name = 1;
-```
-
-On the wire, only `1` matters.
-
-This is why:
-
-- You must never reuse field numbers.
-- You must treat schema evolution carefully.
-- You need tooling to enforce discipline.
-
----
-
-### **B. Protovalidate: Validation Done Right**
-
-Validation used to mean writing manual checks everywhere.
-
-Now you can embed constraints directly in your schema using Protovalidate:
-
-```protobuf
-import "buf/validate/validate.proto";
-
-message CreateUserRequest {
-  string email = 1 [(buf.validate.field).string.email = true];
-  int32 age = 2 [(buf.validate.field).int32.gte = 18];
-}
-```
-
-Now:
-- Validation rules live with the contract.
-- They apply across languages.
-- You stop duplicating logic.
-
----
-
-## **IV. Tooling: The Difference Between Pain and Discipline**
-
-Using raw `protoc` directly is fragile.
-
-Modern teams use **Buf**.
-
-- `buf lint` → Enforce style consistency.
-- `buf breaking` → Detect breaking changes.
-- `buf generate` → Declarative plugin execution.
-
-If you care about API stability, `buf breaking` alone justifies the switch.
-
-### **A. The Buf Schema Registry (BSR)**
-
-Think of the BSR as "npm for Protobuf."
-
-Instead of copying `.proto` files between repositories or using fragile Git submodules, you push your schemas to a central registry.
-
-Clients can then:
-- Depend on specific versions of your API.
-- Generate code remotely without local dependencies.
-- Browse documentation that is always in sync with the schema.
-
-It turns API definitions into a managed dependency, just like any other library.
-
----
-
-## **V. The Transport Layer: HTTP/2 and Performance**
-
-gRPC runs over HTTP/2.
-
-HTTP/2 provides:
-
-- Multiplexed streams
-- Header compression
-- One TCP connection
-- Reduced handshake overhead
-
-Instead of opening multiple TCP connections, you open one and multiplex many RPC calls over it.
-
-This reduces latency and improves throughput significantly in high-volume environments.
-
----
-
-### **A. The TCP Head-of-Line Blocking Problem**
-
-HTTP/2 multiplexes streams.
-
-But they still share one TCP connection.
-
-If a packet drops:
-- The OS pauses the entire TCP connection.
-- Every stream waits.
-- Everything stalls.
-
-This is TCP-level head-of-line blocking.
-
-HTTP/3 (QUIC over UDP) fixes this by isolating streams at the transport layer.
-
-If you operate over unreliable networks, this distinction matters.
-
----
-
-## **VI. Streaming: Moving away from one request/one response
-
-Most APIs are Unary (one request, one response). gRPC supports three more patterns thanks to HTTP/2's long-lived streams:
-
-1. **Server Streaming:** Client sends one request; server sends many responses (e.g., a live stock ticker).
-2. **Client Streaming:** Client sends many requests; server sends one response (e.g., uploading a large file in chunks).
-3. **Bidirectional Streaming:** Both send many messages whenever they want (e.g., a chat application).
-
-Streaming is powerful but adds complexity to load balancing and error handling. Only use it when a single request/response doesn't fit the data flow.
-
----
-
-## **VII. Observability: The Status Code Lie**
-
-If you come from REST, you trust HTTP status codes.
-
-With gRPC, that’s dangerous.
-
-gRPC often returns:
-
-- HTTP Status: `200 OK`
-- Actual Result: `grpc-status: 13 (INTERNAL)`
-
-Why?
-
-Because HTTP is just the transport.  
-The real status is in the trailer.
-
-If your monitoring only checks HTTP codes, your dashboards may lie to you.
-
-You must:
-- Parse `grpc-status`
-- Instrument at the RPC layer
-- Use OpenTelemetry interceptors
-
-### **A. Metadata: The Sidecar for Data**
-
-How do you pass Auth tokens, Request IDs, or Trace Context without polluting your Protobuf messages?
-
-**Metadata.**
-
-Metadata (known as "headers" and "trailers" in HTTP) allows you to pass key-value pairs outside the actual message body.
-
-- **Headers:** Sent at the start of the call.
-- **Trailers:** Sent at the very end (often containing the final status).
-
-Interceptors (middleware) are the best way to handle metadata, ensuring that every call automatically carries the necessary context for security and tracing.
-
----
-
-## **VII. The Browser Gap and gRPC-Web**
-
-Browsers cannot directly speak raw gRPC because:
-
-- They do not expose HTTP/2 framing.
-- Trailer access is restricted.
-- Binary framing conflicts with fetch/XHR constraints.
-
-gRPC-Web solves this via protocol translation and usually requires a proxy (like Envoy).
-
-It works — but it adds infrastructure.
-
----
-
-## **VIII. ConnectRPC: The Practical Evolution**
-
-ConnectRPC, built by the Buf team, fixes many usability issues.
-
-It supports:
-
-- gRPC
-- gRPC-Web
-- Connect protocol
-
-From a single server implementation.
-
-Advantages:
-
-### **A. Real HTTP Status Codes**
-Errors map to actual HTTP 4xx/5xx responses.
-
-Your observability stack works normally.
-
-### **B. JSON Without gRPC Framing**
-You can test endpoints with plain curl:
+**The Call (Standard HTTP):**
 
 ```bash
-curl [https://api.example.com/greet.v1.Greeter/SayHello](https://api.example.com/greet.v1.Greeter/SayHello) \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Alice"}'
+curl \
+    --header "Content-Type: application/json" \
+    --data '{"name": "Jane"}' \
+    [https://api.example.com/greet.v1.Greeter/SayHello](https://api.example.com/greet.v1.Greeter/SayHello)
 ```
 
-No special client required.
+**The Response:**
 
-### **C. One Implementation, Multiple Protocols**
-You don’t need separate infrastructure for browsers and services.
+```json
+{"message": "Hello, Jane!"}
+```
 
-For many teams, Connect is what they hoped gRPC would feel like.
+No binary framing. No proxy. No `grpcurl`.
 
----
-
-## **IX. Generating OpenAPI from Protobuf**
-
-One common objection:
-
-> “Our frontend uses OpenAPI.”
-
-You can still keep Protobuf as your source of truth.
-
-Tools like:
-
-- https://github.com/sudorandom/protoc-gen-connect-openapi
-
-allow you to generate OpenAPI specs directly from Connect/Protobuf schemas.
-
-That means:
-- No duplicate API definitions.
-- No schema drift.
-- No maintaining REST by hand.
-
-One contract. Multiple outputs.
+### **B. Why this matters**
+This unifies your infrastructure. You don't need a "Public REST API" and a "Private gRPC API" anymore. You write one Connect handler.
+- **Frontend** uses the generated Connect client (lightweight, typesafe).
+- **Backend** uses the gRPC protocol (high perf).
+- **Scripts/Debug** use standard HTTP/JSON.
 
 ---
 
-## **X. Mocking and Contract-First Development**
+## **III. Governance First: The Power of `buf breaking`**
 
-Testing often becomes painful in RPC systems.
+Before we write code, we must agree on the contract.
 
-Instead of spinning up real backends, you can mock directly from schema.
+In the old days, you ran `protoc` manually. If you renamed a field from `user_id` to `id`, `protoc` would happily compile it. You would push to production, and instantly break every mobile client running the old version of the app.
 
-- https://github.com/sudorandom/fauxrpc
-- https://fauxrpc.com/
+Enter **Buf**.
 
-FauxRPC enables:
+Buf isn't just a compiler; it is a linter and a breaking change detector.
 
-- Schema-driven mocks
-- Parallel frontend/backend development
-- Rapid prototyping before implementation
+### **A. The Safety Net**
 
-If you embrace contract-first design, mocking from `.proto` is the logical next step.
+The command `buf breaking` compares your current schema against your git `main` branch (or a remote registry). It understands binary compatibility rules better than you do.
 
----
+```bash
+# You try to change a field type from int32 to string
+$ buf breaking --against ".git#branch=main"
 
-## **XI. Alternatives and Tradeoffs**
+req.proto:5:1:Field "1" on message "GetUserRequest" changed type from "int32" to "string".
+```
 
-gRPC is not religion.
+It catches:
+- Reused field numbers.
+- Changed types on existing fields.
+- Renamed packages.
+- Deleted fields (if configured to strict mode).
 
-### Twirp
-- Simpler RPC
-- Protobuf-based
-- Minimalist
-- Less infrastructure complexity
-
-### REST + JSON
-- Universally compatible
-- Easy debugging
-- Weak contracts
-- Larger payloads
-
-gRPC shines when:
-- You control clients
-- You need high throughput
-- You value strict contracts
-- You operate in microservices
-
-It’s overkill when:
-- You need maximum public compatibility
-- You can’t enforce schema discipline
-- Your infra struggles with HTTP/2
+This turns API governance from a "hope and pray" manual review process into a CI/CD failure. **If `buf breaking` passes, you are safe to deploy.**
 
 ---
 
-## **XII. Conclusion**
+## **IV. FauxRPC: Mocking Without the Mockery**
 
-gRPC is not a silver bullet.
+Frontend developers often sit idle waiting for the Backend team to implement the API.
 
-It adds:
-- Tooling complexity
-- Binary debugging friction
-- HTTP/2 infrastructure requirements
+In the REST world, you might hardcode some JSON in a file.
+In the Schema world, we can do better.
 
-But when you combine:
+**FauxRPC** allows you to generate a fully functioning mock server directly from your Protobuf definitions.
 
-- The speed of multiplexed streams
-- The safety of schema validation
-- The guardrails of Buf
-- The ergonomics of Connect
+```d2
+direction: right
+Proto Files -> FauxRPC: Load Schema
+FauxRPC -> Mock Server: Spawns HTTP/2 & HTTP/1.1
+Client -> Mock Server: Call GetUser(id: 123)
+Mock Server -> Client: Returns randomized, valid Protobuf data
+```
 
-You get a system that scales better than loose JSON-over-HTTP architectures.
+Because Protobuf is strongly typed, FauxRPC knows exactly what the data *should* look like.
 
-The real power isn’t the binary encoding.
+- If the field is `int32`, it returns a number.
+- If the field is `repeated string`, it returns an array of strings.
+- If you use `protovalidate` (e.g., `string email = 1 [(buf.validate.field).string.email = true]`), FauxRPC can even generate valid email addresses.
 
-It’s the enforceable contract.
+### **A. The Workflow**
 
-In distributed systems, contracts are everything.
+1. Define `api.proto`.
+2. Run `fauxrpc run api.proto`.
+3. Frontend team builds the UI against `localhost:8080`.
+4. Backend team implements the real logic.
+5. Swap the URL.
 
-And if you adopt them properly, you stop debugging stringly-typed chaos at 2AM.
+This decouples the teams entirely. The schema is the only dependency.
 
-Just remember to check your trailers.
+---
+
+## **V. Conclusion: It’s About the Contract**
+
+The argument is no longer "REST vs. gRPC."
+
+The argument is **"Loose Contracts vs. Strict Contracts."**
+
+If you choose Strict Contracts (Protobuf), you used to pay a heavy tax in complexity.
+- **Buf** removed the complexity of file management and breaking changes.
+- **ConnectRPC** removed the complexity of the network transport and browser incompatibility.
+- **FauxRPC** removed the complexity of prototyping.
+
+You can now have the rigorous safety of gRPC with the ease of use of REST/JSON. There is no longer a reason to settle for less.
+
+Just remember to check your trailers (or, if you use Connect, just check your HTTP status codes).
