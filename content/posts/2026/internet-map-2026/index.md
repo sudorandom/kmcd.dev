@@ -195,6 +195,12 @@ The Chinese internet is giant, but it presents a unique attribution challenge. B
 
 Initially, this caused a "flooding" effect: because I attribute IPs to the cities where they are announced, a single China Telecom node in Hong Kong would suddenly appear to "own" a staggering percentage of the global internet. To fix this, I had to implement specific logic for China-based networks. I used pattern matching to parse provincial hints and city names from the APNIC WHOIS database—mapping "CHINANET-BJ" to Beijing or "CHINANET-GD" to Guangdong—and then distributed the logical weight of these massive blocks across major domestic hubs. This prevents a few international peering points from unfairly skewing the map and provides a much more accurate (if still technically "logical") view of where that weight actually lives.
 
+### UX and Rendering
+
+I've made several UX improvements to how the map handles data density and rendering performance. I've grouped together close-by cities to reduce visual clutter; you can zoom in to see them split out individually. Rendering is also more efficient now, as the map will avoid rendering cities that aren't currently visible in the viewport.
+
+The visual size of cities on the map also now dynamically reflects their importance. Their size depends on a weighted combination of aggregate peering and IP dominance, contributing 80% and 20% to the size calculation respectively.
+
 ### Better Exports
 
 One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.

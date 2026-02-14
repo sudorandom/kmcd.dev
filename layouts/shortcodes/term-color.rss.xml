@@ -8,4 +8,4 @@
 {{ if eq $color "magenta" }}{{ $hex = "#bc3fbc" }}{{ end }}
 {{ if eq $color "cyan" }}{{ $hex = "#11a8cd" }}{{ end }}
 {{ if eq $color "white" }}{{ $hex = "#e5e5e5" }}{{ end }}
-<span style="color: {{ $hex }};">{{ .Inner | safeHTML }}</span>
+<span style="color: {{ $hex }}; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;">{{ .Inner | safeHTML }}</span>
