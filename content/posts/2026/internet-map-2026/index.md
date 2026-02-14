@@ -193,11 +193,19 @@ The Chinese internet is giant, but it presents a unique attribution challenge. B
 Initially, this caused a "flooding" effect: because I attribute IPs to the cities where they are announced, a single China Telecom node in Hong Kong would suddenly appear to "own" a staggering percentage of the global internet. To fix this, I had to implement specific logic for China-based networks. I used pattern matching to parse provincial hints and city names from the APNIC WHOIS database—mapping "CHINANET-BJ" to Beijing or "CHINANET-GD" to Guangdong—and then distributed the logical weight of these massive blocks across major domestic hubs. This prevents a few international peering points from unfairly skewing the map and provides a much more accurate (if still technically "logical") view of where that weight actually lives.
 
 
+#### Case Study: Frankfurt’s "Network Gravity"
+
+Frankfurt is the standout example in this new model. By 2026, it has solidified its position as the #1 city in the world by logical dominance, accounting for over **858 million IPs**.
+
+This reveals a fascinating "center of mass" effect: while **Amsterdam** still holds the crown for raw physical peering bandwidth (244.63 Tbps vs Frankfurt's 200.75 Tbps), Frankfurt wins on logical weight. It acts as the primary intersection where Western hyperscale clouds meet East Asian transit networks, pulling the "logical" center of the internet toward the heart of Europe.
+
 ### UX and Rendering
 
-I've made several UX improvements to how the map handles data density and rendering performance. Because the BGP data introduced many more cities, the map became significantly more cluttered, especially when zoomed out. To help with this, I've grouped together close-by cities to reduce visual clutter. This grouping is dynamic so you can actually zoom in to see each city split out individually like before. This also slightly improves performance since there's fewer shapes to render.
+Layering BGP data onto an already complex physical map created a major design challenge: **density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
 
-I made another performance improvement by changing the map to only render cities that are visible in the viewport. When you pan over to another region the cities will pop in.
+To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you dive deeper. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
+
+I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
 The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. The reasoning behind this is that peering bandwidth is much more of a signal that there's more Internet activity than IP space being advertised.
 
@@ -219,5 +227,7 @@ You can access these directly to build your own visualizations, analyze the grow
 - [`year-summaries.json`](https://map.kmcd.dev/data/year-summaries.json): Brief textual descriptions of notable events or milestones for specific years, displayed in the footer.
 - [`city-dominance/{year}.json`](https://map.kmcd.dev/data/city-dominance/2026.json): Per-year JSON files (e.g., 2026.json) with detailed city-level peering capacity, regional information, and coordinates. Used for rendering city markers and calculating regional statistics.
 - [`meta.json`](https://map.kmcd.dev/data/meta.json): Metadata including the minimum and maximum years covered by the visualization.
+
+---
 
 **[Explore the Map »](https://map.kmcd.dev)**
