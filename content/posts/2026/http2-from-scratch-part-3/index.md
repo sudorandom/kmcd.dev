@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["go", "http2", "protocols", "networking"]
-date: "2026-02-25T10:00:00Z"
+date: "2026-03-04T10:00:00Z"
 description: "Decoding HPACK and the evolution of the HTTP header"
 cover: "cover.svg"
 images: ["/posts/http2-from-scratch-part-3/cover.svg"]

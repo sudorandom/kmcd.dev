@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["go", "http2", "protocols", "networking"]
-date: "2026-02-18T10:00:00Z"
+date: "2026-02-25T10:00:00Z"
 description: "Diving into the binary framing layer and byte-shifting in Go"
 cover: "cover.svg"
 images: ["/posts/http2-from-scratch-part-2/cover.svg"]
