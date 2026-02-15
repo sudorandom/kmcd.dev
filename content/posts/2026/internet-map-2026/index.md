@@ -144,8 +144,8 @@ Consider this: The smallest standard IPv6 assignment is a `/64`. That single sub
 
 If I treated every IP equally, a single home router with IPv6 would statistically obliterate a city hosting the entire legacy IPv4 internet.
 
-- Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456`
-- Total IPv4 Addresses: `4,294,967,296`
+- Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456` or `340.28 undecillion`
+- Total IPv4 Addresses: `4,294,967,296` or `4.29 billion`
 
 Like it or not, IPv4 remains foundational for the Internet's geography. Maybe next year I can tackle the normalization problem, but not today!
 
