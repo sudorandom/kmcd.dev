@@ -71,7 +71,7 @@ Observer -> AS7018
 AS7018 -> Destination
 
 # Path: 20130 6939 15169 (Via Hurricane Electric)
-AS20130: AS20130 {class: bgp_peer}
+AS20130: DePaul University\nAS20130 {class: bgp_peer}
 HE: Hurricane Electric\nAS6939
 Observer -> AS20130
 AS20130 -> HE
@@ -85,8 +85,8 @@ AS3333 -> Tele2
 Tele2 -> Destination
 
 # Path: 49788 12552 15169
-AS49788: AS49788 {class: bgp_peer}
-AS12552: AS12552
+AS49788: Nexthop AS\nAS49788 {class: bgp_peer}
+AS12552: GlobalConnect\nAS12552
 Observer -> AS49788
 AS49788 -> AS12552
 AS12552 -> Destination
