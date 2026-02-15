@@ -15,15 +15,11 @@ type: "posts"
 canonical_url: https://kmcd.dev/posts/internet-map-2026
 ---
 
-For the past few years, I’ve been trying to make the physical reality of the internet visible with my Internet Infrastructure Map. I update the map each year, but I don’t want to just pull the latest data and call it a day.
+For the past few years, I’ve been trying to make the physical reality of the internet visible with my Internet Infrastructure Map. I update the map each year, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
 
-For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m closer to answering it. 
+For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
 
-The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 remains foundational of the Internet, even in 2026. Maybe next year I can tackle IPv6, but not today!
-
-In short: this shows which cities control the largest share of the internet’s reachable address space.
-
-You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
+The result is a concept I call "Logical Dominance." Each city’s dominance is calculated by summing the number of IPv4 addresses that are "homed" in that city. How can I tell where IP addresses are homed? Well, read on, because I talk about this quite a bit in a later section.
 
 {{< diagram >}}
 {{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
@@ -96,7 +92,7 @@ These routes change thousands of times per second, constantly reshaping the inte
 
 #### Sources of BGP Data
 
-To visualize this layer, we need access to routing tables. I explored four ways to get this data, each with its own trade-offs between real-time visibility and historical context.
+To visualize this layer, we need access to routing tables. I explored three ways to get this data, each with its own trade-offs between real-time visibility and historical context.
 
 #### Query a Looking Glass
 
@@ -106,7 +102,7 @@ We can connect to public routers via projects like [University of Oregon Route V
 {{% render-code file="routeviews-log.txt" language="shell" %}}
 {{< /details-md >}}
 
-Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today's internet, it lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
+Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
 
 #### Subscribe to a Stream
 
@@ -126,7 +122,7 @@ The output looks like this:
 
 To build the historical model, I processed raw **RIB (Routing Information Base)** files. These are snapshots of the entire routing table as seen by a backbone router at a specific moment in time. Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the internet at any point in the past. 
 
-I specifically fetch snapshots from February 1st at 12:00 UTC for every year in my timeline. To ensure a comprehensive view, I aggregate data from multiple global collectors maintained by the [University of Oregon Route Views](http://archive.routeviews.org/) project.
+I specifically fetched snapshots from February 1st at 12:00 UTC for every year in my timeline. To ensure a comprehensive view, I aggregated data from multiple global collectors maintained by the [University of Oregon Route Views](http://archive.routeviews.org/) project.
 
 Other excellent resources for this kind of data include:
 
@@ -137,25 +133,39 @@ Other excellent resources for this kind of data include:
 
 ### Showing BGP on the Map
 
-For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the logical dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
+For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the Logical Dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
+
+#### IPv4
+Earlier, I mentioned that I’m only looking at IPv4. You might be asking why I avoided IPv6.
+
+While IPv6 is critical, I’ve excluded it for now because its sheer scale breaks the "dominance" calculation. I measured dominance by counting unique IP addresses, and IPv6 is simply too vast to compare 1:1 with IPv4.
+
+Consider this: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table inside that one subnet **4.3 billion times over**.
+
+If I treated every IP equally, a single home router with IPv6 would statistically obliterate a city hosting the entire legacy IPv4 internet.
+
+- Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456`
+- Total IPv4 Addresses: `4,294,967,296`
+
+Like it or not, IPv4 remains foundational for the Internet's geography. Maybe next year I can tackle the normalization problem, but not today!
 
 #### Finding the Truth in the Noise
 
-Mapping a BGP prefix to a specific city is not as straightforward as you might think. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution uses prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
+Mapping a BGP prefix to a specific city is not as straightforward as you might think. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution used prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
 
-I start with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those aren't available, I look for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
+I started with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those weren't available, I looked for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
 
-When those fail, I look at the network itself. I can map IPs to the city of the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. My final fallback leverages historical **WHOIS** backups. My processing pipeline will automatically switch data sources based on the year. For historical snapshots, it uses RIR delegation statistics appropriate to that year. For current data, it parses the full [APNIC database](https://www.apnic.net/manage-ip/using-whois/) for high-resolution city mapping.
+When a prefix didn't match any of those sources, I looked at the network itself. I could use the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. If THAT fell short, my final fallback leveraged historical **WHOIS** backups.
 
-I even had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for AU.
+To handle address space that remained unattributed to a specific city, I applied a 'footprint' heuristic which assigned those IPs to every city where the network maintained a physical peering presence. While a network might not literally announce every prefix at every IXP, this approach ensures that major connectivity hubs were credited for the logical weight they are capable of serving.
 
-To handle any address space that remains unattributed, I duplicate those IPs across every city where the network maintains a physical peering presence. Even if a network doesn't announce every prefix from every point due to paid transit or internal long-haul links, this approach ensures that major connectivity hubs are credited for the logical weight they represent in the routing topology.
+There were many issues that I stumbled headfirst into when trying to attribute certain prefixes. For example, I had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. The `0.0.0.0/0` prefix would match *every single IPv4 address*. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for Australia.
 
 So... to recap, the data sources used for the 2026 map include:
-- **Infrastructure:** TeleGeography, submarinenetworks.com, and historical archive maps.
-- **Peering:** PeeringDB.
-- **BGP Routing:** University of Oregon Route Views historical RIB archives.
-- **IP Attribution:** RFC 8805 Geofeeds, AWS/Google Cloud IP ranges, BGP Communities, APNIC WHOIS database and historical RIR delegation statistics.
+- **Infrastructure:** [TeleGeography](https://www2.telegeography.com/), [submarinenetworks.com](https://www.submarinenetworks.com/), and historical archive maps.
+- **Peering:** [PeeringDB](https://www.peeringdb.com/).
+- **BGP Routing:** [University of Oregon Route Views historical RIB archives](https://www.routeviews.org/routeviews/).
+- **IP Attribution:** [RFC 8805 Geofeeds](https://datatracker.ietf.org/doc/html/rfc8805), [AWS](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)/[Google Cloud](https://docs.cloud.google.com/vpc/docs/ip-addresses) IP ranges, BGP Communities, and [APNIC WHOIS database](https://www.apnic.net/about-apnic/whois_search/)
 
 Building this pipeline presented unique engineering hurdles; here are the most significant ones:
 
@@ -165,15 +175,15 @@ Downloading 15 years of archives is slow. I threw together a quick file-based ca
 
 #### RAM remains stubbornly finite
 
-Loading millions of IP prefixes, WHOIS records, PeeringDB entries and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out of memory errors I built a custom **on-disk Trie data structure** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
+Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
 #### Cleaning up the spaghetti
 
-While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable. Now the script has clear stages of:
+While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. Now, I have one script for generating this city data. I was only able to do this because of the improvements mentioned above: caching and using on-disk data structures. Now, the script has clear stages of:
 
 - **Fetch:** Downloads and caches raw data (WHOIS, BGP, PeeringDB).
 - **Index:** Builds searchable on-disk tries and resolves authoritative network names from RIRs.
-- **Process:** Scans BGP routes with automatic fallbacks (RouteViews or RIPE RIS) and fuses location sources.
+- **Process:** Scans BGP routes and attributes each prefix using the various data sources mentioned above.
 - **Output:** Produces clean, normalized city results without duplicate entries (e.g., merging "Seoul" and "SEOUL").
 
 ### What Changed When IP Dominance Was Added
@@ -190,7 +200,7 @@ The physical meeting points of networks only tell us a part of the story. The gl
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
 
-The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This maps prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
+The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This mapped prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
 
 {{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after adding BGP data)." >}}
 
@@ -206,7 +216,9 @@ To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now g
 {{< compare before="clustering_no.png" after="clustering_yes.png" caption="Before and after dynamic cluster groupings." >}}
 {{< /diagram >}}
 
-Dynamic Cluster Grouping ensures the map remains legible, preventing the increased data density from overwhelming the map.
+Dynamic Cluster Grouping ensures the map remains legible, preventing the increased data density from overwhelming the map. When you click on a cluster, the details panel expands to list every city contained within that group.
+
+{{< diagram >}}{{< image src="group-screenshot.png" class="center" width="500px"  >}}{{< /diagram >}}
 
 I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
@@ -232,5 +244,9 @@ You can access these directly to build your own visualizations, analyze the grow
 - [`meta.json`](https://map.kmcd.dev/data/meta.json): Metadata including the minimum and maximum years covered by the visualization.
 
 ---
+
+You might ask why I burned so much time manually attributing IP space when services like [MaxMind](https://www.maxmind.com) or [IPInfo](https://ipinfo.io/) already exist. The honest answer? Buying the data isn't fun. The joy of this project comes from the archaeology and the work involved in bringing order to chaotic and disjointed datasets and transforming them into something beautiful.
+
+This was a great project, and I am extremely happy with the results. If you've gotten this far without checking out the map, I'm impressed with your restraint, but here's one more link for you to take a look:
 
 **[Explore the Map »](https://map.kmcd.dev)**
