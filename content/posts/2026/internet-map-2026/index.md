@@ -176,28 +176,21 @@ While investigating all of these different data sources, I ended up writing seve
 
 When I layered IP dominance onto the physical map, many additional cities became visible.
 
-In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, additional cities began to “light up.” These are places with substantial address space and large originating networks, even if they do not host a major public exchange.
+{{< compare before="map_2026_before.svg" after="map_2026.svg" caption="World (before and after adding BGP data)." >}}
 
-{{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after)." >}}
+In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, additional cities began to “light up.” These are places with substantial address space and large originating networks, even if they do not host a major public exchange. This is most noticeable in India, Japan, China, Indonesia and further out from major hubs in the EU and United States.
+
+{{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after adding BGP data)." >}}
 
 The physical meeting points of networks only tell us a part of the story. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant weight without being major public peering hubs. The IP dominance layer exposes that distinction.
 
-{{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after)." >}}
+{{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
 
-This effect, however, was not uniform. One of the most striking patterns on the map is just how much China is under-represented in global routing tables relative to its actual footprint.
+The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was very wrong. It looked like China Telecom was the biggest ISP in germany, which is very not correct. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This maps prefixes like `GD` or `SH` to their respective capital cities. This properly assigned attribution to representative cities for each region. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. That worked for the vast majority of the BGP prefixes. The remaining IP space that is attributed only to China and not a specific city or region is distributed across major domestic hubs. This provides a much more distributed and realistic map of internet density across China’s major regional clusters.
 
-{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after). Note how the 'before' view over-attributes weight to Hong Kong, while the 'after' view distributes it to mainland hubs." >}}
+{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after adding BGP data)." >}}
 
-The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP "firehose" often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt.
-
-Initially, this caused a "flooding" effect: because I attribute IPs to the cities where they are announced, a single China Telecom node in Hong Kong would suddenly appear to "own" a staggering percentage of the global internet. To fix this, I had to implement specific logic for China-based networks. I used pattern matching to parse provincial hints and city names from the APNIC WHOIS database—mapping "CHINANET-BJ" to Beijing or "CHINANET-GD" to Guangdong—and then distributed the logical weight of these massive blocks across major domestic hubs. This prevents a few international peering points from unfairly skewing the map and provides a much more accurate (if still technically "logical") view of where that weight actually lives.
-
-
-#### Case Study: Frankfurt’s "Network Gravity"
-
-Frankfurt is the standout example in this new model. By 2026, it has solidified its position as the #1 city in the world by logical dominance, accounting for over **858 million IPs**.
-
-This reveals a fascinating "center of mass" effect: while **Amsterdam** still holds the crown for raw physical peering bandwidth (244.63 Tbps vs Frankfurt's 200.75 Tbps), Frankfurt wins on logical weight. It acts as the primary intersection where Western hyperscale clouds meet East Asian transit networks, pulling the "logical" center of the internet toward the heart of Europe.
+The result is that we have a little bit more visibility into the reality of China's internet.
 
 ### UX and Rendering
 
