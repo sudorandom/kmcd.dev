@@ -92,7 +92,7 @@ AS49788 -> AS12552
 AS12552 -> Destination
 {{< /d2 >}}
 
-These routes change thousands of times per second.
+These routes change thousands of times per second, constantly reshaping the internet’s topology.
 
 #### Sources of BGP Data
 
@@ -178,7 +178,7 @@ When I layered IP dominance onto the physical map, many additional cities became
 
 {{< compare before="map_2026_before.svg" after="map_2026.svg" caption="World (before and after adding BGP data)." >}}
 
-In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, additional cities began to “light up.” These are places with substantial address space and large originating networks, even if they do not host a major public exchange. This is most noticeable in India, Japan, China, Indonesia and further out from major hubs in the EU and United States.
+In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, the map revealed cities without major IXPs. These are places with substantial address space and large originating networks, even if they do not host a major public exchange. This is most noticeable in India, Japan, China, Indonesia, and in secondary metros beyond traditional hubs in the EU and United States.
 
 {{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after adding BGP data)." >}}
 
@@ -186,11 +186,11 @@ The physical meeting points of networks only tell us a part of the story. The gl
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
 
-The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was very wrong. It looked like China Telecom was the biggest ISP in germany, which is very not correct. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This maps prefixes like `GD` or `SH` to their respective capital cities. This properly assigned attribution to representative cities for each region. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. That worked for the vast majority of the BGP prefixes. The remaining IP space that is attributed only to China and not a specific city or region is distributed across major domestic hubs. This provides a much more distributed and realistic map of internet density across China’s major regional clusters.
+The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This maps prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
 
 {{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after adding BGP data)." >}}
 
-The result is that we have a little bit more visibility into the reality of China's internet.
+The result is a far more realistic view of China’s internal internet topology.
 
 ### UX and Rendering
 
@@ -200,7 +200,7 @@ To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now g
 
 I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
-The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. The reasoning behind this is that peering bandwidth is much more of a signal that there's more Internet activity than IP space being advertised.
+The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone.
 
 ### Better Exports
 
