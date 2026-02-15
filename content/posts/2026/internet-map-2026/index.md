@@ -141,11 +141,11 @@ For this edition, I processed over 15 years of BGP snapshots and PeeringDB archi
 
 #### Finding the Truth in the Noise
 
-Mapping a BGP prefix to a specific city is notoriously difficult. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution uses prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
+Mapping a BGP prefix to a specific city is not as straightforward as you might think. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution uses prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
 
 I start with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those aren't available, I look for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
 
-When those fail, I look at the network itself. I can map IPs to the city of the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. My final fallback is a year-aware **WHOIS** ingestion. This tool now automatically switches data sources based on the year. For historical snapshots, it uses RIR delegation statistics appropriate to that year. For current data, it parses the full [APNIC database](https://www.apnic.net/manage-ip/using-whois/) for high-resolution city mapping.
+When those fail, I look at the network itself. I can map IPs to the city of the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. My final fallback leverages historical **WHOIS** backups. My processing pipeline will automatically switch data sources based on the year. For historical snapshots, it uses RIR delegation statistics appropriate to that year. For current data, it parses the full [APNIC database](https://www.apnic.net/manage-ip/using-whois/) for high-resolution city mapping.
 
 I even had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for AU.
 
