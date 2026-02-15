@@ -19,7 +19,7 @@ For the past few years, I’ve been trying to make the physical reality of the i
 
 For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m closer to answering it. 
 
-The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 is still extremely relevant to the Internet, even in 2026.
+The result is a concept I call “Logical Dominance.” In technical terms, a city’s dominance is calculated by summing the IPv4 address space originated by networks located there. By comparing these totals against the global routing table, we can see where the internet’s weight actually settles. To keep the comparison consistent across the 15-year timeline, I calculate these scores from a full RIB snapshot taken on February 1st of each year. While IPv6 is becoming increasingly critical, I’ve limited this analysis to IPv4 for now due to the higher consistency of historical attribution data across the full window and because IPv6 space is massive and will overshadow IPv4. Like it or not, IPv4 remains the lingua franca of the Internet, even in 2026.
 
 In short: this shows which cities control the largest share of the internet’s reachable address space.
 
@@ -33,7 +33,7 @@ You can explore the map live at **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 Previous versions of the map focused on physical infrastructure: cables and exchange points. However, the physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
 
-BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that holds the internet together. For a deeper dive, [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
+BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that ties the Internet together. For a deeper dive, [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
 
 When you load a webpage, your request doesn't just "know" the path. Your ISP’s routers consult the global BGP routing table to decide the best next hop. Visualized, it looks a little bit like this:
 
@@ -157,7 +157,7 @@ So... to recap, the data sources used for the 2026 map include:
 - **BGP Routing:** University of Oregon Route Views historical RIB archives.
 - **IP Attribution:** RFC 8805 Geofeeds, AWS/Google Cloud IP ranges, BGP Communities, APNIC WHOIS database and historical RIR delegation statistics.
 
-When making this pipeline, I've had many engineering challenges, but here are the ones worth mentioning:
+Building this pipeline presented unique engineering hurdles; here are the most significant ones:
 
 #### The Local Cache
 
@@ -167,10 +167,14 @@ Downloading 15 years of archives is slow. I threw together a quick file-based ca
 
 Loading millions of IP prefixes, WHOIS records, PeeringDB entries and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out of memory errors I built a custom **on-disk Trie data structure** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
-#### From Spaghetti to Pipeline
+#### Cleaning up the spaghetti
 
-While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was definitely enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable.
+While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. However, now I have one script for generating this city data. This was enabled by some of the improvements, like caching and using on-disk data structures to make memory usage reasonable. Now the script has clear stages of:
 
+- **Fetch:** Downloads and caches raw data (WHOIS, BGP, PeeringDB).
+- **Index:** Builds searchable on-disk tries and resolves authoritative network names from RIRs.
+- **Process:** Scans BGP routes with automatic fallbacks (RouteViews or RIPE RIS) and fuses location sources.
+- **Output:** Produces clean, normalized city results without duplicate entries (e.g., merging "Seoul" and "SEOUL").
 
 ### What Changed When IP Dominance Was Added
 
@@ -198,6 +202,12 @@ Layering BGP data onto an already complex physical map created a major design ch
 
 To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you dive deeper. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
 
+{{< diagram >}}
+{{< compare before="clustering_no.png" after="clustering_yes.png" caption="Before and after dynamic cluster groupings." >}}
+{{< /diagram >}}
+
+Dynamic Cluster Grouping ensures the map remains legible, preventing the increased data density from overwhelming the map.
+
 I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
 The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone.
@@ -208,7 +218,7 @@ One of the most requested features for the map has been a way to export the curr
 
 Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Also, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
 
-Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All of the images above used this export!
+Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All images in this post were generated using this new export feature.
 
 ### The Data
 
