@@ -15,11 +15,11 @@ type: "posts"
 canonical_url: https://kmcd.dev/posts/internet-map-2026
 ---
 
-For the past few years, I’ve been trying to make the physical reality of the internet visible with my Internet Infrastructure Map. I update the map each year, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
+For the past few years, I’ve been trying to make the physical reality of the internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
 
-For the 2026 edition, I wanted to answer a harder question: where does the internet actually live? By analyzing 15 years of BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
+For the 2026 edition, I wanted to better answer the question: where does the internet *actually* live? By layering on BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
 
-The result is a concept I call "Logical Dominance." Each city’s dominance is calculated by summing the number of IPv4 addresses that are "homed" in that city. How can I tell where IP addresses are homed? Well, read on, because I talk about this quite a bit in a later section.
+The result is a concept I call "Logical Dominance." Each city’s dominance is calculated by summing the number of IPv4 addresses that are "homed" in that city. How can I tell where IP addresses are homed? This required analyzing global routing tables to trace IP ownership back to specific geographies. I dive into the details below.
 
 {{< diagram >}}
 {{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
@@ -131,14 +131,14 @@ Other excellent resources for this kind of data include:
 
 ---
 
-### Showing BGP on the Map
+### How BGP Shapes the Global Internet Map
 
 For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the Logical Dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
 
 #### IPv4
 Earlier, I mentioned that I’m only looking at IPv4. You might be asking why I avoided IPv6.
 
-While IPv6 is critical, I’ve excluded it for now because its sheer scale breaks the "dominance" calculation. I measured dominance by counting unique IP addresses, and IPv6 is simply too vast to compare 1:1 with IPv4.
+While IPv6 is critical, I’ve excluded it for now because its sheer scale breaks the "Logical Dominance" calculation. I measured dominance by counting unique IP addresses, and IPv6 is simply too vast to compare 1:1 with IPv4.
 
 Consider this: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table inside that one subnet **4.3 billion times over**.
 
@@ -147,7 +147,7 @@ If I treated every IP equally, a single home router with IPv6 would statisticall
 - Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456` or `340.28 undecillion`
 - Total IPv4 Addresses: `4,294,967,296` or `4.29 billion`
 
-Like it or not, IPv4 remains foundational for the Internet's geography. Maybe next year I can tackle the normalization problem, but not today!
+Maybe next year I can tackle the normalization problem and incorporate IPv6 BGP routes to the map, but not today!
 
 #### Finding the Truth in the Noise
 
@@ -155,7 +155,7 @@ Mapping a BGP prefix to a specific city is not as straightforward as you might t
 
 I started with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those weren't available, I looked for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
 
-When a prefix didn't match any of those sources, I looked at the network itself. I could use the **IXP Next-Hop** where they are announced, or parse **BGP Communities** for geographical hints. If THAT fell short, my final fallback leveraged historical **WHOIS** backups.
+When a prefix didn't match any of those sources, I looked at the network itself. I could use the **[IXP](https://en.wikipedia.org/wiki/Internet_exchange_point) [Next-Hop](https://www.noction.com/blog/bgp-next-hop)** where they are announced, or parse **[BGP Communities](https://networklessons.com/bgp/bgp-communities-explained)** for geographical hints. If THAT fell short, my final fallback leveraged historical **WHOIS** backups.
 
 To handle address space that remained unattributed to a specific city, I applied a 'footprint' heuristic which assigned those IPs to every city where the network maintained a physical peering presence. While a network might not literally announce every prefix at every IXP, this approach ensures that major connectivity hubs were credited for the logical weight they are capable of serving.
 
@@ -177,7 +177,7 @@ Downloading 15 years of archives is slow. I threw together a quick file-based ca
 
 Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
-#### Cleaning up the spaghetti
+#### Cleaning Up the Spaghetti
 
 While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. Now, I have one script for generating this city data. I was only able to do this because of the improvements mentioned above: caching and using on-disk data structures. Now, the script has clear stages of:
 
@@ -228,7 +228,7 @@ The visual size of cities on the map also now dynamically reflects their importa
 
 One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.
 
-Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Also, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
+Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Furthermore, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
 
 Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All images in this post were generated using this new export feature.
 
@@ -243,7 +243,7 @@ You can access these directly to build your own visualizations, analyze the grow
 - [`city-dominance/{year}.json`](https://map.kmcd.dev/data/city-dominance/2026.json): Per-year JSON files (e.g., 2026.json) with detailed city-level peering capacity, regional information, and coordinates. Used for rendering city markers and calculating regional statistics.
 - [`meta.json`](https://map.kmcd.dev/data/meta.json): Metadata including the minimum and maximum years covered by the visualization.
 
----
+### See You Next Year
 
 You might ask why I burned so much time manually attributing IP space when services like [MaxMind](https://www.maxmind.com) or [IPInfo](https://ipinfo.io/) already exist. The honest answer? Buying the data isn't fun. The joy of this project comes from the archaeology and the work involved in bringing order to chaotic and disjointed datasets and transforming them into something beautiful.
 
