@@ -159,7 +159,7 @@ When a prefix didn't match any of those sources, I looked at the network itself.
 
 To handle address space that remained unattributed to a specific city, I applied a 'footprint' heuristic which assigned those IPs to every city where the network maintained a physical peering presence. While a network might not literally announce every prefix at every IXP, this approach ensures that major connectivity hubs were credited for the logical weight they are capable of serving.
 
-There were many issues that I stumbled headfirst into when trying to attribute certain prefixes. For example, I had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. The `0.0.0.0/0` prefix would match *every single IPv4 address*. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for Australia.
+There were many issues that I stumbled headfirst into when trying to attribute certain prefixes. For example, I had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. The `0.0.0.0/0` prefix would match *every single IPv4 address*. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for Australia. I know they have a lot of open space down there, but that seemed excessive.
 
 So... to recap, the data sources used for the 2026 map include:
 - **Infrastructure:** [TeleGeography](https://www2.telegeography.com/), [submarinenetworks.com](https://www.submarinenetworks.com/), and historical archive maps.
@@ -175,7 +175,7 @@ Downloading 15 years of archives is slow. I threw together a quick file-based ca
 
 #### RAM remains stubbornly finite
 
-Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger). I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
+Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger), which is a Go KV store built on an LSM tree, which makes IP prefix looks very effecient. I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
 #### Cleaning up the spaghetti
 
