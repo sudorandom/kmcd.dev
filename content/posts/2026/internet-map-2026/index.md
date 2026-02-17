@@ -27,9 +27,9 @@ The result is a concept I call "Logical Dominance." Each city’s dominance is c
 
 ### How the Internet Routes Traffic
 
-Previous versions of the map focused on physical infrastructure: cables and exchange points. However, the physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
+Previous versions of the map focused on physical infrastructure: cables and exchange points. The physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
 
-BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that ties the Internet together. For a deeper dive, [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
+BGP is the protocol that distinct networks, known as **Autonomous Systems (AS)**, use to announce which IP addresses they own and how to reach them. If the cables are the hardware, BGP is the software that ties the Internet together. [Cloudflare has an excellent primer](https://www.cloudflare.com/learning/security/glossary/what-is-bgp/).
 
 When you load a webpage, your request doesn't just "know" the path. Your ISP’s routers consult the global BGP routing table to decide the best next hop. Visualized, it looks a little bit like this:
 
@@ -102,7 +102,7 @@ We can connect to public routers via projects like [University of Oregon Route V
 {{% render-code file="routeviews-log.txt" language="shell" %}}
 {{< /details-md >}}
 
-Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s Internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
+These paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s Internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
 
 #### Subscribe to a Stream
 
@@ -220,7 +220,7 @@ In addition to adding more data to the map, I've also made several improvements 
 #### Dynamic Cluster Grouping
 Layering BGP data onto an already complex physical map created a major design challenge: **information density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
 
-To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you dive deeper. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
+To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you zoom in. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
 
 {{< diagram >}}
 {{< compare before="clustering_no.png" after="clustering_yes.png" caption="Before and after dynamic cluster groupings." >}}
