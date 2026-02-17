@@ -15,7 +15,7 @@ type: "posts"
 canonical_url: https://kmcd.dev/posts/internet-map-2026
 ---
 
-For the past few years, I’ve been trying to make the physical reality of the Internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
+For the past few years, I’ve been trying to make the physical reality of the Internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map evolved this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
 
 For the 2026 edition, I wanted to better answer the question: where does the Internet *actually* live? By layering on BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
 
@@ -129,20 +129,6 @@ Other excellent resources for this kind of data include:
 *   **[RIPE RIS (Routing Information Service)](https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris/ris-raw-data/):** Provides high-fidelity snapshots from a dense network of collectors, primarily in Europe.
 *   **[CAIDA BGP Stream](https://bgpstream.caida.org/):** A framework for analyzing both real-time and historical data from various sources.
 
-#### IPv4
-Earlier, I mentioned that I’m only looking at IPv4. You might be asking why I avoided IPv6.
-
-While IPv6 is critical, I’ve excluded it for now because its sheer scale breaks the "Logical Dominance" calculation. I measured dominance by counting unique IP addresses, and IPv6 is simply too vast to compare 1:1 with IPv4.
-
-Consider this: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table inside that one subnet **4.3 billion times over**.
-
-If I treated every IP equally, a single home router with IPv6 would statistically obliterate a city hosting the entire legacy IPv4 Internet.
-
-- Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456` or `340.28 undecillion`
-- Total IPv4 Addresses: `4,294,967,296` or `4.29 billion`
-
-IPv6 will require a fundamentally different dominance model that deserves its own treatment and time. Maybe next year!
-
 ---
 
 ### How BGP Shapes the Global Internet Map
@@ -153,28 +139,24 @@ For this edition, I processed over 15 years of BGP snapshots and PeeringDB archi
 
 Logical Dominance is calculated by summing the number of unique IPv4 addresses originated by an ASN and attributed to a given city. Overlapping prefixes are deduplicated using longest-prefix normalization so that no address space is counted twice.
 
+#### The Scaling Problem: Why not IPv6?
+You might notice this model focuses entirely on IPv4. While IPv6 is the future of the protocol, its sheer scale currently breaks the "Logical Dominance" math. I measure dominance by counting unique IP addresses; if I treated IPv4 and IPv6 as equals, the numbers wouldn't just be skewed—they’d be nonsensical.
+
+Consider the math: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table (`4,294,967,296` addresses) inside that one subnet **4.3 billion times over**.
+
+If I treated every IP equally, a single residential IPv6 connection would statistically obliterate a city hosting the entire legacy IPv4 Internet. Until I develop a weighted model for IPv6—perhaps based on prefix density rather than raw address count—IPv4 remains the only way to compare global "weight" on a 1:1 scale.
+
 #### Finding the Truth in the Noise
 
-Mapping a BGP prefix to a specific city is not as straightforward as you might think. A range might be registered to a corporate headquarters but serve users thousands of miles away. My solution used prioritized attribution logic to resolve prefixes based on the highest-fidelity data available.
+Mapping a BGP prefix to a specific city is more difficult than you may think. A subnet might be registered to a corporate HQ but serve users thousands of miles away. To solve this, I built a prioritized "waterfall" of attribution logic. I check sources in order of reliability, stopping as soon as I find a match:
 
-I started with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.org/doc/html/rfc8805), where network operators explicitly self-report their locations. When those weren't available, I looked for **Cloud Provider Ranges**. Major providers like [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) and [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range) publish JSON feeds of their active IP ranges. I integrated these feeds and built a mapping layer to tie their logical regions to physical "home" cities—mapping ranges in `eu-west-1` to Dublin or `us-east-1` to Ashburn.
+1.  **[Geofeeds (RFC 8805)](https://datatracker.ietf.org/doc/html/rfc8805):** These are machine-readable CSVs where network operators explicitly self-report where their subnets are used.
+2.  **Cloud Provider Ranges:** I ingest live IP lists from [AWS](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html), [Google Cloud](https://docs.cloud.google.com/compute/docs/faq#find_ip_range), and others, mapping logical regions (like `eu-west-1`) to their physical locations (Dublin).
+3.  **Network Hints (Communities & Next-Hops):** At this point, I look to the routing table itself for hints. If a prefix is only announced at the London Internet Exchange, or tagged with a "London" [BGP Community](https://networklessons.com/bgp/bgp-communities-explained), I attribute it there.
+4.  **Historical WHOIS:** My final fallback for specific location data is the [APNIC](https://www.apnic.net/about-apnic/whois_search/)/RIPE databases.
+5.  **Footprint Heuristic:** For anything remaining, I assign the IP weight to every city where that network maintains physical peering capacity as listed in [PeeringDB](https://www.peeringdb.com/).
 
-When a prefix didn't match any of those sources, I looked at the network itself. I could use the **[IXP](https://en.wikipedia.org/wiki/Internet_exchange_point) [Next-Hop](https://www.noction.com/blog/bgp-next-hop)** where they are announced, or parse **[BGP Communities](https://networklessons.com/bgp/bgp-communities-explained)** for geographical hints. If THAT fell short, my final fallback leveraged historical **WHOIS** backups.
-
-To handle address space that remained unattributed to a specific city, I applied a 'footprint' heuristic which assigned those IPs to every city where the network maintained a physical peering presence. While a network might not literally announce every prefix at every IXP, this approach ensures that major connectivity hubs were credited for the logical weight they are capable of serving.
-
-The priority ended up being this:
-1. RFC 8805 Geofeeds
-2. Cloud provider published IP ranges
-3. BGP communities / IXP next-hop
-4. Historical WHOIS
-5. Footprint heuristic
-
-And to recap, the data sources used for the 2026 map include:
-- **Infrastructure:** [TeleGeography](https://www2.telegeography.com/), [submarinenetworks.com](https://www.submarinenetworks.com/), and historical archive maps.
-- **Peering:** [PeeringDB](https://www.peeringdb.com/).
-- **BGP Routing:** [University of Oregon Route Views historical RIB archives](https://www.routeviews.org/routeviews/).
-- **IP Attribution:** [RFC 8805 Geofeeds](https://datatracker.ietf.org/doc/html/rfc8805), [AWS](https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html)/[Google Cloud](https://docs.cloud.google.com/vpc/docs/ip-addresses) IP ranges, BGP Communities, and [APNIC WHOIS database](https://www.apnic.net/about-apnic/whois_search/)
+This approach ensures that accurate, granular data (like a specific cloud region) always overrides broad, administrative data (like a generic WHOIS entry).
 
 Building this pipeline presented unique engineering hurdles; here are the most significant ones:
 
