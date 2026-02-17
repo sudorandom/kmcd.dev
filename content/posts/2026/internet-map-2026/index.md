@@ -129,12 +129,6 @@ Other excellent resources for this kind of data include:
 *   **[RIPE RIS (Routing Information Service)](https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris/ris-raw-data/):** Provides high-fidelity snapshots from a dense network of collectors, primarily in Europe.
 *   **[CAIDA BGP Stream](https://bgpstream.caida.org/):** A framework for analyzing both real-time and historical data from various sources.
 
----
-
-### How BGP Shapes the Global Internet Map
-
-For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the Logical Dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
-
 #### IPv4
 Earlier, I mentioned that I’m only looking at IPv4. You might be asking why I avoided IPv6.
 
@@ -149,6 +143,12 @@ If I treated every IP equally, a single home router with IPv6 would statisticall
 
 IPv6 will require a fundamentally different dominance model that deserves its own treatment and time. Maybe next year!
 
+---
+
+### How BGP Shapes the Global Internet Map
+
+For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the Logical Dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
+
 #### Defining Logical Dominance
 
 Logical Dominance is calculated by summing the number of unique IPv4 addresses originated by an ASN and attributed to a given city. Overlapping prefixes are deduplicated using longest-prefix normalization so that no address space is counted twice.
@@ -162,8 +162,6 @@ I started with high-quality [**Geofeeds (RFC 8805)**](https://datatracker.ietf.o
 When a prefix didn't match any of those sources, I looked at the network itself. I could use the **[IXP](https://en.wikipedia.org/wiki/Internet_exchange_point) [Next-Hop](https://www.noction.com/blog/bgp-next-hop)** where they are announced, or parse **[BGP Communities](https://networklessons.com/bgp/bgp-communities-explained)** for geographical hints. If THAT fell short, my final fallback leveraged historical **WHOIS** backups.
 
 To handle address space that remained unattributed to a specific city, I applied a 'footprint' heuristic which assigned those IPs to every city where the network maintained a physical peering presence. While a network might not literally announce every prefix at every IXP, this approach ensures that major connectivity hubs were credited for the logical weight they are capable of serving.
-
-There were many issues that I stumbled headfirst into when trying to attribute certain prefixes. For example, I had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. The `0.0.0.0/0` prefix would match *every single IPv4 address*. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for Australia. I know they have a lot of open space down there, but that seemed excessive.
 
 The priority ended up being this:
 1. RFC 8805 Geofeeds
@@ -211,11 +209,28 @@ The physical meeting points of networks only tell us a part of the story. The gl
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
 
+#### The Chinese Internet
+
 The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This mapped prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
 
 {{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after adding BGP data)." >}}
 
 The result is a far more realistic view of China’s internal internet topology.
+
+#### Ghost Networks and Spurious ASNs
+
+Not every entry in the global routing table represents a real network with a physical footprint. While investigating the data, I found several "spurious" Autonomous Systems that I had to filter out to keep the map accurate.
+
+For example, I had to add safety checks to prevent "IP swallowing." There is a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. Since `0.0.0.0/0` matches every single IPv4 address, that one entry would incorrectly claim the entire global IP space for Australia. I know they have a lot of open space down there, but that seemed excessive.
+
+Another prominent example was the Department of Defense (DoD). The DoD holds several massive `/8` blocks (like `7.0.0.0/8` and `11.0.0.0/8`). While this space is technically routed, it does not represent commercial internet traffic. In early versions of my model, the registration data for these blocks linked them to administrative offices in New York City. This caused my script to dump millions of military IPs onto Manhattan and incorrectly made it look like the absolute center of the universe.
+
+I also built a blocklist to ignore other non-geographic entities:
+
+- **Administrative Containers**: I filter out WHOIS entries containing `IANA-NETBLOCK`, `CIDR-BLOCK`, or `ERX-NETBLOCK`. These are typically placeholders for unassigned pools managed by regional registries rather than active networks.
+- **Registry Placeholders**: Specific ASNs like 721, 56, and 37069 often function as loopbacks or registry tests.
+
+By explicitly ignoring these, the resulting map represents the actual commercial Internet rather than the administrative database of the Internet.
 
 ### UX and Rendering
 In addition to adding more data to the map, I've also made several improvements to the map itself.
