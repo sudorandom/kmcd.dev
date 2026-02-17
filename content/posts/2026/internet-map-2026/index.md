@@ -4,7 +4,7 @@ tags: ["dataviz", "internet-map", "internet", "networking", "bgp", "fiber-optics
 keywords: ["interactive internet map", "live internet map", "internet infrastructure map", "internet visualized", "global internet map", "internet exchange map", "internet exchange point map", "internet map of the world", "ixp map", "internet node map", "internet hub locations", "submarine cable map"]
 series: ["Internet Map"]
 date: "2026-02-18T10:00:00Z"
-description: "Mapping global internet infrastructure and routing dominance over time"
+description: "Mapping global Internet infrastructure and routing dominance over time"
 cover: "cover.svg"
 images: ["posts/internet-map-2026/cover.svg"]
 featured: true
@@ -15,11 +15,11 @@ type: "posts"
 canonical_url: https://kmcd.dev/posts/internet-map-2026
 ---
 
-For the past few years, I’ve been trying to make the physical reality of the internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
+For the past few years, I’ve been trying to make the physical reality of the Internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map changed for this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.
 
-For the 2026 edition, I wanted to better answer the question: where does the internet *actually* live? By layering on BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
+For the 2026 edition, I wanted to better answer the question: where does the Internet *actually* live? By layering on BGP routing tables alongside physical infrastructure data, I’m now closer to answering that question.
 
-The result is a concept I call "Logical Dominance." Each city’s dominance is calculated by summing the number of IPv4 addresses that are "homed" in that city. How can I tell where IP addresses are homed? This required analyzing global routing tables to trace IP ownership back to specific geographies. I dive into the details below.
+The result is a concept I call "Logical Dominance." Each city’s dominance is calculated by summing total address space of IPv4 subnets that are "homed" in that city. How can I tell where IP addresses are homed? This required analyzing global routing tables to trace IP ownership back to specific geographies. Read on to find out how I accomplished this!
 
 {{< diagram >}}
 {{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
@@ -88,7 +88,7 @@ AS49788 -> AS12552
 AS12552 -> Destination
 {{< /d2 >}}
 
-These routes change thousands of times per second, constantly reshaping the internet’s topology.
+In this state, the route from `Router` -> `Netstream (AS8283)` -> `Google (AS15169)` was chosen, at least for now. The underlying routes of the global Internet change thousands of times per second, constantly reshaping the topology.
 
 #### Sources of BGP Data
 
@@ -102,11 +102,11 @@ We can connect to public routers via projects like [University of Oregon Route V
 {{% render-code file="routeviews-log.txt" language="shell" %}}
 {{< /details-md >}}
 
-Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
+Crucially, these paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s Internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
 
 #### Subscribe to a Stream
 
-For real-time views, services like **RIPE RIS Live** aggregate BGP data from global collectors and stream it over a public WebSocket. You can watch the internet "breathe" as routes are announced and withdrawn thousands of times per second. This is fascinating for a live dashboard, but useless for backfilling history.
+For real-time views, services like **RIPE RIS Live** aggregate BGP data from global collectors and stream it over a public WebSocket. You can watch the Internet "breathe" as routes are announced and withdrawn thousands of times per second. This is fascinating for a live dashboard, but useless for backfilling history.
 
 Here's an example script consuming this stream:
 {{< details-md summary="go/stream_bgp/main.go" github_file="go/stream_bgp/main.go" >}}
@@ -120,7 +120,7 @@ The output looks like this:
 
 #### Download Historical Snapshots
 
-To build the historical model, I processed raw **RIB (Routing Information Base)** files. These are snapshots of the entire routing table as seen by a backbone router at a specific moment in time. Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the internet at any point in the past. 
+To build the historical model, I processed raw **RIB (Routing Information Base)** files. These are snapshots of the entire routing table as seen by a backbone router at a specific moment in time. Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the Internet at any point in the past.
 
 I specifically fetched snapshots from February 1st at 12:00 UTC for every year in my timeline. To ensure a comprehensive view, I aggregated data from multiple global collectors maintained by the [University of Oregon Route Views](http://archive.routeviews.org/) project.
 
@@ -142,12 +142,16 @@ While IPv6 is critical, I’ve excluded it for now because its sheer scale break
 
 Consider this: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table inside that one subnet **4.3 billion times over**.
 
-If I treated every IP equally, a single home router with IPv6 would statistically obliterate a city hosting the entire legacy IPv4 internet.
+If I treated every IP equally, a single home router with IPv6 would statistically obliterate a city hosting the entire legacy IPv4 Internet.
 
 - Total IPv6 Addresses: `340,282,366,920,938,463,463,374,607,431,768,211,456` or `340.28 undecillion`
 - Total IPv4 Addresses: `4,294,967,296` or `4.29 billion`
 
-Maybe next year I can tackle the normalization problem and incorporate IPv6 BGP routes to the map, but not today!
+IPv6 will require a fundamentally different dominance model that deserves its own treatment and time. Maybe next year!
+
+#### Defining Logical Dominance
+
+Logical Dominance is calculated by summing the number of unique IPv4 addresses originated by an ASN and attributed to a given city. Overlapping prefixes are deduplicated using longest-prefix normalization so that no address space is counted twice.
 
 #### Finding the Truth in the Noise
 
@@ -161,7 +165,14 @@ To handle address space that remained unattributed to a specific city, I applied
 
 There were many issues that I stumbled headfirst into when trying to attribute certain prefixes. For example, I had to add some safety checks to prevent "IP swallowing." For instance, there's a massive `0.0.0.0/0` block often pinned to Australia in the APNIC database. The `0.0.0.0/0` prefix would match *every single IPv4 address*. Without filtering for broad prefixes (anything with a mask length < 8), that one entry would incorrectly claim the entire global IP space for Australia. I know they have a lot of open space down there, but that seemed excessive.
 
-So... to recap, the data sources used for the 2026 map include:
+The priority ended up being this:
+1. RFC 8805 Geofeeds
+2. Cloud provider published IP ranges
+3. BGP communities / IXP next-hop
+4. Historical WHOIS
+5. Footprint heuristic
+
+And to recap, the data sources used for the 2026 map include:
 - **Infrastructure:** [TeleGeography](https://www2.telegeography.com/), [submarinenetworks.com](https://www.submarinenetworks.com/), and historical archive maps.
 - **Peering:** [PeeringDB](https://www.peeringdb.com/).
 - **BGP Routing:** [University of Oregon Route Views historical RIB archives](https://www.routeviews.org/routeviews/).
@@ -175,7 +186,7 @@ Downloading 15 years of archives is slow. I threw together a quick file-based ca
 
 #### RAM remains stubbornly finite
 
-Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger), which is a Go KV store built on an LSM tree, which makes IP prefix looks very effecient. I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
+Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger), which is a Go KV store built on an LSM tree, which makes IP prefix lookups very efficient. I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
 #### Cleaning Up the Spaghetti
 
@@ -196,7 +207,7 @@ In earlier versions, visibility depended heavily on registered Internet Exchange
 
 {{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after adding BGP data)." >}}
 
-The physical meeting points of networks only tell us a part of the story. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant weight without being major public peering hubs. The IP dominance layer exposes that distinction.
+The physical meeting points of networks only tell us a part of the story. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant weight without being major public peering hubs. The IP dominance layer makes that distinction visible.
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
 
@@ -208,7 +219,7 @@ The result is a far more realistic view of China’s internal internet topology.
 
 ### UX and Rendering
 
-Layering BGP data onto an already complex physical map created a major design challenge: **density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
+Layering BGP data onto an already complex physical map created a major design challenge: **information density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
 
 To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you dive deeper. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
 
@@ -224,11 +235,17 @@ I also introduced **Viewport Culling**. The map now only renders assets currentl
 
 The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone.
 
+I also added permalinks to make the map state fully shareable. The URL now encodes the current latitude, longitude, zoom level, selected year, and active text filters. If you zoom into Southeast Asia in 2016 and search for "Singapore", that exact view can be copied and shared. The resulting link will look like this:
+
+> https://map.kmcd.dev/?lat=3.1625&lng=103.4033&z=5.00&year=2016&q=singapore
+
+...which will show exactly how *amazingly* connected Singapore is when others click on it.
+
 ### Better Exports
 
 One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.
 
-Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. Furthermore, it exported as a PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
+Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. It also exported as PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
 
 Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All images in this post were generated using this new export feature.
 
