@@ -218,7 +218,9 @@ The Chinese internet is giant, but it presents a unique attribution challenge. B
 The result is a far more realistic view of China’s internal internet topology.
 
 ### UX and Rendering
+In addition to adding more data to the map, I've also made several improvements to the map itself.
 
+#### Dynamic Cluster Grouping
 Layering BGP data onto an already complex physical map created a major design challenge: **information density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
 
 To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you dive deeper. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
@@ -231,25 +233,30 @@ Dynamic Cluster Grouping ensures the map remains legible, preventing the increas
 
 {{< diagram >}}{{< image src="group-screenshot.png" class="center" width="500px"  >}}{{< /diagram >}}
 
+#### Viewport Culling
+
 I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
-The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone.
+#### Updates to City Sizing
 
+The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based only on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Although this ratio is arbitrary and was picked for aesthetic reasons, peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone, so I think it should be emphasized significantly more.
+
+#### Permalinks
 I also added permalinks to make the map state fully shareable. The URL now encodes the current latitude, longitude, zoom level, selected year, and active text filters. If you zoom into Southeast Asia in 2016 and search for "Singapore", that exact view can be copied and shared. The resulting link will look like this:
 
 > https://map.kmcd.dev/?lat=3.1625&lng=103.4033&z=5.00&year=2016&q=singapore
 
 ...which will show exactly how *amazingly* connected Singapore is when others click on it.
 
-### Better Exports
+#### Better Exports
 
 One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.
 
 Previously, I was using a standard Leaflet plugin for this, but it was not great. It would often fail in weird ways, leaving you with a glitched or incomplete rendering of the map. It also exported as PNG, which meant the beautiful vector data of the cables and cities was flattened into a low-resolution raster format.
 
-Now there's a new download button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. All images in this post were generated using this new export feature.
+Now there's a new export button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. Most images in this post were generated using this new export feature.
 
-### The Data
+#### Show Me the Data
 
 Another one of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and historical data is curated from various sources including **submarinenetworks.com** and archived maps.
 
@@ -264,6 +271,4 @@ You can access these directly to build your own visualizations, analyze the grow
 
 You might ask why I burned so much time manually attributing IP space when services like [MaxMind](https://www.maxmind.com) or [IPInfo](https://ipinfo.io/) already exist. The honest answer? Buying the data isn't fun. The joy of this project comes from the archaeology and the work involved in bringing order to chaotic and disjointed datasets and transforming them into something beautiful.
 
-This was a great project, and I am extremely happy with the results. If you've gotten this far without checking out the map, I'm impressed with your restraint, but here's one more link for you to take a look:
-
-**[Explore the Map »](https://map.kmcd.dev)**
+This was a great project, and I am extremely happy with the results. If you've gotten this far without checking out the map, I'm impressed with your restraint, but here's one more link for you to take a look: **[Explore the Map »](https://map.kmcd.dev)**
