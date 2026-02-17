@@ -71,6 +71,24 @@
 <!-- Icons -->
 {{- partial "favicons.html" . }}
 
+<script>
+    (function() {
+        const chosenTheme = window.localStorage && window.localStorage.getItem("theme");
+        const chosenThemeIsDark = chosenTheme == "dark";
+        const chosenThemeIsLight = chosenTheme == "light";
+
+        if (chosenThemeIsDark) {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else if (chosenThemeIsLight) {
+            document.documentElement.setAttribute("data-theme", "light");
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    })();
+</script>
+
 {{ template "_internal/schema.html" . }}
 {{ template "_internal/twitter_cards.html" . }}
 

@@ -139,11 +139,11 @@ main {
 }
 
 .post.on-list {
-    background: #fff;
     cursor: pointer;
     margin: 0;
 
     [data-theme=light] & {
+        background: #fff;
         border-bottom: 1px black dashed;
     }
     [data-theme=dark] & {
