@@ -140,11 +140,11 @@ For this edition, I processed over 15 years of BGP snapshots and PeeringDB archi
 Logical Dominance is calculated by summing the number of unique IPv4 addresses originated by an ASN and attributed to a given city. Overlapping prefixes are deduplicated using longest-prefix normalization so that no address space is counted twice.
 
 #### The Scaling Problem: Why not IPv6?
-You might notice this model focuses entirely on IPv4. While IPv6 is the future of the protocol, its sheer scale currently breaks the "Logical Dominance" math. I measure dominance by counting unique IP addresses; if I treated IPv4 and IPv6 as equals, the numbers wouldn't just be skewed—they’d be nonsensical.
+You might notice this model focuses entirely on IPv4. While IPv6 is the future of the protocol, its sheer scale currently breaks the "Logical Dominance" math. I measure dominance by counting unique IP addresses; if I treated IPv4 and IPv6 as equals, the numbers wouldn't just be skewed; they’d be nonsensical.
 
 Consider the math: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table (`4,294,967,296` addresses) inside that one subnet **4.3 billion times over**.
 
-If I treated every IP equally, a single residential IPv6 connection would statistically obliterate a city hosting the entire legacy IPv4 Internet. Until I develop a weighted model for IPv6—perhaps based on prefix density rather than raw address count—IPv4 remains the only way to compare global "weight" on a 1:1 scale.
+If I treated every IP equally, a single residential IPv6 connection would statistically obliterate a city hosting the entire legacy IPv4 Internet. Until I develop a weighted model for IPv6, perhaps based on prefix density rather than raw address count, IPv4 remains the only way to compare global "weight" on a 1:1 scale.
 
 #### Finding the Truth in the Noise
 
