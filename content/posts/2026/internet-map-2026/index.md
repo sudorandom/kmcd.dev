@@ -181,21 +181,19 @@ While investigating all of these different data sources, I ended up writing seve
 
 When I layered IP dominance onto the physical map, many additional cities became visible.
 
-{{< compare before="map_2026_before.svg" after="map_2026.svg" caption="World (before and after adding BGP data)." >}}
+{{< compare before="map_2026_before.svg" after="map_2026_after.svg" caption="World ([before](https://map.kmcd.dev/?lat=29.8864&lng=6.8171&z=3.50&year=2026&cables=0&peering=1&ips=0) and [after](https://map.kmcd.dev/?lat=29.8864&lng=6.8171&z=3.50&year=2026&cables=0&peering=1&ips=1) adding BGP data)." >}}
 
 In earlier versions, visibility depended heavily on registered Internet Exchange Points. That highlighted the traditional coastal hubs and major peering metros. But once routing table data was incorporated, the map revealed cities without major IXPs. These are places with substantial address space and large originating networks, even if they do not host a major public exchange. This is most noticeable in India, Japan, China, Indonesia, and in secondary metros beyond traditional hubs in the EU and United States.
 
-{{< compare before="us_before.svg" after="us_after.svg" caption="United States on the map (before and after adding BGP data)." >}}
+{{< compare before="asia_before.svg" after="asia_after.svg" caption="Asia on the map ([before](https://map.kmcd.dev/?lat=17.6440&lng=108.1494&z=5.00&year=2026&cables=0&peering=1&ips=0) and [after](https://map.kmcd.dev/?lat=17.6440&lng=108.1494&z=5.00&year=2026&cables=0&peering=1&ips=1) adding BGP data)." >}}
 
 The physical meeting points of networks only tell us a part of the story. The global routing table reveals where address space is actually controlled and originated. Some cities carry significant weight without being major public peering hubs. The IP dominance layer makes that distinction visible.
 
-{{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map (before and after adding BGP data)." >}}
+{{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map ([before](https://map.kmcd.dev/?lat=48.9108&lng=10.1420&z=5.50&year=2026&cables=0&peering=1&ips=0) and [after](https://map.kmcd.dev/?lat=48.9108&lng=10.1420&z=5.50&year=2026&cables=0&peering=1&ips=1) adding BGP data)." >}}
 
 #### The Chinese Internet
 
 The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This mapped prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
-
-{{< compare before="cn_before.svg" after="cn_after.svg" caption="China on the map (before and after adding BGP data)." >}}
 
 The result is a far more realistic view of China’s internal internet topology.
 
@@ -228,7 +226,7 @@ To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now g
 
 Dynamic Cluster Grouping ensures the map remains legible, preventing the increased data density from overwhelming the map. When you click on a cluster, the details panel expands to list every city contained within that group.
 
-{{< diagram >}}{{< image src="group-screenshot.png" class="center" width="500px"  >}}{{< /diagram >}}
+{{< diagram >}}{{< image src="group-screenshot.png" class="center" width="500px" >}}{{< /diagram >}}
 
 #### Viewport Culling
 
@@ -237,6 +235,12 @@ I also introduced **Viewport Culling**. The map now only renders assets currentl
 #### Updates to City Sizing
 
 The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based only on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Although this ratio is arbitrary and was picked for aesthetic reasons, peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone, so I think it should be emphasized significantly more.
+
+#### Enable/disable layers
+
+Now, the map can be sliced into three layers: Cables, peering bandwidth, and IP allocations. There are controls that allow you to show or hide each of these layers individually.
+
+{{< diagram >}}{{< image src="menu-screenshot.png" class="center" width="500px" >}}{{< /diagram >}}
 
 #### Permalinks
 I also added permalinks to make the map state fully shareable. The URL now encodes the current latitude, longitude, zoom level, selected year, and active text filters. If you zoom into Southeast Asia in 2016 and search for "Singapore", that exact view can be copied and shared. The resulting link will look like this:
