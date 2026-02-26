@@ -46,6 +46,8 @@ if huffman {
 }
 ```
 
+Implementing hpack by hand can be a personal exercise for you later!
+
 #### 2. The Decoder Loop
 
 Our previous `Decode` method was incomplete. We need to handle four specific bit-patterns defined in [RFC 7541](https://datatracker.ietf.org/doc/html/rfc7541).

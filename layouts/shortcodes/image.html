@@ -1,15 +1,20 @@
 {{ if .Get "src" }}
     {{ $image := ($.Page.Resources.GetMatch (.Get "src")) }}
-    {{ if ne $image.MediaType.SubType "svg" }}
-    {{ $image := $image.Fit (or (.Get "fit") "2000x1600 webp") }}
+    {{ if $image }}
+        {{ $should_skip_fit := or (eq $image.MediaType.SubType "svg") (eq $image.MediaType.SubType "gif") (eq (.Get "animate") "true") }}
+        {{ if not $should_skip_fit }}
+            {{ $image = $image.Fit (or (.Get "fit") "2000x1600 webp") }}
+        {{ end }}
+        <img src="{{ $image.Permalink }}"
+             {{- if or (.Get "alt") (.Get "caption") }}
+             alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
+             {{- end -}}
+             {{- with .Get "class" }} class="{{ . }}"{{ end -}}
+             {{- with .Get "width" }} width="{{ . }}"{{ end -}}
+             {{- with .Get "height" }} height="{{ . }}"{{ end -}}
+             {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
+        /><!-- Closing img tag -->
+    {{ else }}
+        {{ warnf "Image not found: %s in %s" (.Get "src") $.Page.File.Path }}
     {{ end }}
-    <img src="{{ $image.Permalink }}"
-         {{- if or (.Get "alt") (.Get "caption") }}
-         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
-         {{- end -}}
-         {{- with .Get "class" }} class="{{ . }}"{{ end -}}
-         {{- with .Get "width" }} width="{{ . }}"{{ end -}}
-         {{- with .Get "height" }} height="{{ . }}"{{ end -}}
-         {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
-    /><!-- Closing img tag -->
 {{ end }}

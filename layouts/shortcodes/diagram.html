@@ -1,7 +1,12 @@
+{{- $caption := .Get "caption" -}}
 <div class="diagram-wrapper">
     <span class="diagram"
         style="{{- with .Get "width" }} width:{{ . }};{{ end -}}
               {{- with .Get "height" }} height:{{ . }};{{ end -}}">
         {{- .Inner | safeHTML }}
     </span>
+
+    {{ with $caption }}
+        <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
 </div>

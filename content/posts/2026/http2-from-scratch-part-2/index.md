@@ -18,7 +18,7 @@ series: ["HTTP from Scratch"]
 
 In the previous post, we successfully performed the TLS handshake and sent our 24-byte connection preface. To the server, we now look like a valid HTTP/2 client. But as soon as that preface is sent, the server starts talking back in a language we haven't yet taught our Go code to understand.
 
-While HTTP/1.1 communicated in lines of text separated by newlines, HTTP/2 communicates in **frames**. Every single interaction from here on out (settings, headers, data, and keepalive pings) happens inside of a frame. To progress, we need to build a parser that can slice into these binary packets and make sense of the bits inside.
+While HTTP/1.1 communicated in lines of text separated by newlines, HTTP/2 communicates in **frames**. Every single interaction from here on out (settings, headers, data, and keepalive pings) happens inside of a frame. To move us closer to our goal of understanding HTTP/2, we need to build a parser that can slice into these binary packets and make sense of the bits inside.
 
 ### The Anatomy of a Frame
 
@@ -43,7 +43,7 @@ The header fields serve specific purposes:
 * **Flags:** Boolean modifiers that change how the frame is processed.
 * **Stream Identifier:** A unique ID that links the frame to a specific request-response lifecycle.
 
-The first bit of the Stream Identifier is reserved (R) and must remain zero. This is a common pattern in binary protocols to ensure alignment or save space for future protocol versions.
+The first bit of the Stream Identifier is reserved (R) and must remain zero. You will see this a lot in binary protocols, where bits are reserved for the potential of making a backwards compatible next version of the protocol or byte alignment.
 
 ### Modeling the Header in Go
 
