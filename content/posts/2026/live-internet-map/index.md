@@ -8,6 +8,7 @@ images: ["/posts/live-internet-map/map.png"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
+featured: true
 title: "Live Internet Map"
 slug: "live-internet-map"
 type: "posts"
