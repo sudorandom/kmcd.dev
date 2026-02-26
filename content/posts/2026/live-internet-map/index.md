@@ -24,7 +24,7 @@ In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure M
 
 I do want to clarify one thing up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, the primary requirement for this project was simply to build a really cool looking map.
 
-You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](https://www.youtube.com/channel/UCA9eO4Gt-Ua6lAEGzWQHQFA/live) or here:
+You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](http://livemap.kmcd.dev) or here:
 
 {{< youtube-live channel="UCA9eO4Gt-Ua6lAEGzWQHQFA" >}}
 
@@ -295,8 +295,8 @@ Implementing it meant solving the projection's iterative trigonometric equations
 
 Here is the final result, which I've gazed at for far too long already:
 
-{{< a href="https://www.youtube.com/channel/UCA9eO4Gt-Ua6lAEGzWQHQFA/live" target="_blank" >}}
-{{< diagram caption="🔴 [sudorandom on youtube](https://www.youtube.com/channel/UCA9eO4Gt-Ua6lAEGzWQHQFA/live)" >}}
+{{< a href="http://livemap.kmcd.dev" target="_blank" >}}
+{{< diagram caption="🔴 [livemap.kmcd.dev](http://livemap.kmcd.dev)" >}}
 {{< image src="map-animation.webp" animate="true" width="600px" >}}
 {{< /diagram >}}
 {{< /a >}}
