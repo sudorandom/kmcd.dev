@@ -18,11 +18,11 @@ canonical_url: https://kmcd.dev/posts/live-internet-map/
 
 The internet runs on constant routing updates. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves between networks. Most people see URLs and apps. Routers see prefixes and AS paths.
 
-I wanted to build a real-time visualization of that stream. I needed something that shows where routing activity is happening and how it shifts over time.
+Because the networking world is so transparent to everyone, I wanted to build a real-time visualization of the stream of routing updates. I needed something that shows where routing activity is happening and how it shifts over time.
 
 In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure Map](map.kmcd.dev), I mentioned a few alternative sources for BGP data that I didn't end up using. One of them was a [websocket-based streaming API](https://ris-live.ripe.net/) from RIPE. At the time, I set it aside. Soon, it became my obsession and the live view was born.
 
-I do want to clarify one thing up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, let us be completely honest with ourselves. The primary requirement for this project was simply to build a really cool looking map.
+I do want to clarify one thing up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, the primary requirement for this project was simply to build a really cool looking map.
 
 You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](https://www.youtube.com/channel/UCA9eO4Gt-Ua6lAEGzWQHQFA/live) or here:
 
@@ -82,9 +82,14 @@ In networking, flapping happens when a route rapidly appears and disappears. Ima
 When you see those colored pulses popping off on the map, they represent specific BGP message types. "Updates" is the general term, but practically, the protocol is juggling a few distinct events:
 
 * **Announcements (Green):** Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut.
-* **Withdrawals (Red):** Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable—usually the result of a severed fiber cable, hardware failure, or a planned maintenance window.
+* **Withdrawals (Red):** Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window.
 * **Path Attributes (Purple):** The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple.
 * **Gossip (Blue):** Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map.
+
+
+{{< diagram >}}
+{{< image src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
+{{< /diagram >}}
 
 When you zoom out and look at all those colors firing at once, the scale starts to make sense. The internet is a collection of over 70,000 independent networks coordinating through BGP. This map visualizes that global coordination as it happens.
 
@@ -92,11 +97,46 @@ When you zoom out and look at all those colors firing at once, the scale starts 
 
 To make sure the map isn't just a wall of moving dots, I included several dashboard elements that provide context to the chaos:
 
-* **Top Activity Hubs:** This ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment.
-* **Most Active Prefixes:** While the hubs show countries, this tracks the specific network blocks causing the most noise. Great for spotting large-scale outages.
-* **Activity Trend (1m):** A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event.
-* **Beacon Analysis:** A dynamic donut chart that separates "Organic" traffic from "Beacons", which are special test signals sent out by researchers. It helps you understand how much of the activity you see is natural internet behavior versus intentional scientific measurement.
-* **Now Playing:** The current background music track.
+### Top Activity Hubs
+
+This ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment.
+
+{{< diagram >}}
+{{< image src="top-activity-hubs.png" >}}
+{{< /diagram >}}
+
+### Most Active Prefixes
+
+While the hubs show countries, this tracks the specific network blocks causing the most noise. Great for spotting large-scale outages. Another name for this is the networking "wall of shame".
+
+{{< diagram >}}
+{{< image src="most-active-prefixes.png" >}}
+{{< /diagram >}}
+
+### Activity Trend (1m)
+
+A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event.
+
+{{< diagram >}}
+{{< image src="activity-trend.png" >}}
+{{< /diagram >}}
+
+### Beacon Analysis
+
+A dynamic donut chart that separates "Organic" traffic from "Beacons", which are special test signals sent out by researchers. It helps you understand how much of the activity you see is natural internet behavior versus intentional scientific measurement. There is more about this later!
+
+{{< diagram >}}
+{{< image src="beacon-analysis.png" >}}
+{{< /diagram >}}
+
+### Now Playing
+
+The current background music track.
+
+
+{{< diagram >}}
+{{< image src="now-playing.png" >}}
+{{< /diagram >}}
 
 
 ### The Ubiquity of /24s
@@ -125,7 +165,7 @@ I've since learned this is likely due to a phenomenon called ["Path Hunting."](h
 
 Not all activity on the map comes from failing links or organic traffic shifts. There is also intentional 'breakage' happening behind the scenes to test BGP propagation.
 
-It turns out RIPE RIS operates [Routing Beacons](https://ris.ripe.net/docs/routing-beacons/). Routing Beacons are prefixes deliberately announced and withdrawn on a fixed schedule, typically every two hours. One of them announces and withdrawals every *10 minutes*. Researchers use these beacons as a controlled signal inside the global routing table to study BGP propagation and convergence. To make the activity list useful, I had to write logic to classify and filter these beacons out of the ranking.
+It turns out RIPE RIS operates [Routing Beacons](https://ris.ripe.net/docs/routing-beacons/). Routing Beacons are prefixes deliberately announced and withdrawn on a fixed schedule, typically every two hours. One of them announces and withdraws every *10 minutes*. Researchers use these beacons as a controlled signal inside the global routing table to study BGP propagation and convergence. To make the activity list useful, I had to write logic to classify and filter these beacons out of the ranking.
 
 RIPE also runs "Anchors" alongside these beacons. While a beacon prefix constantly flips on and off, an anchor is a prefix permanently announced from the exact same physical router. This gives researchers a stable control group. They can compare the volatile beacon traffic against a baseline of stable routing from the identical location.
 
@@ -237,7 +277,7 @@ The colors map directly to the event types: green for new paths, purple for upda
 {{< image src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
 {{< /diagram >}}
 
-#### Projection Choice: Winkel Tripel
+#### The Winkel Tripel Projection
 
 Mercator would have been easy, but it heavily distorts size near the poles. For a global activity map, that felt misleading. 
 
