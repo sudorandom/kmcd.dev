@@ -21,6 +21,8 @@ I wanted to build a real-time visualization of that stream. I needed something t
 
 In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure Map](map.kmcd.dev), I mentioned a few alternative sources for BGP data that I didn't end up using. One of them was a [websocket-based streaming API](https://ris-live.ripe.net/) from RIPE. At the time, I set it aside. Soon, it became my obsession and the live view was born.
 
+I do want to clarify one thing up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, let us be completely honest with ourselves. The primary requirement for this project was simply to build a really cool looking map.
+
 You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](https://www.youtube.com/channel/UCA9eO4Gt-Ua6lAEGzWQHQFA/live) or here:
 
 {{< youtube-live channel="UCA9eO4Gt-Ua6lAEGzWQHQFA" >}}
@@ -73,6 +75,28 @@ If you are watching the map and suddenly see a wave of pulses lighting up all ov
 
 In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone." Because BGP is designed to spread information globally, that single localized hiccup does not stay local. It sends a ripple effect across the map as thousands of routers worldwide are forced to constantly recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
 
+### The Ubiquity of /24s
+
+While building the "Most Active Prefixes" dashboard, I kept noticing the exact same thing: `/24` subnets were overrepresented on the leaderboard. 
+
+From what I've learned, a `/24` (256 IP addresses) is the smallest block of IPs that major ISPs will actually accept and pass along. Because `/24` is the standard unit of the global routing table, most routing churn, whether it is a small office link flapping or a major datacenter shifting traffic, happens at this granularity.
+
+### Path Hunting and Anycast
+
+When I first started watching the live data, I was confused by why a single localized outage would trigger a massive global explosion of pulses. 
+
+I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://blog.cloudflare.com/going-bgp-zombie-hunting/) When a route dies, the internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time.  Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
+
+{{< diagram >}}
+{{< image src="asn32934.gif" >}}
+{{< /diagram >}}
+
+**Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere.  But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a massive visual wave of routing adjustments ripping across the map.
+
+{{< diagram >}}
+{{< image src="spiderman-meme.png" >}}
+{{< /diagram >}}
+
 ### Decoding the Pulses
 
 When you see those colored pulses popping off on the map, they represent specific BGP message types. "Updates" is the general term, but practically, the protocol is juggling a few distinct events:
@@ -82,7 +106,7 @@ When you see those colored pulses popping off on the map, they represent specifi
 * **Path Attributes (Purple):** The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple.
 * **Gossip (Blue):** Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map.
 
-When you zoom out and look at all those colors firing at once, the scale starts to make sense.  The internet is a collection of over 70,000 independent networks coordinating through BGP. This map visualizes that global coordination as it happens.
+When you zoom out and look at all those colors firing at once, the scale starts to make sense. The internet is a collection of over 70,000 independent networks coordinating through BGP. This map visualizes that global coordination as it happens.
 
 ## What else is on the map?
 
@@ -143,8 +167,6 @@ Now, when a route change happens inside a known cloud prefix, the pulse appears 
 
 BGP updates arrive continuously, and during route flapping events the volume spikes hard.
 
-To keep the visualization readable and performant, the pipeline includes a multi-stage classification engine:
-
 To keep the visualization readable without melting the screen, the pipeline filters out redundant updates (within 15 seconds), waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms using a logarithmic scale.
 
 {{< d2 width="500px" >}}
@@ -204,7 +226,7 @@ With some data issues resolved, I could focus on making it look good.
 
 Animations use interpolation instead of snapping to the next state. Country rankings slide into position. Percentages ease between values. Even small UI transitions are smoothed out. These details significantly improve the polish of the stream, but it is definitely a balancing act. Too much movement can distract from the visual effect of the map itself, so getting this right required some restraint.
 
-The pulses are what actually bring the data to life. Under the hood, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
+The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
 The colors map directly to the event types: green for new paths, purple for updates, red for withdrawals, and blue for gossip. Because they use additive blending, overlapping pulses naturally create a bright hotspot over regions with a ton of routing activity. They pop onto the map, expand, and fade out smoothly. Managing this entire visual lifecycle efficiently is what keeps the map feeling dynamic without tanking the frame rate.
 
