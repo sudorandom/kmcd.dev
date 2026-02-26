@@ -1,6 +1,6 @@
 ---
 title: "IRC Log: Reactionary"
-date: 2026-03-02T10:00:00Z
+date: 2026-03-30T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, react, incident]
 series: [irc-logs]
