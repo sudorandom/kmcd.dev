@@ -151,9 +151,11 @@ Handling 30,000+ BGP updates per second takes more than plotting points on a can
 
 I originally planned to build this as a standard web frontend, similar to my [previous map](https://kmcd.dev). However, I hit two massive walls almost immediately.
 
-The first problem was the sheer volume of data. BGP updates can easily peak at over 30,000 events per second. Forcing a web browser to process that firehose while maintaining a smooth 60 FPS with complex blending is just not in the cards today.
+The first problem was the sheer volume of data. BGP updates can easily peak at over 30,000 events per second. Forcing a web browser to process that firehose while maintaining a smooth 30 FPS with complex blending is just not in the cards today.
 
 The second problem was scaling. If the map actually got popular, having thousands of browsers opening individual websocket connections to the RIPE RIS-Live service would be a disaster. It is wildly inefficient, and accidentally DDoSing a service designed to monitor Internet stability was not on my to-do list.
+
+Here is what that scenario looks like:
 
 {{< d2 >}}
 direction: right
@@ -221,6 +223,9 @@ classes: {
   RIPE -> Browsers.BN: {class: bad_connection}
 }
 {{< /d2 >}}
+
+To protect the RIPE service from being overwhelmed, the logical next step was to put a middleman in place to handle the multiplexing. This led me to a standard client-server architecture:
+
 {{< d2 >}}
 direction: right
 
@@ -303,6 +308,9 @@ classes: {
   Server -> Browsers.BN: {class: neutral_connection}
 }
 {{< /d2 >}}
+
+Multiplexing solves the connection problem, but it completely ignores the browser rendering issues I was having. To guarantee a smooth 30 FPS for everyone without melting their CPUs, I decided to bypass the browser canvas entirely. I pivoted the architecture to a centralized video stream broadcasted to YouTube:
+
 {{< d2 >}}
 direction: right
 
@@ -419,9 +427,9 @@ classes: {
 }
 {{< /d2 >}}
 
-I had a choice. Scenario 1 is not viable, because it could make the operators of RIPE RIS-live very sad and potentially angry. So now I have the choice between scenario 2 and 3. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map by streaming to YouTube. I went with the latter option.
+Now I had a choice. Scenario 1 was dead on arrival because it could make the operators of RIPE RIS-Live *very sad* and potentially angry. That left me with the choice between building a complex backend service to multiplex that single RIPE connection to all my users (Scenario 2), or completely changing how people view the map by streaming to YouTube (Scenario 3). I went with the latter option.
 
-Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an obvious choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
+Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It is easy to run on a TV where the browser version isn't really viable. This pivot also made the tech stack an obvious choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
 
 The downside is reduced interaction: no zooming, no toggling UI, no customization. I think this tradeoff was ultimately worth it, but I just want to note what I lost from making this dramatic change in architecture.
 
