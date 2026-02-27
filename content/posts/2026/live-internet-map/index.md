@@ -88,10 +88,12 @@ When you see those colored pulses popping off on the map, they represent specifi
 {{< image src="legend.png" >}}
 {{< /diagram >}}
 
-* **Gossip (Blue):** Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map.
-* **Path Change (Purple):** The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple.
-* **Withdrawals (Red):** Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window.
-* **New Paths (Green):** Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut.
+| Event Type | Color | Description |
+| :--- | :--- | :--- |
+| **Propagation** | Blue | Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map. |
+| **Path Change** | Purple | The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple. |
+| **Withdrawals** | Red | Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window. |
+| **New Paths** | Green | Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut. |
 
 {{< diagram >}}
 {{< image src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
