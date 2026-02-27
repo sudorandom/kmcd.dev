@@ -6,7 +6,8 @@ live
 live.old
 future
 future.old
-_gen
+resources/_gen
+.hugo_cache
 .vscode
 
 env

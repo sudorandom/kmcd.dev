@@ -12,12 +12,24 @@ jobs:
     permissions:
       contents: read
       deployments: write
+    env:
+      HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
         uses: jdx/mise-action@v2
         with:
           experimental: true
+      - name: Cache Hugo
+        uses: actions/cache@v4
+        with:
+          path: |
+            resources/_gen
+            .hugo_cache
+          key: ${{ runner.os }}-hugo-live-${{ hashFiles('**/config.yaml', 'go.sum', 'go.mod') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-live-
+            ${{ runner.os }}-hugo-
       - name: Install Playwright driver (via Go module)
         run: go tool playwright install --with-deps
       - name: Build
@@ -35,12 +47,24 @@ jobs:
     permissions:
       contents: read
       deployments: write
+    env:
+      HUGO_CACHEDIR: ${{ github.workspace }}/.hugo_cache
     steps:
       - uses: actions/checkout@v4
       - name: Setup environment
         uses: jdx/mise-action@v2
         with:
           experimental: true
+      - name: Cache Hugo
+        uses: actions/cache@v4
+        with:
+          path: |
+            resources/_gen
+            .hugo_cache
+          key: ${{ runner.os }}-hugo-future-${{ hashFiles('**/config.yaml', 'go.sum', 'go.mod') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-future-
+            ${{ runner.os }}-hugo-
       - name: Install Playwright driver (via Go module)
         run: go tool playwright install --with-deps
       - name: Build
