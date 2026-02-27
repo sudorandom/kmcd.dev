@@ -419,7 +419,7 @@ classes: {
 }
 {{< /d2 >}}
 
-I had a choice. Scenario 1 is not viable, because it could make the operations of RIPE RIS-live very sad and potentially angry. So now I have the choice between scenario 2 and 3. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map by streaming to YouTube. I went with the latter option.
+I had a choice. Scenario 1 is not viable, because it could make the operators of RIPE RIS-live very sad and potentially angry. So now I have the choice between scenario 2 and 3. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map by streaming to YouTube. I went with the latter option.
 
 Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an easy choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
 

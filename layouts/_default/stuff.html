@@ -13,6 +13,25 @@
         </span>
         <div class="projects-wrapper">
             <div class="projects-box">
+                <h3><a href="https://livemap.kmcd.dev" target="_blank">Live Internet Map</a></h3>
+                {{ $liveInternetMapImg := (resources.Get "images/screenshots/map-animation.webp") }}
+                {{ if $liveInternetMapImg }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://livemap.kmcd.dev" target="_blank">
+                            <img src="{{ $liveInternetMapImg.Permalink }}" alt="Screenshot of Live Internet Map" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    A stylized live map of BGP traffic across the worldwide Internet. Watch the map live at <a href="https://livemap.kmcd.dev" target="_blank">livemap.kmcd.dev</a>.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="https://livemap.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box">
                 <h3><a href="https://map.kmcd.dev" target="_blank">Internet Infrastructure Map</a></h3>
                 {{ $internetMapImg := (resources.Get "images/screenshots/internet-map.png") }}
                 {{ if $internetMapImg }}
