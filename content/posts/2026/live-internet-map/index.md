@@ -143,6 +143,10 @@ I eventually added a Beacon Analysis view that separates "organic" updates from 
 
 ---
 
+{{< diagram >}}
+{{< image src="spiderman-meme-2.jpg" >}}
+{{< /diagram >}}
+
 ## Making the map
 
 Handling 30,000+ BGP updates per second takes more than plotting points on a canvas. The project is written in Go for its concurrency model and relies on Ebitengine for hardware-accelerated 2D rendering. 
@@ -456,7 +460,7 @@ This preprocessing seems a bit complex, but it's worth it since it makes the liv
 
 BGP updates arrive continuously, and during route flapping events the volume spikes hard.
 
-To keep the visualization readable without becoming an incomprehensible mess, the pipeline waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms using a logarithmic scale.
+To keep the visualization readable without becoming an incomprehensible mess, the pipeline waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms.
 
 {{< d2 >}}
 direction: down
@@ -511,7 +515,7 @@ The colors map directly to the event types: green for new paths, purple for upda
 
 #### The Mollweide Projection
 
-Mercator would have been easy, but it heavily distorts size near the poles. For a global activity map, that felt misleading. 
+Mercator would have been easy, but it heavily distorts size near the poles. For a global activity map, that felt misleading.
 
 I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_projection).
 
@@ -519,7 +523,7 @@ I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_proje
 {{< image src="mollweide.svg" width="700px" >}}
 {{< /diagram >}}
 
-This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that feels familiar without exaggerating high-latitude areas.
+This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that still feels familiar without exaggerating high-latitude areas.
 
 ---
 
