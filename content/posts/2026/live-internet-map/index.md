@@ -421,7 +421,7 @@ classes: {
 
 I had a choice. Scenario 1 is not viable, because it could make the operators of RIPE RIS-live very sad and potentially angry. So now I have the choice between scenario 2 and 3. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map by streaming to YouTube. I went with the latter option.
 
-Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an easy choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
+Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an obvious choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
 
 The downside is reduced interaction: no zooming, no toggling UI, no customization. I think this tradeoff was ultimately worth it, but I just want to note what I lost from making this dramatic change in architecture.
 
@@ -491,7 +491,7 @@ Pace -> Output: Smooth Render
 
 ## Aesthetics, Motion, and Sound
 
-Animations use interpolation instead of snapping to the next state. A "glitch" effect was added when changes to the "Top Activity Hubs" and "Most Active Prefixes" lists occur to make it more obvious that a change happened and to add to the cyberpunk aesthetic. Percentages ease between values. These effects add polish, but too much motion distracts. Finding that balance took restraint and a surprisingly large amount of experimentation.
+Animations use interpolation instead of snapping to the next state. For parts of the map which update infrequently, I wanted to highlight that a change occurred. For that, I added a "glitch" effect to the "Top Activity Hubs" and "Most Active Prefixes" to make it more obvious and to add to the cyberpunk aesthetic. These effects add polish, but too much motion distracts. Finding that balance took restraint and a surprisingly large amount of experimentation.
 
 The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
@@ -523,6 +523,6 @@ Here is the final result, which I've gazed at for far too long already:
 {{< /diagram >}}
 {{< /a >}}
 
-This project turned into a deeper dive into BGP than I expected. Watching routing updates happening live exposes patterns that are impossible to find with a static snapshot.
+This project turned into a deeper dive into BGP than I expected. Watching routing updates happening live exposes patterns that are impossible to find with a static snapshot. It has been a rewarding project and I am extremely happy with the result.
 
 So please, toss the live stream on your TV, sit back, relax, and watch the Internet route the world's network traffic as you listen to relaxing lofi in the background.
