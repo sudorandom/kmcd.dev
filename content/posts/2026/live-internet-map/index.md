@@ -16,13 +16,15 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/live-internet-map/
 ---
 
-The internet runs on constant routing updates. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves between networks. Most people see URLs and apps. Routers see prefixes and AS paths.
+Right now, thousands of routers are arguing about how to reach each other. That’s expected, it’s how the Internet works. I made a map that lets us listen in on the conversation, but in a relaxing and aesthetically pleasing way.
+
+Let's back up for a second. The Internet runs on constant routing updates. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves between networks. Most people see URLs and apps. Routers see prefixes and AS paths.
 
 Because the networking world is so mysterious to most people, I wanted to build a real-time visualization of the stream of routing updates. I needed something that shows where routing activity is happening and how it shifts over time.
 
 In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure Map](map.kmcd.dev), I mentioned a few alternative sources for BGP data that I didn't end up using. One of them was a [websocket-based streaming API](https://ris-live.ripe.net/) from RIPE. At the time, I set it aside. Soon, it became my obsession and the live view was born.
 
-I do want to clarify one thing up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, the primary requirement for this project was simply to build a really cool looking map.
+One clarification up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, the primary requirement for this project was simply to build a really cool looking map.
 
 You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](http://livemap.kmcd.dev) or here:
 
@@ -78,7 +80,7 @@ If you are watching the map and suddenly see a wave of pulses lighting up all ov
 {{< image src="flappy-bird.png" width="200px" height="200px" >}}
 {{< /diagram >}}
 
-In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone". Because BGP is designed to spread information globally, that single localized hiccup does not stay local. It sends a ripple effect across the map as thousands of routers worldwide are forced to constantly recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
+In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the Internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone". That single localized hiccup doesn’t stay local. It ripples outward as routers everywhere recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
 
 ### Decoding the Pulses
 
@@ -92,14 +94,14 @@ When you see those colored pulses popping off on the map, they represent specifi
 | :--- | :--- | :--- |
 | **Propagation** | Blue | Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map. |
 | **Path Change** | Purple | The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple. |
-| **Withdrawals** | Red | Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window. |
+| **Withdrawals** | Red | Red means a route is dead. A router is explicitly telling the Internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window. |
 | **New Paths** | Green | Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut. |
 
 {{< diagram >}}
 {{< image src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
 {{< /diagram >}}
 
-When you zoom out and see all those colors firing at once, the true scale of the internet comes to life. It tells the story of over 70,000 independent networks coordinating in real time.
+When you zoom out and see all those colors firing at once, the true scale of the Internet comes to life. It tells the story of over 70,000 independent networks coordinating in real time.
 
 ## What else is on the map?
 
@@ -117,13 +119,13 @@ To make sure the map isn't just a wall of moving dots, I included several dashbo
 
 When I first started watching the live data, I was confused by why a single localized outage would trigger a massive global explosion of pulses. 
 
-I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://blog.cloudflare.com/going-bgp-zombie-hunting/) When a route dies, the internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time.  Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
+I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://blog.cloudflare.com/going-bgp-zombie-hunting/) When a route dies, the Internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time.  Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
 
 {{< diagram caption="[Routers looking for Facebook's network on October 4, 2021](https://blog.cloudflare.com/october-2021-facebook-outage/)" >}}
 {{< image src="asn32934.gif" >}}
 {{< /diagram >}}
 
-**Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere.  But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a massive visual wave of routing adjustments ripping across the map.
+**Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere.  But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a sudden surge of routing adjustments across the map.
 
 {{< diagram >}}
 {{< image src="spiderman-meme.png" >}}
@@ -133,7 +135,7 @@ I've since learned this is likely due to a phenomenon called ["Path Hunting."](h
 
 While building the "Most Active Prefixes" list, I kept noticing the exact same thing: `/24` subnets were overrepresented on the leaderboard. 
 
-From what I've learned, a `/24` (256 IP addresses) is the smallest block of IPs that major ISPs will actually accept and pass along. Because `/24` is the standard unit of the global routing table, most routing churn, whether it is a small office link flapping or a major datacenter shifting traffic, happens at this granularity.
+A /24 (256 IPs) is effectively the smallest globally routable unit, so most churn naturally happens at that granularity.
 
 But there was another reason for seeing the *same* /24 subnets appearing on the list. Not all activity on the map comes from failing links or organic traffic shifts. There is also intentional 'breakage' happening behind the scenes to test BGP propagation.
 
@@ -153,9 +155,9 @@ Handling 30,000+ BGP updates per second takes more than plotting points on a can
 
 I originally planned to build this as a standard web frontend, similar to my [previous map](https://kmcd.dev). However, I hit two massive walls almost immediately.
 
-The first problem was the sheer volume of data. BGP updates can easily peak at over 30,000 events per second. Forcing a web browser to process that firehose while maintaining a smooth 60 FPS with complex blending is a great way to melt a user's laptop.
+The first problem was the sheer volume of data. BGP updates can easily peak at over 30,000 events per second. Forcing a web browser to process that firehose while maintaining a smooth 60 FPS with complex blending is just not in the cards today.
 
-The second problem was scaling. If the map actually got popular, having thousands of browsers opening individual websocket connections to the RIPE RIS-Live service would be a disaster. It is wildly inefficient, and accidentally DDoSing a service designed to monitor internet stability was not on my to-do list.
+The second problem was scaling. If the map actually got popular, having thousands of browsers opening individual websocket connections to the RIPE RIS-Live service would be a disaster. It is wildly inefficient, and accidentally DDoSing a service designed to monitor Internet stability was not on my to-do list.
 
 {{< d2 >}}
 direction: right
@@ -425,13 +427,13 @@ I had a choice. Scenario 1 is not viable, because it could make the operations o
 
 Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an easy choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
 
-The downside to this approach is that there is less opportunity for interaction. You can't zoom to a region that you care about. You can't show or hide any of the UI elements. You can't really customize it at all. I think this tradeoff was ultimately worth it, but I just want to note what I lost from making this dramatic change in architecture.
+The downside is reduced interaction: no zooming, no toggling UI, no customization. I think this tradeoff was ultimately worth it, but I just want to note what I lost from making this dramatic change in architecture.
 
 ### Flattening IP Space
 
 To map a BGP update to a geographic location, you need reliable IP-to-region data. I am currently only focusing on IPv4, and that data comes from five Regional Internet Registries (RIRs). Each registry publishes large and sometimes overlapping delegated stats files.
 
-Fragmented lookups across raw datasets might be fine for offline processing. But this is live data, and there is a strict frame rate budget. If the engine had to search through five separate datasets for every single update, the visualization would immediately grind to a halt. At 30,000+ updates per second, efficiency is non-negotiable.
+Fragmented lookups across raw datasets might be fine for offline processing. But there is a strict frame rate budget. If the engine had to search through five separate datasets for every single update, the visualization would stutter. At 30,000+ updates per second, efficiency is pretty important.
 
 To solve this, I preprocess all the data upfront using a sweep-line algorithm. Each IP range acts as a segment on a 1D number line. The algorithm walks across this space, resolves any overlaps between registries, and collapses millions of ranges into a single, clean, non-overlapping index.
 
@@ -450,7 +452,7 @@ This preprocessing seems a bit complex, but it's worth it since it makes the liv
 
 BGP updates arrive continuously, and during route flapping events the volume spikes hard.
 
-To keep the visualization readable without melting the screen, the pipeline filters out redundant updates (within 15 seconds), waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms using a logarithmic scale.
+To keep the visualization readable without becoming an incomprehensible mess, the pipeline waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms using a logarithmic scale.
 
 {{< d2 >}}
 direction: down
@@ -493,7 +495,7 @@ Pace -> Output: Smooth Render
 
 ## Aesthetics, Motion, and Sound
 
-Animations use interpolation instead of snapping to the next state. A "glitch" effect was added when changes to the "Top Activity Hubs" and "Most Active Prefixes" lists occur to make it more obvious that a change happened and to add to the cyberpunk aesthetic. Percentages ease between values. These details significantly improve the polish of the stream, but it is definitely a balancing act. Too much movement can distract from the visual effect of the map itself, so getting this right required some restraint and experimentation.
+Animations use interpolation instead of snapping to the next state. A "glitch" effect was added when changes to the "Top Activity Hubs" and "Most Active Prefixes" lists occur to make it more obvious that a change happened and to add to the cyberpunk aesthetic. Percentages ease between values. These effects add polish, but too much motion distracts. Finding that balance took restraint and a surprisingly large amount of experimentation.
 
 The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
