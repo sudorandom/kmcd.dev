@@ -54,7 +54,7 @@
       {{- $imageAsset := resources.FromString $assetPath $diagramContent -}}
 
       {{- /* Output an <img> tag referencing the new asset */ -}}
-      <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="width:100%; height:auto; display:block;" />
+      <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="max-width: 100%; max-height: inherit; width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto;" />
     {{- end -}}
   {{- end -}}
 {{- end -}}

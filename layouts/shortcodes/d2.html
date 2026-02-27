@@ -1,7 +1,8 @@
 <div class="d2-diagram-wrapper">
     <div class="d2-diagram"
-        style="max-width: 800px; margin-left: auto; margin-right: auto;
-              {{- with .Get "width" }} width:{{ . }};{{- else -}}width:100%;{{- end -}}
+        style="display: block; width: 100%; max-width: 100%; margin-left: auto; margin-right: auto;
+              {{- with .Get "max-height" }} max-height:{{ . }};{{- else -}}max-height: 80vh;{{- end -}}
+              {{- with .Get "width" }} width:{{ . }};{{- end -}}
               {{- with .Get "height" }} height:{{ . }};{{ end -}}
               {{- with .Get "style" }}{{ . }}{{ end -}}">
         {{- (printf "```d2\n%s\n```" .Inner) | markdownify -}}

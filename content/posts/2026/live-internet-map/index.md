@@ -214,7 +214,7 @@ BGP updates arrive continuously, and during route flapping events the volume spi
 
 To keep the visualization readable without melting the screen, the pipeline filters out redundant updates (within 15 seconds), waits 10 seconds to ensure a withdrawal isn't just a rapid path re-convergence, and paces the visual output so spikes are emitted smoothly every 500ms using a logarithmic scale.
 
-{{< d2 width="500px" >}}
+{{< d2 >}}
 direction: down
 
 classes: {
