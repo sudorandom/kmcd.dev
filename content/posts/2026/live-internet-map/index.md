@@ -255,7 +255,7 @@ Pace -> Output: Smooth Render
 
 ## Aesthetics, Motion, and Sound
 
-Animations use interpolation instead of snapping to the next state. Country rankings slide into position. Percentages ease between values. Even small UI transitions are smoothed out. These details significantly improve the polish of the stream, but it is definitely a balancing act. Too much movement can distract from the visual effect of the map itself, so getting this right required some restraint.
+Animations use interpolation instead of snapping to the next state. A "glitch" effect was added when changes to the "Top Activity Hubs" and "Most Active Prefixes" lists occur to make it more obvious that a change happened and to add to the cyberpunk aesthetic. Percentages ease between values. These details significantly improve the polish of the stream, but it is definitely a balancing act. Too much movement can distract from the visual effect of the map itself, so getting this right required some restraint and experimentation.
 
 The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
