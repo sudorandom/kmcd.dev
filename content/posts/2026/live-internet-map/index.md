@@ -141,7 +141,7 @@ It turns out RIPE RIS operates [Routing Beacons](https://ris.ripe.net/docs/routi
 
 RIPE also runs "Anchors" alongside these beacons. While a beacon prefix constantly flips on and off, an anchor is a prefix permanently announced from the exact same physical router. This gives researchers a stable control group. They can compare the volatile beacon traffic against a baseline of stable routing from the identical location.
 
-I eventually added a Beacon Analysis view that separates "organic" updates from beacon-driven ones. It makes the metrics more accurate and highlights how much traffic is deliberate measurement.
+I eventually added a Beacon Analysis view that separates "organic" updates from beacon-driven ones. It makes the metrics more accurate and highlights how much traffic is from deliberate live validation.
 
 ---
 
