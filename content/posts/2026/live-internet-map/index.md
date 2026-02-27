@@ -73,7 +73,7 @@ Every pulse on the map represents a real routing update. Sometimes it’s routin
 If you are watching the map and suddenly see a wave of pulses lighting up all over the world at the exact same time, you might be witnessing a BGP flap.
 
 {{< diagram >}}
-{{< image src="flappy-bird.png" width="200px" height="200px" >}}
+{{< figure src="flappy-bird.png" width="200px" height="200px" loading="lazy" >}}
 {{< /diagram >}}
 
 In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the Internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone". That single localized hiccup doesn’t stay local. It ripples outward as routers everywhere recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
@@ -83,7 +83,7 @@ In networking, flapping happens when a route rapidly appears and disappears. Ima
 When you see those colored pulses popping off on the map, they represent specific BGP message types. "Updates" is the general term, but practically, the protocol is juggling a few distinct events:
 
 {{< diagram >}}
-{{< image src="legend.png" >}}
+{{< figure src="legend.png" alt="Legend" width="400px" loading="lazy" >}}
 {{< /diagram >}}
 
 | Event Type | Color | Description |
@@ -94,7 +94,7 @@ When you see those colored pulses popping off on the map, they represent specifi
 | **New Paths** | Green | Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut. |
 
 {{< diagram >}}
-{{< image src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
+{{< figure src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" animate="true" >}}
 {{< /diagram >}}
 
 When you zoom out and see all those colors firing at once, the true scale of the Internet comes to life. It tells the story of over 70,000 independent networks coordinating in real time.
@@ -105,11 +105,11 @@ To make sure the map isn't just a wall of moving dots, I included several dashbo
 
 | Dashboard Element | Preview | Description |
 | :--- | :--- | :--- |
-| **Top Activity Hubs** | {{< image src="top-activity-hubs.png" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
-| **Most Active Prefixes** | {{< image src="most-active-prefixes.png" >}} | Tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
-| **Activity Trend (1m)** | {{< image src="activity-trend.png" >}} | A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event. |
-| **Beacon Analysis** | {{< image src="beacon-analysis.png" >}} | A dynamic donut chart separating "Organic" traffic from "Beacons" (special test signals sent out by researchers). It helps show how much activity is natural versus intentional measurement. More on this below. |
-| **Now Playing** | {{< image src="now-playing.png" >}} | The current background music track. |
+| **Top Activity Hubs** | {{< figure src="top-activity-hubs.png" title="Top Activity Hubs" alt="Top Activity Hubs" loading="lazy" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
+| **Most Active Prefixes** | {{< figure src="most-active-prefixes.png" title="Most Active Prefixes" alt="Most Active Prefixes" loading="lazy" >}} | Tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
+| **Activity Trend (1m)** | {{< figure src="activity-trend.png" title="Activity Trend" alt="Activity Trend" loading="lazy" >}} | A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event. |
+| **Beacon Analysis** | {{< figure src="beacon-analysis.png" title="Beacon Analysis" alt="Beacon Analysis" loading="lazy" >}} | A dynamic donut chart separating "Organic" traffic from "Beacons" (special test signals sent out by researchers). It helps show how much activity is natural versus intentional measurement. More on this below. |
+| **Now Playing** | {{< figure src="now-playing.png" alt="Now Playing" loading="lazy" >}} | The current background music track. |
 
 ### Path Hunting and Anycast
 
@@ -510,7 +510,7 @@ The pulses are what actually bring the data to life. In the engine, each pulse i
 The colors map directly to the event types: green for new paths, purple for updates, red for withdrawals, and blue for gossip. Because they use additive blending, overlapping pulses naturally create a bright hotspot over regions with a ton of routing activity. They pop onto the map, expand, and fade out smoothly. Managing this entire visual lifecycle efficiently is what keeps the map feeling dynamic without tanking the frame rate.
 
 {{< diagram >}}
-{{< image src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
+{{< figure src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" animate="true" >}}
 {{< /diagram >}}
 
 #### The Mollweide Projection
@@ -520,7 +520,7 @@ Mercator would have been easy, but it heavily distorts size near the poles. For 
 I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_projection).
 
 {{< diagram caption="[By Justin Kunimune - Own work, CC BY-SA 4.0](https://commons.wikimedia.org/w/index.php?curid=66467569)" >}}
-{{< image src="mollweide.svg" width="700px" >}}
+{{< figure src="mollweide.svg" width="700px" >}}
 {{< /diagram >}}
 
 This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that still feels familiar without exaggerating high-latitude areas.
@@ -530,8 +530,8 @@ This is an equal-area projection, which means it accurately represents the physi
 Here is the final result, which I've gazed at for far too long already:
 
 {{< a href="http://livemap.kmcd.dev" target="_blank" >}}
-{{< diagram caption="🔴 [livemap.kmcd.dev](http://livemap.kmcd.dev)" >}}
-{{< image src="map-animation.webp" animate="true" width="600px" >}}
+{{< diagram >}}
+{{< figure src="map-animation.webp" caption="🔴 [livemap.kmcd.dev](http://livemap.kmcd.dev)" animate="true" width="600px" >}}
 {{< /diagram >}}
 {{< /a >}}
 

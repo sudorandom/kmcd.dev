@@ -27,7 +27,7 @@ If we define “center” as the largest concentration of publicly routed IPv4 a
 
 It is a suburb about 30 miles west of Washington, D.C.
 
-{{< figure src="datacenter.png"  attrlink="datacenter.png" description="A datacenter in Ashburn, Virginia">}}
+{{< figure src="ashburn.jpg" attrlink="ashburn.jpg" caption="A datacenter in Ashburn, Virginia; [By Vahurzpu - Own work, CC BY-SA 4.0](https://commons.wikimedia.org/w/index.php?curid=95951368)">}}
 
 **Ashburn, Virginia.**
 
@@ -110,38 +110,34 @@ pie title United States IP Dominance
 
 To understand Ashburn, you need to understand peering.
 
-The internet is not one network. It is thousands of independent networks called Autonomous Systems. These networks exchange traffic with one another in two primary ways:
+The internet is not a single, monolithic network. Instead, it is a collection of thousands of independent networks known as Autonomous Systems. For the global internet to function, these networks must exchange traffic with one another. They accomplish this in two primary ways:
 
-1. **Private Peering via Cross-Connects** 2. **Public Peering via Internet Exchange Points**
+1. **Private Peering via Cross-Connects**
+2. **Public Peering via Internet Exchange Points**
 
 ### Private Peering and Cross-Connects
 
-Inside large data center facilities, networks can establish direct fiber links between their routers. These are called cross-connects. They are often short fiber runs inside the same building or campus.
+Inside large data center facilities, networks can establish direct, physical links between their routers. These are called cross-connects, and they often consist of short runs of dark fiber connecting cabinets within the same building or campus.
 
+If Netflix and Comcast both maintain routers in the same facility, they can run a direct cross-connect between their respective hardware. This allows their traffic to flow freely without needing to transit through a third-party carrier.
 
+This direct connection significantly reduces:
 
-If Netflix and Comcast both have routers in the same facility, they can run a direct cross-connect between their cabinets. Traffic flows without transiting a third-party carrier.
+* Latency
+* Transit costs
+* The risk of packet loss
 
-This reduces:
-- Latency  
-- Transit cost  
-- Packet loss risk  
-
-Private cross-connects are simple, fast, and powerful. But they require both networks to be physically present in the same building.
-
-That is where clustering begins.
+Private cross-connects are simple, fast, and incredibly powerful. However, they require both networks to be physically present in the exact same building. That physical requirement is exactly where infrastructure clustering begins.
 
 ### Public Peering at IXPs
 
-An Internet Exchange Point, or IXP, is a shared switching fabric where many networks interconnect over a common Ethernet platform.
+While private peering connects two networks directly, public peering scales that concept up. An Internet Exchange Point (IXP) acts as a shared switching fabric where many networks can interconnect over a common Ethernet platform.
 
-Instead of running dozens of individual cross-connects, a network connects once to the exchange switch. From there, it can peer with hundreds of other networks using BGP sessions.
+Instead of running dozens of individual dark fiber cross-connects to every single partner, a network simply connects once to the exchange switch. From that single physical port, it can establish BGP sessions to peer with hundreds of other networks simultaneously.
 
-Think of it as a high-speed meet-me room at metropolitan scale.
+Think of an IXP as a high-speed meet-me room operating at a metropolitan scale.
 
-A 1,000-mile fiber route adds roughly 8–10 ms of round-trip time.
-
-Ashburn hosts several major IXPs. Each one aggregates hundreds of networks. Once a critical mass of networks join an exchange, every new entrant has a strong incentive to join the same location.
+Because a 1,000-mile fiber route adds roughly 8 to 10 milliseconds of round-trip time, physical proximity to these shared switches remains critical. Ashburn hosts several major IXPs, each aggregating hundreds of distinct networks. Once a critical mass of networks joins a specific exchange, an undeniable gravitational pull takes over. Every new entrant has a strong financial and technical incentive to join that exact same location.
 
 If your customers are there, you go there.
 
@@ -149,7 +145,7 @@ If your competitors are there, you go there.
 
 If your upstream providers are there, you definitely go there.
 
-This is how infrastructure gravity forms.
+This cycle is exactly how infrastructure gravity forms.
 
 ---
 
@@ -260,19 +256,7 @@ No model is perfect. The signal, however, is clear.
 
 ## Conclusion
 
-The internet feels abstract. It feels distributed and weightless.
-
-It is not.
-
-It is built from fiber, routers, substations, and concrete buildings.
-
-More of those physical components are concentrated in Ashburn, Virginia than anywhere else on Earth.
-
-If you measure the internet by where its hardware lives, the center is not a skyscraper in Manhattan or a campus in Silicon Valley.
-
-It is a cluster of data centers in Loudoun County.
-
-Infrastructure has gravity. And for now, the internet bends around Ashburn.
+The internet often feels abstract, distributed, and weightless. It is none of those things. It is built from fiber, routers, substations, and concrete. Today, more of those physical components are concentrated in Ashburn, Virginia, than anywhere else on Earth. If you measure the internet by where its hardware lives, the center is not a skyscraper in Manhattan or a campus in Silicon Valley. It is a massive cluster of data centers in Loudoun County. Infrastructure has gravity. For now, the internet bends around Ashburn.
 
 ---
 

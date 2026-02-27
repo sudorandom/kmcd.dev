@@ -22,10 +22,13 @@
     {{ $original := .Page.Resources.GetMatch $src }}
     {{ $image := "" }}
     {{ $isSVG := hasSuffix $src ".svg" }}
+    {{ $animate := .Get "animate" }}
     {{ if $original }}
-        {{ if eq $original.MediaType.SubType "svg" }}
+        {{ if or (eq $original.MediaType.SubType "svg") $animate }}
             {{ $image = $original }}
-            {{ $isSVG = true }}
+            {{ if eq $original.MediaType.SubType "svg" }}
+                {{ $isSVG = true }}
+            {{ end }}
         {{ else }}
             {{ $resizeString := "" }}
             {{ with .Get "width" }}
@@ -43,7 +46,7 @@
     {{ with .Get "width" }}
         {{ $cleanedWidth := replace . "px" "" | int }}
         {{ $imgWidth = $cleanedWidth }}
-        {{ if not $isSVG }}
+        {{ if and (not $isSVG) (not $animate) }}
             {{ $imgHeight = div (mul $imgWidth 630) 1200 }}
         {{ end }}
     {{ end }}
