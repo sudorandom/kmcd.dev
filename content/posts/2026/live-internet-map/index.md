@@ -16,15 +16,11 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/live-internet-map/
 ---
 
-Right now, thousands of routers are arguing about how to reach each other. That’s expected, it’s how the Internet works. I made a map that lets us listen in on the conversation, but in a relaxing and aesthetically pleasing way.
+Right now, thousands of routers are arguing about how to reach each other. That’s expected. It’s how the Internet works. This website wouldn't load without this. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves globally. Most people see URLs and apps; routers see prefixes and AS paths.
 
-Let's back up for a second. The Internet runs on constant routing updates. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves between networks. Most people see URLs and apps. Routers see prefixes and AS paths.
+I made a map that lets us listen in on this conversation, but in a relaxing, aesthetically pleasing way.
 
-Because the networking world is so mysterious to most people, I wanted to build a real-time visualization of the stream of routing updates. I needed something that shows where routing activity is happening and how it shifts over time.
-
-In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure Map](map.kmcd.dev), I mentioned a few alternative sources for BGP data that I didn't end up using. One of them was a [websocket-based streaming API](https://ris-live.ripe.net/) from RIPE. At the time, I set it aside. Soon, it became my obsession and the live view was born.
-
-One clarification up front. While this visualization does occasionally stumble into being practically useful for spotting global outages or routing leaks, the primary requirement for this project was simply to build a really cool looking map.
+In my [last post](/posts/internet-map-2026/), I mentioned a [websocket-based streaming API from RIPE](https://ris-live.ripe.net/). At the time, I set it aside. Soon, it became my obsession and the live view was born. While this visualization occasionally stumbles into being practically useful for spotting global outages, my primary requirement was simply to build a really cool looking map.
 
 You can check out the source code for this project on [GitHub](https://github.com/sudorandom/bgp-stream/) or watch the map in action on my [YouTube channel](http://livemap.kmcd.dev) or here:
 

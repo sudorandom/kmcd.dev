@@ -28,6 +28,21 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=kmcd-dev ./live
+
+  deploy-future:
+    runs-on: ubuntu-latest
+    name: Deploy Future
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment
+        uses: jdx/mise-action@v2
+        with:
+          experimental: true
+      - name: Install Playwright driver (via Go module)
+        run: go tool playwright install --with-deps
       - name: Build
         run: just build-future
       - name: deploy
