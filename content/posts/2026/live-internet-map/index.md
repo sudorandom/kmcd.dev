@@ -442,7 +442,7 @@ The algorithm flattens these into three distinct, non-overlapping segments:
 2. `10.0.0.128` to `10.0.0.255` (Conflict resolved)
 3. `10.0.1.0` to `10.0.1.255` (RIPE only)
 
-This preprocessing seems a bit complex, but it's worth it since it makes the live lookups dirt cheap. I back this index with BadgerDB and a DiskTrie for high-performance persistent storage. This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
+This preprocessing seems a bit complex, but it's worth it since it makes the live lookups dirt cheap. I back this index with BadgerDB and a [DiskTrie for high-performance persistent storage](https://github.com/sudorandom/bgp-stream/blob/main/pkg/utils/disk_trie.go). This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
 
 ### Managing the Firehose
 
