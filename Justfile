@@ -27,3 +27,8 @@ cover-debug path:
     --style=random \
     --network \
     --seed=$(awk 'BEGIN{srand(); print int(rand()*9999)}') -n 100 -m $(awk 'BEGIN{srand(); print int(rand()*9)}')
+
+# Converts and scales a .mov file to an animated .webp file
+# Usage: just mov-to-webp video.mov animated.webp
+mov-to-webp input output width="500" fps="15" quality="100":
+    ffmpeg -i {{input}} -vcodec libwebp -filter:v "fps={{fps}},scale={{width}}:-1" -lossless 0 -compression_level 4 -q:v {{quality}} -loop 0 {{output}}
