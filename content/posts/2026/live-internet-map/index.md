@@ -74,8 +74,11 @@ Every pulse on the map represents a real routing update. Sometimes it’s routin
 
 If you are watching the map and suddenly see a wave of pulses lighting up all over the world at the exact same time, you might be witnessing a BGP flap.
 
-In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone". Because BGP is designed to spread information globally, that single localized hiccup does not stay local. It sends a ripple effect across the map as thousands of routers worldwide are forced to constantly recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
+{{< diagram >}}
+{{< image src="flappy-bird.png" width="200px" height="200px" >}}
+{{< /diagram >}}
 
+In networking, flapping happens when a route rapidly appears and disappears. Imagine a misconfigured router or a loose fiber cable. The router yells to the internet, "I have a path to Google!" only to drop the connection a second later and say, "Never mind, it is gone". Because BGP is designed to spread information globally, that single localized hiccup does not stay local. It sends a ripple effect across the map as thousands of routers worldwide are forced to constantly recalculate their paths. To keep the whole system from grinding to a halt, modern routers use Route Flap Damping. This essentially puts the noisy network in a time-out until it proves it can stay stable.
 
 ### Decoding the Pulses
 
@@ -110,7 +113,7 @@ This ranks the countries currently experiencing the highest volume of network up
 
 ### Most Active Prefixes
 
-While the hubs show countries, this tracks the specific network blocks causing the most noise. Great for spotting large-scale outages. Another name for this is the networking "wall of shame".
+While the hubs show countries, this tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame".
 
 {{< diagram >}}
 {{< image src="most-active-prefixes.png" >}}
@@ -173,7 +176,7 @@ I eventually added a Beacon Analysis view that separates "organic" updates from 
 
 ---
 
-## Tech Details
+## Making the map
 
 Handling 30,000+ BGP updates per second takes more than plotting points on a canvas. The project is written in Go for its concurrency model and relies on Ebitengine for hardware-accelerated 2D rendering. 
 
@@ -185,11 +188,248 @@ The first problem was the sheer volume of data. BGP updates can easily peak at o
 
 The second problem was scaling. If the map actually got popular, having thousands of browsers opening individual websocket connections to the RIPE RIS-Live service would be a disaster. It is wildly inefficient, and accidentally DDoSing a service designed to monitor internet stability was not on my to-do list.
 
-I had a choice. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map. I chose the latter and pivoted to a live video stream.
+{{< d2 >}}
+direction: right
 
-Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. This pivot also made the tech stack an easy choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
+classes: {
+  cloud: {
+    shape: cloud
+    style: {
+      fill: "#1a252f"
+      stroke: "#34495e"
+      font-color: "#ecf0f1"
+    }
+  }
+  browser: {
+    shape: page
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+    }
+  }
+  bad_connection: {
+    style: {
+      stroke: "#e74c3c"
+      stroke-width: 2
+      stroke-dash: 5
+      font-color: "#ecf0f1"
+    }
+  }
+  scenario_box: {
+    style: {
+      fill: transparent
+      stroke: "#555555"
+      stroke-width: 1
+      border-radius: 10
+      font-color: "#ecf0f1"
+    }
+  }
+  invisible_box: {
+    style: {
+      fill: transparent
+      stroke: transparent
+      font-color: "#ecf0f1"
+    }
+  }
+}
 
-### Flattening IP Space with a Sweep-Line Algorithm
+"Scenario 1: Direct Browser Connections": {
+  class: scenario_box
+  direction: right
+
+  RIPE: RIPE RIS-Live Service 😔 {class: cloud}
+
+  Browsers: {
+    class: invisible_box
+    direction: down
+    B1: Browser 1 (Renderer) {class: browser}
+    B2: Browser 2 (Renderer) {class: browser}
+    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    BN: Browser N (Renderer) {class: browser}
+  }
+
+  RIPE -> Browsers.B1: "Many WS Connections" {class: bad_connection}
+  RIPE -> Browsers.B2: {class: bad_connection}
+  RIPE -> Browsers.BN: {class: bad_connection}
+}
+{{< /d2 >}}
+{{< d2 >}}
+direction: right
+
+classes: {
+  cloud: {
+    shape: cloud
+    style: {
+      fill: "#1a252f"
+      stroke: "#34495e"
+      font-color: "#ecf0f1"
+    }
+  }
+  server: {
+    shape: cylinder
+    style: {
+      fill: "#0b5345"
+      stroke: "#1abc9c"
+      font-color: "#ecf0f1"
+    }
+  }
+  browser: {
+    shape: page
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+    }
+  }
+  good_connection: {
+    style: {
+      stroke: "#2ecc71"
+      stroke-width: 2
+      font-color: "#ecf0f1"
+    }
+  }
+  neutral_connection: {
+    style: {
+      stroke: "#95a5a6"
+      stroke-width: 2
+      font-color: "#ecf0f1"
+    }
+  }
+  scenario_box: {
+    style: {
+      fill: transparent
+      stroke: "#555555"
+      stroke-width: 1
+      border-radius: 10
+      font-color: "#ecf0f1"
+    }
+  }
+  invisible_box: {
+    style: {
+      fill: transparent
+      stroke: transparent
+      font-color: "#ecf0f1"
+    }
+  }
+}
+
+"Scenario 2: Server Multiplexing": {
+  class: scenario_box
+  direction: right
+
+  RIPE: RIPE RIS-Live Service {class: cloud}
+  Server: Relay Server {class: server}
+
+  Browsers: {
+    class: invisible_box
+    direction: down
+    B1: Browser 1 (Renderer) {class: browser}
+    B2: Browser 2 (Renderer) {class: browser}
+    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    BN: Browser N (Renderer) {class: browser}
+  }
+
+  RIPE -> Server: "Single WS" {class: good_connection}
+  Server -> Browsers.B1: "Many WS Connections" {class: neutral_connection}
+  Server -> Browsers.B2: {class: neutral_connection}
+  Server -> Browsers.BN: {class: neutral_connection}
+}
+{{< /d2 >}}
+{{< d2 >}}
+direction: right
+
+classes: {
+  cloud: {
+    shape: cloud
+    style: {
+      fill: "#1a252f"
+      stroke: "#34495e"
+      font-color: "#ecf0f1"
+    }
+  }
+  server: {
+    shape: cylinder
+    style: {
+      fill: "#0b5345"
+      stroke: "#1abc9c"
+      font-color: "#ecf0f1"
+    }
+  }
+  browser: {
+    shape: page
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+    }
+  }
+  platform: {
+    shape: rectangle
+    style: {
+      fill: "#641e16"
+      stroke: "#e74c3c"
+      border-radius: 10
+      font-color: "#ecf0f1"
+    }
+  }
+  good_connection: {
+    style: {
+      stroke: "#2ecc71"
+      stroke-width: 2
+      font-color: "#ecf0f1"
+    }
+  }
+  scenario_box: {
+    style: {
+      fill: transparent
+      stroke: "#555555"
+      stroke-width: 1
+      border-radius: 10
+      font-color: "#ecf0f1"
+    }
+  }
+  invisible_box: {
+    style: {
+      fill: transparent
+      stroke: transparent
+      font-color: "#ecf0f1"
+    }
+  }
+}
+
+"Scenario 3: Video Streaming": {
+  class: scenario_box
+  direction: right
+
+  RIPE: RIPE RIS-Live Service {class: cloud}
+  Server: Rendering (Ebitengine) {class: server}
+  YouTube: YouTube Live {class: platform}
+
+  Browsers: {
+    class: invisible_box
+    direction: down
+    B1: Browser 1 (Viewer) {class: browser}
+    B2: Browser 2 (Viewer) {class: browser}
+    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    BN: Browser N (Viewer) {class: browser}
+  }
+
+  RIPE -> Server: "Single WS" {class: good_connection}
+  Server -> YouTube: "RTMP Video Stream" {class: good_connection}
+  YouTube -> Browsers.B1: "Video Stream" {class: good_connection}
+  YouTube -> Browsers.B2: {class: good_connection}
+  YouTube -> Browsers.BN: {class: good_connection}
+}
+{{< /d2 >}}
+
+I had a choice. Scenario 1 is not viable, because it could make the operations of RIPE RIS-live very sad and potentially angry. So now I have the choice between scenario 2 and 3. I could build a complex backend service to multiplex that single RIPE connection to all my users, or I could completely change how people view the map by streaming to YouTube. I went with the latter option.
+
+Rendering the entire visualization on my own server and broadcasting it guarantees that every viewer gets the exact same high-fidelity experience, regardless of their hardware. It's easy to run on a TV where the browser version isn't really as easy. This pivot also made the tech stack an easy choice. Once I started experimenting with [Ebitengine](https://ebitengine.org/), hardware-accelerated rendering in Go gave me crisper, far more fluid visuals than I could ever squeeze out of a standard browser canvas.
+
+The downside to this approach is that there is less opportunity for interaction. You can't zoom to a region that you care about. You can't show or hide any of the UI elements. You can't really customize it at all. I think this tradeoff was ultimately worth it, but I just want to note what I lost from making this dramatic change in architecture.
+
+### Flattening IP Space
 
 To map a BGP update to a geographic location, you need reliable IP-to-region data. I am currently only focusing on IPv4, and that data comes from five Regional Internet Registries (RIRs). Each registry publishes large and sometimes overlapping delegated stats files.
 
