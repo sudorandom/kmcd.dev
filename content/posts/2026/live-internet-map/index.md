@@ -18,7 +18,7 @@ canonical_url: https://kmcd.dev/posts/live-internet-map/
 
 The internet runs on constant routing updates. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves between networks. Most people see URLs and apps. Routers see prefixes and AS paths.
 
-Because the networking world is so transparent to everyone, I wanted to build a real-time visualization of the stream of routing updates. I needed something that shows where routing activity is happening and how it shifts over time.
+Because the networking world is so mysterious to most people, I wanted to build a real-time visualization of the stream of routing updates. I needed something that shows where routing activity is happening and how it shifts over time.
 
 In my [last post](/posts/internet-map-2026/) about my [Internet Infrastructure Map](map.kmcd.dev), I mentioned a few alternative sources for BGP data that I didn't end up using. One of them was a [websocket-based streaming API](https://ris-live.ripe.net/) from RIPE. At the time, I set it aside. Soon, it became my obsession and the live view was born.
 
@@ -81,17 +81,20 @@ In networking, flapping happens when a route rapidly appears and disappears. Ima
 
 When you see those colored pulses popping off on the map, they represent specific BGP message types. "Updates" is the general term, but practically, the protocol is juggling a few distinct events:
 
-* **Announcements (Green):** Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut.
-* **Withdrawals (Red):** Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window.
-* **Path Attributes (Purple):** The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple.
-* **Gossip (Blue):** Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map.
+{{< diagram >}}
+{{< image src="legend.png" >}}
+{{< /diagram >}}
 
+* **Gossip (Blue):** Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map.
+* **Path Change (Purple):** The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple.
+* **Withdrawals (Red):** Red means a route is dead. A router is explicitly telling the internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window.
+* **New Paths (Green):** Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut.
 
 {{< diagram >}}
 {{< image src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
 {{< /diagram >}}
 
-When you zoom out and look at all those colors firing at once, the scale starts to make sense. The internet is a collection of over 70,000 independent networks coordinating through BGP. This map visualizes that global coordination as it happens.
+When you zoom out and see all those colors firing at once, the true scale of the internet comes to life. It tells the story of over 70,000 independent networks coordinating in real time.
 
 ## What else is on the map?
 
@@ -123,7 +126,7 @@ A rolling 60-second activity graph. It tracks whether activity is spiking or cal
 
 ### Beacon Analysis
 
-A dynamic donut chart that separates "Organic" traffic from "Beacons", which are special test signals sent out by researchers. It helps you understand how much of the activity you see is natural internet behavior versus intentional scientific measurement. There is more about this later!
+A dynamic donut chart that separates "Organic" traffic from "Beacons", which are special test signals sent out by researchers. It helps you understand how much of the activity you see is natural internet behavior versus intentional scientific measurement. More on this below.
 
 {{< diagram >}}
 {{< image src="beacon-analysis.png" >}}
@@ -138,20 +141,13 @@ The current background music track.
 {{< image src="now-playing.png" >}}
 {{< /diagram >}}
 
-
-### The Ubiquity of /24s
-
-While building the "Most Active Prefixes" dashboard, I kept noticing the exact same thing: `/24` subnets were overrepresented on the leaderboard. 
-
-From what I've learned, a `/24` (256 IP addresses) is the smallest block of IPs that major ISPs will actually accept and pass along. Because `/24` is the standard unit of the global routing table, most routing churn, whether it is a small office link flapping or a major datacenter shifting traffic, happens at this granularity.
-
 ### Path Hunting and Anycast
 
 When I first started watching the live data, I was confused by why a single localized outage would trigger a massive global explosion of pulses. 
 
 I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://blog.cloudflare.com/going-bgp-zombie-hunting/) When a route dies, the internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time.  Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
 
-{{< diagram >}}
+{{< diagram caption="[Routers looking for Facebook's network on October 4, 2021](https://blog.cloudflare.com/october-2021-facebook-outage/)" >}}
 {{< image src="asn32934.gif" >}}
 {{< /diagram >}}
 
@@ -163,7 +159,11 @@ I've since learned this is likely due to a phenomenon called ["Path Hunting."](h
 
 ### RIPE RIS Beacons and Anchors
 
-Not all activity on the map comes from failing links or organic traffic shifts. There is also intentional 'breakage' happening behind the scenes to test BGP propagation.
+While building the "Most Active Prefixes" list, I kept noticing the exact same thing: `/24` subnets were overrepresented on the leaderboard. 
+
+From what I've learned, a `/24` (256 IP addresses) is the smallest block of IPs that major ISPs will actually accept and pass along. Because `/24` is the standard unit of the global routing table, most routing churn, whether it is a small office link flapping or a major datacenter shifting traffic, happens at this granularity.
+
+But there was another reason for seeing the *same* /24 subnets appearing on the list. Not all activity on the map comes from failing links or organic traffic shifts. There is also intentional 'breakage' happening behind the scenes to test BGP propagation.
 
 It turns out RIPE RIS operates [Routing Beacons](https://ris.ripe.net/docs/routing-beacons/). Routing Beacons are prefixes deliberately announced and withdrawn on a fixed schedule, typically every two hours. One of them announces and withdraws every *10 minutes*. Researchers use these beacons as a controlled signal inside the global routing table to study BGP propagation and convergence. To make the activity list useful, I had to write logic to classify and filter these beacons out of the ranking.
 
@@ -207,14 +207,6 @@ The algorithm flattens these into three distinct, non-overlapping segments:
 3. `10.0.1.0` to `10.0.1.255` (RIPE only)
 
 This preprocessing seems a bit complex, but it's worth it since it makes the live lookups dirt cheap. I back this index with BadgerDB and a DiskTrie for high-performance persistent storage. This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
-
-### High-Precision Cloud Mapping
-
-Relying solely on generic GeoIP data to map cloud providers usually leads to glaring inaccuracies. An AWS prefix might be officially registered to a corporate address in the US, but the actual infrastructure for that block could be sitting in a datacenter in Tokyo.
-
-Drawing from the lessons I learned building [map.kmcd.dev](https://map.kmcd.dev), I designed yet another trie data structure to fix this, but this time it's in memory. It ingests official geofeeds and provider IP range JSONs from networks like AWS and Google Cloud.
-
-Now, when a route change happens inside a known cloud prefix, the pulse appears near its actual physical footprint instead of a random corporate headquarters. It's vastly more accurate than relying on registry data alone.
 
 ### Managing the Firehose
 
@@ -261,11 +253,7 @@ Batch -> Cache: Store state
 Pace -> Output: Smooth Render
 {{< /d2 >}}
 
-The goal is to stay accurate without overwhelming the screen during instability.
-
 ## Aesthetics, Motion, and Sound
-
-With some data issues resolved, I could focus on making it look good.
 
 Animations use interpolation instead of snapping to the next state. Country rankings slide into position. Percentages ease between values. Even small UI transitions are smoothed out. These details significantly improve the polish of the stream, but it is definitely a balancing act. Too much movement can distract from the visual effect of the map itself, so getting this right required some restraint.
 
