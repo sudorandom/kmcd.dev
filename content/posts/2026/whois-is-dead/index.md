@@ -158,7 +158,7 @@ Even though `rdap` works, it isn't installed by default on most systems. Many pe
 
 Now, I will walk you through a WHOIS server that acts as a proxy to other RDAP servers. It will listen for WHOIS queries on port 43 and when it receives a query, it will make an HTTPS request to the appropriate RDAP server, parse the JSON response, format the important details into a human-readable text format, and send that text back to the original WHOIS client. Simple, no?
 
-{{< d2 width="500px" >}}
+{{< d2 >}}
 
 style {
   stroke-width: 2

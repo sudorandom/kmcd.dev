@@ -25,7 +25,7 @@ Input validation is a consistent problem in the web services industry. Usually t
 - There are many libraries that assist with this, but backend programmers will have to add constraints on input from users. Usernames can't be 1000 characters long, someone can't be aged negative 10, etc. **This validation is often the most important for data integrity** because it's the last part of the architecture where developers have 100% control.
 - On the frontend, many of the constraints and rules from the backend are often replicated. This is usually done for UX (User eXperience) reasons. You don't want to wait until you submit a large form with many inputs before realizing you messed up. It's often way better to highlight issues before users try to submit. Often, these constraints are communicated by hand-written documentation that is often not kept up-to-date or not at all, forcing frontend developers to duplicate backend validation logic.
 
-{{< d2 width="600px" >}}
+{{< d2 >}}
 direction: right
 style: {
     fill: transparent
@@ -53,7 +53,7 @@ backend-validation.backend -> database
 
 This is where [protovalidate](https://github.com/bufbuild/protovalidate) comes in. Protovalidate allows you to specify constraints beside your protobuf-defined API and type definitions. I [talked before about API contracts](https://kmcd.dev/posts/api-contracts/), but protovalidate goes a step above what protobuf offers by default. In addition to the cross-language type safety that protobuf offers, protovalidate allows you to define additional constraints for each field. So now the answer to many input validation questions can be answered by directly looking at this file or by using a protovalidate library written for several languages. Now both the frontend and backend logic can be powered by the same declarative schema.
 
-{{< d2 width="600px" >}}
+{{< d2 >}}
 direction: right
 style: {
     fill: transparent
