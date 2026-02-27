@@ -364,6 +364,33 @@ classes: {
       font-color: "#ecf0f1"
     }
   }
+  mobile: {
+    shape: rectangle
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+      border-radius: 15
+    }
+  }
+  tv: {
+    shape: rectangle
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+      border-radius: 2
+    }
+  }
+  device: {
+    shape: rectangle
+    style: {
+      fill: "#2c3e50"
+      stroke: "#f1c40f"
+      font-color: "#ecf0f1"
+      border-radius: 5
+    }
+  }
   platform: {
     shape: rectangle
     style: {
@@ -406,20 +433,22 @@ classes: {
   Server: Rendering (Ebitengine) {class: server}
   YouTube: YouTube Live {class: platform}
 
-  Browsers: {
+  Devices: {
     class: invisible_box
     direction: down
-    B1: Browser 1 (Viewer) {class: browser}
-    B2: Browser 2 (Viewer) {class: browser}
-    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
-    BN: Browser N (Viewer) {class: browser}
+    D1: Web Browser {class: browser}
+    D2: Mobile Phone {class: mobile}
+    D3: Smart TV {class: tv}
+    D4: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    DN: Any Screen {class: device}
   }
 
   RIPE -> Server: "Single WS" {class: good_connection}
   Server -> YouTube: "RTMP Video Stream" {class: good_connection}
-  YouTube -> Browsers.B1: "Video Stream" {class: good_connection}
-  YouTube -> Browsers.B2: {class: good_connection}
-  YouTube -> Browsers.BN: {class: good_connection}
+  YouTube -> Devices.D1: "Video Stream" {class: good_connection}
+  YouTube -> Devices.D2: {class: good_connection}
+  YouTube -> Devices.D3: {class: good_connection}
+  YouTube -> Devices.DN: {class: good_connection}
 }
 {{< /d2 >}}
 
@@ -505,19 +534,17 @@ The colors map directly to the event types: green for new paths, purple for upda
 {{< image src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" >}}
 {{< /diagram >}}
 
-#### The Winkel Tripel Projection
+#### The Mollweide Projection
 
 Mercator would have been easy, but it heavily distorts size near the poles. For a global activity map, that felt misleading. 
 
-I chose the [Winkel Tripel projection](https://en.wikipedia.org/wiki/Winkel_tripel_projection).
+I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_projection).
 
-{{< diagram caption="[By Justin Kunimune - Own work, CC0](https://commons.wikimedia.org/w/index.php?curid=66467590)" >}}
-{{< image src="Winkel_Tripel.svg" width="700px" >}}
+{{< diagram caption="[By Justin Kunimune - Own work, CC BY-SA 4.0](https://commons.wikimedia.org/w/index.php?curid=66467569)" >}}
+{{< image src="mollweide.svg" width="700px" >}}
 {{< /diagram >}}
 
- This is the same one used by National Geographic, and it balances distortion across area, direction, and distance. It produces a world view that feels familiar without exaggerating high-latitude regions.
-
-Implementing it meant solving the projection's iterative trigonometric equations for every coordinate transformation. It was a bit of a headache, specifically because I had issues drawing the longitude and latitude lines. There is a mathematical singularity at the very top and bottom of the map that breaks the rendering, so I had to write custom workarounds to handle the poles gracefully.
+This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that feels familiar without exaggerating high-latitude areas.
 
 ---
 
