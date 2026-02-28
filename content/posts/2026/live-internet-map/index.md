@@ -103,13 +103,13 @@ When you zoom out and see all those colors firing at once, the true scale of the
 
 To make sure the map isn't just a wall of moving dots, I included several dashboard elements that provide context to the chaos:
 
-| Dashboard Element | Preview | Description |
-| :--- | :--- | :--- |
-| **Top Activity Hubs** | {{< figure src="top-activity-hubs.png" title="Top Activity Hubs" alt="Top Activity Hubs" loading="lazy" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
-| **Most Active Prefixes** | {{< figure src="most-active-prefixes.png" title="Most Active Prefixes" alt="Most Active Prefixes" loading="lazy" >}} | Tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
-| **Activity Trend (1m)** | {{< figure src="activity-trend.png" title="Activity Trend" alt="Activity Trend" loading="lazy" >}} | A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event. |
-| **Beacon Analysis** | {{< figure src="beacon-analysis.png" title="Beacon Analysis" alt="Beacon Analysis" loading="lazy" >}} | A dynamic donut chart separating "Organic" traffic from "Beacons" (special test signals sent out by researchers). It helps show how much activity is natural versus intentional measurement. More on this below. |
-| **Now Playing** | {{< figure src="now-playing.png" alt="Now Playing" loading="lazy" >}} | The current background music track. |
+| Preview | Description |
+| :--- | :--- |
+| {{< figure src="top-activity-hubs.png" alt="Top Activity Hubs" loading="lazy" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
+| {{< figure src="most-active-prefixes.png" alt="Most Active Prefixes" loading="lazy" >}} | Tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
+| {{< figure src="activity-trend.png" alt="Activity Trend" loading="lazy" >}} | A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event. |
+| {{< figure src="beacon-analysis.png" alt="Beacon Analysis" loading="lazy" >}} | A dynamic donut chart separating "Organic" traffic from "Beacons" (special test signals sent out by researchers). It helps show how much activity is natural versus intentional measurement. More on this below. |
+| {{< figure src="now-playing.png" alt="Now Playing" loading="lazy" >}} | The current background music track. |
 
 ### Path Hunting and Anycast
 
