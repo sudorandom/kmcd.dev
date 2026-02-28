@@ -141,6 +141,46 @@ RIPE also runs "Anchors" alongside these beacons. While a beacon prefix constant
 
 I eventually added a Beacon Analysis view that separates "organic" updates from beacon-driven ones. It makes the metrics more accurate and highlights how much traffic is from deliberate live validation.
 
+### BGP Babbling and Attribute Churn
+
+So if a burst of updates isn't a dying link, a desperate search for a backup path, or a research beacon, what else could it be? Sometimes a network is just fidgeting. BGP engineers usually call this **babbling**.
+
+I caught a great example of this while watching the stream. A Finnish fiber provider (AS43016) was firing off nearly 100 pulses per second, and this went on for days. The raw data showed the route wasn't actually dropping. Instead, a single piece of metadata called the Aggregator ID just kept flipping back and forth.
+
+This creates a localized micro-storm. An ISP router was probably misconfigured and constantly recalculating how to summarize its network to the outside world. Every time it changed its mind, even by a single bit, it had to update every other router on Earth. Standard monitoring tools usually miss these "attribute flaps" because the network stays perfectly reachable. But on the map, they paint a very clear picture: a constant, rhythmic heartbeat of blue gossip pulses.
+
+I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/debug-prefix/main.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at AS43016:
+
+```shell
+$ just debug-prefix 195.155.146.0/24
+BGP Prefix Monitor Stats (Running for 293.4s)
+--------------------------------------------------
+Announcements: 4576 (15.60/s)
+Withdrawals:   1422 (4.85/s)
+Total Msgs:    5101 (17.39/s)
+Unique Peers:  310
+--------------------------------------------------
+GLOBAL CHURN EVENTS:
+  AS-Path Changes:  2275
+  Community Changes: 3259
+  Next-Hop Changes:  0
+  Aggregator Flaps:  0
+  Path Length Flaps: 1255
+--------------------------------------------------
+LIKELY CONCLUSIONS:
+  - Path Length Oscillation (Route is toggling between different path lengths)
+  - BGP Babbling (Excessive update rate detected)
+--------------------------------------------------
+Top 5 Churning Peers:
+  187.16.220.216: 149 attribute changes
+  5.188.4.211: 142 attribute changes
+  103.152.35.254: 142 attribute changes
+  177.221.140.2: 138 attribute changes
+  154.18.4.110: 132 attribute changes
+```
+
+At the time of publishing, this prefix is still babbling away.
+
 ---
 
 {{< diagram >}}
