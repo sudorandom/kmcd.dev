@@ -355,7 +355,7 @@ classes: {
 }
 {{< /d2 >}}
 
-Multiplexing solves the connection problem, but it completely ignores the browser rendering issues I was having. To guarantee a smooth 30 FPS for everyone without melting their CPUs, I decided to bypass the browser canvas entirely. I pivoted the architecture to a centralized video stream broadcasted to YouTube:
+Multiplexing solves the connection problem, but it completely ignores the browser rendering issues I was having. To guarantee a smooth 30 FPS for everyone without melting their CPUs, I decided to bypass the browser canvas entirely. I pivoted the architecture to a centralized YouTube stream:
 
 {{< d2 >}}
 direction: right
