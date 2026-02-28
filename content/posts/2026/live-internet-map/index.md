@@ -115,11 +115,13 @@ To make sure the map isn't just a wall of moving dots, I included several dashbo
 
 When I first started watching the live data, I was confused by why a single localized outage would trigger a massive global explosion of pulses. 
 
-I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://blog.cloudflare.com/going-bgp-zombie-hunting/) When a route dies, the Internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time.  Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
+I've since learned this is likely due to a phenomenon called ["Path Hunting."](https://www.noction.com/blog/bgp-path-hunting) When a route dies, the Internet doesn't instantly agree it's gone. Instead, routers desperately try to find backup paths. They'll try a longer route, fail, try an even longer one, fail again, and generate a new BGP update every single time. Those massive bursts of purple pulses are basically the routers "thinking out loud" as they scramble to route around the damage.
 
 {{< diagram caption="[Routers looking for Facebook's network on October 4, 2021](https://blog.cloudflare.com/october-2021-facebook-outage/)" >}}
 {{< image src="asn32934.gif" >}}
 {{< /diagram >}}
+
+This scramble to find backup paths can occasionally leave behind an interesting anomaly known as a "BGP zombie." If a router fails to process a withdrawal message due to a software bug or slow propagation, it will stubbornly keep announcing a dead path to its neighbors, creating a localized black hole for traffic. [Cloudflare has a great write-up](https://blog.cloudflare.com/going-bgp-zombie-hunting/) on hunting down these undead routes if you want to fall down that rabbit hole.
 
 **Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere.  But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a sudden surge of routing adjustments across the map.
 
