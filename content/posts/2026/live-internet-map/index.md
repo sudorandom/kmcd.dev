@@ -94,7 +94,7 @@ When you see those colored pulses popping off on the map, they represent specifi
 | **New Paths** | Green | Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut. |
 
 {{< diagram >}}
-{{< figure src="map-animation-noui.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" animate="true" >}}
+{{< figure src="map-animation-noui.webp" animate="true" width="700px" animate="true" >}}
 {{< /diagram >}}
 
 When you zoom out and see all those colors firing at once, the true scale of the Internet comes to life. It tells the story of over 70,000 independent networks coordinating in real time.
