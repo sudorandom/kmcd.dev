@@ -145,11 +145,11 @@ I eventually added a Beacon Analysis view that separates "organic" updates from 
 
 So if a burst of updates isn't a dying link, a desperate search for a backup path, or a research beacon, what else could it be? Sometimes a network is just fidgeting. BGP engineers usually call this **babbling**.
 
-I caught a great example of this while watching the stream. A Finnish fiber provider (AS43016) was firing off nearly 100 pulses per second, and this went on for days. The raw data showed the route wasn't actually dropping. Instead, a single piece of metadata called the Aggregator ID just kept flipping back and forth.
+I caught a great example of this while watching the stream. A Finnish fiber provider (`AS43016`) was firing off nearly 100 pulses per second, and this went on for days. The raw data showed the route wasn't actually dropping. Instead, a single piece of metadata called the Aggregator ID just kept flipping back and forth.
 
 This creates a localized micro-storm. An ISP router was probably misconfigured and constantly recalculating how to summarize its network to the outside world. Every time it changed its mind, even by a single bit, it had to update every other router on Earth. Standard monitoring tools usually miss these "attribute flaps" because the network stays perfectly reachable. But on the map, they paint a very clear picture: a constant, rhythmic heartbeat of blue gossip pulses.
 
-I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/debug-prefix/main.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at AS43016:
+I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/debug-prefix/main.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at `AS43016`:
 
 ```shell
 $ just debug-prefix 195.155.146.0/24
