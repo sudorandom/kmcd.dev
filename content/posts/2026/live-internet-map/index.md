@@ -16,7 +16,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/live-internet-map/
 ---
 
-Right now, thousands of routers are arguing about how to reach each other. That’s expected. It’s how the Internet works. This website wouldn't load without this. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves globally. Most people see URLs and apps; routers see prefixes and AS paths.
+Right now, thousands of routers are arguing about how to reach each other. That’s expected. It’s how the Internet works. This website wouldn't load without it. BGP (Border Gateway Protocol) continuously announces and withdraws prefixes, adjusting how traffic moves globally. Most people see URLs and apps; routers see prefixes and AS paths.
 
 I made a map that lets us listen in on this conversation, but in a relaxing, aesthetically pleasing way.
 
@@ -30,7 +30,7 @@ You can check out the source code for this project on [GitHub](https://github.co
 
 This map is a live visualization of the Border Gateway Protocol (BGP). This is the "language" routers use to talk to each other and decide the best path for your data to travel across the globe. 
 
-Imagine a single router trying to find the best way to send traffic to Google. It receives multiple path advertisements from its neighbors, and it has to pick the most efficient route:
+Imagine a router trying to find the best way to send traffic to Google. It receives multiple path advertisements from its neighbors, and it has to pick the most efficient route:
 
 {{< d2 >}}
 direction: right
@@ -481,7 +481,7 @@ The downside is reduced interaction: no zooming, no toggling UI, no customizatio
 
 To map a BGP update to a geographic location, you need reliable IP-to-region data. I am currently only focusing on IPv4, and that data comes from five Regional Internet Registries (RIRs). Each registry publishes large and sometimes overlapping delegated stats files.
 
-Fragmented lookups across raw datasets might be fine for offline processing. But there is a strict frame rate budget. If the engine had to search through five separate datasets for every single update, the visualization would stutter. At 30,000+ updates per second, efficiency is pretty important.
+Fragmented lookups across raw datasets might be fine for offline processing, but we have a strict frame rate budget. If the engine had to search through five separate datasets for every single update, the visualization would stutter. At 30,000+ updates per second, efficiency is pretty important.
 
 To solve this, I preprocess all the data upfront using a sweep-line algorithm. Each IP range acts as a segment on a 1D number line. The algorithm walks across this space, resolves any overlaps between registries, and collapses millions of ranges into a single, clean, non-overlapping index.
 
@@ -494,7 +494,7 @@ The algorithm flattens these into three distinct, non-overlapping segments:
 2. `10.0.0.128` to `10.0.0.255` (Conflict resolved)
 3. `10.0.1.0` to `10.0.1.255` (RIPE only)
 
-This preprocessing seems a bit complex, but it's worth it since it makes the live lookups dirt cheap. I back this index with BadgerDB and a [DiskTrie for high-performance persistent storage](https://github.com/sudorandom/bgp-stream/blob/main/pkg/utils/disk_trie.go). This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
+This preprocessing seems a bit complex, but it's worth it since it makes the live lookups super cheap. I back this index with BadgerDB and a [DiskTrie for high-performance persistent storage](https://github.com/sudorandom/bgp-stream/blob/main/pkg/utils/disk_trie.go). This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
 
 ### Managing the Firehose
 
