@@ -131,7 +131,7 @@ I've since learned this is likely due to a phenomenon called ["Path Hunting."](h
 
 While building the "Most Active Prefixes" list, I kept noticing the exact same thing: `/24` subnets were overrepresented on the leaderboard. 
 
-A /24 (256 IPs) is effectively the smallest globally routable unit, so most churn naturally happens at that granularity.
+A `/24` (256 IPs) is effectively the smallest globally routable unit, so most churn naturally happens at that granularity.
 
 But there was another reason for seeing the *same* /24 subnets appearing on the list. Not all activity on the map comes from failing links or organic traffic shifts. There is also intentional 'breakage' happening behind the scenes to test BGP propagation.
 
@@ -575,6 +575,6 @@ Here is the final result, which I've gazed at for far too long already:
 {{< /diagram >}}
 {{< /a >}}
 
-This project turned into a deeper dive into BGP than I expected. Watching routing updates happening live exposes patterns that are impossible to find with a static snapshot. It has been a rewarding project and I am extremely happy with the result.
+This project turned into a deeper dive into BGP than I expected. Watching as routing updates happen live exposes patterns that are impossible to find with a static snapshot. It has been a rewarding project and I am extremely happy with the result.
 
 So please, toss the live stream on your TV, sit back, relax, and watch the Internet route the world's network traffic as you listen to relaxing lofi in the background.
