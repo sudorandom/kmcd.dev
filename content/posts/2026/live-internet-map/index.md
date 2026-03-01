@@ -571,7 +571,7 @@ I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_proje
 
 This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that still feels familiar without exaggerating high-latitude areas.
 
-## More meaningful Events
+## More Meaningful Events
 
 Raw BGP messages only tell us two things: a route was announced, or a route was withdrawn. So how does the dashboard know when to declare a 'link flap', a 'route leak', or a massive 'outage'? The short answer is that I built a classification engine that takes the pattern of raw announce/withdrawal updates that BGP provides and converts them more meaningful events. Some kinds of events are easier to detect than others.
 
@@ -579,7 +579,7 @@ Route leaks are a great example of how messy this can get. Initially, I tried to
 
 Because of the noise, I ended up implementing a check for the valley-free routing principle. To understand why this works, we have to look at how BGP treats business relationships. BGP routing policies are built around who is paying whom. A network typically has providers it pays for transit, customers who pay it for access, and peers it swaps traffic with for mutual benefit. The valley-free rule dictates that a network should never act as a free transit bridge between two of its providers or peers.
 
-Imagine a small regional network buys internet access from both AT&T and Verizon for redundancy. AT&T shares its global routing table with this small network so it knows where to send data. If that small network accidentally announces all of those AT&T routes to Verizon, it is inadvertently telling the entire internet to send all traffic between Verizon and AT&T through its local routers. Traffic would flow down from Verizon, into the small regional network, and back up to AT&T. That "down and back up" path is what creates the valley shape in the AS path.  Because that small network does not have the capacity to handle global Tier-1 traffic, it immediately gets crushed under the weight of the data. The network drops packets and causes a massive localized internet outage, which is a classic route leak.
+Imagine a small regional network buys internet access from both AT&T and Verizon for redundancy. AT&T shares its global routing table with this small network so it knows where to send data. If that small network accidentally announces all of those AT&T routes to Verizon, it is inadvertently telling the entire internet to send all traffic between Verizon and AT&T through its local routers. Traffic would flow down from Verizon, into the small regional network, and back up to AT&T. That "down and back up" path is what creates the valley shape in the AS path. Because that small network does not have the capacity to handle global Tier-1 traffic, it immediately gets crushed under the weight of the data. The network drops packets and causes a massive localized internet outage, which is a classic route leak.
 
 {{< d2 >}}
 classes: {
@@ -666,6 +666,8 @@ Other rules are slightly more straightforward:
 | **Path Oscillation**| Frequent path length switching |
 | **Path Hunting** | Increasing path length, then withdrawal |
 | **Discovery** | Prolonged announcements, few changes |
+
+These initial thresholds are just a starting point, and I will definitely refine them as the project goes on.
 
 ---
 
