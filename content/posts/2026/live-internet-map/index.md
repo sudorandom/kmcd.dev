@@ -80,18 +80,22 @@ In networking, flapping happens when a route rapidly appears and disappears. Ima
 
 ### Decoding the Pulses
 
-When you see those colored pulses popping off on the map, they represent specific BGP message types. "Updates" is the general term, but practically, the protocol is juggling a few distinct events:
+When you see those colored pulses popping off on the map, they represent BGP updates processed through a multi-stage classification engine. Rather than just showing raw protocol messages (which is what the earlier version of the map did), the map categorizes events into four distinct colors based on their behavior and potential impact.
 
 {{< diagram >}}
-{{< figure src="legend.png" alt="Legend" width="400px" loading="lazy" >}}
+{{< figure src="legend.png" alt="Legend" loading="lazy" >}}
 {{< /diagram >}}
 
-| Event Type | Color | Description |
-| :--- | :--- | :--- |
-| **Propagation** | Blue | Routers frequently re-announce perfectly valid paths just to keep their tables current; this redundant background noise makes up the blue pulses on the map. |
-| **Path Change** | Purple | The destination is still online, but the directions changed. If traffic suddenly has to detour through an extra transit provider to reach its goal, you'll see those routing adjustments flash purple. |
-| **Withdrawals** | Red | Red means a route is dead. A router is explicitly telling the Internet that a previously advertised IP block is no longer reachable which is usually the result of a severed fiber cable, hardware failure, or a planned maintenance window. |
-| **New Paths** | Green | Bright green pulses mean a new path just opened up. This could be a new ISP coming online, a fresh datacenter spinning up, or just a router discovering a better shortcut. |
+#### Anomalies and Behaviors
+
+The classification engine also maps events into Level 2 categorizations (anomalies) based on heuristics applied over recent activity windows. To make sense of the noise, the multi-stage engine uses specific triggers to drop these events into the four colored buckets before presenting them on the map. These fall into four severity tiers:
+
+| Severity Tier | Color | Examples | Description |
+| :--- | :--- | :--- | :--- |
+| **Critical** | Red | Outage, Route Leak | Significant routing failures, such as a prefix sustaining multiple withdrawals with no announcements, or path violations that suggest a route leak. |
+| **Bad** | Orange | Link Flap, Babbling | Highly volatile or inefficient behavior, including rapid "flapping" of routes, excessive "babbling" with unchanged attributes, or frequent next-hop changes. |
+| **Normal / Policy** | Purple | Policy Churn, Path Hunting | Standard routing adjustments, such as traffic engineering (Policy Churn), path length oscillations, or the natural "Path Hunting" process where routers explore alternatives during convergence. |
+| **Normal / Discovery** | Blue | Discovery, Gossip | Routine background noise, including standard prefix origination or redundant gossip pulses that keep routing tables current. |
 
 {{< diagram >}}
 {{< figure src="map-animation-noui.webp" animate="true" width="700px" animate="true" >}}
@@ -105,8 +109,8 @@ To make sure the map isn't just a wall of moving dots, I included several dashbo
 
 | Preview | Description |
 | :--- | :--- |
-| {{< figure src="top-activity-hubs.png" alt="Top Activity Hubs" loading="lazy" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
-| {{< figure src="most-active-prefixes.png" alt="Most Active Prefixes" loading="lazy" >}} | Tracks the specific network blocks causing the most noise. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
+| {{< figure src="active-countries.png" alt="Active Countries" loading="lazy" >}} | Ranks the countries currently experiencing the highest volume of network updates. It is an instant look at where in the world the most "routing churn" is happening at any given moment. |
+| {{< figure src="bgp-anomalies.png" alt="BGP Anomalies" loading="lazy" >}} | Tracks the specific network blocks that have the worst anomalies that we've detected. Great for spotting outages or a flapping link. Another name for this is the networking "wall of shame". |
 | {{< figure src="activity-trend.png" alt="Activity Trend" loading="lazy" >}} | A rolling 60-second activity graph. It tracks whether activity is spiking or calming down, letting you see the difference between routine background noise and a massive routing event. |
 | {{< figure src="beacon-analysis.png" alt="Beacon Analysis" loading="lazy" >}} | A dynamic donut chart separating "Organic" traffic from "Beacons" (special test signals sent out by researchers). It helps show how much activity is natural versus intentional measurement. More on this below. |
 | {{< figure src="now-playing.png" alt="Now Playing" loading="lazy" >}} | The current background music track. |
@@ -123,7 +127,7 @@ I've since learned this is likely due to a phenomenon called ["Path Hunting."](h
 
 This scramble to find backup paths can occasionally leave behind an interesting anomaly known as a "BGP zombie." If a router fails to process a withdrawal message due to a software bug or slow propagation, it will stubbornly keep announcing a dead path to its neighbors, creating a localized black hole for traffic. [Cloudflare has a great write-up](https://blog.cloudflare.com/going-bgp-zombie-hunting/) on hunting down these undead routes if you want to fall down that rabbit hole.
 
-**Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere.  But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a sudden surge of routing adjustments across the map.
+**Anycast** routing amplifies this chatter even further. Huge networks (like Google or Cloudflare) announce the exact same `/24` prefix from dozens of different physical locations globally so their services are fast everywhere. But if a major transit provider drops a peering session, or a provider intentionally shifts traffic away from a datacenter for maintenance, thousands of routers might suddenly decide to shift their traffic to a different Anycast node all at once. The result is a sudden surge of routing adjustments across the map.
 
 {{< diagram >}}
 {{< image src="spiderman-meme.png" >}}
@@ -149,7 +153,7 @@ So if a burst of updates isn't a dying link, a desperate search for a backup pat
 
 I caught a great example of this while watching the stream. A Finnish fiber provider (`AS43016`) was firing off nearly 100 pulses per second, and this went on for days. The raw data showed the route wasn't actually dropping. Instead, a single piece of metadata called the Aggregator ID just kept flipping back and forth.
 
-This creates a localized flurry of activity. Some router somewhere was probably misconfigured and couldn’t make up its mind about how to summarize its own network. Every time it changed its mind, even by a single bit, it had to update every other router on Earth. Standard monitoring tools usually miss these "attribute flaps" because the network stays perfectly reachable. But on the map, they paint a very clear picture: a constant, rhythmic heartbeat of blue gossip pulses.
+This creates a localized flurry of activity. Some router somewhere was probably misconfigured and couldn’t make up its mind about how to summarize its own network. Every time it changed its mind, even by a single bit, it had to update every other router on Earth. Standard monitoring tools usually miss these "attribute flaps" because the network stays perfectly reachable. But on the map, they paint a very clear picture: a constant, rhythmic heartbeat of orange "bad behavior" pulses.
 
 I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/debug-prefix/main.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at `AS43016`:
 
@@ -181,7 +185,7 @@ Top 5 Churning Peers:
   154.18.4.110: 132 attribute changes
 ```
 
-At the time of publishing, this prefix is still babbling away.
+At the time of publishing, this prefix is still babbling away. This script became the basis for the classification engine that I discuss later on in the article.
 
 ---
 
@@ -543,13 +547,13 @@ Batch -> Cache: Store state
 Pace -> Output: Smooth Render
 {{< /d2 >}}
 
-## Aesthetics, Motion, and Sound
+## Aesthetics and Motion
 
 Animations use interpolation instead of snapping to the next state. For parts of the map which update infrequently, I wanted to highlight that a change occurred. For that, I added a "glitch" effect to the "Top Activity Hubs" and "Most Active Prefixes" to make it more obvious and to add to the cyberpunk aesthetic. These effects add polish, but too much motion distracts. Finding that balance took restraint and a surprisingly large amount of experimentation.
 
 The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
-The colors map directly to the event types: green for new paths, purple for updates, red for withdrawals, and blue for gossip. Because they use additive blending, overlapping pulses naturally create a bright hotspot over regions with a ton of routing activity. They pop onto the map, expand, and fade out smoothly. Managing this entire visual lifecycle efficiently is what keeps the map feeling dynamic without tanking the frame rate.
+The colors map directly to the severity tiers: red for critical events, orange for bad behavior, purple for policy churn and hunting, and blue for routine discovery. Because they use additive blending, overlapping pulses naturally create a bright hotspot over regions with a ton of routing activity. They pop onto the map, expand, and fade out smoothly. Managing this entire visual lifecycle efficiently is what keeps the map feeling dynamic without tanking the frame rate.
 
 {{< diagram >}}
 {{< figure src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" animate="true" >}}
@@ -566,6 +570,150 @@ I chose the [Mollweide projection](https://en.wikipedia.org/wiki/Mollweide_proje
 {{< /diagram >}}
 
 This is an equal-area projection, which means it accurately represents the physical footprint of different regions. It produces a world view that still feels familiar without exaggerating high-latitude areas.
+
+## More meaningful Events
+
+Raw BGP messages only tell us two things: a route was announced, or a route was withdrawn. So how does the dashboard know when to declare a 'link flap', a 'route leak', or a massive 'outage'? The short answer is that I built a classification engine that takes the pattern of raw announce/withdrawal updates that BGP provides and converts them more meaningful events. Some kinds of events are easier to detect than others.
+
+Route leaks are a great example of how messy this can get. Initially, I tried to validate routes using databases like [Cloudflare's RPKI portal](https://blog.cloudflare.com/rpki/), specifically hooking into their `rpki.json` endpoint. The goal was to check if the announcements for networks actually matched their registered ASNs. In practice, this resulted in way too many false positives because a massive number of announcements just were not matching the registered ASNs. If I had kept that logic, the map would have been permanently covered in red alert pulses.
+
+Because of the noise, I ended up implementing a check for the valley-free routing principle. To understand why this works, we have to look at how BGP treats business relationships. BGP routing policies are built around who is paying whom. A network typically has providers it pays for transit, customers who pay it for access, and peers it swaps traffic with for mutual benefit. The valley-free rule dictates that a network should never act as a free transit bridge between two of its providers or peers.
+
+Imagine a small regional network buys internet access from both AT&T and Verizon for redundancy. AT&T shares its global routing table with this small network so it knows where to send data. If that small network accidentally announces all of those AT&T routes to Verizon, it is inadvertently telling the entire internet to send all traffic between Verizon and AT&T through its local routers. Traffic would flow down from Verizon, into the small regional network, and back up to AT&T. That "down and back up" path is what creates the valley shape in the AS path.  Because that small network does not have the capacity to handle global Tier-1 traffic, it immediately gets crushed under the weight of the data. The network drops packets and causes a massive localized internet outage, which is a classic route leak.
+
+{{< d2 >}}
+classes: {
+  t1: {
+    shape: cloud
+    style: {
+      fill: "#3498db"
+      stroke: "#2980b9"
+      font-color: "#ecf0f1"
+      bold: true
+    }
+  }
+  customer: {
+    shape: rectangle
+    style: {
+      fill: "#f1c40f"
+      stroke: "#f39c12"
+      font-color: "#2c3e50"
+      border-radius: 5
+      bold: true
+    }
+  }
+  mitm: {
+    shape: rectangle
+    style: {
+      fill: "#e74c3c"
+      stroke: "#c0392b"
+      font-color: "#ecf0f1"
+      border-radius: 5
+      bold: true
+      shadow: true
+    }
+  }
+  scenario_box: {
+    style: {
+      fill: transparent
+      stroke: "#bdc3c7"
+      stroke-width: 1
+      border-radius: 10
+      font-color: "#2c3e50"
+    }
+  }
+  invisible_layer: {
+    style: {
+      fill: transparent
+      stroke: transparent
+    }
+  }
+}
+
+"Valid Path: Up, Across, Down": {
+  class: scenario_box
+  direction: down
+
+  Top_Layer: {
+    label: ""
+    class: invisible_layer
+    direction: right
+    
+    T1_A: Tier 1 {class: t1}
+    T1_B: Tier 1 {class: t1}
+    
+    T1_A -> T1_B: "Across"
+  }
+
+  Bottom_Layer: {
+    label: ""
+    class: invisible_layer
+    direction: right
+    
+    C1: Customer Network\n(ISP) {class: customer}
+    C2: Customer Network {class: customer}
+    
+    # Invisible link to keep alignment clean
+    C1 -> C2 {style: {stroke: transparent}}
+  }
+
+  Bottom_Layer.C1 -> Top_Layer.T1_A: "Up"
+  Top_Layer.T1_B -> Bottom_Layer.C2: "Down"
+}
+
+"Route Leak: The Valley": {
+  class: scenario_box
+  direction: down
+
+  Top_Layer: {
+    label: ""
+    class: invisible_layer
+    direction: right
+    
+    T1_C: Tier 1 {class: t1}
+    T1_D: Tier 1 {class: t1}
+    
+    # Invisible link to keep spacing consistent with the MITM below
+    T1_C -> T1_D {style: {stroke: transparent}}
+  }
+
+  Bottom_Layer: {
+    label: ""
+    class: invisible_layer
+    direction: right
+    
+    C3: Customer Network\n(ISP) {class: customer}
+    MITM: Customer Network\n(MITM) 😠 {class: mitm}
+    C4: Customer Network {class: customer}
+    
+    # Invisible links to space them out evenly
+    C3 -> MITM {style: {stroke: transparent}}
+    MITM -> C4 {style: {stroke: transparent}}
+  }
+
+  Bottom_Layer.C3 -> Top_Layer.T1_C: "Up"
+  Top_Layer.T1_C -> Bottom_Layer.MITM: "Down" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
+  Bottom_Layer.MITM -> Top_Layer.T1_D: "Up (Valley Formed)" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
+  Top_Layer.T1_D -> Bottom_Layer.C4: "Down"
+}
+{{< /d2 >}}
+
+So, when the classification engine sees an AS path that violates this principle by dipping down into a lower-tier network and back up to a major provider, the system flags it as a route leak. While it serves as a decent baseline, I am generally uncertain about relying solely on this method. It is definitely a part of the classification engine that I want to explore and refine over time.
+
+Other rules are slightly more straightforward:
+
+| Event | Detection Trigger |
+| :--- | :--- |
+| **Outage** | >= 3 withdrawals, 0 announcements |
+| **Route Leak** | path contains Tier-1 to non-Tier-1 to Tier-1 |
+| **Link Flap** | > 5 withdrawals, announce:withdrawal ratio < 2.5 |
+| **Babbling** | High volume, unchanged attributes |
+| **Next-Hop Flap** | >= 5 next-hop changes, stable path length |
+| **Aggregator Flap**| > 10 AGGREGATOR changes |
+| **Policy Churn** | Elevated attribute changes |
+| **Path Oscillation**| Frequent path length switching |
+| **Path Hunting** | Increasing path length, then withdrawal |
+| **Discovery** | Prolonged announcements, few changes |
 
 ---
 
