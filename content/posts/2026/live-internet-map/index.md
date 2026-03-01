@@ -9,7 +9,7 @@ featuredalt: ""
 featuredpath: "date"
 linktitle: ""
 featured: true
-title: "Live Internet Map"
+title: "Building a Live BGP Map"
 slug: "live-internet-map"
 type: "posts"
 devtoSkip: true
@@ -583,118 +583,70 @@ Imagine a small regional network buys internet access from both AT&T and Verizon
 
 {{< d2 >}}
 classes: {
-  t1: {
-    shape: cloud
-    style: {
-      fill: "#3498db"
-      stroke: "#2980b9"
-      font-color: "#ecf0f1"
-      bold: true
-    }
-  }
-  customer: {
-    shape: rectangle
-    style: {
-      fill: "#f1c40f"
-      stroke: "#f39c12"
-      font-color: "#2c3e50"
-      border-radius: 5
-      bold: true
-    }
-  }
-  mitm: {
-    shape: rectangle
-    style: {
-      fill: "#e74c3c"
-      stroke: "#c0392b"
-      font-color: "#ecf0f1"
-      border-radius: 5
-      bold: true
-      shadow: true
-    }
-  }
-  scenario_box: {
-    style: {
-      fill: transparent
-      stroke: "#bdc3c7"
-      stroke-width: 1
-      border-radius: 10
-      font-color: "#2c3e50"
-    }
-  }
-  invisible_layer: {
-    style: {
-      fill: transparent
-      stroke: transparent
-    }
-  }
+  t1: {shape: cloud; style: {fill: "#3498db"; font-color: "#ecf0f1"; bold: true}}
+  customer: {shape: rectangle; style: {fill: "#f1c40f"; font-color: "#2c3e50"; bold: true}}
+  invisible: {shape: rectangle; label: " "; style: {fill: transparent; stroke: transparent}}
 }
 
-"Valid Path: Up, Across, Down": {
-  class: scenario_box
-  direction: down
-
-  Top_Layer: {
-    label: ""
-    class: invisible_layer
-    direction: right
-    
-    T1_A: Tier 1 {class: t1}
-    T1_B: Tier 1 {class: t1}
-    
-    T1_A -> T1_B: "Across"
-  }
-
-  Bottom_Layer: {
-    label: ""
-    class: invisible_layer
-    direction: right
-    
-    C1: Customer Network\n(ISP) {class: customer}
-    C2: Customer Network {class: customer}
-    
-    # Invisible link to keep alignment clean
-    C1 -> C2 {style: {stroke: transparent}}
-  }
-
-  Bottom_Layer.C1 -> Top_Layer.T1_A: "Up"
-  Top_Layer.T1_B -> Bottom_Layer.C2: "Down"
+"Valid Path": {
+  style: {fill: transparent; stroke: "#bdc3c7"}
+  
+  grid-rows: 2
+  grid-columns: 5
+  
+  # Row 1 (Top)
+  empty1: {class: invisible}
+  T1_A: Tier 1 {class: t1}
+  empty2: {class: invisible}
+  T1_B: Tier 1 {class: t1}
+  empty3: {class: invisible}
+  
+  # Row 2 (Bottom)
+  C1: Customer Network\n(ISP) {class: customer}
+  empty4: {class: invisible}
+  empty5: {class: invisible}
+  empty6: {class: invisible}
+  C2: Customer Network {class: customer}
+  
+  # Connections
+  C1 -> T1_A: "Up"
+  T1_A -> T1_B: "Across"
+  T1_B -> C2: "Down"
+}
+{{< /d2 >}}
+{{< d2 >}}
+classes: {
+  t1: {shape: cloud; style: {fill: "#3498db"; font-color: "#ecf0f1"; bold: true}}
+  customer: {shape: rectangle; style: {fill: "#f1c40f"; font-color: "#2c3e50"; bold: true}}
+  mitm: {shape: rectangle; style: {fill: "#e74c3c"; font-color: "#ecf0f1"; bold: true}}
+  invisible: {shape: rectangle; label: " "; style: {fill: transparent; stroke: transparent}}
 }
 
 "Route Leak: The Valley": {
-  class: scenario_box
-  direction: down
-
-  Top_Layer: {
-    label: ""
-    class: invisible_layer
-    direction: right
-    
-    T1_C: Tier 1 {class: t1}
-    T1_D: Tier 1 {class: t1}
-    
-    # Invisible link to keep spacing consistent with the MITM below
-    T1_C -> T1_D {style: {stroke: transparent}}
-  }
-
-  Bottom_Layer: {
-    label: ""
-    class: invisible_layer
-    direction: right
-    
-    C3: Customer Network\n(ISP) {class: customer}
-    MITM: Customer Network\n(MITM) 😠 {class: mitm}
-    C4: Customer Network {class: customer}
-    
-    # Invisible links to space them out evenly
-    C3 -> MITM {style: {stroke: transparent}}
-    MITM -> C4 {style: {stroke: transparent}}
-  }
-
-  Bottom_Layer.C3 -> Top_Layer.T1_C: "Up"
-  Top_Layer.T1_C -> Bottom_Layer.MITM: "Down" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
-  Bottom_Layer.MITM -> Top_Layer.T1_D: "Up (Valley Formed)" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
-  Top_Layer.T1_D -> Bottom_Layer.C4: "Down"
+  style: {fill: transparent; stroke: "#bdc3c7"}
+  
+  grid-rows: 2
+  grid-columns: 5
+  
+  # Row 1 (Top)
+  empty7: {class: invisible}
+  T1_C: Tier 1 {class: t1}
+  empty8: {class: invisible}
+  T1_D: Tier 1 {class: t1}
+  empty9: {class: invisible}
+  
+  # Row 2 (Bottom)
+  C3: Customer Network\n(ISP) {class: customer}
+  empty10: {class: invisible}
+  MITM: Customer Network\n(MITM) 😠 {class: mitm}
+  empty11: {class: invisible}
+  C4: Customer Network {class: customer}
+  
+  # Connections
+  C3 -> T1_C: "Up"
+  T1_C -> MITM: "Down" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
+  MITM -> T1_D: "Up (Valley Formed)" {style: {stroke: "#e74c3c"; stroke-width: 3; stroke-dash: 5}}
+  T1_D -> C4: "Down"
 }
 {{< /d2 >}}
 
