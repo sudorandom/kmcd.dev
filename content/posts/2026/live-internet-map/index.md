@@ -1,7 +1,7 @@
 ---
 categories: ["article", "project"]
 tags: ["dataviz", "internet-map", "internet", "networking", "bgp", "map", "world", "infrastructure", "ebitengine", "go"]
-date: "2026-03-02T10:00:00Z"
+date: "2026-03-02T08:00:00Z"
 description: "Building a cool looking, real-time BGP map"
 cover: "map.png"
 images: ["/posts/live-internet-map/map.png"]
