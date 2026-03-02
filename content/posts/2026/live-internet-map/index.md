@@ -68,6 +68,58 @@ AS6939 -> Destination
 
 Every pulse on the map represents a real routing update. Sometimes it’s routine churn. Sometimes it’s maintenance, an outage, or a path change somewhere along the way.
 
+### The Global Game of Telephone
+
+To understand why the map pulses, you have to look at how routers talk. BGP is a **path-vector protocol**, which is effectively a global game of telephone. When a network (an Autonomous System, or AS) wants to be found, it tells its immediate neighbors, who tell their neighbors, and so on.
+
+* **The Announcement:** When a router in Tokyo says, "I have a path to `8.8.8.0/24`," it sends an **Update** to its peers. Every peer that hears this stamps the message with its own ID before passing it along. This list of stamps is called the **AS Path**.
+* **The Selection:** Routers generally prefer the shortest path. If an observer in New York hears the same news from London (2 hops) and Sydney (5 hops), it will automatically choose the shorter London route. On the live map, you will see this selection light up as a purple pulse.
+* **The Withdrawal:** If a fiber line is cut, for example, the router sends a **Withdrawal**. This is where the game of telephone gets frantic. Neighbors start checking their old notes: *"Wait, I can't go through London anymore? What about that longer path through Sydney I heard about earlier?"*
+
+Here is how that "envelope" looks as it travels from Tokyo to New York. Notice how the path grows longer at every step.
+
+{{< d2 >}}
+direction: down
+
+classes: {
+tokyo: {
+shape: cloud
+style: {
+fill: "#2ecc71"
+font-color: "#ffffff"
+bold: true
+}
+}
+router: {
+shape: rectangle
+style: {
+fill: "#2c3e50"
+font-color: "#ecf0f1"
+border-radius: 5
+}
+}
+}
+
+# The Nodes
+
+AS100: "Tokyo\n(Origin)" {class: tokyo}
+AS200: "London\nPath: [200, 100]" {class: router}
+AS300: "New York\nPath: [300, 200, 100]" {class: router}
+
+# The Conversation
+
+AS100 -> AS200: "Hey London, I've got Google's IPs at AS100!"
+AS200 -> AS300: "Hey New York, I can get you to Tokyo via London (AS200) and AS100."
+AS300 -> User: "I'll take the path through London, it's only 2 hops away." {
+style: {
+stroke-dash: 3
+font-color: "#ecf0f1"
+}
+}
+{{< /d2 >}}
+
+Because routers often wait a few seconds before passing news along (to avoid "vibrating" the whole internet with every tiny hiccup), these updates arrive in waves. On the live map, this looks like a ripple of activity starting at the origin and washing over the globe as the "signatures" accumulate.
+
 ### Spotting a BGP Flap
 
 If you are watching the map and suddenly see a wave of pulses lighting up all over the world at the exact same time, you might be witnessing a BGP flap.
@@ -500,7 +552,7 @@ The algorithm flattens these into three distinct, non-overlapping segments:
 2. `10.0.0.128` to `10.0.0.255` (Conflict resolved)
 3. `10.0.1.0` to `10.0.1.255` (RIPE only)
 
-This preprocessing seems a bit complex, but it's worth it since it makes the live lookups super cheap. I back this index with BadgerDB and a [DiskTrie for high-performance persistent storage](https://github.com/sudorandom/bgp-stream/blob/main/pkg/utils/disk_trie.go). This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
+This preprocessing seems like overkill, but it's worth it since it makes lookups super cheap. I back this index with BadgerDB and a [DiskTrie for high-performance persistent storage](https://github.com/sudorandom/bgp-stream/blob/main/pkg/utils/disk_trie.go). This allows the engine to track "seen" prefixes seamlessly across different sessions without eating up memory.
 
 ### Managing the Firehose
 
@@ -549,7 +601,7 @@ Pace -> Output: Smooth Render
 
 ## Aesthetics and Motion
 
-Animations use interpolation instead of snapping to the next state. For parts of the map which update infrequently, I wanted to highlight that a change occurred. For that, I added a "glitch" effect to the "Top Activity Hubs" and "Most Active Prefixes" to make it more obvious and to add to the cyberpunk aesthetic. These effects add polish, but too much motion distracts. Finding that balance took restraint and a surprisingly large amount of experimentation.
+Animations use interpolation instead of snapping to the next state. For parts of the map which update infrequently, I wanted to highlight that a change occurred. For that, I added a "glitch" effect to the "Top Activity Hubs" and "Most Active Prefixes" to make it more obvious and to add to the cyberpunk aesthetic. These effects add polish, but too much motion detracts from the vibes of the map. Finding that balance took restraint and a surprisingly large amount of experimentation.
 
 The pulses are what actually bring the data to life. In the engine, each pulse is a simple generated glow texture. I add a bit of spatial jitter so concurrent events do not stack perfectly on top of each other, and I scale their sizes logarithmically so massive data spikes do not turn the map into a solid wall of color.
 
@@ -667,7 +719,7 @@ Other rules are slightly more straightforward:
 | **Path Hunting** | Increasing path length, then withdrawal |
 | **Discovery** | Prolonged announcements, few changes |
 
-These initial thresholds are just a starting point, and I will definitely refine them as the project goes on.
+The classifications are set for 10 minutes for each prefix and are then re-resolved with the exception of `Outage`, where any announcement can transition a prefix out of the `outage` state. These initial thresholds are just a starting point, and I will definitely refine them as the project goes on.
 
 ---
 
