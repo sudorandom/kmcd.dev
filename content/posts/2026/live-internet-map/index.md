@@ -719,7 +719,7 @@ Other rules are slightly more straightforward:
 | **Path Hunting** | Increasing path length, then withdrawal |
 | **Discovery** | Prolonged announcements, few changes |
 
-The classifications are set for 10 minutes for each prefix. At the end of the 10 minute period, prefixes are reevaluated, so they can go from `Link Flap` to `Discovery`. There is an exception for `Outage`, where any announcement can transition a prefix out of the `outage` state. These initial thresholds are just a starting point, and I will definitely refine them as the project goes on.
+To make these determinations, the engine analyzes the last five minutes of event data. Once classified, a prefix holds its state for ten minutes before being reevaluated. This means a prefix might eventually downgrade from a `Link Flap` to a routine `Discovery`. `Outage` states are the sole exception and clear immediately upon any new announcement. These initial rules are just a baseline I plan to refine as the project evolves.
 
 ---
 
