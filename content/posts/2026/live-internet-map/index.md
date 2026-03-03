@@ -145,7 +145,7 @@ The classification engine also maps events into Level 2 categorizations (anomali
 | Severity Tier | Color | Examples | Description |
 | :--- | :--- | :--- | :--- |
 | **Critical** | Red | Outage, Route Leak | Significant routing failures, such as a prefix sustaining multiple withdrawals with no announcements, or path violations that suggest a route leak. |
-| **Bad** | Orange | Link Flap, Babbling | Highly volatile or inefficient behavior, including rapid "flapping" of routes, excessive "babbling" with unchanged attributes, or frequent next-hop changes. |
+| **Bad** | Orange | Link Flap, Babbling | Highly volatile or inefficient behavior, including rapid "flapping" of routes, excessive "babbling" (a term I coined for this project) with unchanged attributes, or frequent next-hop changes. |
 | **Normal / Policy** | Purple | Policy Churn, Path Hunting | Standard routing adjustments, such as traffic engineering (Policy Churn), path length oscillations, or the natural "Path Hunting" process where routers explore alternatives during convergence. |
 | **Normal / Discovery** | Blue | Discovery, Gossip | Routine background noise, including standard prefix origination or redundant gossip pulses that keep routing tables current. |
 
@@ -201,7 +201,7 @@ I eventually added a Beacon Analysis view that separates "organic" updates from 
 
 ### BGP Babbling and Attribute Churn
 
-So if a burst of updates isn't a dying link, a desperate search for a backup path, or a research beacon, what else could it be? Sometimes a network is just fidgeting. BGP engineers usually call this **babbling**.
+So if a burst of updates isn't a dying link, a desperate search for a backup path, or a research beacon, what else could it be? Sometimes a network is just fidgeting. I call this **babbling**. While not an official industry term, it perfectly describes the constant, repetitive "talk" of updates that don't actually change anything meaningful about the route.
 
 I caught a great example of this while watching the stream. A Finnish fiber provider (`AS43016`) was firing off nearly 100 pulses per second, and this went on for days. The raw data showed the route wasn't actually dropping. Instead, a single piece of metadata called the Aggregator ID just kept flipping back and forth.
 
@@ -703,6 +703,10 @@ classes: {
 {{< /d2 >}}
 
 So, when the classification engine sees an AS path that violates this principle by dipping down into a lower-tier network and back up to a major provider, the system flags it as a route leak. While it serves as a decent baseline, I am generally uncertain about relying solely on this method. It is definitely a part of the classification engine that I want to explore and refine over time.
+
+{{< warning-box >}}
+Note that since I published this post, I significantly changed how route leaks are detected. Yes, it does involve the valley-free routing principle *and* RPKI, but the story is a bit more complex and will probably require an entire post to explain. More on this topic in the future!
+{{< /warning-box >}}
 
 Other rules are slightly more straightforward:
 
