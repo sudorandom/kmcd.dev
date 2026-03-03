@@ -142,12 +142,12 @@ When you see those colored pulses popping off on the map, they represent BGP upd
 
 The classification engine also maps events into Level 2 categorizations (anomalies) based on heuristics applied over recent activity windows. To make sense of the noise, the multi-stage engine uses specific triggers to drop these events into the four colored buckets before presenting them on the map. These fall into four severity tiers:
 
-| Severity Tier | Color | Examples | Description |
-| :--- | :--- | :--- | :--- |
-| **Critical** | Red | Outage, Route Leak | Significant routing failures, such as a prefix sustaining multiple withdrawals with no announcements, or path violations that suggest a route leak. |
-| **Bad** | Orange | Link Flap, Babbling | Highly volatile or inefficient behavior, including rapid "flapping" of routes, excessive "babbling" (a term I coined for this project) with unchanged attributes, or frequent next-hop changes. |
-| **Normal / Policy** | Purple | Policy Churn, Path Hunting | Standard routing adjustments, such as traffic engineering (Policy Churn), path length oscillations, or the natural "Path Hunting" process where routers explore alternatives during convergence. |
-| **Normal / Discovery** | Blue | Discovery, Gossip | Routine background noise, including standard prefix origination or redundant gossip pulses that keep routing tables current. |
+| Severity Tier | Color | Description |
+| :--- | :--- | :--- |
+| **Critical** | Red | Significant routing failures, such as a prefix sustaining multiple withdrawals with no announcements, or path violations that suggest a route leak. |
+| **Bad** | Orange | Highly volatile or inefficient behavior, including rapid "flapping" of routes, excessive "babbling" (a term I coined for this project) with unchanged attributes, or frequent next-hop changes. |
+| **Normal / Policy** | Purple |  Standard routing adjustments, such as traffic engineering (Policy Churn), path length oscillations, or the natural "Path Hunting" process where routers explore alternatives during convergence. |
+| **Normal / Discovery** | Blue | Routine background noise, including standard prefix origination or redundant gossip pulses that keep routing tables current. |
 
 {{< diagram >}}
 {{< figure src="map-animation-noui.webp" animate="true" width="700px" animate="true" >}}
