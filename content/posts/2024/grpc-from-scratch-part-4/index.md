@@ -16,7 +16,9 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-from-scratch-part-4/
 draft: true
 ---
-TODO: intro
+Welcome back to the *gRPC from Scratch* series! In [Part 3](/posts/grpc-from-scratch-part-3/), we peeled back the curtain on protobuf encoding, diving into the nitty-gritty of wire types, Base-128 Varints, and how basic integers are serialized. We built some barebones functions to encode and decode these types manually, using raw byte slices (`[]byte`) to hold our data.
+
+In this fourth installment, we're going to expand our protobuf encoding toolkit. We'll move beyond simple integers to tackle strings, byte arrays, packed repeated fields, and even embedded messages. But before we get to the new data types, we are going to make a small refactor to our existing encoding functions.
 
 I hear that `bytes.Buffer` is often-times faster than using `[]bytes` append(), so I'm actually going to rewrite these functions to use `bytes.Buffer`. This will also prevent us from needing to manually manage the byte offset. My hunch is that this method is slower but I still like it because it results in more readable code. Here are the equivalent functions now:
 
