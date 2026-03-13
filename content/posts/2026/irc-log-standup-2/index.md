@@ -4,6 +4,7 @@ date: 2026-03-16T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, engineering, standup]
 series: [irc-logs]
+description: "The team attempts another text-based standup, this time with management present. It goes significantly worse than the first one."
 ---
 
 The team attempts another text-based standup, this time with management present. It goes significantly worse than the first one.

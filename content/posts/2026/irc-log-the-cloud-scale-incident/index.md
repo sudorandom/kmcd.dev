@@ -4,6 +4,7 @@ date: 2026-02-23T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, aws, vibe-coding]
 series: [irc-logs]
+description: "A vibe-coder attempts to provision a supercomputer to host a crypto-based to-do list app."
 ---
 
 An archived log from the #dev-help channel on the Freenode (RIP) afterlife network.

@@ -4,6 +4,7 @@ date: 2026-03-09T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, rm, incident]
 series: [irc-logs]
+description: "A tired sysadmin accidentally deletes the production database and discovers that all five backup mechanisms have failed."
 ---
 
 # The Incident Log: January 31, 2017

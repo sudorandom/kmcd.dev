@@ -12,7 +12,7 @@
             <h2>Ongoing Projects</h2>
         </span>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://livemap.kmcd.dev" target="_blank">Live Internet Map</a></h3>
                 {{ $liveInternetMapImg := (resources.Get "images/screenshots/map-animation.webp") }}
                 {{ if $liveInternetMapImg }}
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://map.kmcd.dev" target="_blank">Internet Infrastructure Map</a></h3>
                 {{ $internetMapImg := (resources.Get "images/screenshots/internet-map.png") }}
                 {{ if $internetMapImg }}
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></h3>
                 {{ $fauxrpcImg := (resources.Get "images/screenshots/fauxrpc.png") }}
                 {{ if $fauxrpcImg }}
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></h3>
                 {{ $protocGenImg := (resources.Get "images/screenshots/protoc-gen-connect-openapi.png") }}
                 {{ if $protocGenImg }}
@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://kmcd.dev" target="_blank">kmcd.dev</a></h3>
                 {{ $kmcdDevImg := (resources.Get "images/screenshots/kmcd.dev.png") }}
                 {{ if $kmcdDevImg }}
@@ -119,7 +119,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://phreak.kmcd.dev" target="_blank">phreak.kmcd.dev</a></h3>
                 {{ $phreakBoxImg := (resources.Get "images/screenshots/phreak.png") }}
                 {{ if $phreakBoxImg }}
@@ -140,7 +140,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://morse.kmcd.dev" target="_blank">morse.kmcd.dev</a></h3>
                 {{ $morseSpeedTyperImg := (resources.Get "images/screenshots/morse-speed-typer.png") }}
                 {{ if $morseSpeedTyperImg }}
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://wordseq.com" target="_blank">wordseq</a></h3>
                 {{ $wordseqImg := (resources.Get "images/screenshots/wordseq.png") }}
                 {{ if $wordseqImg }}
@@ -186,7 +186,7 @@
             <h2>Tools</h2>
         </span>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="/http/">HTTP Version Tool</a></h3>
                 {{ $httpToolImg := (resources.Get "images/screenshots/http.png") }}
                 {{ if $httpToolImg }}
@@ -211,7 +211,7 @@
             <h2>Finished Projects</h2>
         </span>
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
                 {{ $evepraisalImg := (resources.Get "images/screenshots/evepraisal.png") }}
                 {{ if $evepraisalImg }}
@@ -237,7 +237,7 @@
         </div>
 
         <div class="projects-wrapper">
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://github.com/softlayer/softlayer-python" target="_blank">softlayer-python</a></h3>
                 {{ $slPyImg := (resources.Get "softlayer-python.webp") }}
                 {{ if $slPyImg }}
@@ -259,7 +259,7 @@
                 </div>
             </div>
 
-            <div class="projects-box">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://github.com/softlayer/swftp" target="_blank">swftp</a></h3>
                 {{ $swftpImg := (resources.Get "swftp.webp") }}
                 {{ if $swftpImg }}

@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
 /* Light theme color */
-$light-background: #fff;
-$light-background-secondary: #eaeaea;
-$light-background-header: #fafafa;
+$light-background: #fafafa;
+$light-background-secondary: #e0e0e0;
+$light-background-header: #ececec;
 $light-color: #222;
 $light-color-variant: black;
 $light-color-secondary: #999;
@@ -35,3 +35,5 @@ $max-width: 860px;
 
 /* Primary color */
 $primary-color: #007bff;
+$light-accent-color: #0052ff;
+$dark-accent-color: #00ffff;

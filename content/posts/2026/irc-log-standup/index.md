@@ -4,6 +4,7 @@ date: 2026-02-09T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, engineering, standup]
 series: [irc-logs]
+description: "The lead is away, so the team holds standup in IRC. It quickly descends into abstract art and magenta-colored login pages."
 ---
 
 The lead is at a conference, so standup is happening in `#engineering-team`. It went about as well as expected.

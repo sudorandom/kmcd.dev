@@ -9,11 +9,63 @@
 
 {{ define "main" }}
     <main role="main">
+        <div class="home-content-container">
         <div class="main-heading">
             {{ with .Content }}
                 {{ . }}
             {{ end }}
         </div>
+
+        <div class="main-heading">
+            <div class="posts-header section-title">
+                <h3><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h3>
+            </div>
+            <div class="projects-wrapper two-columns">
+                {{ $projects := slice 
+                    (dict "title" "protoc-gen-connect-openapi" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
+                    (dict "title" "fauxrpc" "url" "https://github.com/sudorandom/fauxrpc" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
+                    (dict "title" "Internet Map" "url" "https://map.kmcd.dev" "desc" "An interactive visualization of global internet infrastructure, including submarine fiber-optic cables, internet exchange points, and regional bandwidth data." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
+                    (dict "post" "posts/2026/live-internet-map/index.md" "cover" "map.png" "youtube" "UCA9eO4Gt-Ua6lAEGzWQHQFA")
+                }}
+
+                {{ range $projects }}
+                    {{ $projectPage := $.Site.GetPage .post }}
+                    {{ $bgURL := "" }}
+                    {{ if $projectPage }}
+                        {{ if .cover }}
+                            {{ $resource := $projectPage.Resources.GetMatch .cover }}
+                            {{ if $resource }}
+                                {{ if eq $resource.MediaType.SubType "svg" }}
+                                    {{ $bgURL = $resource.Permalink }}
+                                {{ else }}
+                                    {{ $bgURL = ($resource.Fill "800x400 webp").Permalink }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                    {{ end }}
+                    <div class="projects-box with-bg" 
+                        style="{{ if $bgURL }}background-image: url('{{ $bgURL }}');{{ end }} {{ if .url }}cursor: pointer;{{ end }}" 
+                        {{ if .url }}onclick="window.open('{{ .url }}', '_blank')"{{ end }}>
+                        <div class="projects-box-content">
+                            {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
+                            {{ if .desc }}<p>{{ .desc }}</p>{{ end }}
+                            {{ if .youtube }}
+                            <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/live_stream?channel={{ .youtube }}" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                    frameborder="0"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            {{ end }}
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+        </div>
+
         <!-- Start Posts -->
         {{ if .Site.Params.showPosts }}
             {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
@@ -22,63 +74,127 @@
             {{ if .IsHome }}
                 {{ $PageContext = .Site }}
             {{ end }}
+            
             <div class="main-heading">
-            <div class="posts-header">
-                <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
-            </div>
+                <div class="posts-header section-title">
+                    <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
+                </div>
 
-            {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
-            <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                <div class="post-row">
-                    <h3>
-                        <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                        {{- with .Date -}}
-                        <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                        {{- end -}}
-                        <small class="reading-time">{{ .ReadingTime }} min read</small>
-                    </h3>
-                    <div class="post-meta">
+                {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+                {{ $coverURL := "" }}
+                {{ if .Params.cover }}
+                    {{ $res := .Resources.GetMatch .Params.cover }}
+                    {{ if $res }}
+                        {{ if eq $res.MediaType.SubType "svg" }}
+                            {{ $coverURL = $res.Permalink }}
+                        {{ else }}
+                            {{ $coverURL = ($res.Fill "1000x400 webp").Permalink }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+                <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
+                    <div class="post-card-wrapper">
+                        {{ $image := "" }}
+                        {{ if .Params.cover }}
+                            {{ $res := .Resources.GetMatch .Params.cover }}
+                            {{ if $res }}
+                                {{ if eq $res.MediaType.SubType "svg" }}
+                                    {{ $image = $res }}
+                                {{ else }}
+                                    {{ $image = $res.Fill "150x150 webp" }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                        
+                        {{ if $image }}
+                            <img src="{{ $image.Permalink }}" alt="{{ .Title }}" class="post-thumbnail">
+                        {{ end }}
+
+                        <div class="post-card-content">
+                            <h3>
+                                <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+                            </h3>
+                            <div class="post-meta">
+                                {{- with .Date -}}
+                                <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
+                                {{- end -}}
+                                <small class="reading-time">{{ .ReadingTime }} min read</small>
+                            </div>
+                            <div class="post-summary">
+                                {{ or .Description .Summary | truncate 200 }}
+                            </div>
+                            <div class="post-tags">
+                                {{ with .Params.tags }}
+                                    {{ range first 5 . }}
+                                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                    {{ end }}
+                                {{ end }}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="post-row">
-                    <span class="post-tags">
-                    {{ range .Params.tags }}
-                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
-                    {{ end }}
-                    </span>
-                </div>
+                {{ end }}
             </div>
-            <div class="posts-footer"></div>
-            {{ end }}
 
             <div class="main-heading">
-            <div class="posts-header">
-                <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
-            </div>
+                <div class="posts-header section-title">
+                    <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
+                </div>
 
-            {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
-            <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                <div class="post-row">
-                    <h3>
-                        <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                    </h3>
-                    <div class="post-meta">
+                {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
+                {{ $coverURL := "" }}
+                {{ if .Params.cover }}
+                    {{ $res := .Resources.GetMatch .Params.cover }}
+                    {{ if $res }}
+                        {{ if eq $res.MediaType.SubType "svg" }}
+                            {{ $coverURL = $res.Permalink }}
+                        {{ else }}
+                            {{ $coverURL = ($res.Fill "1000x400 webp").Permalink }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+                <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
+                    <div class="post-card-wrapper">
+                        {{ $image := "" }}
+                        {{ if .Params.cover }}
+                            {{ $res := .Resources.GetMatch .Params.cover }}
+                            {{ if $res }}
+                                {{ if eq $res.MediaType.SubType "svg" }}
+                                    {{ $image = $res }}
+                                {{ else }}
+                                    {{ $image = $res.Fill "150x150 webp" }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                        
+                        {{ if $image }}
+                            <img src="{{ $image.Permalink }}" alt="{{ .Title }}" class="post-thumbnail">
+                        {{ end }}
+
+                        <div class="post-card-content">
+                            <h3>
+                                <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
+                            </h3>
+                            <div class="post-summary">
+                                {{ or .Description .Summary | truncate 150 }}
+                            </div>
+                            <div class="post-tags">
+                                {{ with .Params.tags }}
+                                    {{ range first 5 . }}
+                                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                    {{ end }}
+                                {{ end }}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="post-row">
-                    <span class="post-tags">
-                    {{ range .Params.tags }}
-                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>&nbsp;
-                    {{ end }}
-                    </span>
+                {{ end }}
+                <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
+                    Check out the archive for more.
                 </div>
-            </div>
-            {{ end }}
-            <div class="posts-footer">
-                Didn't find what you want? Check out <a href="/posts/">the archive</a> for more.
-            </div>
             </div>
         {{ end }}
         <!-- End Posts -->
+        </div>
     </main>
 {{ end }}

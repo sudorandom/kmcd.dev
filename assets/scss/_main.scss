@@ -68,12 +68,24 @@ h6 {
   display: flex;
   align-items: center;
   line-height: 1.3;
+  [data-theme=dark] & {
+    color: $dark-accent-color;
+  }
+  [data-theme=light] & {
+    color: $light-accent-color;
+  }
 }
 
 h1 {
   font-size: 2.625rem;
   font-family: "Poetsen One", sans-serif;
   font-weight: 800;
+  [data-theme=dark] & {
+    color: $dark-accent-color;
+  }
+  [data-theme=light] & {
+    color: $light-accent-color;
+  }
 }
 
 h2 {
@@ -258,11 +270,11 @@ em, i, strong {
   }
 
   [data-theme=dark] & {
-    color: white;
+    color: $dark-accent-color;
   }
 
   [data-theme=light] & {
-    color: black;
+    color: $light-accent-color;
   }
 }
 

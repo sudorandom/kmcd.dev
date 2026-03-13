@@ -4,6 +4,7 @@ date: 2026-03-30T10:00:00Z
 cover: "cover.svg"
 tags: [humor, irc, react, incident]
 series: [irc-logs]
+description: "A seamless session update turns every customer's browser into an infinite loop cannon."
 ---
 
 {{< chat >}}
