@@ -789,10 +789,38 @@ ul.icons {
     [data-theme=dark] & {
         background-color: $dark-background;
         color: $dark-color;
+
+        --pagefind-ui-primary: #{$dark-accent-color};
+        --pagefind-ui-text: #{$dark-color};
+        --pagefind-ui-background: #{$dark-background};
+        --pagefind-ui-border: #{$dark-border-color};
+        --pagefind-ui-tag: #{$dark-background-secondary};
+
+        .pagefind-ui__result-title,
+        .pagefind-ui__result-link {
+            color: $dark-accent-color !important;
+        }
+
+        .pagefind-ui__result-excerpt {
+            color: $dark-color !important;
+        }
+
+        .pagefind-ui__search-input,
+        .pagefind-ui__search-clear {
+            background-color: $dark-background-secondary !important;
+            color: $dark-color !important;
+            border-color: $dark-border-color !important;
+        }
     }
     [data-theme=light] & {
         background-color: $light-background;
         color: $light-color;
+
+        --pagefind-ui-primary: #{$light-accent-color};
+        --pagefind-ui-text: #{$light-color};
+        --pagefind-ui-background: #{$light-background};
+        --pagefind-ui-border: #{$light-border-color};
+        --pagefind-ui-tag: #{$light-background-secondary};
     }
 }
 
