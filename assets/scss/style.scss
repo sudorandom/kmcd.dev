@@ -724,13 +724,33 @@ ul.icons {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 20px;
+    position: relative;
+    display: flex;
+
     [data-theme=light] & {
         background: #fafafa;
     }
     [data-theme=dark] & {
         background: #1f2a35;
     }
-    display: flex;
+}
+
+.cover-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--cover-image);
+    background-position: center;
+    background-size: cover;
+    filter: blur(10px);
+    transition: filter 0.3s ease;
+    z-index: 1;
+
+    &:hover {
+        filter: blur(0);
+    }
 }
 
 .cover-top {
@@ -749,8 +769,11 @@ ul.icons {
 .cover-inner {
     border-radius: 10px;
     padding: 1em 2em 1em 2em;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: background-color 0.3s ease;
     color: #fff;
+    position: relative;
+    z-index: 2;
 }
 
 .prompt-outer {
@@ -877,4 +900,3 @@ figure img {
     display: inline-block;
     max-width: 100%;
 }
-
