@@ -747,9 +747,19 @@ ul.icons {
     filter: blur(10px);
     transition: filter 0.3s ease;
     z-index: 1;
+    animation: blur-in 0.5s ease-in-out;
 
     &:hover {
         filter: blur(0);
+    }
+}
+
+@keyframes blur-in {
+    from {
+        filter: blur(0);
+    }
+    to {
+        filter: blur(10px);
     }
 }
 
