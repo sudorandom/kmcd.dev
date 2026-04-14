@@ -98,25 +98,43 @@
                     content = `<div class="webmention-text">${mention.content.text}</div>`;
                 }
 
-                li.innerHTML = `
-                    <div class="webmentions-avatar">
-                        <a href="${authorUrl}" target="_blank" rel="noopener noreferrer">
-                            <img src="${avatar}" alt="${authorName}" loading="lazy">
-                        </a>
-                    </div>
-                    <div class="webmentions-content">
-                        <div>
+                if (!content) {
+                    li.classList.add('webmention-mini');
+                    li.innerHTML = `
+                        <div class="webmentions-avatar">
+                            <a href="${authorUrl}" target="_blank" rel="noopener noreferrer">
+                                <img src="${avatar}" alt="${authorName}" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="webmentions-content">
                             <a href="${authorUrl}" class="webmention-author" target="_blank" rel="noopener noreferrer">${authorName}</a>
+                            ${domain ? `<span class="webmention-domain">on <a href="${mention.url}" target="_blank" rel="noopener noreferrer">${domain}</a></span>` : ''}
                             <span class="webmention-type">
                                 <i class="fa-solid ${icon}"></i> ${typeText}
                             </span>
                         </div>
-                        ${content}
-                        <div class="webmention-meta">
-                            <a href="${mention.url}" target="_blank" rel="noopener noreferrer">${dateText}</a>
+                    `;
+                } else {
+                    li.innerHTML = `
+                        <div class="webmentions-avatar">
+                            <a href="${authorUrl}" target="_blank" rel="noopener noreferrer">
+                                <img src="${avatar}" alt="${authorName}" loading="lazy">
+                            </a>
                         </div>
-                    </div>
-                `;
+                        <div class="webmentions-content">
+                            <div>
+                                <a href="${authorUrl}" class="webmention-author" target="_blank" rel="noopener noreferrer">${authorName}</a>
+                                <span class="webmention-type">
+                                    <i class="fa-solid ${icon}"></i> ${typeText}
+                                </span>
+                            </div>
+                            ${content}
+                            <div class="webmention-meta">
+                                <a href="${mention.url}" target="_blank" rel="noopener noreferrer">${dateText}</a>
+                            </div>
+                        </div>
+                    `;
+                }
                 listEl.appendChild(li);
             });
 

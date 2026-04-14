@@ -108,6 +108,12 @@
             }
         }
 
+        .webmention-domain {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
         .webmention-type {
             opacity: 0.7;
             font-size: 0.85rem;
@@ -128,6 +134,41 @@
             opacity: 0.6;
             
             a {
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    &-item.webmention-mini {
+        padding: 8px 0;
+        align-items: center;
+
+        .webmentions-avatar img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .webmentions-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0 5px;
+            line-height: 1;
+
+            .webmention-author {
+                margin-right: 0;
+            }
+
+            .webmention-type {
+                font-size: 0.9rem;
+            }
+
+            .webmention-source-link {
+                font-size: 0.85rem;
+                opacity: 0.6;
                 text-decoration: none;
                 &:hover {
                     text-decoration: underline;
