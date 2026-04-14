@@ -1,0 +1,148 @@
+{{- $targetURL := printf "%s%s" (strings.TrimSuffix "/" site.Params.productionURL) .RelPermalink -}}
+<div class="main-box webmentions" id="webmentions" data-url="{{ or .Params.canonical_url $targetURL }}">
+    <div class="webmentions-container">
+        <div class="webmentions-header">
+            <h3>Mentions</h3>
+            <span class="webmentions-count" id="webmentions-count"></span>
+        </div>
+        <ul id="webmentions-list" class="webmentions-list"></ul>
+        <div id="webmentions-more" class="webmentions-more" style="display: none;">
+            <button id="webmentions-more-button">Show more</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const container = document.getElementById('webmentions');
+        if (!container) return;
+
+        const target = container.getAttribute('data-url');
+        const countEl = document.getElementById('webmentions-count');
+        const listEl = document.getElementById('webmentions-list');
+        const moreEl = document.getElementById('webmentions-more');
+        const moreButton = document.getElementById('webmentions-more-button');
+
+        let allMentions = [];
+        let displayCount = 10;
+
+        const typeMap = {
+            'in-reply-to': 'replied',
+            'like-of': 'liked',
+            'repost-of': 'reposted',
+            'bookmark-of': 'bookmarked',
+            'mention-of': 'mentioned',
+            'rsvp': 'RSVPed'
+        };
+
+        const iconMap = {
+            'in-reply-to': 'fa-reply',
+            'like-of': 'fa-heart',
+            'repost-of': 'fa-retweet',
+            'bookmark-of': 'fa-bookmark',
+            'mention-of': 'fa-link',
+            'rsvp': 'fa-calendar-check'
+        };
+
+        async function fetchMentions() {
+            try {
+                const response = await fetch(`https://webmention.io/api/mentions.jf2?target=${target}`);
+                const data = await response.json();
+                allMentions = data.children || [];
+                
+                if (allMentions.length === 0) {
+                    return;
+                }
+
+                container.classList.add('is-visible');
+                countEl.textContent = `${allMentions.length} mention${allMentions.length === 1 ? '' : 's'}`;
+                renderMentions();
+            } catch (err) {
+                console.error('Error fetching webmentions:', err);
+            }
+        }
+
+        function renderMentions() {
+            const toDisplay = allMentions.slice(0, displayCount);
+            listEl.innerHTML = '';
+            
+            toDisplay.forEach(mention => {
+                const li = document.createElement('li');
+                li.className = 'webmentions-item';
+
+                let domain = '';
+                try {
+                    domain = new URL(mention.url).hostname;
+                } catch (e) {}
+                
+                const author = mention.author || {};
+                const authorName = (author.name && author.name !== 'Anonymous') ? author.name : (domain || 'Anonymous');
+                const authorUrl = author.url || mention.url;
+                const avatar = author.photo || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                const type = mention['wm-property'];
+                const typeText = typeMap[type] || 'mentioned';
+                const icon = iconMap[type] || 'fa-link';
+
+                let dateText = 'link';
+                if (mention.published) {
+                    const date = new Date(mention.published);
+                    if (!isNaN(date.getTime())) {
+                        dateText = date.toLocaleDateString();
+                    }
+                }
+                
+                let content = '';
+                if (mention.content && mention.content.html) {
+                    content = `<div class="webmention-text">${mention.content.html}</div>`;
+                } else if (mention.content && mention.content.text) {
+                    content = `<div class="webmention-text">${mention.content.text}</div>`;
+                }
+
+                li.innerHTML = `
+                    <div class="webmentions-avatar">
+                        <a href="${authorUrl}" target="_blank" rel="noopener noreferrer">
+                            <img src="${avatar}" alt="${authorName}" loading="lazy">
+                        </a>
+                    </div>
+                    <div class="webmentions-content">
+                        <div>
+                            <a href="${authorUrl}" class="webmention-author" target="_blank" rel="noopener noreferrer">${authorName}</a>
+                            <span class="webmention-type">
+                                <i class="fa-solid ${icon}"></i> ${typeText}
+                            </span>
+                        </div>
+                        ${content}
+                        <div class="webmention-meta">
+                            <a href="${mention.url}" target="_blank" rel="noopener noreferrer">${dateText}</a>
+                        </div>
+                    </div>
+                `;
+                listEl.appendChild(li);
+            });
+
+            if (allMentions.length > displayCount) {
+                moreEl.style.display = 'block';
+            } else {
+                moreEl.style.display = 'none';
+            }
+        }
+
+        moreButton.addEventListener('click', () => {
+            displayCount = allMentions.length;
+            renderMentions();
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    fetchMentions();
+                    observer.unobserve(container);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px 100% 0px' // Load when within one page length
+        });
+
+        observer.observe(container);
+    })();
+</script>

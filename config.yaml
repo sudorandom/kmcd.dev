@@ -14,6 +14,7 @@ staticDir:
  - "data"
 
 params:
+  productionURL: "https://kmcd.dev"
   author:
     name: "Kevin McDonald"
   Subtitle: "Depth-first search into networking, programming, random tech topics."

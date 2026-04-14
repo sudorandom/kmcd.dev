@@ -158,10 +158,33 @@
     {{- range . -}}
     <div class="main-wrapper">
     <div class="main-box">
-    <h3>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h3>
-    {{- $series := .Pages.ByDate -}}
+    {{- $seriesPages := .Pages.ByDate -}}
+    {{- $nextPage := "" -}}
+    {{- $foundCurrent := false -}}
+
+    {{- /* We need to find next page before rendering header to put it there */ -}}
+    {{- range $seriesPages -}}
+      {{- if eq .File.UniqueID $.File.UniqueID -}}
+        {{- $foundCurrent = true -}}
+      {{- else if and $foundCurrent (not $nextPage) -}}
+        {{- $nextPage = . -}}
+      {{- end -}}
+    {{- end -}}
+
+    <div class="series-header">
+      <h3>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h3>
+      {{- if $nextPage -}}
+      <div class="button next small">
+        <a href="{{ $nextPage.Permalink }}">
+          <span class="button__text">Next: {{ $nextPage.Name }}</span>
+          <span class="button__icon"><i class="fa-solid fa-arrow-right"></i></span>
+        </a>
+      </div>
+      {{- end -}}
+    </div>
+
     <ol>
-      {{- range $series -}}
+      {{- range $seriesPages -}}
       <li>
         {{- if eq .File.UniqueID $.File.UniqueID -}}
           <b>{{ .Name }}</b>
@@ -175,10 +198,11 @@
     </div>
   {{- end -}}
   {{- end -}}
-
-    <div class="main-wrapper">
+  {{ partial "webmentions.html" . }}
+  <div class="main-wrapper">
       <div class="main-box">
           <h3>See Also</h3>
+
           {{ $currentPage := . }}
           {{ $currentSeriesTerms := .GetTerms "series" }}
           {{ $currentSeriesName := "" }}

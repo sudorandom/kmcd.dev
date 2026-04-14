@@ -16,7 +16,7 @@
 <meta name="keywords" content="{{ .Site.Params.keywords }}{{ with .Params.tags }}{{ range . }}, {{ . }}{{ end }}{{ end }}{{ with .Params.keywords }}{{ range . }}, {{ . }}{{ end }}{{ end }}" />
 <meta name="robots" content="index, archive" />
 <meta name="theme-color" content="{{ .Site.Params.themeColor }}" />
-<link rel="canonical" href="{{ .Permalink }}" />
+<link rel="canonical" href="{{ or .Params.canonical_url .Permalink }}" />
 
 {{ block "title" . }}
     <title>

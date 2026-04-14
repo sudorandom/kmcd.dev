@@ -228,3 +228,25 @@
     margin-right: 8px;
   }
 }
+
+.series-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+  }
+
+  .button {
+    font-size: 0.9rem;
+    max-width: none;
+    
+    a {
+      padding: 6px 12px;
+    }
+  }
+}

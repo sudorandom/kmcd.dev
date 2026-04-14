@@ -1,0 +1,178 @@
+.webmentions {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 10px;
+    width: 100%;
+    text-align: left;
+
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    grid-template-rows: 0fr;
+    transition: opacity 0.5s ease-in-out, grid-template-rows 0.5s ease-in-out, margin 0.5s ease-in-out, padding 0.5s ease-in-out;
+    overflow: hidden;
+
+    &.is-visible {
+        margin: 10px 0;
+        padding: 20px;
+        opacity: 1;
+        visibility: visible;
+        grid-template-rows: 1fr;
+    }
+
+    /* Wrap the content in a div that can have min-height: 0 */
+    &-container {
+        min-height: 0;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        
+        h3 {
+            margin: 0;
+        }
+
+        .webmentions-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            
+            [data-theme=light] & {
+                background: $light-background-secondary;
+                color: $light-color-secondary;
+            }
+            [data-theme=dark] & {
+                background: $dark-background-secondary;
+                color: $dark-color-secondary;
+            }
+        }
+    }
+
+    &-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    &-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid;
+        
+        [data-theme=light] & {
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        [data-theme=dark] & {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &-avatar {
+        flex-shrink: 0;
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    &-content {
+        flex-grow: 1;
+        font-size: 0.95rem;
+
+        .webmention-author {
+            font-weight: bold;
+            margin-right: 5px;
+            text-decoration: none;
+            
+            [data-theme=light] & {
+                color: $light-accent-color;
+            }
+            [data-theme=dark] & {
+                color: $dark-accent-color;
+            }
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .webmention-type {
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        .webmention-text {
+            margin-top: 5px;
+            line-height: 1.4;
+            
+            p {
+                margin: 5px 0;
+            }
+        }
+
+        .webmention-meta {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            
+            a {
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    &-more {
+        margin-top: 15px;
+        text-align: center;
+        
+        button {
+            background: none;
+            border: 1px solid;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+
+            [data-theme=light] & {
+                border-color: $light-border-color;
+                background: $light-background-secondary;
+                color: $light-color;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+            [data-theme=dark] & {
+                border-color: $dark-border-color;
+                background: $dark-background-secondary;
+                color: $dark-color;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    &-empty, &-loading {
+        text-align: center;
+        padding: 20px;
+        opacity: 0.6;
+        font-style: italic;
+    }
+}
