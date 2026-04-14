@@ -9,16 +9,22 @@
 
     {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
     <div class="main-wrapper">
-    <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px; background-position: center;">
-    <article>
-      <div class="prompt-box">
-        <h2>{{ .Title }}</h2>
+      <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px; background-position: center;">
+        <article>
+          <div class="prompt-box">
+            <h2>{{ .Title }}</h2>
+          </div>
+        </article>
       </div>
+    </div>
+
+    <div class="main-wrapper">
+      <div class="main-box">
+        {{ partial "pagination-single.html" . }}
       </div>
-      </div>
-    </article>
+    </div>
+
     {{ partial "webmentions.html" . }}
-    {{ partial "pagination-single.html" . }}
 
   </main>
 
