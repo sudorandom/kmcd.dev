@@ -1,11 +1,11 @@
 ---
 categories: ["article"]
-tags: ["protobuf", "grpc", "api"]
-keywords: ["protobuf unknown fields"]
-date: "2024-03-12"
-description: "Let's delve into the confusing and neat feature of protobuf; unknown fields"
-cover: "cover.jpg"
-images: ["/posts/protobuf-unknown-fields/cover.jpg"]
+tags: ["protobuf", "grpc", "api", "microservices", "datapipelines", "connectrpc", "go", "typescript", "architecture"]
+keywords: ["protobuf unknown fields", "schema evolution", "api gateway", "data preservation", "forward compatibility", "proto3"]
+date: "2026-04-16"
+description: "How Protobuf unknown fields enable seamless schema evolution and robust middleware."
+cover: "cover.svg"
+images: ["/posts/protobuf-unknown-fields/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
@@ -19,42 +19,59 @@ canonical_url: https://kmcd.dev/posts/protobuf-unknown-fields/
 mastodonID: "112277337082054030"
 ---
 
-[Protobuf](https://protobuf.dev/programming-guides/proto3/) offers a powerful feature known as [**unknown fields**](https://protobuf.dev/programming-guides/proto3/#unknowns). These fields act as a safety net when messages encounter unforeseen circumstances. Let's delve into what they are, how they work and why they're useful.
+{{< disclaimer >}}
+This article was originally published in March 2024. It was republished in April 2026 after some significant editing and modernization.
+{{< /disclaimer >}}
 
-**What are Protobuf Unknown Fields?**
+[Protobuf](https://protobuf.dev/programming-guides/proto3/) includes a feature known as [**unknown fields**](https://protobuf.dev/programming-guides/proto3/#unknowns). They act as a safety net when systems encounter data they weren't explicitly built to handle. Here is a breakdown of what they are and why they matter.
 
-Imagine receiving a message encoded in protobuf. You have the corresponding `.proto` file defining the expected structure, which dictates the message's fields and their data types. However, during the parsing process, the message might contain fields you haven't encountered before, meaning they aren't defined in your current `.proto` definition. These unexpected fields are what we call **unknown fields**.
+## What are Protobuf Unknown Fields?
 
-**Forwarding the Unforeseen**
+Your `.proto` file defines the expected structure, fields, and data types. But what happens when you parse a message and it contains fields that aren't in your current `.proto` definition?
 
-One of the most crucial aspects of unknown fields is their behavior when you manipulate a message. Consider a scenario where you receive a message containing unknown fields, and you need to forward it to another system. Protobuf, by default, **forwards these unknown fields along with the known ones**. This ensures that even though you may not understand them, the receiving system has the complete information contained in the message. If this didn't happen you may end up clearing the values of fields that were set by another part of the system.
+These extra pieces of data are called **unknown fields**.
 
-This forwarding capability holds true even if you **persist the message** before forwarding it. When you write the message to a storage location, the unknown fields are included in the serialized format. When the message is retrieved later and sent on, the unknown fields remain intact.
+At a lower level, unknown fields are **field numbers and wire types that exist in the serialized message but are not defined in the current schema**.
 
-Let's run through a scenario where a new field, email, was added to a user object. The backend is updated but the frontend is not. First, we'll see how a "traditional" system would work:
+This mechanism is what enables **forward compatibility**: an older version of your software can safely read, process, and forward data produced by a newer version of the schema without crashing or losing the new data.
 
-```mermaid
+> **Key idea:** Unknown fields enable forward compatibility by default.
 
-sequenceDiagram
-    Frontend->>+Backend: Give me the current data on user Bob
-    Backend->>+Frontend: Here's the data on Bob, including a new email field
-    Frontend->>+Backend: Edit the user entry on Bob (without email field)
-    Bob->>+Backend: Why is my email missing?
+---
 
-```
+## Preserving Unknown Data
 
-The object may look like this coming from the server:
+A key aspect of unknown fields is how they behave during message manipulation.
+
+If you receive a message with unknown fields and forward it to another system, Protobuf defaults to **forwarding the unknown fields alongside the known ones**. This ensures the receiving system gets the complete payload.
+
+If this didn't happen, you could accidentally clear field values set by another part of the system.
+
+This forwarding capability also applies when **persisting messages**, as long as they remain in **binary Protobuf format**. If you store and later reload the binary payload, the unknown fields are preserved.
+
+> **Key idea:** Binary Protobuf preserves unknown fields end-to-end.
+
+> **Historical Note:** Protobuf v3 initially tried to simplify the specification by removing several proto2 features, but real-world usage forced them to walk the biggest ones back. Early versions of proto3 dropped unknown fields entirely, but this was reversed in v3.5. Similarly, proto3 initially removed the `optional` keyword, but brought it back in v3.15 after developers struggled to distinguish between a field being unset and a field just having a zero value, which is [a classic programming mistake](https://en.wikipedia.org/wiki/Null_Island).
+
+---
+
+## JSON Comparison (What Actually Breaks)
+
+Consider a scenario where a new field, `email`, is added to a user object. The backend is updated, but the frontend is not.
+
+The issue in JSON systems is not JSON itself, but rather **typed deserialization**.
+
 ```json
 {
-    "user" {
-        "id": "0edc0903-9e31-47be-adad-1dfc434ca2d3",
-        "name": "Bob",
-        "email" "bob@example.com"
-    }
+  "user": {
+    "id": "0edc0903-9e31-47be-adad-1dfc434ca2d3",
+    "name": "Bob",
+    "email": "bob@example.com"
+  }
 }
 ```
 
-A typical application will unmarshal this object into a struct or object, like:
+If the frontend maps this into a typed structure:
 
 ```typescript
 class User {
@@ -62,78 +79,115 @@ class User {
   name: string;
 }
 ```
-But remember that email is missing, so the resulting request to update the user record would look like this:
+
+The unknown field (`email`) is dropped during deserialization. When the object is sent back:
+
 ```json
 {
-    "user" {
-        "id": "0edc0903-9e31-47be-adad-1dfc434ca2d3",
-        "name": "Bob",
-    }
+  "user": {
+    "id": "0edc0903-9e31-47be-adad-1dfc434ca2d3",
+    "name": "Bob"
+  }
 }
 ```
 
-Now let's see how a system that communicates with protobuf would work. This is an example where the frontend is using [connect-es](https://github.com/connectrpc/connect-es) with the [`useBinaryFormat` transport option set to `true`](https://connectrpc.com/docs/web/choosing-a-protocol#connect):
-```mermaid
+The `email` field is lost.
 
-sequenceDiagram
-    Frontend->>+Backend: Give me the current data on user Bob
-    Backend->>+Frontend: Here's the data on Bob, including a new email field
-    Frontend->>+Backend: Edit the user entry on Bob, including the "unknown" email field
+> **Key idea:** Typed JSON pipelines often drop unknown fields during reserialization.
 
-```
+---
 
-Here's what the resulting protobuf message type would look like:
-```typescript
-export class User extends Message<User> {
-    id = "";
-    name = "";
-    
-    static readonly runtime: typeof proto3 = proto3;
-    static readonly typeName = "management.v1.User";
-    static readonly fields: FieldList = proto3.util.newFieldList(() => [
-        { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-        { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    ]);
-}
-```
+## Protobuf Behavior
 
-This user class looks very similar to the previous one but some extra fields describe the expected structure of the message and some extra metadata on the fields to know how to decode protobuf. It also has an extra field (not shown) for unknown fields. This is what it looks like when we log our protobuf message that contains an unknown field:
+With Protobuf, the same scenario behaves differently.
+
+Even if the frontend does not know about the `email` field, it is preserved internally:
 
 ```typescript
-{
-    id: "0edc0903-9e31-47be-adad-1dfc434ca2d3",
-    name: "Bob",
-    Symbol(@bufbuild/protobuf/unknown-fields): [{0: {no:3, wire_type:2, data: Uint8Array(14)}}]
-}
+Symbol(@bufbuild/protobuf/unknown-fields): [
+  {0: {no:3, wire_type:2, data: Uint8Array(14)}}
+]
 ```
-The `@bufbuild/protobuf/unknown-fields` field shows the field number, protobuf wire type (`LEN`, which is what strings are encoded as) and the raw data from the wire stored in the `data` field. And here's what this message looks like when you encode once more, in protoscope format:
+
+*(Note: This specific `Symbol` representation is how the `@bufbuild/protobuf` implementation manages it under the hood. Other JS/TS generators might expose this data slightly differently, but the underlying concept remains the same.)*
+
+- `no: 3` → field number (email)
+- `wire_type: 2` → length-delimited (used for strings)
+- `data` → raw encoded value
+
+When the message is re-encoded:
 
 ```text
 1:LEN {"0edc0903-9e31-47be-adad-1dfc434ca2d3"}
 2:LEN {"Bob"}
 3:LEN {"bob@example.com"}
 ```
-*Our email field is there!* Even though our application isn't updated to know about the email field when we write back the protobuf object (maybe with some changes) the unknown field comes along with it. [This is configurable](https://github.com/bufbuild/protobuf-es/blob/main/MANUAL.md#serialization) because this may not be the desired behavior in every case.
 
-This scenario does pre-suppose that you write your frontend in a specific way, where changes are written back to the same protobuf message object that you used when fetching the user data initially and that same message is sent in the subsequent edit user request. However, that's often not a crazy pattern to adopt that may save you from potential data loss when introducing new features that aren't immediately supported everywhere.
+The unknown field survives the round trip.
 
-**Benefits and Considerations**
+> **Key idea:** Unknown fields are preserved even when not understood.
 
-Unknown fields offer several advantages:
+---
 
-* **Backward compatibility:** They allow newer versions of your message schema to communicate with older systems that don't recognize the new fields.
-* **Flexibility:** You can introduce new fields to your message structure without breaking existing systems.
-* **Data preservation:** Unknown fields ensure all information in the message is preserved, even if you don't understand it.
+## The Middleware Advantage
 
-However, it's important to be aware of potential drawbacks:
+Unknown fields shine in internal, middleware-heavy architectures.
 
-* **Library Support** Unknown fields aren't universally supported in every protobuf library implementation.
-* **Unintended consequences:** If unknown fields are misinterpreted by a receiving system, it can lead to unexpected behavior. If a system is passing along unknown fields it also doesn't know how to validate the data in the unknown fields. Think wisely about which components are responsible for validation.
-* **Security Concerns** Malicious users could potentially exploit unknown fields to inject harmful data into messages, especially if proper validation mechanisms are not in place.
+Example:
 
-It is recommended by the [API Best Practices article](https://protobuf.dev/programming-guides/api/#support-partial-updates) on [protobuf.dev](https://protobuf.dev) to filter out unknown fields for public APIs. Here's the relevant section:
+- API Gateway reads `id` for routing
+- Logging service reads `trace_id`
+- Downstream service understands full schema including new fields
 
-> In general, public APIs should drop unknown fields on server-side to prevent security attack via unknown fields. For example, garbage unknown fields may cause a server to fail when it starts to use them as new fields in the future.
+Intermediate services can safely:
+1. Unmarshal using an older schema
+2. Read known fields
+3. Forward the message unchanged
 
-### In conclusion
-Protobuf unknown fields are a valuable feature for handling unexpected data in your messages. They offer flexibility and backward compatibility. They give you the power to handle many upgrade scenarios in a far more graceful way than traditional JSON/REST APIs. However, they do require careful consideration to when and where they are used.
+No coordination is required when new fields are added upstream.
+
+> **Key idea:** Internal middleware can stay stable while schemas evolve.
+
+---
+
+## Observability: A Signal for Upgrades
+
+Beyond just forwarding data safely, unknown fields provide a highly valuable observability metric.
+
+When an API gateway or a downstream service detects unknown fields in incoming payloads, it serves as a clear telemetry signal: a client or upstream service is sending extra information because it is using a newer schema.
+
+Instead of crashing or silently dropping the data, the service can log the presence of these unknown fields. You can use this data to trigger alerts, track the rollout progress of new features across your architecture, and pinpoint exactly which legacy services are lagging behind and due for an upgrade.
+
+---
+
+## A Note on JSON Serialization and Object Re-use
+
+There are a couple of important exceptions where unknown fields get lost.
+
+First, unknown field preservation applies **only to binary Protobuf serialization**. If you convert from binary to JSON (e.g., using `protojson` in Go or `toJson` in TypeScript), unknown fields are **dropped** during the encoding process. Conversely, when unmarshaling JSON back into Protobuf, many libraries are strictly configured by default. For instance, Go's `protojson.Unmarshal` will throw a hard error if it encounters unknown fields in the JSON payload unless you explicitly bypass it by passing `DiscardUnknown: true`. JSON simply isn't designed to carry this extra payload without a strict schema map.
+
+Second, preserving these fields during binary serialization requires that you re-use the exact same object for re-serialization. If you read a message, pull out the known fields, and map them into a freshly created object to send downstream, the unknown fields tied to the original object will be left behind.
+
+> **Key idea:** Binary preserves and JSON drops. Always re-use the original object if you want to keep unknown fields intact.
+
+---
+
+## Databases and Security
+
+The theoretical elegance of unknown fields often collides with the messy reality of databases and security perimeters. In practice, relying on unknown fields breaks down entirely in a few critical scenarios.
+
+First, consider database persistence. If clients are trying to store extra data, and a backend service parses a Protobuf message to map it to standard relational database columns, those unknown fields are absolutely gone. There is no magic column for data your database schema does not know about.
+
+The only way to achieve true end-to-end preservation is to store the entire serialized Protobuf message directly in the database as a BLOB. Some teams do this, but blindly storing data you haven't validated and don't even recognize is highly dangerous.
+
+Allowing unknown fields to propagate unchecked from external sources is a significant security risk. While they are a powerful tool inside clearly defined, trusted internal pipelines, accepting them from the open web opens your system up to data smuggling. It allows malicious actors to sneak unvalidated payloads into unknown fields to bypass validation layers that only inspect known schema structures. If your systems blindly unmarshal, store, and forward this data, older services act as unwitting mules for malicious input.
+
+Because of these exact risks, the standard security posture is to aggressively filter at the edge. API Gateways and ingress proxies should explicitly discard unknown fields before the data ever reaches internal microservices.
+
+---
+
+## Conclusion
+
+Unknown fields provide a powerful mechanism for **forward compatibility** in distributed systems. They allow internal systems to evolve independently, act as a clear signal for required upgrades, reduce coordination overhead, and simplify middleware design.
+
+However, they are not a substitute for validation, schema discipline, or proper security boundaries. Use them intentionally in trusted internal pipelines, but never trust them at the edge.

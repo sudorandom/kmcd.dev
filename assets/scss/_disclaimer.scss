@@ -1,0 +1,18 @@
+.disclaimer {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.disclaimer {
+    background-color: #e7f3ff;
+    color: #0c5460;
+    border-color: #bee5eb;
+}
+
+[data-theme='dark'] .disclaimer {
+    background-color: #1b2e35;
+    color: #bee5eb;
+    border-color: #24414d;
+}
