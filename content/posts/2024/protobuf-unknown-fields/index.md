@@ -129,6 +129,23 @@ The unknown field survives the round trip.
 
 ---
 
+## Why We Can't "Guess" the Type
+
+You might wonder why we can't just look at the raw data in an unknown field and "guess" what it is. The reason is that Protobuf uses a very limited set of **wire types** that are shared across many different high-level data types.
+
+| Wire Type | Meaning | Used for... |
+| :--- | :--- | :--- |
+| `0` | Varint | `int32`, `int64`, `uint32`, `uint64`, `sint32`, `sint64`, `bool`, `enum` |
+| `1` | 64-bit | `fixed64`, `sfixed64`, `double` |
+| `2` | Length-delimited | `string`, `bytes`, embedded messages, packed repeated fields |
+| `5` | 32-bit | `fixed32`, `sfixed32`, `float` |
+
+If you see an unknown field with **Wire Type 0**, you don't know if it represents the number `150`, the boolean `true`, or an enum value.
+
+More critically, if you see **Wire Type 2**, you have no way of knowing if the data is a `string`, a `bytes` buffer, or a complex nested message. If you try to "guess" and parse a string as a sub-message, you will likely get gibberish or a parsing error. This is why the schema is strictly required to *understand* the data, while the binary format is sufficient to *preserve* it.
+
+---
+
 ## The Middleware Advantage
 
 Unknown fields shine in internal, middleware-heavy architectures.
