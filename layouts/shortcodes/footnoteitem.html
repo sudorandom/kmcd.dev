@@ -1,0 +1,15 @@
+<li id="footnote-{{ .Get 0 }}">
+  <div class="footnote-item-content">
+    {{- .Get 1 -}}
+    <span class="footnote-links">
+      {{- with .Get 2 -}}
+        <a href="{{ . }}" target="_blank" rel="noopener noreferrer" class="footnote-link">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      {{- end -}}
+      <a href="#footnote-ref-{{ .Get 0 }}" class="footnote-back-link" title="Jump back to reference">
+        <i class="fa-solid fa-arrow-turn-up"></i>
+      </a>
+    </span>
+  </div>
+</li>

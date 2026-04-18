@@ -52,60 +52,6 @@ details > summary {
   }
 }
 
-details {
-  border-radius: 6px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  transition: background-color 0.2s ease-in-out;
-}
-
-details > summary {
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-[data-theme=light] {
-    details {
-        background-color: #eaeaea; // $light-background-secondary
-    }
-    details:hover {
-        background-color: #dfdfdf;
-    }
-    details > summary {
-        color: #007bff; // Primary color for light theme
-    }
-}
-
-[data-theme=dark] {
-    details {
-        background-color: #3b5065; // $dark-background-secondary
-    }
-    details:hover {
-        background-color: #4a6580;
-    }
-    details > summary {
-        color: #a2a2dd; // $dark-color-secondary for dark theme
-    }
-}
-
-.details-github-link {
-  float: right;
-  text-decoration: none;
-  margin-left: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  // Make the svg inside the link inherit the color
-  svg {
-    fill: currentColor;
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.15em;
-    margin-right: 0.25rem;
-  }
-}
-
 @media (max-width: 576px) {
     .details-github-link span {
         display: none;
@@ -128,4 +74,147 @@ details > summary {
             color: #a2a2dd; // $dark-color-secondary
         }
     }
+}
+
+.citation {
+  margin-left: 0.12rem;
+  font-weight: 600;
+  scroll-margin-top: 5rem;
+
+  a {
+    text-decoration: none;
+
+    [data-theme=light] & {
+      color: #0052ff; // $light-accent-color
+    }
+
+    [data-theme=dark] & {
+      color: #00ffff; // $dark-accent-color
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.citations-section {
+  margin-top: 2rem !important;
+  margin-bottom: 3rem !important;
+  padding: 1.5rem 2rem !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  display: block !important;
+
+  [data-theme=light] & {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #e0e0e0 !important;
+  }
+
+  [data-theme=dark] & {
+    background-color: #1f2a35 !important;
+    border: 1px solid #3b5065 !important;
+  }
+
+  hr {
+    display: none;
+  }
+
+  .citations-title {
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    opacity: 0.8;
+  }
+}
+
+.citations-list {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+  counter-reset: citation-counter;
+
+  li {
+    margin-bottom: 0.25rem;
+    padding: 0.1rem 0.5rem 0.1rem 3.5rem;
+    scroll-margin-top: 5rem;
+    position: relative;
+    counter-increment: citation-counter;
+    transition: background-color 0.2s ease-in-out;
+    border-radius: 4px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:target {
+      animation: highlight 3s ease-out;
+      background-color: rgba(0, 123, 255, 0.1);
+
+      [data-theme=dark] & {
+        background-color: rgba(162, 162, 221, 0.15);
+      }
+    }
+
+    &::before {
+      content: "[" counter(citation-counter) "]: ";
+      position: absolute;
+      left: 0.5rem;
+      font-weight: 800;
+      font-size: 1rem;
+      font-family: monospace;
+      [data-theme=light] & {
+        color: #0052ff; // $light-accent-color
+      }
+      [data-theme=dark] & {
+        color: #00ffff; // $dark-accent-color
+      }
+    }
+  }
+}
+
+.footnote-list {
+  padding-left: 2rem;
+  margin-top: 1rem;
+}
+
+.footnote-item-content {
+  display: block;
+}
+
+.footnote-links {
+  white-space: nowrap;
+  margin-left: 0.5rem;
+}
+
+.footnote-link, .footnote-back-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 0 2px;
+
+  [data-theme=light] & {
+    color: #0052ff; // $light-accent-color
+  }
+  [data-theme=dark] & {
+    color: #00ffff; // $dark-accent-color
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.footnote-back-link {
+  transform: translateY(-1px);
+}
+@keyframes highlight {
+  0% { background-color: rgba(0, 123, 255, 0.3); }
+  [data-theme=dark] {
+    0% { background-color: rgba(162, 162, 221, 0.4); }
+  }
+  100% { background-color: transparent; }
 }
