@@ -55,11 +55,11 @@ This forwarding capability also applies when **persisting messages**, as long as
 
 ---
 
-## JSON Comparison (What Actually Breaks)
+## Comparison to JSON
 
 Consider a scenario where a new field, `email`, is added to a user object. The backend is updated, but the frontend is not.
 
-The issue in JSON systems is not JSON itself, but rather **typed deserialization**.
+The issue in JSON systems is not JSON itself, it's **typed deserialization**.
 
 ```json
 {
@@ -171,7 +171,7 @@ No coordination is required when new fields are added upstream.
 
 Beyond just forwarding data safely, unknown fields provide a highly valuable observability metric.
 
-When an API gateway or a downstream service detects unknown fields in incoming payloads, it serves as a clear telemetry signal: a client or upstream service is sending extra information because it is using a newer schema.
+When an API gateway or a downstream service detects unknown fields in incoming payloads, it is a clear telemetry signal: a client or upstream service is sending extra information because it is using a newer schema.
 
 Instead of crashing or silently dropping the data, the service can log the presence of these unknown fields. You can use this data to trigger alerts, track the rollout progress of new features across your architecture, and pinpoint exactly which legacy services are lagging behind and due for an upgrade.
 
@@ -181,7 +181,7 @@ Instead of crashing or silently dropping the data, the service can log the prese
 
 There are a couple of important exceptions where unknown fields get lost.
 
-First, unknown field preservation applies **only to binary Protobuf serialization**. If you convert from binary to JSON (e.g., using `protojson` in Go or `toJson` in TypeScript), unknown fields are **dropped** during the encoding process. Conversely, when unmarshaling JSON back into Protobuf, many libraries are strictly configured by default. For instance, Go's `protojson.Unmarshal` will throw a hard error if it encounters unknown fields in the JSON payload unless you explicitly bypass it by passing `DiscardUnknown: true`. JSON simply isn't designed to carry this extra payload without a strict schema map.
+First, unknown field preservation applies **only to binary Protobuf serialization**. If you convert from binary to JSON (e.g., using `protojson` in Go or `toJson` in TypeScript), unknown fields are **dropped** during the encoding process. When unmarshaling JSON back into Protobuf, many libraries are strictly configured by default. For example, Go's `protojson.Unmarshal` will throw a hard error if it encounters unknown fields in the JSON payload unless you explicitly bypass it by passing `DiscardUnknown: true`. JSON simply isn't designed to carry this extra payload without a strict schema map.
 
 Second, preserving these fields during binary serialization requires that you re-use the exact same object for re-serialization. If you read a message, pull out the known fields, and map them into a freshly created object to send downstream, the unknown fields tied to the original object will be left behind.
 
@@ -193,7 +193,7 @@ Second, preserving these fields during binary serialization requires that you re
 
 The theoretical elegance of unknown fields often collides with the messy reality of databases and security perimeters. In practice, relying on unknown fields breaks down entirely in a few critical scenarios.
 
-First, consider database persistence. If clients are trying to store extra data, and a backend service parses a Protobuf message to map it to standard relational database columns, those unknown fields are absolutely gone. There is no magic column for data your database schema does not know about.
+First, let us consider database persistence. If clients are trying to store extra data, and a backend service parses a Protobuf message to map it to standard relational database columns, those unknown fields are absolutely gone. There is no magic column for data your database schema does not know about.
 
 The only way to achieve true end-to-end preservation is to store the entire serialized Protobuf message directly in the database as a BLOB. Some teams do this, but blindly storing data you haven't validated and don't even recognize is highly dangerous.
 
