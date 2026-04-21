@@ -2,7 +2,7 @@
 {{- $inner := trim .Inner "\n\r" -}} {{/* The D2 code from the markdown block */}}
 {{- $position := .Position -}} {{/* Source position for error messages */}}
 
-{{- $apiEndpoint := "http://localhost:7001/render" -}} {{/* Your D2 rendering service endpoint */}}
+{{- $apiEndpoint := "http://127.0.0.1:7001/render" -}} {{/* Your D2 rendering service endpoint */}}
 {{- $opts := dict "method" "post" "body" $inner -}}
 {{- /*
   Optional: If your API supports content negotiation via Accept header, you can add it.

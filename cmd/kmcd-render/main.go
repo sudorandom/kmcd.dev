@@ -70,7 +70,7 @@ func handleRenderRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	log.Println("INFO: Received request for /render-d2")
+	log.Println("INFO: Received request for /render")
 	requestBody, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Could not read request body", http.StatusBadRequest)
