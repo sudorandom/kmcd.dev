@@ -1,0 +1,8 @@
+<div class="rpki-check" style="background-color: #1f2835; border: 2px solid #42a5f5; border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+    <h3 style="color: #42a5f5; margin-top: 0;">Is your ISP BGP safe?</h3>
+    <p style="color: #cccccc; margin-bottom: 1rem;">
+        This tool checks if your ISP is filtering BGP routes based on RPKI.
+        It attempts to fetch two resources: one from a validly signed prefix and one from an invalidly signed prefix.
+        This is built using the same endpoints as <a href="https://isbgpsafeyet.com/" style="color: #42a5f5; text-decoration: none; border-bottom: 1px dashed #42a5f5;">isbgpsafeyet.com</a>. Go there for more information.
+    </p>    {{ partial "rpki-check-logic.html" . }}
+</div>

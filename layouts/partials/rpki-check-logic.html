@@ -1,0 +1,78 @@
+<div class="rpki-results" style="font-family: monospace; background-color: #111; padding: 1rem; border-radius: 4px; color: #eee; line-height: 1.5;">
+    <div class="rpki-valid-row">
+        <div>fetch https://valid.rpki.isbgpsafeyet.com</div>
+        <div class="rpki-valid-detail" style="margin-left: 2ch; color: #888;">... loading ...</div>
+    </div>
+    <div class="rpki-invalid-row" style="margin-top: 1rem;">
+        <div>fetch https://invalid.rpki.isbgpsafeyet.com/</div>
+        <div class="rpki-invalid-detail" style="margin-left: 2ch; color: #888;">... loading ...</div>
+    </div>
+</div>
+<div class="rpki-summary" style="margin-top: 1rem; font-weight: bold; color: #cccccc;"></div>
+
+<script>
+(function() {
+    const container = document.currentScript.parentElement;
+    const validDetail = container.querySelector('.rpki-valid-detail');
+    const invalidDetail = container.querySelector('.rpki-invalid-detail');
+    const summaryEl = container.querySelector('.rpki-summary');
+
+    const validUrl = 'https://valid.rpki.isbgpsafeyet.com';
+    const invalidUrl = 'https://invalid.rpki.isbgpsafeyet.com/';
+
+    async function checkRpki(url, detailEl, expected) {
+        try {
+            const response = await fetch(url, { mode: 'cors', cache: 'no-cache' });
+            if (response.ok) {
+                const data = await response.json();
+                if (expected === 'valid') {
+                    detailEl.textContent = '  correctly accepted valid prefixes';
+                    detailEl.style.color = '#66bb6a';
+                } else {
+                    detailEl.textContent = '  incorrectly accepted invalid prefixes';
+                    detailEl.style.color = '#ff6b6b';
+                }
+                return { success: true, data };
+            } else {
+                detailEl.textContent = '  failed to reach prefix (status: ' + response.status + ')';
+                detailEl.style.color = '#ffa726';
+                return { success: false };
+            }
+        } catch (e) {
+            if (expected === 'invalid') {
+                detailEl.textContent = '  correctly dropped invalid prefixes';
+                detailEl.style.color = '#66bb6a';
+            } else {
+                detailEl.textContent = '  failed to reach valid prefixes (unstable connection?)';
+                detailEl.style.color = '#ff6b6b';
+            }
+            return { success: false, error: e };
+        }
+    }
+
+    async function runCheck() {
+        const [validRes, invalidRes] = await Promise.all([
+            checkRpki(validUrl, validDetail, 'valid'),
+            checkRpki(invalidUrl, invalidDetail, 'invalid')
+        ]);
+
+        let ispName = 'your ISP';
+        if (validRes.success && validRes.data) {
+            ispName = validRes.data.name || 'your ISP';
+        }
+
+        if (validRes.success && !invalidRes.success) {
+            summaryEl.textContent = `✅ Your ISP, ${ispName}, is BGP safe! They are filtering RPKI-invalid routes.`;
+            summaryEl.style.color = '#66bb6a';
+        } else if (validRes.success && invalidRes.success) {
+            summaryEl.textContent = `❌ Your ISP, ${ispName}, is NOT BGP safe. They are accepting RPKI-invalid routes.`;
+            summaryEl.style.color = '#ff6b6b';
+        } else {
+            summaryEl.textContent = '⚠️ Could not determine BGP safety status.';
+            summaryEl.style.color = '#ffa726';
+        }
+    }
+
+    runCheck();
+})();
+</script>

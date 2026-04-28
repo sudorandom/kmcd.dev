@@ -83,7 +83,7 @@ But there is a big difference between a technical success and a widely adopted s
 
 Worse, it preserved the most frustrating parts of gRPC. Every single request returned a **200 OK**, regardless of whether the server crashed or the resource was missing. It was a baffling design choice that broke the internet's existing contract for observability. You could not rely on standard load balancer metrics, standard browser dev tools, or your generic APM to see if your site was actually healthy. You were forced to use specialized, protocol-aware tooling just to perform basic debugging. If I have to open a dedicated "gRPC-aware" network tab just to see why a login failed, I feel like it hasn't actually earned the "web" part of gRPC-Web name.
 
-ConnectRPC stepped in and completely bypassed the proxy requirement. Beyond just dropping Envoy, it fixed the foundational web integration issues. A unary JSON request in ConnectRPC acts exactly like a standard REST call. If a resource is missing, you get a real **404 Not Found**, and your existing monitoring stack just works. It gave frontend developers the familiar, straightforward debugging experience they actually wanted while keeping the strict schema safety that backend teams need.
+ConnectRPC stepped in and completely erased the proxy requirement. It also fixed the integration issues with the traditional web. A unary JSON request in ConnectRPC acts exactly like a standard REST call. If a resource is missing, you get a real **404 Not Found**, and your existing monitoring stack just works. It gave frontend developers the familiar, straightforward debugging experience they actually wanted while keeping the strict schema safety that backend teams need.
 
 ## Why it's my default choice
 

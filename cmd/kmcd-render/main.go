@@ -80,6 +80,7 @@ func handleRenderRequest(w http.ResponseWriter, r *http.Request) {
 
 	output, err := renderD2(string(requestBody))
 	if err != nil {
+		log.Printf("ERROR: D2 render failed: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

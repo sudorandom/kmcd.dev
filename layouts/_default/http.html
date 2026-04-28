@@ -142,6 +142,17 @@
     </div>
 
     <div class="main-wrapper">
+        <div class="main-box" style="background-color: #1f2a2a; border: 2px solid #00acc1; border-radius: 8px;">
+            <h3 style="color: #00acc1; margin-top: 0;">🛡️ RPKI Check</h3>
+            <p style="color: #cccccc;">
+                Is your ISP BGP safe? This tool checks if your ISP is filtering BGP routes based on RPKI by attempting to fetch resources from both valid and invalidly signed prefixes.
+                This is built using the same endpoints as <a href="https://isbgpsafeyet.com/" style="color: #00acc1; text-decoration: none; border-bottom: 1px dashed #00acc1;">isbgpsafeyet.com</a>. Go there for more information.
+            </p>
+            {{ partial "rpki-check-logic.html" . }}
+        </div>
+    </div>
+
+    <div class="main-wrapper">
         <div class="main-box" style="background-color: #1f2a1f; border: 2px solid #66bb6a; border-radius: 8px;">
             <h3 id="http3" style="color: #66bb6a; margin-top: 0;">✨ HTTP/3</h3>
             <p style="color: #cccccc;">

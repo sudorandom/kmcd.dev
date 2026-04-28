@@ -34,13 +34,13 @@ In these distributed systems, a unique string is the only universal bridge. A sp
 ### How to Write for Grep
 
 * **The Log-to-Code Pipeline:** If a method handles a critical business action, name it something distinct. If a system crashes at 3:00 AM and the log says `Error in CalculateRegionalTax()`, you have found the bug before you have even opened your editor.
-* **Avoid Generic Sinks:** Names like `data`, `info`, `manager`, or `entity` are search poison. `orderValidationLogic` is longer, but it is a direct hit for a search engine.
+* **Avoid Generic Names:** Names like `data`, `info`, `manager`, or `entity` are search poison. `orderValidationLogic` is longer, but it is a direct hit for a search engine.
 * **Establish a Naming Hierarchy:** Focus your "naming budget" where the scope is widest. Filenames, class names, and API methods must be unique. Local variables inside a five-line function, like `i` or `buf`, can stay generic because their search boundary is tiny.
 * **Beware of Dynamic Magic:** If your language uses reflection or string interpolation to call methods, such as `this.call("prefix_" + action)`, you have killed the ability to grep for the implementation.
 
 ### The gRPC Search Advantage
 
-This is where RPC-based designs offer a distinct advantage over REST. In a REST architecture, searching for an "update" action usually requires a two-step mental grep: find the path (`/users/:id`) and then filter by the HTTP verb (`PUT`). 
+This is where RPC-based designs offer a distinct advantage over REST. In a REST architecture, searching for an "update" action usually requires a two-step mental grep: find the path (`/users/:id`) and then filter by the HTTP verb (`PUT`).
 
 In gRPC, the method name is a **globally unique string**. 
 
