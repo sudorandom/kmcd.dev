@@ -2,7 +2,7 @@
 categories: ["opinion"]
 tags: ["networking", "yang", "data-modeling", "openconfig", "netconf", "gnmi", "graphql", "smithy"]
 keywords: ["what is yang", "yang vs json schema", "openconfig yang", "yang vs graphql", "yang vs smithy"]
-date: "2026-05-19T10:00:00Z"
+date: "2026-05-26T10:00:00Z"
 description: "Why the networking world built its own data modeling language and what software engineers can learn from it."
 cover: "cover.svg"
 images: ["/posts/yang/cover.svg"]
