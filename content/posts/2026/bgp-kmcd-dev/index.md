@@ -26,6 +26,8 @@ This whole thing started because I wanted to learn more about BGP, so I wrote [a
 
 What began as a simple monitoring visualization shifted into a massive interactive learning resource.
 
+This shift aligns with how I tend to learn best: by doing. I've always found that I don't truly understand a protocol until I've had to handle its edge cases in code. This is why I write about [HTTP from Scratch](/series/http-from-scratch/), [gRPC From Scratch](/series/grpc-from-scratch/) and [gRPC Over HTTP/3](/posts/grpc-over-http3/); to push myself to build one layer deeper than I strictly need for my day-to-day work. But there is another layer to it: I strongly believe that to properly **learn** something, you must be able to **teach** it, or at the very least, communicate it clearly to others. There is a strange shift that happens in my brain when I approach a topic with the intent to present it. It forces a level of rigor that I might otherwise skip. It's the same reason I am such a huge fan of self-reviews while a PR is in draft; looking at my own code through the lens of an external reviewer often reveals "perfect" code to be anything but. It's also 95% of the reason that I write this blog (the other 5% is vanity).
+
 ### Interactive Tools
 
 I replaced static images with **interactive SVG diagrams** driven by the same data models used in the backend. You can interactively see different behaviors of BGP and the internet play out from advertisements, to withdrawals, to route leaks.
@@ -101,7 +103,7 @@ I rewrote the telemetry collector in **Rust** using the [BGPKit](https://bgpkit.
 
 With Rust handling the data ingestion, the Go viewer was freed up. Using the [Ebitengine](https://ebitengine.org/) game engine, the Go application is now just a lean client that focuses entirely on rendering a 2D Mollweide projection of the globe at 60 FPS. That 60 FPS target is nearly always reached now, when it was a pipedream with the first architecture.
 
-Yes, I know how instane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine. This is what personal projects are for: to do thinks you wouldn't normally do in ways you wouldn't normally do it.
+Yes, I know how insane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine. This is what personal projects are for: to do think you wouldn't normally do in ways you wouldn't normally do it.
 
 ### Protobuf as the Glue
 
