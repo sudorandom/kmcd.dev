@@ -24,33 +24,43 @@ Before we get into the weeds of how this was built, go check out [bgp.kmcd.dev](
 
 Once you have a feel for it, come back here. Or don't. I'm not your dad or anything.
 
+### The Ultimate Interview Question
+
+My favorite interview question for software engineers is wonderfully simple: *"How does the internet work?"*
+
+If a candidate walks me through DHCP, DNS, TCP, TLS, and HTTP, I know I am talking to someone with solid real-world experience. But there is almost always a glaring omission in their answer. A shockingly small number of people ever mention the role of BGP.
+
+It makes sense why so many engineers miss it. Most software development today is incredibly abstracted. An engineer building microservices in AWS or configuring a Kubernetes cluster spends their whole day thinking about application-layer protocols. BGP operates at a layer of the infrastructure that is almost entirely invisible to them; it is treated as "the network's problem" or something only ISPs and cloud providers need to worry about. 
+
+But without BGP, the internet as we know it would literally not exist. 
+
 ### Why BGP Matters
 
-BGP (Border Gateway Protocol) is essentially the "glue" that holds the internet together. It's the protocol that determines how data travels from one network to another across the globe. When you click a link, BGP is what decided the path those packets took to get to you.
+BGP (Border Gateway Protocol) is essentially the "glue" that holds the internet together. It is the protocol that determines how data travels from one network to another across the globe. When you click a link, BGP is what decided the path those packets took to get to you.
 
-It's also incredibly fragile. A single misconfiguration or a malicious "route leak" can accidentally divert traffic for an entire country or knock major services offline. Despite being the backbone of the global internet, much of it still relies on trust. This is why security measures like RPKI (Resource Public Key Infrastructure) are so critical yet inconsistently adopted.
+It is also incredibly fragile. A single misconfiguration or a malicious "route leak" can accidentally divert traffic for an entire country or knock major services offline. Despite being the backbone of the global internet, much of it still relies on trust. This is why security measures like RPKI (Resource Public Key Infrastructure) are so critical yet inconsistently adopted.
 
 ## The Power of Interactive Explainers
 
-I am really happy with how this project turned out. I have always found "interactive explainer" microsites to be super effective for learning complex technical concepts. Reading a whitepaper about the Border Gateway Protocol (BGP) is one thing, but actively playing with CIDR subnetting tools or triggering the steps in a BGP state machine makes the concepts actually stick.
+I am really happy with how this project turned out. I have always found "interactive explainer" microsites to be super effective for learning complex technical concepts. Reading a whitepaper about the Border Gateway Protocol (BGP) is one thing, but discovering that your own ISP is vulnerable to a BGP hijack, or visually seeing how a Remote Triggered Black Hole (RTBH) can mitigate a DDoS attack, makes the concepts actually stick.
 
 Static documentation often fails to convey the *dynamic* nature of protocols. An interactive explainer unlocks a "feedback loop" that docs can't: you change a variable, and you see the consequence immediately. It bridges the gap between abstract theory and practical intuition. I find these sites are worth building whenever a concept involves state transitions, complex spatial relationships, or high-stakes edge cases that are hard to replicate in a lab.
 
 ### Embracing the Evolution
 
-This whole thing started because I wanted to learn more about BGP, so I wrote [a visually cool (and mostly useless) 24/7 live stream](/posts/live-internet-map/). The natural next step was to leverage some of the insights I observed into a dashboard. But as I built the early version of the dashboard, the explanatory text became more interesting and powerful than the raw dashboard data.
+This whole thing started because I wanted to learn more about BGP, so I wrote [a visually cool (and mostly useless) 24/7 live stream](/posts/live-internet-map/). The natural next step was to leverage some of the insights I observed into a dashboard. But as I built the early version of the dashboard, the explanatory text became more interesting and more powerful than the raw dashboard data.
 
-What began as a simple monitoring visualization shifted into a massive interactive learning resource. This taught me a valuable lesson: **projects don't need to start useful.** The most valuable outcome isn't always the original goal. It's often the observations you make while building toward it. By staying flexible, I was able to reshape the project into something far more impactful than just another "live map."
+What began as a simple monitoring visualization shifted into a massive interactive learning resource. This taught me a valuable lesson: **projects don't need to start useful.** The most valuable outcome isn't always the original goal. It is often the observations you make while building toward it. By staying flexible, I was able to reshape the project into something far more impactful than just another "live map."
 
-This shift aligns with how I tend to learn best: by doing. I've always found that I don't truly understand a protocol until I've had to handle its edge cases in code. This is why I write about [HTTP from Scratch](/series/http-from-scratch/), [gRPC From Scratch](/series/grpc-from-scratch/) and [gRPC Over HTTP/3](/posts/grpc-over-http3/); to push myself to build one layer deeper than I strictly need for my day-to-day work. But there is another layer to it: I strongly believe that to properly **learn** something, you must be able to **teach** it, or at the very least, communicate it clearly to others. There is a strange shift that happens in my brain when I approach a topic with the intent to present it. It forces a level of rigor that I might otherwise skip. It's the same reason I am such a huge fan of self-reviews while a PR is in draft; looking at my own code through the lens of an external reviewer often reveals "perfect" code to be anything but. It's also 95% of the reason that I write this blog (the other 5% is vanity).
+This shift aligns with how I tend to learn best: by doing. I've always found that I don't truly understand a protocol until I've had to handle its edge cases in code. This is why I write about [HTTP from Scratch](/series/http-from-scratch/), [gRPC From Scratch](/series/grpc-from-scratch/) and [gRPC Over HTTP/3](/posts/grpc-over-http3/); to push myself to build one layer deeper than I strictly need for my day-to-day work. But there is another layer to it: I strongly believe that to properly **learn** something, you must be able to **teach** it, or at the very least, communicate it clearly to others. There is a strange shift that happens in my brain when I approach a topic with the intent to present it. It forces a level of rigor that I might otherwise skip. It is the same reason I am such a huge fan of self-reviews while a PR is in draft; looking at my own code through the lens of an external reviewer often reveals "perfect" code to be anything but. It is also 95% of the reason that I write this blog (the other 5% is vanity).
 
 ### Interactive Tools
 
-I replaced static images with **interactive SVG diagrams** driven by the same data models used in the backend. You can interactively see different behaviors of BGP and the internet play out from advertisements, to withdrawals, to route leaks.
+I replaced static images with **interactive SVG diagrams** driven by the same data models used in the backend. You can watch different BGP behaviors play out interactively, from route advertisements and withdrawals to full blown route leaks.
 
 The most useful tool on the site is the **ISP RPKI Safety Test**. It lets you check if your own Internet provider is using RPKI to sign and validate routes. 
 
-When I first ran this, I was shocked to see that **my own home ISP fails this check.** This means they are effectively trusting the "word" of any other network on the planet without cryptographically verifying it. It's a sobering reminder that the backbone of our digital lives is often held together by conventions and good faith rather than hard security. If your ISP fails, it's a great excuse to reach out to their support and ask *why*. This test is powered by [isbgpsafeyet.com](https://isbgpsafeyet.com/), and they encourage you to tweet about your ISP if they fail.
+When I first ran this, I was shocked to see that **my own home ISP fails this check.** This means they are effectively trusting the "word" of any other network on the planet without cryptographically verifying it. It is a sobering reminder that the backbone of our digital lives is often held together by conventions and good faith rather than hard security. If your ISP fails, it is a great excuse to reach out to their support and ask *why*. This test is powered by [isbgpsafeyet.com](https://isbgpsafeyet.com/), and they encourage you to tweet about your ISP if they fail.
 
 {{< rpki-check >}}
 
@@ -103,9 +113,7 @@ Indexer: Go Indexer {
 GitHub: GitHub Repository
 Cloudflare: Cloudflare Pages
 
-OBS: OBS Studio {
-  Encoder: RTMP Output
-}
+OBS: OBS Studio
 
 Sources -> Collector: Raw Telemetry
 Collector -> Viewer: "gRPC Stream"
@@ -113,7 +121,7 @@ Collector -> Indexer: "Summary Data"
 Indexer -> GitHub: "Commit Snapshots"
 GitHub -> Cloudflare: "CI/CD Trigger"
 Cloudflare -> "bgp.kmcd.dev": "Serve Static Data"
-Viewer -> OBS: "Window Capture\n(4K 60FPS)"
+Viewer -> OBS: "Window Capture"
 OBS -> YouTube: "4K 60FPS Video"
 {{< /d2 >}}
 
@@ -127,7 +135,7 @@ Could I have just optimized the Go version? Probably. But the sheer volume of sm
 
 With Rust handling the data ingestion, the Go viewer was freed up to focus entirely on the **24/7 YouTube live stream**. Using the [Ebitengine](https://ebitengine.org/) game engine, the Go application is now just a lean client that renders a 2D Mollweide projection of the globe at 60 FPS. This output is captured by OBS and pushed to YouTube. That 60 FPS target is nearly always reached now, when it was a pipedream with the first architecture.
 
-Yes, I know how insane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine for this specific real-time visualization task. This is what personal projects are for: to do things you wouldn't normally do in ways you wouldn't normally do it.
+Yes, I know how insane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine for this specific real-time visualization task. This is what personal projects are for: to do things you wouldn't normally do in ways you wouldn't normally do them.
 
 ### Unifying on Protobuf
 
@@ -151,6 +159,6 @@ I chose to build [bgp.kmcd.dev](https://bgp.kmcd.dev) as a standalone microsite 
 
 This project shifted from a monolithic live map to a distributed educational tool. Choosing specialized tools for each layer (Rust for throughput, Go for rendering, and Protobuf for data delivery) made the system more stable and capable.
 
-I set out to visualize the internet, but ended up understanding it. I even built something that might help others do the same. If there's one takeaway here, it's that "learning by building" involves more than the code you write. It's also about the clarity you gain when you try to explain that code to the rest of the world.
+I set out to visualize the internet, but ended up understanding it. I even built something that might help others do the same. If there's one takeaway here, it is that "learning by building" involves more than the code you write. It is also about the clarity you gain when you try to explain that code to the rest of the world.
 
 Explore the tools and live data at [bgp.kmcd.dev](https://bgp.kmcd.dev). Source code is on [GitHub](https://github.com/sudorandom/livemap.kmcd.dev/).
