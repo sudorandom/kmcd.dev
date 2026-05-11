@@ -16,11 +16,13 @@ canonical_url: https://kmcd.dev/posts/bgp-kmcd-dev/
 
 Before we get into the weeds of how this was built, go check out [bgp.kmcd.dev](https://bgp.kmcd.dev) right now. Play around with the interactive elements:
 
+[{{< image src="logo.png" width="500px" class="center" >}}](https://bgp.kmcd.dev)
+
 * **Learn about BGP through interactive diagrams**
 * **Try the RPKI safety test.** You might not like what you find about your own ISP's routing security.
-* **Explore the live map** to see the heartbeat of the internet's interconnected networks.
+* **Explore the interactive dashboard** at [bgp.kmcd.dev](https://bgp.kmcd.dev) to see the heartbeat of the internet's interconnected networks.
 
-Once you have a feel for it, come back here. Or don't. I'm not your boss or anything.
+Once you have a feel for it, come back here. Or don't. I'm not your dad or anything.
 
 ### Why BGP Matters
 
@@ -36,7 +38,7 @@ Static documentation often fails to convey the *dynamic* nature of protocols. An
 
 ### Embracing the Evolution
 
-This whole thing started because I wanted to learn more about BGP, so I wrote [a visually cool (and mostly useless) live map](/posts/live-internet-map/). The natural next step was to leverage some of the insights I observed into a dashboard. But as I built the early version of the dashboard, the explanatory text became more interesting and powerful than the raw dashboard data.
+This whole thing started because I wanted to learn more about BGP, so I wrote [a visually cool (and mostly useless) 24/7 live stream](/posts/live-internet-map/). The natural next step was to leverage some of the insights I observed into a dashboard. But as I built the early version of the dashboard, the explanatory text became more interesting and powerful than the raw dashboard data.
 
 What began as a simple monitoring visualization shifted into a massive interactive learning resource. This taught me a valuable lesson: **projects don't need to start useful.** The most valuable outcome isn't always the original goal. It's often the observations you make while building toward it. By staying flexible, I was able to reshape the project into something far more impactful than just another "live map."
 
@@ -54,9 +56,11 @@ When I first ran this, I was shocked to see that **my own home ISP fails this ch
 
 ## How It Was Made
 
-Getting a live global heartbeat of the internet to run smoothly required completely rethinking the architecture. The [original implementation](/posts/live-internet-map/) handled data collection and GPU rendering in a single Go process. It worked fine at first, but garbage collector pauses during high-volume routing bursts (30,000+ updates per second) caused dropped frames in the visualization.
+Getting a live global heartbeat of the internet to run smoothly required completely rethinking the architecture. The [original implementation](/posts/live-internet-map/) handled data collection and GPU rendering in a single Go process. It worked fine at first, but garbage collector pauses during high-volume routing bursts (30,000+ updates per second) caused dropped frames in the 24/7 live stream.
 
-Here is the high-level flow: raw BGP updates from global sensors come in, a Rust backend processes and validates them in real-time, a Go client renders them at 60 FPS, and hourly snapshots are automatically committed as static data.
+The new architecture separates these concerns into two distinct outputs: a **real-time 4K live stream** on YouTube and an **interactive microsite** at [bgp.kmcd.dev](https://bgp.kmcd.dev).
+
+Here is the high-level flow: raw BGP updates from global sensors come in, a Rust backend processes and validates them in real-time. This processed data is then broadcast to a Go client (which renders the 60 FPS YouTube stream) and a Go indexer (which generates the static data for the microsite).
 
 Here is a look at the architecture that solved this:
 
@@ -119,23 +123,21 @@ I rewrote the telemetry collector in **Rust** using the [BGPKit](https://bgpkit.
 
 Could I have just optimized the Go version? Probably. But the sheer volume of small allocations during BGP parsing was a "worst-case scenario" for Go's garbage collector. Moving to Rust allowed me to manage memory exactly where it mattered, ensuring that even the most massive routing bursts wouldn't stutter the visualization. Plus, I had been wanting to dip my toes into Rust, and this proved to be a great project for it.
 
-### Go and Ebitengine
+### Go and Ebitengine for the Live Stream
 
-With Rust handling the data ingestion, the Go viewer was freed up. Using the [Ebitengine](https://ebitengine.org/) game engine, the Go application is now just a lean client that focuses entirely on rendering a 2D Mollweide projection of the globe at 60 FPS. That 60 FPS target is nearly always reached now, when it was a pipedream with the first architecture.
+With Rust handling the data ingestion, the Go viewer was freed up to focus entirely on the **24/7 YouTube live stream**. Using the [Ebitengine](https://ebitengine.org/) game engine, the Go application is now just a lean client that renders a 2D Mollweide projection of the globe at 60 FPS. This output is captured by OBS and pushed to YouTube. That 60 FPS target is nearly always reached now, when it was a pipedream with the first architecture.
 
-Yes, I know how insane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine. This is what personal projects are for: to do things you wouldn't normally do in ways you wouldn't normally do it.
+Yes, I know how insane I sound when I say "oh, and Go is used for the frontend", but I learned to respect the performance and robustness of Ebitengine for this specific real-time visualization task. This is what personal projects are for: to do things you wouldn't normally do in ways you wouldn't normally do it.
 
-### Protobuf as the Glue
+### Unifying on Protobuf
 
 To manage the complex schema between Go, Rust, and TypeScript, I leveraged **Protocol Buffers** and **gRPC**. 
 
 Defining the interface between the Rust collector and the Go viewer in Protobuf simplified the Go code significantly. Instead of managing internal channels, it just subscribes to a gRPC stream of events. I can even restart the Rust collector to update logic without the visualizer dropping a single frame.
 
-More importantly, dropping JSON for Protobuf on the web frontend resulted in **10x smaller file sizes**. While the site isn't "heavy" by modern standards, this reduction is huge for mobile users and those on spotty connections. Smaller payloads mean faster time-to-interactive and less battery drain. This is critical for an "explainer" that you want people to actually use on the go.
-
 ### Static Hourly Snapshots
 
-To keep the web platform fast without maintaining a live database for every user request, I built a Go indexer. It generates snapshots of the global routing state every hour and commits them to a GitHub repository. This triggers a build on Cloudflare Pages, which deploys the updated snapshots as static assets. This has proven 'reliable enough' for this project.
+To keep the web platform fast without maintaining a live database to service requests, I built a Go indexer. It generates snapshots of the global routing state every hour and commits them to a GitHub repository. This triggers a build on Cloudflare Pages, which deploys the updated snapshots as static assets. This has proven 'reliable enough' for this project. Because of this, the data referenced in the website are updated hourly.
 
 ### Why a Microsite?
 
