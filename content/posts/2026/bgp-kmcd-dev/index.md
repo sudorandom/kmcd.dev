@@ -20,7 +20,6 @@ Before we get into the weeds of how this was built, go check out [bgp.kmcd.dev](
 
 * **Learn about BGP through interactive diagrams**
 * **Try the RPKI safety test.** You might not like what you find about your own ISP's routing security.
-* **Explore the interactive dashboard** at [bgp.kmcd.dev](https://bgp.kmcd.dev) to see the heartbeat of the internet's interconnected networks.
 
 Once you have a feel for it, come back here. Or don't. I'm not your dad or anything.
 
