@@ -4,6 +4,7 @@ on:
       - main
   schedule:
     - cron: "42 */3 * * *"
+  workflow_dispatch:
 
 jobs:
   deploy:
