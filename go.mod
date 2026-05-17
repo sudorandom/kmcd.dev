@@ -1,8 +1,6 @@
 module github.com/sudorandom/kmcd.dev
 
-go 1.24.0
-
-toolchain go1.24.3
+go 1.26.3
 
 tool (
 	github.com/fogleman/primitive

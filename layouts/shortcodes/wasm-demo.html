@@ -1,0 +1,246 @@
+<div class="wasm-demo">
+    <div class="wasm-demo-header">
+        <span class="wasm-demo-title">Live WASM Demo</span>
+        <div id="wasm-status" class="wasm-status-loading">
+            <span class="status-dot"></span>
+            <span class="status-text">Initializing...</span>
+        </div>
+    </div>
+    <div class="wasm-demo-controls">
+        <input type="text" id="wasm-input" placeholder="Type something..." value="Hello WASM!" disabled>
+    </div>
+    <div class="wasm-demo-output">
+        <strong>Output:</strong> <span id="wasm-result">Waiting for input...</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Add a cache-buster for development reloads
+        const wasmUrl = "/wasm/demo.wasm?t=" + new Date().getTime();
+        const glueUrl = "/js/wasm_exec.js";
+        const statusEl = document.getElementById('wasm-status');
+        const statusText = statusEl.querySelector('.status-text');
+        const inputField = document.getElementById('wasm-input');
+        const resultField = document.getElementById('wasm-result');
+
+        function debounce(func, timeout = 300) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        const updateOutput = () => {
+            const input = inputField.value;
+            if (typeof processData === 'function') {
+                const output = processData(input);
+                resultField.textContent = output;
+            } else {
+                resultField.textContent = 'Error: processData function not found';
+            }
+        };
+
+        const debouncedUpdate = debounce(updateOutput);
+
+        async function init() {
+            try {
+                // Ensure Go glue code is loaded
+                if (typeof Go === 'undefined') {
+                    await new Promise((resolve, reject) => {
+                        const s = document.createElement('script');
+                        s.src = glueUrl;
+                        s.onload = resolve;
+                        s.onerror = reject;
+                        document.head.appendChild(s);
+                    });
+                }
+
+                const go = new Go();
+                let result;
+                
+                // Try streaming instantiation first
+                try {
+                    const fetchPromise = fetch(wasmUrl);
+                    result = await WebAssembly.instantiateStreaming(fetchPromise, go.importObject);
+                } catch (e) {
+                    console.warn("WASM instantiateStreaming failed, falling back to arrayBuffer", e);
+                    const response = await fetch(wasmUrl);
+                    const buffer = await response.arrayBuffer();
+                    result = await WebAssembly.instantiate(buffer, go.importObject);
+                }
+
+                // Run the Go instance
+                go.run(result.instance);
+                
+                statusText.textContent = 'Ready';
+                statusEl.className = 'wasm-status-ready';
+                inputField.disabled = false;
+                
+                // Initial run
+                updateOutput();
+
+                inputField.addEventListener('input', debouncedUpdate);
+            } catch (err) {
+                console.error("WASM Initialization Error:", err);
+                statusText.textContent = 'Engine Error';
+                statusEl.className = 'wasm-status-error';
+                resultField.textContent = 'Check console for errors. Reloading might help.';
+            }
+        }
+
+        init();
+    })();
+</script>
+
+<style>
+.wasm-demo {
+    border: 1px solid var(--border-color);
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    color: var(--text-main);
+    margin: 2rem 0;
+    font-family: inherit;
+}
+
+/* Light theme colors (default) */
+:root {
+    --bg-secondary: #fafafa;
+    --bg-tertiary: #e0e0e0;
+    --text-main: #222;
+    --border-color: #dcdcdc;
+    --accent-color: #0052ff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --status-bg: rgba(0, 0, 0, 0.05);
+}
+
+/* Dark theme colors */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-secondary: #283745;
+        --bg-tertiary: #3b5065;
+        --text-main: #ffffff;
+        --border-color: #3b5065;
+        --accent-color: #00ffff;
+        --success-color: #34ce57;
+        --error-color: #ff4b5c;
+        --status-bg: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Specific theme overrides */
+[data-theme=dark] :root {
+    --bg-secondary: #283745;
+    --bg-tertiary: #3b5065;
+    --text-main: #ffffff;
+    --border-color: #3b5065;
+    --accent-color: #00ffff;
+    --status-bg: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme=light] :root {
+    --bg-secondary: #fafafa;
+    --bg-tertiary: #e0e0e0;
+    --text-main: #222;
+    --border-color: #dcdcdc;
+    --accent-color: #0052ff;
+    --status-bg: rgba(0, 0, 0, 0.05);
+}
+
+.wasm-demo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.wasm-demo-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+}
+
+#wasm-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background: var(--status-bg);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.wasm-status-loading { color: var(--text-main); opacity: 0.6; }
+.wasm-status-loading .status-dot {
+    animation: wasm-pulse 1.5s infinite;
+}
+
+.wasm-status-ready { color: var(--success-color); }
+.wasm-status-error { color: var(--error-color); }
+
+@keyframes wasm-pulse {
+    0% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.wasm-demo-controls {
+    margin-bottom: 1rem;
+}
+
+.wasm-demo-controls input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-tertiary);
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.wasm-demo-controls input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.1);
+}
+
+.wasm-demo-controls input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.wasm-demo-output {
+    padding: 1.25rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    border-left: 4px solid var(--accent-color);
+    word-break: break-all;
+    min-height: 4rem;
+    display: flex;
+    align-items: center;
+}
+
+.wasm-demo-output strong {
+    margin-right: 0.75rem;
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+</style>

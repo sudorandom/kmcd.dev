@@ -17,36 +17,35 @@ canonical_url: https://kmcd.dev/posts/yang/
 draft: true
 ---
 
-Modern network automation is shifting away from protocols like [SNMP](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol). While my [previous post](/posts/gnmi/) covered why [gNMI](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md) is the future of telemetry and management, protocols only define how data moves. They do not define the data itself.
+We are finally moving away from relying on protocols like [SNMP](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol). My [previous post](/posts/gnmi/) covered why [gNMI](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md) is the future for telemetry, but the protocol is only half the problem. You still need to agree on what the data actually looks like.
 
-[YANG](https://datatracker.ietf.org/doc/html/rfc7950) (Yet Another Next Generation) is a data modeling language used to define the configuration, state data, RPCs, and notifications for network devices. 
+That is where [YANG](https://datatracker.ietf.org/doc/html/rfc7950) comes in. It is a data modeling language that defines the configuration, state, and RPCs for network hardware.
 
-A critical distinction is that YANG models the data completely independent of the transport or encoding format. Software engineers are familiar with tools like [OpenAPI](https://www.openapis.org/), which explicitly document the types and endpoints for a specific REST API. YANG operates differently because it models the domain itself. The data described by a YANG schema can be encoded as [XML](https://www.w3.org/XML/), [JSON](https://www.json.org/), or [Protocol Buffers](https://protobuf.dev/), and it can be transported over [NETCONF](https://datatracker.ietf.org/doc/html/rfc6241), [RESTCONF](https://datatracker.ietf.org/doc/html/rfc8040), or gNMI. The schema defines the physical and logical reality of the device, not the mechanism used to communicate with it.
+The weird part for software engineers is how YANG totally decouples the model from the wire format. We usually reach for tools like [OpenAPI](https://www.openapis.org/), which tie the schema directly to REST endpoints. YANG models the actual domain. You can encode the payload in [XML](https://www.w3.org/XML/), [JSON](https://www.json.org/), or [Protocol Buffers](https://protobuf.dev/), and ship it over [NETCONF](https://datatracker.ietf.org/doc/html/rfc6241) or gNMI. The schema describes the physical router. How you transport the data is a separate problem.
 
-The networking domain created a Domain Specific Language (DSL) specifically to model data for network devices. To understand why, it helps to look at the historical context of its creation and how it compares to the tools software engineers use today.
+Networking built its own Domain Specific Language (DSL) entirely out of necessity. Looking at it today, it is fair to ask why they didn't just adopt existing tools.
 
-### What was lacking in other options?
+### Why not JSON Schema, GraphQL, or Smithy?
 
-Software engineers looking at YANG today often ask: *Why not just use [JSON Schema](https://json-schema.org/), or modern interface languages like [GraphQL SDL](https://graphql.org/learn/schema/) or [AWS Smithy](https://smithy.io/)?*
+A lot of it comes down to timing. [GraphQL](https://graphql.org/learn/schema/) and [AWS Smithy](https://smithy.io/) didn't exist when the IETF started drafting YANG in the late 2000s. The industry relied on SNMP MIBs, which worked for reading state but fell apart when writing complex configs. [XML Schema (XSD)](https://www.w3.org/XML/Schema) had the structural power, but frankly, nobody wants to write SOAP envelopes to manage a core switch.
 
-The first answer is chronology. When the IETF started designing YANG in the late 2000s, GraphQL and Smithy did not exist. The networking industry relied on SNMP MIBs (Management Information Bases) and [XML Schema (XSD)](https://www.w3.org/XML/Schema). While MIBs were structured for reading state, they lacked the strong typing and transactional safeguards required for complex configuration writes. XSD was too verbose and lacked domain-specific semantics. 
+Network hardware also strictly separates two types of data:
+1. **Configuration Data:** What you want the device to do (e.g., IP addresses, BGP neighbor settings).
+2. **State Data:** What the device is actually doing right now (e.g., packet counters, CPU temperature).
 
-Network devices strictly separate two types of data:
-1. **Configuration Data:** Read/write settings applied to a device (e.g., IP addresses, port states).
-2. **State Data:** Read-only operational reality of the device (e.g., packet counters, CPU temperature).
+Engineers needed a way to guarantee a config payload was valid before applying it, alongside defining read-only telemetry. Even if modern tools had been around, they solve different problems.
 
-Network engineers needed a way to guarantee a configuration payload was valid before deployment while also defining available read-only telemetry paths. Even if modern tools had existed at the time, they are optimized for entirely different domains:
+GraphQL SDL handles the state/config split reasonably well using Queries and Mutations. The issue is that GraphQL is an API contract detailing client-server communication. YANG maps out the hardware layout.
 
-* **GraphQL SDL:** GraphQL's Schema Definition Language handles the state versus configuration problem cleanly through operations. The `Query` type defines the read-only operational state you can pull, while the `Mutation` type strictly defines what you are allowed to change. However, GraphQL is fundamentally bound to the API interaction layer. It defines how a client queries a server. YANG defines the physical and logical structure of the hardware itself, regardless of how you query it.
-* **AWS Smithy:** Amazon's Smithy is conceptually the closest modern cousin to YANG. Smithy models cloud services independently of their underlying protocol, allowing developers to generate OpenAPI specs or Protobuf schemas from a single source of truth. YANG does the exact same thing for network infrastructure. The difference is the target domain. Smithy optimizes for cloud service operations and SDK generation, while YANG optimizes for hardware constraints, hierarchical configuration inheritance, and deep referential integrity. 
+AWS Smithy is conceptually closer. It models cloud services independently of the protocol, letting you generate OpenAPI specs or Protobufs from one source. While YANG takes a similar approach, the targets differ. Smithy generates cloud SDKs. YANG enforces referential integrity on embedded devices and handles deep configuration inheritance.
 
-### The Power of the YANG DSL
+### The Power of the DSL and OpenConfig
 
-YANG uses a tree hierarchy where every leaf is strongly typed. Its most vital feature for infrastructure is the ability to explicitly tag data using the `config true` (read/write) or `config false` (read-only) statements. 
+YANG uses a strongly typed tree hierarchy. The killer feature here is tagging data natively with `config true` (read/write) or `config false` (read-only).
 
-Historically, early IETF YANG models would intermingle configuration and state data within the same lists. A massive step forward in the industry was the [OpenConfig](https://www.openconfig.net/) working group, which took YANG's native `config` property and built a strict structural convention around it.
+Early vendor models mixed these properties together in the same lists, making automation incredibly frustrating. The [OpenConfig](https://www.openconfig.net/) working group eventually stepped in to enforce a strict structural pattern around those native `config` tags.
 
-Instead of mixing read/write and read-only leaves, OpenConfig enforces a pattern where every major component has a dedicated `config` container and a `state` container. Here is a simplified snippet of how this looks using the [OpenConfig interfaces model](https://github.com/openconfig/public/blob/master/release/models/interfaces/openconfig-interfaces.yang):
+Now, instead of a messy mix of leaves, every major component needs a dedicated `config` container and a `state` container. Here is a simplified look at the [OpenConfig interfaces model](https://github.com/openconfig/public/blob/master/release/models/interfaces/openconfig-interfaces.yang):
 
 ```yang
 container interfaces {
@@ -77,18 +76,11 @@ container interfaces {
 }
 ```
 
-The `config false;` statement under the `state` container enforces the read-only constraint for that entire branch.
+That `config false;` line cascades down and locks the entire operational branch.
 
-### Beyond the Basics: Advanced Schema Features
+Complex infrastructure footprints require heavy reusability and validation. You define blocks of nodes using `grouping` and inject them with `uses`, similar to mixins. Referential integrity is handled by `leafref`. If a routing protocol references a network interface, the `leafref` guarantees the interface exists in the config before the router accepts the payload.
 
-The language is deeply involved and goes far beyond basic type definitions. It includes mechanisms for strict data validation and schema reusability that are critical for managing complex infrastructure.
-
-* **Reusability (`grouping` and `uses`):** Similar to inheritance or mixins in software development, you can define a block of nodes as a `grouping` and inject it anywhere in the tree using the `uses` statement. The OpenConfig snippet above uses this heavily.
-* **Referential Integrity (`leafref`):** You can enforce that a value must exist elsewhere in the configuration. For example, if a routing protocol references a network interface, the `leafref` ensures that the specific interface actually exists before the configuration is accepted.
-* **Field Validation:** YANG supports complex constraints. You can restrict strings with regular expressions (`pattern`), limit integers to specific bounds (`range`), and use XPath expressions (`must`) to enforce conditional logic across entirely different parts of the tree.
-* **Mandatory and Optional Fields:** Nodes can be explicitly marked with `mandatory true` to ensure the device rejects any payload missing critical information, while optional fields can be assigned explicit `default` values.
-
-Tools are typically used to visualize this tree structure and these constraints. For example, [`pyang`](https://github.com/mbj4668/pyang) outputs the model into a visual tree:
+We usually rely on tools like [`pyang`](https://github.com/mbj4668/pyang) to visualize these constraints. It dumps the model into a readable tree:
 
 ```text
 module: openconfig-interfaces
@@ -110,26 +102,16 @@ module: openconfig-interfaces
               +--ro out-octets?   yang:counter64
 ```
 
-A script reading this schema knows it can modify the `enabled` boolean under `config`, but can only monitor the `in-octets` counter under `state`. This standardized relationship enables features like gNMI subscriptions.
+A script reading this schema immediately knows what it can touch. It can toggle the `enabled` boolean under `config`, but it is restricted to just monitoring the `in-octets` counter under `state`.
 
-### OpenConfig: The Dream of Vendor Neutrality
+### Vendor Neutrality and the Ecosystem Tax
 
-Beyond establishing structural conventions, OpenConfig drives significant vendor-neutral YANG development.
+OpenConfig is also the main engine behind vendor neutrality. An interface path on a Cisco box historically looked nothing like one on a Juniper switch, forcing you to rewrite automation logic per vendor.
 
-Historically, network vendors (Cisco, Juniper, Arista) structured data differently. An interface on a Cisco device had a different path than on a Juniper device, requiring automation scripts to be rewritten per vendor.
+With operators like Google and Microsoft backing OpenConfig, automation can just target a generic "OpenConfig router". The hardware vendors handle translating that standard model into their proprietary backends. Consumers actually get some leverage back.
 
-OpenConfig, led by operators like Google and Microsoft, publishes vendor-neutral YANG models. Automation can target an "OpenConfig router" rather than a specific vendor's hardware. The vendors translate the OpenConfig YANG model into their proprietary backend. This shifts control toward consumers and relies on the strict contracts YANG provides.
+It isn't a perfect system. A custom DSL means custom tooling, and the software ecosystem around YANG is extremely narrow. C/C++ developers get [`libyang`](https://github.com/CESNET/libyang). Python developers get `pyang`. I write a lot of Go, so I rely on [`ygot`](https://github.com/openconfig/ygot). If you want native parsing in Rust or TypeScript, you are mostly on your own with some massive RFCs to read.
 
-### The Downsides: Ecosystem and AST Performance
+Processing these models is computationally expensive. Parsing a modern router schema means resolving external module imports, expanding groupings, and mapping cross-tree references. Building that Abstract Syntax Tree (AST) in memory can eat hundreds of megabytes of RAM. You might wait several seconds just for the compilation to finish before processing a single byte of telemetry data.
 
-Building a custom DSL comes with severe trade-offs. The language specification is massive, and because of this complexity, the software ecosystem around YANG is surprisingly narrow.
-
-While JSON or [YAML](https://yaml.org/) have robust, production-ready parsing libraries in virtually every programming language, YANG relies on a handful of specialized open-source projects. If you are developing in C or Python, you have access to [`libyang`](https://github.com/CESNET/libyang) or `pyang`. If you are working in [Go](https://go.dev/), you can use [`ygot`](https://github.com/openconfig/ygot). However, if you want to interact natively with YANG models in a language outside of this small circle, you must write your own parser. Given the size of the RFCs defining the language, this is a monumental task.
-
-Additionally, handling the language introduces significant performance bottlenecks. To process a YANG model, a parser must resolve external module imports, expand inherited groupings, and map complex cross-tree references. This requires building an enormous Abstract Syntax Tree (AST) in memory. 
-
-Parsing the full schema for a modern router is computationally expensive. Loading these definitions can consume hundreds of megabytes of RAM and take several seconds just to compile the AST before a single byte of actual telemetry data is evaluated.
-
-### Lessons Learned
-
-When systems have strict operational requirements, like differentiating intended configuration from actual operational state, a purpose-built schema provides necessary constraints. YANG moved the networking industry from bespoke CLI commands to structured, contract-driven data. It requires a steep learning curve and tolerates high computational overhead, but establishes a necessary foundation for reliable infrastructure automation.
+The language is a beast to parse and frustrating to learn. Still, a purpose-built schema makes sense when you need absolute certainty about the difference between intended configuration and the live operational reality of a network. It is an ecosystem tax I'm willing to pay if it means I never have to regex-match CLI output again.

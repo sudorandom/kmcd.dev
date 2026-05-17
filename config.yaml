@@ -129,6 +129,11 @@ markup:
     style: nord
     tabWidth: 4
 
+mediaTypes:
+  application/wasm:
+    suffixes:
+      - wasm
+
 outputFormats:
   jsonfeed:
     mediaType: "application/json"
