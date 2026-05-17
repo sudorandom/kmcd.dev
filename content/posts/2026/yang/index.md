@@ -14,7 +14,6 @@ slug: "yang"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/yang/
-draft: true
 ---
 
 We are finally moving away from relying on protocols like [SNMP](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol). My [previous post](/posts/gnmi/) covered why [gNMI](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md) is the future for telemetry, but the protocol is only half the problem. You still need to agree on what the data actually looks like.
