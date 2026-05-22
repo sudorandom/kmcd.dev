@@ -1,8 +1,9 @@
 details {
-  border-radius: 6px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  transition: background-color 0.2s ease-in-out;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
 }
 
 details > summary {
@@ -14,25 +15,27 @@ details > summary {
 
 [data-theme=light] {
     details {
-        background-color: #eaeaea; // $light-background-secondary
+        background-color: #f5f6f8;
+        border-color: #e6e8eb;
     }
     details:hover {
-        background-color: #dfdfdf;
+        background-color: #ebecf0;
     }
     details > summary {
-        color: #007bff; // Primary color for light theme
+        color: $light-accent-color;
     }
 }
 
 [data-theme=dark] {
     details {
-        background-color: #3b5065; // $dark-background-secondary
+        background-color: #2c3a47;
+        border-color: #3b5065;
     }
     details:hover {
-        background-color: #4a6580;
+        background-color: #324251;
     }
     details > summary {
-        color: #a2a2dd; // $dark-color-secondary for dark theme
+        color: $dark-accent-color;
     }
 }
 
@@ -85,7 +88,7 @@ details > summary {
     text-decoration: none;
 
     [data-theme=light] & {
-      color: #0052ff; // $light-accent-color
+      color: $light-accent-color;
     }
 
     [data-theme=dark] & {
@@ -166,12 +169,11 @@ details > summary {
       font-size: 1rem;
       font-family: monospace;
       [data-theme=light] & {
-        color: #0052ff; // $light-accent-color
+        color: $light-accent-color;
       }
       [data-theme=dark] & {
         color: #00ffff; // $dark-accent-color
-      }
-    }
+      }    }
   }
 }
 
@@ -197,12 +199,11 @@ details > summary {
   padding: 0 2px;
 
   [data-theme=light] & {
-    color: #0052ff; // $light-accent-color
+    color: $light-accent-color;
   }
   [data-theme=dark] & {
     color: #00ffff; // $dark-accent-color
   }
-
   &:hover {
     opacity: 0.8;
   }

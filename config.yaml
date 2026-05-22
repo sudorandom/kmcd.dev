@@ -109,6 +109,8 @@ markup:
   tableOfContents:
     endLevel: 4
   goldmark:
+    renderer:
+      unsafe: true
     renderHooks:
       image:
         useEmbedded: "fallback"

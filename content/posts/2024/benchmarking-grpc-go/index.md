@@ -99,16 +99,16 @@ This is a pretty outdated machine so if you run these benchmarks locally, you sh
         },
         scaleShowValues: true,
         scales: {
-            yAxes: [{
+            y: {
                 ticks: {
                     autoSkip: false
                 }
-            }],
-            xAxes: [{
+            },
+            x: {
                 ticks: {
                     autoSkip: false
                 }
-            }]
+            }
         }
     }
 }
@@ -202,16 +202,16 @@ Now here are the results of a test that uses a relatively complex message so we 
         },
         scaleShowValues: true,
         scales: {
-            yAxes: [{
+            y: {
                 ticks: {
                     autoSkip: false
                 }
-            }],
-            xAxes: [{
+            },
+            x: {
                 ticks: {
                     autoSkip: false
                 }
-            }]
+            }
         }
     }
 }

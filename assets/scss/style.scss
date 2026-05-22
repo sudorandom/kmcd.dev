@@ -239,6 +239,11 @@ main {
             backdrop-filter: blur(8px);
             z-index: 1;
         }
+
+        .post-card-content h3 {
+            color: $dark-accent-color;
+            a { color: $dark-accent-color; }
+        }
     }
 
     .post-card-wrapper {
@@ -605,8 +610,7 @@ ul.icons {
             color: #fff;
 
             h3 a {
-                [data-theme=dark] & { color: $dark-accent-color; }
-                [data-theme=light] & { color: $light-accent-color; }
+                color: $dark-accent-color;
             }
         }
     }
@@ -784,6 +788,14 @@ ul.icons {
     color: #fff;
     position: relative;
     z-index: 2;
+
+    .post-title a {
+        color: $dark-accent-color;
+    }
+
+    .post-info-2 a {
+        color: $dark-accent-color;
+    }
 }
 
 .prompt-outer {

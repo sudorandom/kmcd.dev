@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+// Unique proto package name so this package can coexist with vanilla and
+// jsonplugin in the same test binary without global type-registry conflicts.
+package event_vtproto;
+
+option go_package = "json-vs-proto/proto/vtproto;vtprotopb";
+
+import "google/protobuf/any.proto";
+
+message SmallObject {
+  string id = 1;
+  bool active = 2;
+  int32 age = 3;
+  double score = 4;
+}
+
+message Actor {
+  string id = 1;
+  string email = 2;
+  bool verified = 3;
+}
+
+message Metadata {
+  string ip = 1;
+  string user_agent = 2;
+  int64 attempts = 3;
+}
+
+message MediumEvent {
+  string id = 1;
+  int64 timestamp = 2;
+  string event_type = 3;
+  Actor actor = 4;
+  repeated string tags = 5;
+  Metadata metadata = 6;
+}
+
+message AnyEnvelope {
+  string id = 1;
+  int64 timestamp = 2;
+  google.protobuf.Any payload = 3;
+}
+
+message LargeEventPayload {
+  repeated MediumEvent events = 1;
+}

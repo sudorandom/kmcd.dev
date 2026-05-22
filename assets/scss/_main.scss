@@ -283,9 +283,15 @@ code {
   font-display: auto;
   font-feature-settings: normal;
   padding: 1px 6px;
-  margin: 0 2px;
+  margin: 0 4px;
   border-radius: 5px;
   font-size: 0.95rem;
+
+  h1 &, h2 &, h3 &, h4 &, h5 &, h6 & {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  
   // Default
   background: $light-background-secondary;
 
@@ -637,9 +643,70 @@ ul.icons li a:active {
 
 .chart {
   margin: 0 auto;
-  background:#3b5065;
   padding: 10px 10px 10px 20px;
   border-radius: 8px;
   font-size: 0.95rem;
   overflow: auto;
+  background: #1f2a35;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chart-wrapper {
+  margin: 25px auto;
+  max-width: 100%;
+}
+
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+
+  button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &.active {
+      background: #00ffff;
+      color: #1f2a35;
+      border-color: #00ffff;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+  }
+
+  [data-theme=light] & {
+    button {
+      background: rgba(31, 42, 53, 0.05);
+      border: 1px solid rgba(31, 42, 53, 0.1);
+      color: #555;
+
+      &:hover {
+        background: rgba(31, 42, 53, 0.1);
+        color: #111;
+        border-color: rgba(31, 42, 53, 0.2);
+      }
+
+      &.active {
+        background: #007bff;
+        color: #fff;
+        border-color: #007bff;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+      }
+    }
+  }
 }

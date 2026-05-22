@@ -1,5 +1,7 @@
 .post-content {
   table {
+    display: block;
+    overflow-x: auto;
     border-collapse: collapse;
     margin: 25px auto;
     font-size: 0.9em;
@@ -84,4 +86,48 @@
 
 th {
   white-space: nowrap;
+}
+
+details table {
+  margin: 1rem 0 0.5rem 0;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  
+  [data-theme=dark] & {
+    background-color: #1f2a35;
+    border: 1px solid #3b5065;
+  }
+  
+  [data-theme=light] & {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+  }
+
+  th, td {
+    padding: 10px 14px;
+    
+    [data-theme=dark] & {
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    
+    [data-theme=light] & {
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  thead tr {
+    [data-theme=dark] & {
+      background-color: #232f3c !important;
+      color: #00ffff !important;
+    }
+    
+    [data-theme=light] & {
+      background-color: #f1f3f5 !important;
+      color: #007bff !important;
+    }
+  }
 }
