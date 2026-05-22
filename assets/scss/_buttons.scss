@@ -34,12 +34,10 @@ a.button {
 
   [data-theme=dark] & {
     background: $dark-background-header;
-    opacity: 0.6;
   }
 
   [data-theme=light] & {
     background: $light-background-header;
-    opacity: 0.6;
   }
 
   &.mastodon {

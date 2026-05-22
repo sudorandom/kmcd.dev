@@ -226,7 +226,11 @@ figure {
   figcaption {
     font-size: 14px;
     margin-top: 5px;
-    opacity: 0.8;
+    color: #666;
+
+    [data-theme=dark] & {
+      color: #aaaaaa;
+    }
 
     a {
       color: $light-accent-color;
@@ -294,22 +298,31 @@ code {
   
   // Default
   background: $light-background-secondary;
+  color: $light-color;
 
   @media (prefers-color-scheme: dark) {
     background: $dark-background-secondary;
+    color: $dark-color;
   }
 
   @media (prefers-color-scheme: light) {
     background: $light-background-secondary;
+    color: $light-color;
   }
 
   [data-theme=dark] & {
     background: $dark-background-secondary;
+    color: $dark-color;
   }
 
   [data-theme=light] & {
     background: $light-background-secondary;
+    color: $light-color;
   }
+}
+
+a code {
+  color: inherit;
 }
 
 pre {

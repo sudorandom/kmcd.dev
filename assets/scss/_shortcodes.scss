@@ -45,13 +45,19 @@ details > summary {
   margin-left: 0.5rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 4px;
   // Make the svg inside the link inherit the color
   svg {
     fill: currentColor;
     width: 1em;
     height: 1em;
     vertical-align: -0.15em;
-    margin-right: 0.25rem;
+  }
+  span {
+    margin-left: 0.25rem;
   }
 }
 

@@ -1,3 +1,7 @@
 @mixin dimmed {
   opacity: .6;
+
+  [data-theme=light] & {
+    opacity: .7;
+  }
 }
