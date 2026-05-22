@@ -122,12 +122,12 @@ details table {
   thead tr {
     [data-theme=dark] & {
       background-color: #232f3c !important;
-      color: #00ffff !important;
+      color: $dark-accent-color !important;
     }
     
     [data-theme=light] & {
       background-color: #f1f3f5 !important;
-      color: #007bff !important;
+      color: $light-accent-color !important;
     }
   }
 }

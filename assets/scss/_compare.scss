@@ -87,7 +87,7 @@
     color: #666;
 
     a {
-      color: #2798aa;
+      color: $light-accent-color;
       text-decoration: underline;
 
       &:hover {
@@ -118,7 +118,7 @@
       color: #ccc;
 
       a {
-        color: #77e3f4;
+        color: $dark-accent-color;
       }
     }
   }

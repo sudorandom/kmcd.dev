@@ -301,7 +301,7 @@ main {
             text-decoration: none;
             
             [data-theme=dark] & {
-                background: rgba(0, 229, 255, 0.2);
+                background: rgba($dark-accent-color, 0.2);
                 border: 1px solid $dark-accent-color;
                 &:hover {
                     background: $dark-accent-color;
@@ -309,7 +309,7 @@ main {
                 }
             }
             [data-theme=light] & {
-                background: rgba(0, 123, 255, 0.1);
+                background: rgba($light-accent-color, 0.1);
                 border: 1px solid $light-accent-color;
                 color: $light-accent-color;
                 &:hover {
@@ -795,6 +795,16 @@ ul.icons {
 
     .post-info-2 a {
         color: $dark-accent-color;
+    }
+
+    .post-excerpt {
+        color: #ccc;
+    }
+
+    i,
+    .post-title strong,
+    .post-title em {
+        color: $dark-accent-color !important;
     }
 }
 

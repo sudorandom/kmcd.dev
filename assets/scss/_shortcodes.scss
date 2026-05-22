@@ -65,7 +65,7 @@ details > summary {
     .details-github-link {
         color: #222; // $light-color
         &:hover {
-            color: #007bff; // $primary-color
+            color: $light-accent-color;
         }
     }
 }
@@ -92,7 +92,7 @@ details > summary {
     }
 
     [data-theme=dark] & {
-      color: #00ffff; // $dark-accent-color
+      color: $dark-accent-color;
     }
 
     &:hover {
@@ -154,7 +154,7 @@ details > summary {
 
     &:target {
       animation: highlight 3s ease-out;
-      background-color: rgba(0, 123, 255, 0.1);
+      background-color: rgba($light-accent-color, 0.1);
 
       [data-theme=dark] & {
         background-color: rgba(162, 162, 221, 0.15);
@@ -172,7 +172,7 @@ details > summary {
         color: $light-accent-color;
       }
       [data-theme=dark] & {
-        color: #00ffff; // $dark-accent-color
+        color: $dark-accent-color;
       }    }
   }
 }
@@ -202,7 +202,7 @@ details > summary {
     color: $light-accent-color;
   }
   [data-theme=dark] & {
-    color: #00ffff; // $dark-accent-color
+    color: $dark-accent-color;
   }
   &:hover {
     opacity: 0.8;
@@ -213,7 +213,7 @@ details > summary {
   transform: translateY(-1px);
 }
 @keyframes highlight {
-  0% { background-color: rgba(0, 123, 255, 0.3); }
+  0% { background-color: rgba($light-accent-color, 0.3); }
   [data-theme=dark] {
     0% { background-color: rgba(162, 162, 221, 0.4); }
   }

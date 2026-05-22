@@ -125,11 +125,11 @@ h4 {
 
 p a {
   [data-theme=dark] & {
-    color: #77e3f4;
+    color: $dark-accent-color;
   }
 
   [data-theme=light] & {
-    color: #2798aa;
+    color: $light-accent-color;
   }
 }
 
@@ -229,7 +229,7 @@ figure {
     opacity: 0.8;
 
     a {
-      color: #2798aa;
+      color: $light-accent-color;
       text-decoration: underline;
 
       &:hover {
@@ -239,7 +239,7 @@ figure {
 
     [data-theme=dark] & {
       a {
-        color: #77e3f4;
+        color: $dark-accent-color;
       }
     }
 
@@ -682,10 +682,10 @@ ul.icons li a:active {
     }
 
     &.active {
-      background: #00ffff;
+      background: $dark-accent-color;
       color: #1f2a35;
-      border-color: #00ffff;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      border-color: $dark-accent-color;
+      box-shadow: 0 0 10px rgba($dark-accent-color, 0.3);
     }
   }
 
@@ -702,10 +702,10 @@ ul.icons li a:active {
       }
 
       &.active {
-        background: #007bff;
+        background: $light-accent-color;
         color: #fff;
-        border-color: #007bff;
-        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        border-color: $light-accent-color;
+        box-shadow: 0 0 10px rgba($light-accent-color, 0.3);
       }
     }
   }
