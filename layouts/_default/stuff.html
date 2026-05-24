@@ -54,6 +54,27 @@
         </div>
         <div class="projects-wrapper">
             <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
+                <h3><a href="https://bgp.kmcd.dev" target="_blank">Let's Learn About BGP</a></h3>
+                {{ $bgpImg := (resources.Get "images/screenshots/bgp.png") }}
+                {{ if $bgpImg }}
+                    {{ $resizedBgpImg := $bgpImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://bgp.kmcd.dev" target="_blank">
+                            <img src="{{ $resizedBgpImg.Permalink }}" alt="Screenshot of Let's Learn About BGP" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    An interactive, web-based explainer on the Border Gateway Protocol (BGP). Understand the glue that holds the internet together through dynamic, interactive diagrams, real-time route visualization, and a security test to see if your own ISP validates routes using RPKI. Dive in at <a href="https://bgp.kmcd.dev" target="_blank">bgp.kmcd.dev</a>.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="/posts/bgp-kmcd-dev/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://bgp.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://fauxrpc.com" target="_blank">FauxRPC</a></h3>
                 {{ $fauxrpcImg := (resources.Get "images/screenshots/fauxrpc.png") }}
                 {{ if $fauxrpcImg }}

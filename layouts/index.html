@@ -24,8 +24,7 @@
                 {{ $projects := slice 
                     (dict "title" "protoc-gen-connect-openapi" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
                     (dict "title" "fauxrpc" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
-                    (dict "title" "Internet Map" "url" "https://map.kmcd.dev" "desc" "An interactive visualization of global internet infrastructure, including submarine fiber-optic cables, internet exchange points, and regional bandwidth data." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
-                    (dict "post" "posts/2026/live-internet-map/index.md" "cover" "map.png" "youtube" "UCA9eO4Gt-Ua6lAEGzWQHQFA")
+                    (dict "title" "Internet Maps" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg" "youtube" "UCA9eO4Gt-Ua6lAEGzWQHQFA" "wide" true)
                 }}
 
                 {{ range $projects }}
@@ -43,22 +42,26 @@
                             {{ end }}
                         {{ end }}
                     {{ end }}
-                    <div class="projects-box with-bg" 
+                    <div class="projects-box with-bg{{ if .wide }} wide{{ end }}" 
                         style="{{ if $bgURL }}background-image: url('{{ $bgURL }}');{{ end }} {{ if .url }}cursor: pointer;{{ end }}" 
-                        {{ if .url }}onclick="window.open('{{ .url }}', '_blank')"{{ end }}>
+                        {{ if .url }}onclick="if(!event.target.closest('a')){ window.open('{{ .url }}', '_blank'); }"{{ end }}>
                         <div class="projects-box-content">
-                            {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
-                            {{ if .desc }}<p>{{ .desc }}</p>{{ end }}
+                            <div class="project-info-wrapper">
+                                {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
+                                {{ if .desc }}<p>{{ .desc | safeHTML }}</p>{{ end }}
+                            </div>
                             {{ if .youtube }}
-                            <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                                <iframe 
-                                    title="YouTube Live Stream"
-                                    src="https://www.youtube-nocookie.com/embed/live_stream?channel={{ .youtube }}" 
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-                                    frameborder="0"
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen>
-                                </iframe>
+                            <div class="video-box-wrapper">
+                                <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                                    <iframe
+                                        title="YouTube Live Stream"
+                                        src="https://www.youtube-nocookie.com/embed/live_stream?channel={{ .youtube }}"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                        frameborder="0"
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
                             </div>
                             {{ end }}
                         </div>
