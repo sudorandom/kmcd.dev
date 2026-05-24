@@ -61,7 +61,7 @@ GraphQL SDL can model config and state via queries and mutations, but it is an A
 
 ---
 
-## OpenConfig and the Clean Architecture Pattern
+## The Promise of OpenConfig
 
 Historically, hardware vendors (Cisco, Juniper, Arista) published their own proprietary YANG models. The path to enable an interface on a Cisco router was completely different from a Juniper switch, forcing operators to write complex translation layers.
 
@@ -117,7 +117,7 @@ A network automation script reading this schema instantly knows it can edit `/in
 
 ---
 
-## The Developer Experience and the Custom DSL Tax
+## Dev UX
 
 While YANG is architecturally brilliant, the developer experience for software engineers is notoriously painful.
 
@@ -133,17 +133,17 @@ To mitigate this, tooling often compiles YANG models into optimized native code 
 
 Looking at YANG's design highlights several interesting trade-offs rather than hard and fast rules. The technical choices in YANG have distinct pros and cons:
 
-*   **Model the Domain, Not the API**:
-    *   *Pros:* Building schemas that describe the core domain (like AWS Smithy or YANG) rather than binding schemas directly to JSON/REST protocols ensures longevity and enables protocol migration (e.g., REST to gRPC) without structural rewrites.
-    *   *Cons:* It introduces substantial mapping and translation overhead, requiring serialization layers to map abstract domain structures onto concrete transport envelopes.
-*   **First-Class Operational State**:
-    *   *Pros:* Separating the "intended configuration" from the "current operational reality" is a powerful pattern that prevents exposing mutable and immutable resource fields in a single flat JSON object.
-    *   *Cons:* It doubles the schema complexity, forcing developers to model every attribute twice (once as configuration and once as state) and manage the reconciliation logic between them.
-*   **Schema-Level Referential Validation**:
-    *   *Pros:* Enforcing relational integrity directly in the schema payload (using constructs like `leafref`) is highly effective for distributed pipelines, catching invalid references before they reach the device.
-    *   *Cons:* It makes parsing computationally expensive. Validating a single payload requires loading the entire dependency graph in memory, making schema evaluation resource-heavy and slow.
-*   **Self-Documenting Schemas**:
-    *   *Pros:* Similar to OpenAPI, YANG is excellent at acting as the authoritative documentation for the system. Native `description` and `reference` statements make YANG modules highly self-documenting, and tooling can easily parse them to generate clean API documentation or interactive tree diagrams.
-    *   *Cons:* Without specialized rendering tools (like `pyang`), the raw YANG DSL is extremely verbose and difficult for developers outside the networking domain to read or scan directly.
+* **Model the Domain, Not the API**:
+  * *Pros:* Building schemas that describe the core domain (like AWS Smithy or YANG) rather than binding schemas directly to JSON/REST protocols ensures longevity and enables protocol migration (e.g., REST to gRPC) without structural rewrites.
+  * *Cons:* It introduces substantial mapping and translation overhead, requiring serialization layers to map abstract domain structures onto concrete transport envelopes.
+* **First-Class Operational State**:
+  * *Pros:* Separating the "intended configuration" from the "current operational reality" is a powerful pattern that prevents exposing mutable and immutable resource fields in a single flat JSON object.
+  * *Cons:* It doubles the schema complexity, forcing developers to model every attribute twice (once as configuration and once as state) and manage the reconciliation logic between them.
+* **Schema-Level Referential Validation**:
+  * *Pros:* Enforcing relational integrity directly in the schema payload (using constructs like `leafref`) is highly effective for distributed pipelines, catching invalid references before they reach the device.
+  * *Cons:* It makes parsing computationally expensive. Validating a single payload requires loading the entire dependency graph in memory, making schema evaluation resource-heavy and slow.
+* **Self-Documenting Schemas**:
+  * *Pros:* Similar to OpenAPI, YANG is excellent at acting as the authoritative documentation for the system. Native `description` and `reference` statements make YANG modules highly self-documenting, and tooling can easily parse them to generate clean API documentation or interactive tree diagrams.
+  * *Cons:* Without specialized rendering tools (like `pyang`), the raw YANG DSL is extremely verbose and difficult for developers outside the networking domain to read or scan directly.
 
 Ultimately, YANG's architecture is a beast to learn and expensive to run, but it is tailored to handle the complexity of physical infrastructure. It presents a clear trade-off: a heavy runtime and developer tax worth paying to replace fragile CLI regex parsing with type-safe, validated automation contracts.
