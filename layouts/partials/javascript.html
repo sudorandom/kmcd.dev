@@ -2,7 +2,8 @@
 {{ $menu := resources.Get "js/menu.js" }}
 {{ $prism := resources.Get "js/prism.js" }}
 {{ $compare := resources.Get "js/compare.js" }}
-{{ $secureJS := slice $main $menu $prism $compare | resources.Concat "bundle.js" | resources.Minify | resources.Fingerprint "sha512" }}
+{{ $tabs := resources.Get "js/tabs.js" }}
+{{ $secureJS := slice $main $menu $prism $compare $tabs | resources.Concat "bundle.js" | resources.Minify | resources.Fingerprint "sha512" }}
 <script type="text/javascript" src="{{ $secureJS.RelPermalink }}" integrity="{{ $secureJS.Data.Integrity }}" defer></script>
 
 {{ range $val := $.Site.Params.customJS }}

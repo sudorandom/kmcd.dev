@@ -1,0 +1,11 @@
+{{- $name := .Get "name" -}}
+{{- $id := $name | urlize -}}
+{{- $id_suffix := printf "%.0f" (mul 100000 math.Rand) -}}
+{{- $unique_id := printf "%s-%s" $id $id_suffix -}}
+{{- .Parent.Scratch.Add "tab_list" (slice (dict "name" $name "id" $unique_id)) -}}
+{{- $tab_list := .Parent.Scratch.Get "tab_list" -}}
+{{- $default_name := .Parent.Get "default" | default "Medium Payload" -}}
+{{- $is_active := eq $name $default_name -}}
+<div class="tab-panel-content" id="panel-{{ $unique_id }}" role="tabpanel"{{ if not $is_active }} style="display: none;"{{ end }}>
+  {{ .Inner | markdownify }}
+</div>

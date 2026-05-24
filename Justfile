@@ -1,6 +1,6 @@
 run:
   ./ensure-build-server.sh
-  hugo server -w --buildDrafts --buildFuture --minify --disableFastRender
+  hugo server -w --buildDrafts --buildFuture --minify
 
 build:
   ./ensure-build-server.sh

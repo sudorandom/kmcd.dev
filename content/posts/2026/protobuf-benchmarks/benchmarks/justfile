@@ -1,0 +1,2 @@
+protobuf-benchmarks:
+    go test -bench=. -benchmem | tee results.txt

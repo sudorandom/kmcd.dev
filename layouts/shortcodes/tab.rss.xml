@@ -1,0 +1,5 @@
+{{- $name := .Get "name" -}}
+<div class="rss-tab-section" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+  <h3>{{ $name }}</h3>
+  {{ .Inner | markdownify }}
+</div>

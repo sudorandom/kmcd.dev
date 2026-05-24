@@ -1,101 +1,156 @@
 {{- $id := substr (md5 .Inner) 0 16 -}}
+{{- $unit := .Get "unit" -}}
+{{- $sort := .Get "sort" | default "true" -}}
 <div class="chart-wrapper">
-    <div class="chart">
-        <canvas id="{{ $id }}"></canvas>
-    </div>
+<div class="chart">
+<canvas id="{{ $id }}"{{ with $unit }} data-unit="{{ . }}"{{ end }}{{ with $sort }} data-sort="{{ . }}"{{ end }}></canvas>
+</div>
 </div>
 <script>
 (function() {
-    // 1. Ensure Chart.js is loaded dynamically and reliably
-    window.chartJsPromise = window.chartJsPromise || new Promise((resolve, reject) => {
-        if (window.Chart) {
-            resolve(window.Chart);
-            return;
-        }
-        const script = document.createElement('script');
-        script.src = "https://cdn.jsdelivr.net/npm/chart.js";
-        script.async = true;
-        script.onload = () => resolve(window.Chart);
-        script.onerror = () => reject(new Error("Failed to load Chart.js"));
-        document.head.appendChild(script);
-    });
-
-    // 2. Keep track of all active charts
-    window.activeCharts = window.activeCharts || [];
-
-    // Helper to get colors. Since the chart background is always dark,
-    // we always use light colors for text and grids to ensure high contrast.
-    function getThemeColors() {
-        return {
-            text: '#ffffff',
-            grid: 'rgba(255, 255, 255, 0.1)'
-        };
-    }
-
-    // Apply theme colors to chart options
-    function applyThemeToOptions(options, colors) {
-        if (!options) return;
-        if (!options.plugins) options.plugins = {};
-
-        // Title color
-        if (options.plugins.title) {
-            options.plugins.title.color = colors.text;
-        }
-
-        // Legend color
-        if (!options.plugins.legend) options.plugins.legend = {};
-        if (!options.plugins.legend.labels) options.plugins.legend.labels = {};
-        options.plugins.legend.labels.color = colors.text;
-
-        // Scales ticks & grids
-        if (options.scales) {
-            for (const scaleId in options.scales) {
-                const scale = options.scales[scaleId];
-                if (!scale.ticks) scale.ticks = {};
-                scale.ticks.color = colors.text;
-                
-                if (!scale.grid) scale.grid = {};
-                scale.grid.color = colors.grid;
-            }
-        }
-    }
-
-    // 3. Initialize the observer once to handle theme switching
-    if (!window.chartThemeObserver) {
-        window.chartThemeObserver = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'data-theme') {
-                    const colors = getThemeColors();
-                    window.activeCharts.forEach((chart) => {
-                        applyThemeToOptions(chart.options, colors);
-                        chart.update();
-                    });
-                }
-            });
-        });
-        window.chartThemeObserver.observe(document.documentElement, { attributes: true });
-    }
-
-    // 4. Wait for Chart.js to load, then initialize this specific chart
-    window.chartJsPromise.then((Chart) => {
-        const ctx = document.getElementById('{{ $id }}');
-        if (!ctx) return;
-        
-        const chartConfig = {{ .Inner | chomp | safeJS }};
-        const colors = getThemeColors();
-
-        if (!chartConfig.options) chartConfig.options = {};
-        applyThemeToOptions(chartConfig.options, colors);
-
-        const chart = new Chart(ctx, chartConfig);
-        window.activeCharts.push(chart);
-
-        // Call the global callback if defined
-        if (window.onChartInit) {
-            window.onChartInit(chart);
-        }
-    }, (err) => {
-        console.error("Chart.js loading error: ", err);
-    });
+window.chartJsPromise = window.chartJsPromise || new Promise((resolve, reject) => {
+if (window.Chart) {
+resolve(window.Chart);
+return;
+}
+const script = document.createElement('script');
+script.src = "https://cdn.jsdelivr.net/npm/chart.js";
+script.async = true;
+script.onload = () => resolve(window.Chart);
+script.onerror = () => reject(new Error("Failed to load Chart.js"));
+document.head.appendChild(script);
+});
+window.activeCharts = window.activeCharts || [];
+function getThemeColors() {
+return {
+text: '#ffffff',
+grid: 'rgba(255, 255, 255, 0.1)'
+};
+}
+function applyThemeToOptions(options, colors) {
+if (!options) return;
+if (!options.plugins) options.plugins = {};
+if (options.plugins.title) {
+options.plugins.title.color = colors.text;
+}
+if (!options.plugins.legend) options.plugins.legend = {};
+if (!options.plugins.legend.labels) options.plugins.legend.labels = {};
+options.plugins.legend.labels.color = colors.text;
+if (options.scales) {
+for (const scaleId in options.scales) {
+const scale = options.scales[scaleId];
+if (scale && typeof scale === 'object') {
+if (!scale.ticks) scale.ticks = {};
+scale.ticks.color = colors.text;
+if (!scale.grid) scale.grid = {};
+scale.grid.color = colors.grid;
+}
+}
+}
+}
+if (!window.chartThemeObserver) {
+window.chartThemeObserver = new MutationObserver((mutations) => {
+mutations.forEach((mutation) => {
+if (mutation.attributeName === 'data-theme') {
+const colors = getThemeColors();
+window.activeCharts.forEach((chart) => {
+applyThemeToOptions(chart.options, colors);
+chart.update();
+});
+}
+});
+});
+window.chartThemeObserver.observe(document.documentElement, { attributes: true });
+}
+window.chartJsPromise.then((Chart) => {
+const ctx = document.getElementById('{{ $id }}');
+if (!ctx) return;
+const chartConfig = {{ .Inner | chomp | safeJS }};
+if (chartConfig.options && chartConfig.options.plugins && chartConfig.options.plugins.legend && chartConfig.options.plugins.legend.customLegend) { const customItems = chartConfig.options.plugins.legend.customLegend; chartConfig.options.plugins.legend.labels = chartConfig.options.plugins.legend.labels || {}; chartConfig.options.plugins.legend.labels.generateLabels = function(chart) { return customItems.map(function(item) { return { text: item.text, fillStyle: item.color, strokeStyle: item.color, lineWidth: 1, hidden: false, fontColor: '#ffffff', color: '#ffffff' }; }); }; chartConfig.options.plugins.legend.onClick = function() {}; }
+const colors = getThemeColors();
+if (!chartConfig.options) chartConfig.options = {};
+applyThemeToOptions(chartConfig.options, colors);
+const customLabelPlugin = {
+id: 'customLabelPlugin',
+afterDatasetsDraw: function(chart) {
+if (chart.config.type !== 'bar') return;
+const ctx = chart.ctx;
+const canvasEl = chart.canvas;
+const unit = canvasEl.getAttribute('data-unit');
+chart.data.datasets.forEach(function(dataset, datasetIndex) {
+const meta = chart.getDatasetMeta(datasetIndex);
+meta.data.forEach(function(bar, index) {
+const value = dataset.data[index];
+if (value === undefined || value === null) return;
+if (bar && typeof bar.x === 'number' && chart.isDatasetVisible(datasetIndex)) {
+ctx.fillStyle = '#ffffff';
+ctx.textAlign = 'left';
+ctx.textBaseline = 'middle';
+ctx.font = 'bold 11px sans-serif';
+let text = value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+if (unit) {
+text += ' ' + unit;
+} else {
+const label = dataset.label || '';
+if (label.toLowerCase().indexOf('bytes') !== -1) {
+text += ' B';
+} else if (label.toLowerCase().indexOf('ns') !== -1) {
+text += ' ns';
+}
+}
+ctx.fillText(text, bar.x + 6, bar.y);
+}
+});
+});
+}
+};
+chartConfig.plugins = chartConfig.plugins || [];
+chartConfig.plugins.push(customLabelPlugin);
+if (!chartConfig.options.scales) chartConfig.options.scales = {};
+if (!chartConfig.options.scales.x) chartConfig.options.scales.x = {};
+chartConfig.options.scales.x.grace = '15%';
+{{- /* Always sort bar charts by performance unless sort="false" is explicitly set */ -}}
+const canvasEl = ctx;
+const sortAttr = canvasEl.getAttribute('data-sort');
+if (sortAttr !== 'false' && chartConfig.type === 'bar' && chartConfig.data && chartConfig.data.datasets && chartConfig.data.datasets[0]) {
+const dataset = chartConfig.data.datasets[0];
+const label = (dataset.label || '').toLowerCase();
+let sortOrder = 'asc';
+if (label.indexOf('rps') !== -1 || label.indexOf('throughput') !== -1 || sortAttr === 'desc') {
+sortOrder = 'desc';
+}
+if (chartConfig.data.labels && dataset.data && chartConfig.data.labels.length === dataset.data.length) {
+let items = chartConfig.data.labels.map(function(label, index) {
+return {
+label: label,
+value: dataset.data[index],
+backgroundColor: Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[index] : dataset.backgroundColor,
+borderColor: Array.isArray(dataset.borderColor) ? dataset.borderColor[index] : dataset.borderColor
+};
+});
+items.sort(function(a, b) {
+if (sortOrder === 'desc') {
+return b.value - a.value;
+}
+return a.value - b.value;
+});
+chartConfig.data.labels = items.map(function(item) { return item.label; });
+dataset.data = items.map(function(item) { return item.value; });
+if (Array.isArray(dataset.backgroundColor)) {
+dataset.backgroundColor = items.map(function(item) { return item.backgroundColor; });
+}
+if (Array.isArray(dataset.borderColor)) {
+dataset.borderColor = items.map(function(item) { return item.borderColor; });
+}
+}
+}
+const chart = new Chart(ctx, chartConfig);
+window.activeCharts.push(chart);
+if (window.onChartInit) {
+window.onChartInit(chart);
+}
+}, (err) => {
+console.error("Chart.js loading error: ", err);
+});
 })();
 </script>

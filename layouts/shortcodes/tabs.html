@@ -1,0 +1,28 @@
+{{- $inner := .Inner -}}
+{{- $tab_list := .Scratch.Get "tab_list" -}}
+{{- $tabs_id := printf "tabs-%.0f" (mul 100000 math.Rand) | urlize -}}
+{{- $default_name := .Get "default" | default "Medium Payload" -}}
+{{- $default_index := 0 -}}
+{{- range $index, $tab := $tab_list -}}
+  {{- if eq $tab.name $default_name -}}
+    {{- $default_index = $index -}}
+  {{- end -}}
+{{- end -}}
+<div class="tabs-wrapper" id="{{ $tabs_id }}">
+  <div class="tabs-nav" role="tablist">
+    {{- range $index, $tab := $tab_list -}}
+      {{- $is_active := eq $index $default_index -}}
+      <button class="tab-btn{{ if $is_active }} active{{ end }}" 
+              role="tab" 
+              aria-selected="{{ if $is_active }}true{{ else }}false{{ end }}" 
+              aria-controls="panel-{{ $tab.id }}" 
+              id="tab-btn-{{ $tab.id }}"
+              data-tab="{{ $tab.id }}">
+        {{ $tab.name }}
+      </button>
+    {{- end -}}
+  </div>
+  <div class="tabs-panels">
+    {{- $inner -}}
+  </div>
+</div>

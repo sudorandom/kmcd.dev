@@ -65,7 +65,7 @@ The results are measured in Requests Per Second (RPS) which means that higher is
 
 This is a pretty outdated machine so if you run these benchmarks locally, you should see better performance.
 
-{{< chart >}}
+{{< chart unit="rps" >}}
 {
     type: 'bar',
     data: {
@@ -162,7 +162,7 @@ In this scenario, I also tested with and without an alternative marshal/unmarsha
 
 ### Results
 Now here are the results of a test that uses a relatively complex message so we can see how protobuf parsing factors into the benchmarks:
-{{< chart >}}
+{{< chart unit="rps" >}}
 {
     type: 'bar',
     data: {
