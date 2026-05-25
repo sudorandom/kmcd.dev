@@ -1,0 +1,19 @@
+/* Tip Box */
+.tip-box {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.tip-box {
+    background-color: #e2f0d9;
+    color: #274e13;
+    border-color: #93c47d;
+}
+
+[data-theme='dark'] .tip-box {
+    background-color: #1e3512;
+    color: #d9ead3;
+    border-color: #6aa84f;
+}

@@ -1,5 +1,5 @@
 ---
-title: "google.protobuf.Value considered harmful"
+title: "google.protobuf.Value Considered Harmful"
 date: "2026-06-15T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "json", "software-architecture"]
@@ -45,16 +45,114 @@ This structure leads to the following well-known types:
     ```
     In Go, this translates to a key-value map (`map[string]any`) or a raw JavaScript object where the keys are strings and the values are dynamically typed.
 
-Together, they allow Protobuf messages to carry arbitrary, unstructured JSON-like payloads without declaring a strict schema beforehand. This is a common architectural pattern, and it successfully solves a real developer pain point: handling highly dynamic data. Since Protobuf is famous for being fast and compact, one would intuitively think that wrapping dynamic payloads in these well-known types would still be more efficient than standard JSON. I decided to test that assumption, and **I could not have been more wrong**.
+Together, they allow Protobuf messages to carry arbitrary, unstructured JSON-like payloads without declaring a strict schema beforehand. This is a common architectural pattern, and it successfully solves a real developer pain point: handling highly dynamic data. Since Protobuf is famous for being fast and compact, one would intuitively think that wrapping dynamic payloads in these well-known types would still be more efficient than standard JSON. I decided to test that assumption, and the results were the opposite of what I expected. Most of Protobuf’s performance advantage comes from ahead-of-time schema knowledge. Statically compiled schemas are the primary optimization lever that allows Protocol Buffers to achieve speed and compactness. The moment you remove schema information and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you forfeit that optimization lever entirely. It is not that the Well-Known Types are poorly implemented; rather, removing schema information fundamentally removes Protobuf's ability to optimize the data layout.
+
+## The Structural Cost of Dynamism
+
+Before looking at the benchmark numbers, it helps to understand why `google.protobuf.Value` is structurally expensive on the wire compared to compact JSON. When representing arbitrary object structures, `google.protobuf.Struct` is defined under the hood as `map<string, Value> fields = 1;`.
+
+In the Protobuf wire format, maps are not native primitives. Instead, they are represented as a repeated list of auto-generated key-value message entries. The map field is equivalent to:
+
+```protobuf
+message MapEntry {
+  string key = 1;
+  google.protobuf.Value value = 2;
+}
+
+// Inside google.protobuf.Struct:
+repeated MapEntry fields = 1;
+```
+
+This explains why every key-value entry is serialized as a nested sub-message (`MapEntry`) containing two inner fields (`key` and `value`), each with its own tag and length overhead.
+
+For tiny dynamic payloads, the structural metadata overhead of `Struct` can exceed the payload itself. While in practice payloads are enclosed in full objects and messages (and subject to transport compression, which we discuss later), comparing the raw serialization layout of a single dynamic key-value entry like `"age": 30` illustrates this overhead:
+
+### Wire Format Layout Comparison
+
+#### 1. Compact JSON (10 bytes)
+
+For this conceptual representation of JSON, containing a single key/value pair for age wrapped in enclosing object braces, we have:
+
+```json
+{"age":30}
+```
+
+This payload is exactly **10 bytes** in size:
+- 2 bytes for the enclosing object braces `{}`
+- 5 bytes for the key `"age"` (including quotes)
+- 1 byte for the colon separator `:`
+- 2 bytes for the numeric characters `"30"`
+
+#### 2. Dynamic Protobuf (Protoscope Representation: 18 bytes)
+
+If we describe the dynamic Protobuf binary payload using [Protoscope](https://github.com/protocolbuffers/protoscope) (the language for representing raw Protobuf wire formats) to visualize the structure and tags:
+
+```protoscope
+1: {           # Struct.fields map entry header        -> 2 Bytes
+  1: "age"     # MapEntry.key (tag/len + "age" string) -> 5 Bytes (2B tag/len + 3B value)
+  2: {         # MapEntry.value Value wrapper header   -> 2 Bytes
+    2: 30.0    # Value.number_value double field       -> 9 Bytes (1B tag + 8B float)
+  }
+}
+```
+
+- Each set of braces `{}` represents a length-delimited sub-message, which compiles to a field tag followed by a length prefix byte on the wire.
+- The prefix tags `1:` and `2:` represent the field numbers.
+- `30.0` compiles to field tag 2 (wire type 1, 64-bit) followed by its fixed 8-byte double-precision float value.
+
+Summing these up (2B + 5B + 2B + 9B) results in a total payload size of **18 bytes**.
+
+So with this context, we can now say *why* `google.protobuf.Value` is inefficient:
+
+1. **Double Nesting and Header Overhead:** In compact JSON, the valid payload `{"age":30}` consumes 10 bytes total. In dynamic Protobuf, the nested schema-less structure requires 18 bytes. The nested header metadata alone (the field tags and length prefixes for each layer) consumes **7 bytes**, which is nearly as large as the entire JSON payload before any key or value content is even written.
+
+2. **No Field Name Compression**: One of Protobuf's largest size advantages usually comes from discarding human-readable field names (like `"age"`) and replacing them with compact, 1-byte numeric tags. However, because `google.protobuf.Struct` is unstructured, it must serialize the actual field name string `"age"` on the wire (represented by the `"age"` key value in the Protoscope code). This completely forfeits the field-name compression benefit that makes static Protobuf so compact.
+
+3. **No Varint Compression for Numbers**: `google.protobuf.Value` serializes every numeric value as a fixed-width IEEE754 double on the wire, eliminating protobuf’s normal varint compression benefits. To visualize the wire layout comparison for representing the number `30`:
+
+```text
+Compact JSON ("30"):
+00110011 00110000 -> 2 bytes
+
+Static Protobuf (Varint 30):
+00011110 -> 1 byte
+
+Dynamic Protobuf (30.0 double-precision float):
+00000000 00000000 00000000 00000000 
+00000000 00000000 00111110 01000000 -> 8 bytes (little-endian)
+```
+
+Instead of 2 bytes in JSON or a single byte in native Protobuf, dynamic Protobuf forces even a simple integer to occupy **8 bytes** (double float value) on the wire.
+
+As a result of this multiple-nesting structure and fixed-size floats, dynamic Protobuf payloads end up **significantly larger** on the wire than compact JSON.
+
+### Wire Inefficiency vs. Runtime Inefficiency
+
+Dynamic Protobuf hurts in two completely different ways that affect different engineering decisions:
+
+1. **Wire Inefficiency:** The serialized payload becomes larger than many developers expect. This is caused by human-readable field names being serialized repeatedly, nested map entry encoding, double-precision floating-point storage for all numbers, and the loss of varint integer compression. Bandwidth-sensitive systems, databases, or event brokers care heavily about this.
+2. **Runtime Inefficiency:** The runtime representation in Go becomes allocation-heavy and expensive to parse. This is caused by Go's allocation behavior, interface-heavy and pointer-heavy structures in the standard `structpb` package, Go's reflection model, and tree-shaped decoding. CPU-bound services that deserialize payloads frequently care heavily about this.
+
+---
+
+{{< warning-box >}}
+**Go-Specific Disclaimer:** This article focuses specifically on Go’s protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
+
+Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
+{{< /warning-box >}}
 
 ---
 
 ## The Benchmark Setup
 
-I built a Go benchmark comparing standard JSON against various Protobuf strategies across three payload sizes:
+I built a Go benchmark comparing standard JSON against various Protobuf strategies across three payload sizes. The complete benchmark suite and Go test code are available in the [sudorandom/kmcd.dev](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/google-protobuf-value-considered-harmful/benchmarks) repository on GitHub.
+
+The payload configurations are:
 * **Small:** A flat object with 4 fields (string ID, status boolean, age integer, score float).
 * **Medium:** A nested user signup event containing an actor object, string tags, and a metadata map.
 * **Large:** An array repeating the Medium object 100 times.
+
+This benchmark focuses specifically on the tradeoff between schema-less Protobuf WKTs and common Go JSON implementations rather than surveying all binary serialization formats (like MessagePack, CBOR, BSON, Avro, or FlatBuffers).
 
 ### Benchmark Variants
 
@@ -74,6 +172,14 @@ To evaluate performance across different serialization models, I compared the fo
 | **Concrete (JSONProto)** | JSON | Serializes statically generated Protobuf messages into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Value (JSONProto)** | JSON | Serializes dynamic [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) payloads into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Any (JSONProto)** | JSON | Serializes polymorphic [`google.protobuf.Any`](https://protobuf.dev/reference/protobuf/google.protobuf/#any) wrappers into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
+
+**A Note on Payload Decoding in Benchmarks:**
+To ensure a fair, apples-to-apples performance comparison, the unmarshaling benchmarks for all variants fully deserialize both the outer envelope and the inner dynamic/polymorphic payloads:
+* In the **`google.protobuf.Any`** benchmark, the payload is not left as raw bytes; it is fully unpacked into a concrete statically-compiled Go struct using `anypb.UnmarshalTo()`.
+* In the **`Protobuf + JSON`** benchmark, the inner JSON string is not left unparsed; it is fully deserialized into a concrete Go struct using standard `json.Unmarshal()`.
+* In the **`google.protobuf.Value`** benchmark, the payload is fully parsed into a tree of Go objects representing the JSON-like data.
+
+Importantly, in real-world applications, both `google.protobuf.Any` and opaque `Protobuf + JSON` packaging allow you to bypass this inner parsing entirely on intermediate routing nodes (deferred/lazy parsing). This is a significant architectural advantage if intermediate services only need to forward or store the payload without inspecting it. However, to maintain a level playing field and measure the actual parsing cost, these benchmarks force full decoding.
 
 To handle arbitrary data, the dynamic Protobuf configurations rely on standard `structpb` definitions:
 
@@ -177,6 +283,9 @@ First, I compared the serialized payload size of each configuration. Since Proto
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Format / Config (Small Payload) | Serialized Size | % of JSON (lower is better) |
 | :--- | :---: | :---: |
 | **Concrete (JSON)** | 55 B | 100.0% (Baseline) |
@@ -187,6 +296,8 @@ First, I compared the serialized payload size of each configuration. Since Proto
 | **Concrete (JSONProto)** | 55 B | 100.0% |
 | **google.protobuf.Value (JSONProto)** | 55 B | 100.0% |
 | **google.protobuf.Any (JSONProto)** | 111 B | 201.8% |
+
+</details>
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -262,6 +373,9 @@ First, I compared the serialized payload size of each configuration. Since Proto
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Format / Config (Medium Payload) | Serialized Size | % of JSON (lower is better) |
 | :--- | :---: | :---: |
 | **Concrete (JSON)** | 291 B | 100.0% (Baseline) |
@@ -272,6 +386,8 @@ First, I compared the serialized payload size of each configuration. Since Proto
 | **Concrete (JSONProto)** | 293 B | 100.7% |
 | **google.protobuf.Value (JSONProto)** | 291 B | 100.0% |
 | **google.protobuf.Any (JSONProto)** | 349 B | 119.9% |
+
+</details>
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -347,114 +463,32 @@ First, I compared the serialized payload size of each configuration. Since Proto
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Format / Config (Large Payload) | Serialized Size | % of JSON (lower is better) |
 | :--- | :---: | :---: |
 | **Concrete (JSON)** | 29,201 B | 100.0% (Baseline) |
 | **Concrete (proto)** / **Concrete (vtproto)** | 16,500 B | **56.5%** |
-| **google.protobuf.Any (proto)** | 21,200 B | **72.6%** |
+| **google.protobuf.Any (proto)** | 21200 B | **72.6%** |
 | **Protobuf + JSON** | 29,205 B | 100.0% |
 | **google.protobuf.Value (proto)** | 33,104 B | 113.4% |
 | **Concrete (JSONProto)** | 29,412 B | 100.7% |
 | **google.protobuf.Value (JSONProto)** | 29,201 B | 100.0% |
 | **google.protobuf.Any (JSONProto)** | 34,900 B | 119.5% |
+
+</details>
   {{< /tab >}}
 {{< /tabs >}}
 
-While static binary structures are highly compact, dynamic Protobuf schemas drop schema optimization completely. When representing arbitrary object structures, `google.protobuf.Struct` is defined under the hood as `map<string, Value> fields = 1;`.
+{{< tip-box >}}
+**Transport Compression:** In practice, many production gRPC systems also apply transport compression (gzip or zstd). Since repeated JSON field names compress extremely well, the wire-size advantage of dynamic Protobuf structures often shrinks even further, making dynamic Protobuf even less appealing from a bandwidth perspective.
+{{< /tip-box >}}
 
-In the Protobuf wire format, maps are not native primitives. Instead, they are represented as a repeated list of auto-generated key-value message entries. The map field is equivalent to:
 
-```protobuf
-message MapEntry {
-  string key = 1;
-  google.protobuf.Value value = 2;
-}
-
-// Inside google.protobuf.Struct:
-repeated MapEntry fields = 1;
-```
-
-This explains why every key-value entry is serialized as a nested sub-message (`MapEntry`) containing two inner fields (`key` and `value`), each with its own tag and length overhead.
-
-Let's look at the layout of serializing the simple entry `"age": 30` in compact JSON vs. dynamic Protobuf:
-
-### Wire Format Layout Comparison (`"age": 30`)
-
-#### 1. Compact JSON (8 bytes)
-
-For text-based formats it's pretty easy to see where the 'space' is being taken up.
-
-For this subset of JSON, containing a singe key/value pair for age, we have this JSON
-```text
-"age":30
-```
-When you count 'structual' characters (commas and quotes), you get 3 extra bytes for each key/value pair. It's maybe 4 bytes if you consider commas between elements.
-
-#### 2. Dynamic Protobuf (Protoscope Representation: 18 bytes)
-
-If we describe the dynamic Protobuf binary payload using [Protoscope](https://github.com/protocolbuffers/protoscope) (the language for representing raw Protobuf wire formats), the structure and tags become clearer:
-
-```protoscope
-1: {           # Struct.fields (Map entry, tag 1)      -> 2B tag/len
-  1: "age"     # MapEntry.key (string, tag 1)          -> 2B tag/len + 3B "age" value
-  2: {         # MapEntry.value (Value wrapper, tag 2) -> 2B tag/len
-    2: 30.0    # Value.number_value (float64, tag 2)   -> 1B tag + 8B float value
-  }
-}
-```
-
-- Each set of braces `{}` represents a length-delimited sub-message, which compiles to a field tag followed by a length prefix byte on the wire.
-- The prefix tags `1:` and `2:` represent the field numbers.
-- `30.0` compiles to field tag 2 (wire type 1, 64-bit) followed by its fixed 8-byte double-precision float value.
-
-Summing these up (2B + 2B + 3B + 2B + 1B + 8B) results in a total payload size of **18 bytes**.
-
-So with this context, we can now say *why* `google.protobuf.Value` is inefficient:
-
-1. **Double Nesting and Field Tag Overhead**: In compact JSON, a single isolated field's framing overhead is only 3 bytes (quotes and colon). To be completely fair, a full JSON payload also incurs a small fixed overhead of 2 bytes for the outer curly braces `{}` and 1 byte per additional field for commas `,` (though this is a flat, amortized cost rather than a per-field nested multiplier). In dynamic Protobuf, the nested structure requires **7 bytes of structural framing metadata** (tag and length headers for each layer), plus **3 bytes** for the field name itself.
-
-2. **No Field Name Compression**: One of Protobuf's largest size advantages usually comes from discarding human-readable field names (like `"age"`) and replacing them with compact, 1-byte numeric tags. However, because `google.protobuf.Struct` is unstructured, it must serialize the actual field name string `"age"` on the wire (represented by the `"age"` key value in the Protoscope code). This completely forfeits the field-name compression benefit that makes static Protobuf so compact.
-
-3. **No Varint Compression for Numbers**: Standard Protobuf is highly efficient because it serializes integers using variable-length Varints (e.g., the number `30` takes only 1 byte). However, to remain JSON-compatible, `google.protobuf.Value` stores all numbers as double-precision floating-point numbers (`double`). This completely disables Varint compression:
-
-##### 1. Compact JSON (2 bytes / 16 bits)
-```text
-┌─────────────────────────┬─────────────────────────┐
-│       '3' (0x33)        │       '0' (0x30)        │
-│        00110011         │        00110000         │
-├─────────────────────────┼─────────────────────────┤
-│         1 byte          │         1 byte          │
-└─────────────────────────┴─────────────────────────┘
-```
-
-##### 2. Static Protobuf with Varint (1 byte / 8 bits)
-```text
-┌───────────────────────────────────────────────────┐
-│                 Varint 30 (0x1E)                  │
-│                     00011110                      │
-├───────────────────────────────────────────────────┤
-│                      1 byte                       │
-└───────────────────────────────────────────────────┘
-```
-
-##### 3. Dynamic Protobuf (8 bytes / 64 bits)
-```text
-┌───────────────────────────────────────────────┐
-│       8-Byte Float (30.0 double)              │
-│  Hex (Little-Endian): 00 00 00 00 00 00 3E 40 │
-│      00000000 00000000 00000000 00000000      |
-|      00000000 00000000 00111110 01000000      │
-├───────────────────────────────────────────────┤
-│                  8 bytes                      │
-└───────────────────────────────────────────────┘
-```
-
-Instead of 2 bytes in JSON or a single byte in native Protobuf, dynamic Protobuf forces even a simple integer to occupy **8 bytes** (double float value) on the wire.
-
-As a result of this multiple-nesting structure and fixed-size floats, dynamic Protobuf payloads end up **significantly larger** on the wire than compact JSON.
 
 ### Processing Throughput
-Building and parsing schema-less Protobuf trees involves significant pointer-wrapping overhead, resulting in higher CPU usage and frequent heap allocations. Standard concrete Protobuf marshals almost instantly, and PlanetScale's reflection-free generator `Concrete (vtproto)` is the absolute fastest.
+Building and parsing schema-less Protobuf trees involves significant pointer-wrapping overhead, resulting in higher CPU usage and frequent heap allocations. Standard concrete Protobuf marshals almost instantly, and PlanetScale's reflection-free generator `Concrete (vtproto)` is the absolute fastest. Much of `vtproto`’s advantage comes from eliminating reflection and generating specialized straight-line serialization code ahead of time.
 
 {{< tabs >}}
   {{< tab name="Small Payload" >}}
@@ -540,6 +574,9 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **30.8 ns** | **32 B** | **1** |
@@ -553,6 +590,8 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 | **Map (JSONv2)** | 949.5 ns | 151 B | 9 |
 | **google.protobuf.Value (proto)** | 2,163.0 ns | 879 B | 22 |
 | **google.protobuf.Value (JSONProto)** | 3,017.0 ns | 1,364 B | 35 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -637,6 +676,9 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **128.7 ns** | **176 B** | **1** |
@@ -650,6 +692,8 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 | **Concrete (JSONProto)** | 2,739.0 ns | 1,722 B | 34 |
 | **google.protobuf.Value (proto)** | 6,854.0 ns | 2,959 B | 68 |
 | **google.protobuf.Value (JSONProto)** | 10,177.0 ns | 4,977 B | 113 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -734,6 +778,9 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **9,065 ns** | **18,432 B** | **1** |
@@ -747,6 +794,8 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 | **Concrete (JSONProto)** | 279,812 ns | 243,749 B | 2,728 |
 | **google.protobuf.Value (proto)** | 680,700 ns | 302,768 B | 6,706 |
 | **google.protobuf.Value (JSONProto)** | 988,728 ns | 543,744 B | 10,566 |
+
+</details>
   {{< /tab >}}
 {{< /tabs >}}
 
@@ -836,6 +885,9 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **31.6 ns** | **16 B** | **1** |
@@ -849,6 +901,8 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 | **Map (JSON)** | 1,345.0 ns | 648 B | 20 |
 | **google.protobuf.Value (proto)** | 1,715.0 ns | 832 B | 26 |
 | **google.protobuf.Value (JSONProto)** | 3,220.0 ns | 1,256 B | 43 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -933,6 +987,9 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **382.6 ns** | **432 B** | **14** |
@@ -946,6 +1003,8 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 | **Concrete (JSONProto)** | 4,659.0 ns | 1,304 B | 58 |
 | **google.protobuf.Value (proto)** | 5,686.0 ns | 2,888 B | 90 |
 | **google.protobuf.Value (JSONProto)** | 10,819.0 ns | 4,080 B | 145 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -1030,6 +1089,9 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **43,925 ns** | **58,168 B** | **1,508** |
@@ -1043,32 +1105,39 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 | **Concrete (JSONProto)** | 473,163 ns | 119,256 B | 5,713 |
 | **google.protobuf.Value (proto)** | 585,077 ns | 291,106 B | 9,011 |
 | **google.protobuf.Value (JSONProto)** | 1,150,365 ns | 395,331 B | 14,414 |
+
+</details>
   {{< /tab >}}
 {{< /tabs >}}
 
 Dynamic binary parsing takes **5,772.0 ns** and requires **90 allocations**, compared to just **673.5 ns** and **15 allocations** for standard static Protobuf.
 
+### Workload Sensitivity and Caveats
+
+While these benchmarks demonstrate a massive performance gap, it is important to qualify these numbers: workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go’s map lookup and insertion overhead. Deeply nested objects amplify these allocation costs exponentially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as the thread-local arena pool solution demonstrated later in this article with `hyperpb + Shared`) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
+
 ---
 
-## The Root Cause: Wire Overhead and Heap Allocations
+## The Root Cause: Allocations and Pointer Chasing
 
-The performance drop comes down to two specific architectural factors:
+With the wire and processing numbers in hand, we can look at the mechanical reasons behind the overhead. As established earlier, dynamic Protobuf hurts in two ways: wire size and runtime parsing.
 
-1. **Wire Format Overhead:** Statically compiled Protobuf omits field names entirely, sending only numeric field tags. A dynamic `Value` field has no static schema. To represent a simple key-value pair like `{"age": 30}`, Protobuf must serialize a `MapEntry` message containing the string key `"age"` (which takes 5 bytes on the wire including its field tag and length prefix), the field tag of the selected type inside the `Value` message (1 byte), and an 8-byte double precision float. With all the nesting tags and length prefixes included, the dynamic Protobuf footprint for this single pair reaches **18 bytes**, compared to just **8 bytes** in compact JSON (`"age":30`).
-2. **Heap Allocations in Go:** In Go, representing dynamic, polymorphic variants requires nested pointers and interfaces. Every map item inside a `structpb.Struct` maps to a distinct `*structpb.Value` pointer containing an interface value. Parsing a large payload into this structural tree demands **over 9,000 individual heap allocations**, introducing substantial garbage collection pressure.
+1. **Wire Format Overhead:** `google.protobuf.Value` serializes every numeric value as a fixed-width IEEE754 double on the wire, eliminating protobuf’s normal varint compression benefits. Combined with repeated field names and nested map entry headers, the wire footprint balloons.
+2. **Go Runtime Allocations:** Because Go is statically typed, representing a polymorphic JSON-like tree requires nesting interfaces and pointers. Deserializing a dynamic `Value` payload requires Go's runtime to allocate a unique `*structpb.Value` pointer for every single map key, list item, and value in the tree. On a large payload, this creates over 9,000 individual heap allocations, putting immense pressure on Go’s garbage collector and memory allocator.
+3. **Cache Locality and Memory Layout:** At the systems level, statically generated Protobuf messages compile to flat, cache-friendly Go structs representing contiguous (or near-contiguous) memory blocks. In contrast, `structpb.Value` constructs a highly fragmented graph of heap-allocated objects connected by pointers. Traversing this tree-shaped structure causes frequent pointer chasing, which hurts cache locality, increases L1/L2 cache misses, and hinders branch prediction.
 
 ---
 
 ## High-Performance Alternatives
 
-Importantly, this problem is not inherent to runtime protobuf parsing itself. The real bottleneck is schema-less JSON-style polymorphism layered onto protobuf through `Struct` and `Value`.
+Importantly, this does not mean runtime protobuf parsing itself is inherently slow. Rather, the real bottleneck is schema-less, JSON-style polymorphism layered onto Protobuf through `Struct` and `Value`.
 
 If your system requires runtime schema flexibility, avoid `google.protobuf.Struct` for high-throughput paths and leverage these specific optimizations depending on your runtime requirements:
 
 ### Polymorphism: Use `google.protobuf.Any`
 When data conforms to a known set of pre-compiled schemas, wrap the fields in an `Any` message. It records a clean `type_url` string alongside raw compiled binary bytes.
 * **Pros:** Highly compact (212 bytes for a medium payload) and fast. Processing is roughly 11x faster than using generic values.
-* **Cons:** Requires compile-time schema awareness for all incoming types.
+* **Cons:** Requires compile-time schema awareness for all incoming types. Additionally, `Any` carries the wire overhead of serializing the `type_url` string (e.g., `type.googleapis.com/package.Message`), which adds a few dozen bytes depending on your package name length. This explains the size increases for `Any` visible in the benchmark charts compared to native static Protobuf.
 
 ### Runtime Schema Discovery: Use Buf's `hyperpb`
 For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) library (introduced in [their blog post](https://buf.build/blog/hyperpb)) fixes this by compiling a message descriptor into dedicated, optimized table-driven parser bytecode. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly.
@@ -1167,6 +1236,9 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **31.6 ns** | **16 B** | **1** |
@@ -1176,6 +1248,8 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 | **dynamicpb** | 762.3 ns | 616 B | 11 |
 | **Map (JSONv2)** | 961.1 ns | 408 B | 8 |
 | **Map (JSON)** | 1,336.0 ns | 648 B | 20 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -1246,6 +1320,9 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **hyperpb + Shared** | **350.2 ns** | **357 B** | **1** |
@@ -1255,6 +1332,8 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 | **Map (JSONv2)** | 2,581.0 ns | 1,392 B | 30 |
 | **dynamicpb** | 2,930.0 ns | 2,072 B | 43 |
 | **Map (JSON)** | 4,148.0 ns | 1,856 B | 54 |
+
+</details>
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -1325,6 +1404,9 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 }
 {{< /chart >}}
 
+<details>
+<summary><b>Show data table</b></summary>
+
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **hyperpb + Shared** | **22,074 ns** | **21,838 B** | **1** |
@@ -1334,6 +1416,8 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 | **Map (JSONv2)** | 221,455 ns | 144,647 B | 3,309 |
 | **dynamicpb** | 298,918 ns | 205,753 B | 4,117 |
 | **Map (JSON)** | 337,503 ns | 162,296 B | 4,313 |
+
+</details>
   {{< /tab >}}
 {{< /tabs >}}
 
@@ -1427,8 +1511,7 @@ If you must support unstructured data on a high-throughput, latency-sensitive ho
 Let's be honest: **this feels gross**. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, bypasses static verification, makes API documentation a mess, and is generally a dirty hack. 
 
 But if you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. It allows intermediate routing nodes to forward the packet instantly without deserializing the payload at all, leaving the task of parsing to downstream consumer services which can deserialize it directly into native Go structs only when absolutely necessary. 
-
-It's a compromise. If you can, commit to stable, statically typed schemas. But if you must support unstructured data, holding your nose and packing raw JSON into a string or bytes field is far more efficient than pretending `google.protobuf.Value` is a clean solution.
+It's a compromise. Opaque JSON packaging is only advantageous when intermediate services do not need to inspect the payload. If you can, commit to stable, statically typed schemas. But if you must support unstructured data, holding your nose and packing raw JSON into a string or bytes field is far more efficient on performance-critical transport paths than treating `google.protobuf.Value` as a zero-cost abstraction.
 
 ### Use `google.protobuf.Value` for low-throughput dynamic data
 
@@ -1438,9 +1521,6 @@ If you just want a quick, standardized way to represent arbitrary JSON-like stru
 
 ## Conclusion
 
-I started this process with some incredibly wrong assumptions. I fully expected `google.protobuf.Value` to be comparable to or even more efficient than raw JSON. After all, it's Protobuf. But I was wrong. The speed and compactness of Protocol Buffers are not magic. They are directly bought with the strict constraints of ahead-of-time, statically compiled schemas. The moment you strip away those schemas and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you forfeit all of those structural advantages. Instead, you reintroduce key-name serialization, discard varint compression, and incur significant heap allocation overhead.
+I started this process with some incredibly wrong assumptions. I fully expected `google.protobuf.Value` to be comparable to or even more efficient than raw JSON. After all, it's Protobuf. But I was wrong. Ultimately, Protobuf’s performance advantage is not magic—it is directly bought with compile-time schema knowledge. Statically compiled schemas are Protobuf's primary optimization lever. Removing this schema information removes that lever. It is not a matter of poor implementation of the Well-Known Types; it is a fundamental architectural constraint. The moment you adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you forfeit those structural optimizations. Instead, you reintroduce key-name serialization, discard varint compression, and incur significant heap allocation overhead.
 
-If you need high performance, stick to statically typed fields in your Protobuf definitions. If you absolutely need dynamic fields, packaging raw JSON inside a standard string or bytes field is far more efficient than using `google.protobuf.Value`. Avoiding dynamic fields on performance-critical paths saves a lot of CPU and memory, letting your services deliver the speed that Protobuf is famous for.
-
-
-
+If you need high performance, stick to statically typed fields in your Protobuf definitions. If you absolutely need dynamic fields, and intermediate services do not need to inspect the payload, packaging raw JSON inside a standard string or bytes field is often more efficient on high-throughput transport paths than decoding into `google.protobuf.Value`. Avoiding dynamic fields on performance-critical paths saves a lot of CPU and memory, letting your services deliver the speed that Protobuf is famous for.
