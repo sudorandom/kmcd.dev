@@ -45,3 +45,8 @@ message AnyEnvelope {
 message LargeEventPayload {
   repeated MediumEvent events = 1;
 }
+
+message JSONEnvelope {
+  string json_data = 1;
+}
+

@@ -2,12 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: proto/vanilla/event.proto
+// source: proto/jsonplugin/event.proto
 
-// Unique proto package name so this package can coexist with vtproto and
-// jsonplugin in the same test binary without global type-registry conflicts.
+// Unique proto package name so this package can coexist with vanilla and
+// vtproto in the same test binary without global type-registry conflicts.
 
-package vanillapb
+package jsonpluginpb
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -37,7 +37,7 @@ type SmallObject struct {
 
 func (x *SmallObject) Reset() {
 	*x = SmallObject{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[0]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -49,7 +49,7 @@ func (x *SmallObject) String() string {
 func (*SmallObject) ProtoMessage() {}
 
 func (x *SmallObject) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[0]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -62,7 +62,7 @@ func (x *SmallObject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SmallObject.ProtoReflect.Descriptor instead.
 func (*SmallObject) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{0}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SmallObject) GetId() string {
@@ -104,7 +104,7 @@ type Actor struct {
 
 func (x *Actor) Reset() {
 	*x = Actor{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[1]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -116,7 +116,7 @@ func (x *Actor) String() string {
 func (*Actor) ProtoMessage() {}
 
 func (x *Actor) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[1]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -129,7 +129,7 @@ func (x *Actor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Actor.ProtoReflect.Descriptor instead.
 func (*Actor) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{1}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Actor) GetId() string {
@@ -164,7 +164,7 @@ type Metadata struct {
 
 func (x *Metadata) Reset() {
 	*x = Metadata{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[2]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +176,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[2]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +189,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{2}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Metadata) GetIp() string {
@@ -227,7 +227,7 @@ type MediumEvent struct {
 
 func (x *MediumEvent) Reset() {
 	*x = MediumEvent{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[3]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -239,7 +239,7 @@ func (x *MediumEvent) String() string {
 func (*MediumEvent) ProtoMessage() {}
 
 func (x *MediumEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[3]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -252,7 +252,7 @@ func (x *MediumEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MediumEvent.ProtoReflect.Descriptor instead.
 func (*MediumEvent) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{3}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *MediumEvent) GetId() string {
@@ -308,7 +308,7 @@ type AnyEnvelope struct {
 
 func (x *AnyEnvelope) Reset() {
 	*x = AnyEnvelope{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[4]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -320,7 +320,7 @@ func (x *AnyEnvelope) String() string {
 func (*AnyEnvelope) ProtoMessage() {}
 
 func (x *AnyEnvelope) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[4]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,7 +333,7 @@ func (x *AnyEnvelope) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnyEnvelope.ProtoReflect.Descriptor instead.
 func (*AnyEnvelope) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{4}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AnyEnvelope) GetId() string {
@@ -366,7 +366,7 @@ type LargeEventPayload struct {
 
 func (x *LargeEventPayload) Reset() {
 	*x = LargeEventPayload{}
-	mi := &file_proto_vanilla_event_proto_msgTypes[5]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -378,7 +378,7 @@ func (x *LargeEventPayload) String() string {
 func (*LargeEventPayload) ProtoMessage() {}
 
 func (x *LargeEventPayload) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_vanilla_event_proto_msgTypes[5]
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -391,7 +391,7 @@ func (x *LargeEventPayload) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LargeEventPayload.ProtoReflect.Descriptor instead.
 func (*LargeEventPayload) Descriptor() ([]byte, []int) {
-	return file_proto_vanilla_event_proto_rawDescGZIP(), []int{5}
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *LargeEventPayload) GetEvents() []*MediumEvent {
@@ -401,11 +401,55 @@ func (x *LargeEventPayload) GetEvents() []*MediumEvent {
 	return nil
 }
 
-var File_proto_vanilla_event_proto protoreflect.FileDescriptor
+type JSONEnvelope struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	JsonData      string                 `protobuf:"bytes,1,opt,name=json_data,json=jsonData,proto3" json:"json_data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
 
-const file_proto_vanilla_event_proto_rawDesc = "" +
+func (x *JSONEnvelope) Reset() {
+	*x = JSONEnvelope{}
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JSONEnvelope) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JSONEnvelope) ProtoMessage() {}
+
+func (x *JSONEnvelope) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_jsonplugin_event_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JSONEnvelope.ProtoReflect.Descriptor instead.
+func (*JSONEnvelope) Descriptor() ([]byte, []int) {
+	return file_proto_jsonplugin_event_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *JSONEnvelope) GetJsonData() string {
+	if x != nil {
+		return x.JsonData
+	}
+	return ""
+}
+
+var File_proto_jsonplugin_event_proto protoreflect.FileDescriptor
+
+const file_proto_jsonplugin_event_proto_rawDesc = "" +
 	"\n" +
-	"\x19proto/vanilla/event.proto\x12\revent_vanilla\x1a\x19google/protobuf/any.proto\"]\n" +
+	"\x1cproto/jsonplugin/event.proto\x12\x10event_jsonplugin\x1a\x19google/protobuf/any.proto\"]\n" +
 	"\vSmallObject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
 	"\x06active\x18\x02 \x01(\bR\x06active\x12\x10\n" +
@@ -419,49 +463,52 @@ const file_proto_vanilla_event_proto_rawDesc = "" +
 	"\x02ip\x18\x01 \x01(\tR\x02ip\x12\x1d\n" +
 	"\n" +
 	"user_agent\x18\x02 \x01(\tR\tuserAgent\x12\x1a\n" +
-	"\battempts\x18\x03 \x01(\x03R\battempts\"\xcf\x01\n" +
+	"\battempts\x18\x03 \x01(\x03R\battempts\"\xd5\x01\n" +
 	"\vMediumEvent\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1c\n" +
 	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\x12\x1d\n" +
 	"\n" +
-	"event_type\x18\x03 \x01(\tR\teventType\x12*\n" +
-	"\x05actor\x18\x04 \x01(\v2\x14.event_vanilla.ActorR\x05actor\x12\x12\n" +
-	"\x04tags\x18\x05 \x03(\tR\x04tags\x123\n" +
-	"\bmetadata\x18\x06 \x01(\v2\x17.event_vanilla.MetadataR\bmetadata\"k\n" +
+	"event_type\x18\x03 \x01(\tR\teventType\x12-\n" +
+	"\x05actor\x18\x04 \x01(\v2\x17.event_jsonplugin.ActorR\x05actor\x12\x12\n" +
+	"\x04tags\x18\x05 \x03(\tR\x04tags\x126\n" +
+	"\bmetadata\x18\x06 \x01(\v2\x1a.event_jsonplugin.MetadataR\bmetadata\"k\n" +
 	"\vAnyEnvelope\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1c\n" +
 	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\x12.\n" +
-	"\apayload\x18\x03 \x01(\v2\x14.google.protobuf.AnyR\apayload\"G\n" +
-	"\x11LargeEventPayload\x122\n" +
-	"\x06events\x18\x01 \x03(\v2\x1a.event_vanilla.MediumEventR\x06eventsB'Z%json-vs-proto/proto/vanilla;vanillapbb\x06proto3"
+	"\apayload\x18\x03 \x01(\v2\x14.google.protobuf.AnyR\apayload\"J\n" +
+	"\x11LargeEventPayload\x125\n" +
+	"\x06events\x18\x01 \x03(\v2\x1d.event_jsonplugin.MediumEventR\x06events\"+\n" +
+	"\fJSONEnvelope\x12\x1b\n" +
+	"\tjson_data\x18\x01 \x01(\tR\bjsonDataB-Z+json-vs-proto/proto/jsonplugin;jsonpluginpbb\x06proto3"
 
 var (
-	file_proto_vanilla_event_proto_rawDescOnce sync.Once
-	file_proto_vanilla_event_proto_rawDescData []byte
+	file_proto_jsonplugin_event_proto_rawDescOnce sync.Once
+	file_proto_jsonplugin_event_proto_rawDescData []byte
 )
 
-func file_proto_vanilla_event_proto_rawDescGZIP() []byte {
-	file_proto_vanilla_event_proto_rawDescOnce.Do(func() {
-		file_proto_vanilla_event_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_vanilla_event_proto_rawDesc), len(file_proto_vanilla_event_proto_rawDesc)))
+func file_proto_jsonplugin_event_proto_rawDescGZIP() []byte {
+	file_proto_jsonplugin_event_proto_rawDescOnce.Do(func() {
+		file_proto_jsonplugin_event_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_jsonplugin_event_proto_rawDesc), len(file_proto_jsonplugin_event_proto_rawDesc)))
 	})
-	return file_proto_vanilla_event_proto_rawDescData
+	return file_proto_jsonplugin_event_proto_rawDescData
 }
 
-var file_proto_vanilla_event_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_proto_vanilla_event_proto_goTypes = []any{
-	(*SmallObject)(nil),       // 0: event_vanilla.SmallObject
-	(*Actor)(nil),             // 1: event_vanilla.Actor
-	(*Metadata)(nil),          // 2: event_vanilla.Metadata
-	(*MediumEvent)(nil),       // 3: event_vanilla.MediumEvent
-	(*AnyEnvelope)(nil),       // 4: event_vanilla.AnyEnvelope
-	(*LargeEventPayload)(nil), // 5: event_vanilla.LargeEventPayload
-	(*anypb.Any)(nil),         // 6: google.protobuf.Any
+var file_proto_jsonplugin_event_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_proto_jsonplugin_event_proto_goTypes = []any{
+	(*SmallObject)(nil),       // 0: event_jsonplugin.SmallObject
+	(*Actor)(nil),             // 1: event_jsonplugin.Actor
+	(*Metadata)(nil),          // 2: event_jsonplugin.Metadata
+	(*MediumEvent)(nil),       // 3: event_jsonplugin.MediumEvent
+	(*AnyEnvelope)(nil),       // 4: event_jsonplugin.AnyEnvelope
+	(*LargeEventPayload)(nil), // 5: event_jsonplugin.LargeEventPayload
+	(*JSONEnvelope)(nil),      // 6: event_jsonplugin.JSONEnvelope
+	(*anypb.Any)(nil),         // 7: google.protobuf.Any
 }
-var file_proto_vanilla_event_proto_depIdxs = []int32{
-	1, // 0: event_vanilla.MediumEvent.actor:type_name -> event_vanilla.Actor
-	2, // 1: event_vanilla.MediumEvent.metadata:type_name -> event_vanilla.Metadata
-	6, // 2: event_vanilla.AnyEnvelope.payload:type_name -> google.protobuf.Any
-	3, // 3: event_vanilla.LargeEventPayload.events:type_name -> event_vanilla.MediumEvent
+var file_proto_jsonplugin_event_proto_depIdxs = []int32{
+	1, // 0: event_jsonplugin.MediumEvent.actor:type_name -> event_jsonplugin.Actor
+	2, // 1: event_jsonplugin.MediumEvent.metadata:type_name -> event_jsonplugin.Metadata
+	7, // 2: event_jsonplugin.AnyEnvelope.payload:type_name -> google.protobuf.Any
+	3, // 3: event_jsonplugin.LargeEventPayload.events:type_name -> event_jsonplugin.MediumEvent
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -469,26 +516,26 @@ var file_proto_vanilla_event_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_proto_vanilla_event_proto_init() }
-func file_proto_vanilla_event_proto_init() {
-	if File_proto_vanilla_event_proto != nil {
+func init() { file_proto_jsonplugin_event_proto_init() }
+func file_proto_jsonplugin_event_proto_init() {
+	if File_proto_jsonplugin_event_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_vanilla_event_proto_rawDesc), len(file_proto_vanilla_event_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_jsonplugin_event_proto_rawDesc), len(file_proto_jsonplugin_event_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_proto_vanilla_event_proto_goTypes,
-		DependencyIndexes: file_proto_vanilla_event_proto_depIdxs,
-		MessageInfos:      file_proto_vanilla_event_proto_msgTypes,
+		GoTypes:           file_proto_jsonplugin_event_proto_goTypes,
+		DependencyIndexes: file_proto_jsonplugin_event_proto_depIdxs,
+		MessageInfos:      file_proto_jsonplugin_event_proto_msgTypes,
 	}.Build()
-	File_proto_vanilla_event_proto = out.File
-	file_proto_vanilla_event_proto_goTypes = nil
-	file_proto_vanilla_event_proto_depIdxs = nil
+	File_proto_jsonplugin_event_proto = out.File
+	file_proto_jsonplugin_event_proto_goTypes = nil
+	file_proto_jsonplugin_event_proto_depIdxs = nil
 }

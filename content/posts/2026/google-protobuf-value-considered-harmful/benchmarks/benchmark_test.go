@@ -310,11 +310,15 @@ func TestSizes(t *testing.T) {
 	smallJP := getSmallJSONPluginMsg()
 	smallJPBytes, _ := json.Marshal(smallJP)
 
+	smallProtoJSONEnv := &vanillapb.JSONEnvelope{JsonData: string(smallJSON)}
+	smallProtoJSONBytes, _ := proto.Marshal(smallProtoJSONEnv)
+
 	fmt.Printf("Small payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(smallJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallProtoBytes), float64(len(smallProtoBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPbBytes), float64(len(smallPbBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  google.protobuf.Any (proto) size: %d bytes (%.1f%% of Concrete (JSON)) [Includes type_url overhead]\n", len(smallAnyBytes), float64(len(smallAnyBytes))/float64(len(smallJSON))*100)
+	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallProtoJSONBytes), float64(len(smallProtoJSONBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjStatic), float64(len(smallPjStatic))/float64(len(smallJSON))*100)
 	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjValue), float64(len(smallPjValue))/float64(len(smallJSON))*100)
 	fmt.Printf("  google.protobuf.Any (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjAny), float64(len(smallPjAny))/float64(len(smallJSON))*100)
@@ -341,11 +345,15 @@ func TestSizes(t *testing.T) {
 	mediumJP := getMediumJSONPluginMsg()
 	mediumJPBytes, _ := json.Marshal(mediumJP)
 
+	mediumProtoJSONEnv := &vanillapb.JSONEnvelope{JsonData: string(mediumJSON)}
+	mediumProtoJSONBytes, _ := proto.Marshal(mediumProtoJSONEnv)
+
 	fmt.Printf("Medium payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(mediumJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumProtoBytes), float64(len(mediumProtoBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPbBytes), float64(len(mediumPbBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  google.protobuf.Any (proto) size: %d bytes (%.1f%% of Concrete (JSON)) [Includes type_url overhead]\n", len(mediumAnyBytes), float64(len(mediumAnyBytes))/float64(len(mediumJSON))*100)
+	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumProtoJSONBytes), float64(len(mediumProtoJSONBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjStatic), float64(len(mediumPjStatic))/float64(len(mediumJSON))*100)
 	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjValue), float64(len(mediumPjValue))/float64(len(mediumJSON))*100)
 	fmt.Printf("  google.protobuf.Any (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjAny), float64(len(mediumPjAny))/float64(len(mediumJSON))*100)
@@ -385,11 +393,15 @@ func TestSizes(t *testing.T) {
 	largeJP := getLargeJSONPluginMsgPayload()
 	largeJPBytes, _ := json.Marshal(largeJP)
 
+	largeProtoJSONEnv := &vanillapb.JSONEnvelope{JsonData: string(largeJSON)}
+	largeProtoJSONBytes, _ := proto.Marshal(largeProtoJSONEnv)
+
 	fmt.Printf("Large payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(largeJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeProtoBytes), float64(len(largeProtoBytes))/float64(len(largeJSON))*100)
 	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePbBytes), float64(len(largePbBytes))/float64(len(largeJSON))*100)
 	fmt.Printf("  google.protobuf.Any (proto) size (approx sum): %d bytes (%.1f%% of Concrete (JSON))\n", totalAnySize, float64(totalAnySize)/float64(len(largeJSON))*100)
+	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeProtoJSONBytes), float64(len(largeProtoJSONBytes))/float64(len(largeJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePjStatic), float64(len(largePjStatic))/float64(len(largeJSON))*100)
 	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePjValue), float64(len(largePjValue))/float64(len(largeJSON))*100)
 	fmt.Printf("  google.protobuf.Any (JSONProto) size (approx sum): %d bytes (%.1f%% of Concrete (JSON))\n", totalPjAnySize, float64(totalPjAnySize)/float64(len(largeJSON))*100)
@@ -1240,3 +1252,69 @@ func BenchmarkUnmarshal_Large_ProtoJSON_Any(b *testing.B) {
 		}
 	}
 }
+
+// --- Protobuf + JSON (Opaque JSON Packaging) Benchmarks ---
+
+func BenchmarkMarshal_Small_Proto_JSON(b *testing.B) {
+	data := getSmallStruct()
+	for b.Loop() {
+		jsonBytes, _ := json.Marshal(&data)
+		envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+		_, _ = proto.Marshal(envelope)
+	}
+}
+
+func BenchmarkUnmarshal_Small_Proto_JSON(b *testing.B) {
+	jsonBytes, _ := json.Marshal(getSmallStruct())
+	envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+	data, _ := proto.Marshal(envelope)
+	for b.Loop() {
+		var env vanillapb.JSONEnvelope
+		_ = proto.Unmarshal(data, &env)
+		var dest SmallObject
+		_ = json.Unmarshal([]byte(env.JsonData), &dest)
+	}
+}
+
+func BenchmarkMarshal_Medium_Proto_JSON(b *testing.B) {
+	data := getMediumStruct()
+	for b.Loop() {
+		jsonBytes, _ := json.Marshal(&data)
+		envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+		_, _ = proto.Marshal(envelope)
+	}
+}
+
+func BenchmarkUnmarshal_Medium_Proto_JSON(b *testing.B) {
+	jsonBytes, _ := json.Marshal(getMediumStruct())
+	envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+	data, _ := proto.Marshal(envelope)
+	for b.Loop() {
+		var env vanillapb.JSONEnvelope
+		_ = proto.Unmarshal(data, &env)
+		var dest MediumEvent
+		_ = json.Unmarshal([]byte(env.JsonData), &dest)
+	}
+}
+
+func BenchmarkMarshal_Large_Proto_JSON(b *testing.B) {
+	data := getLargeStruct()
+	for b.Loop() {
+		jsonBytes, _ := json.Marshal(&data)
+		envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+		_, _ = proto.Marshal(envelope)
+	}
+}
+
+func BenchmarkUnmarshal_Large_Proto_JSON(b *testing.B) {
+	jsonBytes, _ := json.Marshal(getLargeStruct())
+	envelope := &vanillapb.JSONEnvelope{JsonData: string(jsonBytes)}
+	data, _ := proto.Marshal(envelope)
+	for b.Loop() {
+		var env vanillapb.JSONEnvelope
+		_ = proto.Unmarshal(data, &env)
+		var dest []MediumEvent
+		_ = json.Unmarshal([]byte(env.JsonData), &dest)
+	}
+}
+

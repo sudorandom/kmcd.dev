@@ -1,14 +1,14 @@
 ---
-title: "google.protobuf.Value considered harmful?"
+title: "google.protobuf.Value considered harmful"
 date: "2026-06-15T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "json", "software-architecture"]
 description: "The hidden performance cost of dynamic Protobuf in Go."
 cover: "cover.svg"
-images: ["/posts/protobuf-benchmarks/cover.svg"]
+images: ["/posts/google-protobuf-value-considered-harmful/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
-slug: "protobuf-benchmarks"
+slug: "google-protobuf-value-considered-harmful"
 type: "posts"
 devtoSkip: true
 draft: false
@@ -49,7 +49,7 @@ Together, they allow Protobuf messages to carry arbitrary, unstructured JSON-lik
 
 ---
 
-## 1. The Benchmark Setup
+## The Benchmark Setup
 
 I built a Go benchmark comparing standard JSON against various Protobuf strategies across three payload sizes:
 * **Small:** A flat object with 4 fields (string ID, status boolean, age integer, score float).
@@ -70,6 +70,7 @@ To evaluate performance across different serialization models, I compared the fo
 | **Concrete (vtproto)** | Protobuf | Serializes statically generated Protobuf messages using PlanetScale's optimized, reflection-free [`vtproto`](https://github.com/planetscale/vtproto) generator. |
 | **google.protobuf.Any (proto)** | Protobuf | Serializes static Protobuf messages wrapped in a dynamic, polymorphic Well-Known Type [`google.protobuf.Any`](https://protobuf.dev/reference/protobuf/google.protobuf/#any). |
 | **google.protobuf.Value (proto)** | Protobuf | Serializes schema-less dynamic payloads using the Well-Known Type [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) ([`structpb`](https://pkg.go.dev/google.golang.org/protobuf/types/known/structpb)). |
+| **Protobuf + JSON** | Protobuf | Bypasses the dynamic WKT wrapper by storing the raw serialized JSON string directly inside an opaque Protobuf string/bytes field (Opaque JSON Packaging). |
 | **Concrete (JSONProto)** | JSON | Serializes statically generated Protobuf messages into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Value (JSONProto)** | JSON | Serializes dynamic [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) payloads into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Any (JSONProto)** | JSON | Serializes polymorphic [`google.protobuf.Any`](https://protobuf.dev/reference/protobuf/google.protobuf/#any) wrappers into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
@@ -93,7 +94,7 @@ message EventEnvelope {
 
 ---
 
-## 2. Benchmark Results
+## Benchmark Results
 
 The benchmarks were executed under Go 1.26 on an Apple M1 Pro.
 
@@ -111,6 +112,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
       "Concrete (proto)",
       "google.protobuf.Value (proto)",
       "google.protobuf.Any (proto)",
+      "Protobuf + JSON",
       "Concrete (JSON)",
       "Concrete (JSONProto)",
       "google.protobuf.Value (JSONProto)",
@@ -119,8 +121,9 @@ First, I compared the serialized payload size of each configuration. Since Proto
     "datasets": [
       {
         "label": "Small Payload (Bytes)",
-        "data": [25, 74, 74, 55, 55, 55, 111],
+        "data": [25, 74, 74, 57, 55, 55, 55, 111],
         "backgroundColor": [
+          "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
@@ -130,6 +133,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
+          "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
@@ -177,6 +181,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
 | :--- | :---: | :---: |
 | **Concrete (JSON)** | 55 B | 100.0% (Baseline) |
 | **Concrete (proto)** / **Concrete (vtproto)** | 25 B | **45.5%** |
+| **Protobuf + JSON** | 57 B | 103.6% |
 | **google.protobuf.Any (proto)** | 74 B | 134.5% |
 | **google.protobuf.Value (proto)** | 74 B | 134.5% |
 | **Concrete (JSONProto)** | 55 B | 100.0% |
@@ -192,6 +197,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
       "Concrete (proto)",
       "google.protobuf.Value (proto)",
       "google.protobuf.Any (proto)",
+      "Protobuf + JSON",
       "Concrete (JSON)",
       "Concrete (JSONProto)",
       "google.protobuf.Value (JSONProto)",
@@ -200,8 +206,9 @@ First, I compared the serialized payload size of each configuration. Since Proto
     "datasets": [
       {
         "label": "Medium Payload (Bytes)",
-        "data": [162, 328, 212, 291, 293, 291, 349],
+        "data": [162, 328, 212, 294, 291, 293, 291, 349],
         "backgroundColor": [
+          "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
@@ -211,6 +218,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
+          "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
@@ -259,6 +267,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
 | **Concrete (JSON)** | 291 B | 100.0% (Baseline) |
 | **Concrete (proto)** / **Concrete (vtproto)** | 162 B | **55.7%** |
 | **google.protobuf.Any (proto)** | 212 B | **72.9%** |
+| **Protobuf + JSON** | 294 B | 101.0% |
 | **google.protobuf.Value (proto)** | 328 B | 112.7% |
 | **Concrete (JSONProto)** | 293 B | 100.7% |
 | **google.protobuf.Value (JSONProto)** | 291 B | 100.0% |
@@ -273,6 +282,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
       "Concrete (proto)",
       "google.protobuf.Value (proto)",
       "google.protobuf.Any (proto)",
+      "Protobuf + JSON",
       "Concrete (JSON)",
       "Concrete (JSONProto)",
       "google.protobuf.Value (JSONProto)",
@@ -281,8 +291,9 @@ First, I compared the serialized payload size of each configuration. Since Proto
     "datasets": [
       {
         "label": "Large Payload (Bytes)",
-        "data": [16500, 33104, 21200, 29201, 29412, 29201, 34900],
+        "data": [16500, 33104, 21200, 29205, 29201, 29412, 29201, 34900],
         "backgroundColor": [
+          "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
@@ -292,6 +303,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
+          "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
@@ -340,6 +352,7 @@ First, I compared the serialized payload size of each configuration. Since Proto
 | **Concrete (JSON)** | 29,201 B | 100.0% (Baseline) |
 | **Concrete (proto)** / **Concrete (vtproto)** | 16,500 B | **56.5%** |
 | **google.protobuf.Any (proto)** | 21,200 B | **72.6%** |
+| **Protobuf + JSON** | 29,205 B | 100.0% |
 | **google.protobuf.Value (proto)** | 33,104 B | 113.4% |
 | **Concrete (JSONProto)** | 29,412 B | 100.7% |
 | **google.protobuf.Value (JSONProto)** | 29,201 B | 100.0% |
@@ -462,41 +475,44 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
     "labels": [
       "Concrete (vtproto)",
       "Concrete (proto)",
-      "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSON)",
+      "google.protobuf.Any (proto)",
+      "Protobuf + JSON",
       "Concrete (JSONv2)",
-      "Map (JSONv2)",
       "Map (JSON)",
       "Concrete (JSONProto)",
+      "Map (JSONv2)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Small Payload (ns/op)",
-        "data": [29.74, 103.8, 281.6, 2144, 210.8, 347.1, 926.7, 703.6, 750.3, 3064],
+        "data": [30.76, 103.8, 210.1, 286.8, 365.2, 365.2, 706.4, 760.9, 949.5, 2163, 3017],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
+          "rgba(255, 165, 0, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -536,16 +552,17 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 
 | Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **29.7 ns** | **32 B** | **1** |
+| **Concrete (vtproto)** | **30.8 ns** | **32 B** | **1** |
 | **Concrete (proto)** | 103.8 ns | 32 B | 1 |
-| **Concrete (JSON)** | 210.8 ns | 64 B | 1 |
-| **google.protobuf.Any (proto)** | 281.6 ns | 240 B | 4 |
-| **Concrete (JSONv2)** | 347.1 ns | 112 B | 2 |
-| **Map (JSON)** | 703.6 ns | 352 B | 10 |
-| **Concrete (JSONProto)** | 750.3 ns | 512 B | 12 |
-| **Map (JSONv2)** | 926.7 ns | 151 B | 9 |
-| **google.protobuf.Value (proto)** | 2,144.0 ns | 879 B | 22 |
-| **google.protobuf.Value (JSONProto)** | 3,064.0 ns | 1,364 B | 35 |
+| **Concrete (JSON)** | 210.1 ns | 64 B | 1 |
+| **google.protobuf.Any (proto)** | 286.8 ns | 240 B | 4 |
+| **Protobuf + JSON** | 365.2 ns | 256 B | 4 |
+| **Concrete (JSONv2)** | 365.2 ns | 112 B | 2 |
+| **Map (JSON)** | 706.4 ns | 352 B | 10 |
+| **Concrete (JSONProto)** | 760.9 ns | 512 B | 12 |
+| **Map (JSONv2)** | 949.5 ns | 151 B | 9 |
+| **google.protobuf.Value (proto)** | 2,163.0 ns | 879 B | 22 |
+| **google.protobuf.Value (JSONProto)** | 3,017.0 ns | 1,364 B | 35 |
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -556,40 +573,43 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
       "Concrete (vtproto)",
       "Concrete (proto)",
       "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSON)",
+      "Protobuf + JSON",
       "Concrete (JSONv2)",
       "Map (JSONv2)",
       "Map (JSON)",
       "Concrete (JSONProto)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Medium Payload (ns/op)",
-        "data": [122.0, 359.2, 580.3, 6835, 634.3, 988.5, 1811, 2273, 2732, 10063],
+        "data": [128.7, 366.4, 597.1, 656.1, 854.9, 1002, 1852, 2273, 2739, 6854, 10177],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
+          "rgba(255, 165, 0, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -629,16 +649,17 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **122.0 ns** | **176 B** | **1** |
-| **Concrete (proto)** | 359.2 ns | 176 B | 1 |
-| **google.protobuf.Any (proto)** | 580.3 ns | 528 B | 4 |
-| **Concrete (JSON)** | 634.3 ns | 464 B | 2 |
-| **Concrete (JSONv2)** | 988.5 ns | 608 B | 3 |
-| **Map (JSONv2)** | 1,811.0 ns | 456 B | 12 |
+| **Concrete (vtproto)** | **128.7 ns** | **176 B** | **1** |
+| **Concrete (proto)** | 366.4 ns | 176 B | 1 |
+| **google.protobuf.Any (proto)** | 597.1 ns | 528 B | 4 |
+| **Concrete (JSON)** | 656.1 ns | 464 B | 2 |
+| **Protobuf + JSON** | 854.9 ns | 1,024 B | 4 |
+| **Concrete (JSONv2)** | 1,002.0 ns | 608 B | 3 |
+| **Map (JSONv2)** | 1,852.0 ns | 456 B | 12 |
 | **Map (JSON)** | 2,273.0 ns | 1,200 B | 28 |
-| **Concrete (JSONProto)** | 2,732.0 ns | 1,722 B | 34 |
-| **google.protobuf.Value (proto)** | 6,835.0 ns | 2,959 B | 68 |
-| **google.protobuf.Value (JSONProto)** | 10,063.0 ns | 4,977 B | 113 |
+| **Concrete (JSONProto)** | 2,739.0 ns | 1,722 B | 34 |
+| **google.protobuf.Value (proto)** | 6,854.0 ns | 2,959 B | 68 |
+| **google.protobuf.Value (JSONProto)** | 10,177.0 ns | 4,977 B | 113 |
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -648,41 +669,44 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
     "labels": [
       "Concrete (vtproto)",
       "Concrete (proto)",
-      "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSON)",
+      "google.protobuf.Any (proto)",
+      "Protobuf + JSON",
       "Concrete (JSONv2)",
       "Map (JSONv2)",
       "Map (JSON)",
       "Concrete (JSONProto)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Large Payload (ns/op)",
-        "data": [8683, 30846, 57640, 675890, 50244, 76923, 106473, 223140, 274812, 988378],
+        "data": [9065, 31060, 50746, 59813, 61323, 76945, 107436, 236591, 279812, 680700, 988728],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
-          "rgba(0, 191, 255, 0.75)",
-          "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
-          "rgba(0, 191, 255, 1)",
-          "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
+          "rgba(0, 191, 255, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -722,16 +746,17 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **8,683 ns** | **18,432 B** | **1** |
-| **Concrete (proto)** | 30,846 ns | 18,432 B | 1 |
-| **Concrete (JSON)** | 50,244 ns | 32,823 B | 2 |
-| **google.protobuf.Any (proto)** | 57,640 ns | 52,800 B | 400 |
-| **Concrete (JSONv2)** | 76,923 ns | 32,847 B | 3 |
-| **Map (JSONv2)** | 106,473 ns | 35,275 B | 303 |
-| **Map (JSON)** | 223,140 ns | 120,897 B | 2,702 |
-| **Concrete (JSONProto)** | 274,812 ns | 243,742 B | 2,728 |
-| **google.protobuf.Value (proto)** | 675,890 ns | 302,770 B | 6,706 |
-| **google.protobuf.Value (JSONProto)** | 988,378 ns | 543,738 B | 10,565 |
+| **Concrete (vtproto)** | **9,065 ns** | **18,432 B** | **1** |
+| **Concrete (proto)** | 31,060 ns | 18,432 B | 1 |
+| **Concrete (JSON)** | 50,746 ns | 32,831 B | 2 |
+| **google.protobuf.Any (proto)** | 59,813 ns | 52,800 B | 400 |
+| **Protobuf + JSON** | 61,323 ns | 98,928 B | 4 |
+| **Concrete (JSONv2)** | 76,945 ns | 32,837 B | 3 |
+| **Map (JSONv2)** | 107,436 ns | 35,275 B | 303 |
+| **Map (JSON)** | 236,591 ns | 120,886 B | 2,702 |
+| **Concrete (JSONProto)** | 279,812 ns | 243,749 B | 2,728 |
+| **google.protobuf.Value (proto)** | 680,700 ns | 302,768 B | 6,706 |
+| **google.protobuf.Value (JSONProto)** | 988,728 ns | 543,744 B | 10,566 |
   {{< /tab >}}
 {{< /tabs >}}
 
@@ -747,40 +772,43 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
       "Concrete (vtproto)",
       "Concrete (proto)",
       "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSONv2)",
-      "Map (JSONv2)",
       "Concrete (JSON)",
-      "Map (JSON)",
+      "Map (JSONv2)",
+      "Protobuf + JSON",
       "Concrete (JSONProto)",
+      "Map (JSON)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Small Payload (ns/op)",
-        "data": [31.57, 141.2, 315.2, 1715, 423.6, 961.1, 941.6, 1336, 1157, 3192],
+        "data": [31.57, 141.2, 315.2, 430.0, 936.3, 964.2, 1130, 1161, 1345, 1715, 3220],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
           "rgba(0, 191, 255, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
           "rgba(0, 191, 255, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -823,13 +851,14 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 | **Concrete (vtproto)** | **31.6 ns** | **16 B** | **1** |
 | **Concrete (proto)** | 141.2 ns | 96 B | 2 |
 | **google.protobuf.Any (proto)** | 315.2 ns | 256 B | 5 |
-| **Concrete (JSONv2)** | 423.6 ns | 48 B | 1 |
-| **Concrete (JSON)** | 941.6 ns | 280 B | 6 |
-| **Map (JSONv2)** | 961.1 ns | 408 B | 8 |
-| **Concrete (JSONProto)** | 1,157.0 ns | 336 B | 14 |
-| **Map (JSON)** | 1,336.0 ns | 648 B | 20 |
+| **Concrete (JSONv2)** | 430.0 ns | 48 B | 1 |
+| **Concrete (JSON)** | 936.3 ns | 280 B | 6 |
+| **Map (JSONv2)** | 964.2 ns | 408 B | 8 |
+| **Protobuf + JSON** | 1,130.0 ns | 472 B | 9 |
+| **Concrete (JSONProto)** | 1,161.0 ns | 336 B | 14 |
+| **Map (JSON)** | 1,345.0 ns | 648 B | 20 |
 | **google.protobuf.Value (proto)** | 1,715.0 ns | 832 B | 26 |
-| **google.protobuf.Value (JSONProto)** | 3,192.0 ns | 1,256 B | 43 |
+| **google.protobuf.Value (JSONProto)** | 3,220.0 ns | 1,256 B | 43 |
   {{< /tab >}}
   {{< tab name="Medium Payload" >}}
 {{< chart >}}
@@ -840,40 +869,43 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
       "Concrete (vtproto)",
       "Concrete (proto)",
       "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSONv2)",
       "Map (JSONv2)",
       "Concrete (JSON)",
+      "Protobuf + JSON",
       "Map (JSON)",
       "Concrete (JSONProto)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Medium Payload (ns/op)",
-        "data": [369.4, 673.5, 877.4, 5772, 1396, 2581, 3645, 4148, 4645, 10903],
+        "data": [382.6, 690.2, 906.2, 1410, 2595, 3659, 3970, 4177, 4659, 5686, 10819],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -913,16 +945,17 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **369.4 ns** | **432 B** | **14** |
-| **Concrete (proto)** | 673.5 ns | 560 B | 15 |
-| **google.protobuf.Any (proto)** | 877.4 ns | 864 B | 18 |
-| **Concrete (JSONv2)** | 1,396.0 ns | 256 B | 4 |
-| **Map (JSONv2)** | 2,581.0 ns | 1,392 B | 30 |
-| **Concrete (JSON)** | 3,645.0 ns | 688 B | 19 |
-| **Map (JSON)** | 4,148.0 ns | 1,856 B | 54 |
-| **Concrete (JSONProto)** | 4,645.0 ns | 1,304 B | 58 |
-| **google.protobuf.Value (proto)** | 5,772.0 ns | 2,888 B | 90 |
-| **google.protobuf.Value (JSONProto)** | 10,903.0 ns | 4,080 B | 145 |
+| **Concrete (vtproto)** | **382.6 ns** | **432 B** | **14** |
+| **Concrete (proto)** | 690.2 ns | 560 B | 15 |
+| **google.protobuf.Any (proto)** | 906.2 ns | 864 B | 18 |
+| **Concrete (JSONv2)** | 1,410.0 ns | 256 B | 4 |
+| **Map (JSONv2)** | 2,595.0 ns | 1,392 B | 30 |
+| **Concrete (JSON)** | 3,659.0 ns | 688 B | 19 |
+| **Protobuf + JSON** | 3,970.0 ns | 1,392 B | 22 |
+| **Map (JSON)** | 4,177.0 ns | 1,856 B | 54 |
+| **Concrete (JSONProto)** | 4,659.0 ns | 1,304 B | 58 |
+| **google.protobuf.Value (proto)** | 5,686.0 ns | 2,888 B | 90 |
+| **google.protobuf.Value (JSONProto)** | 10,819.0 ns | 4,080 B | 145 |
   {{< /tab >}}
   {{< tab name="Large Payload" >}}
 {{< chart >}}
@@ -933,40 +966,43 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
       "Concrete (vtproto)",
       "Concrete (proto)",
       "google.protobuf.Any (proto)",
-      "google.protobuf.Value (proto)",
       "Concrete (JSONv2)",
       "Map (JSONv2)",
-      "Concrete (JSON)",
       "Map (JSON)",
+      "Concrete (JSON)",
+      "Protobuf + JSON",
       "Concrete (JSONProto)",
+      "google.protobuf.Value (proto)",
       "google.protobuf.Value (JSONProto)"
     ],
     "datasets": [
       {
         "label": "Large Payload (ns/op)",
-        "data": [42896, 66722, 88219, 588602, 136392, 221455, 345604, 337503, 471031, 1104782],
+        "data": [43925, 67402, 90635, 137095, 219971, 337811, 345927, 358199, 473163, 585077, 1150365],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
           "rgba(0, 191, 255, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
+          "rgba(255, 165, 0, 0.75)",
           "rgba(0, 191, 255, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
-          "rgba(255, 165, 0, 0.75)",
           "rgba(186, 85, 211, 0.75)",
+          "rgba(0, 191, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
           "rgba(0, 191, 255, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
+          "rgba(255, 165, 0, 1)",
           "rgba(0, 191, 255, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
-          "rgba(255, 165, 0, 1)",
           "rgba(186, 85, 211, 1)",
+          "rgba(0, 191, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -1006,16 +1042,17 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **42,896 ns** | **58,168 B** | **1,508** |
-| **Concrete (proto)** | 66,722 ns | 58,232 B | 1,509 |
-| **google.protobuf.Any (proto)** | 88,219 ns | 86,400 B | 1,800 |
-| **Concrete (JSONv2)** | 136,392 ns | 54,303 B | 309 |
-| **Map (JSONv2)** | 221,455 ns | 144,647 B | 3,309 |
-| **Map (JSON)** | 337,503 ns | 162,296 B | 4,313 |
-| **Concrete (JSON)** | 345,604 ns | 70,584 B | 1,216 |
-| **Concrete (JSONProto)** | 471,031 ns | 119,256 B | 5,713 |
-| **google.protobuf.Value (proto)** | 588,602 ns | 291,171 B | 9,011 |
-| **google.protobuf.Value (JSONProto)** | 1,104,782 ns | 395,330 B | 14,414 |
+| **Concrete (vtproto)** | **43,925 ns** | **58,168 B** | **1,508** |
+| **Concrete (proto)** | 67,402 ns | 58,232 B | 1,509 |
+| **google.protobuf.Any (proto)** | 90,635 ns | 86,400 B | 1,800 |
+| **Concrete (JSONv2)** | 137,095 ns | 54,303 B | 309 |
+| **Map (JSONv2)** | 219,971 ns | 144,699 B | 3,309 |
+| **Map (JSON)** | 337,811 ns | 162,297 B | 4,313 |
+| **Concrete (JSON)** | 345,927 ns | 70,584 B | 1,216 |
+| **Protobuf + JSON** | 358,199 ns | 136,184 B | 1,219 |
+| **Concrete (JSONProto)** | 473,163 ns | 119,256 B | 5,713 |
+| **google.protobuf.Value (proto)** | 585,077 ns | 291,106 B | 9,011 |
+| **google.protobuf.Value (JSONProto)** | 1,150,365 ns | 395,331 B | 14,414 |
   {{< /tab >}}
 {{< /tabs >}}
 
@@ -1023,7 +1060,7 @@ Dynamic binary parsing takes **5,772.0 ns** and requires **90 allocations**, com
 
 ---
 
-## 3. The Root Cause: Wire Overhead and Heap Allocations
+## The Root Cause: Wire Overhead and Heap Allocations
 
 The performance drop comes down to two specific architectural factors:
 
@@ -1032,7 +1069,7 @@ The performance drop comes down to two specific architectural factors:
 
 ---
 
-## 4. High-Performance Alternatives
+## High-Performance Alternatives
 
 Importantly, this problem is not inherent to runtime protobuf parsing itself. The real bottleneck is schema-less JSON-style polymorphism layered onto protobuf through `Struct` and `Value`.
 
@@ -1044,7 +1081,7 @@ When data conforms to a known set of pre-compiled schemas, wrap the fields in an
 * **Cons:** Requires compile-time schema awareness for all incoming types.
 
 ### Runtime Schema Discovery: Use Buf's `hyperpb`
-For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's `hyperpb` fixes this by compiling a message descriptor into dedicated Table-Driven Parser bytecode at application startup.
+For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) library (introduced in [their blog post](https://buf.build/blog/introducing-hyperpb)) fixes this by compiling a message descriptor into dedicated, optimized table-driven parser bytecode. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly.
 
 To evaluate dynamic runtime parsing options, I compared the following variants:
 
@@ -1312,7 +1349,7 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 
 ---
 
-## 5. When google.protobuf.Struct Is Still Reasonable
+## When google.protobuf.Struct Is Still Reasonable
 
 `Struct` remains useful and entirely appropriate for:
 
@@ -1326,20 +1363,108 @@ The performance problems only emerge when these dynamic trees sit directly on ho
 
 ---
 
-## 6. Recommendations
+## Recommendations
 
-1. **Stable Schemas:** Commit to first-class, statically typed fields whenever possible. It's worth it.
-2. **Flat Attributes:** If your metadata is strictly flat key-value strings (like HTTP headers or tags), use a native `map<string, string>`. It converts cleanly to a native Go map without pointer wrapping.
-3. **Opaque JSON Packaging:** If the payload is complex, nested, and truly arbitrary, bypass the Protobuf wrapper completely. Store the raw data as an opaque `string` or `bytes` field directly in the message template:
+To help choose the right design pattern for your dynamic payloads, you can follow this decision flow:
 
-```protobuf
-message UserEvent {
-  string event_id = 1;
-  int64 timestamp = 2;
-  string raw_metadata_json = 3; // Avoids structural parsing overhead during transit
+{{< d2 >}}
+direction: down
+
+style: {
+  fill: transparent
 }
-```
 
-This lets your edge nodes route the packet instantly without parsing overhead. Downstream consumer services can then extract and decode the payload cleanly into native Go structures using optimized JSON parsers only when necessary.
+Start: "Data Design Decision" {
+  shape: oval
+}
+
+Q_Schema: "Fixed schema?" {
+  shape: diamond
+}
+
+Stable: "Statically typed\nProtobuf fields"
+
+Q_Runtime: "Dynamic descriptors\nat runtime?" {
+  shape: diamond
+}
+
+Hyper: "Buf's hyperpb"
+
+Q_Flat: "Flat key-value\nstrings?" {
+  shape: diamond
+}
+
+Flat: "map<string, string>"
+
+Q_Opaque: "Opaque to\nmiddle layer?" {
+  shape: diamond
+}
+
+Any: "google.protobuf.Any"
+
+Q_Perf: "Care about\nperformance?" {
+  shape: diamond
+}
+
+JSON: "Embedded JSON\nstring/bytes"
+
+Value: "google.protobuf.Value"
+
+Start -> Q_Schema
+
+Q_Schema -> Stable: "Yes"
+Q_Schema -> Q_Runtime: "No"
+
+Q_Runtime -> Hyper: "Yes"
+Q_Runtime -> Q_Flat: "No"
+
+Q_Flat -> Flat: "Yes"
+Q_Flat -> Q_Opaque: "No"
+
+Q_Opaque -> Any: "Yes"
+Q_Opaque -> Q_Perf: "No"
+
+Q_Perf -> JSON: "Yes"
+Q_Perf -> Value: "No"
+{{< /d2 >}}
+
+### Model your actual data in Protobuf
+
+Statically defining your schemas is always the ideal path. It yields the best performance, full compile-time type safety, and clear API contracts. Commit to first-class, statically typed fields whenever possible. It's worth it.
+
+### Use Buf's `hyperpb` for dynamic runtime schemas
+
+If you must resolve and parse dynamic schema descriptors at runtime (like in message registries or API gateways), standard reflection-based parsing (`dynamicpb`) is too slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) compiles message descriptors into optimized bytecode to bypass reflection. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly, significantly outperforming standard reflection.
+
+### Use a native `map<string, string>` for flat attributes
+
+If your metadata is strictly flat key-value strings (like HTTP headers or tags), use a native `map<string, string>`. It converts cleanly to a native Go map without pointer wrapping or parsing overhead.
+
+### Use `google.protobuf.Any` for middle-layer opacity
+
+If you have opaque data that you don't want intermediate routing nodes to parse, wrap the payload in a `google.protobuf.Any` message. This allows middle layers to forward or store packets without deserialization, while downstream consumers can decode the payload cleanly using pre-compiled schemas.
+
+### Pack raw JSON into strings (Opaque JSON Packaging)
+
+If you must support unstructured data on a high-throughput, latency-sensitive hot path, bypassing the Protobuf wrapper completely is the most efficient choice. Storing raw JSON directly inside a standard `string` or `bytes` field avoids WKT parsing entirely. While wrapping raw JSON inside a Protobuf envelope feels like a hack and bypasses static type verification, it eliminates dynamic parsing and heap allocations at intermediate routing nodes. Downstream consumer services can then deserialize the JSON payload directly into native structs only when necessary.
+
+Let's be honest: **this feels gross**. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, bypasses static verification, makes API documentation a mess, and is generally a dirty hack. 
+
+But if you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. It allows intermediate routing nodes to forward the packet instantly without deserializing the payload at all, leaving the task of parsing to downstream consumer services which can deserialize it directly into native Go structs only when absolutely necessary. 
+
+It's a compromise. If you can, commit to stable, statically typed schemas. But if you must support unstructured data, holding your nose and packing raw JSON into a string or bytes field is far more efficient than pretending `google.protobuf.Value` is a clean solution.
+
+### Use `google.protobuf.Value` for low-throughput dynamic data
+
+If you just want a quick, standardized way to represent arbitrary JSON-like structures in Protobuf and your throughput/latency budgets aren't tight, using the built-in Well-Known Types is completely fine and requires the least custom logic.
+
+---
+
+## Conclusion
+
+I started this process with some incredibly wrong assumptions. I fully expected `google.protobuf.Value` to be comparable to or even more efficient than raw JSON. After all, it's Protobuf. But I was wrong. The speed and compactness of Protocol Buffers are not magic. They are directly bought with the strict constraints of ahead-of-time, statically compiled schemas. The moment you strip away those schemas and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you forfeit all of those structural advantages. Instead, you reintroduce key-name serialization, discard varint compression, and incur significant heap allocation overhead.
+
+If you need high performance, stick to statically typed fields in your Protobuf definitions. If you absolutely need dynamic fields, packaging raw JSON inside a standard string or bytes field is far more efficient than using `google.protobuf.Value`. Avoiding dynamic fields on performance-critical paths saves a lot of CPU and memory, letting your services deliver the speed that Protobuf is famous for.
+
 
 

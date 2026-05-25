@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-// Unique proto package name so this package can coexist with vanilla and
+// Unique proto package name so this package can coexist with vtproto and
 // jsonplugin in the same test binary without global type-registry conflicts.
-package event_vtproto;
+package event_vanilla;
 
-option go_package = "json-vs-proto/proto/vtproto;vtprotopb";
+option go_package = "json-vs-proto/proto/vanilla;vanillapb";
 
 import "google/protobuf/any.proto";
 
@@ -45,3 +45,8 @@ message AnyEnvelope {
 message LargeEventPayload {
   repeated MediumEvent events = 1;
 }
+
+message JSONEnvelope {
+  string json_data = 1;
+}
+

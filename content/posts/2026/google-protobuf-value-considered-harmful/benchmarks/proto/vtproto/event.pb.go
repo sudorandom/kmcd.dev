@@ -401,6 +401,50 @@ func (x *LargeEventPayload) GetEvents() []*MediumEvent {
 	return nil
 }
 
+type JSONEnvelope struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	JsonData      string                 `protobuf:"bytes,1,opt,name=json_data,json=jsonData,proto3" json:"json_data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JSONEnvelope) Reset() {
+	*x = JSONEnvelope{}
+	mi := &file_proto_vtproto_event_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JSONEnvelope) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JSONEnvelope) ProtoMessage() {}
+
+func (x *JSONEnvelope) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_vtproto_event_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JSONEnvelope.ProtoReflect.Descriptor instead.
+func (*JSONEnvelope) Descriptor() ([]byte, []int) {
+	return file_proto_vtproto_event_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *JSONEnvelope) GetJsonData() string {
+	if x != nil {
+		return x.JsonData
+	}
+	return ""
+}
+
 var File_proto_vtproto_event_proto protoreflect.FileDescriptor
 
 const file_proto_vtproto_event_proto_rawDesc = "" +
@@ -433,7 +477,9 @@ const file_proto_vtproto_event_proto_rawDesc = "" +
 	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\x12.\n" +
 	"\apayload\x18\x03 \x01(\v2\x14.google.protobuf.AnyR\apayload\"G\n" +
 	"\x11LargeEventPayload\x122\n" +
-	"\x06events\x18\x01 \x03(\v2\x1a.event_vtproto.MediumEventR\x06eventsB'Z%json-vs-proto/proto/vtproto;vtprotopbb\x06proto3"
+	"\x06events\x18\x01 \x03(\v2\x1a.event_vtproto.MediumEventR\x06events\"+\n" +
+	"\fJSONEnvelope\x12\x1b\n" +
+	"\tjson_data\x18\x01 \x01(\tR\bjsonDataB'Z%json-vs-proto/proto/vtproto;vtprotopbb\x06proto3"
 
 var (
 	file_proto_vtproto_event_proto_rawDescOnce sync.Once
@@ -447,7 +493,7 @@ func file_proto_vtproto_event_proto_rawDescGZIP() []byte {
 	return file_proto_vtproto_event_proto_rawDescData
 }
 
-var file_proto_vtproto_event_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_proto_vtproto_event_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_proto_vtproto_event_proto_goTypes = []any{
 	(*SmallObject)(nil),       // 0: event_vtproto.SmallObject
 	(*Actor)(nil),             // 1: event_vtproto.Actor
@@ -455,12 +501,13 @@ var file_proto_vtproto_event_proto_goTypes = []any{
 	(*MediumEvent)(nil),       // 3: event_vtproto.MediumEvent
 	(*AnyEnvelope)(nil),       // 4: event_vtproto.AnyEnvelope
 	(*LargeEventPayload)(nil), // 5: event_vtproto.LargeEventPayload
-	(*anypb.Any)(nil),         // 6: google.protobuf.Any
+	(*JSONEnvelope)(nil),      // 6: event_vtproto.JSONEnvelope
+	(*anypb.Any)(nil),         // 7: google.protobuf.Any
 }
 var file_proto_vtproto_event_proto_depIdxs = []int32{
 	1, // 0: event_vtproto.MediumEvent.actor:type_name -> event_vtproto.Actor
 	2, // 1: event_vtproto.MediumEvent.metadata:type_name -> event_vtproto.Metadata
-	6, // 2: event_vtproto.AnyEnvelope.payload:type_name -> google.protobuf.Any
+	7, // 2: event_vtproto.AnyEnvelope.payload:type_name -> google.protobuf.Any
 	3, // 3: event_vtproto.LargeEventPayload.events:type_name -> event_vtproto.MediumEvent
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
@@ -480,7 +527,7 @@ func file_proto_vtproto_event_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_vtproto_event_proto_rawDesc), len(file_proto_vtproto_event_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

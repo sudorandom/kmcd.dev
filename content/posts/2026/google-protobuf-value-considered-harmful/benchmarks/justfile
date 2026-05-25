@@ -1,2 +1,2 @@
-protobuf-benchmarks:
+google-protobuf-value-considered-harmful:
     go test -bench=. -benchmem | tee results.txt
