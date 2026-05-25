@@ -1367,7 +1367,7 @@ The performance problems only emerge when these dynamic trees sit directly on ho
 
 To help choose the right design pattern for your dynamic payloads, you can follow this decision flow:
 
-{{< d2 >}}
+{{< d2 max-height="100%" >}}
 direction: down
 
 style: {
