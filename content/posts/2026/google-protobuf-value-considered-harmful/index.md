@@ -11,7 +11,7 @@ featuredpath: "date"
 slug: "google-protobuf-value-considered-harmful"
 type: "posts"
 devtoSkip: true
-draft: false
+draft: true
 ---
 
 Migrating legacy JSON APIs to gRPC frequently stumbles over a common anti-pattern: unstructured, dynamic JSON fields (such as `metadata` or `extra_properties`) mapped directly into Protobuf using [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) or [`google.protobuf.Struct`](https://protobuf.dev/reference/protobuf/google.protobuf/#struct).
@@ -1114,7 +1114,7 @@ Dynamic binary parsing takes **5,772.0 ns** and requires **90 allocations**, com
 
 ### Workload Sensitivity and Caveats
 
-While these benchmarks demonstrate a massive performance gap, it is important to qualify these numbers: workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go’s map lookup and insertion overhead. Deeply nested objects amplify these allocation costs exponentially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as the thread-local arena pool solution demonstrated later in this article with `hyperpb + Shared`) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
+While these benchmarks demonstrate a massive performance gap, it is important to qualify these numbers: workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go’s map lookup and insertion overhead. Deeply nested objects amplify these allocation costs exponentially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as a thread-local arena pool solution using dynamic parser bytecode) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
 
 ---
 
@@ -1139,287 +1139,11 @@ When data conforms to a known set of pre-compiled schemas, wrap the fields in an
 * **Pros:** Highly compact (212 bytes for a medium payload) and fast. Processing is roughly 11x faster than using generic values.
 * **Cons:** Requires compile-time schema awareness for all incoming types. Additionally, `Any` carries the wire overhead of serializing the `type_url` string (e.g., `type.googleapis.com/package.Message`), which adds a few dozen bytes depending on your package name length. This explains the size increases for `Any` visible in the benchmark charts compared to native static Protobuf.
 
-### Runtime Schema Discovery: Use Buf's `hyperpb`
-For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) library (introduced in [their blog post](https://buf.build/blog/hyperpb)) fixes this by compiling a message descriptor into dedicated, optimized table-driven parser bytecode. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly.
+### Runtime Schema Discovery: Use Dynamic Bytecode Compilers
 
-To evaluate dynamic runtime parsing options, I compared the following variants:
+If you must resolve and parse dynamic schema descriptors at runtime (like in API gateways or dynamic proxies) without compile-time knowledge of the schemas, you aren't limited to the standard library's reflection-based `dynamicpb`. Modern alternatives like Buf's `hyperpb` compile descriptors into optimized bytecode to bypass reflection overhead.
 
-| Variant | Format | Description |
-| :--- | :---: | :--- |
-| **dynamicpb** | Protobuf | Evaluates dynamic descriptor compilation and reflection-based Protobuf handling at runtime using Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. |
-| **hyperpb** | Protobuf | Evaluates dynamic descriptor parsing and serialization at runtime using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb) library. |
-| **hyperpb + Shared** | Protobuf | Evaluates dynamic parsing using Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) paired with a thread-local, pre-allocated memory arena to eliminate runtime heap allocations. |
-
-By combining this bytecode engine with a thread-local `hyperpb.Shared` arena pool, you can eliminate request-time heap churn:
-
-```go
-shared := new(hyperpb.Shared) // Instantiated once per goroutine
-
-for _, payload := range incoming {
-    msg := shared.NewMessage(mType) // Reuses the underlying memory arena
-    _ = proto.Unmarshal(payload, msg)
-    
-    route(msg) // Read-only access pipeline
-    shared.Free() // Recycles the arena back to the pool
-}
-```
-
-On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with exactly **1 heap allocation**, outperforming even build-time generated static Protobuf code (**66,722 ns**, **1,509 allocations**).
-
-{{< tabs >}}
-  {{< tab name="Small Payload" >}}
-{{< chart >}}
-{
-  "type": "bar",
-  "data": {
-    "labels": [
-      "Map (JSON)",
-      "Map (JSONv2)",
-      "dynamicpb",
-      "hyperpb",
-      "hyperpb + Shared",
-      "Concrete (proto)",
-      "Concrete (vtproto)"
-    ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [1336, 961.1, 762.3, 381.3, 150.7, 141.2, 31.57],
-      "backgroundColor": [
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(148, 163, 184, 0.75)",
-        "rgba(148, 163, 184, 0.75)"
-      ],
-      "borderColor": [
-        "rgba(255, 165, 0, 1)",
-        "rgba(255, 165, 0, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(148, 163, 184, 1)",
-        "rgba(148, 163, 184, 1)"
-      ],
-      "borderWidth": 1
-    }]
-  },
-  "options": {
-    "indexAxis": "y",
-    "plugins": {
-      "title": {
-        "display": true,
-        "text": "Dynamic Parsing Performance (Small Payload): lower is better",
-        "color": "#fff"
-      },
-      "legend": {
-        "labels": { "color": "#fff" },
-        "customLegend": [
-          { "text": "proto", "color": "rgba(0, 191, 255, 0.75)" },
-          { "text": "json", "color": "rgba(255, 165, 0, 0.75)" },
-          { "text": "baseline", "color": "rgba(148, 163, 184, 0.75)" }
-        ]
-      }
-    },
-    "scales": {
-      "x": {
-        "type": "linear",
-        "min": 0,
-        "ticks": { "color": "#fff" }
-      },
-      "y": {
-        "ticks": { "color": "#fff" }
-      }
-    }
-  }
-}
-{{< /chart >}}
-
-<details>
-<summary><b>Show data table</b></summary>
-
-| Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
-| :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **31.6 ns** | **16 B** | **1** |
-| **Concrete (proto)** | 141.2 ns | 96 B | 2 |
-| **hyperpb + Shared** | 150.7 ns | 64 B | 1 |
-| **hyperpb** | 381.3 ns | 799 B | 4 |
-| **dynamicpb** | 762.3 ns | 616 B | 11 |
-| **Map (JSONv2)** | 961.1 ns | 408 B | 8 |
-| **Map (JSON)** | 1,336.0 ns | 648 B | 20 |
-
-</details>
-  {{< /tab >}}
-  {{< tab name="Medium Payload" >}}
-{{< chart >}}
-{
-  "type": "bar",
-  "data": {
-    "labels": [
-      "Map (JSON)",
-      "dynamicpb",
-      "Map (JSONv2)",
-      "hyperpb",
-      "Concrete (proto)",
-      "Concrete (vtproto)",
-      "hyperpb + Shared"
-    ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [4148, 2930, 2581, 697.1, 673.5, 369.4, 350.2],
-      "backgroundColor": [
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(148, 163, 184, 0.75)",
-        "rgba(148, 163, 184, 0.75)",
-        "rgba(0, 191, 255, 0.75)"
-      ],
-      "borderColor": [
-        "rgba(255, 165, 0, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(255, 165, 0, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(148, 163, 184, 1)",
-        "rgba(148, 163, 184, 1)",
-        "rgba(0, 191, 255, 1)"
-      ],
-      "borderWidth": 1
-    }]
-  },
-  "options": {
-    "indexAxis": "y",
-    "plugins": {
-      "title": {
-        "display": true,
-        "text": "Dynamic Parsing Performance (Medium Payload): lower is better",
-        "color": "#fff"
-      },
-      "legend": {
-        "labels": { "color": "#fff" },
-        "customLegend": [
-          { "text": "proto", "color": "rgba(0, 191, 255, 0.75)" },
-          { "text": "json", "color": "rgba(255, 165, 0, 0.75)" },
-          { "text": "baseline", "color": "rgba(148, 163, 184, 0.75)" }
-        ]
-      }
-    },
-    "scales": {
-      "x": {
-        "type": "linear",
-        "min": 0,
-        "ticks": { "color": "#fff" }
-      },
-      "y": {
-        "ticks": { "color": "#fff" }
-      }
-    }
-  }
-}
-{{< /chart >}}
-
-<details>
-<summary><b>Show data table</b></summary>
-
-| Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
-| :--- | :---: | :---: | :---: |
-| **hyperpb + Shared** | **350.2 ns** | **357 B** | **1** |
-| **Concrete (vtproto)** | 369.4 ns | 432 B | 14 |
-| **Concrete (proto)** | 673.5 ns | 560 B | 15 |
-| **hyperpb** | 697.1 ns | 1,446 B | 5 |
-| **Map (JSONv2)** | 2,581.0 ns | 1,392 B | 30 |
-| **dynamicpb** | 2,930.0 ns | 2,072 B | 43 |
-| **Map (JSON)** | 4,148.0 ns | 1,856 B | 54 |
-
-</details>
-  {{< /tab >}}
-  {{< tab name="Large Payload" >}}
-{{< chart >}}
-{
-  "type": "bar",
-  "data": {
-    "labels": [
-      "Map (JSON)",
-      "dynamicpb",
-      "Map (JSONv2)",
-      "Concrete (proto)",
-      "Concrete (vtproto)",
-      "hyperpb",
-      "hyperpb + Shared"
-    ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [337503, 298918, 221455, 66722, 42896, 29197, 22074],
-      "backgroundColor": [
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(255, 165, 0, 0.75)",
-        "rgba(148, 163, 184, 0.75)",
-        "rgba(148, 163, 184, 0.75)",
-        "rgba(0, 191, 255, 0.75)",
-        "rgba(0, 191, 255, 0.75)"
-      ],
-      "borderColor": [
-        "rgba(255, 165, 0, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(255, 165, 0, 1)",
-        "rgba(148, 163, 184, 1)",
-        "rgba(148, 163, 184, 1)",
-        "rgba(0, 191, 255, 1)",
-        "rgba(0, 191, 255, 1)"
-      ],
-      "borderWidth": 1
-    }]
-  },
-  "options": {
-    "indexAxis": "y",
-    "plugins": {
-      "title": {
-        "display": true,
-        "text": "Dynamic Parsing Performance (Large Payload): lower is better",
-        "color": "#fff"
-      },
-      "legend": {
-        "labels": { "color": "#fff" },
-        "customLegend": [
-          { "text": "proto", "color": "rgba(0, 191, 255, 0.75)" },
-          { "text": "json", "color": "rgba(255, 165, 0, 0.75)" },
-          { "text": "baseline", "color": "rgba(148, 163, 184, 0.75)" }
-        ]
-      }
-    },
-    "scales": {
-      "x": {
-        "type": "linear",
-        "min": 0,
-        "ticks": { "color": "#fff" }
-      },
-      "y": {
-        "ticks": { "color": "#fff" }
-      }
-    }
-  }
-}
-{{< /chart >}}
-
-<details>
-<summary><b>Show data table</b></summary>
-
-| Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
-| :--- | :---: | :---: | :---: |
-| **hyperpb + Shared** | **22,074 ns** | **21,838 B** | **1** |
-| **hyperpb** | 29,197 ns | 59,999 B | 12 |
-| **Concrete (vtproto)** | 42,896 ns | 58,168 B | 1,508 |
-| **Concrete (proto)** | 66,722 ns | 58,232 B | 1,509 |
-| **Map (JSONv2)** | 221,455 ns | 144,647 B | 3,309 |
-| **dynamicpb** | 298,918 ns | 205,753 B | 4,117 |
-| **Map (JSON)** | 337,503 ns | 162,296 B | 4,313 |
-
-</details>
-  {{< /tab >}}
-{{< /tabs >}}
+<!-- To read more about runtime schema handling and how dynamic Protobuf can actually outperform static compilation, check out my follow-up article: **[Dynamic Protobuf in Go](/posts/dynamic-protobuf-in-go/)** -->
 
 ---
 
@@ -1444,12 +1168,6 @@ Q_Schema: "Fixed schema?" {
 
 Stable: "Statically typed\nProtobuf fields"
 
-Q_Runtime: "Dynamic descriptors\nat runtime?" {
-  shape: diamond
-}
-
-Hyper: "Buf's hyperpb"
-
 Q_Flat: "Flat key-value\nstrings?" {
   shape: diamond
 }
@@ -1473,10 +1191,7 @@ Value: "google.protobuf.Value"
 Start -> Q_Schema
 
 Q_Schema -> Stable: "Yes"
-Q_Schema -> Q_Runtime: "No"
-
-Q_Runtime -> Hyper: "Yes"
-Q_Runtime -> Q_Flat: "No"
+Q_Schema -> Q_Flat: "No"
 
 Q_Flat -> Flat: "Yes"
 Q_Flat -> Q_Opaque: "No"
@@ -1491,10 +1206,6 @@ Q_Perf -> Value: "No"
 ### Model your actual data in Protobuf
 
 Statically defining your schemas is always the ideal path. It yields the best performance, full compile-time type safety, and clear API contracts. Commit to first-class, statically typed fields whenever possible. It's worth it.
-
-### Use Buf's `hyperpb` for dynamic runtime schemas
-
-If you must resolve and parse dynamic schema descriptors at runtime (like in message registries or API gateways), standard reflection-based parsing (`dynamicpb`) is too slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) compiles message descriptors into optimized bytecode to bypass reflection. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly, significantly outperforming standard reflection.
 
 ### Use a native `map<string, string>` for flat attributes
 

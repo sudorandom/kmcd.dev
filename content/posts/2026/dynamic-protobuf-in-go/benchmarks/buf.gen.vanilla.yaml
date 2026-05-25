@@ -1,0 +1,10 @@
+# buf.gen.vanilla.yaml
+# Used for proto/vanilla/.
+# Generates standard Go protobuf code only.
+# Plugins are resolved via `go tool` (see generate.sh) — no system installation needed.
+version: v2
+plugins:
+  - local: protoc-gen-go
+    out: .
+    opt:
+      - paths=source_relative
