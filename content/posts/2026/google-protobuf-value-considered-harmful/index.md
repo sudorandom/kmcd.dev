@@ -388,17 +388,17 @@ For this subset of JSON, containing a singe key/value pair for age, we have this
 ```text
 "age":30
 ```
-When you count 'structual' characters (commas and quotes), you get 3 'extra' bytes for each key/value pair. It's maybe 4 bytes if you consider commas between elements.
+When you count 'structual' characters (commas and quotes), you get 3 extra bytes for each key/value pair. It's maybe 4 bytes if you consider commas between elements.
 
 #### 2. Dynamic Protobuf (Protoscope Representation: 18 bytes)
 
-If we describe the dynamic Protobuf binary payload using [Protoscope](https://github.com/protocolbuffers/protoscope) (language for representing raw Protobuf wire formats), the structure and tags become immediately clear:
+If we describe the dynamic Protobuf binary payload using [Protoscope](https://github.com/protocolbuffers/protoscope) (the language for representing raw Protobuf wire formats), the structure and tags become clearer:
 
 ```protoscope
-1: {           # Struct.fields (Map Entry sub-message, tag 1, length-delimited)
-  1: "age"     # MapEntry.key (string key, tag 1, length-delimited)
-  2: {         # MapEntry.value (Value sub-message, tag 2, length-delimited)
-    2: 30.0    # Value.number_value (double float, tag 2, 64-bit)
+1: {           # Struct.fields (Map entry, tag 1)      -> 2B tag/len
+  1: "age"     # MapEntry.key (string, tag 1)          -> 2B tag/len + 3B "age" value
+  2: {         # MapEntry.value (Value wrapper, tag 2) -> 2B tag/len
+    2: 30.0    # Value.number_value (float64, tag 2)   -> 1B tag + 8B float value
   }
 }
 ```
@@ -407,19 +407,9 @@ If we describe the dynamic Protobuf binary payload using [Protoscope](https://gi
 - The prefix tags `1:` and `2:` represent the field numbers.
 - `30.0` compiles to field tag 2 (wire type 1, 64-bit) followed by its fixed 8-byte double-precision float value.
 
-To see where the 18 bytes come from, we can break down the serialized dynamic Protobuf payload byte by byte:
+Summing these up (2B + 2B + 3B + 2B + 1B + 8B) results in a total payload size of **18 bytes**.
 
-| Bytes | Hex Value | Field / Component | Description | Size |
-| :---: | :--- | :--- | :--- | :---: |
-| **1 – 2** | `0x0A 0x10` | `Struct.fields` Tag & Length | Map entry (tag 1, wire type 2, length 16) | 2 B |
-| **3 – 4** | `0x0A 0x03` | `MapEntry.key` Tag & Length | Key field (tag 1, wire type 2, length 3) | 2 B |
-| **5 – 7** | `0x61 0x67 0x65` | `MapEntry.key` Value | The string `"age"` | 3 B |
-| **8 – 9** | `0x12 0x09` | `MapEntry.value` Tag & Length | Value wrapper (tag 2, wire type 2, length 9) | 2 B |
-| **10** | `0x11` | `Value.number_value` Tag | Double float field (tag 2, wire type 1) | 1 B |
-| **11 – 18** | `0x00 0x00 ... 0x40` | `Value.number_value` Value | Float64 value `30.0` (little-endian) | 8 B |
-| **Total** | | | | **18 B** |
-
-Let's analyze why this byte layout is so inefficient:
+So with this context, we can now say *why* `google.protobuf.Value` is inefficient:
 
 1. **Double Nesting and Field Tag Overhead**: In compact JSON, a single isolated field's framing overhead is only 3 bytes (quotes and colon). To be completely fair, a full JSON payload also incurs a small fixed overhead of 2 bytes for the outer curly braces `{}` and 1 byte per additional field for commas `,` (though this is a flat, amortized cost rather than a per-field nested multiplier). In dynamic Protobuf, the nested structure requires **7 bytes of structural framing metadata** (tag and length headers for each layer), plus **3 bytes** for the field name itself.
 
@@ -1081,7 +1071,7 @@ When data conforms to a known set of pre-compiled schemas, wrap the fields in an
 * **Cons:** Requires compile-time schema awareness for all incoming types.
 
 ### Runtime Schema Discovery: Use Buf's `hyperpb`
-For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) library (introduced in [their blog post](https://buf.build/blog/introducing-hyperpb)) fixes this by compiling a message descriptor into dedicated, optimized table-driven parser bytecode. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly.
+For pipelines that handle dynamic descriptors entirely at runtime (like schema registries or event gateways), Go's native `dynamicpb` is notoriously slow. Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) library (introduced in [their blog post](https://buf.build/blog/hyperpb)) fixes this by compiling a message descriptor into dedicated, optimized table-driven parser bytecode. While compiling descriptors at application startup is ideal, you can also compile them dynamically at runtime if schemas are discovered on the fly.
 
 To evaluate dynamic runtime parsing options, I compared the following variants:
 
@@ -1346,20 +1336,6 @@ On a large payload, `hyperpb + Shared` processes requests in **22,074 ns** with 
 | **Map (JSON)** | 337,503 ns | 162,296 B | 4,313 |
   {{< /tab >}}
 {{< /tabs >}}
-
----
-
-## When google.protobuf.Struct Is Still Reasonable
-
-`Struct` remains useful and entirely appropriate for:
-
-* low-throughput administrative APIs
-* debugging endpoints
-* rapidly evolving schemas
-* plugin metadata
-* cross-language extensibility layers
-
-The performance problems only emerge when these dynamic trees sit directly on hot-path production traffic.
 
 ---
 
