@@ -11,7 +11,6 @@ featuredpath: "date"
 slug: "google-protobuf-value-considered-harmful"
 type: "posts"
 devtoSkip: true
-draft: true
 ---
 
 Migrating legacy JSON APIs to gRPC frequently stumbles over a common anti-pattern: unstructured, dynamic JSON fields (such as `metadata` or `extra_properties`) mapped directly into Protobuf using [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) or [`google.protobuf.Struct`](https://protobuf.dev/reference/protobuf/google.protobuf/#struct).
