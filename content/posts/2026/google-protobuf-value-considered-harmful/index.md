@@ -46,7 +46,7 @@ This structure leads to the following well-known types:
 
 Together, they allow Protobuf messages to carry arbitrary, unstructured JSON-like payloads without declaring a strict schema beforehand. This is a common architectural pattern, and it successfully solves a real developer pain point: handling highly dynamic data. Since Protobuf is famous for being fast and compact, one would intuitively think that wrapping dynamic payloads in these well-known types would still be more efficient than standard JSON. I decided to test that assumption, and the results were the opposite of what I expected. Most of Protobuf’s performance advantage comes from ahead-of-time schema knowledge. Statically compiled schemas are the primary optimization lever that allows Protocol Buffers to achieve speed and compactness. The moment you remove schema information and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you forfeit that optimization lever entirely. It is not that the Well-Known Types are poorly implemented; rather, removing schema information fundamentally removes Protobuf's ability to optimize the data layout.
 
-## The Structural Cost of Dynamism
+## The Structural Cost of Dynamic Data
 
 Before looking at the benchmark numbers, it helps to understand why `google.protobuf.Value` is structurally expensive on the wire compared to compact JSON. When representing arbitrary object structures, `google.protobuf.Struct` is defined under the hood as `map<string, Value> fields = 1;`.
 
