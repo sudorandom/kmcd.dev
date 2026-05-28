@@ -476,12 +476,6 @@ First, I compared the serialized payload size of each configuration. Since Proto
   {{< /tab >}}
 {{< /tabs >}}
 
-{{< tip-box >}}
-**Transport Compression:** In practice, many production gRPC systems also apply transport compression (gzip or zstd). Since repeated JSON field names compress extremely well, the wire-size advantage of dynamic Protobuf structures often shrinks even further, making dynamic Protobuf even less appealing from a bandwidth perspective.
-{{< /tip-box >}}
-
-
-
 ### Processing Throughput
 Building and parsing schema-less Protobuf trees involves significant pointer-wrapping overhead, resulting in higher CPU usage and frequent heap allocations. Standard concrete Protobuf marshals almost instantly, and PlanetScale's reflection-free generator `Concrete (vtproto)` is the absolute fastest. Much of `vtproto`’s advantage comes from eliminating reflection and generating specialized straight-line serialization code ahead of time.
 
@@ -1212,12 +1206,20 @@ If you have opaque data that you don't want intermediate routing nodes to parse,
 
 ### Pack raw JSON into strings (Opaque JSON Packaging)
 
-If you must support unstructured data on a high-throughput, latency-sensitive hot path, bypassing the Protobuf wrapper completely is the most efficient choice. Storing raw JSON directly inside a standard `string` or `bytes` field avoids WKT parsing entirely. While wrapping raw JSON inside a Protobuf envelope feels like a hack and bypasses static type verification, it eliminates dynamic parsing and heap allocations at intermediate routing nodes. Downstream consumer services can then deserialize the JSON payload directly into native structs only when necessary.
+If you must support unstructured data on a high-throughput, latency-sensitive hot path, storing the dynamic data as raw JSON directly inside a standard `string` or `bytes` protobuf field seems to be the best choice.
 
-Let's be honest: **this feels gross**. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, bypasses static verification, makes API documentation a mess, and is generally a dirty hack. 
+Let's be honest: **this feels gross**. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, makes API documentation messy, and is generally a dirty hack.
 
-But if you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. It allows intermediate routing nodes to forward the packet instantly without deserializing the payload at all, leaving the task of parsing to downstream consumer services which can deserialize it directly into native Go structs only when absolutely necessary. 
-It's a compromise. Opaque JSON packaging is only advantageous when intermediate services do not need to inspect the payload. If you can, commit to stable, statically typed schemas. But if you must support unstructured data, holding your nose and packing raw JSON into a string or bytes field is far more efficient on performance-critical transport paths than treating `google.protobuf.Value` as a zero-cost abstraction.
+But if you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. It allows intermediate routing nodes to forward the packet instantly without deserializing the payload at all, leaving the task of parsing to downstream consumer services which can deserialize it directly into native Go structs only when absolutely necessary.
+
+You may not like it, but this might be what peak performance looks like:
+
+```protobuf
+message EventEnvelope {
+  string event_json = 1;
+  int64 timestamp = 2;
+}
+```
 
 ### Use `google.protobuf.Value` for low-throughput dynamic data
 
