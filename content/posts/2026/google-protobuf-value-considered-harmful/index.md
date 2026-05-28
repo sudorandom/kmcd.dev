@@ -132,15 +132,11 @@ Dynamic Protobuf hurts in two completely different ways that affect different en
 1. **Wire Inefficiency:** The serialized payload becomes larger than many developers expect. This is caused by human-readable field names being serialized repeatedly, nested map entry encoding, double-precision floating-point storage for all numbers, and the loss of varint integer compression. Bandwidth-sensitive systems, databases, or event brokers care heavily about this.
 2. **Runtime Inefficiency:** The runtime representation in Go becomes allocation-heavy and expensive to parse. This is caused by Go's allocation behavior, interface-heavy and pointer-heavy structures in the standard `structpb` package, Go's reflection model, and tree-shaped decoding. CPU-bound services that deserialize payloads frequently care heavily about this.
 
----
+### Go-Specific Disclaimer
 
-{{< warning-box >}}
-**Go-Specific Disclaimer:** This article focuses specifically on Go’s protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
+This article focuses specifically on Go’s protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
 
 Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
-{{< /warning-box >}}
-
----
 
 ## The Benchmark Setup
 
