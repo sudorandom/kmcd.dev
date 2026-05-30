@@ -9,10 +9,16 @@
             window.addEventListener('load', function() {
                 var content = document.querySelector('main.post');
                 if (!content) return;
-                var clone = content.cloneNode(true);
-                
-                // Copy canvas contexts since cloneNode leaves them blank
-                function copyCanvases() {
+
+                var clone = null;
+                var lastClonedHeight = 0;
+                var minimapContent = document.getElementById('minimap-content');
+                var minimap = document.getElementById('minimap');
+                var viewport = document.getElementById('minimap-viewport');
+
+                // Copy canvas contexts and image dimensions since cloneNode leaves them blank/unloaded
+                function syncDimensions() {
+                    if (!clone) return;
                     try {
                         var origCanvases = content.querySelectorAll('canvas');
                         var cloneCanvases = clone.querySelectorAll('canvas');
@@ -25,112 +31,177 @@
                                 }
                             }
                         }
-                    } catch(e) { console.warn('Minimap canvas sync error:', e); }
+                        var origImages = content.querySelectorAll('img');
+                        var cloneImages = clone.querySelectorAll('img');
+                        for (var i = 0; i < origImages.length; i++) {
+                            if (origImages[i] && cloneImages[i]) {
+                                cloneImages[i].style.height = origImages[i].getBoundingClientRect().height + 'px';
+                                cloneImages[i].style.width = origImages[i].getBoundingClientRect().width + 'px';
+                            }
+                        }
+                    } catch(e) { console.warn('Minimap sync error:', e); }
                 }
-                copyCanvases();
-                setTimeout(copyCanvases, 1000);
-                setTimeout(copyCanvases, 3000);
-                
 
-                var elementsWithIds = clone.querySelectorAll('[id]');
-                for (var i = 0; i < elementsWithIds.length; i++) {
-                    elementsWithIds[i].removeAttribute('id');
+                function createClone() {
+                    try {
+                        minimapContent.innerHTML = '';
+                        clone = content.cloneNode(true);
+
+                        // Remove minimap and scripts from clone to avoid duplication
+                        var clonedMinimap = clone.querySelector('#minimap');
+                        if (clonedMinimap) clonedMinimap.remove();
+                        var clonedScripts = clone.querySelectorAll('script');
+                        for (var i = 0; i < clonedScripts.length; i++) {
+                            clonedScripts[i].remove();
+                        }
+
+                        var elementsWithIds = clone.querySelectorAll('[id]');
+                        for (var i = 0; i < elementsWithIds.length; i++) {
+                            elementsWithIds[i].removeAttribute('id');
+                        }
+
+                        minimapContent.appendChild(clone);
+                        lastClonedHeight = content.clientHeight;
+                        syncDimensions();
+                    } catch(e) { console.warn('Minimap clone error:', e); }
                 }
-                var minimapContent = document.getElementById('minimap-content');
-                minimapContent.appendChild(clone);
-                
-                var minimap = document.getElementById('minimap');
-                var viewport = document.getElementById('minimap-viewport');
-                
+
+                createClone();
+
                 var currentScale = 1;
                 var currentMinimapScrollY = 0;
-                
+
                 function update() {
+                    if (!clone) return;
                     minimapContent.style.width = content.clientWidth + 'px';
                     var scale = minimap.clientWidth / content.clientWidth;
                     currentScale = scale;
-                    
+
                     var scrollY = window.scrollY;
                     var windowHeight = window.innerHeight;
                     var documentHeight = document.documentElement.scrollHeight;
-                    
+
+                    var headerHeight = content.getBoundingClientRect().top + window.scrollY;
+                    var footerHeight = documentHeight - (headerHeight + content.getBoundingClientRect().height);
+                    minimapContent.style.boxSizing = 'content-box';
+                    minimapContent.style.paddingTop = headerHeight + 'px';
+                    minimapContent.style.paddingBottom = Math.max(0, footerHeight) + 'px';
+
                     var scrollPercent = scrollY / (documentHeight - windowHeight);
                     if (isNaN(scrollPercent)) scrollPercent = 0;
                     if (scrollPercent > 1) scrollPercent = 1;
                     if (scrollPercent < 0) scrollPercent = 0;
-                    
+
                     var scaledHeight = minimapContent.scrollHeight * scale;
                     var maxScroll = scaledHeight - minimap.clientHeight;
                     if (maxScroll < 0) maxScroll = 0;
-                    
+
                     var minimapScrollY = scrollPercent * maxScroll;
                     currentMinimapScrollY = minimapScrollY;
                     minimapContent.style.transform = 'translateY(-' + minimapScrollY + 'px) scale(' + scale + ')';
-                    
+
                     var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
                     var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
                     if (viewportHeight > trackHeight) viewportHeight = trackHeight;
                     viewport.style.height = viewportHeight + 'px';
                     viewport.style.top = (scrollPercent * (trackHeight - viewportHeight)) + 'px';
                 }
-                
+
+                if (window.ResizeObserver) {
+                    var resizeObserver = new ResizeObserver(function() {
+                        if (Math.abs(content.clientHeight - lastClonedHeight) > 5) {
+                            createClone();
+                        } else {
+                            syncDimensions();
+                        }
+                        update();
+                    });
+                    resizeObserver.observe(content);
+                }
+
                 window.addEventListener('scroll', update);
-                window.addEventListener('resize', update);
+                window.addEventListener('resize', function() {
+                    syncDimensions();
+                    update();
+                });
+
+                // Fallback timeouts in case ResizeObserver isn't supported or to ensure initial loads are captured
+                setTimeout(function() {
+                    if (Math.abs(content.clientHeight - lastClonedHeight) > 5) {
+                        createClone();
+                        update();
+                    }
+                }, 1000);
+                setTimeout(function() {
+                    if (Math.abs(content.clientHeight - lastClonedHeight) > 5) {
+                        createClone();
+                        update();
+                    }
+                }, 3000);
+
                 setTimeout(update, 100);
                 setTimeout(update, 500);
-                
+
                 // Click and drag support
                 var isDragging = false;
-                
-                function scrollToMinimapY(clientY) {
+
+                function scrollToMinimapY(clientY, dragging) {
                     var rect = minimap.getBoundingClientRect();
                     var clickY = clientY - rect.top;
-                    
+
                     var windowHeight = window.innerHeight;
                     var documentHeight = document.documentElement.scrollHeight;
                     var scaledHeight = minimapContent.scrollHeight * currentScale;
                     var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
                     var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
                     if (viewportHeight > trackHeight) viewportHeight = trackHeight;
-                    
+
                     if (trackHeight <= viewportHeight) return;
-                    
-                    var boxTop = clickY - viewportHeight / 2;
-                    if (boxTop < 0) boxTop = 0;
-                    if (boxTop > trackHeight - viewportHeight) boxTop = trackHeight - viewportHeight;
-                    
-                    var scrollPercent = boxTop / (trackHeight - viewportHeight);
-                    var targetScrollY = scrollPercent * (documentHeight - windowHeight);
-                    window.scrollTo({ top: targetScrollY, behavior: isDragging ? 'auto' : 'smooth' });
+
+                    var targetScrollY;
+                    if (dragging) {
+                        var boxTop = clickY - viewportHeight / 2;
+                        if (boxTop < 0) boxTop = 0;
+                        if (boxTop > trackHeight - viewportHeight) boxTop = trackHeight - viewportHeight;
+
+                        var scrollPercent = boxTop / (trackHeight - viewportHeight);
+                        targetScrollY = scrollPercent * (documentHeight - windowHeight);
+                    } else {
+                        var Y_clone = (clickY + currentMinimapScrollY) / currentScale;
+                        targetScrollY = Y_clone - windowHeight / 2;
+                    }
+
+                    window.scrollTo({ top: targetScrollY, behavior: dragging ? 'auto' : 'smooth' });
                 }
-                
+
                 minimap.addEventListener('mousedown', function(e) {
                     isDragging = true;
-                    scrollToMinimapY(e.clientY);
+                    e.preventDefault(); // prevents text selection from starting
+                    scrollToMinimapY(e.clientY, false);
                 });
-                
+
                 window.addEventListener('mousemove', function(e) {
                     if (isDragging) {
                         e.preventDefault();
-                        scrollToMinimapY(e.clientY);
+                        scrollToMinimapY(e.clientY, true);
                     }
                 });
-                
+
                 window.addEventListener('mouseup', function() {
                     isDragging = false;
                 });
-                
+
                 minimap.addEventListener('touchstart', function(e) {
                     isDragging = true;
-                    if(e.touches.length > 0) scrollToMinimapY(e.touches[0].clientY);
+                    if(e.touches.length > 0) scrollToMinimapY(e.touches[0].clientY, false);
                 }, {passive: true});
-                
+
                 window.addEventListener('touchmove', function(e) {
                     if (isDragging && e.touches.length > 0) {
-                        scrollToMinimapY(e.touches[0].clientY);
+                        scrollToMinimapY(e.touches[0].clientY, true);
                     }
                 }, {passive: true});
-                
+
                 window.addEventListener('touchend', function() {
                     isDragging = false;
                 });

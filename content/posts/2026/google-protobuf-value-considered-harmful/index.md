@@ -121,7 +121,7 @@ Dynamic Protobuf (30.0 double-precision float):
 00000000 00000000 00111110 01000000 -> 8 bytes (little-endian)
 ```
 
-Instead of 2 bytes in JSON or a single byte in native Protobuf, dynamic Protobuf forces even a simple integer to occupy **8 bytes** (double float value) on the wire.
+Instead of 2 bytes in JSON or a single byte in native Protobuf, dynamic Protobuf forces even a simple integer to occupy **8 bytes** (double float value) on the wire. Note, however, that fixed-size fields should parse/unparse faster, as processor instructions are tuned for these types, so this specific extra space may be worth it. For larger numbers that use more than 8 digits, this actually represents less space compared to JSON numbers.
 
 As a result of this multiple-nesting structure and fixed-size floats, dynamic Protobuf payloads end up **significantly larger** on the wire than compact JSON.
 
@@ -132,7 +132,11 @@ Dynamic Protobuf hurts in two completely different ways that affect different en
 1. **Wire Inefficiency:** The serialized payload becomes larger than many developers expect. This is caused by human-readable field names being serialized repeatedly, nested map entry encoding, double-precision floating-point storage for all numbers, and the loss of varint integer compression. Bandwidth-sensitive systems, databases, or event brokers care heavily about this.
 2. **Runtime Inefficiency:** The runtime representation in Go becomes allocation-heavy and expensive to parse. This is caused by Go's allocation behavior, interface-heavy and pointer-heavy structures in the standard `structpb` package, Go's reflection model, and tree-shaped decoding. CPU-bound services that deserialize payloads frequently care heavily about this.
 
-### Go-Specific Disclaimer
+Before we jump into the runtime efficiency benchmarks, I need to give a required disclaimer.
+
+### Benchmark Disclaimer
+
+As with all performance testing, microbenchmarks should be taken with a grain of salt. Actual performance will vary depending on your specific hardware, operating system, compiler version, garbage collection settings, and payload structure. Microbenchmarks represent synthetic workloads and may not perfectly translate to the performance profile of a complex, production system. You should always run benchmarks under your own representative workloads before making significant architectural decisions.
 
 This article focuses specifically on Go’s protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
 
