@@ -56,6 +56,66 @@
   fill: currentColor;
 }
 
+/* Sun/Moon Theme Toggle Animations */
+.theme-toggle-svg {
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.theme-toggle-svg:hover {
+  transform: rotate(15deg);
+}
+
+.theme-toggle-svg:active {
+  transform: scale(0.85) rotate(30deg);
+  transition: transform 0.1s ease;
+}
+
+.theme-toggle-center {
+  transition: r 0.4s cubic-bezier(0.4, 0, 0.2, 1), fill 0.4s ease;
+}
+
+.theme-toggle-mask-circle {
+  transition: cx 0.4s cubic-bezier(0.4, 0, 0.2, 1), cy 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-rays {
+  transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-width: 2px;
+}
+
+/* Light Theme (Sun) */
+[data-theme=light] {
+  .theme-toggle-center {
+    r: 5px;
+  }
+  .theme-toggle-mask-circle {
+    cx: 24px;
+    cy: 4px;
+  }
+  .theme-toggle-rays {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Dark Theme (Moon) */
+[data-theme=dark] {
+  .theme-toggle-center {
+    r: 9px;
+  }
+  .theme-toggle-mask-circle {
+    cx: 16px;
+    cy: 8px;
+  }
+  .theme-toggle-rays {
+    transform: rotate(45deg) scale(0);
+    opacity: 0;
+  }
+}
+
 .not-selectable {
   user-select: none;
   -webkit-user-select: none;  

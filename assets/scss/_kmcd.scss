@@ -32,6 +32,26 @@
     text-align: left !important;
 }
 
+// Default margin for page titles, excerpts, and standalone headings (desktop/tablet/mobile)
+.post-title, h1.page-title, .post-excerpt,
+main.posts > .content,
+main.post > article > .post-content,
+main.post > h1, main.post > h2, main.post > h3, main.post > h4,
+main.post article > h1, main.post article > h2, main.post article > h3,
+main.post article > span[id] > h1, main.post article > span[id] > h2, main.post article > span[id] > h3 {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+}
+
+// Reset margin for elements inside containers that already provide padding on desktop
+.main-box h1, .main-box h2, .main-box h3, .main-box h4, .main-box h5, .main-box h6,
+.projects-box h1, .projects-box h2, .projects-box h3, .projects-box h4, .projects-box h5, .projects-box h6,
+.prompt-box h1, .prompt-box h2, .prompt-box h3, .prompt-box h4, .prompt-box h5, .prompt-box h6,
+.links-box h1, .links-box h2, .links-box h3, .links-box h4, .links-box h5, .links-box h6 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 .post-preview.on-list {
     margin-bottom: 4em;
     cursor: pointer;
@@ -162,11 +182,42 @@ body .cover-inner .post-title em {
         margin: 0;
         width: 100%;
     }
-    .sidebar .theme-toggle {
+    .sidebar .theme-toggle.mobile-only {
         position: absolute;
         top: 0.1em;
         right: 0.5rem;
         margin-top: 0;
+    }
+
+    .desktop-only-theme-toggle {
+        display: flex !important;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 101;
+        cursor: pointer;
+    }
+
+    .sidebar-desktop-only {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .sidebar-logo {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .mobile-hidden-on-desktop {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: none !important;
     }
 }
 
@@ -196,6 +247,10 @@ body .cover-inner .post-title em {
     .sidebar-about {
         display: none !important;
     }
+}
+
+.desktop-only-theme-toggle {
+    display: none !important;
 }
 
 @media (min-width: 685px) {
@@ -270,8 +325,14 @@ ul.icons li a {
         padding-left: 10px !important;
         padding-right: 10px !important;
     }
-    .post-header {
+    .posts-header, .posts-footer {
         padding-left: 10px !important;
         padding-right: 10px !important;
+    }
+
+    // For blog posts on mobile, reduce the title/excerpt margins to 10px to match the post content
+    .post-header .post-title, .post-header .post-excerpt {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
     }
 }

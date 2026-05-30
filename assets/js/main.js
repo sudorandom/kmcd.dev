@@ -5,7 +5,7 @@
  * the theme choice of the user.
  *
  */
-const themeToggle = document.querySelector(".theme-toggle");
+const themeToggles = document.querySelectorAll(".theme-toggle");
 
 // Detect the color scheme the operating system prefers.
 function detectOSColorTheme() {
@@ -38,8 +38,10 @@ function switchTheme(e) {
 }
 
 // Event listener
-if (themeToggle) {
-  themeToggle.addEventListener("click", switchTheme, false);
+if (themeToggles.length > 0) {
+  themeToggles.forEach(toggle => {
+    toggle.addEventListener("click", switchTheme, false);
+  });
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", (e) => e.matches && detectOSColorTheme());

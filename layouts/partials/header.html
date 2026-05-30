@@ -1,6 +1,11 @@
+{{- if .Site.Params.EnableThemeToggle }}
+<span class="theme-toggle not-selectable desktop-only-theme-toggle">{{ partial "theme-toggle-icon.html" . }}</span>
+{{- end}}
 <header class="page-header">
     <span class="page-header__inner">
-        {{ partial "logo.html" . }}
+        <span class="mobile-hidden-on-desktop">
+            {{ partial "logo.html" . }}
+        </span>
 
         <div class="sidebar-about" style="text-align: center; width: 100%; margin: 1.5rem 0;">
           {{- $image := resources.Get "images/me.png" -}}
@@ -10,6 +15,12 @@
             <img class="sidebar-profile-img" src="{{ $profile.RelPermalink }}" alt="A picture of {{ $.Site.Params.author.name }}" width="120" height="120">
           </a>
           {{- end -}}
+          
+          <div class="sidebar-desktop-only" style="margin-top: 1rem;">
+             <div class="sidebar-logo">
+                 {{ partial "logo.html" . }}
+             </div>
+          </div>
         </div>
 
         <span class="page-header__right">
@@ -24,7 +35,7 @@
                 </span>
             {{ end }}
             {{- if .Site.Params.EnableThemeToggle }}
-                <span class="theme-toggle not-selectable">{{ partial "theme-toggle-icon.html" . }}</span>
+                <span class="theme-toggle not-selectable mobile-only">{{ partial "theme-toggle-icon.html" . }}</span>
             {{- end}}
         </span>
     </span>
