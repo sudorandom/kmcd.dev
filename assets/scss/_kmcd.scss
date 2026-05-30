@@ -37,6 +37,10 @@
     cursor: pointer;
     position: relative;
     padding: 0;
+
+    .post-title {
+        padding-left: 20px;
+    }
 }
 
 body .cover-inner .post-title a, body .post-title a,
