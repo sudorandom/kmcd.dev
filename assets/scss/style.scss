@@ -907,6 +907,11 @@ ul.icons {
             color: $dark-color !important;
             border-color: $dark-border-color !important;
         }
+
+        .pagefind-ui__search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+            opacity: 1 !important;
+        }
     }
     [data-theme=light] & {
         background-color: $light-background;
