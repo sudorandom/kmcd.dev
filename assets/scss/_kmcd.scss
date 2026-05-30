@@ -252,3 +252,22 @@ ul.icons li a {
         }
     }
 }
+
+@media #{$media-size-phone} {
+    main {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .content {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .post-inner {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    .post-header {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+}
