@@ -183,18 +183,23 @@
                     
                     var windowHeight = window.innerHeight;
                     var documentHeight = document.documentElement.scrollHeight;
-                    var scaledHeight = documentHeight * currentScale;
                     
-                    if (scaledHeight <= windowHeight) return;
+                    if (documentHeight <= windowHeight) return; // Document not scrollable
+                    
+                    var scaledHeight = documentHeight * currentScale;
+                    var viewportHeight = windowHeight * currentScale;
+                    var trackHeight = scaledHeight > windowHeight ? windowHeight : scaledHeight;
                     
                     var targetScrollY;
                     if (dragging) {
-                        var viewportHeight = windowHeight * currentScale;
+                        var maxSliderTop = trackHeight - viewportHeight;
+                        if (maxSliderTop <= 0) return;
+                        
                         var boxTop = clickY - viewportHeight / 2;
                         if (boxTop < 0) boxTop = 0;
-                        if (boxTop > windowHeight - viewportHeight) boxTop = windowHeight - viewportHeight;
+                        if (boxTop > maxSliderTop) boxTop = maxSliderTop;
                         
-                        var scrollPercent = boxTop / (windowHeight - viewportHeight);
+                        var scrollPercent = boxTop / maxSliderTop;
                         targetScrollY = scrollPercent * (documentHeight - windowHeight);
                     } else {
                         var Y_doc = (clickY + currentMinimapScrollY) / currentScale;
