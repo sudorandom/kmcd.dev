@@ -449,24 +449,31 @@ ol ol {
 hr {
   width: 100%;
   border: none;
-  height: 1px;
-  // Default
-  background: $light-border-color;
+  height: 2px;
+  margin: 2.5rem 0;
+
+  // Default light theme
+  background: linear-gradient(to right, transparent, rgba($light-accent-color, 0.2), $light-accent-color 50%, rgba($light-accent-color, 0.2), transparent);
+  box-shadow: 0 0 8px rgba($light-accent-color, 0.6), 0 0 3px rgba($light-accent-color, 0.3);
 
   @media (prefers-color-scheme: dark) {
-    background: $dark-border-color;
+    background: linear-gradient(to right, transparent, rgba($dark-accent-color, 0.2), $dark-accent-color 50%, rgba($dark-accent-color, 0.2), transparent);
+    box-shadow: 0 0 10px rgba($dark-accent-color, 0.7), 0 0 4px rgba($dark-accent-color, 0.4);
   }
 
   @media (prefers-color-scheme: light) {
-    background: $light-border-color;
+    background: linear-gradient(to right, transparent, rgba($light-accent-color, 0.2), $light-accent-color 50%, rgba($light-accent-color, 0.2), transparent);
+    box-shadow: 0 0 8px rgba($light-accent-color, 0.6), 0 0 3px rgba($light-accent-color, 0.3);
   }
 
   [data-theme=dark] & {
-    background: $dark-border-color;
+    background: linear-gradient(to right, transparent, rgba($dark-accent-color, 0.2), $dark-accent-color 50%, rgba($dark-accent-color, 0.2), transparent);
+    box-shadow: 0 0 10px rgba($dark-accent-color, 0.7), 0 0 4px rgba($dark-accent-color, 0.4);
   }
 
   [data-theme=light] & {
-    background: $light-border-color;
+    background: linear-gradient(to right, transparent, rgba($light-accent-color, 0.2), $light-accent-color 50%, rgba($light-accent-color, 0.2), transparent);
+    box-shadow: 0 0 8px rgba($light-accent-color, 0.6), 0 0 3px rgba($light-accent-color, 0.3);
   }
 }
 
