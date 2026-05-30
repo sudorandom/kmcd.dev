@@ -184,17 +184,21 @@ body .cover-inner .post-title em {
     }
     .menu {
         display: none;
+        
+        &:not(.hidden) {
+            display: block;
+        }
     }
     .sidebar-about {
         display: none !important;
     }
 }
 
-@media (min-width: 48em) {
+@media (min-width: 685px) {
     @include desktop-sidebar;
 }
 
-@media (max-width: 47.99em) {
+@media #{$media-size-phone} {
     @include mobile-sidebar;
 }
 
