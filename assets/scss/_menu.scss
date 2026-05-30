@@ -45,12 +45,20 @@
 
     @media #{$media-size-phone} {
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       padding: 0;
 
       li {
         margin: 0;
-        padding: 5px;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+      }
+      
+      a {
+        display: block;
+        width: 100%;
+        padding: 10px;
       }
     }
   }

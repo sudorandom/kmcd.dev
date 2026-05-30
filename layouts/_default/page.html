@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+<main class="post">
+    <article>
+        {{if not .Params.hideTitle }}
+        <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a
+                href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
+        {{ end }}
+        
+        <div class="post-content">
+            {{ .Content }}
+        </div>
+    </article>
+</main>
+
+{{ end }}

@@ -22,6 +22,42 @@
     @media #{$media-size-tablet} {
       flex-direction: column;
     }
+
+    .icons {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      width: 100%;
+      
+      li {
+        margin: 0;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+      }
+      
+      a {
+        font-size: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        
+        &:hover, &:active {
+          background: transparent !important;
+          opacity: 0.7;
+        }
+      }
+    }
   }
 
   &__content {

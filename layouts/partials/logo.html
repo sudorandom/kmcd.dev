@@ -5,8 +5,6 @@
         {{ else }}
             <span class="logo__mark">{{ with .Site.Params.Logo.logoMark }}{{ . }}{{ else }}>{{ end }}</span>
             <span class="logo__text">{{ with .Site.Params.Logo.logoText }}{{ . }}{{ else }}hello{{ end }}</span>
-            <span class="logo__cursor">
-            </span>
         {{ end }}
     </div>
 </a>

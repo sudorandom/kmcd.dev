@@ -611,7 +611,7 @@ The colors map directly to the severity tiers: red for critical events, orange f
 {{< figure src="europe-animation.webp" caption="Animation of BGP events in Europe" animate="true" width="700px" animate="true" >}}
 {{< /diagram >}}
 
-#### The Mollweide Projection
+### The Mollweide Projection
 
 Mercator would have been easy, but it heavily distorts size near the poles. For a global activity map, that felt misleading.
 

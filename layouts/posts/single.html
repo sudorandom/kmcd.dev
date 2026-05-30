@@ -1,92 +1,180 @@
 {{ define "main" }}
   <main class="post">
+    <div style="position: relative;">
+        <!-- Custom Minimap setup -->
+        <div id="minimap" class="hide-on-phone hide-on-tablet hide-on-laptop" style="position: fixed; top: 0; right: 0; width: 120px; height: 100%; z-index: 999; overflow: hidden; pointer-events: auto; opacity: 0.4; cursor: pointer; user-select: none; -webkit-user-select: none;">
+            <div id="minimap-content" style="transform-origin: top left; pointer-events: none; width: 1000px;"></div>
+            <div id="minimap-viewport" style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(150,150,150,0.2); border: 1px solid rgba(150,150,150,0.4); pointer-events: none;"></div>
+        </div>
+        <script>
+            window.addEventListener('load', function() {
+                var content = document.querySelector('main.post');
+                if (!content) return;
+                var clone = content.cloneNode(true);
+                
+                // Copy canvas contexts since cloneNode leaves them blank
+                function copyCanvases() {
+                    try {
+                        var origCanvases = content.querySelectorAll('canvas');
+                        var cloneCanvases = clone.querySelectorAll('canvas');
+                        for (var i = 0; i < origCanvases.length; i++) {
+                            if (origCanvases[i] && cloneCanvases[i] && origCanvases[i].width > 0 && origCanvases[i].height > 0) {
+                                var ctx = cloneCanvases[i].getContext('2d');
+                                if (ctx) {
+                                    ctx.clearRect(0, 0, cloneCanvases[i].width, cloneCanvases[i].height);
+                                    ctx.drawImage(origCanvases[i], 0, 0);
+                                }
+                            }
+                        }
+                    } catch(e) { console.warn('Minimap canvas sync error:', e); }
+                }
+                copyCanvases();
+                setTimeout(copyCanvases, 1000);
+                setTimeout(copyCanvases, 3000);
+                
+
+                var elementsWithIds = clone.querySelectorAll('[id]');
+                for (var i = 0; i < elementsWithIds.length; i++) {
+                    elementsWithIds[i].removeAttribute('id');
+                }
+                var minimapContent = document.getElementById('minimap-content');
+                minimapContent.appendChild(clone);
+                
+                var minimap = document.getElementById('minimap');
+                var viewport = document.getElementById('minimap-viewport');
+                
+                var currentScale = 1;
+                var currentMinimapScrollY = 0;
+                
+                function update() {
+                    minimapContent.style.width = content.clientWidth + 'px';
+                    var scale = minimap.clientWidth / content.clientWidth;
+                    currentScale = scale;
+                    
+                    var scrollY = window.scrollY;
+                    var windowHeight = window.innerHeight;
+                    var documentHeight = document.documentElement.scrollHeight;
+                    
+                    var headerHeight = content.getBoundingClientRect().top + window.scrollY;
+                    var footerHeight = documentHeight - (headerHeight + content.getBoundingClientRect().height);
+                    minimapContent.style.boxSizing = 'content-box';
+                    minimapContent.style.paddingTop = headerHeight + 'px';
+                    minimapContent.style.paddingBottom = Math.max(0, footerHeight) + 'px';
+                    
+                    var scrollPercent = scrollY / (documentHeight - windowHeight);
+                    if (isNaN(scrollPercent)) scrollPercent = 0;
+                    if (scrollPercent > 1) scrollPercent = 1;
+                    if (scrollPercent < 0) scrollPercent = 0;
+                    
+                    var scaledHeight = minimapContent.scrollHeight * scale;
+                    var maxScroll = scaledHeight - minimap.clientHeight;
+                    if (maxScroll < 0) maxScroll = 0;
+                    
+                    var minimapScrollY = scrollPercent * maxScroll;
+                    currentMinimapScrollY = minimapScrollY;
+                    minimapContent.style.transform = 'translateY(-' + minimapScrollY + 'px) scale(' + scale + ')';
+                    
+                    var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
+                    var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
+                    if (viewportHeight > trackHeight) viewportHeight = trackHeight;
+                    viewport.style.height = viewportHeight + 'px';
+                    viewport.style.top = (scrollPercent * (trackHeight - viewportHeight)) + 'px';
+                }
+                
+                window.addEventListener('scroll', update);
+                window.addEventListener('resize', update);
+                setTimeout(update, 100);
+                setTimeout(update, 500);
+                
+                // Click and drag support
+                var isDragging = false;
+                
+                function scrollToMinimapY(clientY) {
+                    var rect = minimap.getBoundingClientRect();
+                    var clickY = clientY - rect.top;
+                    
+                    var windowHeight = window.innerHeight;
+                    var documentHeight = document.documentElement.scrollHeight;
+                    var scaledHeight = minimapContent.scrollHeight * currentScale;
+                    var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
+                    var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
+                    if (viewportHeight > trackHeight) viewportHeight = trackHeight;
+                    
+                    if (trackHeight <= viewportHeight) return;
+                    
+                    var boxTop = clickY - viewportHeight / 2;
+                    if (boxTop < 0) boxTop = 0;
+                    if (boxTop > trackHeight - viewportHeight) boxTop = trackHeight - viewportHeight;
+                    
+                    var scrollPercent = boxTop / (trackHeight - viewportHeight);
+                    var targetScrollY = scrollPercent * (documentHeight - windowHeight);
+                    window.scrollTo({ top: targetScrollY, behavior: isDragging ? 'auto' : 'smooth' });
+                }
+                
+                minimap.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    e.preventDefault(); // prevents text selection from starting
+                    scrollToMinimapY(e.clientY);
+                });
+                
+                window.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        e.preventDefault();
+                        scrollToMinimapY(e.clientY);
+                    }
+                });
+                
+                window.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+                
+                minimap.addEventListener('touchstart', function(e) {
+                    isDragging = true;
+                    if(e.touches.length > 0) scrollToMinimapY(e.touches[0].clientY);
+                }, {passive: true});
+                
+                window.addEventListener('touchmove', function(e) {
+                    if (isDragging && e.touches.length > 0) {
+                        scrollToMinimapY(e.touches[0].clientY);
+                    }
+                }, {passive: true});
+                
+                window.addEventListener('touchend', function() {
+                    isDragging = false;
+                });
+            });
+        </script>
     <div class="main-wrapper">
     <div class="post-header">
-      {{- with (.Resources.Get .Params.Cover) -}}
-        {{- $cover := . }}
-        {{- $additionalStyles := "" }}
-        {{- $minHeight := "250" }}
-        {{- if eq .MediaType.SubType "svg" -}}
-          {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
-        {{- else -}}
-          {{- if eq .MediaType.SubType "png" -}}
-             {{- $cover = $cover.Fill "2560x1080 Center png" -}}
-          {{- else -}}
-             {{- $cover = $cover.Fill "2560x1080 Center webp q100" -}}
-          {{- end -}}
-          {{- $minHeight = "250" -}}
-          {{- $additionalStyles = "background-repeat: no-repeat; background-size: cover;" -}}
-        {{- end -}}
-        <div class="cover-outer cover-{{ or $.Params.CoverPosition "bottom" }}" style="min-height: {{ $minHeight }}px;">
+        <div class="cover-outer cover-{{ or $.Params.CoverPosition "bottom" }}">
           <div class="cover-inner">
-            <h1 class="post-title">
-              <a href="{{ $.Permalink }}">{{- with $.Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ $.Title | markdownify }}</a>
-            </h1>
+            <div class="post-title">
+              <span class="post-meta">
+                {{- with $.Date -}}
+                {{ .Format "2006-01-02" }}
+                {{- end }}
+                &nbsp;&bull;&nbsp; {{ $.Page.WordCount }} words
+                &nbsp;&bull;&nbsp; {{ $.Page.ReadingTime }} minutes
+                {{- with $.Params.tags -}}
+                  {{ range first 5 . }}
+                  &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                  {{ end }}
+                  {{- if gt (len .) 5 -}}
+                  &nbsp;&bull;&nbsp; {{ sub (len .) 5 }} more
+                  {{- end -}}
+                {{- end -}}
+              </span>
+              <h1 class="post-title-text">
+                <a href="{{ $.Permalink }}">{{- with $.Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ $.Title | markdownify }}</a>
+              </h1>
+            </div>
             {{ with $.Params.Description }}
               <div class="post-excerpt">{{ . }}</div>
             {{ end }}
-
-            <div class="post-info-2">
-              <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ or $.Params.Author $.Site.Params.Author.Name }}</a></span>
-              <span><i class="fa-solid fa-clock"></i> {{ $.Page.ReadingTime }} min</span>
-              <span><i class="fa-solid fa-clipboard"></i> {{ $.Page.WordCount | lang.FormatNumberCustom 0 }} words</span>
-              <span>
-                <i class="fa-solid fa-calendar-days"></i>
-                {{ if $.Site.Params.dateformNum }}
-                  {{ dateFormat $.Site.Params.dateformNum $.Date.Local }}
-                {{ else }}
-                  {{ dateFormat "2006-01-02" $.Date.Local }}
-                {{ end }}
-              </span>
-
-              {{ if $.Lastmod }}
-              {{ if not (eq $.Lastmod $.Date )}}
-                {{- if $.GitInfo }}
-                <span><a href="{{ $.Site.Params.gitUrl -}}/commits/main/content/{{ $.Page.File.Path }}" target="_blank" rel="noopener" aria-label="Latest git commit"><i class="fa-solid fa-code-commit"></i></a></span>
-                {{- end }}
-              {{ end }}
-              {{ end }}
-              {{ with $.Page.Store.Get "toot" }}
-                <span><a href="{{ .status.url }}" target="_blank" aria-label="Related Mastodon Post (for commenting)"><i class="fa-brands fa-mastodon"></i></a></span>
-              {{ end }}
-              <span><a href="{{ $.Permalink }}" onclick="navigator.clipboard.writeText('{{ $.Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
-            </div>
-          </div>
-          <div class="cover-background" style="--cover-image: url('{{ $cover.RelPermalink }}'); {{ $additionalStyles | safeCSS }}"></div>
-        </div>
-      {{- else -}}
-        <div class="cover-outer cover-{{ or .Params.CoverPosition "bottom" }}">
-          <div class="cover-inner">
-            <h1 class="post-title">
-              <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-            </h1>
-            {{ with .Params.Description }}
-              <div class="post-excerpt">{{ . }}</div>
-            {{ end }}
-
-            <div class="post-info-2">
-              <span><i class="fa-solid fa-user-circle"></i> <a href="/me/">{{ or .Params.Author .Site.Params.Author.Name }}</a></span>
-              <span><i class="fa-solid fa-clock"></i> {{ .Page.ReadingTime }} min</span>
-              <span><i class="fa-solid fa-clipboard"></i> {{ .Page.WordCount | lang.FormatNumberCustom 0 }} words</span>
-              <span>
-                <i class="fa-solid fa-calendar-days"></i>
-                {{ if .Site.Params.dateformNum }}
-                  {{ dateFormat .Site.Params.dateformNum .Date.Local }}
-                {{ else }}
-                  {{ dateFormat "2006-01-02" .Date.Local }}
-                {{ end }}
-              </span>
-              <span><a href="{{ .Permalink }}" onclick="navigator.clipboard.writeText('{{ .Permalink }}');" aria-label="Copy permalink to this post"><i class="fa-solid fa-link"></i></a></span>
-            </div>
           </div>
         </div>
-      {{- end }}
 
       <div class="post-inner">
-      <div class="post-info">
-        {{ partial "categories.html" . }}
-        {{ partial "tags.html" .Params.tags }}
-      </div>
 
       <article>
         {{- if .Params.toc }}
@@ -126,19 +214,9 @@
 
     <div class="main-wrapper">
       <div class="main-box">
-        <h3>About the Author</h3>
-          <div class="author-box-content">
-              <div class="author-box-image">
-                  {{- $image := resources.Get "images/me.png" -}}
-                  {{- with $image -}}
-                  {{- $profile := .Fill "150x150 Center" -}}
-                <img src="{{ $profile.RelPermalink }}" alt="A picture of {{ $.Site.Params.author.name }}" class="author-profile-image">
-                  {{- end -}}
-              </div>
-              <div class="author-box-text">
-                  <p>
-                      Hi, I'm <strong>{{ $.Site.Params.author.name }}</strong>. I'm a backend engineer doing a depth-first search into networking, Go, and internet infrastructure.
-                  </p>
+        <h3>Share this post</h3>
+          <div class="author-box-content" style="align-items: center; justify-content: center;">
+              <div class="author-box-text" style="width: 100%;">
                   {{- $url := .Permalink -}}
                   {{- if .Params.canonical_url -}}
                       {{- $url = .Params.canonical_url -}}
@@ -243,13 +321,5 @@
     </div>
   </main>
 
-  <div id="reading-progress"><div id="reading-progress-fill"></div></div>
-  <script type="text/javascript">
-  const readingProgress = document.querySelector('#reading-progress-fill');
-  const footerHeight = 250;
-  document.addEventListener('scroll', function(e) {
-    let w = (document.body.scrollTop || document.documentElement.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight - footerHeight) * 100;
-    readingProgress.style.setProperty('width', w + '%');
-  });
-</script>
+</div>
 {{ end }}

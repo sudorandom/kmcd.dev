@@ -1,18 +1,165 @@
 {{ define "main" }}
+    <div style="position: relative;">
+        <!-- Custom Minimap setup -->
+        <div id="minimap" class="hide-on-phone hide-on-tablet" style="position: fixed; top: 0; right: 0; width: 120px; height: 100%; z-index: 999; overflow: hidden; pointer-events: auto; opacity: 0.4; cursor: pointer;">
+            <div id="minimap-content" style="transform-origin: top left; pointer-events: none; width: 1000px;"></div>
+            <div id="minimap-viewport" style="position: absolute; top: 0; left: 0; width: 100%; background: rgba(150,150,150,0.2); border: 1px solid rgba(150,150,150,0.4); pointer-events: none;"></div>
+        </div>
+        <script>
+            window.addEventListener('load', function() {
+                var content = document.querySelector('main.post');
+                if (!content) return;
+                var clone = content.cloneNode(true);
+                
+                // Copy canvas contexts since cloneNode leaves them blank
+                function copyCanvases() {
+                    try {
+                        var origCanvases = content.querySelectorAll('canvas');
+                        var cloneCanvases = clone.querySelectorAll('canvas');
+                        for (var i = 0; i < origCanvases.length; i++) {
+                            if (origCanvases[i] && cloneCanvases[i] && origCanvases[i].width > 0 && origCanvases[i].height > 0) {
+                                var ctx = cloneCanvases[i].getContext('2d');
+                                if (ctx) {
+                                    ctx.clearRect(0, 0, cloneCanvases[i].width, cloneCanvases[i].height);
+                                    ctx.drawImage(origCanvases[i], 0, 0);
+                                }
+                            }
+                        }
+                    } catch(e) { console.warn('Minimap canvas sync error:', e); }
+                }
+                copyCanvases();
+                setTimeout(copyCanvases, 1000);
+                setTimeout(copyCanvases, 3000);
+                
+
+                var elementsWithIds = clone.querySelectorAll('[id]');
+                for (var i = 0; i < elementsWithIds.length; i++) {
+                    elementsWithIds[i].removeAttribute('id');
+                }
+                var minimapContent = document.getElementById('minimap-content');
+                minimapContent.appendChild(clone);
+                
+                var minimap = document.getElementById('minimap');
+                var viewport = document.getElementById('minimap-viewport');
+                
+                var currentScale = 1;
+                var currentMinimapScrollY = 0;
+                
+                function update() {
+                    minimapContent.style.width = content.clientWidth + 'px';
+                    var scale = minimap.clientWidth / content.clientWidth;
+                    currentScale = scale;
+                    
+                    var scrollY = window.scrollY;
+                    var windowHeight = window.innerHeight;
+                    var documentHeight = document.documentElement.scrollHeight;
+                    
+                    var scrollPercent = scrollY / (documentHeight - windowHeight);
+                    if (isNaN(scrollPercent)) scrollPercent = 0;
+                    if (scrollPercent > 1) scrollPercent = 1;
+                    if (scrollPercent < 0) scrollPercent = 0;
+                    
+                    var scaledHeight = minimapContent.scrollHeight * scale;
+                    var maxScroll = scaledHeight - minimap.clientHeight;
+                    if (maxScroll < 0) maxScroll = 0;
+                    
+                    var minimapScrollY = scrollPercent * maxScroll;
+                    currentMinimapScrollY = minimapScrollY;
+                    minimapContent.style.transform = 'translateY(-' + minimapScrollY + 'px) scale(' + scale + ')';
+                    
+                    var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
+                    var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
+                    if (viewportHeight > trackHeight) viewportHeight = trackHeight;
+                    viewport.style.height = viewportHeight + 'px';
+                    viewport.style.top = (scrollPercent * (trackHeight - viewportHeight)) + 'px';
+                }
+                
+                window.addEventListener('scroll', update);
+                window.addEventListener('resize', update);
+                setTimeout(update, 100);
+                setTimeout(update, 500);
+                
+                // Click and drag support
+                var isDragging = false;
+                
+                function scrollToMinimapY(clientY) {
+                    var rect = minimap.getBoundingClientRect();
+                    var clickY = clientY - rect.top;
+                    
+                    var windowHeight = window.innerHeight;
+                    var documentHeight = document.documentElement.scrollHeight;
+                    var scaledHeight = minimapContent.scrollHeight * currentScale;
+                    var trackHeight = scaledHeight < minimap.clientHeight ? scaledHeight : minimap.clientHeight;
+                    var viewportHeight = (windowHeight / documentHeight) * scaledHeight;
+                    if (viewportHeight > trackHeight) viewportHeight = trackHeight;
+                    
+                    if (trackHeight <= viewportHeight) return;
+                    
+                    var boxTop = clickY - viewportHeight / 2;
+                    if (boxTop < 0) boxTop = 0;
+                    if (boxTop > trackHeight - viewportHeight) boxTop = trackHeight - viewportHeight;
+                    
+                    var scrollPercent = boxTop / (trackHeight - viewportHeight);
+                    var targetScrollY = scrollPercent * (documentHeight - windowHeight);
+                    window.scrollTo({ top: targetScrollY, behavior: isDragging ? 'auto' : 'smooth' });
+                }
+                
+                minimap.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    scrollToMinimapY(e.clientY);
+                });
+                
+                window.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        e.preventDefault();
+                        scrollToMinimapY(e.clientY);
+                    }
+                });
+                
+                window.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+                
+                minimap.addEventListener('touchstart', function(e) {
+                    isDragging = true;
+                    if(e.touches.length > 0) scrollToMinimapY(e.touches[0].clientY);
+                }, {passive: true});
+                
+                window.addEventListener('touchmove', function(e) {
+                    if (isDragging && e.touches.length > 0) {
+                        scrollToMinimapY(e.touches[0].clientY);
+                    }
+                }, {passive: true});
+                
+                window.addEventListener('touchend', function() {
+                    isDragging = false;
+                });
+            });
+        </script>
     <main class="post">
         <article>
             {{if not .Params.hideTitle }}
-                <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
-                {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
-            {{ end }}
-
-            {{ if .Params.Cover }}
-                <figure>
-                    <img src="{{ .Params.Cover | absURL }}" alt="{{ .Title }}" />
-                    {{ if .Params.CoverCaption }}
-                        <figcaption class="center">{{ .Params.CoverCaption | markdownify }}</figcaption>
-                    {{ end }}
-                </figure>
+                <div class="post-title">
+                  <span class="post-meta">
+                    {{- with $.Date -}}
+                    {{ .Format "2006-01-02" }}
+                    {{- end }}
+                    {{- if or $.Page.WordCount $.Page.ReadingTime }}
+                    &nbsp;&bull;&nbsp; {{ $.Page.WordCount }} words
+                    &nbsp;&bull;&nbsp; {{ $.Page.ReadingTime }} minutes
+                    {{- end }}
+                    {{- with $.Params.tags -}}
+                      {{ range first 5 . }}
+                      &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                      {{ end }}
+                      {{- if gt (len .) 5 -}}
+                      &nbsp;&bull;&nbsp; {{ sub (len .) 5 }} more
+                      {{- end -}}
+                    {{- end -}}
+                  </span>
+                  <h1 class="post-title-text">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+                  {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
+                </div>
             {{ end }}
             
             {{ if .Params.toc }}
@@ -29,12 +176,10 @@
             </div>
         </article>
 
-        <div class="post-info">
-            {{ partial "tags.html" .Params.tags }}
-            {{ partial "categories.html" . }}
-  		</div>
+
 
         {{ partial "webmentions.html" . }}
     </main>
+    </div>
 
 {{ end }}

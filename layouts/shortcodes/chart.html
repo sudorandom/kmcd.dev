@@ -66,9 +66,49 @@ window.chartJsPromise.then((Chart) => {
 const ctx = document.getElementById('{{ $id }}');
 if (!ctx) return;
 const chartConfig = {{ .Inner | chomp | safeJS }};
+const isMobileWidth = window.innerWidth >= 600 ? false : true;
+if (!chartConfig.options) chartConfig.options = {};
+if (chartConfig.options.responsive === undefined) chartConfig.options.responsive = true;
+if (chartConfig.options.maintainAspectRatio === undefined) chartConfig.options.maintainAspectRatio = false;
+if (isMobileWidth && chartConfig.data && chartConfig.data.labels) {
+chartConfig.data.labels = chartConfig.data.labels.map(function(label) {
+if (typeof label === 'string') {
+return label
+.replace('google.protobuf.Value', 'g.p.Value')
+.replace('google.protobuf.Any', 'g.p.Any')
+.replace('google.protobuf.', 'g.p.');
+}
+return label;
+});
+}
+if (isMobileWidth) {
+if (!chartConfig.options.scales) chartConfig.options.scales = {};
+if (!chartConfig.options.scales.x) chartConfig.options.scales.x = {};
+if (!chartConfig.options.scales.x.ticks) chartConfig.options.scales.x.ticks = {};
+if (!chartConfig.options.scales.x.ticks.font) chartConfig.options.scales.x.ticks.font = {};
+chartConfig.options.scales.x.ticks.font.size = 10;
+if (!chartConfig.options.scales.y) chartConfig.options.scales.y = {};
+if (!chartConfig.options.scales.y.ticks) chartConfig.options.scales.y.ticks = {};
+if (!chartConfig.options.scales.y.ticks.font) chartConfig.options.scales.y.ticks.font = {};
+chartConfig.options.scales.y.ticks.font.size = 10;
+}
+function adjustHeight() {
+const isMobile = window.innerWidth >= 600 ? false : true;
+const barCount = (chartConfig.data && chartConfig.data.labels) ? chartConfig.data.labels.length : 0;
+let chartHeight = 350;
+if (chartConfig.type === 'bar' && chartConfig.options.indexAxis === 'y') {
+const heightPerBar = isMobile ? 35 : 30;
+const extraPadding = isMobile ? 130 : 100;
+chartHeight = Math.max(300, (barCount * heightPerBar) + extraPadding);
+} else {
+chartHeight = isMobile ? 320 : 380;
+}
+ctx.parentElement.style.height = chartHeight + 'px';
+}
+adjustHeight();
+window.addEventListener('resize', adjustHeight);
 if (chartConfig.options && chartConfig.options.plugins && chartConfig.options.plugins.legend && chartConfig.options.plugins.legend.customLegend) { const customItems = chartConfig.options.plugins.legend.customLegend; chartConfig.options.plugins.legend.labels = chartConfig.options.plugins.legend.labels || {}; chartConfig.options.plugins.legend.labels.generateLabels = function(chart) { return customItems.map(function(item) { return { text: item.text, fillStyle: item.color, strokeStyle: item.color, lineWidth: 1, hidden: false, fontColor: '#ffffff', color: '#ffffff' }; }); }; chartConfig.options.plugins.legend.onClick = function() {}; }
 const colors = getThemeColors();
-if (!chartConfig.options) chartConfig.options = {};
 applyThemeToOptions(chartConfig.options, colors);
 const customLabelPlugin = {
 id: 'customLabelPlugin',
@@ -86,7 +126,8 @@ if (bar && typeof bar.x === 'number' && chart.isDatasetVisible(datasetIndex)) {
 ctx.fillStyle = '#ffffff';
 ctx.textAlign = 'left';
 ctx.textBaseline = 'middle';
-ctx.font = 'bold 11px sans-serif';
+const isMobile = window.innerWidth >= 600 ? false : true;
+ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 11px sans-serif';
 let text = value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 if (unit) {
 text += ' ' + unit;
@@ -108,8 +149,7 @@ chartConfig.plugins = chartConfig.plugins || [];
 chartConfig.plugins.push(customLabelPlugin);
 if (!chartConfig.options.scales) chartConfig.options.scales = {};
 if (!chartConfig.options.scales.x) chartConfig.options.scales.x = {};
-chartConfig.options.scales.x.grace = '15%';
-{{- /* Always sort bar charts by performance unless sort="false" is explicitly set */ -}}
+chartConfig.options.scales.x.grace = isMobileWidth ? '25%' : '15%';
 const canvasEl = ctx;
 const sortAttr = canvasEl.getAttribute('data-sort');
 if (sortAttr !== 'false' && chartConfig.type === 'bar' && chartConfig.data && chartConfig.data.datasets && chartConfig.data.datasets[0]) {

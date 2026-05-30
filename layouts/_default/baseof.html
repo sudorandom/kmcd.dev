@@ -5,19 +5,29 @@
     </head>
 
     {{ block "body" . }}
-        <body>
+        {{ $bgImage := "" }}
+        {{ if .Site.Params.backgroundImage }}
+            {{ $img := resources.Get .Site.Params.backgroundImage }}
+            {{ if $img }}
+                {{ $bgImage = $img.Permalink }}
+            {{ end }}
+        {{ end }}
+        <body class="page-{{ .Type }}"{{ if $bgImage }} style="--bg-image: url('{{ $bgImage }}');"{{ end }}>
     {{ end }}
     
-        <div class="container">
-            {{ partial "header.html" . }}
+        <div class="sidebar">
+            <div class="sidebar-sticky" style="position: relative;">
 
-            <div class="content">
-                {{ block "main" . }}{{ end }}
+
+                {{ partial "header.html" . }}
+
+                {{ block "footer" . }}
+                    {{ partial "footer.html" . }}
+                {{ end }}
             </div>
-
-            {{ block "footer" . }}
-                {{ partial "footer.html" . }}
-            {{ end }}
+        </div>
+        <div class="content container">
+            {{ block "main" . }}{{ end }}
         </div>
 
         {{ partial "javascript.html" . }}

@@ -2,8 +2,9 @@
 
 /* Light theme color */
 $light-background: #fafafa;
+$light-sidebar-background: #e0e0e0;
 $light-background-secondary: #e0e0e0;
-$light-background-header: #ececec;
+$light-background-header: #e0e0e0;
 $light-color: #222;
 $light-color-variant: black;
 $light-color-secondary: #999;
@@ -11,10 +12,10 @@ $light-border-color: #dcdcdc;
 $light-table-color: #dcdcdc;
 
 /* Dark theme colors */
-// https://www.colorhexa.com/1f2a35
-$dark-background: #283745;
+$dark-background: #161e26;
+$dark-sidebar-background: #0d1217;
 $dark-background-secondary: #3b5065;
-$dark-background-header: #1f2a35;
+$dark-background-header: #0d1217;
 $dark-color: white;
 $dark-color-variant: white;
 $dark-color-secondary: #a2a2dd;
@@ -23,6 +24,7 @@ $dark-table-color: #3e3e53;
 
 $media-size-phone: "(max-width: 684px)";
 $media-size-tablet: "(max-width: 900px)";
+$media-size-laptop: "(max-width: 1200px)";
 
 /* Variables for js, must be the same as these in @custom-media queries */
 :root {

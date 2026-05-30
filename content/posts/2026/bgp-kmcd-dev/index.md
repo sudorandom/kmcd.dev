@@ -16,14 +16,14 @@ canonical_url: https://kmcd.dev/posts/bgp-kmcd-dev/
 
 Before we get into the weeds of how this was built, go check out [bgp.kmcd.dev](https://bgp.kmcd.dev) right now. Play around with the interactive elements:
 
-[{{< image src="logo.png" width="500px" class="center" >}}](https://bgp.kmcd.dev)
+[{{< image src="logo.png" width="500px" class="center" alt="bgp.kmcd.dev logo" >}}](https://bgp.kmcd.dev)
 
 * **Learn about BGP through interactive diagrams**
 * **Try the RPKI safety test.** You might not like what you find about your own ISP's routing security.
 
 Once you have a feel for it, come back here. Or don't. I'm not your dad or anything.
 
-### The Ultimate Interview Question
+## The Ultimate Interview Question
 
 My favorite interview question for software engineers is wonderfully simple: *"How does the internet work?"*
 

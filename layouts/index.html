@@ -1,11 +1,3 @@
-{{ define "body" }}
-    {{ $bgImage := (resources.Get .Site.Params.backgroundImage).Fit "2000x2000 webp" | resources.Fingerprint }}
-    {{ if .Site.Params.backgroundEffects }}
-    <body class="{{ if .Site.Params.backgroundImage }} bg" style="background-image: url('{{ $bgImage.Permalink }}'); background-repeat: repeat; background-size: auto;" {{ else }}"{{ end }}>
-    {{ else }}
-    <body class="{{ if .Site.Params.backgroundImage }} background-image" style="background-image: url('{{ $bgImage.Permalink }}');" {{ else }}"{{ end }}>
-    {{ end }}
-{{ end }}
 
 {{ define "main" }}
     <main role="main">
@@ -15,6 +7,82 @@
                 {{ . }}
             {{ end }}
         </div>
+
+
+        <!-- Start Posts -->
+        {{ if .Site.Params.showPosts }}
+            {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
+            {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
+            {{ $PageContext := . }}
+            {{ if .IsHome }}
+                {{ $PageContext = .Site }}
+            {{ end }}
+            
+            <div class="main-heading">
+                <div class="posts-header section-title">
+                    <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
+                </div>
+            </div>
+
+            <div class="posts-list">
+                {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+                <div class="post-preview on-list">
+                    <div class="post-title">
+                        <span class="post-meta">
+                            {{- with .Date -}}
+                            {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
+                            {{- end }}
+                            &nbsp;&bull;&nbsp; {{ .WordCount }} words
+                            &nbsp;&bull;&nbsp; {{ .ReadingTime }} minutes
+                            {{- with .Params.tags -}}
+                                {{ range first 5 . }}
+                                &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                {{ end }}
+                                {{- if gt (len .) 5 -}}
+                                &nbsp;&bull;&nbsp; {{ sub (len .) 5 }} more
+                                {{- end -}}
+                            {{- end -}}
+                        </span>
+                        <h1>
+                            <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+                        </h1>
+                    </div>
+                    <div class="post post-summary" onclick="location.href='{{ .Permalink }}'" style="cursor: pointer;">
+                        {{ .Content }}
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+
+            <div class="main-heading">
+                <div class="posts-header section-title">
+                    <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
+                </div>
+            </div>
+
+            <div class="posts-list">
+                {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
+                <div class="post-preview on-list">
+                    <div class="post-title">
+                        <span class="post-meta">
+                            {{- with .Date -}}
+                            <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
+                            {{- end }}
+                            <small class="reading-time"> &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read</small>
+                        </span>
+                        <h1>
+                            <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
+                        </h1>
+                    </div>
+                    <div class="post post-summary" onclick="location.href='{{ .Permalink }}'" style="cursor: pointer;">
+                        {{ .Content }}
+                    </div>
+                </div>
+                {{ end }}
+                <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
+                    Check out the archive for more.
+                </div>
+            </div>
 
         <div class="main-heading">
             <div class="posts-header section-title">
@@ -69,134 +137,6 @@
                 {{ end }}
             </div>
         </div>
-
-        <!-- Start Posts -->
-        {{ if .Site.Params.showPosts }}
-            {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
-            {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
-            {{ $PageContext := . }}
-            {{ if .IsHome }}
-                {{ $PageContext = .Site }}
-            {{ end }}
-            
-            <div class="main-heading">
-                <div class="posts-header section-title">
-                    <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
-                </div>
-
-                {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
-                {{ $coverURL := "" }}
-                {{ if .Params.cover }}
-                    {{ $res := .Resources.GetMatch .Params.cover }}
-                    {{ if $res }}
-                        {{ if eq $res.MediaType.SubType "svg" }}
-                            {{ $coverURL = $res.Permalink }}
-                        {{ else }}
-                            {{ $coverURL = ($res.Fill "1000x400 webp").Permalink }}
-                        {{ end }}
-                    {{ end }}
-                {{ end }}
-                <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                    <div class="post-card-wrapper">
-                        {{ $image := "" }}
-                        {{ if .Params.cover }}
-                            {{ $res := .Resources.GetMatch .Params.cover }}
-                            {{ if $res }}
-                                {{ if eq $res.MediaType.SubType "svg" }}
-                                    {{ $image = $res }}
-                                {{ else }}
-                                    {{ $image = $res.Fill "150x150 webp" }}
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-                        
-                        {{ if $image }}
-                            <img src="{{ $image.Permalink }}" alt="{{ .Title }}" class="post-thumbnail">
-                        {{ end }}
-
-                        <div class="post-card-content">
-                            <h3>
-                                <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                            </h3>
-                            <div class="post-meta">
-                                {{- with .Date -}}
-                                <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                                {{- end -}}
-                                <small class="reading-time">{{ .ReadingTime }} min read</small>
-                            </div>
-                            <div class="post-summary">
-                                {{ or .Description .Summary | truncate 200 }}
-                            </div>
-                            <div class="post-tags">
-                                {{ with .Params.tags }}
-                                    {{ range first 5 . }}
-                                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
-                                    {{ end }}
-                                {{ end }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{ end }}
-            </div>
-
-            <div class="main-heading">
-                <div class="posts-header section-title">
-                    <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
-                </div>
-
-                {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
-                {{ $coverURL := "" }}
-                {{ if .Params.cover }}
-                    {{ $res := .Resources.GetMatch .Params.cover }}
-                    {{ if $res }}
-                        {{ if eq $res.MediaType.SubType "svg" }}
-                            {{ $coverURL = $res.Permalink }}
-                        {{ else }}
-                            {{ $coverURL = ($res.Fill "1000x400 webp").Permalink }}
-                        {{ end }}
-                    {{ end }}
-                {{ end }}
-                <div class="post on-list" onclick="location.href='{{ .Permalink }}'">
-                    <div class="post-card-wrapper">
-                        {{ $image := "" }}
-                        {{ if .Params.cover }}
-                            {{ $res := .Resources.GetMatch .Params.cover }}
-                            {{ if $res }}
-                                {{ if eq $res.MediaType.SubType "svg" }}
-                                    {{ $image = $res }}
-                                {{ else }}
-                                    {{ $image = $res.Fill "150x150 webp" }}
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-                        
-                        {{ if $image }}
-                            <img src="{{ $image.Permalink }}" alt="{{ .Title }}" class="post-thumbnail">
-                        {{ end }}
-
-                        <div class="post-card-content">
-                            <h3>
-                                <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                            </h3>
-                            <div class="post-summary">
-                                {{ or .Description .Summary | truncate 150 }}
-                            </div>
-                            <div class="post-tags">
-                                {{ with .Params.tags }}
-                                    {{ range first 5 . }}
-                                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
-                                    {{ end }}
-                                {{ end }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{ end }}
-                <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
-                    Check out the archive for more.
-                </div>
-            </div>
         {{ end }}
         <!-- End Posts -->
         </div>

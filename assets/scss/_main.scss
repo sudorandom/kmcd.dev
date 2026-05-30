@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 *,
@@ -486,6 +486,12 @@ hr {
   }
 }
 
+.hide-on-laptop {
+  @media #{$media-size-laptop} {
+    display: none !important;
+  }
+}
+
 // Accessibility
 .screen-reader-text {
   border: 0;
@@ -655,6 +661,9 @@ ul.icons li a:active {
 }
 
 .chart {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 10px 10px 10px 20px;
   border-radius: 8px;
@@ -665,6 +674,9 @@ ul.icons li a:active {
 }
 
 .chart-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
   margin: 25px auto;
   max-width: 100%;
 }

@@ -2,7 +2,18 @@
     <span class="page-header__inner">
         {{ partial "logo.html" . }}
 
+        <div class="sidebar-about" style="text-align: center; width: 100%; margin: 1.5rem 0;">
+          {{- $image := resources.Get "images/me.png" -}}
+          {{- if $image -}}
+          {{- $profile := $image.Fill "256x256 Center" -}}
+          <a href="/">
+            <img class="sidebar-profile-img" src="{{ $profile.RelPermalink }}" alt="A picture of {{ $.Site.Params.author.name }}" width="120" height="120">
+          </a>
+          {{- end -}}
+        </div>
+
         <span class="page-header__right">
+
             {{ if len .Site.Menus }}
                 {{ partial "menu.html" . }}
                 <span class="menu-trigger">
@@ -12,7 +23,6 @@
                     </svg>
                 </span>
             {{ end }}
-
             {{- if .Site.Params.EnableThemeToggle }}
                 <span class="theme-toggle not-selectable">{{ partial "theme-toggle-icon.html" . }}</span>
             {{- end}}
