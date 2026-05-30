@@ -25,7 +25,7 @@ Imagine a real-world scenario where the backend team renames a `userId` field to
 
 This is where **contract-based APIs** come in. A contract-based API is one where the schema is defined first in a formal specification, and both client and server are generated or validated against that contract. They reduce ambiguity and enforce consistency across services.
 
-### The Power of Pre-defined API Contracts
+## The Power of Pre-defined API Contracts
 
 A contract-based API defines exactly what data can be exchanged, in what format, and what actions can be performed. This strict, pre-defined agreement unlocks several immediate advantages:
 
@@ -35,7 +35,7 @@ A contract-based API defines exactly what data can be exchanged, in what format,
 * **Easier Integration:** Contracts act as a single source of truth. Developers can quickly understand how to interact with the API without extensive back and forth communication.
 * **Streamlined Development:** These APIs often enable tools to automatically generate code for both client and server implementations. This eliminates manual boilerplate so you can focus on core logic.
 
-### Protobuf: The Language of APIs
+## Protobuf: The Language of APIs
 
 In modern distributed systems, the foundation of many contract-based APIs lies in [**Protocol Buffers (protobuf)**](https://protobuf.dev/). It is a language-neutral data format specifically designed for structured messages. 
 
@@ -72,11 +72,11 @@ In this example, the `User` message has fields for name, ID, email, and an `Addr
 
 > **Key idea:** Protobuf relies on immutable field numbers instead of field names. This golden rule guarantees backward and forward compatibility.
 
-### gRPC: Building APIs on a Solid Foundation
+## gRPC: Building APIs on a Solid Foundation
 
 **gRPC (gRPC Remote Procedure Call)** is a high-performance framework that builds upon protobuf's strengths. It provides a powerful way to implement remote procedure calls, allowing applications to interact using clients generated for each language. 
 
-#### Introducing Services and Request/Response Types with gRPC
+### Introducing Services and Request/Response Types with gRPC
 
 We can expand the `.proto` file to define a service called `UserService` with methods for user management:
 
@@ -105,10 +105,10 @@ Notice how clear the intention is. A helpful mental model to contrast modern API
 
 A reader of this spec does not have to map vague HTTP verbs like "POST" to actions like "create." Also, these method names are [greppable](https://en.wiktionary.org/wiki/greppable). It is trivial to locate every use of `CreateUser` across several repositories, making refactoring and impact analysis much easier.
 
-#### Server Reflection
+### Server Reflection
 Another powerful feature of the gRPC ecosystem is **Server Reflection**. This allows clients or debugging tools (like Postman or grpcurl) to query the server at runtime to discover the available services and methods. This eliminates the need to distribute `.proto` files to developers just so they can explore the API structure.
 
-### Distributing API Contracts
+## Distributing API Contracts
 
 Defining a contract is only half the battle. How do the frontend and backend teams actually share that `.proto` file? If the schema is not easily accessible, the contract is useless.
 
@@ -117,7 +117,7 @@ In practice, teams usually solve this distribution problem in one of three ways:
 2.  **Package Managers:** Generating the client SDKs in a CI/CD pipeline and publishing them as internal NPM, Maven, or Go packages.
 3.  **Schema Registries:** Using dedicated tools like the [Buf Schema Registry](https://buf.build/) to manage, version, and distribute Protobuf files securely across an organization.
 
-### What about public APIs?
+## What about public APIs?
 
 Historically, strict RPC contracts were tough for external, public-facing APIs. If your primary consumers were third-party developers, handing them a raw Protobuf file or expecting them to set up gRPC clients caused massive friction. They just wanted to use standard REST with JSON. 
 

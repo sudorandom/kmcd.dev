@@ -60,9 +60,7 @@
     {{ end }}
 
     <img src="{{ $finalSrc }}"
-         {{- if or (.Get "alt") (.Get "caption") }}
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
-         {{- end -}}
          {{- with $imgWidth }} width="{{ . }}"{{ end -}}
          {{- with $imgHeight }} height="{{ . }}"{{ end -}}
          {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}

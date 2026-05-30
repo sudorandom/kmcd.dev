@@ -25,7 +25,7 @@ The result is a concept I call "Logical Dominance." Each city’s dominance is c
 {{< compare before="map_dark.svg" after="map_light.svg" caption="Internet Infrastructure Map (2026) @ **[map.kmcd.dev](https://map.kmcd.dev)**" >}}
 {{< /diagram >}}
 
-### How the Internet Routes Traffic
+## How the Internet Routes Traffic
 
 Previous versions of the map focused on physical infrastructure: cables and exchange points. The physical path is only half the story. To understand how data moves, we have to look at **BGP (Border Gateway Protocol)**.
 
@@ -90,11 +90,11 @@ AS12552 -> Destination
 
 In this state, the route from `Router` -> `Netstream (AS8283)` -> `Google (AS15169)` was chosen, at least for now. The underlying routes of the global Internet change thousands of times per second, constantly reshaping the topology.
 
-#### Sources of BGP Data
+### Sources of BGP Data
 
 To visualize this layer, we need access to routing tables. I explored three ways to get this data, each with its own trade-offs between real-time visibility and historical context.
 
-#### Query a Looking Glass
+### Query a Looking Glass
 
 We can connect to public routers via projects like [University of Oregon Route Views](http://www.routeviews.org/). These allow you to telnet in and run standard CLI commands like `show ip bgp` to see exactly what a backbone router sees. 
 
@@ -104,7 +104,7 @@ We can connect to public routers via projects like [University of Oregon Route V
 
 These paths often carry metadata called **BGP Communities**. These are optional tags that networks use to signal things like geographic origin or peering policy. While perfect for debugging today’s Internet, this approach lacks historical context; you can’t telnet into 2012 to check a routing table from 14 years ago.
 
-#### Subscribe to a Stream
+### Subscribe to a Stream
 
 For real-time views, services like **RIPE RIS Live** aggregate BGP data from global collectors and stream it over a public WebSocket. You can watch the Internet "breathe" as routes are announced and withdrawn thousands of times per second. This is fascinating for a live dashboard, but useless for backfilling history.
 
@@ -118,7 +118,7 @@ The output looks like this:
 {{% render-code file="go/stream_bgp/output.txt" language="shell" %}}
 {{< /details-md >}}
 
-#### Download Historical Snapshots
+### Download Historical Snapshots
 
 To build the historical model, I processed raw **RIB (Routing Information Base)** files. These are snapshots of the entire routing table as seen by a backbone router at a specific moment in time. Because BGP is a "chatter" protocol that only announces changes, these full table dumps are essential for reconstructing the state of the Internet at any point in the past.
 
@@ -131,22 +131,22 @@ Other excellent resources for this kind of data include:
 
 ---
 
-### How BGP Shapes the Global Internet Map
+## How BGP Shapes the Global Internet Map
 
 For this edition, I processed over 15 years of BGP snapshots and PeeringDB archives to build the Logical Dominance model. Reconstructing this history was easily the hardest part of the project. I quickly realized that reliable archival data for physical peering effectively vanishes before 2010, which set a hard limit on how far back I could take the timeline.
 
-#### Defining Logical Dominance
+### Defining Logical Dominance
 
 Logical Dominance is calculated by summing the number of unique IPv4 addresses originated by an ASN and attributed to a given city. Overlapping prefixes are deduplicated using longest-prefix normalization so that no address space is counted twice.
 
-#### The Scaling Problem: Why not IPv6?
+### The Scaling Problem: Why not IPv6?
 You might notice this model focuses entirely on IPv4. While IPv6 is the future of the protocol, its sheer scale currently breaks the "Logical Dominance" math. I measure dominance by counting unique IP addresses; if I treated IPv4 and IPv6 as equals, the numbers wouldn't just be skewed; they’d be nonsensical.
 
 Consider the math: The smallest standard IPv6 assignment is a `/64`. That single subnet contains `18,446,744,073,709,551,616` addresses. You could fit the entire global IPv4 routing table (`4,294,967,296` addresses) inside that one subnet **4.3 billion times over**.
 
 If I treated every IP equally, a single residential IPv6 connection would statistically obliterate a city hosting the entire legacy IPv4 Internet. Until I develop a weighted model for IPv6, perhaps based on prefix density rather than raw address count, IPv4 remains the only way to compare global "weight" on a 1:1 scale.
 
-#### Finding the Truth in the Noise
+### Finding the Truth in the Noise
 
 Mapping a BGP prefix to a specific city is more difficult than you may think. A subnet might be registered to a corporate HQ but serve users thousands of miles away. To solve this, I built a prioritized "waterfall" of attribution logic. I check sources in order of reliability, stopping as soon as I find a match:
 
@@ -160,15 +160,15 @@ This approach ensures that accurate, granular data (like a specific cloud region
 
 Building this pipeline presented unique engineering hurdles; here are the most significant ones:
 
-#### The Local Cache
+### The Local Cache
 
 Downloading 15 years of archives is slow. I threw together a quick file-based cache to avoid hitting the network repeatedly. It was the simplest code I wrote but easily the most valuable, turning 30-minute download waits into near-instant local reads.
 
-#### RAM remains stubbornly finite
+### RAM remains stubbornly finite
 
 Loading millions of IP prefixes, WHOIS records, PeeringDB entries, and their associated metadata into a standard in-memory map consumes gigabytes of RAM instantly. Frustratingly, my laptop only has so much. To avoid out-of-memory errors I built a custom **on-disk [trie data structure](https://en.wikipedia.org/wiki/Trie)** using [**BadgerDB v4**](https://github.com/dgraph-io/badger), which is a Go KV store built on an LSM tree, which makes IP prefix lookups very efficient. I might show it off in a later blog post after I clean it up a little bit. By using IP prefixes as keys in a sorted KV store, I can perform efficient longest-prefix matching directly against the disk.
 
-#### Cleaning Up the Spaghetti
+### Cleaning Up the Spaghetti
 
 While investigating all of these different data sources, I ended up writing several programs that generated output of different shapes that would be used by other programs. It all made sense to me at the time but it spiraled out of control into a confusing mess. Now, I have one script for generating this city data. I was only able to do this because of the improvements mentioned above: caching and using on-disk data structures. Now, the script has clear stages of:
 
@@ -177,7 +177,7 @@ While investigating all of these different data sources, I ended up writing seve
 - **Process:** Scans BGP routes and attributes each prefix using the various data sources mentioned above.
 - **Output:** Produces clean, normalized city results without duplicate entries (e.g., merging "Seoul" and "SEOUL").
 
-### What Changed When IP Dominance Was Added
+## What Changed When IP Dominance Was Added
 
 When I layered IP dominance onto the physical map, many additional cities became visible.
 
@@ -191,13 +191,13 @@ The physical meeting points of networks only tell us a part of the story. The gl
 
 {{< compare before="eu_before.svg" after="eu_after.svg" caption="Europe on the map ([before](https://map.kmcd.dev/?lat=48.9108&lng=10.1420&z=5.50&year=2026&cables=0&peering=1&ips=0) and [after](https://map.kmcd.dev/?lat=48.9108&lng=10.1420&z=5.50&year=2026&cables=0&peering=1&ips=1) adding BGP data)." >}}
 
-#### The Chinese Internet
+### The Chinese Internet
 
 The Chinese internet is giant, but it presents a unique attribution challenge. Because so much of China’s domestic routing remains internal to national carriers, the global BGP table often only sees these massive networks when they peer at international hubs like Hong Kong, Los Angeles, or Frankfurt. An earlier version of my attribution code ended up adding all of China's IP space to these select few international hubs, which was clearly incorrect. It looked like China Telecom was the biggest ISP in Germany, which made it appear that China Telecom dominated Germany. It does not, at least not yet. To fix this, I implemented specific logic for China-based networks. I used pattern matching to parse provincial hints from APNIC WHOIS data. This mapped prefixes like `GD` or `SH` to their respective provincial capitals. I also linked ASNs to their parent organizations in PeeringDB to prevent Chinese networks from being misattributed to foreign exchange points. This resolved attribution for the vast majority of prefixes. Any remaining IP space attributed only at the country level is distributed across major domestic hubs.
 
 The result is a far more realistic view of China’s internal internet topology.
 
-#### Ghost Networks and Spurious ASNs
+### Ghost Networks and Spurious ASNs
 
 Not every entry in the global routing table represents a real network with a physical footprint. While investigating the data, I found several "spurious" Autonomous Systems that I had to filter out to keep the map accurate.
 
@@ -212,10 +212,10 @@ I also built a blocklist to ignore other non-geographic entities:
 
 By explicitly ignoring these, the resulting map represents the actual commercial Internet rather than the administrative database of the Internet.
 
-### UX and Rendering
+## UX and Rendering
 In addition to adding more data to the map, I've also made several improvements to the map itself.
 
-#### Dynamic Cluster Grouping
+### Dynamic Cluster Grouping
 Layering BGP data onto an already complex physical map created a major design challenge: **information density**. With hundreds of new cities "lighting up" globally, the map became significantly cluttered when zoomed out.
 
 To solve this, I implemented **Dynamic Cluster Grouping**. Close-by cities now group together into aggregate hubs at low zoom levels, which then split into individual markers as you zoom in. This isn't just a visual fix; by reducing the number of active SVG shapes in the DOM, it significantly improves panning performance on mobile devices.
@@ -228,28 +228,28 @@ Dynamic Cluster Grouping ensures the map remains legible, preventing the increas
 
 {{< diagram >}}{{< image src="group-screenshot.png" class="center" width="500px" >}}{{< /diagram >}}
 
-#### Viewport Culling
+### Viewport Culling
 
 I also introduced **Viewport Culling**. The map now only renders assets currently within your bounds. As you pan to a new region, cities "pop in" dynamically, ensuring the browser isn't wasting resources on rendering things on the other side of the planet.
 
-#### Updates to City Sizing
+### Updates to City Sizing
 
 The visual size of cities on the map also now dynamically reflects their importance. Previously, cities were sized based only on their relative peering bandwidth. Now, their size depends on a weighted combination of aggregate peering bandwidth and IP dominance, contributing 80% and 20% to the size calculation respectively. Although this ratio is arbitrary and was picked for aesthetic reasons, peering bandwidth is a stronger signal of real traffic concentration than raw IP space alone, so I think it should be emphasized significantly more.
 
-#### Enable/disable layers
+### Enable/disable layers
 
 Now, the map can be sliced into three layers: Cables, peering bandwidth, and IP allocations. There are controls that allow you to show or hide each of these layers individually.
 
 {{< diagram >}}{{< image src="menu-screenshot.png" class="center" width="500px" >}}{{< /diagram >}}
 
-#### Permalinks
+### Permalinks
 I also added permalinks to make the map state fully shareable. The URL now encodes the current latitude, longitude, zoom level, selected year, and active text filters. If you zoom into Southeast Asia in 2016 and search for "Singapore", that exact view can be copied and shared. The resulting link will look like this:
 
 > https://map.kmcd.dev/?lat=3.1625&lng=103.4033&z=5.00&year=2016&q=singapore
 
 ...which will show exactly how *amazingly* connected Singapore is when others click on it.
 
-#### Better Exports
+### Better Exports
 
 One of the most requested features for the map has been a way to export the current view for use in presentations, reports, posters, or just as a high-quality wallpaper.
 
@@ -257,7 +257,7 @@ Previously, I was using a standard Leaflet plugin for this, but it was not great
 
 Now there's a new export button that renders an isolated SVG. Because the map itself is built on SVGs, this new export method is lossless. It respects your current zoom level and position, allowing you to focus on a specific region and generate an incredibly high-quality vector file that you can scale to any size without losing a single pixel of detail. Most images in this post were generated using this new export feature.
 
-#### Show Me the Data
+### Show Me the Data
 
 Another one of the biggest requests I've had in previous years is for access to the raw data behind the visualizations. For the 2026 edition, I have exposed the underlying JSON datasets that power the map. These files are curated from **TeleGeography** (for modern cables), **PeeringDB** (for IXPs), and historical data is curated from various sources including **submarinenetworks.com** and archived maps.
 
@@ -268,7 +268,7 @@ You can access these directly to build your own visualizations, analyze the grow
 - [`city-dominance/{year}.json`](https://map.kmcd.dev/data/city-dominance/2026.json): Per-year JSON files (e.g., 2026.json) with detailed city-level peering capacity, regional information, and coordinates. Used for rendering city markers and calculating regional statistics.
 - [`meta.json`](https://map.kmcd.dev/data/meta.json): Metadata including the minimum and maximum years covered by the visualization.
 
-### See You Next Year
+## See You Next Year
 
 You might ask why I burned so much time manually attributing IP space when services like [MaxMind](https://www.maxmind.com) or [IPInfo](https://ipinfo.io/) already exist. The honest answer? Buying the data isn't fun. The joy of this project comes from the archaeology and the work involved in bringing order to chaotic and disjointed datasets and transforming them into something beautiful.
 
