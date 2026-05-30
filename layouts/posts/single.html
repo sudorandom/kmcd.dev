@@ -110,11 +110,12 @@
                     }
                     currentMinimapScrollY = minimapScrollY;
                     
-                    var isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark' || 
-                                     (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                    var theme = document.documentElement.getAttribute('data-theme');
+                    var isDarkMode = theme === 'dark' || 
+                                     (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
                     
-                    var textCol = isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)';
-                    var blockCol = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
+                    var textCol = isDarkMode ? 'rgba(255, 255, 255, 0.15)' : '#d0d0d0';
+                    var blockCol = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : '#e5e5e5';
                     var headingCol = isDarkMode ? 'rgba(45, 212, 191, 0.7)' : 'rgba(0, 122, 120, 0.6)';
                     var mediaCol = isDarkMode ? 'rgba(129, 140, 248, 0.4)' : 'rgba(79, 70, 229, 0.35)';
                     
