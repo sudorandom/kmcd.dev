@@ -162,16 +162,16 @@ To evaluate performance across different serialization models, I compared the fo
 | **google.protobuf.Value (JSONProto)** | JSON | Serializes dynamic [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) payloads into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Any (JSONProto)** | JSON | Serializes polymorphic [`google.protobuf.Any`](https://protobuf.dev/reference/protobuf/google.protobuf/#any) wrappers into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 
-> **A Note on `Any` vs `Value`:**
-> `Any` and `Value` solve fundamentally different problems. `Any` is not a schema-less alternative; it is a schema-dispatch mechanism. `Any` assumes a schema exists and the consumer knows it, while `Value` assumes no schema exists at all. The comparison is useful because teams often reach for `Value` when their actual requirement is polymorphism rather than truly schema-less data.
+**A Note on `Any` vs `Value`:**
+`Any` and `Value` solve fundamentally different problems. `Any` is not a schema-less alternative; it is a schema-dispatch mechanism. `Any` assumes a schema exists and the consumer knows it, while `Value` assumes no schema exists at all. The comparison is useful because teams often reach for `Value` when their actual requirement is polymorphism rather than truly schema-less data.
 
-> **A Note on Payload Decoding in Benchmarks:**
-> To ensure a fair, apples-to-apples performance comparison, the unmarshaling benchmarks for all variants fully deserialize both the outer envelope and the inner dynamic/polymorphic payloads:
-> * In the **`google.protobuf.Any`** benchmark, the payload is not left as raw bytes; it is fully unpacked into a concrete statically-compiled Go struct using `anypb.UnmarshalTo()`.
-> * In the **`Protobuf + JSON`** benchmark, the inner JSON string is not left unparsed; it is fully deserialized into a concrete Go struct using standard `json.Unmarshal()`.
-> * In the **`google.protobuf.Value`** benchmark, the payload is fully parsed into a tree of Go objects representing the JSON-like data.
->
-> Importantly, in real-world applications, both `google.protobuf.Any` and opaque `Protobuf + JSON` packaging allow you to bypass this inner parsing entirely on intermediate routing nodes (deferred/lazy parsing). This is a significant architectural advantage if intermediate services only need to forward or store the payload without inspecting it. However, to maintain a level playing field and measure the actual parsing cost, these benchmarks force full decoding.
+**A Note on Payload Decoding in Benchmarks:**
+To ensure a fair, apples-to-apples performance comparison, the unmarshaling benchmarks for all variants fully deserialize both the outer envelope and the inner dynamic/polymorphic payloads:
+* In the **`google.protobuf.Any`** benchmark, the payload is not left as raw bytes; it is fully unpacked into a concrete statically-compiled Go struct using `anypb.UnmarshalTo()`.
+* In the **`Protobuf + JSON`** benchmark, the inner JSON string is not left unparsed; it is fully deserialized into a concrete Go struct using standard `json.Unmarshal()`.
+* In the **`google.protobuf.Value`** benchmark, the payload is fully parsed into a tree of Go objects representing the JSON-like data.
+
+Importantly, in real-world applications, both `google.protobuf.Any` and opaque `Protobuf + JSON` packaging allow you to bypass this inner parsing entirely on intermediate routing nodes (deferred/lazy parsing). This is a significant architectural advantage if intermediate services only need to forward or store the payload without inspecting it. However, to maintain a level playing field and measure the actual parsing cost, these benchmarks force full decoding.
 
 To handle arbitrary data, the dynamic Protobuf configurations rely on standard `structpb` definitions:
 
@@ -190,13 +190,13 @@ message EventEnvelope {
 
 ### Benchmark Disclaimer and Workload Caveats
 
-> As with all performance testing, microbenchmarks should be taken with a grain of salt. Actual performance will vary depending on your specific hardware, operating system, compiler version, garbage collection settings, and payload structure. Workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go's map lookup and insertion overhead. Deeply nested objects increase allocation and traversal costs substantially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as a thread-local arena pool solution using dynamic parser bytecode) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
->
-> Microbenchmarks represent synthetic workloads and may not perfectly translate to the performance profile of a complex, production system. You should always run benchmarks under your own representative workloads before making significant architectural decisions.
->
-> This article focuses specifically on Go's protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
->
-> Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
+As with all performance testing, microbenchmarks should be taken with a grain of salt. Actual performance will vary depending on your specific hardware, operating system, compiler version, garbage collection settings, and payload structure. Workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go's map lookup and insertion overhead. Deeply nested objects increase allocation and traversal costs substantially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as a thread-local arena pool solution using dynamic parser bytecode) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
+
+Microbenchmarks represent synthetic workloads and may not perfectly translate to the performance profile of a complex, production system. You should always run benchmarks under your own representative workloads before making significant architectural decisions.
+
+This article focuses specifically on Go's protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
+
+Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
 
 ---
 
