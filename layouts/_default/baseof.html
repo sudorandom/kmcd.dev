@@ -5,14 +5,7 @@
     </head>
 
     {{ block "body" . }}
-        {{ $bgImage := "" }}
-        {{ if .Site.Params.backgroundImage }}
-            {{ $img := resources.Get .Site.Params.backgroundImage }}
-            {{ if $img }}
-                {{ $bgImage = $img.Permalink }}
-            {{ end }}
-        {{ end }}
-        <body class="page-{{ .Type }}"{{ if $bgImage }} style="--bg-image: url('{{ $bgImage }}');"{{ end }}>
+        <body class="page-{{ .Type }}">
     {{ end }}
     
         <div class="sidebar">
