@@ -15,7 +15,7 @@ devtoSkip: true
 
 Migrating legacy JSON APIs to gRPC frequently stumbles over a common anti-pattern: unstructured, dynamic JSON fields (such as `metadata` or `extra_properties`) mapped directly into Protobuf using [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) or [`google.protobuf.Struct`](https://protobuf.dev/reference/protobuf/google.protobuf/#struct).
 
-These belong to Protobuf's **Well-Known Types (WKTs)**, a library of standardized, common message schemas defined by Google (such as `Timestamp`, `Duration`, and `Any`) that ship out-of-the-box with the protobuf compiler to provide consistent representation for reusable data structures across different languages.
+These belong to Protobuf's **Well-Known Types (WKTs)**, a library of standardized, common message schemas defined by Google (such as `Timestamp`, `Duration`, and `Any`) that ship out-of-the-box with the Protobuf compiler to provide consistent representation for reusable data structures across different languages.
 
 But what actually are these specific dynamic types under the hood?
 
@@ -123,7 +123,7 @@ Dynamic Protobuf (30.0 double-precision float):
 00000000 00000000 00111110 01000000 -> 8 bytes (little-endian)
 ```
 
-As a result of this multiple-nesting structure and fixed-size floats, dynamic Protobuf payloads often end up larger on the wire than compact JSON. However, this result is heavily workload-dependent. The biggest penalties come from having many fields, many keys, small numeric values, and deeply nested structures. A payload consisting mostly of a single massive string will not exhibit the same structural overhead.
+As a result of this deeply nested structure and fixed-size floats, dynamic Protobuf payloads often end up larger on the wire than compact JSON. However, this result is heavily workload-dependent. The biggest penalties come from having many fields, many keys, small numeric values, and deeply nested structures. A payload consisting mostly of a single massive string will not exhibit the same structural overhead.
 
 ### Wire Inefficiency vs. Runtime Inefficiency
 
@@ -162,16 +162,16 @@ To evaluate performance across different serialization models, I compared the fo
 | **google.protobuf.Value (JSONProto)** | JSON | Serializes dynamic [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) payloads into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 | **google.protobuf.Any (JSONProto)** | JSON | Serializes polymorphic [`google.protobuf.Any`](https://protobuf.dev/reference/protobuf/google.protobuf/#any) wrappers into JSON format using Go's official [`protojson`](https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson) encoder. |
 
-**A Note on `Any` vs `Value`:**
-It is worth noting that `Any` and `Value` solve different problems. `Any` is not a schema-less alternative; it is a schema-dispatch mechanism. `Any` assumes a schema exists and the consumer knows it, while `Value` assumes no schema exists at all. The comparison is useful because teams often reach for `Value` when their actual requirement is polymorphism rather than truly schema-less data.
+> **A Note on `Any` vs `Value`:**
+> `Any` and `Value` solve fundamentally different problems. `Any` is not a schema-less alternative; it is a schema-dispatch mechanism. `Any` assumes a schema exists and the consumer knows it, while `Value` assumes no schema exists at all. The comparison is useful because teams often reach for `Value` when their actual requirement is polymorphism rather than truly schema-less data.
 
-**A Note on Payload Decoding in Benchmarks:**
-To ensure a fair, apples-to-apples performance comparison, the unmarshaling benchmarks for all variants fully deserialize both the outer envelope and the inner dynamic/polymorphic payloads:
-* In the **`google.protobuf.Any`** benchmark, the payload is not left as raw bytes; it is fully unpacked into a concrete statically-compiled Go struct using `anypb.UnmarshalTo()`.
-* In the **`Protobuf + JSON`** benchmark, the inner JSON string is not left unparsed; it is fully deserialized into a concrete Go struct using standard `json.Unmarshal()`.
-* In the **`google.protobuf.Value`** benchmark, the payload is fully parsed into a tree of Go objects representing the JSON-like data.
-
-Importantly, in real-world applications, both `google.protobuf.Any` and opaque `Protobuf + JSON` packaging allow you to bypass this inner parsing entirely on intermediate routing nodes (deferred/lazy parsing). This is a significant architectural advantage if intermediate services only need to forward or store the payload without inspecting it. However, to maintain a level playing field and measure the actual parsing cost, these benchmarks force full decoding.
+> **A Note on Payload Decoding in Benchmarks:**
+> To ensure a fair, apples-to-apples performance comparison, the unmarshaling benchmarks for all variants fully deserialize both the outer envelope and the inner dynamic/polymorphic payloads:
+> * In the **`google.protobuf.Any`** benchmark, the payload is not left as raw bytes; it is fully unpacked into a concrete statically-compiled Go struct using `anypb.UnmarshalTo()`.
+> * In the **`Protobuf + JSON`** benchmark, the inner JSON string is not left unparsed; it is fully deserialized into a concrete Go struct using standard `json.Unmarshal()`.
+> * In the **`google.protobuf.Value`** benchmark, the payload is fully parsed into a tree of Go objects representing the JSON-like data.
+>
+> Importantly, in real-world applications, both `google.protobuf.Any` and opaque `Protobuf + JSON` packaging allow you to bypass this inner parsing entirely on intermediate routing nodes (deferred/lazy parsing). This is a significant architectural advantage if intermediate services only need to forward or store the payload without inspecting it. However, to maintain a level playing field and measure the actual parsing cost, these benchmarks force full decoding.
 
 To handle arbitrary data, the dynamic Protobuf configurations rely on standard `structpb` definitions:
 
@@ -190,13 +190,13 @@ message EventEnvelope {
 
 ### Benchmark Disclaimer and Workload Caveats
 
-As with all performance testing, microbenchmarks should be taken with a grain of salt. Actual performance will vary depending on your specific hardware, operating system, compiler version, garbage collection settings, and payload structure. Workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go's map lookup and insertion overhead. Deeply nested objects increase allocation and traversal costs substantially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as a thread-local arena pool solution using dynamic parser bytecode) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
-
-Microbenchmarks represent synthetic workloads and may not perfectly translate to the performance profile of a complex, production system. You should always run benchmarks under your own representative workloads before making significant architectural decisions.
-
-This article focuses specifically on Go's protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
-
-Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
+> As with all performance testing, microbenchmarks should be taken with a grain of salt. Actual performance will vary depending on your specific hardware, operating system, compiler version, garbage collection settings, and payload structure. Workload shape and configuration matter enormously. Map-heavy workloads are particularly pathological for `google.protobuf.Struct` due to Go's map lookup and insertion overhead. Deeply nested objects increase allocation and traversal costs substantially, whereas flat structures suffer less. Furthermore, implementation details like hot-path struct reuse or memory pooling (such as a thread-local arena pool solution using dynamic parser bytecode) can dramatically change outcomes in production, shifting the bottleneck back toward wire serialization and parsing logic.
+>
+> Microbenchmarks represent synthetic workloads and may not perfectly translate to the performance profile of a complex, production system. You should always run benchmarks under your own representative workloads before making significant architectural decisions.
+>
+> This article focuses specifically on Go's protobuf implementation and the `structpb` runtime model. Other languages may exhibit different allocation and parsing characteristics, though the wire-format overhead discussed here remains universal.
+>
+> Additionally, dynamic Protobuf is not always a poor choice. For admin panels, configuration APIs, low-volume integrations, or systems where schema flexibility matters more than throughput, `google.protobuf.Value` remains a perfectly reasonable choice. It is only when these structures sit directly on high-throughput hot paths that performance problems emerge.
 
 ---
 
@@ -206,7 +206,7 @@ The benchmarks were executed under Go 1.26 on an Apple M1 Pro.
 
 ### Wire Size
 
-First, I compared the serialized payload size of each configuration. Since Protobuf is widely recognized as a highly compact binary protocol, developers often assume that even unstructured dynamic payloads utilizing `google.protobuf.Value` will naturally be smaller on the wire than standard JSON. Measuring serialized byte sizes is a straightforward test that yields definitive, objective results.
+First, I compared the serialized payload size of each configuration. Because Protobuf is famous for being compact, developers often assume even unstructured dynamic payloads using `google.protobuf.Value` will be smaller than standard JSON. Measuring serialized byte sizes is a straightforward test that yields definitive, objective results.
 
 *Note: These measurements reflect raw serialized payload size before transport-level compression. Systems using gzip or zstd may observe different relative wire sizes. Repeated JSON keys compress extremely well, though Protobuf map entries and repeated keys also benefit heavily from transport compression.*
 
@@ -484,7 +484,8 @@ First, I compared the serialized payload size of each configuration. Since Proto
 {{< /tabs >}}
 
 ### Processing Throughput
-Building and parsing schema-less Protobuf trees involves significant pointer-wrapping overhead, resulting in higher CPU usage and frequent heap allocations. Standard concrete Protobuf marshals almost instantly, and PlanetScale's reflection-free generator `Concrete (vtproto)` is the absolute fastest. Much of `vtproto`'s advantage comes from eliminating reflection and generating specialized straight-line serialization code ahead of time.
+
+Wire size is only half the battle; parsing these dynamic structures introduces significant CPU and memory costs. Building and parsing schema-less Protobuf trees involves significant pointer-wrapping overhead, resulting in higher CPU usage and frequent heap allocations. Standard concrete Protobuf marshals almost instantly, and PlanetScale's reflection-free generator `Concrete (vtproto)` is the absolute fastest. Much of `vtproto`'s advantage comes from eliminating reflection and generating specialized straight-line serialization code ahead of time.
 
 {{< tabs >}}
   {{< tab name="Small Payload" >}}
@@ -544,7 +545,7 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
     "plugins": {
       "title": {
         "display": true,
-        "text": "Marshalling Performance (Small Payload): lower is better",
+        "text": "Marshaling Performance (Small Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -646,7 +647,7 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
     "plugins": {
       "title": {
         "display": true,
-        "text": "Marshalling Performance (Medium Payload): lower is better",
+        "text": "Marshaling Performance (Medium Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -748,7 +749,7 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
     "plugins": {
       "title": {
         "display": true,
-        "text": "Marshalling Performance (Large Payload): lower is better",
+        "text": "Marshaling Performance (Large Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -797,7 +798,7 @@ Building and parsing schema-less Protobuf trees involves significant pointer-wra
 
 The most surprising finding here is not that `Value` is slower than static Protobuf. Everyone expects that. The headline-worthy result is this: in these benchmarks, dynamic Protobuf frequently loses to plain JSON as well.
 
-For a medium payload, standard static Protobuf is 19x faster than dynamic binary `Value` serialization, but standard JSON is over 10x faster than `Value`. When evaluating unmarshalling, the gap widens further:
+For a medium payload, standard static Protobuf is 19x faster than dynamic binary `Value` serialization, but standard JSON is over 10x faster than `Value`. When evaluating unmarshaling, the gap widens further:
 
 {{< tabs >}}
   {{< tab name="Small Payload" >}}
@@ -857,7 +858,7 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
     "plugins": {
       "title": {
         "display": true,
-        "text": "Unmarshalling Performance (Small Payload): lower is better",
+        "text": "Unmarshaling Performance (Small Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -959,7 +960,7 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
     "plugins": {
       "title": {
         "display": true,
-        "text": "Unmarshalling Performance (Medium Payload): lower is better",
+        "text": "Unmarshaling Performance (Medium Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -1061,7 +1062,7 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
     "plugins": {
       "title": {
         "display": true,
-        "text": "Unmarshalling Performance (Large Payload): lower is better",
+        "text": "Unmarshaling Performance (Large Payload): lower is better",
         "color": "#fff"
       },
       "legend": {
@@ -1117,12 +1118,16 @@ Note that these benchmarks isolate the marshaling and unmarshaling steps using p
 
 With the wire and processing numbers in hand, we can look at the mechanical reasons behind the overhead.
 
-1. **Go Runtime Allocations:** Because Go is statically typed, representing a polymorphic JSON-like tree requires nesting interfaces and pointers. Deserializing a dynamic `Value` payload requires Go's runtime to allocate a unique `*structpb.Value` pointer for every single map key, list item, and value in the tree. Every node in the tree is represented as a separate protobuf message (`Value`, `Struct`, or `ListValue`), requiring recursive traversal during serialization and deserialization. On a large payload, this creates over 9,000 individual heap allocations, putting immense pressure on Go's garbage collector and memory allocator. Furthermore, `structpb` relies heavily on interface boxing. Pushing values through these abstraction layers prevents the compiler from applying the aggressive optimizations it normally uses for generated static structs.
-2. **Cache Locality and Memory Layout:** At the systems level, statically generated Protobuf messages compile to flat, cache-friendly Go structs representing contiguous (or near-contiguous) memory blocks. In contrast, `structpb.Value` constructs a highly fragmented graph of heap-allocated objects connected by pointers. Traversing this tree-shaped structure causes frequent pointer chasing, which hurts cache locality, increases L1/L2 cache misses, and hinders branch prediction.
+1. **Go Runtime Allocations:** Because Go is statically typed, representing a polymorphic JSON-like tree requires nesting interfaces and pointers. Deserializing a dynamic `Value` payload requires Go's runtime to allocate a unique `*structpb.Value` pointer for every single map key, list item, and value in the tree. Every node in the tree is represented as a separate Protobuf message (`Value`, `Struct`, or `ListValue`), requiring recursive traversal during serialization and deserialization. On a large payload, this creates over 9,000 individual heap allocations, putting immense pressure on Go's garbage collector and memory allocator. Furthermore, `structpb` relies heavily on interface boxing. Pushing values through these abstraction layers prevents the compiler from applying the aggressive optimizations it normally uses for generated static structs.
+2. **Cache Locality and Memory Layout:** At the systems level, statically generated Protobuf messages compile to flat, cache-friendly Go structs representing contiguous (or near-contiguous) memory blocks. In contrast, `structpb.Value` constructs a highly fragmented graph of heap-allocated objects connected by pointers. Traversing this tree-shaped structure causes frequent pointer chasing, which hurts cache locality, increases L1/L2 cache misses, and hinders branch prediction. Because the pointer graph fragments memory, the CPU prefetcher cannot effectively predict the next memory address, leading to those cache misses.
+
+## Are You Actually Solving a Dynamic Data Problem?
+
+In practice, many `google.protobuf.Value` fields are not truly dynamic. They are often legacy JSON blobs carried forward during API migrations. Before reaching for `Value`, ask whether the payload has a finite, documented structure. If it does, a normal Protobuf message is usually the better long-term design. A dynamic field is often a temporary migration artifact rather than a genuine domain requirement. If the field's shape is stable enough to document, it is usually stable enough to model as a statically typed Protobuf message.
 
 ## High-Performance Alternatives
 
-Importantly, this does not mean runtime protobuf parsing itself is inherently slow. Rather, the real bottleneck is schema-less, JSON-style polymorphism layered onto Protobuf through `Struct` and `Value`.
+Importantly, this does not mean runtime Protobuf parsing itself is inherently slow. Rather, the real bottleneck is schema-less, JSON-style polymorphism layered onto Protobuf through `Struct` and `Value`.
 
 If your system requires runtime schema flexibility, avoid `google.protobuf.Struct` for high-throughput paths and leverage these specific optimizations depending on your runtime requirements:
 
@@ -1201,11 +1206,9 @@ If you have opaque data that you don't want intermediate routing nodes to parse,
 
 ### Pack raw JSON into strings (Opaque JSON Packaging)
 
-If you must support unstructured data on a high-throughput, latency-sensitive hot path, storing the dynamic data as raw JSON directly inside a standard `string` or `bytes` protobuf field is often the best choice.
+If you must support unstructured data on a high-throughput, latency-sensitive hot path, storing the dynamic data as raw JSON directly inside a standard `string` or `bytes` Protobuf field is often the best choice.
 
-Let's be honest: this feels gross. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, makes API documentation messy, and is generally a dirty hack.
-
-But if you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. Among the approaches evaluated here, opaque JSON packaging provides the best performance/flexibility tradeoff for fully unstructured payloads. You may not like it, but this might be what peak performance looks like:
+Let's be honest: this feels gross. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, makes API documentation messy, and is generally a dirty hack. But pragmatism sometimes has to beat purity in high-throughput systems. If you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. Among the approaches evaluated here, opaque JSON packaging provides the best performance/flexibility tradeoff for fully unstructured payloads. You may not like it, but this might be what peak performance looks like:
 
 ```protobuf
 message EventEnvelope {
@@ -1218,10 +1221,6 @@ message EventEnvelope {
 
 If you just want a quick, standardized way to represent arbitrary JSON-like structures in Protobuf and your throughput/latency budgets aren't tight, using the built-in Well-Known Types is completely fine and requires the least custom logic.
 
-## Are You Actually Solving a Dynamic Data Problem?
-
-In practice, many `google.protobuf.Value` fields are not truly dynamic. They are often legacy JSON blobs carried forward during API migrations. Before reaching for `Value`, ask whether the payload has a finite, documented structure. If it does, a normal protobuf message is usually the better long-term design. A dynamic field is often a temporary migration artifact rather than a genuine domain requirement. If the field's shape is stable enough to document, it is usually stable enough to model as a statically typed protobuf message.
-
 ## Conclusion
 
-Static protobuf delivers its benefits because the schema is known ahead of time. `google.protobuf.Value` intentionally gives up that information in exchange for flexibility. In Go, that tradeoff can be surprisingly expensive in both wire size and runtime cost. If your payload has a schema, model it. If it doesn't and performance matters, opaque JSON may outperform dynamic protobuf despite being less elegant.
+Static Protobuf delivers its benefits because the schema is known ahead of time. `google.protobuf.Value` intentionally gives up that information in exchange for flexibility. In Go, that tradeoff can be surprisingly expensive in both wire size and runtime cost. If your payload has a schema, model it. If it doesn't and performance matters, opaque JSON may outperform dynamic Protobuf despite being less elegant.
