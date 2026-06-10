@@ -450,16 +450,18 @@ func BenchmarkMarshal_Small_Proto_Static(b *testing.B) {
 
 func BenchmarkMarshal_Small_Proto_Value(b *testing.B) {
 	data := getSmallMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = proto.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Small_Proto_Any(b *testing.B) {
 	msg := getSmallVanillaMsg()
+	anyVal, _ := anypb.New(msg)
+	b.ResetTimer()
 	for b.Loop() {
-		anyVal, _ := anypb.New(msg)
 		_, _ = proto.Marshal(anyVal)
 	}
 }
@@ -669,16 +671,18 @@ func BenchmarkMarshal_Medium_Proto_Static(b *testing.B) {
 
 func BenchmarkMarshal_Medium_Proto_Value(b *testing.B) {
 	data := getMediumMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = proto.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Medium_Proto_Any(b *testing.B) {
 	msg := getMediumVanillaMsg()
+	anyVal, _ := anypb.New(msg)
+	b.ResetTimer()
 	for b.Loop() {
-		anyVal, _ := anypb.New(msg)
 		_, _ = proto.Marshal(anyVal)
 	}
 }
@@ -888,18 +892,22 @@ func BenchmarkMarshal_Large_Proto_Static(b *testing.B) {
 
 func BenchmarkMarshal_Large_Proto_Value(b *testing.B) {
 	data := getLargeMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = proto.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Large_Proto_Any(b *testing.B) {
 	msgList := getLargeVanillaMsg()
+	largeAnyList := make([]*anypb.Any, 100)
+	for j := range 100 {
+		largeAnyList[j], _ = anypb.New(msgList[j])
+	}
+	b.ResetTimer()
 	for b.Loop() {
-		largeAnyList := make([]*anypb.Any, 100)
 		for j := range 100 {
-			largeAnyList[j], _ = anypb.New(msgList[j])
 			_, _ = proto.Marshal(largeAnyList[j])
 		}
 	}
@@ -1091,16 +1099,18 @@ func BenchmarkMarshal_Small_ProtoJSON_Static(b *testing.B) {
 
 func BenchmarkMarshal_Small_ProtoJSON_Value(b *testing.B) {
 	data := getSmallMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = protojson.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Small_ProtoJSON_Any(b *testing.B) {
 	msg := getSmallVanillaMsg()
+	anyVal, _ := anypb.New(msg)
+	b.ResetTimer()
 	for b.Loop() {
-		anyVal, _ := anypb.New(msg)
 		_, _ = protojson.Marshal(anyVal)
 	}
 }
@@ -1145,16 +1155,18 @@ func BenchmarkMarshal_Medium_ProtoJSON_Static(b *testing.B) {
 
 func BenchmarkMarshal_Medium_ProtoJSON_Value(b *testing.B) {
 	data := getMediumMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = protojson.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Medium_ProtoJSON_Any(b *testing.B) {
 	msg := getMediumVanillaMsg()
+	anyVal, _ := anypb.New(msg)
+	b.ResetTimer()
 	for b.Loop() {
-		anyVal, _ := anypb.New(msg)
 		_, _ = protojson.Marshal(anyVal)
 	}
 }
@@ -1199,18 +1211,22 @@ func BenchmarkMarshal_Large_ProtoJSON_Static(b *testing.B) {
 
 func BenchmarkMarshal_Large_ProtoJSON_Value(b *testing.B) {
 	data := getLargeMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
 	for b.Loop() {
-		pbVal, _ := structpb.NewValue(data)
 		_, _ = protojson.Marshal(pbVal)
 	}
 }
 
 func BenchmarkMarshal_Large_ProtoJSON_Any(b *testing.B) {
 	msgList := getLargeVanillaMsg()
+	largeAnyList := make([]*anypb.Any, 100)
+	for j := range 100 {
+		largeAnyList[j], _ = anypb.New(msgList[j])
+	}
+	b.ResetTimer()
 	for b.Loop() {
-		largeAnyList := make([]*anypb.Any, 100)
 		for j := range 100 {
-			largeAnyList[j], _ = anypb.New(msgList[j])
 			_, _ = protojson.Marshal(largeAnyList[j])
 		}
 	}
@@ -1317,4 +1333,55 @@ func BenchmarkUnmarshal_Large_Proto_JSON(b *testing.B) {
 		_ = json.Unmarshal([]byte(env.JsonData), &dest)
 	}
 }
+
+// --- Construction & Conversion (Appendix) Benchmarks ---
+
+func BenchmarkConstruction_Small_Proto_Value(b *testing.B) {
+	data := getSmallMap()
+	for b.Loop() {
+		_, _ = structpb.NewValue(data)
+	}
+}
+
+func BenchmarkConversion_Small_Proto_Value(b *testing.B) {
+	data := getSmallMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
+	for b.Loop() {
+		_ = pbVal.AsInterface()
+	}
+}
+
+func BenchmarkConstruction_Medium_Proto_Value(b *testing.B) {
+	data := getMediumMap()
+	for b.Loop() {
+		_, _ = structpb.NewValue(data)
+	}
+}
+
+func BenchmarkConversion_Medium_Proto_Value(b *testing.B) {
+	data := getMediumMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
+	for b.Loop() {
+		_ = pbVal.AsInterface()
+	}
+}
+
+func BenchmarkConstruction_Large_Proto_Value(b *testing.B) {
+	data := getLargeMap()
+	for b.Loop() {
+		_, _ = structpb.NewValue(data)
+	}
+}
+
+func BenchmarkConversion_Large_Proto_Value(b *testing.B) {
+	data := getLargeMap()
+	pbVal, _ := structpb.NewValue(data)
+	b.ResetTimer()
+	for b.Loop() {
+		_ = pbVal.AsInterface()
+	}
+}
+
 

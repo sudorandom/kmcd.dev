@@ -599,16 +599,16 @@ Wire size is only half the battle; parsing these dynamic structures introduces s
 | Benchmark (Small Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
 | **Concrete (vtproto)** | **31 ns** | **32 B** | **1** |
+| **google.protobuf.Any (proto)** | 97 ns | 80 B | 1 |
 | **Concrete (proto)** | 104 ns | 32 B | 1 |
-| **Concrete (JSON)** | 210 ns | 64 B | 1 |
-| **google.protobuf.Any (proto)** | 287 ns | 240 B | 4 |
-| **Protobuf + JSON** | 365 ns | 256 B | 4 |
-| **Concrete (JSONv2)** | 365 ns | 112 B | 2 |
-| **Map (JSON)** | 706 ns | 352 B | 10 |
-| **Concrete (JSONProto)** | 761 ns | 512 B | 12 |
-| **Map (JSONv2)** | 950 ns | 151 B | 9 |
-| **google.protobuf.Value (proto)** | 2,163 ns | 879 B | 22 |
-| **google.protobuf.Value (JSONProto)** | 3,017 ns | 1,364 B | 35 |
+| **Concrete (JSON)** | 212 ns | 64 B | 1 |
+| **Protobuf + JSON** | 361 ns | 256 B | 4 |
+| **Concrete (JSONv2)** | 372 ns | 112 B | 2 |
+| **Map (JSON)** | 707 ns | 352 B | 10 |
+| **Concrete (JSONProto)** | 774 ns | 512 B | 12 |
+| **Map (JSONv2)** | 949 ns | 151 B | 9 |
+| **google.protobuf.Value (proto)** | 1,598 ns | 208 B | 9 |
+| **google.protobuf.Value (JSONProto)** | 2,461 ns | 704 B | 23 |
 
 </details>
   {{< /tab >}}
@@ -700,17 +700,17 @@ Wire size is only half the battle; parsing these dynamic structures introduces s
 
 | Benchmark (Medium Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **129 ns** | **176 B** | **1** |
-| **Concrete (proto)** | 366 ns | 176 B | 1 |
-| **google.protobuf.Any (proto)** | 597 ns | 528 B | 4 |
-| **Concrete (JSON)** | 656 ns | 464 B | 2 |
-| **Protobuf + JSON** | 855 ns | 1,024 B | 4 |
-| **Concrete (JSONv2)** | 1,002 ns | 608 B | 3 |
-| **Map (JSONv2)** | 1,852 ns | 456 B | 12 |
-| **Map (JSON)** | 2,273 ns | 1,200 B | 28 |
-| **Concrete (JSONProto)** | 2,739 ns | 1,722 B | 34 |
-| **google.protobuf.Value (proto)** | 6,854 ns | 2,959 B | 68 |
-| **google.protobuf.Value (JSONProto)** | 10,177 ns | 4,977 B | 113 |
+| **Concrete (vtproto)** | **123 ns** | **176 B** | **1** |
+| **google.protobuf.Any (proto)** | 127 ns | 224 B | 1 |
+| **Concrete (proto)** | 356 ns | 176 B | 1 |
+| **Concrete (JSON)** | 634 ns | 464 B | 2 |
+| **Protobuf + JSON** | 844 ns | 1,024 B | 4 |
+| **Concrete (JSONv2)** | 985 ns | 608 B | 3 |
+| **Map (JSONv2)** | 1,835 ns | 456 B | 12 |
+| **Map (JSON)** | 2,346 ns | 1,200 B | 28 |
+| **Concrete (JSONProto)** | 2,797 ns | 1,722 B | 34 |
+| **google.protobuf.Value (proto)** | 4,872 ns | 736 B | 25 |
+| **google.protobuf.Value (JSONProto)** | 7,828 ns | 2,750 B | 70 |
 
 </details>
   {{< /tab >}}
@@ -802,17 +802,17 @@ Wire size is only half the battle; parsing these dynamic structures introduces s
 
 | Benchmark (Large Payload) | ns/op | Memory (B/op) | Allocations/op |
 | :--- | :---: | :---: | :---: |
-| **Concrete (vtproto)** | **9,065 ns** | **18,432 B** | **1** |
-| **Concrete (proto)** | 31,060 ns | 18,432 B | 1 |
-| **Concrete (JSON)** | 50,746 ns | 32,831 B | 2 |
-| **google.protobuf.Any (proto)** | 59,813 ns | 52,800 B | 400 |
-| **Protobuf + JSON** | 61,323 ns | 98,928 B | 4 |
-| **Concrete (JSONv2)** | 76,945 ns | 32,837 B | 3 |
-| **Map (JSONv2)** | 107,436 ns | 35,275 B | 303 |
-| **Map (JSON)** | 236,591 ns | 120,886 B | 2,702 |
-| **Concrete (JSONProto)** | 279,812 ns | 243,749 B | 2,728 |
-| **google.protobuf.Value (proto)** | 680,700 ns | 302,768 B | 6,706 |
-| **google.protobuf.Value (JSONProto)** | 988,728 ns | 543,744 B | 10,566 |
+| **Concrete (vtproto)** | **8,818 ns** | **18,432 B** | **1** |
+| **google.protobuf.Any (proto)** | 13,042 ns | 22,400 B | 100 |
+| **Concrete (proto)** | 30,748 ns | 18,432 B | 1 |
+| **Concrete (JSON)** | 50,543 ns | 32,823 B | 2 |
+| **Protobuf + JSON** | 60,580 ns | 98,877 B | 4 |
+| **Concrete (JSONv2)** | 76,952 ns | 32,837 B | 3 |
+| **Map (JSONv2)** | 106,291 ns | 35,259 B | 303 |
+| **Map (JSON)** | 226,032 ns | 120,907 B | 2,702 |
+| **Concrete (JSONProto)** | 284,717 ns | 243,744 B | 2,728 |
+| **google.protobuf.Value (proto)** | 486,336 ns | 79,360 B | 2,401 |
+| **google.protobuf.Value (JSONProto)** | 811,368 ns | 320,172 B | 6,260 |
 
 </details>
   {{< /tab >}}
@@ -820,7 +820,7 @@ Wire size is only half the battle; parsing these dynamic structures introduces s
 
 The most surprising finding here is not that `Value` is slower than static Protobuf. Everyone expects that. The headline-worthy result is this: in these benchmarks, dynamic Protobuf frequently loses to plain JSON as well.
 
-For a medium payload, standard static Protobuf is 19x faster than dynamic binary `Value` serialization, but standard JSON is over 10x faster than `Value`. When evaluating unmarshaling, the gap widens further:
+For a medium payload, standard static Protobuf is 13x faster than dynamic binary `Value` serialization, but standard JSON is over 7x faster than `Value`. When evaluating unmarshaling, the gap widens further:
 
 {{< tabs >}}
   {{< tab name="Small Payload" >}}
@@ -1134,7 +1134,23 @@ For a medium payload, standard static Protobuf is 19x faster than dynamic binary
 Dynamic binary parsing takes **5,772 ns** and requires **90 allocations**, compared to just **674 ns** and **15 allocations** for standard static Protobuf.
 
 ### Appendix: The Hidden Cost of Construction
-Note that these benchmarks isolate the marshaling and unmarshaling steps using prebuilt structures. They do not include the initial conversion cost of translating native Go types (like `map[string]any`) into `structpb.NewStruct()`. In real systems, building this fragmented graph of heap-allocated objects before serialization even begins can be surprisingly expensive, adding even more overhead to the dynamic Protobuf numbers.
+
+To keep comparisons apples-to-apples, the main benchmarks above isolate the pure marshaling (serialization) and unmarshaling (deserialization) phases using pre-constructed message structures. 
+
+However, in real-world systems, using dynamic types introduces a secondary runtime overhead: translating native Go data structures (like `map[string]any`) into `structpb.Value` (construction) before serialization, and converting them back (using `.AsInterface()`) after deserialization.
+
+The table below shows the cost of these construction and conversion steps across our three payload sizes:
+
+| Payload | Phase | Time (ns/op) | Memory (B/op) | Allocations/op |
+| :--- | :--- | :---: | :---: | :---: |
+| **Small** | Construction (`NewValue`) | 504 ns | 671 B | 13 |
+| | Conversion (`AsInterface`) | 300 ns | 368 B | 5 |
+| **Medium** | Construction (`NewValue`) | 2,076 ns | 2,223 B | 43 |
+| | Conversion (`AsInterface`) | 1,127 ns | 1,240 B | 19 |
+| **Large** | Construction (`NewValue`) | 200,092 ns | 223,407 B | 4,305 |
+| | Conversion (`AsInterface`) | 129,140 ns | 125,818 B | 1,902 |
+
+For a medium payload, constructing the `structpb.Value` and converting it back adds an extra **3.2 microseconds** and **62 heap allocations** to the overall lifecycle. When combined with the marshaling and unmarshaling costs, these conversion steps represent a significant hidden performance penalty in high-throughput Go services.
 
 ## The Root Cause: Allocations and Pointer Chasing
 
@@ -1155,7 +1171,7 @@ If your system requires runtime schema flexibility, avoid `google.protobuf.Struc
 
 ### Polymorphism: Use `google.protobuf.Any`
 When data conforms to a known set of pre-compiled schemas, wrap the fields in an `Any` message. It records a clean `type_url` string alongside raw compiled binary bytes.
-* **Pros:** Highly compact (212 bytes for a medium payload) and fast. Processing is roughly 11x faster than using generic values.
+* **Pros:** Highly compact (212 bytes for a medium payload) and fast. Marshaling is over 35x faster than using generic values.
 * **Cons:** Requires compile-time schema awareness for all incoming types. Crucially, the consuming service must have the exact generated Go types compiled and registered in its binary to cleanly unpack the message (e.g., via `anypb.UnmarshalTo()`). If the global protobuf registry lacks the specific type matching the incoming `type_url`, unmarshaling will fail. This strict coupling highlights why `Any` is a schema-dispatch mechanism, not a drop-in replacement for fully unstructured JSON. Additionally, `Any` carries the wire overhead of serializing the `type_url` string (e.g., `type.googleapis.com/package.Message`), which adds a few dozen bytes depending on your package name length. This explains the size increases for `Any` visible in the benchmark charts compared to native static Protobuf.
 
 ## Recommendations
