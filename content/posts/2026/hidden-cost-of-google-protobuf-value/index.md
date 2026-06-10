@@ -17,9 +17,11 @@ Migrating legacy JSON APIs to gRPC frequently stumbles over a common anti-patter
 
 These belong to Protobuf's **Well-Known Types (WKTs)**, a library of standardized, common message schemas defined by Google (such as `Timestamp`, `Duration`, and `Any`) that ship out-of-the-box with the Protobuf compiler to provide consistent representation for reusable data structures across different languages.
 
-But what actually are these specific dynamic types under the hood?
+But what actually are these specific dynamic types under the hood, and how are they used?
 
-If we look at their official definitions, `google.protobuf.Value` is defined as a `oneof` containing the possible JSON-compatible data types:
+### The `Value` Message
+
+At the core of dynamic Protobuf is [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value). If we look at its official definition, it is defined as a `oneof` containing the possible JSON-compatible data types:
 
 ```protobuf
 message Value {
@@ -34,19 +36,37 @@ message Value {
 }
 ```
 
-This structure leads to the following well-known types:
-* [`google.protobuf.Value`](https://protobuf.dev/reference/protobuf/google.protobuf/#value) represents a dynamically typed wrapper that can hold any JSON-compatible value: null, a number (encoded as a double-precision float), a string, a boolean, a nested `Struct` (representing a JSON object), or a list of values (`ListValue`, representing a JSON array).
-* [`google.protobuf.Struct`](https://protobuf.dev/reference/protobuf/google.protobuf/#struct) represents a structured data value consisting of fields that map to dynamically typed values. In practice, it **behaves like a JSON object**, mapping keys (strings) to `Value` messages:
-    ```protobuf
-    message Struct {
-      map<string, Value> fields = 1;
-    }
-    ```
-    In Go, this translates to a key-value map (`map[string]any`) or a raw JavaScript object where the keys are strings and the values are dynamically typed.
+`google.protobuf.Value` represents a dynamically typed wrapper that can hold any single JSON-compatible value: null, a number (encoded as a double-precision float), a string, a boolean, a nested `Struct` (representing a JSON object), or a list of values (`ListValue`, representing a JSON array).
+
+#### How `Value` is Used
+
+`Value` is used to represent a single dynamic field whose specific type is not known at compile-time. Instead of declaring a rigid type like `string` or `int32`, defining a field as `Value` allows it to wrap any scalar, nested object, or list at runtime. In languages like Go, this compiles to a struct where the type of the value is inspected or retrieved via type assertions or helper getters on the underlying `oneof` interface.
+
+---
+
+### The `Struct` Message
+
+To represent a dynamic object structure (a collection of key-value pairs), Protobuf provides [`google.protobuf.Struct`](https://protobuf.dev/reference/protobuf/google.protobuf/#struct). Under the hood, it maps string keys to `Value` messages:
+
+```protobuf
+message Struct {
+  map<string, Value> fields = 1;
+}
+```
+
+In practice, `Struct` behaves like a JSON object. In Go, this translates directly to a key-value map (`map[string]any`) or a raw JavaScript object where the keys are strings and the values are dynamically typed.
+
+#### How `Struct` is Used
+
+`Struct` is used to carry arbitrary structured dictionaries, and can be utilized in two primary ways:
+
+1. **Directly**: As a top-level field in your message to represent unstructured configuration or metadata (e.g., `google.protobuf.Struct metadata = 1;`).
+2. **Via `Value`**: Since `Struct` is one of the options inside `Value`'s `oneof kind` (`Struct struct_value = 5;`), a `Struct` contains a map of keys to `Value`s, which can themselves be `Struct`s. This recursive relationship allows `Struct` and `Value` to together represent complex, deeply nested JSON objects containing nested lists and primitive values.
+
 
 Together, they allow Protobuf messages to carry arbitrary, unstructured JSON-like payloads without declaring a strict schema beforehand. This is a common architectural pattern, and it successfully solves a real developer pain point: handling highly dynamic data. Since Protobuf is famous for being fast and compact, one would intuitively think that wrapping dynamic payloads in these well-known types would still be more efficient than standard JSON.
 
-I decided to test that assumption, and the results were the opposite of what I expected. Most of Protobuf's performance advantage comes from ahead-of-time schema knowledge. Statically compiled schemas are the primary optimization lever that allows Protocol Buffers to achieve speed and compactness. The moment you remove schema information and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you give up many of the optimizations that make Protobuf fast and compact.
+I decided to test that assumption, and the results were **the complete opposite** of what I expected. Most of Protobuf's performance advantage comes from ahead-of-time schema knowledge. Statically compiled schemas are the primary optimization lever that allows Protocol Buffers to achieve speed and compactness. The moment you remove schema information and adopt unstructured types like `google.protobuf.Value` or `google.protobuf.Struct`, you give up many of the optimizations that make Protobuf fast and compact.
 
 ## The Structural Cost of Dynamic Data
 
@@ -99,7 +119,7 @@ If we describe the dynamic Protobuf binary payload using [Protoscope](https://gi
 
 - Each set of braces `{}` represents a length-delimited sub-message, which compiles to a field tag followed by a length prefix byte on the wire.
 - The prefix tags `1:` and `2:` represent the field numbers.
-- `30.0` compiles to field tag 2 (wire type 1, 64-bit) followed by its fixed 8-byte double-precision float value.
+- `30.0` compiles to field tag 2 (wire type 1, 64-bit) followed by its fixed 8-byte float value.
 
 Summing these up (2B + 5B + 2B + 9B) results in a total payload size of exactly 18 bytes for this specific encoding.
 
@@ -109,7 +129,7 @@ So with this context, we can now say *why* `google.protobuf.Value` is inefficien
 
 2. **No Field Name Compression**: One of Protobuf's largest size advantages usually comes from discarding human-readable field names (like `"age"`) and replacing them with compact, 1-byte numeric tags. However, because `google.protobuf.Struct` is unstructured, it must serialize the actual field name string `"age"` on the wire. This completely forfeits the field-name compression benefit that makes static Protobuf so compact.
 
-3. **No Varint Compression for Numbers**: Instead of benefiting from Protobuf's specialized integer encodings, all numeric values are represented through a double-precision floating-point field. Small integers suffer most because Protobuf normally compresses them using varints. Large values may see less dramatic differences because JSON must serialize every digit as text. To visualize the wire layout comparison for representing the small number `30`:
+3. **No Varint Compression for Numbers**: Instead of benefiting from Protobuf's specialized integer encodings, all numeric values are represented through a double-precision float field. Small integers suffer most because Protobuf normally compresses them using varints. Large values may see less dramatic differences because JSON must serialize every digit as text. To visualize the wire layout comparison for representing the small number `30`:
 
 ```text
 Compact JSON ("30"):
@@ -129,8 +149,10 @@ As a result of this deeply nested structure and fixed-size floats, dynamic Proto
 
 Dynamic Protobuf hurts in two completely different ways that affect different engineering decisions:
 
-1. **Wire Inefficiency:** The serialized payload becomes larger than many developers expect. This is caused by human-readable field names being serialized repeatedly, nested map entry encoding, double-precision floating-point storage for all numbers, and the loss of varint integer compression. Bandwidth-sensitive systems, databases, or event brokers care heavily about this.
+1. **Wire Inefficiency:** The serialized payload becomes larger than many developers expect. This is caused by human-readable field names being serialized repeatedly, nested map entry encoding, double-precision float storage for all numbers, and the loss of varint integer compression. Bandwidth-sensitive systems, databases, or event brokers care heavily about this.
 2. **Runtime Inefficiency:** The runtime representation in Go becomes allocation-heavy and expensive to parse. This is caused by Go's allocation behavior, interface-heavy and pointer-heavy structures in the standard `structpb` package, Go's reflection model, and tree-shaped decoding. CPU-bound services that deserialize payloads frequently care heavily about this.
+
+To see exactly how these wire and runtime inefficiencies compound, I built a benchmark suite to measure the real-world performance differences.
 
 ## The Benchmark Setup
 
@@ -1208,7 +1230,9 @@ If you have opaque data that you don't want intermediate routing nodes to parse,
 
 If you must support unstructured data on a high-throughput, latency-sensitive hot path, storing the dynamic data as raw JSON directly inside a standard `string` or `bytes` Protobuf field is often the best choice.
 
-Let's be honest: this feels gross. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, makes API documentation messy, and is generally a dirty hack. But pragmatism sometimes has to beat purity in high-throughput systems. If you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. Among the approaches evaluated here, opaque JSON packaging provides the best performance/flexibility tradeoff for fully unstructured payloads. You may not like it, but this might be what peak performance looks like:
+Let's be honest: this feels gross. Wrapping raw, stringified JSON inside a Protobuf binary envelope violates schema purity, makes API documentation messy, and is generally a dirty hack. Specifically, it breaks schema-first workflows: API tooling (like OpenAPI generators, Buf, or gRPC gateways) that relies on strict contracts cannot introspect the structure of the JSON payload. This forces downstream consumers to rely on out-of-band documentation rather than compile-time safety and automatic code generation, making it a last-resort optimization.
+
+But pragmatism sometimes has to beat purity in high-throughput systems. If you are on a high-throughput, latency-sensitive hot path, the numbers don't care about architectural aesthetics. Bypassing dynamic WKT parsing in favor of opaque JSON packaging saves a lot of CPU cycles and heap allocations. Among the approaches evaluated here, opaque JSON packaging provides the best performance/flexibility tradeoff for fully unstructured payloads. **You may not like it, but this might be what peak performance looks like**:
 
 ```protobuf
 message EventEnvelope {
