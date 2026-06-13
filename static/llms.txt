@@ -1,0 +1,62 @@
+# kmcd.dev
+
+This is the personal blog of Kevin McDonald. Kevin is a Software Engineer who worked for SoftLayer (a cloud provider before it was called that; acuqired by IBM), Apple (working on automation for Apple's backbone and datacenter networks), and SYBO (the company who made Subway Surfers).
+
+> Depth-first search into networking, programming, web development, and random tech topics by software engineer Kevin McDonald. This blog features deep-dive guides, interactive visualizations, protocol implementations, and tooling for developers.
+
+## Major Projects
+
+### Ongoing Projects
+- [Live Internet Map](https://livemap.kmcd.dev): A real-time, cyberpunk-inspired visualization of the Border Gateway Protocol (BGP). Tracks global routing updates per second, translating network churn into color-coded pulses and live dashboards.
+- [Internet Infrastructure Map](https://map.kmcd.dev): A fully interactive, animated map of the internet's physical backbone (submarine fiber optic cables and Internet Exchange Points) from 1989 to 2025.
+- [Let's Learn About BGP](https://bgp.kmcd.dev): An interactive, web-based explainer on the Border Gateway Protocol (BGP), featuring diagrams, route visualizations, and an ISP RPKI validation security test.
+- [FauxRPC](https://fauxrpc.com): A tool and doc site to easily run a fake gRPC/gRPC-Web/Connect/REST server directly from protobuf definitions. GitHub: [sudorandom/fauxrpc](https://github.com/sudorandom/fauxrpc).
+- [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi): A Protobuf plugin that generates OpenAPI specifications matching Connect RPC.
+- [phreak.kmcd.dev](https://phreak.kmcd.dev): A web-based simulator for old-school phone phreaking (whistling the 2600Hz tone).
+- [morse.kmcd.dev](https://morse.kmcd.dev): A web-based Morse code typing speed game.
+- [wordseq](https://wordseq.com): A daily word puzzle game built with Go, React, and TypeScript.
+- [kmcd.dev Repository](https://github.com/sudorandom/kmcd.dev): The source code and posts backlog for this blog.
+
+## "From Scratch" Series
+
+Kevin McDonald writes extensive series building core internet protocols and tools from the ground up in Go:
+
+- **HTTP from Scratch**: A journey through the evolution of HTTP by implementing simple web servers in Go:
+  - [HTTP/0.9 From Scratch](https://kmcd.dev/posts/http0.9-from-scratch/): Building the foundation with HTTP/0.9.
+  - [HTTP/1.0 From Scratch](https://kmcd.dev/posts/http1.0-from-scratch/): Advancing to HTTP/1.0.
+  - [HTTP/1.1 From Scratch](https://kmcd.dev/posts/http1.1-from-scratch/): Implementing persistent connections, chunked transfer encoding, and other key features of HTTP/1.1.
+  - [HTTP/2 From Scratch (Parts 1-4)](https://kmcd.dev/posts/http2-from-scratch-part-1/): Deep dive into HTTP/2 frames, stream states, header compression (HPACK), and multiplexing.
+- **gRPC from Scratch**: Dissecting gRPC and binary protobuf encoding:
+  - [gRPC From Scratch: Part 1 - Client](https://kmcd.dev/posts/grpc-from-scratch/): Implementing a barebones gRPC client.
+  - [gRPC From Scratch: Part 2 - Server](https://kmcd.dev/posts/grpc-from-scratch-part-2/): Implementing a barebones gRPC server.
+  - [gRPC From Scratch: Part 3 - Protobuf Encoding](https://kmcd.dev/posts/grpc-from-scratch-part-3/): Understanding varints, wire types, and binary protobuf serialization.
+  - [gRPC From Scratch: Part 4 - More Protobuf Encoding](https://kmcd.dev/posts/grpc-from-scratch-part-4/): Covering packed repeated fields, sub-messages, and maps.
+- **Other Network Protocols & Tools**:
+  - [gNMI Server From Scratch](https://kmcd.dev/posts/gnmi-from-scratch/): Building a gNMI (gRPC Network Management Interface) server in Go using ConnectRPC.
+  - [Traceroute Tool from Scratch](https://kmcd.dev/posts/traceroute/): Constructing a traceroute tool using raw ICMP sockets in Go.
+  - [WHOIS Client from Scratch](https://kmcd.dev/posts/whois-is-dead/): Memorializing the legacy WHOIS protocol by implementing a simple client from scratch.
+
+### Tools
+- [HTTP Version Tool](https://kmcd.dev/http/): A utility to check which version of HTTP (HTTP/1.0, HTTP/1.1, HTTP/2, or HTTP/3) your browser uses to connect, along with request information like ASN and user-agent.
+
+### Finished & Archived Projects
+- [evepraisal.com](https://kmcd.dev/posts/evepraisal.com/): A bulk-price estimator for EVE Online that helped shape the game's economy (now shut down). GitHub: [evepraisal/go-evepraisal](https://github.com/evepraisal/go-evepraisal).
+- [softlayer-python](https://github.com/softlayer/softlayer-python): Python libraries and CLI for interacting with the SoftLayer/IBM Cloud API.
+- [swftp](https://github.com/softlayer/swftp): An FTP/SFTP interface for OpenStack Object Storage (swift) written in Twisted Python.
+
+## Core Content Sections
+- [Posts](https://kmcd.dev/posts/): A collection of technical posts covering Go, protobuf, network protocols (HTTP/1.1, HTTP/2, BGP, gNMI, YANG), CLI tools, and development adventures.
+- [Prompts](https://kmcd.dev/prompts/): Quick notes, developer logs, and prompts.
+- [Stuff](https://kmcd.dev/stuff/): Summary page of active, tool, and finished projects.
+- [About Me](https://kmcd.dev/me/): Information about Kevin McDonald, his background, and interests.
+- [Links](https://kmcd.dev/links/): Hand-curated list of links and resources.
+
+## Core Technologies
+- Languages: Go, TypeScript
+- Cloud & Infrastructure: Kubernetes, Google Cloud Platform (GCP), AWS, Terraform
+- Ecosystems: Protobuf, gRPC, Connect
+
+## Links & Feeds
+- GitHub: [sudorandom](https://github.com/sudorandom)
+- YouTube: [Your YouTube Channel Link]
+- RSS Feed: [https://kmcd.dev/index.xml](https://kmcd.dev/index.xml)
