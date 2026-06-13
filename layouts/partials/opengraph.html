@@ -10,54 +10,134 @@
           "size" 45
           "x" 40
           "y" 60
-          "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
+          "font" (resources.GetRemote "https://fonts.gstatic.com/s/orbitron/v35/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_Cmxpg.ttf")))
         }}
     {{- $promptCover := (partial "prompts/load-cover.html" .).Filter $filters -}}
     <meta property="og:image" content="{{ $promptCover.Permalink }}"/>
 {{ else }}
-        {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
+    {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- $page := . -}}
-    {{- with .Resources.Get .Params.cover -}}
-      {{ $img := . }}
-      {{ $processedImg := "" }}
 
-      {{ if eq $img.MediaType.SubType "svg" }}
-          {{ $opts := dict "method" "POST" "body" $img.Content }}
-          {{ $pngResource := resources.GetRemote "http://127.0.0.1:7001/svg-to-png" $opts }}
-          {{ $processedImg = resources.FromString (printf "socials/%s.png" $img.Name) $pngResource.Content }}
-      {{ else }}
-          {{ $processedImg = $img }}
+    {{/* Build solid dark background images by padding a 1x1 average pixel to the target sizes */}}
+    {{ $bgBase := ($siteImage.Process "fill 1x1 png") }}
+    {{ $rectBg := $bgBase.Filter (images.Padding 280 600 279 599 "#161e26") }}
+    {{ $squareBg := $bgBase.Filter (images.Padding 258 285 258 284 "#161e26") }}
+
+    {{ $font := resources.GetRemote "https://fonts.gstatic.com/s/orbitron/v35/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_Cmxpg.ttf" }}
+    {{ $spaceMonoFont := resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/spacemono/SpaceMono-Regular.ttf" }}
+
+    {{/* Rectangular Image (1200x560) with massive wrapped text */}}
+    {{ $words := split $page.Title " " }}
+    {{ $maxWordLen := 0 }}
+    {{ range $words }}
+      {{ if gt (len .) $maxWordLen }}
+        {{ $maxWordLen = len . }}
       {{ end }}
-
-      {{/* Square image for some platforms */}}
-      {{ $squareFilters := slice
-        (images.Process "fill 570x517 Center png q95")
-        (images.Padding 135 30 30  "#1F2A35")
-        (images.Text $page.Title (dict
-            "size" 36
-            "x" 40
-            "y" 60
-            "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
-          }}
-      {{ $squareImg := $processedImg.Filter $squareFilters }}
-      <meta property="og:image" content="{{ $squareImg.Permalink }}"/>
-
-      {{/* Rectangular image for other platforms */}}
-      {{ $rectFilters := slice
-          (images.Process "fill 1200x560 Center png q95")
-          (images.Padding 70 0 0 0 "#1F2A35")
-          (images.Text $page.Title (dict
-              "size" 40
-              "x" 40
-              "y" 10
-              "font" (resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/poetsenone/PoetsenOne-Regular.ttf")))
-        }}
-      {{ $socialimg := $processedImg.Filter $rectFilters }}
-      <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
-    {{ else }}
-      <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
     {{ end }}
+
+    {{ $rectLines := slice }}
+    {{ $currentRectLine := "" }}
+    {{ range $words }}
+      {{ if eq $currentRectLine "" }}
+        {{ $currentRectLine = . }}
+      {{ else if lt (add (len $currentRectLine) (len .)) 22 }}
+        {{ $currentRectLine = printf "%s %s" $currentRectLine . }}
+      {{ else }}
+        {{ $rectLines = $rectLines | append $currentRectLine }}
+        {{ $currentRectLine = . }}
+      {{ end }}
+    {{ end }}
+    {{ if ne $currentRectLine "" }}
+      {{ $rectLines = $rectLines | append $currentRectLine }}
+    {{ end }}
+
+    {{ $rectFontSize := 65 }}
+    {{ if gt $maxWordLen 28 }}
+      {{ $rectFontSize = div (mul 65 28) $maxWordLen }}
+    {{ end }}
+
+    {{ $yOffsetRect := 40 }}
+    {{ if eq (len $rectLines) 1 }}
+      {{ $yOffsetRect = 200 }}
+    {{ else if eq (len $rectLines) 2 }}
+      {{ $yOffsetRect = 150 }}
+    {{ else if eq (len $rectLines) 3 }}
+      {{ $yOffsetRect = 110 }}
+    {{ else }}
+      {{ $yOffsetRect = 70 }}
+    {{ end }}
+
+    {{ $rectFilters := slice }}
+    {{ range $index, $line := $rectLines }}
+      {{ $y := add $yOffsetRect (mul $index (add $rectFontSize 25)) }}
+      {{ $rectFilters = $rectFilters | append (images.Text $line (dict
+          "size" $rectFontSize
+          "x" 80
+          "y" $y
+          "color" "#2dd4bf"
+          "font" $font)) }}
+    {{ end }}
+    {{ $rectFilters = $rectFilters | append (images.Text "kmcd.dev" (dict
+        "size" 28
+        "x" 980
+        "y" 500
+        "color" "#a2a2dd"
+        "font" $spaceMonoFont)) }}
+    {{ $socialimg := $rectBg.Filter $rectFilters }}
+    <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
+
+    {{/* Square Image (570x517) with wrapped text */}}
+    {{ $squareLines := slice }}
+    {{ $currentSquareLine := "" }}
+    {{ range $words }}
+      {{ if eq $currentSquareLine "" }}
+        {{ $currentSquareLine = . }}
+      {{ else if lt (add (len $currentSquareLine) (len .)) 16 }}
+        {{ $currentSquareLine = printf "%s %s" $currentSquareLine . }}
+      {{ else }}
+        {{ $squareLines = $squareLines | append $currentSquareLine }}
+        {{ $currentSquareLine = . }}
+      {{ end }}
+    {{ end }}
+    {{ if ne $currentSquareLine "" }}
+      {{ $squareLines = $squareLines | append $currentSquareLine }}
+    {{ end }}
+
+    {{ $squareFontSize := 42 }}
+    {{ if gt $maxWordLen 18 }}
+      {{ $squareFontSize = div (mul 42 18) $maxWordLen }}
+    {{ end }}
+
+    {{ $yOffsetSquare := 80 }}
+    {{ if eq (len $squareLines) 1 }}
+      {{ $yOffsetSquare = 210 }}
+    {{ else if eq (len $squareLines) 2 }}
+      {{ $yOffsetSquare = 160 }}
+    {{ else if eq (len $squareLines) 3 }}
+      {{ $yOffsetSquare = 120 }}
+    {{ else if eq (len $squareLines) 4 }}
+      {{ $yOffsetSquare = 90 }}
+    {{ end }}
+
+    {{ $squareFilters := slice }}
+    {{ range $index, $line := $squareLines }}
+      {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize 20)) }}
+      {{ $squareFilters = $squareFilters | append (images.Text $line (dict
+          "size" $squareFontSize
+          "x" 50
+          "y" $y
+          "color" "#2dd4bf"
+          "font" $font)) }}
+    {{ end }}
+    {{ $squareFilters = $squareFilters | append (images.Text "kmcd.dev" (dict
+        "size" 20
+        "x" 430
+        "y" 470
+        "color" "#a2a2dd"
+        "font" $spaceMonoFont)) }}
+    {{ $squareImg := $squareBg.Filter $squareFilters }}
+    <meta property="og:image" content="{{ $squareImg.Permalink }}"/>
 {{ end }}
 
 <meta property="og:url" content="{{ .Permalink }}">
