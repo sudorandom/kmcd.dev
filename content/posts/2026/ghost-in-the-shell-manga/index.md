@@ -15,6 +15,11 @@ canonical_url: https://kmcd.dev/posts/ghost-in-the-shell-manga/
 
 My family enjoys doing cozy "out into the city" days for birthdays, Mother's Day, and Father's Day. During our recent Father's Day trip, we visited the local anime shop. That is where we found *The Ghost in the Shell: Fully Compiled*, and we just had to pick it up.
 
+{{< columns >}}
+{{< figure src="ghost-in-the-shell-fully-compiled.jpg" >}}
+{{< figure src="book-physical.jpg" caption="This book is *massive*!" >}}
+{{< /columns >}}
+
 *The Ghost in the Shell: Stand Alone Complex* series is my favorite anime series of all time. I also really loved the 1995 movie. So I was excited to read the manga that inspired the anime.
 
 Reading the manga made me think about how the series became one of the defining works of cyberpunk. There is a giant gulf between sci-fi that merely uses flashy futuristic backdrops for action sequences and sci-fi that truly tells a story using the logical implications of future advancements. Ghost in the Shell firmly belongs to the latter. By fully embracing the technological and scientific feasibility of its ideas, it gives us room to ask much more interesting questions. It forces us to consider the systems our real world is built on and how they might change given new technology.
