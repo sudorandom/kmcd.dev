@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Protobuf in Go"
+title: "Fast Dynamic Protobuf in Go"
 date: "2026-06-22T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "software-architecture"]
@@ -11,16 +11,15 @@ featuredpath: "date"
 slug: "dynamic-protobuf-in-go"
 type: "posts"
 devtoSkip: true
-draft: true
 ---
 
 Statically compiled schemas are Protocol Buffers' primary optimization lever. By compiling `.proto` definitions into concrete, statically typed Go structures at build time, the Go Protobuf compiler generates highly optimized serialization and deserialization routines.
 
 Without a known schema at build time, this optimization pipeline breaks down. Pipelines handling dynamic message descriptors at runtime (message registries, API event gateways, dynamic proxies, developer tools) cannot rely on code generation. They need to load schema descriptors on the fly and parse incoming binary payloads dynamically. 
 
-Historically, this required Go's native reflection-based package, [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb). Standard `dynamicpb` is notoriously slow and allocation-heavy.
+Historically, this required the reflection-based package, [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb). Standard `dynamicpb` is significantly slower and more allocation-heavy than generated protobuf code.
 
-Here is a look at why reflection hurts dynamic parsing, how Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) bypasses it using table-driven bytecode compilation, and the real-world impact of switching [FauxRPC](https://fauxrpc.com) to use `hyperpb`.
+Here is a look at why reflection hurts dynamic parsing, how Buf's [`hyperpb`](https://github.com/bufbuild/hyperpb) bypasses it using table-driven bytecode compilation, compiling descriptors into a compact parser instruction stream (bytecode) executed by a specialized runtime, and the real-world impact of switching [FauxRPC](https://fauxrpc.com) to use `hyperpb`.
 
 ---
 
@@ -40,7 +39,7 @@ If you're curious how both libraries are used in FauxRPC, you can see the search
 
 Go's standard `dynamicpb` package takes a `protoreflect.MessageDescriptor` and constructs a dynamic message representation at runtime. 
 
-Since the layout is unknown at compile time, `dynamicpb` relies heavily on Go's reflection subsystem to inspect types, allocate objects, and map fields. This creates two distinct performance bottlenecks:
+Since message layouts are only known at runtime, `dynamicpb` must route field access through descriptors and generic message representations rather than compile-time generated code. This introduces additional indirection, dynamic dispatch, and allocation overhead compared to statically generated protobuf types. This creates two distinct performance bottlenecks:
 
 1. **Massive Allocation Overhead**: Deserializing a complex, nested binary payload dynamically means constructing a tree of runtime structures. Without compile-time type definitions, the Go runtime allocates heap pointers and interfaces for map entries, repeated fields, and nested messages. This causes severe garbage collector (GC) pressure.
 2. **Pointer Chasing and Cache Misses**: Traversing a reflection-heavy object graph requires following layers of pointers. At the CPU level, this leads to frequent cache misses and degrades branch prediction compared to flat, contiguous memory access.
@@ -55,7 +54,7 @@ The bytecode engine parses binary payloads directly, bypassing Go's reflection m
 
 ### Pre-Compiling at Runtime
 
-Because `hyperpb` uses a custom virtual machine under the hood, it requires a compilation phase before you can parse any payloads. Similar to compiling a regular expression with Go's `regexp.Compile`, you must compile the schema definition at runtime. The library provides functions like `hyperpb.CompileMessageDescriptor` (to compile a single message schema) or `hyperpb.CompileFileDescriptorSet` (to compile a set of schemas):
+Because `hyperpb` uses a custom VM under the hood, it requires a compilation phase before you can parse any payloads. Similar to compiling a regular expression with Go's `regexp.Compile`, you must compile the schema definition at runtime. The library provides functions like `hyperpb.CompileMessageDescriptor` (to compile a single message schema) or `hyperpb.CompileFileDescriptorSet` (to compile a set of schemas):
 
 ```go
 // Done once at startup/initialization
@@ -68,7 +67,7 @@ This compilation step incurs a small runtime CPU overhead, so the compiled types
 
 Execution speed is only half the equation; memory allocation dictates the rest.
 
-`hyperpb` provides a thread-local, pre-allocated memory arena pool through `hyperpb.Shared`. Pairing bytecode parsing with a reusable memory arena allows you to recycle memory buffers across multiple requests. This eliminates runtime heap churn for read-only pipelines:
+`hyperpb` provides a reusable, pre-allocated memory arena pool through `hyperpb.Shared`. Pairing bytecode parsing with a reusable memory arena allows you to recycle memory buffers across multiple requests. This eliminates runtime heap churn for read-only pipelines:
 
 ```go
 shared := new(hyperpb.Shared) // Instantiated once per goroutine/worker
@@ -83,7 +82,9 @@ for _, payload := range incoming {
 }
 ```
 
-*Note: Because the data fields in `msg` are backed by the pre-allocated pool's memory arena, any references to those fields become invalid (and will read corrupted data or panic) after `shared.Free()` is called. The processing pipeline must handle the message completely synchronously (e.g., no asynchronous routing, lazy field reading, or passing to background goroutines) before the arena is recycled.*
+{{% warning-box %}}
+**Critical Memory Reuse Warning**: Because the data fields in `msg` are backed by the pre-allocated pool's memory arena, any references to those fields become invalid (and will read corrupted data or panic) after `shared.Free()` is called. The processing pipeline must handle the message completely synchronously (e.g., no asynchronous routing, lazy field reading, or passing to background goroutines) before the arena is recycled.
+{{% /warning-box %}}
 
 ---
 
@@ -91,7 +92,7 @@ for _, payload := range incoming {
 
 To see how `dynamicpb` and `hyperpb` compare in code, we can use the classic ConnectRPC/Buf [Eliza service](https://buf.build/connectrpc/eliza) schema. 
 
-A complete, working set of examples is available in the [dynamic-protobuf-in-go/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/dynamic-protobuf-in-go/go) directory. It uses `buf` to compile the Protobuf definitions into a binary descriptor set, which is then loaded at runtime to perform dynamic serialization and reflection.
+A complete set of runnable examples is available in the [dynamic-protobuf-in-go/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/dynamic-protobuf-in-go/go) directory. It uses `buf` to compile the Protobuf definitions into a binary descriptor set, which is then loaded at runtime to perform dynamic serialization and reflection.
 
 ### 1. Compiling Protobuf Descriptors with Buf
 
@@ -138,7 +139,7 @@ Decoded message: Hello Eliza, how are you?
 Memory arena recycled.
 ```
 
-By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. That's the claim, at least. So let's test it to see just how efficient hyperpb is compared to dynamicpb.
+By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. The natural question is whether those claims hold up in practice.
 
 ---
 
@@ -150,7 +151,7 @@ I benchmarked three dynamic parsing strategies against statically generated Go P
 | :--- | :--- |
 | **dynamicpb** | Evaluates dynamic descriptor parsing and reflection-based Protobuf handling using Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. |
 | **hyperpb** | Evaluates dynamic parsing using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb) library. |
-| **hyperpb + Shared** | Evaluates dynamic parsing using `hyperpb` paired with a thread-local, pre-allocated `hyperpb.Shared` memory arena to recycle allocations. |
+| **hyperpb + Shared** | Evaluates dynamic parsing using `hyperpb` paired with a reusable `hyperpb.Shared` memory arena to recycle allocations. |
 | **Concrete (proto)** | Statically compiled Go Protobuf code (provided as a baseline comparison). |
 | **Concrete (vtproto)** | Statically compiled, reflection-free PlanetScale [`vtproto`](https://github.com/planetscale/vtproto) code (provided as a baseline comparison). |
 
@@ -160,6 +161,8 @@ The benchmarks evaluate performance across three payload scales:
 - **Large**: An array repeating the Medium event 100 times.
 
 The source code and setup for these benchmarks are available in the [dynamic-protobuf-in-go/benchmarks](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/dynamic-protobuf-in-go/benchmarks) directory.
+
+*All benchmarks were executed on an Apple M1 Pro (`darwin/arm64`) using Go 1.26. Descriptor compilation was excluded from timing and performed once during benchmark initialization. Measurements represent deserialization only (`proto.Unmarshal`) and were collected using `go test -bench=. -benchmem`.*
 
 ### Benchmark Results
 
@@ -405,16 +408,18 @@ On a **Large Payload**, standard reflection-based `dynamicpb` takes 298,918 ns.
 - Standard `hyperpb` executes in 29,197 ns (a 10x speedup).
 - `hyperpb + Shared` executes in 22,074 ns (a 13.5x speedup).
 
-Interestingly, both `hyperpb` configurations outperform compile-time generated static Protobuf code (`Concrete (proto)` at 66,722 ns and reflection-free `Concrete (vtproto)` at 42,896 ns). Standard static Protobuf still incurs the runtime cost of allocating individual heap pointers and structs for every nested sub-message in the list. The memory arena in `hyperpb + Shared` allocates this memory contiguously.
+*Note: These benchmarks measure parsing and deserialization costs only. Work performed after unmarshalling (such as downstream data manipulation or field access) is excluded.*
 
-Notably, this crossover point—where dynamic parsing paired with a memory arena beats statically compiled generated code—occurs even at the **Medium Payload** scale. At that size, `hyperpb + Shared` (350.2 ns) already edges out reflection-free `Concrete (vtproto)` (369.4 ns). This inversion highlights just how substantial the CPU overhead of standard heap allocation tracking and garbage collection is in Go.
+Interestingly, both `hyperpb` configurations outperform compile-time generated static Protobuf code (`Concrete (proto)` at 66,722 ns and reflection-free `Concrete (vtproto)` at 42,896 ns). This does not mean `hyperpb`'s parser engine is inherently faster than generated Go code. Rather, the combination of bytecode parsing and arena-backed allocation dramatically reduces object creation costs for large nested payloads. Standard static Protobuf still incurs the runtime cost of allocating individual heap pointers and structs for every nested sub-message in the list. The memory arena in `hyperpb + Shared` allocates this memory contiguously.
+
+In these benchmarks, this crossover point, where dynamic parsing paired with a memory arena beats statically compiled generated code, occurs even at the **Medium Payload** scale. At that size, `hyperpb + Shared` (350.2 ns) already edges out reflection-free `Concrete (vtproto)` (369.4 ns). This inversion highlights just how substantial the CPU overhead of standard heap allocation tracking and garbage collection is in Go.
 
 ### 2. Allocation Elimination
 The allocation statistics highlight the biggest architectural advantage. On a Large Payload:
 - `dynamicpb`: 4,117 heap allocations per message.
 - `Concrete (proto)`: 1,509 heap allocations.
 - `hyperpb`: 12 heap allocations.
-- `hyperpb + Shared`: 1 heap allocation. (This single allocation is the top-level message pointer escaping to the heap as a `proto.Message` interface wrapper. Because the standard `proto.Unmarshal` signature requires passing an interface, this top-level escape cannot easily be avoided and prevents hitting an absolute zero allocation count.)
+- `hyperpb + Shared`: 1 heap allocation. (The remaining allocation appears to come from the top-level message pointer escaping to the heap as a `proto.Message` interface wrapper. Because the standard `proto.Unmarshal` signature requires passing an interface, this top-level escape cannot easily be avoided and prevents hitting an absolute zero allocation count.)
 
 Eliminating thousands of heap allocations per request removes the CPU bottleneck of garbage collection. For hot-path event routing or proxying services, this lowers tail latency (p99) and reduces CPU utilization under load.
 
@@ -430,7 +435,7 @@ Eliminating thousands of heap allocations per request removes the CPU bottleneck
 - **High-Throughput Pipelines**: Pipelines with dynamic schemas where reflection overhead is a bottleneck.
 
 ### Trade-offs and Constraints
-- **Platform Specificity**: `hyperpb` relies on specialized runtime assembly/bytecode generators tailored for optimized CPU architectures. Its performance benefits currently apply to `amd64` and `arm64` platforms. It falls back to standard reflection on other architectures.
+- **Platform Specificity**: `hyperpb` relies on specialized runtime assembly and bytecode generators tailored for 64-bit little-endian architectures. It is officially supported only on `amd64` and `arm64` platforms. Compiling for other architectures requires the manual build tag `hyperpb.unsupported`, which compiles a slower generic parser backend.
 - **Read-Only vs Mutable**: Reusing buffers via `hyperpb.Shared` works best for read-only access pipelines. If you need to mutate the parsed message or pass it asynchronously to other goroutines, you must copy the data or avoid using the shared arena. This increases allocations, though still resulting in fewer than standard `dynamicpb`.
 - **AOT Compilation**: If your schema is known at build time, compiling your Protobuf definitions remains the best approach. Static compilation (`vtproto` or standard `proto`) offers strict type safety and requires no runtime bytecode compilation overhead.
 
@@ -438,9 +443,9 @@ Eliminating thousands of heap allocations per request removes the CPU bottleneck
 
 ## Conclusion
 
-Reflection-based parsing limits the performance of systems requiring runtime schema flexibility. `hyperpb` proves that dynamic parsing can be highly optimized. By compiling descriptors into optimized bytecode tables and utilizing thread-local memory arenas, `hyperpb` bridges the performance gap between dynamic reflection and static compilation. In high-throughput scenarios, its allocation efficiency can even outperform static generation.
+Traditional dynamic protobuf parsing imposes significant overhead on systems that require runtime schema flexibility. `hyperpb` proves that dynamic parsing can be highly optimized. By compiling descriptors into optimized bytecode tables and utilizing reusable memory arenas, `hyperpb` bridges the performance gap between dynamic reflection and static compilation. In high-throughput scenarios, its allocation efficiency can even outperform static generation.
 
-For FauxRPC, adopting `hyperpb` was a pretty easy drop-in replacement. If you're doing dynamicpb, you might want to consider adopting hyperpb for the 'unmarshalling' part of your code.
+If your workload is descriptor-driven and spends significant CPU time unmarshalling protobufs, `hyperpb` is one of the rare optimizations that can deliver order-of-magnitude improvements without redesigning the surrounding architecture. For FauxRPC, adopting `hyperpb` turned dynamic schema mock generation into a highly efficient, virtually allocation-free pipeline.
 
 ---
 
