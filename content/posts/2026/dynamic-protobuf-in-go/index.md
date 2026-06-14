@@ -28,9 +28,11 @@ Here is a look at why reflection hurts dynamic parsing, how Buf's [`hyperpb`](ht
 
 FauxRPC generates mock data from arbitrary Protobuf schemas. It ingests schemas after startup. Users upload `.proto` schemas or descriptors dynamically, and FauxRPC instantly configures itself to parse, generate, and route gRPC mock requests.
 
-Because of this runtime flexibility, FauxRPC historically relied on `dynamicpb`. It worked fine for local development mocks. However, the overhead of reflection-heavy parsing on large payloads or fast mock workloads created a noticeable CPU bottleneck.
+Because of this runtime flexibility, FauxRPC historically relied on dynamicpb`. It worked fine for local development mocks. However, the overhead of reflection-heavy parsing on large payloads or fast mock workloads created a noticeable CPU bottleneck.
 
-I recently switched FauxRPC to use `hyperpb` for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. Because `hyperpb` is strictly read-only and does not support any of the modification reflection APIs, FauxRPC uses it exclusively for reading in and parsing protobuf requests. Writing responses still uses standard `dynamicpb` since those messages must be modified and populated dynamically. Even with this hybrid model, the switch drastically improved parsing performance and dropped allocation overhead. If `hyperpb` adds modification support, I'll probably be one of the first to adopt it because FauxRPC is the perfect use-case for this library.
+I recently switched FauxRPC to use `hyperpb` for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. Because `hyperpb` is strictly read-only and does not support any of the modification reflection APIs, FauxRPC uses it exclusively for reading in and parsing protobuf requests. Writing responses still uses standard [`dynamicpb`](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code) since those messages must be modified and populated dynamically. Even with this hybrid model, the switch drastically improved parsing performance and dropped allocation overhead. If `hyperpb` adds modification support, I'll probably be one of the first to adopt it because FauxRPC is the perfect use-case for this library.
+
+If you're curious how both libraries are used in FauxRPC, you can see the search results for [dynamicpb](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code) and [hyperpb](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc+hyperpb&type=code).
 
 ---
 
@@ -65,12 +67,12 @@ for _, payload := range incoming {
     msg := shared.NewMessage(mType) 
     _ = proto.Unmarshal(payload, msg)
     
-    route(msg)    // Note: Must be handled synchronously
+    route(msg)    // Note: Must be handled synchronously and complete before Free()
     shared.Free() // Recycles the arena back to the pool
 }
 ```
 
-*Note: Passing `msg` to a background goroutine before calling `shared.Free()` will cause data corruption. The pipeline must be synchronous.*
+*Note: Because the data fields in `msg` are backed by the pre-allocated pool's memory arena, any references to those fields become invalid (and will read corrupted data or panic) after `shared.Free()` is called. The processing pipeline must handle the message completely synchronously (e.g., no asynchronous routing, lazy field reading, or passing to background goroutines) before the arena is recycled.*
 
 ---
 
@@ -106,7 +108,7 @@ Because `hyperpb` is built for high-performance ingestion and routing, it only s
 
 {{% render-code file="go/hyperpb.go" language="go" start="// start: hyperpb" %}}
 
-By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. That's the claim, at least. So let's test it to see just how efficient hyperpb is completed to dynamicpb.
+By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. That's the claim, at least. So let's test it to see just how efficient hyperpb is compared to dynamicpb.
 
 ---
 
@@ -114,13 +116,13 @@ By using the exact same standard `protoreflect` interface, `hyperpb` acts as a d
 
 I benchmarked three dynamic parsing strategies against statically generated Go Protobuf code to measure the exact improvements:
 
-| Variant | Format | Description |
-| :--- | :---: | :--- |
-| **dynamicpb** | Protobuf | Evaluates dynamic descriptor parsing and reflection-based Protobuf handling using Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. |
-| **hyperpb** | Protobuf | Evaluates dynamic parsing using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb) library. |
-| **hyperpb + Shared** | Protobuf | Evaluates dynamic parsing using `hyperpb` paired with a thread-local, pre-allocated `hyperpb.Shared` memory arena to recycle allocations. |
-| **Concrete (proto)** | Protobuf | Statically compiled Go Protobuf code (provided as a baseline comparison). |
-| **Concrete (vtproto)** | Protobuf | Statically compiled, reflection-free PlanetScale [`vtproto`](https://github.com/planetscale/vtproto) code (provided as a baseline comparison). |
+| Variant | Description |
+| :--- | :--- |
+| **dynamicpb** | Evaluates dynamic descriptor parsing and reflection-based Protobuf handling using Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. |
+| **hyperpb** | Evaluates dynamic parsing using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb) library. |
+| **hyperpb + Shared** | Evaluates dynamic parsing using `hyperpb` paired with a thread-local, pre-allocated `hyperpb.Shared` memory arena to recycle allocations. |
+| **Concrete (proto)** | Statically compiled Go Protobuf code (provided as a baseline comparison). |
+| **Concrete (vtproto)** | Statically compiled, reflection-free PlanetScale [`vtproto`](https://github.com/planetscale/vtproto) code (provided as a baseline comparison). |
 
 The benchmarks evaluate performance across three payload scales:
 - **Small**: A flat message with 4 primitive fields (ID, status, age, score).
@@ -375,12 +377,14 @@ On a **Large Payload**, standard reflection-based `dynamicpb` takes 298,918 ns.
 
 Interestingly, both `hyperpb` configurations outperform compile-time generated static Protobuf code (`Concrete (proto)` at 66,722 ns and reflection-free `Concrete (vtproto)` at 42,896 ns). Standard static Protobuf still incurs the runtime cost of allocating individual heap pointers and structs for every nested sub-message in the list. The memory arena in `hyperpb + Shared` allocates this memory contiguously.
 
+Notably, this crossover point—where dynamic parsing paired with a memory arena beats statically compiled generated code—occurs even at the **Medium Payload** scale. At that size, `hyperpb + Shared` (350.2 ns) already edges out reflection-free `Concrete (vtproto)` (369.4 ns). This inversion highlights just how substantial the CPU overhead of standard heap allocation tracking and garbage collection is in Go.
+
 ### 2. Allocation Elimination
 The allocation statistics highlight the biggest architectural advantage. On a Large Payload:
 - `dynamicpb`: 4,117 heap allocations per message.
 - `Concrete (proto)`: 1,509 heap allocations.
 - `hyperpb`: 12 heap allocations.
-- `hyperpb + Shared`: 1 heap allocation. (This single allocation is typically just the top-level message struct wrapper returned by the pool).
+- `hyperpb + Shared`: 1 heap allocation. (This single allocation is the top-level message pointer escaping to the heap as a `proto.Message` interface wrapper. Because the standard `proto.Unmarshal` signature requires passing an interface, this top-level escape cannot easily be avoided and prevents hitting an absolute zero allocation count.)
 
 Eliminating thousands of heap allocations per request removes the CPU bottleneck of garbage collection. For hot-path event routing or proxying services, this lowers tail latency (p99) and reduces CPU utilization under load.
 
