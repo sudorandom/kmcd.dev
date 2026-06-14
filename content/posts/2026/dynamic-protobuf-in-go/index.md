@@ -30,7 +30,7 @@ FauxRPC generates mock data from arbitrary Protobuf schemas. It ingests schemas 
 
 Because of this runtime flexibility, FauxRPC historically relied on `dynamicpb`. It worked fine for local development mocks. However, the overhead of reflection-heavy parsing on large payloads or fast mock workloads created a noticeable CPU bottleneck.
 
-I recently switched FauxRPC to use `hyperpb` for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. The switch drastically improved parsing performance and dropped allocation overhead.
+I recently switched FauxRPC to use `hyperpb` for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. Because `hyperpb` is strictly read-only and does not support any of the modification reflection APIs, FauxRPC uses it exclusively for reading in and parsing protobuf requests. Writing responses still uses standard `dynamicpb` since those messages must be modified and populated dynamically. Even with this hybrid model, the switch drastically improved parsing performance and dropped allocation overhead. If `hyperpb` adds modification support, I'll probably be one of the first to adopt it because FauxRPC is the perfect use-case for this library.
 
 ---
 
@@ -71,6 +71,42 @@ for _, payload := range incoming {
 ```
 
 *Note: Passing `msg` to a background goroutine before calling `shared.Free()` will cause data corruption. The pipeline must be synchronous.*
+
+---
+
+## Dynamic Reflection in Practice
+
+To see how `dynamicpb` and `hyperpb` compare in code, we can use the classic ConnectRPC/Buf [Eliza service](https://buf.build/connectrpc/eliza) schema. 
+
+A complete, working set of examples is available in the [dynamic-protobuf-in-go/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/dynamic-protobuf-in-go/go) directory. It uses `buf` to compile the Protobuf definitions into a binary descriptor set, which is then loaded at runtime to perform dynamic serialization and reflection.
+
+### 1. Compiling Protobuf Descriptors with Buf
+
+Before using dynamic messages, we must compile the `.proto` schema into a `FileDescriptorSet` (a serialized binary image of the schemas). Using the Buf CLI, this is done with a single command:
+
+```bash
+buf build -o eliza.binpb
+```
+
+### 2. Loading Descriptors at Runtime
+
+In Go, we read this descriptor set, unmarshal it into a `descriptorpb.FileDescriptorSet`, and load it into a `protoregistry.Files` registry. This registry allows us to look up the message descriptors by name:
+
+{{% render-code file="go/main.go" language="go" start="// start: load" %}}
+
+### 3. Dynamic Access with dynamicpb
+
+Standard `dynamicpb` creates dynamic messages that support both reading and writing field values. The standard `protoreflect` interface is used for field access:
+
+{{% render-code file="go/dynamicpb.go" language="go" start="// start: dynamicpb" %}}
+
+### 4. High-Performance Read-Only Access with hyperpb
+
+Because `hyperpb` is built for high-performance ingestion and routing, it only supports **read-only** access. Message descriptors must be compiled into optimized parser bytecode. Any attempt to write or mutate a message will panic:
+
+{{% render-code file="go/hyperpb.go" language="go" start="// start: hyperpb" %}}
+
+By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. That's the claim, at least. So let's test it to see just how efficient hyperpb is completed to dynamicpb.
 
 ---
 

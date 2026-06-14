@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package connectrpc.eliza.v1;
+
+option go_package = "connectrpc.com/examples/gen/eliza/v1;elizav1";
+
+// ElizaService provides a way to talk to Eliza, a port of the DOCTOR script
+// for Joseph Weizenbaum's original ELIZA program. Created in the mid-1960s at
+// the MIT Artificial Intelligence Laboratory, ELIZA demonstrates the
+// superficiality of human-computer communication. DOCTOR simulates a
+// psychotherapist, and is commonly found as an Easter egg in emacs
+// distributions.
+service ElizaService {
+  // Say is a unary RPC. Eliza responds to the prompt with a single sentence.
+  rpc Say(SayRequest) returns (SayResponse) {}
+
+  // Introduce is a server-streaming RPC. Eliza sends a few introductory
+  // sentences.
+  rpc Introduce(IntroduceRequest) returns (stream IntroduceResponse) {}
+
+  // Converse is a bidirectional-streaming RPC. The stream is open until
+  // Eliza detects a goodbye.
+  rpc Converse(stream ConverseRequest) returns (stream ConverseResponse) {}
+}
+
+message SayRequest {
+  string sentence = 1;
+}
+
+message SayResponse {
+  string sentence = 1;
+}
+
+message IntroduceRequest {
+  string name = 1;
+}
+
+message IntroduceResponse {
+  string sentence = 1;
+}
+
+message ConverseRequest {
+  string sentence = 1;
+}
+
+message ConverseResponse {
+  string sentence = 1;
+}

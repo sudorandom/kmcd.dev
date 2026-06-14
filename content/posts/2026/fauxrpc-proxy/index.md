@@ -64,7 +64,7 @@ fauxrpc -> client: "Return Fake/Stub Response\n(if backend returns Unimplemented
 
 ## Zero-Configuration Reflection
 
-Normally, running a mock server requires you to supply the schema files. You have to pass paths to your `.proto` files or compiled descriptor sets (`.binpb`). That’s fine for a CI environment, but during local development, dragging files around and keeping them in sync is a pain.
+Normally, running a mock server requires you to supply the schema files. You have to pass paths to your `.proto` files or compiled descriptor sets (`.binpb`). That's fine for a CI environment, but during local development, dragging files around and keeping them in sync is a pain.
 
 If you start FauxRPC in proxy mode without specifying a schema:
 ```bash
@@ -116,13 +116,37 @@ stubs/
 
 As you interact with your upstream service, FauxRPC intercepts the requests and responses, automatically writing them to disk as structured JSON or YAML files matching your service hierarchy.
 
-Because these files are saved directly in your codebase, you can commit them to Git and immediately use them as your mock suite in CI/CD pipelines or integration tests. There's no extra setup—just run your application, click around your frontend, and your API mock stubs are generated for you.
+Because these files are saved directly in your codebase, you can commit them to Git and immediately use them as your mock suite in CI/CD pipelines or integration tests. There is no extra setup: just run your application, click around your frontend, and your API mock stubs are generated for you.
+
+## A Protobuf-Native Dashboard for Curation
+
+Having an automated directory of stubs is a massive time saver, but you still need a way to easily curate and manage them. The developer dashboard in FauxRPC (served at `http://localhost:6660/fauxrpc` when running with `--dashboard`) gives you exactly that.
+
+The dashboard captures your live traffic history so you can view the raw JSON payload of any logged request. From there, you can copy a pre-compiled FauxRPC YAML stub, along with its generated `active_if` matcher, directly to your clipboard. This gives you the ability to carefully curate your stub directory while still completely bypassing the need to hand-write them yourself.
+
+{{< figure src="fauxrpc-request-log-stub.png" alt="Viewing the FauxRPC request log history and copying a pre-generated stub" >}}
+
+This dashboard interface is powered by **[Protodocs](https://protodocs.dev/)**, a "protobuf-native" documentation tool that I integrated directly into FauxRPC.
+
+Previously, I relied on converting Protobuf schemas to OpenAPI and rendering a standard Swagger UI using my plugin, [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). It worked, but OpenAPI is fundamentally designed for REST. Translating Protobuf concepts into OpenAPI constructs is like fitting a square peg in a round hole, and you lose the rich semantics of your schemas.
+
+{{< figure src="protodoc-in-fauxrpc.png" alt="Protodocs rendered natively inside the FauxRPC developer dashboard" >}}
+
+Because Protodocs understands the schema natively, it includes features you'd expect from an IDE:
+* **Go-to-definition** and **find-references** for messages, fields, and services.
+* **Interactive API explorer**: You can make test calls directly from the browser using gRPC, gRPC-Web, or ConnectRPC (similar to Swagger, but with native protocol support).
+
+### Testing gRPC from the Browser
+
+One major hurdle with browser-based gRPC clients is that browsers don't expose HTTP/2 trailers, which native gRPC requires for status codes.
+
+To solve this, Protodocs uses a websocket-based proxy under the hood when integrated with a Go server like FauxRPC. When you trigger a gRPC call from the browser, the request is channeled through a WebSocket connection to FauxRPC, which acts as a bridge to translate and send native gRPC frames to the backend. You get full browser-based testing for actual gRPC APIs without having to deploy Envoy or configure complex gRPC-Web proxies.
 
 ## Generating Intelligent CEL Matchers
 
-A recorded stub is only useful if it matches the right request parameters. If you search for user ID `12`, you want the stub that returns Alice. If you search for user ID `42`, you want the stub that returns Bob.
+When you are curating these recorded stubs, they are only useful if they match the right request parameters. If you search for user ID `12`, you want the stub that returns Alice. If you search for user ID `42`, you want the stub that returns Bob.
 
-FauxRPC automatically compiles request shapes into Common Expression Language (CEL) matching rules by examining the request metadata and payload:
+Whether auto-saved to disk or copied from the dashboard, FauxRPC automatically compiles request shapes into Common Expression Language (CEL) matching rules by examining the request metadata and payload:
 1. It ranges over the fields set on the request message.
 2. It ignores complex fields (nested messages, lists, and maps) to keep the generated rules readable.
 3. For primitive fields (like strings, booleans, and integers), it formats the values into CEL literals.
@@ -136,7 +160,7 @@ When a subsequent request comes in, FauxRPC compiles and evaluates this expressi
 
 ## Recorded Stub Formats
 
-FauxRPC records three kinds of stubs based on the call type:
+FauxRPC formats these stubs into three distinct kinds based on the call type:
 
 ### Unary / Client-Streaming Success
 For successful unary calls, it records the response payload:
@@ -183,33 +207,8 @@ For streaming APIs, it records the sequence of frames, mimicking latency with a 
 }
 ```
 
-## A Protobuf-Native Dashboard with Protodocs
-
-The developer dashboard in FauxRPC (served at `http://localhost:6660/fauxrpc` when running with `--dashboard`) has also received a major upgrade. 
-
-Previously, I relied on converting Protobuf schemas to OpenAPI and rendering a standard Swagger UI using my plugin, [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). It worked, but OpenAPI is fundamentally designed for REST. Translating Protobuf concepts into OpenAPI constructs is like fitting a square peg in a round hole—you lose the rich semantics of your schemas.
-
-To fix this, I built **[Protodocs](https://protodocs.dev/)**, a "protobuf-native" documentation tool, and integrated it directly into FauxRPC.
-
-{{< figure src="protodoc-in-fauxrpc.png" alt="Protodocs rendered natively inside the FauxRPC developer dashboard" >}}
-
-Protodocs takes raw protobuf descriptors and renders a documentation page built specifically for Protobuf. Because it understands the schema natively, it includes features you’d expect from an IDE:
-* **Go-to-definition** and **find-references** for messages, fields, and services.
-* **Interactive API explorer**: You can make test calls directly from the browser using gRPC, gRPC-Web, or ConnectRPC (similar to Swagger, but with native protocol support).
-
-### Testing gRPC from the Browser
-
-One major hurdle with browser-based gRPC clients is that browsers don't expose HTTP/2 trailers, which native gRPC requires for status codes. 
-
-To solve this, Protodocs uses a websocket-based proxy under the hood when integrated with a Go server like FauxRPC. When you trigger a gRPC call from the browser, the request is channeled through a WebSocket connection to FauxRPC, which acts as a bridge to translate and send native gRPC frames to the backend. You get full browser-based testing for actual gRPC APIs without having to deploy Envoy or configure complex gRPC-Web proxies.
-
-And, of course, the FauxRPC dashboard still captures your live traffic history. When you open a logged request, you can view the raw JSON payload or copy a pre-compiled FauxRPC YAML stub with its generated `active_if` matcher directly to your clipboard. This completely bypasses the manual stub-writing process.
-
-{{< figure src="fauxrpc-request-log-stub.png" alt="Viewing the FauxRPC request log history and copying a pre-generated stub" >}}
-
 ## Summary
 
-FauxRPC’s proxy and recording capabilities bridge the gap between static mock servers and real-world backend services. By discovering schemas through reflection, handling dynamic protocol translation, falling back to fake data, and generating intelligent CEL matchers automatically, it takes the busywork out of API mocking.
+FauxRPC's proxy and recording capabilities bridge the gap between static mock servers and real-world backend services. By discovering schemas through reflection, handling dynamic protocol translation, falling back to fake data, and generating intelligent CEL matchers automatically, it takes the busywork out of API mocking.
 
 It turns mocks from a maintenance chore into a natural byproduct of running your development environment.
-
