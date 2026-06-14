@@ -28,9 +28,9 @@ Here is a look at why reflection hurts dynamic parsing, how Buf's [`hyperpb`](ht
 
 FauxRPC generates mock data from arbitrary Protobuf schemas. It ingests schemas after startup. Users upload `.proto` schemas or descriptors dynamically, and FauxRPC instantly configures itself to parse, generate, and route gRPC mock requests.
 
-Because of this runtime flexibility, FauxRPC historically relied on dynamicpb`. It worked fine for local development mocks. However, the overhead of reflection-heavy parsing on large payloads or fast mock workloads created a noticeable CPU bottleneck.
+Because of this runtime flexibility, FauxRPC historically relied on [`dynamicpb`](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code). It worked fine for local development mocks. However, the overhead of reflection-heavy parsing on large payloads or fast mock workloads created a noticeable CPU bottleneck.
 
-I recently switched FauxRPC to use `hyperpb` for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. Because `hyperpb` is strictly read-only and does not support any of the modification reflection APIs, FauxRPC uses it exclusively for reading in and parsing protobuf requests. Writing responses still uses standard [`dynamicpb`](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code) since those messages must be modified and populated dynamically. Even with this hybrid model, the switch drastically improved parsing performance and dropped allocation overhead. If `hyperpb` adds modification support, I'll probably be one of the first to adopt it because FauxRPC is the perfect use-case for this library.
+I recently switched FauxRPC to use [`hyperpb`](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc+hyperpb&type=code) for dynamic schemas on `amd64` and `arm64` platforms, where the optimized bytecode engine is fully supported. Because `hyperpb` is strictly read-only and does not support any of the modification reflection APIs, FauxRPC uses it exclusively for reading in and parsing protobuf requests. Writing responses still uses standard [`dynamicpb`](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code) since those messages must be modified and populated dynamically. Even with this hybrid model, the switch drastically improved parsing performance and dropped allocation overhead. If `hyperpb` adds modification support, I'll probably be one of the first to adopt it because FauxRPC is the perfect use-case for this library.
 
 If you're curious how both libraries are used in FauxRPC, you can see the search results for [dynamicpb](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc%20dynamicpb&type=code) and [hyperpb](https://github.com/search?q=repo%3Asudorandom%2Ffauxrpc+hyperpb&type=code).
 
@@ -52,6 +52,17 @@ Since the layout is unknown at compile time, `dynamicpb` relies heavily on Go's 
 Buf's `hyperpb` library takes a different approach. It compiles the message descriptor into dedicated, optimized table-driven parser bytecode at runtime.
 
 The bytecode engine parses binary payloads directly, bypassing Go's reflection model entirely, and decodes field tags with speeds approaching statically generated code.
+
+### Pre-Compiling at Runtime
+
+Because `hyperpb` uses a custom virtual machine under the hood, it requires a compilation phase before you can parse any payloads. Similar to compiling a regular expression with Go's `regexp.Compile`, you must compile the schema definition at runtime. The library provides functions like `hyperpb.CompileMessageDescriptor` (to compile a single message schema) or `hyperpb.CompileFileDescriptorSet` (to compile a set of schemas):
+
+```go
+// Done once at startup/initialization
+hyperMsgType := hyperpb.CompileMessageDescriptor(messageDesc)
+```
+
+This compilation step incurs a small runtime CPU overhead, so the compiled types should be cached and reused rather than recompiled on every incoming request.
 
 ### Eliminating Heap Allocations
 
@@ -108,7 +119,7 @@ Standard `dynamicpb` creates dynamic messages that support both reading and writ
 
 ### 4. High-Performance Read-Only Access with hyperpb
 
-Because `hyperpb` is built for high-performance ingestion and routing, it only supports **read-only** access. Sunny mentioned Message descriptors must be compiled into optimized parser bytecode. Any attempt to write or mutate a message will panic:
+Because `hyperpb` is built for high-performance ingestion and routing, it only supports **read-only** access. Message descriptors must be compiled into optimized parser bytecode, and any attempt to write or mutate a message will panic:
 
 {{% render-code file="go/hyperpb.go" language="go" start="// start: hyperpb" end="// end: hyperpb" %}}
 
