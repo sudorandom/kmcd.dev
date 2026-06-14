@@ -9,10 +9,10 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-// start: hyperpb
 func runHyperPB(sayRequestDesc protoreflect.MessageDescriptor, sentenceField protoreflect.FieldDescriptor, wireBytes []byte) {
 	fmt.Println("\n--- Step 2: hyperpb (Table-Driven Bytecode VM) ---")
 
+	// start: hyperpb
 	// Compile the descriptor into hyperpb optimized message type
 	// Note: You should compile descriptors once at startup or pool them, not per request.
 	hyperMsgType := hyperpb.CompileMessageDescriptor(sayRequestDesc)
@@ -28,4 +28,5 @@ func runHyperPB(sayRequestDesc protoreflect.MessageDescriptor, sentenceField pro
 	// Get field dynamically from hyperpb message using standard protoreflect API
 	hyperVal := hyperMsg.ProtoReflect().Get(sentenceField)
 	fmt.Printf("Decoded message: %s\n", hyperVal.String())
+	// end: hyperpb
 }

@@ -92,21 +92,40 @@ buf build -o eliza.binpb
 
 ### 2. Loading Descriptors at Runtime
 
-In Go, we read this descriptor set, unmarshal it into a `descriptorpb.FileDescriptorSet`, and load it into a `protoregistry.Files` registry. This registry allows us to look up the message descriptors by name:
+In Go, we read this descriptor set, unmarshal it into a `descriptorpb.FileDescriptorSet`, and load it into a `protoregistry.Files` registry:
 
-{{% render-code file="go/main.go" language="go" start="// start: load" %}}
+{{% render-code file="go/main.go" language="go" start="// start: register" end="// end: register" %}}
+
+Once registered, we can look up the message descriptor by its full name and locate individual fields dynamically:
+
+{{% render-code file="go/main.go" language="go" start="// start: lookup" end="// end: lookup" %}}
 
 ### 3. Dynamic Access with dynamicpb
 
 Standard `dynamicpb` creates dynamic messages that support both reading and writing field values. The standard `protoreflect` interface is used for field access:
 
-{{% render-code file="go/dynamicpb.go" language="go" start="// start: dynamicpb" %}}
+{{% render-code file="go/dynamicpb.go" language="go" start="// start: dynamicpb" end="// end: dynamicpb" %}}
 
 ### 4. High-Performance Read-Only Access with hyperpb
 
-Because `hyperpb` is built for high-performance ingestion and routing, it only supports **read-only** access. Message descriptors must be compiled into optimized parser bytecode. Any attempt to write or mutate a message will panic:
+Because `hyperpb` is built for high-performance ingestion and routing, it only supports **read-only** access. Sunny mentioned Message descriptors must be compiled into optimized parser bytecode. Any attempt to write or mutate a message will panic:
 
-{{% render-code file="go/hyperpb.go" language="go" start="// start: hyperpb" %}}
+{{% render-code file="go/hyperpb.go" language="go" start="// start: hyperpb" end="// end: hyperpb" %}}
+
+When running these examples (with `go run .`), we get the following output, verifying that both implementations decode the reflection values identically:
+
+```text
+--- Step 1: dynamicpb (Standard Go Reflection) ---
+Serialized bytes: 0a1948656c6c6f20456c697a612c20686f772061726520796f753f
+Decoded message: Hello Eliza, how are you?
+
+--- Step 2: hyperpb (Table-Driven Bytecode VM) ---
+Decoded message: Hello Eliza, how are you?
+
+--- Step 3: hyperpb + Shared (Memory Reuse Arena) ---
+Decoded message: Hello Eliza, how are you?
+Memory arena recycled.
+```
 
 By using the exact same standard `protoreflect` interface, `hyperpb` acts as a drop-in replacement for downstream read operations while executing significantly faster and with drastically fewer allocations. That's the claim, at least. So let's test it to see just how efficient hyperpb is compared to dynamicpb.
 
@@ -410,7 +429,7 @@ Eliminating thousands of heap allocations per request removes the CPU bottleneck
 
 Reflection-based parsing limits the performance of systems requiring runtime schema flexibility. `hyperpb` proves that dynamic parsing can be highly optimized. By compiling descriptors into optimized bytecode tables and utilizing thread-local memory arenas, `hyperpb` bridges the performance gap between dynamic reflection and static compilation. In high-throughput scenarios, its allocation efficiency can even outperform static generation.
 
-For FauxRPC, adopting `hyperpb` turned dynamic schema mock generation into a highly efficient, virtually allocation-free pipeline.
+For FauxRPC, adopting `hyperpb` was a pretty easy drop-in replacement. If you're doing dynamicpb, you might want to consider adopting hyperpb for the 'unmarshalling' part of your code.
 
 ---
 

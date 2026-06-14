@@ -18,7 +18,7 @@ It leverages the classic [Eliza service](https://buf.build/connectrpc/eliza) sch
 
 2. **Run the Go program:**
    ```bash
-   go run main.go
+   go run .
    ```
 
 ## Expected Output

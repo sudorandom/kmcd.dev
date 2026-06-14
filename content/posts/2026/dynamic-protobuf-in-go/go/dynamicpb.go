@@ -9,10 +9,10 @@ import (
 	"google.golang.org/protobuf/types/dynamicpb"
 )
 
-// start: dynamicpb
 func runDynamicPB(sayRequestDesc protoreflect.MessageDescriptor, sentenceField protoreflect.FieldDescriptor) []byte {
 	fmt.Println("--- Step 1: dynamicpb (Standard Go Reflection) ---")
 
+	// start: dynamicpb
 	// Create request message dynamically
 	dynMsg := dynamicpb.NewMessage(sayRequestDesc)
 
@@ -35,6 +35,7 @@ func runDynamicPB(sayRequestDesc protoreflect.MessageDescriptor, sentenceField p
 	// Get field dynamically
 	val := dynMsg2.ProtoReflect().Get(sentenceField)
 	fmt.Printf("Decoded message: %s\n", val.String())
+	// end: dynamicpb
 
 	return wireBytes
 }

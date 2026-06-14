@@ -4,5 +4,9 @@
     {{- $parts := strings.Split $file . -}}
     {{- $file = delimit (after 1 $parts) . -}}
 {{- end -}}
+{{- with (.Get "end") -}}
+    {{- $parts := strings.Split $file . -}}
+    {{- $file = index $parts 0 -}}
+{{- end -}}
 {{- $lang := .Get "language" -}}
 {{- (print "```" $lang "\n" (trim $file "\n\r") "\n```") | safeHTML }}

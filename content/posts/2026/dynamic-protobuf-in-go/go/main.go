@@ -21,6 +21,7 @@ func main() {
 
 // start: load
 func loadDescriptors() (protoreflect.MessageDescriptor, protoreflect.FieldDescriptor) {
+	// start: register
 	// Read compiled schema descriptors
 	descriptorBytes, err := os.ReadFile("eliza.binpb")
 	if err != nil {
@@ -37,7 +38,9 @@ func loadDescriptors() (protoreflect.MessageDescriptor, protoreflect.FieldDescri
 	if err != nil {
 		log.Fatalf("failed to create protodesc registry: %v", err)
 	}
+	// end: register
 
+	// start: lookup
 	// Retrieve message descriptor for Eliza's SayRequest
 	sayRequestName := protoreflect.FullName("connectrpc.eliza.v1.SayRequest")
 	desc, err := registry.FindDescriptorByName(sayRequestName)
@@ -54,6 +57,7 @@ func loadDescriptors() (protoreflect.MessageDescriptor, protoreflect.FieldDescri
 	if sentenceField == nil {
 		log.Fatalf("failed to find 'sentence' field in %s", sayRequestName)
 	}
+	// end: lookup
 
 	return sayRequestDesc, sentenceField
 }
