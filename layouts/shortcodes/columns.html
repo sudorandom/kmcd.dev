@@ -1,0 +1,5 @@
+{{- $class := .Get "class" | default "" -}}
+{{- $gap := .Get "gap" | default "1.5rem" -}}
+<div class="columns-container {{ $class }}" style="--columns-gap: {{ $gap | safeCSS }};">
+  {{- .Inner -}}
+</div>

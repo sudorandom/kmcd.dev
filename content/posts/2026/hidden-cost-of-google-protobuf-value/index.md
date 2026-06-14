@@ -1,6 +1,6 @@
 ---
 title: "The Hidden Cost of google.protobuf.Value"
-date: "2026-06-15T10:00:00Z"
+date: "2026-06-16T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "json", "software-architecture"]
 description: "The hidden performance cost of dynamic Protobuf in Go."
