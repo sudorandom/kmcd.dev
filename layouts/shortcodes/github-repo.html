@@ -1,0 +1,11 @@
+<a href="https://github.com/{{ .Get "repo" }}" target="_blank" rel="noopener noreferrer" class="github-repo-card">
+  <div class="github-repo-card-header">
+    <div class="github-repo-icon">
+      {{- partial "svg.html" (dict "name" "github") -}}
+    </div>
+    <span class="github-repo-name">{{ .Get "repo" }}</span>
+  </div>
+  {{- with .Get "description" -}}
+  <p class="github-repo-description">{{ . }}</p>
+  {{- end -}}
+</a>

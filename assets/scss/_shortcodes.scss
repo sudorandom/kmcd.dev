@@ -273,3 +273,103 @@ details > summary {
   }
 }
 
+.github-repo-card {
+  display: block;
+  border: 1px solid;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+  [data-theme=light] & {
+    background: linear-gradient(135deg, #ffffff, #fafafa);
+    border-color: #e2e8f0;
+    color: $light-color;
+  }
+
+  [data-theme=dark] & {
+    background: linear-gradient(135deg, #1e293b, #151f28);
+    border-color: #334155;
+    color: $dark-color;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    
+    [data-theme=light] & {
+      border-color: $light-accent-color;
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    }
+    
+    [data-theme=dark] & {
+      border-color: $dark-accent-color;
+      background: linear-gradient(135deg, #1e293b, #1e293b);
+    }
+  }
+
+  .github-repo-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .github-repo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    
+    [data-theme=light] & {
+      background-color: #f1f5f9;
+      color: #000;
+    }
+    
+    [data-theme=dark] & {
+      background-color: #334155;
+      color: #fff;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+  }
+
+  .github-repo-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-family: monospace;
+    letter-spacing: -0.025em;
+
+    [data-theme=light] & {
+      color: $light-accent-color;
+    }
+
+    [data-theme=dark] & {
+      color: $dark-accent-color;
+    }
+  }
+
+  .github-repo-description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    
+    [data-theme=light] & {
+      color: #475569;
+    }
+
+    [data-theme=dark] & {
+      color: #94a3b8;
+    }
+  }
+}
+
+
