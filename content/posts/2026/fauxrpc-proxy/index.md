@@ -6,7 +6,7 @@ description: "Stop writing mock stubs by hand. How FauxRPC uses smart proxying, 
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-title: "Smart Proxying and Auto-Recording in FauxRPC"
+title: "Proxy, Record, and Mock gRPC APIs with FauxRPC"
 slug: "fauxrpc-proxy"
 type: "posts"
 devtoSkip: true
@@ -61,6 +61,16 @@ fauxrpc -> client: "Return Fake/Stub Response\n(if backend returns Unimplemented
 }
 ```
 
+## The Auto-Recording Workflow
+
+Rather than thinking about mocks as a separate coding chore, FauxRPC integrates mock generation directly into your existing development flow:
+
+1. **Start FauxRPC** in proxy mode in front of a staging or local backend server.
+2. **Interact with your application** normally in the browser or via API clients.
+3. **Capture traffic automatically** as FauxRPC records every request and response into the `stubs/` directory.
+4. **Commit the generated stubs** to Git along with your code changes.
+5. **Run your CI test suite** against FauxRPC using those recorded stubs, ensuring fast, offline, and reproducible test runs.
+
 ## Zero-Configuration Reflection
 
 Normally, running a mock server requires you to supply the schema files. You have to pass paths to your `.proto` files or compiled descriptor sets (`.binpb`). That's fine for a CI environment, but during local development, dragging files around and keeping them in sync is a pain.
@@ -78,6 +88,8 @@ Behind the scenes, FauxRPC performs a few key steps during this schema discovery
 4. It compiles the gathered descriptors into a `FileDescriptorSet` and registers them in FauxRPC's registry.
 
 This means FauxRPC is ready to handle, translate, and mock any method defined on the upstream server with absolutely zero configuration.
+
+Because the schema is discovered directly from the running service, the proxy automatically stays in sync with upstream changes. No descriptor files need to be exported, committed, or manually refreshed—as your API evolves, FauxRPC adapts instantly.
 
 ## The Multi-Protocol Proxy Engine
 
@@ -115,6 +127,19 @@ stubs/
 
 As you interact with your upstream service, FauxRPC intercepts the requests and responses, automatically writing them to disk as structured JSON or YAML files matching your service hierarchy.
 
+For example, a recorded stub might look like this:
+
+```json
+{
+  "id": "c85d8869-ad10-449e-ba63-2287f7401c10",
+  "target": "connectrpc.eliza.v1.ElizaService/Say",
+  "active_if": "req.sentence == \"hello\"",
+  "content": {
+    "sentence": "Hello! How can I help you today?"
+  }
+}
+```
+
 Because these files are saved directly in your codebase, you can commit them to Git and immediately use them as your mock suite in CI/CD pipelines or integration tests. There is no extra setup: just run your application, click around your frontend, and your API mock stubs are generated for you.
 
 ## A Protobuf-Native Dashboard for Curation
@@ -125,21 +150,7 @@ The dashboard captures your live traffic history so you can view the raw JSON pa
 
 {{< figure src="fauxrpc-request-log-stub.png" alt="Viewing the FauxRPC request log history and copying a pre-generated stub" >}}
 
-This dashboard interface is powered by **[Protodocs](https://protodocs.dev/)**, a "protobuf-native" documentation tool that I integrated directly into FauxRPC.
-
-Previously, I relied on converting Protobuf schemas to OpenAPI and rendering a standard Swagger UI using my plugin, [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). It worked, but OpenAPI is fundamentally designed for REST. Translating Protobuf concepts into OpenAPI constructs is like fitting a square peg in a round hole, and you lose the rich semantics of your schemas.
-
-{{< figure src="protodoc-in-fauxrpc.png" alt="Protodocs rendered natively inside the FauxRPC developer dashboard" >}}
-
-Because Protodocs understands the schema natively, it includes features you'd expect from an IDE:
-* **Go-to-definition** and **find-references** for messages, fields, and services.
-* **Interactive API explorer**: You can make test calls directly from the browser using gRPC, gRPC-Web, or ConnectRPC (similar to Swagger, but with native protocol support).
-
-### Testing gRPC from the Browser
-
-One major hurdle with browser-based gRPC clients is that browsers don't expose HTTP/2 trailers, which native gRPC requires for status codes.
-
-To solve this, Protodocs uses a websocket-based proxy under the hood when integrated with a Go server like FauxRPC. When you trigger a gRPC call from the browser, the request is channeled through a WebSocket connection to FauxRPC, which acts as a bridge to translate and send native gRPC frames to the backend. You get full browser-based testing for actual gRPC APIs without having to deploy Envoy or configure complex gRPC-Web proxies.
+This dashboard interface is powered by **[Protodocs](https://protodocs.dev/)**, which displays native protobuf schemas directly inside FauxRPC. Because it understands protobuf natively, you can view your packages, messages, and services, and use a built-in API explorer to run test calls (including unary and streaming APIs) directly from the browser without needing complex local Envoy or gRPC-Web proxy configurations.
 
 ## Generating Intelligent CEL Matchers
 
@@ -210,4 +221,4 @@ For streaming APIs, it records the sequence of frames, mimicking latency with a 
 
 FauxRPC's proxy and recording capabilities bridge the gap between static mock servers and real-world backend services. By discovering schemas through reflection, handling dynamic protocol translation, falling back to fake data, and generating intelligent CEL matchers automatically, it takes the busywork out of API mocking.
 
-It turns mocks from a maintenance chore into a natural byproduct of running your development environment.
+Traditional mocks drift because they are maintained separately from the systems they represent. By recording real traffic, discovering schemas automatically, and falling back to generated data when necessary, FauxRPC keeps mock environments aligned with production behavior while dramatically reducing the amount of manual work required. It turns mocks from a maintenance chore into a natural byproduct of running your development environment.
