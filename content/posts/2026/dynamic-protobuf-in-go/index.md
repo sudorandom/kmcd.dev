@@ -1,6 +1,6 @@
 ---
 title: "Fast Dynamic Protobuf in Go"
-date: "2026-06-22T10:00:00Z"
+date: "2026-07-07T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "software-architecture"]
 description: "How table-driven bytecode parsing makes dynamic Protocol Buffers fast in Go."
