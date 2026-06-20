@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["fauxrpc", "connectrpc", "grpc", "protobuf", "api", "rpc", "go", "golang", "http3"]
-date: "2026-06-29T10:00:00Z"
+date: "2026-06-30T10:00:00Z"
 description: "Stop writing mock stubs by hand. How FauxRPC uses smart proxying, reflection, and CEL to automate your API testing."
 featuredalt: ""
 featuredpath: "date"
@@ -11,7 +11,6 @@ slug: "fauxrpc-proxy"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/fauxrpc-proxy/
-draft: true
 ---
 
 Mocking APIs is one of those tasks that starts simple and quickly turns into a chore. You begin with the best intentions, hand-crafting a few JSON fixtures for your frontend tests. But microservices evolve, payloads change, and soon you're maintaining a massive directory of stale mock files. You find yourself trying to remember if user ID `42` was the one that returns a `404`, or the one that simulates a slow response.

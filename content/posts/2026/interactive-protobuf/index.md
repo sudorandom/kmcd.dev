@@ -1,7 +1,7 @@
 ---
 categories: ["article", "project"]
 tags: ["protobuf", "wasm", "go", "webassembly", "dataviz"]
-date: "2026-06-30T10:00:00Z"
+date: "2026-06-25T10:00:00Z"
 description: "Announcing protobuf.kmcd.dev, an interactive explainer and playground for exploring the binary details of Protocol Buffers."
 cover: "cover.svg"
 images: ["/posts/interactive-protobuf/cover.png"]
@@ -12,7 +12,6 @@ slug: "interactive-protobuf"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/interactive-protobuf/
-draft: true
 ---
 
 Protocol Buffers (protobuf) are a core part of modern RPCs, schema-driven APIs, and microservices. They work well, but learning how the format operates under the hood can be dry. Most of us stick to the high-level basics (like message fields and primitive types) and rarely need to dig into the wire format, varints, ZigZag encoding, or compiler plugins.

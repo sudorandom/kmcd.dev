@@ -12,7 +12,6 @@ slug: "introducing-protodocs"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/introducing-protodocs/
-draft: true
 ---
 
 **Protocol Buffers are fantastic for defining API contracts.** They give you a massive ecosystem of tooling, backward compatibility guarantees, and rock-solid schemas. But if you have ever tried sharing protobuf docs with an API consumer, you know the generated documentation story usually feels like a complete afterthought.
