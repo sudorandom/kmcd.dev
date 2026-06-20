@@ -4,7 +4,7 @@ date: "2026-06-23T10:00:00Z"
 categories: ["article", "project"]
 tags: ["protobuf", "grpc", "connectrpc", "documentation", "go", "rpc"]
 description: "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs."
-cover: "cover.png"
+cover: "cover.svg"
 images: ["/posts/introducing-protodocs/cover.png"]
 featuredalt: "A stylized ProtoDocs interface showing protobuf files, services, messages, and RPC calls."
 featuredpath: "date"

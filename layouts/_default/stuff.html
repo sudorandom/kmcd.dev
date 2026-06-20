@@ -97,6 +97,50 @@
         </div>
         <div class="projects-wrapper">
             <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
+                <h3><a href="https://protodocs.dev/" target="_blank">ProtoDocs</a></h3>
+                {{ $protodocsImg := (resources.Get "images/screenshots/protodocs.png") }}
+                {{ if $protodocsImg }}
+                    {{ $resizedProtodocsImg := $protodocsImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://protodocs.dev/" target="_blank">
+                            <img src="{{ $resizedProtodocsImg.Permalink }}" alt="Screenshot or logo of ProtoDocs" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    A protobuf-first documentation browser for APIs that deserve better than ugly generated docs. Support for Connect, gRPC, and gRPC-Web, with interactive request-reply clients, query reflection, and Go embedded handlers.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="https://github.com/sudorandom/protodocs" target="_blank"><i class="fa-brands fa-github"></i></a>
+                    <a href="/posts/introducing-protodocs/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://protodocs.dev/" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
+                <h3><a href="https://protobuf.kmcd.dev" target="_blank">protobuf.kmcd.dev</a></h3>
+                {{ $protobufImg := (resources.Get "images/screenshots/protobuf.png") }}
+                {{ if $protobufImg }}
+                    {{ $resizedProtobufImg := $protobufImg.Resize "400x webp" }}
+                    <figure style="float: right; margin-left: 15px; margin-bottom: 10px; max-width: 250px;">
+                        <a href="https://protobuf.kmcd.dev" target="_blank">
+                            <img src="{{ $resizedProtobufImg.Permalink }}" alt="Screenshot of protobuf.kmcd.dev" style="width: 100%; height: auto; border-radius: 5px; border: 1px solid #ddd;">
+                        </a>
+                    </figure>
+                {{ end }}
+                <p>
+                    An interactive playground for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency. Natively powered by Go compilers compiled to WebAssembly.
+                </p>
+                <div class="project-icons" style="clear: right;">
+                    <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank"><i class="fa-brands fa-github"></i></a>
+                    <a href="/posts/interactive-protobuf/"><i class="fa-solid fa-book"></i></a>
+                    <a href="https://protobuf.kmcd.dev" target="_blank"><i class="fa-solid fa-globe"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="projects-wrapper">
+            <div class="projects-box" style="cursor: pointer;" onclick="if(!event.target.closest('a')){ window.open(this.querySelector('h3 a').href, '_blank'); }">
                 <h3><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank">protoc-gen-connect-openapi</a></h3>
                 {{ $protocGenImg := (resources.Get "images/screenshots/protoc-gen-connect-openapi.png") }}
                 {{ if $protocGenImg }}
