@@ -16,7 +16,7 @@ draft: true
 
 gRPC did a lot right.
 
-It turned Protocol Buffers from "how do I encode this struct?" into "how do I define this API?" You write a schema, generate clients and servers, and now you have typed messages, streaming, deadlines, cancellation, interceptors, and a cross-language contract that mostly works the way it says it will.
+It turned Protocol Buffers from "how do I encode this struct?" into "how do I define this API?" You write a schema, generate clients and servers, and now you have typed messages, streaming, deadlines, cancellation, interceptors, and generated code in different languages that stays tied to the same contract.
 
 For backend systems, that bargain is great. If you control the clients, servers, load balancers, and deployment environment, gRPC is a very nice tool. I use it. I like it.
 
@@ -24,13 +24,13 @@ But gRPC also made a very expensive bet on HTTP/2-specific behavior, and that be
 
 Browsers could negotiate HTTP/2 just fine. That was not the problem. The problem was that frontend JavaScript did not get access to the HTTP/2 features gRPC needed. `fetch()` could not send raw HTTP/2 frames, manage streams the way native gRPC expected, or read trailers as normal response metadata.
 
-So we ended up in a strange place: the browser could speak HTTP/2 under the hood, but your JavaScript app still could not make a standard gRPC call. Enter gRPC-Web, which is where I think the ecosystem made the wrong call.
+So we ended up in a strange place: the browser could speak HTTP/2 under the hood, but your JavaScript app still could not make a standard gRPC call.
 
-gRPC-Web was treated as a browser compatibility layer. It should have been treated as a warning sign.
+gRPC-Web was the answer to that gap. It changed the protocol enough for browser clients to call protobuf-backed services without exposing raw HTTP/2 features to JavaScript.
 
-Maybe not the exact gRPC-Web protocol we ended up with, but the idea behind it: keep protobuf, keep generated clients, keep the RPC model, work with normal HTTP infrastructure, and stop making every API call behave like a custom protocol hiding inside HTTP.
+That was useful, but with the advantage of hindsight, I believe that this approach was too narrow. The bigger opportunity was to keep protobuf, keep generated clients, keep the RPC model, work with normal HTTP infrastructure, and stop making every API call behave like a custom protocol hiding inside HTTP.
 
-In other words, gRPC-Web should have fixed gRPC.
+In other words, gRPC-Web should have 'fixed' gRPC.
 
 ## The original bargain
 
