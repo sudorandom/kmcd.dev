@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["grpc", "grpc-web", "protobuf", "api", "rpc", "web", "http2", "connectrpc"]
-date: "2026-06-28T10:00:00Z"
+date: "2026-07-14T10:00:00Z"
 description: "gRPC-Web should have been the pressure that made gRPC simpler, more inspectable, and better suited for the web."
 featuredalt: ""
 featuredpath: "date"
