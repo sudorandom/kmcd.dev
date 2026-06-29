@@ -6,7 +6,6 @@ description: "gRPC-Web should have been the pressure that made gRPC simpler, mor
 title: "gRPC-Web Should Have Fixed gRPC"
 slug: "grpc-web-should-have-fixed-grpc"
 type: "posts"
-draft: true
 ---
 
 gRPC did a lot right. It turned Protocol Buffers into an API design tool, delivering typed messages, generated clients, and strict contracts. For backend networks where you control every hop, it is a fantastic tool.
