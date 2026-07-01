@@ -1,6 +1,6 @@
 ---
 title: "Speeding Up ProtoJSON: Benchmarking protojsonx"
-date: "2026-06-30T15:20:00Z"
+date: "2026-07-21T15:20:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "json", "protojsonx"]
 description: "How protojsonx compares to standard protojson, JSON, and vtproto."
