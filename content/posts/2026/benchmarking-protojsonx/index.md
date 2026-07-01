@@ -11,6 +11,7 @@ featuredpath: "date"
 slug: "benchmarking-protojsonx"
 type: "posts"
 devtoSkip: true
+draft: true
 ---
 
 While modern Go frameworks like ConnectRPC handle browser-facing APIs natively, ProtoJSON remains a vital tool for debugging—particularly when frontend teams need human-readable logs, inspection tools, or mock JSON payloads to interact with Protobuf schemas.

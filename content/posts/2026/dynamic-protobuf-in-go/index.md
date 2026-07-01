@@ -11,7 +11,6 @@ featuredpath: "date"
 slug: "dynamic-protobuf-in-go"
 type: "posts"
 devtoSkip: true
-draft: true
 ---
 
 Most Protocol Buffer services get their speed from ahead-of-time code generation. But when you are building developer tools, proxies, or gateways, you often have to load schemas dynamically at runtime.
