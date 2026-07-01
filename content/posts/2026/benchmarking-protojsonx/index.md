@@ -20,7 +20,7 @@ The downside is performance. Go's official `protojson` package does a lot of wor
 
 I built [`protojsonx`](https://github.com/sudorandom/protojsonx) to see how much of that cost could be removed without changing the Protobuf JSON format. The basic idea is to do more work up front, compile message layouts into faster lookup tables, and avoid repeated reflection-heavy traversal on every marshal or unmarshal call.
 
-In this article, we’ll run a benchmark suite against `protojsonx` to see how it compares with standard `protojson`, raw JSON, dynamic Well-Known Types (`google.protobuf.Value`), and standard binary Protobuf (`proto` and reflection-free `vtproto`).
+In this article, I’ll run a benchmark suite against `protojsonx` to see how it compares with standard `protojson`, raw JSON, dynamic Well-Known Types (`google.protobuf.Value`), and standard binary Protobuf (`proto` and reflection-free `vtproto`).
 
 {{< github-repo repo="sudorandom/protojsonx" description="An experimental faster ProtoJSON encoder and decoder for Go." >}}
 
@@ -39,7 +39,7 @@ In this article, we’ll run a benchmark suite against `protojsonx` to see how i
 
 ### Operating Modes
 
-To evaluate the impact of these strategies, we run `protojsonx` in two distinct modes during unmarshaling:
+To evaluate the impact of these strategies, I ran `protojsonx` in two distinct modes during unmarshaling:
 1. **Default Mode**: A direct drop-in API path using `protojsonx.Unmarshal(...)`. This mode has no special input-buffer lifetime requirements.
 2. **Optimized Mode**: Configured with `ZeroCopy: true` and the `BumpAllocator`. This mode reduces allocation pressure, especially for larger static messages, but it comes with buffer lifetime constraints and is not universally faster across every payload shape.
 
@@ -47,12 +47,12 @@ To evaluate the impact of these strategies, we run `protojsonx` in two distinct 
 
 ## The Benchmark Setup
 
-We used the benchmark suite from our previous article, running on Go 1.26 on an Apple M1 Pro. The configurations are:
+I used the benchmark suite from my previous article, running on Go 1.26 on an Apple M1 Pro. The configurations are:
 * **Small:** A flat object with 4 fields (string ID, status boolean, age integer, score float).
 * **Medium:** A nested user signup event containing actor object, string tags, and metadata map.
 * **Large:** An array repeating the Medium object 100 times.
 
-We group the results directly by data representation (**Static Message**, **google.protobuf.Any**, and **google.protobuf.Value**), showing the serialization formats side-by-side.
+I grouped the results directly by data representation (**Static Message**, **google.protobuf.Any**, and **google.protobuf.Value**), showing the serialization formats side-by-side.
 
 ### Payload Decoding in `Any` Benchmarks
 
@@ -318,7 +318,7 @@ Marshaling is the process of serializing Go values into bytes. The charts below 
 
 ## Unmarshaling Performance
 
-Unmarshaling parses incoming bytes back into Go values. In the benchmarks below, we present `protojsonx` in both its drop-in **Default Mode** (no API changes) and its **Optimized Mode** (`ZeroCopy: true` + `BumpAllocator`).
+Unmarshaling parses incoming bytes back into Go values. In the benchmarks below, I present `protojsonx` in both its drop-in **Default Mode** (no API changes) and its **Optimized Mode** (`ZeroCopy: true` + `BumpAllocator`).
 
 {{< tabs >}}
   {{< tab name="Small Payload" >}}
@@ -595,6 +595,7 @@ Unmarshaling parses incoming bytes back into Go values. In the benchmarks below,
 *   **Bump allocation helps most on static messages**: For large static payloads, the optimized mode cuts allocations substantially by reusing pre-allocated chunks instead of creating thousands of short-lived heap objects. That reduces GC pressure and improves throughput.
 *   **Zero-copy helps when strings are part of the hot path**: When it is safe to tie decoded strings to the lifetime of the input buffer, zero-copy parsing can avoid extra string allocations. This is useful, but it is a trade-off, not a free lunch.
 *   **The parsing bottleneck shifts to structural layout**: With reflection and memory allocation overhead minimized, the remaining processing cost is largely dictated by Go's representation of the data. Flat, contiguous static structures parse extremely quickly, while `Any` and `Value` get less benefit because their runtime structure still dominates the cost.
+*   **The Complexity vs. Performance**: While Zero-Copy and monotonic bump allocation substantially reduce allocation counts on large payloads, they offer almost no benefit for small payloads. In fact, on small or dynamic messages, the overhead of managing allocator offsets and alignment checks can actually *hurt* performance (e.g. unmarshaling a small `Value` struct takes 1,799 ns in Default Mode vs 1,808 ns in Optimized Mode). Given that Default Mode yields the vast majority of the speedup with none of the API complexity or memory-pinning safety risks, it raises a serious question: is maintaining these complex allocator and zero-copy features worth the cognitive load? I am strongly considering dropping them entirely in future versions of `protojsonx` to keep the library simple and safe.
 
 ---
 
@@ -602,7 +603,7 @@ Unmarshaling parses incoming bytes back into Go values. In the benchmarks below,
 
 One of the most interesting findings from these benchmarks is that while `protojsonx` speeds up static message parsing by **3.5x to 7x**, it only achieves a modest **1.2x to 1.4x improvement** on schema-less `google.protobuf.Value` payloads, even with the monotonic bump allocator enabled.
 
-To understand why this is the case, we have to look at the structural difference in how Go represents these two types of data:
+To understand why this is the case, let's look at the structural difference in how Go represents these two types of data:
 
 ### 1. The Pointer Tree Problem
 
@@ -667,7 +668,7 @@ To ensure these results are reproducible, here are the environment parameters an
 
 If you require high performance, follow these guidelines to pick the right pattern:
 
-1. **Evaluate replacing `protojson` on hot paths**: If your service spends meaningful CPU time encoding or decoding ProtoJSON, `protojsonx` is worth benchmarking against your own schemas. It offers a drop-in replacement with significant speedups, plus further optimized modes if you can manage input-buffer lifetimes safely.
+1. **Evaluate replacing `protojson` on hot paths**: If your service spends meaningful CPU time encoding or decoding ProtoJSON, `protojsonx` is worth benchmarking against your own schemas. **Stick to the Default Mode first**: it provides the vast majority of the speedups with zero API changes or safety risks. Because Optimized Mode (Zero-Copy + BumpAllocator) can degrade performance on smaller/dynamic payloads and carries memory-pinning safety risks, I may deprecate and remove it entirely in future releases.
 2. **Expose static contracts**: Avoid dynamic fields like `google.protobuf.Value` on hot paths. Even with the fastest JSON serializers, dynamic value trees impose a heavy allocation and pointer-chasing penalty.
 3. **If you must support dynamic payloads on hot paths**: Use **Opaque JSON Packaging** rather than `Value`. For example, a `bytes raw_json = 1;` or `string raw_json = 1;` field preserves the dynamic payload and lets you bypass parser loops entirely on intermediate nodes, without forcing every service to materialize it as a `structpb.Value` tree.
 4. **Prefer static schemas on hot paths**: `protojsonx` helps most when the schema is static. The more your data model becomes "JSON inside Protobuf," the less a schema-aware serializer can help.
