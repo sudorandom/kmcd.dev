@@ -15,6 +15,7 @@ require (
 	github.com/mfridman/protoc-gen-go-json v1.6.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
+	github.com/sudorandom/protojsonx v0.0.4 // indirect
 	github.com/timandy/routine v1.1.5 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
