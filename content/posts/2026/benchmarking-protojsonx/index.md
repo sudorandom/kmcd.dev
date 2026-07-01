@@ -652,7 +652,7 @@ To ensure these results are reproducible, here are the environment parameters an
 *   **Go Version**: `go version go1.26 darwin/arm64`
 *   **Machine Details**: Apple M1 Pro (10-core CPU, 16GB unified memory, macOS)
 *   **Target Library Version**: `github.com/sudorandom/protojsonx v0.0.4`
-*   **Benchmark Source**: The benchmark code is available in the posts directory under [content/posts/2026/hidden-cost-of-google-protobuf-value/benchmarks/](https://github.com/sudorandom/kmcd.dev/tree/aa493ae8ce96718665cb1fae3c786e6fd4ddca22/content/posts/2026/hidden-cost-of-google-protobuf-value/benchmarks/) at commit `aa493ae8ce96718665cb1fae3c786e6fd4ddca22`.
+*   **Benchmark Source**: The benchmark code is available in the posts directory under [content/posts/2026/benchmarking-protojsonx/benchmarks/](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/benchmarking-protojsonx/benchmarks/).
 *   **Test Execution Command**:
     ```bash
     go test -bench="." -benchmem -benchtime=1s ./...
