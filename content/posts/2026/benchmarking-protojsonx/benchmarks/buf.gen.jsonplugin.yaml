@@ -1,14 +1,13 @@
 # buf.gen.jsonplugin.yaml
 # Used for proto/jsonplugin/.
 # Generates standard Go protobuf code + protoc-gen-go-json MarshalJSON/UnmarshalJSON wrappers.
-# Plugins are resolved via `go tool` (see generate.sh) — no system installation needed.
 version: v2
 plugins:
-  - local: protoc-gen-go
+  - local: ["go", "tool", "protoc-gen-go"]
     out: .
     opt:
       - paths=source_relative
-  - local: protoc-gen-go-json
+  - local: ["go", "tool", "protoc-gen-go-json"]
     out: .
     opt:
       - paths=source_relative

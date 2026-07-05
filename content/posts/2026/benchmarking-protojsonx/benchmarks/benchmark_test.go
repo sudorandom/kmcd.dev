@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	jsonpluginpb "json-vs-proto/proto/jsonplugin"
+	protojsonxpb "json-vs-proto/proto/protojsonx"
 	vanillapb "json-vs-proto/proto/vanilla"
 	vtprotopb "json-vs-proto/proto/vtproto"
 
@@ -13,8 +14,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/dynamicpb"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/structpb"
 
 	"buf.build/go/hyperpb"
 
@@ -285,6 +284,51 @@ func getLargeJSONPluginMsgPayload() *jsonpluginpb.LargeEventPayload {
 	}
 }
 
+// --- ProtoJSONx Plugin Message Helpers ---
+
+func getSmallProtoJSONxMsg() *protojsonxpb.SmallObject {
+	return &protojsonxpb.SmallObject{
+		Id:     "usr_123456",
+		Active: true,
+		Age:    30,
+		Score:  95.5,
+	}
+}
+
+func getMediumProtoJSONxMsg() *protojsonxpb.MediumEvent {
+	return &protojsonxpb.MediumEvent{
+		Id:        "evt_987654",
+		Timestamp: 1620000000,
+		EventType: "user_signup",
+		Actor: &protojsonxpb.Actor{
+			Id:       "usr_123456",
+			Email:    "user@example.com",
+			Verified: true,
+		},
+		Tags: []string{"marketing", "beta_user", "us_east"},
+		Metadata: &protojsonxpb.Metadata{
+			Ip:        "192.168.1.1",
+			UserAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+			Attempts:  3,
+		},
+	}
+}
+
+func getLargeProtoJSONxMsg() []*protojsonxpb.MediumEvent {
+	med := getMediumProtoJSONxMsg()
+	list := make([]*protojsonxpb.MediumEvent, 100)
+	for i := 0; i < 100; i++ {
+		list[i] = med
+	}
+	return list
+}
+
+func getLargeProtoJSONxMsgPayload() *protojsonxpb.LargeEventPayload {
+	return &protojsonxpb.LargeEventPayload{
+		Events: getLargeProtoJSONxMsg(),
+	}
+}
+
 // Print byte sizes and check results.
 func TestSizes(t *testing.T) {
 	fmt.Println("=== SERIALIZED DATA SIZES ===")
@@ -292,16 +336,10 @@ func TestSizes(t *testing.T) {
 	// 1. Small
 	smallMap := getSmallMap()
 	smallJSON, _ := json.Marshal(smallMap)
-	smallPb, _ := structpb.NewValue(smallMap)
-	smallPbBytes, _ := proto.Marshal(smallPb)
 
 	smallVanilla := getSmallVanillaMsg()
 	smallProtoBytes, _ := proto.Marshal(smallVanilla)
-	smallAny, _ := anypb.New(smallVanilla)
-	smallAnyBytes, _ := proto.Marshal(smallAny)
 	smallPjStatic, _ := protojson.Marshal(smallVanilla)
-	smallPjValue, _ := protojson.Marshal(smallPb)
-	smallPjAny, _ := protojson.Marshal(smallAny)
 
 	// VTProto sizes
 	smallVT := getSmallVTProtoMsg()
@@ -317,28 +355,18 @@ func TestSizes(t *testing.T) {
 	fmt.Printf("Small payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(smallJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallProtoBytes), float64(len(smallProtoBytes))/float64(len(smallJSON))*100)
-	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPbBytes), float64(len(smallPbBytes))/float64(len(smallJSON))*100)
-	fmt.Printf("  google.protobuf.Any (proto) size: %d bytes (%.1f%% of Concrete (JSON)) [Includes type_url overhead]\n", len(smallAnyBytes), float64(len(smallAnyBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallProtoJSONBytes), float64(len(smallProtoJSONBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjStatic), float64(len(smallPjStatic))/float64(len(smallJSON))*100)
-	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjValue), float64(len(smallPjValue))/float64(len(smallJSON))*100)
-	fmt.Printf("  google.protobuf.Any (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallPjAny), float64(len(smallPjAny))/float64(len(smallJSON))*100)
 	fmt.Printf("  VTProto size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallVTBytes), float64(len(smallVTBytes))/float64(len(smallJSON))*100)
 	fmt.Printf("  JSONPlugin size: %d bytes (%.1f%% of Concrete (JSON))\n", len(smallJPBytes), float64(len(smallJPBytes))/float64(len(smallJSON))*100)
 
 	// 2. Medium
 	mediumMap := getMediumMap()
 	mediumJSON, _ := json.Marshal(mediumMap)
-	mediumPb, _ := structpb.NewValue(mediumMap)
-	mediumPbBytes, _ := proto.Marshal(mediumPb)
 
 	mediumVanilla := getMediumVanillaMsg()
 	mediumProtoBytes, _ := proto.Marshal(mediumVanilla)
-	mediumAny, _ := anypb.New(mediumVanilla)
-	mediumAnyBytes, _ := proto.Marshal(mediumAny)
 	mediumPjStatic, _ := protojson.Marshal(mediumVanilla)
-	mediumPjValue, _ := protojson.Marshal(mediumPb)
-	mediumPjAny, _ := protojson.Marshal(mediumAny)
 
 	mediumVT := getMediumVTProtoMsg()
 	mediumVTBytes, _ := mediumVT.MarshalVT()
@@ -352,41 +380,19 @@ func TestSizes(t *testing.T) {
 	fmt.Printf("Medium payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(mediumJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumProtoBytes), float64(len(mediumProtoBytes))/float64(len(mediumJSON))*100)
-	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPbBytes), float64(len(mediumPbBytes))/float64(len(mediumJSON))*100)
-	fmt.Printf("  google.protobuf.Any (proto) size: %d bytes (%.1f%% of Concrete (JSON)) [Includes type_url overhead]\n", len(mediumAnyBytes), float64(len(mediumAnyBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumProtoJSONBytes), float64(len(mediumProtoJSONBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjStatic), float64(len(mediumPjStatic))/float64(len(mediumJSON))*100)
-	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjValue), float64(len(mediumPjValue))/float64(len(mediumJSON))*100)
-	fmt.Printf("  google.protobuf.Any (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumPjAny), float64(len(mediumPjAny))/float64(len(mediumJSON))*100)
 	fmt.Printf("  VTProto size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumVTBytes), float64(len(mediumVTBytes))/float64(len(mediumJSON))*100)
 	fmt.Printf("  JSONPlugin size: %d bytes (%.1f%% of Concrete (JSON))\n", len(mediumJPBytes), float64(len(mediumJPBytes))/float64(len(mediumJSON))*100)
 
 	// 3. Large
 	largeMap := getLargeMap()
 	largeJSON, _ := json.Marshal(largeMap)
-	largePb, _ := structpb.NewValue(largeMap)
-	largePbBytes, _ := proto.Marshal(largePb)
 
 	largeVanillaPayload := getLargeVanillaMsgPayload()
 	largeProtoBytes, _ := proto.Marshal(largeVanillaPayload)
 
-	largeVanillaList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	for i := 0; i < 100; i++ {
-		largeAnyList[i], _ = anypb.New(largeVanillaList[i])
-	}
-	var totalAnySize int
-	for _, anyVal := range largeAnyList {
-		b, _ := proto.Marshal(anyVal)
-		totalAnySize += len(b)
-	}
 	largePjStatic, _ := protojson.Marshal(largeVanillaPayload)
-	largePjValue, _ := protojson.Marshal(largePb)
-	var totalPjAnySize int
-	for _, anyVal := range largeAnyList {
-		b, _ := protojson.Marshal(anyVal)
-		totalPjAnySize += len(b)
-	}
 
 	largeVT := getLargeVTProtoMsgPayload()
 	largeVTBytes, _ := largeVT.MarshalVT()
@@ -400,12 +406,8 @@ func TestSizes(t *testing.T) {
 	fmt.Printf("Large payload:\n")
 	fmt.Printf("  Concrete (JSON) size: %d bytes\n", len(largeJSON))
 	fmt.Printf("  Concrete (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeProtoBytes), float64(len(largeProtoBytes))/float64(len(largeJSON))*100)
-	fmt.Printf("  google.protobuf.Value (proto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePbBytes), float64(len(largePbBytes))/float64(len(largeJSON))*100)
-	fmt.Printf("  google.protobuf.Any (proto) size (approx sum): %d bytes (%.1f%% of Concrete (JSON))\n", totalAnySize, float64(totalAnySize)/float64(len(largeJSON))*100)
 	fmt.Printf("  Protobuf + JSON size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeProtoJSONBytes), float64(len(largeProtoJSONBytes))/float64(len(largeJSON))*100)
 	fmt.Printf("  Concrete (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePjStatic), float64(len(largePjStatic))/float64(len(largeJSON))*100)
-	fmt.Printf("  google.protobuf.Value (JSONProto) size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largePjValue), float64(len(largePjValue))/float64(len(largeJSON))*100)
-	fmt.Printf("  google.protobuf.Any (JSONProto) size (approx sum): %d bytes (%.1f%% of Concrete (JSON))\n", totalPjAnySize, float64(totalPjAnySize)/float64(len(largeJSON))*100)
 	fmt.Printf("  VTProto size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeVTBytes), float64(len(largeVTBytes))/float64(len(largeJSON))*100)
 	fmt.Printf("  JSONPlugin size: %d bytes (%.1f%% of Concrete (JSON))\n", len(largeJPBytes), float64(len(largeJPBytes))/float64(len(largeJSON))*100)
 	fmt.Println("=============================")
@@ -449,23 +451,7 @@ func BenchmarkMarshal_Small_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Small_Proto_Value(b *testing.B) {
-	data := getSmallMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = proto.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Small_Proto_Any(b *testing.B) {
-	msg := getSmallVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = proto.Marshal(anyVal)
-	}
-}
 
 func BenchmarkMarshal_Small_VTProto(b *testing.B) {
 	msg := getSmallVTProtoMsg()
@@ -552,25 +538,7 @@ func BenchmarkUnmarshal_Small_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Small_Proto_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getSmallMap())
-	data, _ := proto.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = proto.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Small_Proto_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getSmallVanillaMsg())
-	data, _ := proto.Marshal(anyVal)
-	for b.Loop() {
-		var a anypb.Any
-		_ = proto.Unmarshal(data, &a)
-		var msg vanillapb.SmallObject
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
 func BenchmarkUnmarshal_Small_VTProto(b *testing.B) {
 	msg := getSmallVTProtoMsg()
@@ -670,23 +638,7 @@ func BenchmarkMarshal_Medium_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Medium_Proto_Value(b *testing.B) {
-	data := getMediumMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = proto.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Medium_Proto_Any(b *testing.B) {
-	msg := getMediumVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = proto.Marshal(anyVal)
-	}
-}
 
 func BenchmarkMarshal_Medium_VTProto(b *testing.B) {
 	msg := getMediumVTProtoMsg()
@@ -773,25 +725,7 @@ func BenchmarkUnmarshal_Medium_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Medium_Proto_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getMediumMap())
-	data, _ := proto.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = proto.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Medium_Proto_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getMediumVanillaMsg())
-	data, _ := proto.Marshal(anyVal)
-	for b.Loop() {
-		var a anypb.Any
-		_ = proto.Unmarshal(data, &a)
-		var msg vanillapb.MediumEvent
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
 func BenchmarkUnmarshal_Medium_VTProto(b *testing.B) {
 	msg := getMediumVTProtoMsg()
@@ -891,28 +825,7 @@ func BenchmarkMarshal_Large_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Large_Proto_Value(b *testing.B) {
-	data := getLargeMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = proto.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Large_Proto_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-	}
-	b.ResetTimer()
-	for b.Loop() {
-		for j := range 100 {
-			_, _ = proto.Marshal(largeAnyList[j])
-		}
-	}
-}
 
 func BenchmarkMarshal_Large_VTProto(b *testing.B) {
 	data := getLargeVTProtoMsgPayload()
@@ -998,33 +911,7 @@ func BenchmarkUnmarshal_Large_Proto_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Large_Proto_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getLargeMap())
-	data, _ := proto.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = proto.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Large_Proto_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	var dataBytes [][]byte
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-		bytes, _ := proto.Marshal(largeAnyList[j])
-		dataBytes = append(dataBytes, bytes)
-	}
-	for b.Loop() {
-		for j := range 100 {
-			var a anypb.Any
-			_ = proto.Unmarshal(dataBytes[j], &a)
-			var msg vanillapb.MediumEvent
-			_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-		}
-	}
-}
 
 func BenchmarkUnmarshal_Large_VTProto(b *testing.B) {
 	msg := getLargeVTProtoMsgPayload()
@@ -1098,23 +985,7 @@ func BenchmarkMarshal_Small_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Small_ProtoJSON_Value(b *testing.B) {
-	data := getSmallMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojson.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Small_ProtoJSON_Any(b *testing.B) {
-	msg := getSmallVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojson.Marshal(anyVal)
-	}
-}
 
 // Small Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Small_ProtoJSON_Static(b *testing.B) {
@@ -1126,25 +997,7 @@ func BenchmarkUnmarshal_Small_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Small_ProtoJSON_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getSmallMap())
-	data, _ := protojson.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = protojson.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Small_ProtoJSON_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getSmallVanillaMsg())
-	data, _ := protojson.Marshal(anyVal)
-	for b.Loop() {
-		var a anypb.Any
-		_ = protojson.Unmarshal(data, &a)
-		var msg vanillapb.SmallObject
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
 // Medium Marshal ProtoJSON
 func BenchmarkMarshal_Medium_ProtoJSON_Static(b *testing.B) {
@@ -1154,23 +1007,7 @@ func BenchmarkMarshal_Medium_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Medium_ProtoJSON_Value(b *testing.B) {
-	data := getMediumMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojson.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Medium_ProtoJSON_Any(b *testing.B) {
-	msg := getMediumVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojson.Marshal(anyVal)
-	}
-}
 
 // Medium Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Medium_ProtoJSON_Static(b *testing.B) {
@@ -1182,25 +1019,7 @@ func BenchmarkUnmarshal_Medium_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Medium_ProtoJSON_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getMediumMap())
-	data, _ := protojson.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = protojson.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Medium_ProtoJSON_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getMediumVanillaMsg())
-	data, _ := protojson.Marshal(anyVal)
-	for b.Loop() {
-		var a anypb.Any
-		_ = protojson.Unmarshal(data, &a)
-		var msg vanillapb.MediumEvent
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
 // Large Marshal ProtoJSON
 func BenchmarkMarshal_Large_ProtoJSON_Static(b *testing.B) {
@@ -1210,28 +1029,7 @@ func BenchmarkMarshal_Large_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshal_Large_ProtoJSON_Value(b *testing.B) {
-	data := getLargeMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojson.Marshal(pbVal)
-	}
-}
 
-func BenchmarkMarshal_Large_ProtoJSON_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-	}
-	b.ResetTimer()
-	for b.Loop() {
-		for j := range 100 {
-			_, _ = protojson.Marshal(largeAnyList[j])
-		}
-	}
-}
 
 // Large Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Large_ProtoJSON_Static(b *testing.B) {
@@ -1242,64 +1040,30 @@ func BenchmarkUnmarshal_Large_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Large_ProtoJSON_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getLargeMap())
-	data, _ := protojson.Marshal(pbVal)
-	for b.Loop() {
-		var pb structpb.Value
-		_ = protojson.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Large_ProtoJSON_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	var dataBytes [][]byte
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-		bytes, _ := protojson.Marshal(largeAnyList[j])
-		dataBytes = append(dataBytes, bytes)
-	}
-	for b.Loop() {
-		for j := range 100 {
-			var a anypb.Any
-			_ = protojson.Unmarshal(dataBytes[j], &a)
-			var msg vanillapb.MediumEvent
-			_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-		}
-	}
-}
 
 // --- ProtoJSONx Benchmarks ---
 
-// Small Marshal ProtoJSONx
-func BenchmarkMarshal_Small_ProtoJSONx_Static(b *testing.B) {
+// Small Marshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkMarshal_Small_ProtoJSONx_Lib_Static(b *testing.B) {
 	msg := getSmallVanillaMsg()
 	for b.Loop() {
 		_, _ = protojsonx.Marshal(msg)
 	}
 }
 
-func BenchmarkMarshal_Small_ProtoJSONx_Value(b *testing.B) {
-	data := getSmallMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
+// Small Marshal ProtoJSONx (Plugin)
+func BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static(b *testing.B) {
+	msg := getSmallProtoJSONxMsg()
 	for b.Loop() {
-		_, _ = protojsonx.Marshal(pbVal)
+		_, _ = protojsonx.Marshal(msg)
 	}
 }
 
-func BenchmarkMarshal_Small_ProtoJSONx_Any(b *testing.B) {
-	msg := getSmallVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojsonx.Marshal(anyVal)
-	}
-}
 
-// Small Unmarshal ProtoJSONx (Default Mode)
-func BenchmarkUnmarshal_Small_ProtoJSONx_Static(b *testing.B) {
+
+// Small Unmarshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static(b *testing.B) {
 	msg := getSmallVanillaMsg()
 	data, _ := protojsonx.Marshal(msg)
 	b.ResetTimer()
@@ -1309,98 +1073,39 @@ func BenchmarkUnmarshal_Small_ProtoJSONx_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Small_ProtoJSONx_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getSmallMap())
-	data, _ := protojsonx.Marshal(pbVal)
-	b.ResetTimer()
-	for b.Loop() {
-		var pb structpb.Value
-		_ = protojsonx.Unmarshal(data, &pb)
-	}
-}
-
-func BenchmarkUnmarshal_Small_ProtoJSONx_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getSmallVanillaMsg())
-	data, _ := protojsonx.Marshal(anyVal)
-	b.ResetTimer()
-	for b.Loop() {
-		var a anypb.Any
-		_ = protojsonx.Unmarshal(data, &a)
-		var msg vanillapb.SmallObject
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
-
-// Small Unmarshal ProtoJSONx (Optimized Mode)
-func BenchmarkUnmarshal_Small_ProtoJSONx_Opt_Static(b *testing.B) {
-	msg := getSmallVanillaMsg()
+// Small Unmarshal ProtoJSONx (Plugin)
+func BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static(b *testing.B) {
+	msg := getSmallProtoJSONxMsg()
 	data, _ := protojsonx.Marshal(msg)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
 	b.ResetTimer()
 	for b.Loop() {
-		alloc.Reset()
-		var m vanillapb.SmallObject
-		_ = opts.Unmarshal(data, &m)
+		var m protojsonxpb.SmallObject
+		_ = protojsonx.Unmarshal(data, &m)
 	}
 }
 
-func BenchmarkUnmarshal_Small_ProtoJSONx_Opt_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getSmallMap())
-	data, _ := protojsonx.Marshal(pbVal)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var pb structpb.Value
-		_ = opts.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Small_ProtoJSONx_Opt_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getSmallVanillaMsg())
-	data, _ := protojsonx.Marshal(anyVal)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var a anypb.Any
-		_ = opts.Unmarshal(data, &a)
-		var msg vanillapb.SmallObject
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
-// Medium Marshal ProtoJSONx
-func BenchmarkMarshal_Medium_ProtoJSONx_Static(b *testing.B) {
+// Medium Marshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static(b *testing.B) {
 	msg := getMediumVanillaMsg()
 	for b.Loop() {
 		_, _ = protojsonx.Marshal(msg)
 	}
 }
 
-func BenchmarkMarshal_Medium_ProtoJSONx_Value(b *testing.B) {
-	data := getMediumMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
+// Medium Marshal ProtoJSONx (Plugin)
+func BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static(b *testing.B) {
+	msg := getMediumProtoJSONxMsg()
 	for b.Loop() {
-		_, _ = protojsonx.Marshal(pbVal)
+		_, _ = protojsonx.Marshal(msg)
 	}
 }
 
-func BenchmarkMarshal_Medium_ProtoJSONx_Any(b *testing.B) {
-	msg := getMediumVanillaMsg()
-	anyVal, _ := anypb.New(msg)
-	b.ResetTimer()
-	for b.Loop() {
-		_, _ = protojsonx.Marshal(anyVal)
-	}
-}
 
-// Medium Unmarshal ProtoJSONx (Default Mode)
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Static(b *testing.B) {
+
+// Medium Unmarshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static(b *testing.B) {
 	msg := getMediumVanillaMsg()
 	data, _ := protojsonx.Marshal(msg)
 	b.ResetTimer()
@@ -1410,103 +1115,39 @@ func BenchmarkUnmarshal_Medium_ProtoJSONx_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getMediumMap())
-	data, _ := protojsonx.Marshal(pbVal)
-	b.ResetTimer()
-	for b.Loop() {
-		var pb structpb.Value
-		_ = protojsonx.Unmarshal(data, &pb)
-	}
-}
-
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getMediumVanillaMsg())
-	data, _ := protojsonx.Marshal(anyVal)
-	b.ResetTimer()
-	for b.Loop() {
-		var a anypb.Any
-		_ = protojsonx.Unmarshal(data, &a)
-		var msg vanillapb.MediumEvent
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
-
-// Medium Unmarshal ProtoJSONx (Optimized Mode)
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Opt_Static(b *testing.B) {
-	msg := getMediumVanillaMsg()
+// Medium Unmarshal ProtoJSONx (Plugin)
+func BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static(b *testing.B) {
+	msg := getMediumProtoJSONxMsg()
 	data, _ := protojsonx.Marshal(msg)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
 	b.ResetTimer()
 	for b.Loop() {
-		alloc.Reset()
-		var m vanillapb.MediumEvent
-		_ = opts.Unmarshal(data, &m)
+		var m protojsonxpb.MediumEvent
+		_ = protojsonx.Unmarshal(data, &m)
 	}
 }
 
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Opt_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getMediumMap())
-	data, _ := protojsonx.Marshal(pbVal)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var pb structpb.Value
-		_ = opts.Unmarshal(data, &pb)
-	}
-}
 
-func BenchmarkUnmarshal_Medium_ProtoJSONx_Opt_Any(b *testing.B) {
-	anyVal, _ := anypb.New(getMediumVanillaMsg())
-	data, _ := protojsonx.Marshal(anyVal)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var a anypb.Any
-		_ = opts.Unmarshal(data, &a)
-		var msg vanillapb.MediumEvent
-		_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-	}
-}
 
-// Large Marshal ProtoJSONx
-func BenchmarkMarshal_Large_ProtoJSONx_Static(b *testing.B) {
+// Large Marshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkMarshal_Large_ProtoJSONx_Lib_Static(b *testing.B) {
 	data := getLargeVanillaMsgPayload()
 	for b.Loop() {
 		_, _ = protojsonx.Marshal(data)
 	}
 }
 
-func BenchmarkMarshal_Large_ProtoJSONx_Value(b *testing.B) {
-	data := getLargeMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
+// Large Marshal ProtoJSONx (Plugin)
+func BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static(b *testing.B) {
+	data := getLargeProtoJSONxMsgPayload()
 	for b.Loop() {
-		_, _ = protojsonx.Marshal(pbVal)
+		_, _ = protojsonx.Marshal(data)
 	}
 }
 
-func BenchmarkMarshal_Large_ProtoJSONx_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-	}
-	b.ResetTimer()
-	for b.Loop() {
-		for j := range 100 {
-			_, _ = protojsonx.Marshal(largeAnyList[j])
-		}
-	}
-}
 
-// Large Unmarshal ProtoJSONx (Default Mode)
-func BenchmarkUnmarshal_Large_ProtoJSONx_Static(b *testing.B) {
+
+// Large Unmarshal ProtoJSONx (Lib - Table-driven fallback)
+func BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static(b *testing.B) {
 	data, _ := protojsonx.Marshal(getLargeVanillaMsgPayload())
 	b.ResetTimer()
 	for b.Loop() {
@@ -1515,84 +1156,17 @@ func BenchmarkUnmarshal_Large_ProtoJSONx_Static(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshal_Large_ProtoJSONx_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getLargeMap())
-	data, _ := protojsonx.Marshal(pbVal)
+// Large Unmarshal ProtoJSONx (Plugin)
+func BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static(b *testing.B) {
+	data, _ := protojsonx.Marshal(getLargeProtoJSONxMsgPayload())
 	b.ResetTimer()
 	for b.Loop() {
-		var pb structpb.Value
-		_ = protojsonx.Unmarshal(data, &pb)
+		var p protojsonxpb.LargeEventPayload
+		_ = protojsonx.Unmarshal(data, &p)
 	}
 }
 
-func BenchmarkUnmarshal_Large_ProtoJSONx_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	var dataBytes [][]byte
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-		bytes, _ := protojsonx.Marshal(largeAnyList[j])
-		dataBytes = append(dataBytes, bytes)
-	}
-	b.ResetTimer()
-	for b.Loop() {
-		for j := range 100 {
-			var a anypb.Any
-			_ = protojsonx.Unmarshal(dataBytes[j], &a)
-			var msg vanillapb.MediumEvent
-			_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-		}
-	}
-}
 
-// Large Unmarshal ProtoJSONx (Optimized Mode)
-func BenchmarkUnmarshal_Large_ProtoJSONx_Opt_Static(b *testing.B) {
-	data, _ := protojsonx.Marshal(getLargeVanillaMsgPayload())
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var p vanillapb.LargeEventPayload
-		_ = opts.Unmarshal(data, &p)
-	}
-}
-
-func BenchmarkUnmarshal_Large_ProtoJSONx_Opt_Value(b *testing.B) {
-	pbVal, _ := structpb.NewValue(getLargeMap())
-	data, _ := protojsonx.Marshal(pbVal)
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		alloc.Reset()
-		var pb structpb.Value
-		_ = opts.Unmarshal(data, &pb)
-	}
-}
-
-func BenchmarkUnmarshal_Large_ProtoJSONx_Opt_Any(b *testing.B) {
-	msgList := getLargeVanillaMsg()
-	largeAnyList := make([]*anypb.Any, 100)
-	var dataBytes [][]byte
-	for j := range 100 {
-		largeAnyList[j], _ = anypb.New(msgList[j])
-		bytes, _ := protojsonx.Marshal(largeAnyList[j])
-		dataBytes = append(dataBytes, bytes)
-	}
-	alloc := protojsonx.NewBumpAllocator()
-	opts := protojsonx.UnmarshalOptions{ZeroCopy: true, Allocator: alloc}
-	b.ResetTimer()
-	for b.Loop() {
-		for j := range 100 {
-			alloc.Reset()
-			var a anypb.Any
-			_ = opts.Unmarshal(dataBytes[j], &a)
-			var msg vanillapb.MediumEvent
-			_ = anypb.UnmarshalTo(&a, &msg, proto.UnmarshalOptions{})
-		}
-	}
-}
 
 // --- Protobuf + JSON (Opaque JSON Packaging) Benchmarks ---
 
@@ -1661,52 +1235,10 @@ func BenchmarkUnmarshal_Large_Proto_JSON(b *testing.B) {
 
 // --- Construction & Conversion (Appendix) Benchmarks ---
 
-func BenchmarkConstruction_Small_Proto_Value(b *testing.B) {
-	data := getSmallMap()
-	for b.Loop() {
-		_, _ = structpb.NewValue(data)
-	}
-}
 
-func BenchmarkConversion_Small_Proto_Value(b *testing.B) {
-	data := getSmallMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_ = pbVal.AsInterface()
-	}
-}
 
-func BenchmarkConstruction_Medium_Proto_Value(b *testing.B) {
-	data := getMediumMap()
-	for b.Loop() {
-		_, _ = structpb.NewValue(data)
-	}
-}
 
-func BenchmarkConversion_Medium_Proto_Value(b *testing.B) {
-	data := getMediumMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_ = pbVal.AsInterface()
-	}
-}
 
-func BenchmarkConstruction_Large_Proto_Value(b *testing.B) {
-	data := getLargeMap()
-	for b.Loop() {
-		_, _ = structpb.NewValue(data)
-	}
-}
 
-func BenchmarkConversion_Large_Proto_Value(b *testing.B) {
-	data := getLargeMap()
-	pbVal, _ := structpb.NewValue(data)
-	b.ResetTimer()
-	for b.Loop() {
-		_ = pbVal.AsInterface()
-	}
-}
 
 

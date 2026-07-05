@@ -1,0 +1,13 @@
+# buf.gen.protojsonx.yaml
+# Used for proto/protojsonx/.
+# Generates standard Go protobuf code + protoc-gen-go-protojsonx wrappers.
+version: v2
+plugins:
+  - local: ["go", "tool", "protoc-gen-go"]
+    out: .
+    opt:
+      - paths=source_relative
+  - local: ["go", "tool", "protoc-gen-go-protojsonx"]
+    out: .
+    opt:
+      - paths=source_relative
