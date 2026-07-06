@@ -81,14 +81,14 @@ func (x *SmallObject) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "id")
+		status, err := d.MatchFast(&fastFirst, "id")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -102,14 +102,14 @@ func (x *SmallObject) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "active")
+		status, err := d.MatchFast(&fastFirst, "active")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -123,14 +123,14 @@ func (x *SmallObject) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "age")
+		status, err := d.MatchFast(&fastFirst, "age")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -144,14 +144,14 @@ func (x *SmallObject) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "score")
+		status, err := d.MatchFast(&fastFirst, "score")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -178,7 +178,7 @@ func (x *SmallObject) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [4]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -188,92 +188,12 @@ func (x *SmallObject) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "id" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Id = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Id = v
-				}
-				continue
-			}
-		case 1:
-			if key == "active" {
-				expected = 2
-				const bit = uint64(1) << 1
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Active = false
-				} else {
-					v, err := d.ReadBool()
-					if err != nil {
-						return err
-					}
-					x.Active = v
-				}
-				continue
-			}
-		case 2:
-			if key == "age" {
-				expected = 3
-				const bit = uint64(1) << 2
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Age = 0
-				} else {
-					v, err := d.ReadInt32()
-					if err != nil {
-						return err
-					}
-					x.Age = v
-				}
-				continue
-			}
-		case 3:
-			if key == "score" {
-				expected = 4
-				const bit = uint64(1) << 3
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Score = 0
-				} else {
-					v, err := d.ReadFloat64()
-					if err != nil {
-						return err
-					}
-					x.Score = v
-				}
-				continue
-			}
-		}
 		switch key {
 		case "id":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Id = ""
 			} else {
@@ -285,11 +205,10 @@ func (x *SmallObject) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "active":
-			const bit = uint64(1) << 1
-			if seen&bit != 0 {
+			if seen[1] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[1] = true
 			if d.ReadNull() {
 				x.Active = false
 			} else {
@@ -301,11 +220,10 @@ func (x *SmallObject) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "age":
-			const bit = uint64(1) << 2
-			if seen&bit != 0 {
+			if seen[2] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[2] = true
 			if d.ReadNull() {
 				x.Age = 0
 			} else {
@@ -317,11 +235,10 @@ func (x *SmallObject) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "score":
-			const bit = uint64(1) << 3
-			if seen&bit != 0 {
+			if seen[3] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[3] = true
 			if d.ReadNull() {
 				x.Score = 0
 			} else {
@@ -406,14 +323,14 @@ func (x *Actor) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnknown
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "id")
+		status, err := d.MatchFast(&fastFirst, "id")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -427,14 +344,14 @@ func (x *Actor) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnknown
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "email")
+		status, err := d.MatchFast(&fastFirst, "email")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -448,14 +365,14 @@ func (x *Actor) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnknown
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "verified")
+		status, err := d.MatchFast(&fastFirst, "verified")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -482,7 +399,7 @@ func (x *Actor) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnknown
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [3]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -492,73 +409,12 @@ func (x *Actor) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnknown
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "id" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Id = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Id = v
-				}
-				continue
-			}
-		case 1:
-			if key == "email" {
-				expected = 2
-				const bit = uint64(1) << 1
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Email = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Email = v
-				}
-				continue
-			}
-		case 2:
-			if key == "verified" {
-				expected = 3
-				const bit = uint64(1) << 2
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Verified = false
-				} else {
-					v, err := d.ReadBool()
-					if err != nil {
-						return err
-					}
-					x.Verified = v
-				}
-				continue
-			}
-		}
 		switch key {
 		case "id":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Id = ""
 			} else {
@@ -570,11 +426,10 @@ func (x *Actor) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnknown
 			}
 			continue
 		case "email":
-			const bit = uint64(1) << 1
-			if seen&bit != 0 {
+			if seen[1] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[1] = true
 			if d.ReadNull() {
 				x.Email = ""
 			} else {
@@ -586,11 +441,10 @@ func (x *Actor) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnknown
 			}
 			continue
 		case "verified":
-			const bit = uint64(1) << 2
-			if seen&bit != 0 {
+			if seen[2] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[2] = true
 			if d.ReadNull() {
 				x.Verified = false
 			} else {
@@ -675,14 +529,14 @@ func (x *Metadata) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnkn
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "ip")
+		status, err := d.MatchFast(&fastFirst, "ip")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -696,14 +550,14 @@ func (x *Metadata) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnkn
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "userAgent")
+		status, err := d.MatchFast(&fastFirst, "userAgent")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -717,14 +571,14 @@ func (x *Metadata) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardUnkn
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "attempts")
+		status, err := d.MatchFast(&fastFirst, "attempts")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -751,7 +605,7 @@ func (x *Metadata) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnkn
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [3]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -761,73 +615,12 @@ func (x *Metadata) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnkn
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "ip" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Ip = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Ip = v
-				}
-				continue
-			}
-		case 1:
-			if key == "userAgent" {
-				expected = 2
-				const bit = uint64(1) << 1
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.UserAgent = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.UserAgent = v
-				}
-				continue
-			}
-		case 2:
-			if key == "attempts" {
-				expected = 3
-				const bit = uint64(1) << 2
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Attempts = 0
-				} else {
-					v, err := d.ReadInt64()
-					if err != nil {
-						return err
-					}
-					x.Attempts = v
-				}
-				continue
-			}
-		}
 		switch key {
 		case "ip":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Ip = ""
 			} else {
@@ -839,11 +632,10 @@ func (x *Metadata) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnkn
 			}
 			continue
 		case "userAgent", "user_agent":
-			const bit = uint64(1) << 1
-			if seen&bit != 0 {
+			if seen[1] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[1] = true
 			if d.ReadNull() {
 				x.UserAgent = ""
 			} else {
@@ -855,11 +647,10 @@ func (x *Metadata) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardUnkn
 			}
 			continue
 		case "attempts":
-			const bit = uint64(1) << 2
-			if seen&bit != 0 {
+			if seen[2] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[2] = true
 			if d.ReadNull() {
 				x.Attempts = 0
 			} else {
@@ -983,14 +774,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "id")
+		status, err := d.MatchFast(&fastFirst, "id")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1004,14 +795,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "timestamp")
+		status, err := d.MatchFast(&fastFirst, "timestamp")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1025,14 +816,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "eventType")
+		status, err := d.MatchFast(&fastFirst, "eventType")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1046,14 +837,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "actor")
+		status, err := d.MatchFast(&fastFirst, "actor")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1076,14 +867,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "tags")
+		status, err := d.MatchFast(&fastFirst, "tags")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1115,14 +906,14 @@ func (x *MediumEvent) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "metadata")
+		status, err := d.MatchFast(&fastFirst, "metadata")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1158,7 +949,7 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [6]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -1168,162 +959,12 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "id" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Id = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Id = v
-				}
-				continue
-			}
-		case 1:
-			if key == "timestamp" {
-				expected = 2
-				const bit = uint64(1) << 1
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Timestamp = 0
-				} else {
-					v, err := d.ReadInt64()
-					if err != nil {
-						return err
-					}
-					x.Timestamp = v
-				}
-				continue
-			}
-		case 2:
-			if key == "eventType" {
-				expected = 3
-				const bit = uint64(1) << 2
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.EventType = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.EventType = v
-				}
-				continue
-			}
-		case 3:
-			if key == "actor" {
-				expected = 4
-				const bit = uint64(1) << 3
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Actor = nil
-				} else {
-					x.Actor = &Actor{}
-					if slow, ok := any(x.Actor).(interface {
-						unmarshalProtoJSONXFrom(*protojsonxgen.Decoder, bool) error
-					}); ok {
-						if err := slow.unmarshalProtoJSONXFrom(d, discardUnknown); err != nil {
-							return err
-						}
-					} else {
-						if err := protojsonxgen.UnmarshalField(d, x.Actor, discardUnknown); err != nil {
-							return err
-						}
-					}
-				}
-				continue
-			}
-		case 4:
-			if key == "tags" {
-				expected = 5
-				const bit = uint64(1) << 4
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Tags = nil
-				} else {
-					values := x.Tags[:0]
-					if values == nil {
-						values = make([]string, 0, 4)
-					}
-					if err := d.BeginArray(); err != nil {
-						return err
-					}
-					arrayFirst := true
-					for {
-						elemOK, err := d.NextArrayElement(&arrayFirst)
-						if err != nil {
-							return err
-						}
-						if !elemOK {
-							break
-						}
-						v, err := d.ReadString()
-						if err != nil {
-							return err
-						}
-						values = append(values, v)
-					}
-					x.Tags = values
-				}
-				continue
-			}
-		case 5:
-			if key == "metadata" {
-				expected = 6
-				const bit = uint64(1) << 5
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Metadata = nil
-				} else {
-					x.Metadata = &Metadata{}
-					if slow, ok := any(x.Metadata).(interface {
-						unmarshalProtoJSONXFrom(*protojsonxgen.Decoder, bool) error
-					}); ok {
-						if err := slow.unmarshalProtoJSONXFrom(d, discardUnknown); err != nil {
-							return err
-						}
-					} else {
-						if err := protojsonxgen.UnmarshalField(d, x.Metadata, discardUnknown); err != nil {
-							return err
-						}
-					}
-				}
-				continue
-			}
-		}
 		switch key {
 		case "id":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Id = ""
 			} else {
@@ -1335,11 +976,10 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "timestamp":
-			const bit = uint64(1) << 1
-			if seen&bit != 0 {
+			if seen[1] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[1] = true
 			if d.ReadNull() {
 				x.Timestamp = 0
 			} else {
@@ -1351,11 +991,10 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "eventType", "event_type":
-			const bit = uint64(1) << 2
-			if seen&bit != 0 {
+			if seen[2] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[2] = true
 			if d.ReadNull() {
 				x.EventType = ""
 			} else {
@@ -1367,11 +1006,10 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "actor":
-			const bit = uint64(1) << 3
-			if seen&bit != 0 {
+			if seen[3] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[3] = true
 			if d.ReadNull() {
 				x.Actor = nil
 			} else {
@@ -1390,11 +1028,10 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "tags":
-			const bit = uint64(1) << 4
-			if seen&bit != 0 {
+			if seen[4] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[4] = true
 			if d.ReadNull() {
 				x.Tags = nil
 			} else {
@@ -1424,11 +1061,10 @@ func (x *MediumEvent) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "metadata":
-			const bit = uint64(1) << 5
-			if seen&bit != 0 {
+			if seen[5] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[5] = true
 			if d.ReadNull() {
 				x.Metadata = nil
 			} else {
@@ -1530,14 +1166,14 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "id")
+		status, err := d.MatchFast(&fastFirst, "id")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1551,14 +1187,14 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "timestamp")
+		status, err := d.MatchFast(&fastFirst, "timestamp")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1572,14 +1208,14 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discardU
 		}
 	}
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "payload")
+		status, err := d.MatchFast(&fastFirst, "payload")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1615,7 +1251,7 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [3]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -1625,80 +1261,12 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "id" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Id = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.Id = v
-				}
-				continue
-			}
-		case 1:
-			if key == "timestamp" {
-				expected = 2
-				const bit = uint64(1) << 1
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Timestamp = 0
-				} else {
-					v, err := d.ReadInt64()
-					if err != nil {
-						return err
-					}
-					x.Timestamp = v
-				}
-				continue
-			}
-		case 2:
-			if key == "payload" {
-				expected = 3
-				const bit = uint64(1) << 2
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Payload = nil
-				} else {
-					x.Payload = &anypb.Any{}
-					if slow, ok := any(x.Payload).(interface {
-						unmarshalProtoJSONXFrom(*protojsonxgen.Decoder, bool) error
-					}); ok {
-						if err := slow.unmarshalProtoJSONXFrom(d, discardUnknown); err != nil {
-							return err
-						}
-					} else {
-						if err := protojsonxgen.UnmarshalField(d, x.Payload, discardUnknown); err != nil {
-							return err
-						}
-					}
-				}
-				continue
-			}
-		}
 		switch key {
 		case "id":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Id = ""
 			} else {
@@ -1710,11 +1278,10 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "timestamp":
-			const bit = uint64(1) << 1
-			if seen&bit != 0 {
+			if seen[1] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[1] = true
 			if d.ReadNull() {
 				x.Timestamp = 0
 			} else {
@@ -1726,11 +1293,10 @@ func (x *AnyEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discardU
 			}
 			continue
 		case "payload":
-			const bit = uint64(1) << 2
-			if seen&bit != 0 {
+			if seen[2] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[2] = true
 			if d.ReadNull() {
 				x.Payload = nil
 			} else {
@@ -1809,8 +1375,18 @@ func (x *LargeEventPayload) marshalProtoJSONXTo(e *protojsonxgen.Encoder) error 
 			}
 			if v == nil {
 				e.Raw("null")
-			} else if err := v.marshalProtoJSONXTo(e); err != nil {
-				return err
+			} else {
+				if fast, ok := any(v).(interface {
+					marshalProtoJSONXTo(*protojsonxgen.Encoder) error
+				}); ok {
+					if err := fast.marshalProtoJSONXTo(e); err != nil {
+						return err
+					}
+				} else {
+					if err := protojsonxgen.MarshalField(e, v); err != nil {
+						return err
+					}
+				}
 			}
 		}
 		e.Byte(']')
@@ -1825,14 +1401,14 @@ func (x *LargeEventPayload) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, di
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "events")
+		status, err := d.MatchFast(&fastFirst, "events")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -1890,7 +1466,7 @@ func (x *LargeEventPayload) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, di
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [1]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -1900,64 +1476,12 @@ func (x *LargeEventPayload) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, di
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "events" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.Events = nil
-				} else {
-					values := x.Events[:0]
-					if values == nil {
-						values = make([]*MediumEvent, 0, 4)
-					}
-					if err := d.BeginArray(); err != nil {
-						return err
-					}
-					arrayFirst := true
-					for {
-						elemOK, err := d.NextArrayElement(&arrayFirst)
-						if err != nil {
-							return err
-						}
-						if !elemOK {
-							break
-						}
-						if d.ReadNull() {
-							return protojsonxgen.NullRepeatedMessage()
-						}
-						v := &MediumEvent{}
-						if slow, ok := any(v).(interface {
-							unmarshalProtoJSONXFrom(*protojsonxgen.Decoder, bool) error
-						}); ok {
-							if err := slow.unmarshalProtoJSONXFrom(d, discardUnknown); err != nil {
-								return err
-							}
-						} else {
-							if err := protojsonxgen.UnmarshalField(d, v, discardUnknown); err != nil {
-								return err
-							}
-						}
-						values = append(values, v)
-					}
-					x.Events = values
-				}
-				continue
-			}
-		}
 		switch key {
 		case "events":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.Events = nil
 			} else {
@@ -2063,14 +1587,14 @@ func (x *JSONEnvelope) unmarshalProtoJSONXFast(d *protojsonxgen.Decoder, discard
 	}
 	fastFirst := true
 	{
-		matched, done, err := d.TryObjectFieldFast(&fastFirst, "jsonData")
+		status, err := d.MatchFast(&fastFirst, "jsonData")
 		if err != nil {
 			return false, err
 		}
-		if done {
+		if status == 0 {
 			return true, nil
 		}
-		if !matched {
+		if status < 0 {
 			return false, nil
 		}
 		if d.ReadNull() {
@@ -2097,7 +1621,7 @@ func (x *JSONEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discard
 	if err := d.BeginObject(); err != nil {
 		return err
 	}
-	var seen uint64
+	var seen [1]bool
 	first := true
 	for {
 		key, ok, err := d.NextObjectKey(&first)
@@ -2107,35 +1631,12 @@ func (x *JSONEnvelope) unmarshalProtoJSONXFrom(d *protojsonxgen.Decoder, discard
 		if !ok {
 			return nil
 		}
-		expected := 0
-		switch expected {
-		case 0:
-			if key == "jsonData" {
-				expected = 1
-				const bit = uint64(1) << 0
-				if seen&bit != 0 {
-					return protojsonxgen.DuplicateField(key)
-				}
-				seen |= bit
-				if d.ReadNull() {
-					x.JsonData = ""
-				} else {
-					v, err := d.ReadString()
-					if err != nil {
-						return err
-					}
-					x.JsonData = v
-				}
-				continue
-			}
-		}
 		switch key {
 		case "jsonData", "json_data":
-			const bit = uint64(1) << 0
-			if seen&bit != 0 {
+			if seen[0] {
 				return protojsonxgen.DuplicateField(key)
 			}
-			seen |= bit
+			seen[0] = true
 			if d.ReadNull() {
 				x.JsonData = ""
 			} else {

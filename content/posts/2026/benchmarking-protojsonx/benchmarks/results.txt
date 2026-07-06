@@ -21,96 +21,360 @@ Large payload:
   VTProto size: 16500 bytes (56.5% of Concrete (JSON))
   JSONPlugin size: 29412 bytes (100.7% of Concrete (JSON))
 =============================
+=== SERIALIZED DATA SIZES ===
+Small payload:
+  Concrete (JSON) size: 55 bytes
+  Concrete (proto) size: 25 bytes (45.5% of Concrete (JSON))
+  Protobuf + JSON size: 57 bytes (103.6% of Concrete (JSON))
+  Concrete (JSONProto) size: 58 bytes (105.5% of Concrete (JSON))
+  VTProto size: 25 bytes (45.5% of Concrete (JSON))
+  JSONPlugin size: 55 bytes (100.0% of Concrete (JSON))
+Medium payload:
+  Concrete (JSON) size: 291 bytes
+  Concrete (proto) size: 162 bytes (55.7% of Concrete (JSON))
+  Protobuf + JSON size: 294 bytes (101.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 304 bytes (104.5% of Concrete (JSON))
+  VTProto size: 162 bytes (55.7% of Concrete (JSON))
+  JSONPlugin size: 293 bytes (100.7% of Concrete (JSON))
+Large payload:
+  Concrete (JSON) size: 29201 bytes
+  Concrete (proto) size: 16500 bytes (56.5% of Concrete (JSON))
+  Protobuf + JSON size: 29205 bytes (100.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 30611 bytes (104.8% of Concrete (JSON))
+  VTProto size: 16500 bytes (56.5% of Concrete (JSON))
+  JSONPlugin size: 29412 bytes (100.7% of Concrete (JSON))
+=============================
+=== SERIALIZED DATA SIZES ===
+Small payload:
+  Concrete (JSON) size: 55 bytes
+  Concrete (proto) size: 25 bytes (45.5% of Concrete (JSON))
+  Protobuf + JSON size: 57 bytes (103.6% of Concrete (JSON))
+  Concrete (JSONProto) size: 58 bytes (105.5% of Concrete (JSON))
+  VTProto size: 25 bytes (45.5% of Concrete (JSON))
+  JSONPlugin size: 55 bytes (100.0% of Concrete (JSON))
+Medium payload:
+  Concrete (JSON) size: 291 bytes
+  Concrete (proto) size: 162 bytes (55.7% of Concrete (JSON))
+  Protobuf + JSON size: 294 bytes (101.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 304 bytes (104.5% of Concrete (JSON))
+  VTProto size: 162 bytes (55.7% of Concrete (JSON))
+  JSONPlugin size: 293 bytes (100.7% of Concrete (JSON))
+Large payload:
+  Concrete (JSON) size: 29201 bytes
+  Concrete (proto) size: 16500 bytes (56.5% of Concrete (JSON))
+  Protobuf + JSON size: 29205 bytes (100.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 30611 bytes (104.8% of Concrete (JSON))
+  VTProto size: 16500 bytes (56.5% of Concrete (JSON))
+  JSONPlugin size: 29412 bytes (100.7% of Concrete (JSON))
+=============================
+=== SERIALIZED DATA SIZES ===
+Small payload:
+  Concrete (JSON) size: 55 bytes
+  Concrete (proto) size: 25 bytes (45.5% of Concrete (JSON))
+  Protobuf + JSON size: 57 bytes (103.6% of Concrete (JSON))
+  Concrete (JSONProto) size: 58 bytes (105.5% of Concrete (JSON))
+  VTProto size: 25 bytes (45.5% of Concrete (JSON))
+  JSONPlugin size: 55 bytes (100.0% of Concrete (JSON))
+Medium payload:
+  Concrete (JSON) size: 291 bytes
+  Concrete (proto) size: 162 bytes (55.7% of Concrete (JSON))
+  Protobuf + JSON size: 294 bytes (101.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 304 bytes (104.5% of Concrete (JSON))
+  VTProto size: 162 bytes (55.7% of Concrete (JSON))
+  JSONPlugin size: 293 bytes (100.7% of Concrete (JSON))
+Large payload:
+  Concrete (JSON) size: 29201 bytes
+  Concrete (proto) size: 16500 bytes (56.5% of Concrete (JSON))
+  Protobuf + JSON size: 29205 bytes (100.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 30611 bytes (104.8% of Concrete (JSON))
+  VTProto size: 16500 bytes (56.5% of Concrete (JSON))
+  JSONPlugin size: 29412 bytes (100.7% of Concrete (JSON))
+=============================
+=== SERIALIZED DATA SIZES ===
+Small payload:
+  Concrete (JSON) size: 55 bytes
+  Concrete (proto) size: 25 bytes (45.5% of Concrete (JSON))
+  Protobuf + JSON size: 57 bytes (103.6% of Concrete (JSON))
+  Concrete (JSONProto) size: 58 bytes (105.5% of Concrete (JSON))
+  VTProto size: 25 bytes (45.5% of Concrete (JSON))
+  JSONPlugin size: 55 bytes (100.0% of Concrete (JSON))
+Medium payload:
+  Concrete (JSON) size: 291 bytes
+  Concrete (proto) size: 162 bytes (55.7% of Concrete (JSON))
+  Protobuf + JSON size: 294 bytes (101.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 304 bytes (104.5% of Concrete (JSON))
+  VTProto size: 162 bytes (55.7% of Concrete (JSON))
+  JSONPlugin size: 293 bytes (100.7% of Concrete (JSON))
+Large payload:
+  Concrete (JSON) size: 29201 bytes
+  Concrete (proto) size: 16500 bytes (56.5% of Concrete (JSON))
+  Protobuf + JSON size: 29205 bytes (100.0% of Concrete (JSON))
+  Concrete (JSONProto) size: 30611 bytes (104.8% of Concrete (JSON))
+  VTProto size: 16500 bytes (56.5% of Concrete (JSON))
+  JSONPlugin size: 29412 bytes (100.7% of Concrete (JSON))
+=============================
 goos: darwin
 goarch: arm64
 pkg: json-vs-proto
 cpu: Apple M1 Pro
-BenchmarkMarshal_Small_JSON_Std_Map-8                  	 2022804	       582.4 ns/op	     352 B/op	      10 allocs/op
-BenchmarkMarshal_Small_JSON_Std_Struct-8               	 7205144	       170.1 ns/op	      64 B/op	       1 allocs/op
-BenchmarkMarshal_Small_JSON_V2_Map-8                   	 1555774	       768.1 ns/op	     151 B/op	       9 allocs/op
-BenchmarkMarshal_Small_JSON_V2_Struct-8                	 3992059	       285.0 ns/op	     112 B/op	       2 allocs/op
-BenchmarkMarshal_Small_Proto_Static-8                  	15136113	        81.64 ns/op	      32 B/op	       1 allocs/op
-BenchmarkMarshal_Small_VTProto-8                       	51250929	        24.76 ns/op	      32 B/op	       1 allocs/op
-BenchmarkMarshal_Small_JSONPlugin_Std-8                	 1000000	      1085 ns/op	     576 B/op	      13 allocs/op
-BenchmarkMarshal_Small_JSONPlugin_V2-8                 	 1315888	       920.4 ns/op	     576 B/op	      13 allocs/op
-BenchmarkMarshal_Small_Proto_Dynamic-8                 	 2095531	       566.9 ns/op	     160 B/op	       8 allocs/op
-BenchmarkMarshal_Small_Proto_HyperPB-8                 	 3579380	       324.2 ns/op	     144 B/op	       7 allocs/op
-BenchmarkUnmarshal_Small_JSON_Std_Map-8                	 1000000	      1107 ns/op	     648 B/op	      20 allocs/op
-BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 1525786	       776.9 ns/op	     280 B/op	       6 allocs/op
-BenchmarkUnmarshal_Small_JSON_V2_Map-8                 	 1495584	       789.0 ns/op	     408 B/op	       8 allocs/op
-BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	 3542262	       339.4 ns/op	      48 B/op	       1 allocs/op
-BenchmarkUnmarshal_Small_Proto_Static-8                	10528042	       116.3 ns/op	      96 B/op	       2 allocs/op
-BenchmarkUnmarshal_Small_VTProto-8                     	49605054	        26.05 ns/op	      16 B/op	       1 allocs/op
-BenchmarkUnmarshal_Small_JSONPlugin_Std-8              	  871514	      1409 ns/op	     496 B/op	      16 allocs/op
-BenchmarkUnmarshal_Small_JSONPlugin_V2-8               	 1000000	      1185 ns/op	     336 B/op	      14 allocs/op
-BenchmarkUnmarshal_Small_Proto_Dynamic-8               	 1748524	       668.8 ns/op	     616 B/op	      11 allocs/op
-BenchmarkUnmarshal_Small_Proto_HyperPB-8               	 3383964	       370.5 ns/op	     797 B/op	       4 allocs/op
-BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	 9688015	       124.5 ns/op	      64 B/op	       1 allocs/op
-BenchmarkMarshal_Medium_JSON_Std_Map-8                 	  572466	      1941 ns/op	    1200 B/op	      28 allocs/op
-BenchmarkMarshal_Medium_JSON_Std_Struct-8              	 2266096	       542.5 ns/op	     464 B/op	       2 allocs/op
-BenchmarkMarshal_Medium_JSON_V2_Map-8                  	  831676	      1570 ns/op	     456 B/op	      12 allocs/op
-BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 1198483	       963.0 ns/op	     608 B/op	       3 allocs/op
-BenchmarkMarshal_Medium_Proto_Static-8                 	 4107510	       331.4 ns/op	     176 B/op	       1 allocs/op
-BenchmarkMarshal_Medium_VTProto-8                      	11155608	       115.1 ns/op	     176 B/op	       1 allocs/op
-BenchmarkMarshal_Medium_JSONPlugin_Std-8               	  299601	      4157 ns/op	    2044 B/op	      35 allocs/op
-BenchmarkMarshal_Medium_JSONPlugin_V2-8                	  403555	      3082 ns/op	    2043 B/op	      35 allocs/op
-BenchmarkMarshal_Medium_Proto_Dynamic-8                	  663740	      1842 ns/op	     797 B/op	      20 allocs/op
-BenchmarkMarshal_Medium_Proto_HyperPB-8                	 1000000	      1073 ns/op	     744 B/op	      17 allocs/op
-BenchmarkUnmarshal_Medium_JSON_Std_Map-8               	  360247	      3435 ns/op	    1856 B/op	      54 allocs/op
-BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	  407062	      2927 ns/op	     688 B/op	      19 allocs/op
-BenchmarkUnmarshal_Medium_JSON_V2_Map-8                	  587274	      2127 ns/op	    1392 B/op	      30 allocs/op
-BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 1000000	      1137 ns/op	     256 B/op	       4 allocs/op
-BenchmarkUnmarshal_Medium_Proto_Static-8               	 2140736	       577.0 ns/op	     560 B/op	      15 allocs/op
-BenchmarkUnmarshal_Medium_VTProto-8                    	 3620564	       326.6 ns/op	     432 B/op	      14 allocs/op
-BenchmarkUnmarshal_Medium_JSONPlugin_Std-8             	  214399	      5723 ns/op	    1480 B/op	      61 allocs/op
-BenchmarkUnmarshal_Medium_JSONPlugin_V2-8              	  290192	      4325 ns/op	    1304 B/op	      58 allocs/op
-BenchmarkUnmarshal_Medium_Proto_Dynamic-8              	  499891	      2484 ns/op	    2072 B/op	      43 allocs/op
-BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 1765706	       665.0 ns/op	    1444 B/op	       5 allocs/op
-BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	 3539126	       329.7 ns/op	     357 B/op	       1 allocs/op
-BenchmarkMarshal_Large_JSON_Std_Map-8                  	    6555	    202906 ns/op	  120906 B/op	    2702 allocs/op
-BenchmarkMarshal_Large_JSON_Std_Struct-8               	   25716	     43933 ns/op	   32829 B/op	       2 allocs/op
-BenchmarkMarshal_Large_JSON_V2_Map-8                   	   13052	     90285 ns/op	   35240 B/op	     303 allocs/op
-BenchmarkMarshal_Large_JSON_V2_Struct-8                	   18808	     62898 ns/op	   32868 B/op	       3 allocs/op
-BenchmarkMarshal_Large_Proto_Static-8                  	   46444	     25865 ns/op	   18432 B/op	       1 allocs/op
-BenchmarkMarshal_Large_VTProto-8                       	  143274	      8095 ns/op	   18432 B/op	       1 allocs/op
-BenchmarkMarshal_Large_JSONPlugin_Std-8                	    3097	    403004 ns/op	  276801 B/op	    2730 allocs/op
-BenchmarkMarshal_Large_JSONPlugin_V2-8                 	    4192	    327408 ns/op	  276709 B/op	    2729 allocs/op
-BenchmarkMarshal_Large_Proto_Dynamic-8                 	    6372	    197909 ns/op	  116071 B/op	    1522 allocs/op
-BenchmarkMarshal_Large_Proto_HyperPB-8                 	   10000	    112333 ns/op	  107217 B/op	    1022 allocs/op
-BenchmarkUnmarshal_Large_JSON_Std_Map-8                	    4167	    277278 ns/op	  162297 B/op	    4313 allocs/op
-BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	    4459	    275105 ns/op	   70584 B/op	    1216 allocs/op
-BenchmarkUnmarshal_Large_JSON_V2_Map-8                 	    6903	    183730 ns/op	  144664 B/op	    3309 allocs/op
-BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   10000	    112052 ns/op	   54304 B/op	     309 allocs/op
-BenchmarkUnmarshal_Large_Proto_Static-8                	   21793	     56842 ns/op	   58232 B/op	    1509 allocs/op
-BenchmarkUnmarshal_Large_VTProto-8                     	   31425	     37442 ns/op	   58168 B/op	    1508 allocs/op
-BenchmarkUnmarshal_Large_JSONPlugin_Std-8              	    2215	    553541 ns/op	  119449 B/op	    5717 allocs/op
-BenchmarkUnmarshal_Large_JSONPlugin_V2-8               	    2894	    421722 ns/op	  119302 B/op	    5713 allocs/op
-BenchmarkUnmarshal_Large_Proto_Dynamic-8               	    5011	    250396 ns/op	  205753 B/op	    4117 allocs/op
-BenchmarkUnmarshal_Large_Proto_HyperPB-8               	   47455	     25885 ns/op	   60032 B/op	      12 allocs/op
-BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	   64311	     18820 ns/op	   21861 B/op	       1 allocs/op
-BenchmarkMarshal_Small_ProtoJSON_Static-8              	 1859318	       648.4 ns/op	     512 B/op	      12 allocs/op
-BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 1258192	       947.7 ns/op	     336 B/op	      14 allocs/op
-BenchmarkMarshal_Medium_ProtoJSON_Static-8             	  441546	      2352 ns/op	    1721 B/op	      34 allocs/op
-BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	  326370	      3760 ns/op	    1304 B/op	      58 allocs/op
-BenchmarkMarshal_Large_ProtoJSON_Static-8              	    5204	    238838 ns/op	  243736 B/op	    2728 allocs/op
-BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	    3192	    381304 ns/op	  119256 B/op	    5713 allocs/op
-BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	 8440554	       145.8 ns/op	      64 B/op	       1 allocs/op
-BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	10742816	       104.9 ns/op	      64 B/op	       1 allocs/op
-BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	 4898900	       250.7 ns/op	      96 B/op	       3 allocs/op
-BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	 9050604	       138.1 ns/op	      96 B/op	       2 allocs/op
-BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	 3326300	       367.2 ns/op	     320 B/op	       1 allocs/op
-BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	 3775573	       316.4 ns/op	     320 B/op	       1 allocs/op
-BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	  931748	      1085 ns/op	     576 B/op	      16 allocs/op
-BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 1623328	       733.3 ns/op	     528 B/op	      14 allocs/op
-BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	   38680	     31854 ns/op	   32803 B/op	       1 allocs/op
-BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	   41005	     28456 ns/op	   32787 B/op	       1 allocs/op
-BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   10000	    113750 ns/op	   62232 B/op	    1709 allocs/op
-BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   16207	     73070 ns/op	   55008 B/op	    1407 allocs/op
-BenchmarkMarshal_Small_Proto_JSON-8                    	 3887509	       300.3 ns/op	     256 B/op	       4 allocs/op
-BenchmarkUnmarshal_Small_Proto_JSON-8                  	 1278603	       932.9 ns/op	     472 B/op	       9 allocs/op
-BenchmarkMarshal_Medium_Proto_JSON-8                   	 1672249	       704.7 ns/op	    1024 B/op	       4 allocs/op
-BenchmarkUnmarshal_Medium_Proto_JSON-8                 	  377938	      3214 ns/op	    1392 B/op	      22 allocs/op
-BenchmarkMarshal_Large_Proto_JSON-8                    	   23280	     51936 ns/op	   98831 B/op	       4 allocs/op
-BenchmarkUnmarshal_Large_Proto_JSON-8                  	    4275	    292553 ns/op	  136184 B/op	    1219 allocs/op
+BenchmarkMarshal_Small_JSON_Std_Struct-8               	35847218	       188.4 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_JSON_Std_Struct-8               	33814286	       174.4 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_JSON_Std_Struct-8               	34683216	       165.6 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_JSON_Std_Struct-8               	34998559	       164.3 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_JSON_Std_Struct-8               	36886332	       164.2 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_JSON_V2_Struct-8                	22425748	       274.2 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMarshal_Small_JSON_V2_Struct-8                	21121485	       274.2 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMarshal_Small_JSON_V2_Struct-8                	22459190	       273.7 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMarshal_Small_JSON_V2_Struct-8                	21614481	       275.4 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMarshal_Small_JSON_V2_Struct-8                	21553484	       284.2 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMarshal_Small_Proto_Static-8                  	74208136	        81.88 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_Proto_Static-8                  	72063596	        81.88 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_Proto_Static-8                  	74612906	        81.86 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_Proto_Static-8                  	72326989	        80.73 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_Proto_Static-8                  	74731936	        82.13 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_VTProto-8                       	245713292	        24.29 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_VTProto-8                       	245479729	        24.14 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_VTProto-8                       	246373054	        24.08 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_VTProto-8                       	244000849	        24.24 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_VTProto-8                       	246061141	        24.11 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMarshal_Small_Proto_HyperPB-8                 	21366645	       283.3 ns/op	     144 B/op	       7 allocs/op
+BenchmarkMarshal_Small_Proto_HyperPB-8                 	21583017	       285.8 ns/op	     144 B/op	       7 allocs/op
+BenchmarkMarshal_Small_Proto_HyperPB-8                 	20656168	       291.0 ns/op	     144 B/op	       7 allocs/op
+BenchmarkMarshal_Small_Proto_HyperPB-8                 	19346551	       294.0 ns/op	     144 B/op	       7 allocs/op
+BenchmarkMarshal_Small_Proto_HyperPB-8                 	20788570	       305.1 ns/op	     144 B/op	       7 allocs/op
+BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 7453506	       895.3 ns/op	     280 B/op	       6 allocs/op
+BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 7406144	       766.1 ns/op	     280 B/op	       6 allocs/op
+BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 7963375	       736.7 ns/op	     280 B/op	       6 allocs/op
+BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 7953099	       756.7 ns/op	     280 B/op	       6 allocs/op
+BenchmarkUnmarshal_Small_JSON_Std_Struct-8             	 7818051	       743.1 ns/op	     280 B/op	       6 allocs/op
+BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	17299293	       336.8 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	16955808	       334.9 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	17257262	       331.4 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	18338404	       330.9 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_JSON_V2_Struct-8              	17955854	       331.0 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_Static-8                	53578563	       112.2 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_Proto_Static-8                	55073259	       112.5 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_Proto_Static-8                	52920669	       125.3 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_Proto_Static-8                	49335816	       117.0 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_Proto_Static-8                	53328000	       116.5 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_VTProto-8                     	229834815	        26.41 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_VTProto-8                     	240078937	        25.57 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_VTProto-8                     	232018176	        26.77 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_VTProto-8                     	230592468	        25.46 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_VTProto-8                     	239547630	        25.50 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB-8               	16001094	       356.9 ns/op	     798 B/op	       4 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB-8               	15652893	       369.6 ns/op	     798 B/op	       4 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB-8               	14926455	       359.5 ns/op	     798 B/op	       4 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB-8               	15718003	       367.1 ns/op	     798 B/op	       4 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB-8               	15700777	       378.0 ns/op	     798 B/op	       4 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	46539512	       123.9 ns/op	      65 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	48352051	       123.9 ns/op	      65 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	50087217	       122.0 ns/op	      65 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	51231274	       121.8 ns/op	      65 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_Proto_HyperPB_Shared-8        	48737166	       120.8 ns/op	      65 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_JSON_Std_Struct-8              	11463544	       508.4 ns/op	     464 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_JSON_Std_Struct-8              	11433741	       507.5 ns/op	     464 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_JSON_Std_Struct-8              	11651571	       530.8 ns/op	     464 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_JSON_Std_Struct-8              	11336290	       520.0 ns/op	     464 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_JSON_Std_Struct-8              	11527576	       519.9 ns/op	     464 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 7419404	       801.5 ns/op	     608 B/op	       3 allocs/op
+BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 7474975	       804.2 ns/op	     608 B/op	       3 allocs/op
+BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 7363537	       807.5 ns/op	     608 B/op	       3 allocs/op
+BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 7342118	       804.3 ns/op	     608 B/op	       3 allocs/op
+BenchmarkMarshal_Medium_JSON_V2_Struct-8               	 7339888	       806.9 ns/op	     608 B/op	       3 allocs/op
+BenchmarkMarshal_Medium_Proto_Static-8                 	20944887	       286.4 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_Proto_Static-8                 	20936332	       285.9 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_Proto_Static-8                 	20604512	       303.3 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_Proto_Static-8                 	20532375	       292.4 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_Proto_Static-8                 	20764071	       289.5 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_VTProto-8                      	58148808	       101.4 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_VTProto-8                      	58763397	       107.4 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_VTProto-8                      	56922260	       108.5 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_VTProto-8                      	51321986	       112.9 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_VTProto-8                      	56462306	       110.2 ns/op	     176 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_Proto_HyperPB-8                	 4830740	      1104 ns/op	     744 B/op	      17 allocs/op
+BenchmarkMarshal_Medium_Proto_HyperPB-8                	 5273598	      1088 ns/op	     744 B/op	      17 allocs/op
+BenchmarkMarshal_Medium_Proto_HyperPB-8                	 5699325	      1042 ns/op	     744 B/op	      17 allocs/op
+BenchmarkMarshal_Medium_Proto_HyperPB-8                	 5638089	      1058 ns/op	     744 B/op	      17 allocs/op
+BenchmarkMarshal_Medium_Proto_HyperPB-8                	 5651391	      1051 ns/op	     744 B/op	      17 allocs/op
+BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	 2057086	      2904 ns/op	     688 B/op	      19 allocs/op
+BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	 2071383	      2895 ns/op	     688 B/op	      19 allocs/op
+BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	 2066755	      2898 ns/op	     688 B/op	      19 allocs/op
+BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	 2073234	      2902 ns/op	     688 B/op	      19 allocs/op
+BenchmarkUnmarshal_Medium_JSON_Std_Struct-8            	 2074188	      2891 ns/op	     688 B/op	      19 allocs/op
+BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 5355168	      1118 ns/op	     256 B/op	       4 allocs/op
+BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 5331535	      1116 ns/op	     256 B/op	       4 allocs/op
+BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 5342973	      1118 ns/op	     256 B/op	       4 allocs/op
+BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 5342282	      1120 ns/op	     256 B/op	       4 allocs/op
+BenchmarkUnmarshal_Medium_JSON_V2_Struct-8             	 5068905	      1133 ns/op	     256 B/op	       4 allocs/op
+BenchmarkUnmarshal_Medium_Proto_Static-8               	10478527	       567.4 ns/op	     560 B/op	      15 allocs/op
+BenchmarkUnmarshal_Medium_Proto_Static-8               	10530759	       575.4 ns/op	     560 B/op	      15 allocs/op
+BenchmarkUnmarshal_Medium_Proto_Static-8               	10458780	       567.7 ns/op	     560 B/op	      15 allocs/op
+BenchmarkUnmarshal_Medium_Proto_Static-8               	10618232	       577.5 ns/op	     560 B/op	      15 allocs/op
+BenchmarkUnmarshal_Medium_Proto_Static-8               	10105521	       561.4 ns/op	     560 B/op	      15 allocs/op
+BenchmarkUnmarshal_Medium_VTProto-8                    	19176152	       317.0 ns/op	     432 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_VTProto-8                    	18576171	       314.5 ns/op	     432 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_VTProto-8                    	18682962	       313.9 ns/op	     432 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_VTProto-8                    	18887865	       315.4 ns/op	     432 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_VTProto-8                    	18393956	       335.0 ns/op	     432 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 9286932	       630.0 ns/op	    1446 B/op	       5 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 9367801	       630.2 ns/op	    1446 B/op	       5 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 9474741	       626.7 ns/op	    1446 B/op	       5 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 9150862	       628.3 ns/op	    1446 B/op	       5 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB-8              	 9353730	       629.3 ns/op	    1446 B/op	       5 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	21070362	       292.2 ns/op	     357 B/op	       1 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	20768284	       292.5 ns/op	     357 B/op	       1 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	20670709	       291.4 ns/op	     357 B/op	       1 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	20088752	       292.7 ns/op	     357 B/op	       1 allocs/op
+BenchmarkUnmarshal_Medium_Proto_HyperPB_Shared-8       	19986477	       297.9 ns/op	     357 B/op	       1 allocs/op
+BenchmarkMarshal_Large_JSON_Std_Struct-8               	  147270	     41385 ns/op	   32823 B/op	       2 allocs/op
+BenchmarkMarshal_Large_JSON_Std_Struct-8               	  143439	     41312 ns/op	   32828 B/op	       2 allocs/op
+BenchmarkMarshal_Large_JSON_Std_Struct-8               	  143511	     41363 ns/op	   32827 B/op	       2 allocs/op
+BenchmarkMarshal_Large_JSON_Std_Struct-8               	  145665	     41048 ns/op	   32823 B/op	       2 allocs/op
+BenchmarkMarshal_Large_JSON_Std_Struct-8               	  150522	     40345 ns/op	   32820 B/op	       2 allocs/op
+BenchmarkMarshal_Large_JSON_V2_Struct-8                	   97095	     60652 ns/op	   32854 B/op	       3 allocs/op
+BenchmarkMarshal_Large_JSON_V2_Struct-8                	   98554	     60419 ns/op	   32851 B/op	       3 allocs/op
+BenchmarkMarshal_Large_JSON_V2_Struct-8                	   98570	     60423 ns/op	   32846 B/op	       3 allocs/op
+BenchmarkMarshal_Large_JSON_V2_Struct-8                	   97232	     62292 ns/op	   32861 B/op	       3 allocs/op
+BenchmarkMarshal_Large_JSON_V2_Struct-8                	   96154	     61390 ns/op	   32853 B/op	       3 allocs/op
+BenchmarkMarshal_Large_Proto_Static-8                  	  241314	     24371 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_Proto_Static-8                  	  240792	     24478 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_Proto_Static-8                  	  244495	     24499 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_Proto_Static-8                  	  242646	     24504 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_Proto_Static-8                  	  253206	     24423 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_VTProto-8                       	  724798	      7818 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_VTProto-8                       	  746910	      7891 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_VTProto-8                       	  835587	      7545 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_VTProto-8                       	  835969	      7724 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_VTProto-8                       	  809151	      7543 ns/op	   18432 B/op	       1 allocs/op
+BenchmarkMarshal_Large_Proto_HyperPB-8                 	   55321	    106591 ns/op	  107217 B/op	    1022 allocs/op
+BenchmarkMarshal_Large_Proto_HyperPB-8                 	   55930	    105629 ns/op	  107217 B/op	    1022 allocs/op
+BenchmarkMarshal_Large_Proto_HyperPB-8                 	   56424	    105581 ns/op	  107216 B/op	    1022 allocs/op
+BenchmarkMarshal_Large_Proto_HyperPB-8                 	   55512	    105488 ns/op	  107217 B/op	    1022 allocs/op
+BenchmarkMarshal_Large_Proto_HyperPB-8                 	   56446	    105618 ns/op	  107216 B/op	    1022 allocs/op
+BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	   21792	    275138 ns/op	   70584 B/op	    1216 allocs/op
+BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	   21670	    276071 ns/op	   70584 B/op	    1216 allocs/op
+BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	   21346	    280011 ns/op	   70584 B/op	    1216 allocs/op
+BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	   22004	    278409 ns/op	   70584 B/op	    1216 allocs/op
+BenchmarkUnmarshal_Large_JSON_Std_Struct-8             	   21735	    275752 ns/op	   70584 B/op	    1216 allocs/op
+BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   53856	    110465 ns/op	   54304 B/op	     309 allocs/op
+BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   54250	    110769 ns/op	   54304 B/op	     309 allocs/op
+BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   54444	    110307 ns/op	   54304 B/op	     309 allocs/op
+BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   53563	    111094 ns/op	   54304 B/op	     309 allocs/op
+BenchmarkUnmarshal_Large_JSON_V2_Struct-8              	   54051	    110584 ns/op	   54303 B/op	     309 allocs/op
+BenchmarkUnmarshal_Large_Proto_Static-8                	  102585	     56530 ns/op	   58232 B/op	    1509 allocs/op
+BenchmarkUnmarshal_Large_Proto_Static-8                	  104524	     56351 ns/op	   58232 B/op	    1509 allocs/op
+BenchmarkUnmarshal_Large_Proto_Static-8                	  106240	     57588 ns/op	   58232 B/op	    1509 allocs/op
+BenchmarkUnmarshal_Large_Proto_Static-8                	  104320	     55158 ns/op	   58232 B/op	    1509 allocs/op
+BenchmarkUnmarshal_Large_Proto_Static-8                	  105580	     56182 ns/op	   58232 B/op	    1509 allocs/op
+BenchmarkUnmarshal_Large_VTProto-8                     	  162234	     36803 ns/op	   58168 B/op	    1508 allocs/op
+BenchmarkUnmarshal_Large_VTProto-8                     	  147000	     38589 ns/op	   58168 B/op	    1508 allocs/op
+BenchmarkUnmarshal_Large_VTProto-8                     	  153067	     37610 ns/op	   58168 B/op	    1508 allocs/op
+BenchmarkUnmarshal_Large_VTProto-8                     	  156760	     36590 ns/op	   58168 B/op	    1508 allocs/op
+BenchmarkUnmarshal_Large_VTProto-8                     	  161008	     36275 ns/op	   58168 B/op	    1508 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB-8               	  227505	     24810 ns/op	   60022 B/op	      12 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB-8               	  239803	     24868 ns/op	   60021 B/op	      12 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB-8               	  233640	     24730 ns/op	   60037 B/op	      12 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB-8               	  251763	     25719 ns/op	   60021 B/op	      12 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB-8               	  241713	     24980 ns/op	   60027 B/op	      12 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	  323474	     18554 ns/op	   21860 B/op	       1 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	  315121	     19355 ns/op	   21858 B/op	       1 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	  311194	     18963 ns/op	   21860 B/op	       1 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	  328225	     18542 ns/op	   21861 B/op	       1 allocs/op
+BenchmarkUnmarshal_Large_Proto_HyperPB_Shared-8        	  331281	     18516 ns/op	   21857 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSON_Static-8              	 9159524	       646.8 ns/op	     512 B/op	      12 allocs/op
+BenchmarkMarshal_Small_ProtoJSON_Static-8              	 9239882	       646.1 ns/op	     512 B/op	      12 allocs/op
+BenchmarkMarshal_Small_ProtoJSON_Static-8              	 8988056	       649.2 ns/op	     512 B/op	      12 allocs/op
+BenchmarkMarshal_Small_ProtoJSON_Static-8              	 8997571	       649.5 ns/op	     512 B/op	      12 allocs/op
+BenchmarkMarshal_Small_ProtoJSON_Static-8              	 9220186	       647.2 ns/op	     512 B/op	      12 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 6385412	       943.1 ns/op	     336 B/op	      14 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 6223015	       944.9 ns/op	     336 B/op	      14 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 6352531	       937.3 ns/op	     336 B/op	      14 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 6389931	       941.6 ns/op	     336 B/op	      14 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSON_Static-8            	 6315903	       940.8 ns/op	     336 B/op	      14 allocs/op
+BenchmarkMarshal_Medium_ProtoJSON_Static-8             	 2521075	      2372 ns/op	    1721 B/op	      34 allocs/op
+BenchmarkMarshal_Medium_ProtoJSON_Static-8             	 2531925	      2356 ns/op	    1721 B/op	      34 allocs/op
+BenchmarkMarshal_Medium_ProtoJSON_Static-8             	 2531979	      2357 ns/op	    1721 B/op	      34 allocs/op
+BenchmarkMarshal_Medium_ProtoJSON_Static-8             	 2525001	      2359 ns/op	    1721 B/op	      34 allocs/op
+BenchmarkMarshal_Medium_ProtoJSON_Static-8             	 2533780	      2359 ns/op	    1721 B/op	      34 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	 1603059	      3745 ns/op	    1304 B/op	      58 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	 1605810	      3733 ns/op	    1304 B/op	      58 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	 1608004	      3728 ns/op	    1304 B/op	      58 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	 1608960	      3727 ns/op	    1304 B/op	      58 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSON_Static-8           	 1597995	      3715 ns/op	    1304 B/op	      58 allocs/op
+BenchmarkMarshal_Large_ProtoJSON_Static-8              	   24888	    239149 ns/op	  243736 B/op	    2728 allocs/op
+BenchmarkMarshal_Large_ProtoJSON_Static-8              	   24724	    239662 ns/op	  243740 B/op	    2728 allocs/op
+BenchmarkMarshal_Large_ProtoJSON_Static-8              	   25026	    238542 ns/op	  243739 B/op	    2728 allocs/op
+BenchmarkMarshal_Large_ProtoJSON_Static-8              	   24765	    235946 ns/op	  243739 B/op	    2728 allocs/op
+BenchmarkMarshal_Large_ProtoJSON_Static-8              	   25618	    232656 ns/op	  243736 B/op	    2728 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	   16083	    373015 ns/op	  119256 B/op	    5713 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	   15991	    374639 ns/op	  119256 B/op	    5713 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	   15810	    379434 ns/op	  119256 B/op	    5713 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	   15853	    377160 ns/op	  119256 B/op	    5713 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSON_Static-8            	   15916	    375887 ns/op	  119256 B/op	    5713 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	41919309	       143.9 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	39844826	       143.9 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	40908009	       143.9 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	42303793	       144.4 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Lib_Static-8         	40214342	       143.6 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	59211913	       102.7 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	58540321	       103.5 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	58843191	       103.8 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	57328857	       107.9 ns/op	      64 B/op	       1 allocs/op
+BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static-8      	51863221	       112.3 ns/op	      64 B/op	       1 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	22221124	       266.7 ns/op	      96 B/op	       3 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	24024003	       249.1 ns/op	      96 B/op	       3 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	24298666	       256.2 ns/op	      96 B/op	       3 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	23696954	       250.3 ns/op	      96 B/op	       3 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static-8       	24120088	       252.6 ns/op	      96 B/op	       3 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	42816988	       143.1 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	42586616	       145.6 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	38860386	       142.1 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	42808956	       140.6 ns/op	      96 B/op	       2 allocs/op
+BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static-8    	41606338	       141.9 ns/op	      96 B/op	       2 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	15725214	       372.5 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	16115152	       372.5 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	15946286	       366.5 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	15746780	       372.8 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static-8        	16338085	       409.3 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	18527578	       315.1 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	19259017	       314.0 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	19067563	       315.0 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	19234938	       315.6 ns/op	     320 B/op	       1 allocs/op
+BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static-8     	19036095	       354.1 ns/op	     320 B/op	       1 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	 5583848	      1107 ns/op	     576 B/op	      16 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	 4711642	      1296 ns/op	     576 B/op	      16 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	 4896120	      1123 ns/op	     576 B/op	      16 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	 5392132	      1148 ns/op	     576 B/op	      16 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static-8      	 4628979	      1135 ns/op	     576 B/op	      16 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 8051948	       713.8 ns/op	     528 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 8127848	       714.7 ns/op	     528 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 8035958	       725.4 ns/op	     528 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 8136397	       711.5 ns/op	     528 B/op	      14 allocs/op
+BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static-8   	 8228535	       755.0 ns/op	     528 B/op	      14 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	  183928	     31646 ns/op	   32795 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	  186523	     32963 ns/op	   32790 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	  181008	     32253 ns/op	   32800 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	  174104	     32122 ns/op	   32804 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Lib_Static-8         	  182289	     31942 ns/op	   32793 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	  211063	     27804 ns/op	   32783 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	  214281	     27796 ns/op	   32782 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	  215679	     27720 ns/op	   32783 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	  221166	     27606 ns/op	   32786 B/op	       1 allocs/op
+BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static-8      	  216170	     27160 ns/op	   32784 B/op	       1 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   54213	    108796 ns/op	   62232 B/op	    1709 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   54038	    108880 ns/op	   62232 B/op	    1709 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   54456	    108966 ns/op	   62232 B/op	    1709 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   53643	    108799 ns/op	   62232 B/op	    1709 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static-8       	   54451	    109375 ns/op	   62232 B/op	    1709 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   84127	     70453 ns/op	   55008 B/op	    1407 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   81928	     70141 ns/op	   55008 B/op	    1407 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   82831	     70498 ns/op	   55008 B/op	    1407 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   85144	     70393 ns/op	   55008 B/op	    1407 allocs/op
+BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static-8    	   84524	     70098 ns/op	   55008 B/op	    1407 allocs/op
 PASS
-ok  	json-vs-proto	105.267s
+ok  	json-vs-proto	1522.023s
+?   	json-vs-proto/proto/jsonplugin	[no test files]
+?   	json-vs-proto/proto/protojsonx	[no test files]
+?   	json-vs-proto/proto/vanilla	[no test files]
+?   	json-vs-proto/proto/vtproto	[no test files]
