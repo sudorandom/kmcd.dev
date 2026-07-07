@@ -1,0 +1,226 @@
+=== SERIALIZED DATA SIZES (1000 elements) ===
+64-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Large Positive: Varint=8003 B, Sint=8003 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=8003 B
+32-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Large Positive: Varint=5003 B, Sint=5003 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=4003 B
+=============================================
+=== SERIALIZED DATA SIZES (1000 elements) ===
+64-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Large Positive: Varint=8003 B, Sint=8003 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=8003 B
+32-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Large Positive: Varint=5003 B, Sint=5003 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=4003 B
+=============================================
+=== SERIALIZED DATA SIZES (1000 elements) ===
+64-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Large Positive: Varint=8003 B, Sint=8003 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=8003 B
+32-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Large Positive: Varint=5003 B, Sint=5003 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=4003 B
+=============================================
+=== SERIALIZED DATA SIZES (1000 elements) ===
+64-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Large Positive: Varint=8003 B, Sint=8003 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=8003 B
+32-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Large Positive: Varint=5003 B, Sint=5003 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=4003 B
+=============================================
+=== SERIALIZED DATA SIZES (1000 elements) ===
+64-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Large Positive: Varint=8003 B, Sint=8003 B, Fixed=8003 B, Ufixed=8003 B
+64-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=8003 B
+32-bit Small Positive: Varint=1003 B, Sint=1363 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Large Positive: Varint=5003 B, Sint=5003 B, Fixed=4003 B, Ufixed=4003 B
+32-bit Negative:       Varint=10003 B, Sint=1363 B, Fixed=4003 B
+=============================================
+goos: darwin
+goarch: arm64
+pkg: ints-bench
+cpu: Apple M1 Pro
+BenchmarkMarshal_64_SmallPositive_Varint-8        	  315796	      3684 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint-8        	  308970	      3751 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint-8        	  321888	      3808 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint-8        	  320169	      3715 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint-8        	  329646	      3716 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint_VT-8     	  422463	      2780 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint_VT-8     	  393633	      2790 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint_VT-8     	  433686	      2813 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint_VT-8     	  447690	      2770 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Varint_VT-8     	  429314	      2917 ns/op	    1024 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint-8          	  261706	      4507 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint-8          	  269439	      4524 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint-8          	  258981	      4481 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint-8          	  273598	      4626 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint-8          	  270322	      4594 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint_VT-8       	  343617	      3571 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint_VT-8       	  343219	      3547 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint_VT-8       	  350241	      3565 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint_VT-8       	  310458	      3823 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Sint_VT-8       	  334798	      3717 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed-8         	  741576	      1698 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed-8         	  720963	      1580 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed-8         	  788781	      1634 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed-8         	  697040	      1797 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed-8         	  601117	      1807 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed_VT-8      	  561638	      2164 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed_VT-8      	  581732	      2210 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed_VT-8      	  559108	      2221 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed_VT-8      	  587748	      2154 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_SmallPositive_Fixed_VT-8      	  544729	      2081 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint-8        	  171850	      7047 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint-8        	  169119	      7066 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint-8        	  173522	      7063 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint-8        	  172464	      7050 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint-8        	  167481	      7002 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint_VT-8     	  173750	      6785 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint_VT-8     	  176220	      6795 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint_VT-8     	  167967	      6772 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint_VT-8     	  176191	      6805 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Varint_VT-8     	  181538	      6907 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint-8          	  162246	      7670 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint-8          	  160339	      7590 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint-8          	  159284	      7731 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint-8          	  155557	      7470 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint-8          	  161407	      7541 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint_VT-8       	  177039	      7023 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint_VT-8       	  173474	      6992 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint_VT-8       	  155805	      7055 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint_VT-8       	  171796	      7045 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Sint_VT-8       	  169555	      6843 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed-8         	  733959	      1674 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed-8         	  712311	      1703 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed-8         	  689722	      1718 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed-8         	  634695	      1726 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed-8         	  721117	      1609 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed_VT-8      	  529843	      1978 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed_VT-8      	  503054	      2067 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed_VT-8      	  551418	      2177 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed_VT-8      	  549470	      2030 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_LargePositive_Fixed_VT-8      	  580128	      1880 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint-8             	  166284	      7395 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint-8             	  154888	      7405 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint-8             	  150517	      7614 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint-8             	  161562	      7766 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint-8             	  154220	      7680 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint_VT-8          	  164499	      7485 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint_VT-8          	  169111	      7287 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint_VT-8          	  167364	      7298 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint_VT-8          	  164287	      7421 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Varint_VT-8          	  162103	      7377 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint-8               	  266048	      4523 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint-8               	  260859	      4525 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint-8               	  269798	      4471 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint-8               	  264949	      4586 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint-8               	  261696	      4554 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint_VT-8            	  336754	      3657 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint_VT-8            	  340106	      3530 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint_VT-8            	  342609	      3510 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint_VT-8            	  347947	      3527 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Sint_VT-8            	  344085	      3498 ns/op	    1408 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed-8              	  846588	      1675 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed-8              	  758217	      1620 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed-8              	  733225	      1663 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed-8              	  738267	      1660 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed-8              	  744939	      1676 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed_VT-8           	  679788	      1858 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed_VT-8           	  710674	      1914 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed_VT-8           	  590755	      1854 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed_VT-8           	  718148	      1794 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMarshal_64_Negative_Fixed_VT-8           	  758704	      1874 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint-8      	  498033	      2555 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint-8      	  502516	      2579 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint-8      	  466927	      2626 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint-8      	  449775	      2579 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint-8      	  466321	      2548 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint_VT-8   	  385316	      3244 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint_VT-8   	  384153	      3219 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint_VT-8   	  355117	      3235 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint_VT-8   	  380860	      3221 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Varint_VT-8   	  370969	      3224 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint-8        	  445274	      2761 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint-8        	  465627	      2745 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint-8        	  433352	      2767 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint-8        	  454711	      2739 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint-8        	  428150	      2803 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint_VT-8     	  369884	      3369 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint_VT-8     	  368860	      3348 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint_VT-8     	  360944	      3380 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint_VT-8     	  368845	      3354 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Sint_VT-8     	  360990	      3352 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed-8       	  563121	      2032 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed-8       	  615546	      2053 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed-8       	  634664	      2044 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed-8       	  511606	      2032 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed-8       	  614121	      2062 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed_VT-8    	  412929	      2906 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed_VT-8    	  413859	      2927 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed_VT-8    	  428283	      2929 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed_VT-8    	  395284	      2869 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_SmallPositive_Fixed_VT-8    	  381774	      2875 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint-8      	  146164	      8076 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint-8      	  150430	      8087 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint-8      	  139110	      8106 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint-8      	  151264	      8075 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint-8      	  146059	      8037 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint_VT-8   	  137779	      8857 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint_VT-8   	  137641	      8954 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint_VT-8   	  132446	      9010 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint_VT-8   	  134923	      8986 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Varint_VT-8   	  137532	      8951 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint-8        	  148068	      8402 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint-8        	  141110	      8309 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint-8        	  147679	      8248 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint-8        	  146844	      8314 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint-8        	  142291	      8399 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint_VT-8     	  131026	      8930 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint_VT-8     	  133444	      8856 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint_VT-8     	  136370	      8846 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint_VT-8     	  136719	      8875 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Sint_VT-8     	  135013	      8839 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed-8       	  663321	      2057 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed-8       	  564757	      2078 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed-8       	  524690	      2038 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed-8       	  554157	      2012 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed-8       	  570208	      2213 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed_VT-8    	  413326	      2918 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed_VT-8    	  398088	      2924 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed_VT-8    	  432650	      2884 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed_VT-8    	  413480	      2886 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_LargePositive_Fixed_VT-8    	  417320	      2916 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint-8           	  120999	      9470 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint-8           	  127815	      9536 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint-8           	  118244	      9527 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint-8           	  125775	      9508 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint-8           	  124663	      9525 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint_VT-8        	  106269	     10862 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint_VT-8        	  112022	     10766 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint_VT-8        	  114126	     10798 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint_VT-8        	  113179	     10724 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Varint_VT-8        	  111430	     10804 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint-8             	  468674	      2752 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint-8             	  418617	      2686 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint-8             	  466453	      2767 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint-8             	  467323	      2725 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint-8             	  461834	      2840 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint_VT-8          	  364848	      3340 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint_VT-8          	  377715	      3345 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint_VT-8          	  315772	      3356 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint_VT-8          	  380013	      3376 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Sint_VT-8          	  360688	      3314 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed-8            	  699787	      1979 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed-8            	  554322	      2159 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed-8            	  477442	      2100 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed-8            	  587114	      2023 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed-8            	  639633	      2051 ns/op	    8256 B/op	       2 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed_VT-8         	  434082	      2890 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed_VT-8         	  386305	      2925 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed_VT-8         	  429560	      2891 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed_VT-8         	  431196	      2892 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkUnmarshal_64_Negative_Fixed_VT-8         	  353566	      2914 ns/op	    8192 B/op	       1 allocs/op
+PASS
+ok  	ints-bench	228.022s

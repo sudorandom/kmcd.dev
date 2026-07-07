@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package ints;
+
+option go_package = "ints-bench/proto;pb";
+
+// 64-bit integer types comparison
+message Int64Varint {
+  repeated int64 values = 1;
+}
+
+message Int64Sint {
+  repeated sint64 values = 1;
+}
+
+message Int64Fixed {
+  repeated sfixed64 values = 1;
+}
+
+message Int64Ufixed {
+  repeated fixed64 values = 1;
+}
+
+// 32-bit integer types comparison
+message Int32Varint {
+  repeated int32 values = 1;
+}
+
+message Int32Sint {
+  repeated sint32 values = 1;
+}
+
+message Int32Fixed {
+  repeated sfixed32 values = 1;
+}
+
+message Int32Ufixed {
+  repeated fixed32 values = 1;
+}
