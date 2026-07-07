@@ -613,13 +613,13 @@ The overall performance landscape for static schemas looks like this:
 
 | Format / Serializer | Performance Tier | Characteristics |
 | :--- | :--- | :--- |
-| **Official `protojson`** | Slowest JSON | Walks descriptor trees dynamically via reflection on every call |
-| **`encoding/json` (V1)** | General JSON | General-purpose reflection-based standard library parser |
-| **`protojsonx` Runtime Table Mode** | Fast JSON | Compiles descriptors once at startup into sequential offset tables |
-| **`encoding/json/v2`** | Fast JSON | Redesigned standard parser with optimized parsing and lower heap allocations |
-| **`protojsonx` Generated Plugin Mode** | Fastest JSON | Statically generated type-specific parsing routines (no reflection) |
-| **Standard binary `proto`** | Fast Binary | Compact binary Protobuf using the standard Go protobuf runtime |
-| **`vtproto`** | Fastest Binary | Statically generated type-specific binary routines (no reflection) |
+| **Official `protojson`** | 🐌 Slowest JSON | Walks descriptor trees dynamically via reflection on every call |
+| **`encoding/json` (V1)** | 🐢 General JSON | General-purpose reflection-based standard library parser |
+| **`encoding/json/v2`** | ⚡ Fast JSON | Redesigned standard parser with optimized parsing and lower heap allocations |
+| **`protojsonx` Runtime Table Mode** | ⚡ Fast JSON | Compiles descriptors once at startup into sequential offset tables |
+| **`protojsonx` Generated Plugin Mode** | 🚀 Fastest JSON | Statically generated type-specific parsing routines (no reflection) |
+| **Standard binary `proto`** | 📦 Fast Binary | Compact binary Protobuf using the standard Go protobuf runtime |
+| **`vtproto`** | 🛸 Fastest Binary | Statically generated type-specific binary routines (no reflection) |
 
 For static-message marshaling, `protojsonx` (especially with the plugin) gets much closer to standard binary Protobuf than official `protojson`, and in these benchmarks it beats generic `encoding/json` and V2 JSON.
 

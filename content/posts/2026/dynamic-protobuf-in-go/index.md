@@ -15,7 +15,7 @@ devtoSkip: true
 
 Most Go Protobuf services get to cheat: their schemas are known at build time. [`protoc-gen-go`](https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go) turns those schemas into concrete message types, accessor methods, and runtime metadata that the protobuf runtime can use efficiently.
 
-[FauxRPC](https://fauxrpc.com) does not get that luxury. It loads user-provided schemas at runtime so it can mock arbitrary gRPC, gRPC-Web, and Connect services without asking users to install `protoc`, Buf, or a Go toolchain first. Without generated Go types for each schema, it has to parse and inspect payloads dynamically.
+[FauxRPC](https://fauxrpc.com) does not get that luxury. It loads user-provided schemas at runtime so it can mock arbitrary gRPC, gRPC-Web, and Connect services without asking users to install `protoc`, Buf, or a Go toolchain first. Without generated Go types for each schema, it has to parse and inspect payloads dynamically. This is also the case for tools like `buf`, `grpcurl`, `kreya`, `postman`, and more.
 
 That flexibility pushed the request path toward Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. `dynamicpb` is flexible, but it pays for that flexibility with extra allocations, descriptor lookups, and reflection-heavy access paths.
 
