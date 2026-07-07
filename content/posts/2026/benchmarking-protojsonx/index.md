@@ -1,5 +1,5 @@
 ---
-title: "ProtoJSON Without the Reflection Tax: Benchmarking protojsonx"
+title: "Beating Go's encoding/json with Schema-Guided ProtoJSON"
 date: "2026-07-21T15:20:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "json", "protojsonx"]
