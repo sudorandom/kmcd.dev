@@ -473,13 +473,13 @@ hr {
 
 .hide-on-phone {
   @media #{$media-size-phone} {
-    display: none;
+    display: none !important;
   }
 }
 
 .hide-on-tablet {
   @media #{$media-size-tablet} {
-    display: none;
+    display: none !important;
   }
 }
 
