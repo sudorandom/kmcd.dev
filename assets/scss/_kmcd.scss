@@ -151,6 +151,14 @@ body .cover-inner .post-title em {
         @media (min-width: 1201px) {
             margin-right: 10rem;
         }
+
+        @media (min-width: 1700px) {
+            max-width: 75rem;
+        }
+
+        @media (min-width: 2100px) {
+            max-width: 90rem;
+        }
     }
     .sidebar .page-header {
         background: transparent !important;
@@ -334,5 +342,192 @@ ul.icons li a {
     .post-header .post-title, .post-header .post-excerpt {
         margin-left: 10px !important;
         margin-right: 10px !important;
+    }
+}
+
+/* Header Next/Prev Links */
+.nav-prev-next {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+
+  @media #{$media-size-phone} {
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .sidebar & {
+    margin-top: 1.5rem;
+    margin-left: 1.5em;
+    margin-right: 0;
+    width: auto;
+  }
+
+  .nav-prev-next-link {
+    font-size: 1rem;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.5em 0;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, color 0.2s ease;
+
+    &:hover:not(.disabled) {
+      opacity: 1;
+      color: $light-accent-color;
+
+      [data-theme=dark] & {
+        color: $dark-accent-color;
+      }
+    }
+
+    &.disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+  }
+
+  .nav-prev-next-sep {
+    opacity: 0.4;
+    font-weight: bold;
+  }
+}
+
+/* Video-Game Quest Log / Series Track */
+.sidebar-series-track {
+    margin-top: 2.5rem;
+    width: 100%;
+    font-family: "Courier New", Courier, monospace;
+    color: #a2a2dd;
+    pointer-events: auto;
+    text-align: left;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    box-sizing: border-box;
+
+    [data-theme=light] & {
+        color: #555;
+    }
+
+    .quest-log-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        color: #ff9f1c;
+        text-shadow: 0 0 8px rgba(255, 159, 28, 0.3);
+
+        [data-theme=light] & {
+            color: #d66800;
+        }
+    }
+
+    .quest-series-name {
+        margin-top: 0.3rem;
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: #eee;
+        line-height: 1.3;
+
+        [data-theme=light] & {
+            color: #111;
+        }
+    }
+
+    .quest-steps-horizontal {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 0.8rem;
+        position: relative;
+    }
+
+    .quest-step-horizontal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        position: relative;
+        z-index: 2;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+
+        .quest-marker {
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+
+            .pending-node {
+                font-size: 0.5rem;
+            }
+        }
+
+        &.status-completed {
+            .quest-marker {
+                color: #2dd4bf;
+                text-shadow: 0 0 6px rgba(45, 212, 191, 0.4);
+            }
+        }
+
+        &.status-active {
+            .quest-marker {
+                color: #ff9f1c;
+                text-shadow: 0 0 10px rgba(255, 159, 28, 0.6);
+            }
+        }
+
+        &.status-locked {
+            .quest-marker {
+                color: #888;
+                opacity: 0.6;
+
+                [data-theme=light] & {
+                    color: #777;
+                }
+
+                &:hover {
+                    opacity: 1;
+                    color: #ff9f1c;
+                    text-shadow: 0 0 8px rgba(255, 159, 28, 0.4);
+
+                    [data-theme=light] & {
+                        color: #d66800;
+                    }
+                }
+            }
+        }
+    }
+
+    .quest-line-horizontal {
+        flex-grow: 1;
+        max-width: 32px;
+        min-width: 10px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 1;
+        margin: 0 -4px;
+
+        [data-theme=light] & {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        &.status-completed, &.status-active {
+            background: #2dd4bf;
+            opacity: 0.4;
+        }
     }
 }

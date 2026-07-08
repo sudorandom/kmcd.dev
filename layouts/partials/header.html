@@ -24,7 +24,6 @@
         </div>
 
         <span class="page-header__right">
-
             {{ if len .Site.Menus }}
                 {{ partial "menu.html" . }}
                 <span class="menu-trigger">
@@ -34,9 +33,78 @@
                     </svg>
                 </span>
             {{ end }}
+
+            {{- if .IsPage -}}
+              {{- if or .NextInSection .PrevInSection -}}
+                <div class="nav-prev-next hide-on-phone">
+                  {{- if .NextInSection -}}
+                    <a href="{{ .NextInSection.Permalink }}" class="nav-prev-next-link" title="Newer post: {{ .NextInSection.Title }}">Newer</a>
+                  {{- else -}}
+                    <span class="nav-prev-next-link disabled">Newer</span>
+                  {{- end -}}
+                  <span class="nav-prev-next-sep">|</span>
+                  {{- if .PrevInSection -}}
+                    <a href="{{ .PrevInSection.Permalink }}" class="nav-prev-next-link" title="Older post: {{ .PrevInSection.Title }}">Older</a>
+                  {{- else -}}
+                    <span class="nav-prev-next-link disabled">Older</span>
+                  {{- end -}}
+                </div>
+              {{- end -}}
+            {{- end -}}
+
             {{- if .Site.Params.EnableThemeToggle }}
                 <span class="theme-toggle not-selectable mobile-only">{{ partial "theme-toggle-icon.html" . }}</span>
             {{- end}}
         </span>
+
+        {{- if .IsPage -}}
+          {{- with (.GetTerms "series") -}}
+            {{- range . -}}
+              <div class="sidebar-series-track hide-on-phone hide-on-tablet">
+                  <div class="quest-log-header">
+                      <span class="quest-log-icon"><i class="fa-solid fa-scroll"></i></span>
+                      <span class="quest-log-title">Series</span>
+                  </div>
+                  <div class="quest-series-name">{{ .Name | safeHTML }}</div>
+                  
+                  <div class="quest-steps-horizontal">
+                      {{- $seriesPages := .Pages.ByDate -}}
+                      {{- $currentUniqueID := $.File.UniqueID -}}
+                      {{- $foundCurrent := false -}}
+                      
+                      {{- range $index, $page := $seriesPages -}}
+                          {{- $isCurrent := eq $page.File.UniqueID $currentUniqueID -}}
+                          {{- if $isCurrent -}}
+                              {{- $foundCurrent = true -}}
+                          {{- end -}}
+                          
+                          {{- $status := "locked" -}}
+                          {{- if $isCurrent -}}
+                              {{- $status = "active" -}}
+                          {{- else if not $foundCurrent -}}
+                              {{- $status = "completed" -}}
+                          {{- end -}}
+                          
+                          {{- if gt $index 0 -}}
+                              <div class="quest-line-horizontal status-{{ $status }}"></div>
+                          {{- end -}}
+                          
+                          <a href="{{ $page.Permalink }}" class="quest-step-horizontal status-{{ $status }}{{ if $isCurrent }} active{{ end }}" title="{{ $page.Title | htmlEscape }}">
+                              <span class="quest-marker">
+                                  {{- if eq $status "completed" -}}
+                                      <i class="fa-solid fa-circle-check"></i>
+                                  {{- else if eq $status "active" -}}
+                                      <i class="fa-solid fa-crosshairs fa-pulse"></i>
+                                  {{- else -}}
+                                      <i class="fa-solid fa-circle pending-node"></i>
+                                  {{- end -}}
+                              </span>
+                          </a>
+                      {{- end -}}
+                  </div>
+              </div>
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
     </span>
 </header>

@@ -21,6 +21,18 @@
                 opacity: 1.0;
                 background: rgba(150, 150, 150, 0.05);
             }
+            @media (min-width: 1700px) {
+                #minimap {
+                    left: calc(19rem + 75rem + 2rem);
+                    right: auto;
+                }
+            }
+            @media (min-width: 2100px) {
+                #minimap {
+                    left: calc(19rem + 90rem + 2rem);
+                    right: auto;
+                }
+            }
         </style>
         <div id="minimap" class="hide-on-phone hide-on-tablet">
             <canvas id="minimap-canvas" style="display: block; width: 100%; height: 100%;"></canvas>

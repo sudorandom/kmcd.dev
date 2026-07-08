@@ -8,6 +8,9 @@
   @media #{$media-size-tablet} {
     max-width: 800px;
   }
+  @media (min-width: 1700px) {
+    max-width: 100%;
+  }
 
   &-date {
   }
@@ -48,6 +51,11 @@
     @media #{$media-size-tablet} {
       margin: 20px 0;
       width: 100%;
+    }
+    @media (min-width: 1700px) {
+      margin: 40px 0;
+      width: 100%;
+      max-width: 100%;
     }
   }
 
@@ -159,56 +167,71 @@
   &__buttons {
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    a {
-      text-decoration: none;
-      font-weight: bold;
-    }
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
-.button {
+.pagination .button,
+.series-header .button {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 8px;
-  max-width: 50%;
+  border-radius: 12px;
+  max-width: 48%;
   padding: 0;
   cursor: pointer;
   appearance: none;
-  // Default
-  background: $light-background-secondary;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+
+  // Background and borders based on theme
+  background: rgba(224, 224, 224, 0.3);
+  border-color: rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  [data-theme=dark] & {
+    background: rgba(31, 42, 53, 0.4);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #eee;
+  }
+  
+  [data-theme=light] & {
+    background: rgba(224, 224, 224, 0.3);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #333;
+  }
 
   @media (prefers-color-scheme: dark) {
-    background: $dark-background-secondary;
+    background: rgba(31, 42, 53, 0.4);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #eee;
   }
 
   @media (prefers-color-scheme: light) {
-    background: $light-background-secondary;
-  }
-
-  [data-theme=dark] & {
-    background: $dark-background-secondary;
-  }
-
-  [data-theme=light] & {
-    background: $light-background-secondary;
-  }
-
-  + .button {
-    margin-left: 10px;
+    background: rgba(224, 224, 224, 0.3);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #333;
   }
 
   a {
     display: flex;
-    padding: 8px 16px;
+    align-items: center;
+    padding: 12px 20px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    gap: 8px;
+  }
+
+  &.next {
+    margin-left: auto;
   }
 
   &__text {
@@ -217,12 +240,48 @@
     overflow: hidden;
   }
 
-  &.next .button__icon {
-    margin-left: 8px;
+  &__icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
   }
 
-  &.previous .button__icon {
-    margin-right: 8px;
+  // Hover states
+  &:hover {
+    transform: translateY(-2px);
+    
+    [data-theme=dark] & {
+      border-color: $dark-accent-color;
+      box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
+      color: $dark-accent-color;
+    }
+    
+    [data-theme=light] & {
+      border-color: $light-accent-color;
+      box-shadow: 0 4px 15px rgba(0, 122, 120, 0.15);
+      color: $light-accent-color;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      border-color: $dark-accent-color;
+      box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
+      color: $dark-accent-color;
+    }
+
+    @media (prefers-color-scheme: light) {
+      border-color: $light-accent-color;
+      box-shadow: 0 4px 15px rgba(0, 122, 120, 0.15);
+      color: $light-accent-color;
+    }
+  }
+
+  &.next:hover .button__icon {
+    transform: translateX(4px);
+  }
+
+  &.previous:hover .button__icon {
+    transform: translateX(-4px);
   }
 }
 
