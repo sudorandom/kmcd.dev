@@ -9,7 +9,6 @@ cover: "cover.svg"
 images: ["/posts/protobuf-varint-vs-fixed/cover.svg"]
 type: "posts"
 devtoSkip: true
-draft: true
 ---
 
 Many Protocol Buffer schemas default to integer types like `int32` and `int64`. They are familiar, compact, and usually good enough.
