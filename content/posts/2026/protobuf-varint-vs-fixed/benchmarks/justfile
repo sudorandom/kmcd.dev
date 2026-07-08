@@ -1,2 +1,2 @@
-benchmarking-protojsonx:
+protobuf-varint-vs-fixed:
     go test -bench=. -benchmem -benchtime=5s -count=5 > results.txt

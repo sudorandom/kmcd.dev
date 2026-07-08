@@ -451,8 +451,6 @@ func BenchmarkMarshal_Small_Proto_Static(b *testing.B) {
 	}
 }
 
-
-
 func BenchmarkMarshal_Small_VTProto(b *testing.B) {
 	msg := getSmallVTProtoMsg()
 	for b.Loop() {
@@ -488,7 +486,9 @@ func BenchmarkMarshal_Small_Proto_Dynamic(b *testing.B) {
 func BenchmarkMarshal_Small_Proto_HyperPB(b *testing.B) {
 	orig := getSmallVanillaMsg()
 	data, _ := proto.Marshal(orig)
-	msg := hyperpb.NewMessage(hyperSmallType)
+	shared := new(hyperpb.Shared)
+	defer shared.Free()
+	msg := shared.NewMessage(hyperSmallType)
 	_ = proto.Unmarshal(data, msg)
 	b.ResetTimer()
 	for b.Loop() {
@@ -537,8 +537,6 @@ func BenchmarkUnmarshal_Small_Proto_Static(b *testing.B) {
 		_ = proto.Unmarshal(data, &m)
 	}
 }
-
-
 
 func BenchmarkUnmarshal_Small_VTProto(b *testing.B) {
 	msg := getSmallVTProtoMsg()
@@ -638,8 +636,6 @@ func BenchmarkMarshal_Medium_Proto_Static(b *testing.B) {
 	}
 }
 
-
-
 func BenchmarkMarshal_Medium_VTProto(b *testing.B) {
 	msg := getMediumVTProtoMsg()
 	for b.Loop() {
@@ -675,7 +671,9 @@ func BenchmarkMarshal_Medium_Proto_Dynamic(b *testing.B) {
 func BenchmarkMarshal_Medium_Proto_HyperPB(b *testing.B) {
 	orig := getMediumVanillaMsg()
 	data, _ := proto.Marshal(orig)
-	msg := hyperpb.NewMessage(hyperMediumType)
+	shared := new(hyperpb.Shared)
+	defer shared.Free()
+	msg := shared.NewMessage(hyperMediumType)
 	_ = proto.Unmarshal(data, msg)
 	b.ResetTimer()
 	for b.Loop() {
@@ -724,8 +722,6 @@ func BenchmarkUnmarshal_Medium_Proto_Static(b *testing.B) {
 		_ = proto.Unmarshal(data, &m)
 	}
 }
-
-
 
 func BenchmarkUnmarshal_Medium_VTProto(b *testing.B) {
 	msg := getMediumVTProtoMsg()
@@ -825,8 +821,6 @@ func BenchmarkMarshal_Large_Proto_Static(b *testing.B) {
 	}
 }
 
-
-
 func BenchmarkMarshal_Large_VTProto(b *testing.B) {
 	data := getLargeVTProtoMsgPayload()
 	for b.Loop() {
@@ -862,7 +856,9 @@ func BenchmarkMarshal_Large_Proto_Dynamic(b *testing.B) {
 func BenchmarkMarshal_Large_Proto_HyperPB(b *testing.B) {
 	orig := getLargeVanillaMsgPayload()
 	data, _ := proto.Marshal(orig)
-	msg := hyperpb.NewMessage(hyperLargeType)
+	shared := new(hyperpb.Shared)
+	defer shared.Free()
+	msg := shared.NewMessage(hyperLargeType)
 	_ = proto.Unmarshal(data, msg)
 	b.ResetTimer()
 	for b.Loop() {
@@ -910,8 +906,6 @@ func BenchmarkUnmarshal_Large_Proto_Static(b *testing.B) {
 		_ = proto.Unmarshal(data, &p)
 	}
 }
-
-
 
 func BenchmarkUnmarshal_Large_VTProto(b *testing.B) {
 	msg := getLargeVTProtoMsgPayload()
@@ -985,8 +979,6 @@ func BenchmarkMarshal_Small_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-
-
 // Small Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Small_ProtoJSON_Static(b *testing.B) {
 	msg := getSmallVanillaMsg()
@@ -997,8 +989,6 @@ func BenchmarkUnmarshal_Small_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-
-
 // Medium Marshal ProtoJSON
 func BenchmarkMarshal_Medium_ProtoJSON_Static(b *testing.B) {
 	msg := getMediumVanillaMsg()
@@ -1006,8 +996,6 @@ func BenchmarkMarshal_Medium_ProtoJSON_Static(b *testing.B) {
 		_, _ = protojson.Marshal(msg)
 	}
 }
-
-
 
 // Medium Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Medium_ProtoJSON_Static(b *testing.B) {
@@ -1019,8 +1007,6 @@ func BenchmarkUnmarshal_Medium_ProtoJSON_Static(b *testing.B) {
 	}
 }
 
-
-
 // Large Marshal ProtoJSON
 func BenchmarkMarshal_Large_ProtoJSON_Static(b *testing.B) {
 	data := getLargeVanillaMsgPayload()
@@ -1028,8 +1014,6 @@ func BenchmarkMarshal_Large_ProtoJSON_Static(b *testing.B) {
 		_, _ = protojson.Marshal(data)
 	}
 }
-
-
 
 // Large Unmarshal ProtoJSON
 func BenchmarkUnmarshal_Large_ProtoJSON_Static(b *testing.B) {
@@ -1039,8 +1023,6 @@ func BenchmarkUnmarshal_Large_ProtoJSON_Static(b *testing.B) {
 		_ = protojson.Unmarshal(data, &p)
 	}
 }
-
-
 
 // --- ProtoJSONx Benchmarks ---
 
@@ -1059,8 +1041,6 @@ func BenchmarkMarshal_Small_ProtoJSONx_Plugin_Static(b *testing.B) {
 		_, _ = protojsonx.Marshal(msg)
 	}
 }
-
-
 
 // Small Unmarshal ProtoJSONx (Lib - Table-driven fallback)
 func BenchmarkUnmarshal_Small_ProtoJSONx_Lib_Static(b *testing.B) {
@@ -1084,8 +1064,6 @@ func BenchmarkUnmarshal_Small_ProtoJSONx_Plugin_Static(b *testing.B) {
 	}
 }
 
-
-
 // Medium Marshal ProtoJSONx (Lib - Table-driven fallback)
 func BenchmarkMarshal_Medium_ProtoJSONx_Lib_Static(b *testing.B) {
 	msg := getMediumVanillaMsg()
@@ -1101,8 +1079,6 @@ func BenchmarkMarshal_Medium_ProtoJSONx_Plugin_Static(b *testing.B) {
 		_, _ = protojsonx.Marshal(msg)
 	}
 }
-
-
 
 // Medium Unmarshal ProtoJSONx (Lib - Table-driven fallback)
 func BenchmarkUnmarshal_Medium_ProtoJSONx_Lib_Static(b *testing.B) {
@@ -1126,8 +1102,6 @@ func BenchmarkUnmarshal_Medium_ProtoJSONx_Plugin_Static(b *testing.B) {
 	}
 }
 
-
-
 // Large Marshal ProtoJSONx (Lib - Table-driven fallback)
 func BenchmarkMarshal_Large_ProtoJSONx_Lib_Static(b *testing.B) {
 	data := getLargeVanillaMsgPayload()
@@ -1143,8 +1117,6 @@ func BenchmarkMarshal_Large_ProtoJSONx_Plugin_Static(b *testing.B) {
 		_, _ = protojsonx.Marshal(data)
 	}
 }
-
-
 
 // Large Unmarshal ProtoJSONx (Lib - Table-driven fallback)
 func BenchmarkUnmarshal_Large_ProtoJSONx_Lib_Static(b *testing.B) {
@@ -1165,8 +1137,6 @@ func BenchmarkUnmarshal_Large_ProtoJSONx_Plugin_Static(b *testing.B) {
 		_ = protojsonx.Unmarshal(data, &p)
 	}
 }
-
-
 
 // --- Protobuf + JSON (Opaque JSON Packaging) Benchmarks ---
 
@@ -1234,11 +1204,3 @@ func BenchmarkUnmarshal_Large_Proto_JSON(b *testing.B) {
 }
 
 // --- Construction & Conversion (Appendix) Benchmarks ---
-
-
-
-
-
-
-
-

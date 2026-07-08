@@ -6,8 +6,21 @@ import (
 
 	pb "ints-bench/proto"
 
+	"buf.build/go/hyperpb"
 	"google.golang.org/protobuf/proto"
 )
+
+var (
+	hyperInt64VarintType *hyperpb.MessageType
+	hyperInt64SintType   *hyperpb.MessageType
+	hyperInt64FixedType  *hyperpb.MessageType
+)
+
+func init() {
+	hyperInt64VarintType = hyperpb.CompileMessageDescriptor((*pb.Int64Varint)(nil).ProtoReflect().Descriptor())
+	hyperInt64SintType = hyperpb.CompileMessageDescriptor((*pb.Int64Sint)(nil).ProtoReflect().Descriptor())
+	hyperInt64FixedType = hyperpb.CompileMessageDescriptor((*pb.Int64Fixed)(nil).ProtoReflect().Descriptor())
+}
 
 // --- Test Data Generation (64-bit) ---
 
@@ -306,6 +319,18 @@ func BenchmarkUnmarshal_64_SmallPositive_Varint_VT(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshal_64_SmallPositive_Varint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Varint{Values: makeSmallPositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64VarintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
+	}
+}
+
 func BenchmarkUnmarshal_64_SmallPositive_Sint(b *testing.B) {
 	payload, _ := proto.Marshal(&pb.Int64Sint{Values: makeSmallPositive64()})
 	b.ResetTimer()
@@ -321,6 +346,18 @@ func BenchmarkUnmarshal_64_SmallPositive_Sint_VT(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		msg := &pb.Int64Sint{}
 		_ = msg.UnmarshalVT(payload)
+	}
+}
+
+func BenchmarkUnmarshal_64_SmallPositive_Sint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Sint{Values: makeSmallPositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64SintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
 	}
 }
 
@@ -342,6 +379,18 @@ func BenchmarkUnmarshal_64_SmallPositive_Fixed_VT(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshal_64_SmallPositive_Fixed_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Fixed{Values: makeSmallPositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64FixedType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
+	}
+}
+
 func BenchmarkUnmarshal_64_LargePositive_Varint(b *testing.B) {
 	payload, _ := proto.Marshal(&pb.Int64Varint{Values: makeLargePositive64()})
 	b.ResetTimer()
@@ -357,6 +406,18 @@ func BenchmarkUnmarshal_64_LargePositive_Varint_VT(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		msg := &pb.Int64Varint{}
 		_ = msg.UnmarshalVT(payload)
+	}
+}
+
+func BenchmarkUnmarshal_64_LargePositive_Varint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Varint{Values: makeLargePositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64VarintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
 	}
 }
 
@@ -378,6 +439,18 @@ func BenchmarkUnmarshal_64_LargePositive_Sint_VT(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshal_64_LargePositive_Sint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Sint{Values: makeLargePositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64SintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
+	}
+}
+
 func BenchmarkUnmarshal_64_LargePositive_Fixed(b *testing.B) {
 	payload, _ := proto.Marshal(&pb.Int64Fixed{Values: makeLargePositive64()})
 	b.ResetTimer()
@@ -393,6 +466,18 @@ func BenchmarkUnmarshal_64_LargePositive_Fixed_VT(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		msg := &pb.Int64Fixed{}
 		_ = msg.UnmarshalVT(payload)
+	}
+}
+
+func BenchmarkUnmarshal_64_LargePositive_Fixed_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Fixed{Values: makeLargePositive64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64FixedType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
 	}
 }
 
@@ -414,6 +499,18 @@ func BenchmarkUnmarshal_64_Negative_Varint_VT(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshal_64_Negative_Varint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Varint{Values: makeNegative64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64VarintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
+	}
+}
+
 func BenchmarkUnmarshal_64_Negative_Sint(b *testing.B) {
 	payload, _ := proto.Marshal(&pb.Int64Sint{Values: makeNegative64()})
 	b.ResetTimer()
@@ -432,6 +529,18 @@ func BenchmarkUnmarshal_64_Negative_Sint_VT(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshal_64_Negative_Sint_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Sint{Values: makeNegative64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64SintType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
+	}
+}
+
 func BenchmarkUnmarshal_64_Negative_Fixed(b *testing.B) {
 	payload, _ := proto.Marshal(&pb.Int64Fixed{Values: makeNegative64()})
 	b.ResetTimer()
@@ -447,5 +556,17 @@ func BenchmarkUnmarshal_64_Negative_Fixed_VT(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		msg := &pb.Int64Fixed{}
 		_ = msg.UnmarshalVT(payload)
+	}
+}
+
+func BenchmarkUnmarshal_64_Negative_Fixed_HyperPB_Shared(b *testing.B) {
+	payload, _ := proto.Marshal(&pb.Int64Fixed{Values: makeNegative64()})
+	shared := new(hyperpb.Shared)
+	mType := hyperInt64FixedType
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msg := shared.NewMessage(mType)
+		_ = proto.Unmarshal(payload, msg)
+		shared.Free()
 	}
 }

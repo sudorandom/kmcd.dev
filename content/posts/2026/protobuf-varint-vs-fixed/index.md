@@ -19,15 +19,15 @@ Protobuf also gives us fixed-size integers: `fixed32`, `fixed64`, `sfixed32`, an
 
 So I wanted to measure the trade directly. How much CPU time do varints cost in Go? How much faster are fixed-size integers? And where do ZigZag integers fit into the picture?
 
-The answer from these benchmarks is pretty clear: **for this kind of CPU-bound protobuf encoding and decoding, fixed-size integers are faster. Sometimes much faster.**
+The benchmarks mostly confirmed the intuition, with one caveat: **for this packed repeated 64-bit benchmark, fixed-size integers are faster in the standard Go protobuf path, especially when values are large or negative.** Implementation details still matter. The `hyperpb.Shared` result for small positive varints is the fastest parse in the whole benchmark because it combines a much smaller payload with a specialized parser and memory model.
 
-In these Go benchmarks, fixed-size integers were up to **4.4x faster during marshaling** and **4.5x faster during unmarshaling** when handling larger or negative values. The wire-size trade-off is real, but so is the CPU cost of varints.
+Within the same implementation path, fixed-size integers were up to **4.4x faster during marshaling** and **4.5x faster during unmarshaling** when handling larger or negative values. The wire-size trade-off is real, but so is the CPU cost of long varints.
 
 ---
 
 ## Wire Format Mechanics: Varints vs. Fixed
 
-To understand the benchmark results, we need to look at what protobuf actually writes to the wire.
+The benchmark only makes sense if we look at the bytes first.
 
 This article focuses on three groups of integer types:
 
@@ -35,7 +35,7 @@ This article focuses on three groups of integer types:
 2. ZigZag varints: `sint32` and `sint64`
 3. Fixed-size integers: `fixed32`, `fixed64`, `sfixed32`, and `sfixed64`
 
-They all represent integers, but they have very different CPU and wire-size behavior.
+They all look like "integers" in the schema, but they are very different once the encoder starts writing bytes.
 
 ### 1. Standard Varints (`int32` / `int64`)
 
@@ -81,7 +81,7 @@ For example, `-42` as a plain `int64` takes 10 bytes. As a `sint64`, it becomes 
 
 That makes `sint32` and `sint64` much better choices for signed values that are often small in magnitude.
 
-The CPU cost does not disappear, though. ZigZag still uses varint encoding after the signed-to-unsigned mapping. The encoder and decoder still need the continuation-bit loop.
+The CPU cost does not disappear, though. ZigZag still uses varint encoding after the signed-to-unsigned mapping. For negative values it can save both bytes and CPU by making the varints shorter, but the encoder and decoder still need the continuation-bit loop.
 
 ### 3. Fixed-Size Integers (`fixed` / `sfixed`)
 
@@ -120,18 +120,23 @@ I tested three value distributions:
 2. **Large Positive**: integers in the range `[2^50, 2^50 + 999]`
 3. **Negative**: integers in the range `[-100, -1]`
 
-The benchmarks compare two Go protobuf paths:
+The benchmarks compare three Go protobuf paths:
 
 1. Standard Go protobuf serialization with `proto.Marshal` and `proto.Unmarshal`
 2. Generated marshal and unmarshal methods from PlanetScale's [`vtprotobuf`](https://github.com/planetscale/vtprotobuf) plugin
+3. Descriptor-compiled parsing with [`hyperpb`](https://github.com/bufbuild/hyperpb) and a reusable `hyperpb.Shared` memory arena
 
-All benchmarks were executed on an Apple M1 Pro (`darwin/arm64`) using Go 1.25.5. Averages represent 5 independent runs of 1 second each using:
+The `hyperpb` results are useful, but they are not a one-to-one replacement for generated Go struct unmarshaling. They show what happens when parsing is handled by a specialized dynamic parser with reusable memory, not merely what happens when `int64` becomes `sfixed64`.
+
+All benchmarks were executed on an Apple M1 Pro (`darwin/arm64`) using Go 1.26.3. Averages represent 5 independent runs of 5 seconds each using:
 
 ```sh
-go test -bench=. -benchmem -benchtime=1s -count=5
+go test -bench=. -benchmem -benchtime=5s -count=5 > results.txt
 ```
 
 This is not meant to model every possible protobuf workload. It is intentionally narrow. I wanted to isolate the CPU cost of protobuf integer encoding across different value shapes.
+
+The benchmark messages use packed repeated primitive fields. That means each serialized payload is one field tag, one length prefix, and then the concatenated encoded values. The tag overhead is amortized across all 1,000 integers, which is why the size numbers below are only a few bytes larger than the raw encoded values.
 
 ### Wire Size Comparison
 
@@ -151,7 +156,7 @@ The size table already tells part of the story.
 
 For small positive values, varints crush fixed-size integers on bytes. A thousand small `int64` values serialize to 1,003 bytes. The same number of `sfixed64` values takes 8,003 bytes.
 
-For large positive values, the size advantage disappears. The large values in this benchmark require 8 bytes as varints, which puts them at the same payload size as fixed-size integers.
+For large positive values, the size advantage mostly disappears in this benchmark. The large values used here require 8 bytes as varints, which puts them at the same payload size as fixed-size integers.
 
 For negative values, plain `int64` is terrible. The payload becomes 10,003 bytes. ZigZag fixes the size problem, and fixed-size integers land in the middle.
 
@@ -161,6 +166,8 @@ Now the real question: what does the CPU do with those bytes?
 
 ## Benchmark Results
 
+Before running this, I expected fixed-width integers to win on large values and lose badly on tiny values. The first part happened. The second part was more complicated.
+
 ### Marshaling
 
 Serialization benchmarks measure the cost of converting Go structs into protobuf binary data.
@@ -169,51 +176,66 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
 {{< tab name="Small Positive" >}}
 {{< chart >}}
 {
-"type": "bar",
-"data": {
-"labels": [
-"sint64 (Sint)",
-"int64 (Varint)",
-"sint64 (Sint) + vtproto",
-"int64 (Varint) + vtproto",
-"sfixed64 (Fixed) + vtproto",
-"sfixed64 (Fixed)"
-],
-"datasets": [{
-"label": "ns/op",
-"data": [4398, 3642, 3451, 2748, 1881, 1642],
-"backgroundColor": [
-"rgba(75, 192, 192, 0.85)",
-"rgba(54, 162, 235, 0.85)",
-"rgba(75, 192, 192, 0.45)",
-"rgba(54, 162, 235, 0.45)",
-"rgba(153, 102, 255, 0.45)",
-"rgba(153, 102, 255, 0.85)"
-],
-"borderWidth": 0
-}]
-},
-"options": {
-"indexAxis": "y",
-"plugins": {
-"title": {
-"display": true,
-"text": "Marshal 64-bit (Small Positive): lower is better",
-"color": "#fff"
-},
-"legend": { "display": false }
-},
-"scales": {
-"x": {
-"type": "linear",
-"min": 0,
-"ticks": { "color": "#fff" }
-},
-"y": {
-"ticks": { "color": "#fff" }
-}
-}
-}
+  "type": "bar",
+  "data": {
+    "labels": [
+      "sint64 (ZigZag)",
+      "int64 (Varint)",
+      "sint64 (ZigZag) + vtproto",
+      "int64 (Varint) + vtproto",
+      "sfixed64 (Fixed) + vtproto",
+      "sfixed64 (Fixed)"
+    ],
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          4504,
+          3743,
+          3525,
+          2851,
+          2214,
+          1768
+        ],
+        "backgroundColor": [
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(153, 102, 255, 0.85)"
+        ],
+        "borderWidth": 0
+      }
+    ]
+  },
+  "options": {
+    "indexAxis": "y",
+    "plugins": {
+      "title": {
+        "display": true,
+        "text": "Marshal 64-bit (Small Positive): lower is better",
+        "color": "#fff"
+      },
+      "legend": {
+        "display": false
+      }
+    },
+    "scales": {
+      "x": {
+        "type": "linear",
+        "min": 0,
+        "ticks": {
+          "color": "#fff"
+        }
+      },
+      "y": {
+        "ticks": {
+          "color": "#fff"
+        }
+      }
+    }
+  }
 }
 {{< /chart >}}
 
@@ -222,41 +244,50 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
 
 | Benchmark (1000 Small Positives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **1,642 ns** |    8,192 B    |        1       |
-| **`sfixed64` (Fixed) + vtproto** |   1,881 ns   |    8,192 B    |        1       |
-| **`int64` (Varint) + vtproto**   |   2,748 ns   |    1,024 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   3,451 ns   |    1,408 B    |        1       |
-| **`int64` (Varint)**             |   3,642 ns   |    1,024 B    |        1       |
-| **`sint64` (Sint)**              |   4,398 ns   |    1,408 B    |        1       |
+| **`sfixed64 (Fixed)`** | **1,768 ns** |    8,192 B    |        1       |
+| **`sfixed64 (Fixed) + vtproto`** | 2,214 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + vtproto`** | 2,851 ns |    1,024 B    |        1       |
+| **`sint64 (ZigZag) + vtproto`** | 3,525 ns |    1,408 B    |        1       |
+| **`int64 (Varint)`** | 3,743 ns |    1,024 B    |        1       |
+| **`sint64 (ZigZag)`** | 4,504 ns |    1,408 B    |        1       |
 
 </details>
   {{< /tab >}}
-  {{< tab name="Large Positive" >}}
+{{< tab name="Large Positive" >}}
 {{< chart >}}
 {
   "type": "bar",
   "data": {
     "labels": [
-      "sint64 (Sint)",
+      "sint64 (ZigZag)",
       "int64 (Varint)",
-      "sint64 (Sint) + vtproto",
+      "sint64 (ZigZag) + vtproto",
       "int64 (Varint) + vtproto",
       "sfixed64 (Fixed) + vtproto",
       "sfixed64 (Fixed)"
     ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [6900, 6739, 6649, 6280, 1783, 1647],
-      "backgroundColor": [
-        "rgba(75, 192, 192, 0.85)",
-        "rgba(54, 162, 235, 0.85)",
-        "rgba(75, 192, 192, 0.45)",
-        "rgba(54, 162, 235, 0.45)",
-        "rgba(153, 102, 255, 0.45)",
-        "rgba(153, 102, 255, 0.85)"
-      ],
-      "borderWidth": 0
-    }]
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          7487,
+          7014,
+          7036,
+          6725,
+          2224,
+          1727
+        ],
+        "backgroundColor": [
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(153, 102, 255, 0.85)"
+        ],
+        "borderWidth": 0
+      }
+    ]
   },
   "options": {
     "indexAxis": "y",
@@ -266,16 +297,22 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
         "text": "Marshal 64-bit (Large Positive): lower is better",
         "color": "#fff"
       },
-      "legend": { "display": false }
+      "legend": {
+        "display": false
+      }
     },
     "scales": {
       "x": {
         "type": "linear",
         "min": 0,
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       },
       "y": {
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       }
     }
   }
@@ -287,16 +324,16 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
 
 | Benchmark (1000 Large Positives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **1,647 ns** |    8,192 B    |        1       |
-| **`sfixed64` (Fixed) + vtproto** |   1,783 ns   |    8,192 B    |        1       |
-| **`int64` (Varint) + vtproto**   |   6,280 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   6,649 ns   |    8,192 B    |        1       |
-| **`int64` (Varint)**             |   6,739 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint)**              |   6,900 ns   |    8,192 B    |        1       |
+| **`sfixed64 (Fixed)`** | **1,727 ns** |    8,192 B    |        1       |
+| **`sfixed64 (Fixed) + vtproto`** | 2,224 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + vtproto`** | 6,725 ns |    8,192 B    |        1       |
+| **`int64 (Varint)`** | 7,014 ns |    8,192 B    |        1       |
+| **`sint64 (ZigZag) + vtproto`** | 7,036 ns |    8,192 B    |        1       |
+| **`sint64 (ZigZag)`** | 7,487 ns |    8,192 B    |        1       |
 
 </details>
   {{< /tab >}}
-  {{< tab name="Negative" >}}
+{{< tab name="Negative" >}}
 {{< chart >}}
 {
   "type": "bar",
@@ -304,24 +341,33 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
     "labels": [
       "int64 (Varint)",
       "int64 (Varint) + vtproto",
-      "sint64 (Sint)",
-      "sint64 (Sint) + vtproto",
+      "sint64 (ZigZag)",
+      "sint64 (ZigZag) + vtproto",
       "sfixed64 (Fixed) + vtproto",
       "sfixed64 (Fixed)"
     ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [7224, 6876, 4360, 3427, 1874, 1630],
-      "backgroundColor": [
-        "rgba(54, 162, 235, 0.85)",
-        "rgba(54, 162, 235, 0.45)",
-        "rgba(75, 192, 192, 0.85)",
-        "rgba(75, 192, 192, 0.45)",
-        "rgba(153, 102, 255, 0.45)",
-        "rgba(153, 102, 255, 0.85)"
-      ],
-      "borderWidth": 0
-    }]
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          7609,
+          7345,
+          4488,
+          3478,
+          2175,
+          1716
+        ],
+        "backgroundColor": [
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(153, 102, 255, 0.85)"
+        ],
+        "borderWidth": 0
+      }
+    ]
   },
   "options": {
     "indexAxis": "y",
@@ -331,16 +377,22 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
         "text": "Marshal 64-bit (Negative): lower is better",
         "color": "#fff"
       },
-      "legend": { "display": false }
+      "legend": {
+        "display": false
+      }
     },
     "scales": {
       "x": {
         "type": "linear",
         "min": 0,
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       },
       "y": {
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       }
     }
   }
@@ -350,14 +402,14 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
 <details>
 <summary><b>Show data table</b></summary>
 
-| Benchmark (1000 Negatives)       |     ns/op    | Memory (B/op) | Allocations/op |
+| Benchmark (1000 Negatives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **1,630 ns** |    8,192 B    |        1       |
-| **`sfixed64` (Fixed) + vtproto** |   1,874 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   3,427 ns   |    1,408 B    |        1       |
-| **`sint64` (Sint)**              |   4,360 ns   |    1,408 B    |        1       |
-| **`int64` (Varint) + vtproto**   |   6,876 ns   |    10,240 B   |        1       |
-| **`int64` (Varint)**             |   7,224 ns   |    10,240 B   |        1       |
+| **`sfixed64 (Fixed)`** | **1,716 ns** |    8,192 B    |        1       |
+| **`sfixed64 (Fixed) + vtproto`** | 2,175 ns |    8,192 B    |        1       |
+| **`sint64 (ZigZag) + vtproto`** | 3,478 ns |    1,408 B    |        1       |
+| **`sint64 (ZigZag)`** | 4,488 ns |    1,408 B    |        1       |
+| **`int64 (Varint) + vtproto`** | 7,345 ns |    10,240 B    |        1       |
+| **`int64 (Varint)`** | 7,609 ns |    10,240 B    |        1       |
 
 </details>
   {{< /tab >}}
@@ -373,51 +425,75 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 {{< tab name="Small Positive" >}}
 {{< chart >}}
 {
-"type": "bar",
-"data": {
-"labels": [
-"sint64 (Sint) + vtproto",
-"int64 (Varint) + vtproto",
-"sfixed64 (Fixed) + vtproto",
-"sint64 (Sint)",
-"int64 (Varint)",
-"sfixed64 (Fixed)"
-],
-"datasets": [{
-"label": "ns/op",
-"data": [3414, 3278, 3049, 3153, 2523, 2251],
-"backgroundColor": [
-"rgba(75, 192, 192, 0.45)",
-"rgba(54, 162, 235, 0.45)",
-"rgba(153, 102, 255, 0.45)",
-"rgba(75, 192, 192, 0.85)",
-"rgba(54, 162, 235, 0.85)",
-"rgba(153, 102, 255, 0.85)"
-],
-"borderWidth": 0
-}]
-},
-"options": {
-"indexAxis": "y",
-"plugins": {
-"title": {
-"display": true,
-"text": "Unmarshal 64-bit (Small Positive): lower is better",
-"color": "#fff"
-},
-"legend": { "display": false }
-},
-"scales": {
-"x": {
-"type": "linear",
-"min": 0,
-"ticks": { "color": "#fff" }
-},
-"y": {
-"ticks": { "color": "#fff" }
-}
-}
-}
+  "type": "bar",
+  "data": {
+    "labels": [
+      "sint64 (ZigZag) + vtproto",
+      "int64 (Varint) + vtproto",
+      "sfixed64 (Fixed) + vtproto",
+      "sint64 (ZigZag)",
+      "int64 (Varint)",
+      "sfixed64 (Fixed)",
+      "sint64 (ZigZag) + hyperpb Shared",
+      "sfixed64 (Fixed) + hyperpb Shared",
+      "int64 (Varint) + hyperpb Shared"
+    ],
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          3603,
+          3759,
+          3156,
+          2974,
+          2538,
+          2366,
+          1828,
+          1430,
+          478
+        ],
+        "backgroundColor": [
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(153, 102, 255, 0.85)",
+          "rgba(75, 192, 192, 0.30)",
+          "rgba(153, 102, 255, 0.30)",
+          "rgba(54, 162, 235, 0.30)"
+        ],
+        "borderWidth": 0
+      }
+    ]
+  },
+  "options": {
+    "indexAxis": "y",
+    "plugins": {
+      "title": {
+        "display": true,
+        "text": "Unmarshal 64-bit (Small Positive): lower is better",
+        "color": "#fff"
+      },
+      "legend": {
+        "display": false
+      }
+    },
+    "scales": {
+      "x": {
+        "type": "linear",
+        "min": 0,
+        "ticks": {
+          "color": "#fff"
+        }
+      },
+      "y": {
+        "ticks": {
+          "color": "#fff"
+        }
+      }
+    }
+  }
 }
 {{< /chart >}}
 
@@ -426,41 +502,62 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 
 | Benchmark (1000 Small Positives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **2,251 ns** |    8,256 B    |        2       |
-| **`int64` (Varint)**             |   2,523 ns   |    8,256 B    |        2       |
-| **`sfixed64` (Fixed) + vtproto** |   3,049 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint)**              |   3,153 ns   |    8,256 B    |        2       |
-| **`int64` (Varint) + vtproto**   |   3,278 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   3,414 ns   |    8,192 B    |        1       |
+| **`int64 (Varint) + hyperpb Shared`** | **478 ns** |    1,560 B    |        1       |
+| **`sfixed64 (Fixed) + hyperpb Shared`** | 1,430 ns |    10,419 B    |        1       |
+| **`sint64 (ZigZag) + hyperpb Shared`** | 1,828 ns |    2,066 B    |        1       |
+| **`sfixed64 (Fixed)`** | 2,366 ns |    8,256 B    |        2       |
+| **`int64 (Varint)`** | 2,538 ns |    8,256 B    |        2       |
+| **`sint64 (ZigZag)`** | 2,974 ns |    8,256 B    |        2       |
+| **`sfixed64 (Fixed) + vtproto`** | 3,156 ns |    8,192 B    |        1       |
+| **`sint64 (ZigZag) + vtproto`** | 3,603 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + vtproto`** | 3,759 ns |    8,192 B    |        1       |
 
 </details>
   {{< /tab >}}
-  {{< tab name="Large Positive" >}}
+{{< tab name="Large Positive" >}}
 {{< chart >}}
 {
   "type": "bar",
   "data": {
     "labels": [
       "int64 (Varint) + vtproto",
-      "sint64 (Sint) + vtproto",
-      "sint64 (Sint)",
+      "sint64 (ZigZag) + vtproto",
+      "sint64 (ZigZag)",
       "int64 (Varint)",
+      "sint64 (ZigZag) + hyperpb Shared",
+      "int64 (Varint) + hyperpb Shared",
       "sfixed64 (Fixed) + vtproto",
-      "sfixed64 (Fixed)"
+      "sfixed64 (Fixed)",
+      "sfixed64 (Fixed) + hyperpb Shared"
     ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [9547, 8896, 9157, 9181, 2979, 2119],
-      "backgroundColor": [
-        "rgba(54, 162, 235, 0.45)",
-        "rgba(75, 192, 192, 0.45)",
-        "rgba(75, 192, 192, 0.85)",
-        "rgba(54, 162, 235, 0.85)",
-        "rgba(153, 102, 255, 0.45)",
-        "rgba(153, 102, 255, 0.85)"
-      ],
-      "borderWidth": 0
-    }]
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          11800,
+          9201,
+          8466,
+          8383,
+          6526,
+          6249,
+          3247,
+          2505,
+          1465
+        ],
+        "backgroundColor": [
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(75, 192, 192, 0.30)",
+          "rgba(54, 162, 235, 0.30)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(153, 102, 255, 0.85)",
+          "rgba(153, 102, 255, 0.30)"
+        ],
+        "borderWidth": 0
+      }
+    ]
   },
   "options": {
     "indexAxis": "y",
@@ -470,16 +567,22 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
         "text": "Unmarshal 64-bit (Large Positive): lower is better",
         "color": "#fff"
       },
-      "legend": { "display": false }
+      "legend": {
+        "display": false
+      }
     },
     "scales": {
       "x": {
         "type": "linear",
         "min": 0,
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       },
       "y": {
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       }
     }
   }
@@ -491,16 +594,19 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 
 | Benchmark (1000 Large Positives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **2,119 ns** |    8,256 B    |        2       |
-| **`sfixed64` (Fixed) + vtproto** |   2,979 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   8,896 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint)**              |   9,157 ns   |    8,256 B    |        2       |
-| **`int64` (Varint)**             |   9,181 ns   |    8,256 B    |        2       |
-| **`int64` (Varint) + vtproto**   |   9,547 ns   |    8,192 B    |        1       |
+| **`sfixed64 (Fixed) + hyperpb Shared`** | **1,465 ns** |    10,416 B    |        1       |
+| **`sfixed64 (Fixed)`** | 2,505 ns |    8,256 B    |        2       |
+| **`sfixed64 (Fixed) + vtproto`** | 3,247 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + hyperpb Shared`** | 6,249 ns |    10,302 B    |        1       |
+| **`sint64 (ZigZag) + hyperpb Shared`** | 6,526 ns |    10,302 B    |        1       |
+| **`int64 (Varint)`** | 8,383 ns |    8,256 B    |        2       |
+| **`sint64 (ZigZag)`** | 8,466 ns |    8,256 B    |        2       |
+| **`sint64 (ZigZag) + vtproto`** | 9,201 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + vtproto`** | 11,800 ns |    8,192 B    |        1       |
 
 </details>
   {{< /tab >}}
-  {{< tab name="Negative" >}}
+{{< tab name="Negative" >}}
 {{< chart >}}
 {
   "type": "bar",
@@ -508,24 +614,42 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
     "labels": [
       "int64 (Varint) + vtproto",
       "int64 (Varint)",
-      "sint64 (Sint) + vtproto",
+      "int64 (Varint) + hyperpb Shared",
+      "sint64 (ZigZag) + vtproto",
       "sfixed64 (Fixed) + vtproto",
-      "sint64 (Sint)",
-      "sfixed64 (Fixed)"
+      "sint64 (ZigZag)",
+      "sfixed64 (Fixed)",
+      "sint64 (ZigZag) + hyperpb Shared",
+      "sfixed64 (Fixed) + hyperpb Shared"
     ],
-    "datasets": [{
-      "label": "ns/op",
-      "data": [10798, 9556, 3539, 3181, 2768, 2126],
-      "backgroundColor": [
-        "rgba(54, 162, 235, 0.45)",
-        "rgba(54, 162, 235, 0.85)",
-        "rgba(75, 192, 192, 0.45)",
-        "rgba(153, 102, 255, 0.45)",
-        "rgba(75, 192, 192, 0.85)",
-        "rgba(153, 102, 255, 0.85)"
-      ],
-      "borderWidth": 0
-    }]
+    "datasets": [
+      {
+        "label": "ns/op",
+        "data": [
+          14518,
+          9819,
+          7445,
+          3650,
+          3230,
+          3062,
+          2465,
+          1854,
+          1473
+        ],
+        "backgroundColor": [
+          "rgba(54, 162, 235, 0.45)",
+          "rgba(54, 162, 235, 0.85)",
+          "rgba(54, 162, 235, 0.30)",
+          "rgba(75, 192, 192, 0.45)",
+          "rgba(153, 102, 255, 0.45)",
+          "rgba(75, 192, 192, 0.85)",
+          "rgba(153, 102, 255, 0.85)",
+          "rgba(75, 192, 192, 0.30)",
+          "rgba(153, 102, 255, 0.30)"
+        ],
+        "borderWidth": 0
+      }
+    ]
   },
   "options": {
     "indexAxis": "y",
@@ -535,16 +659,22 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
         "text": "Unmarshal 64-bit (Negative): lower is better",
         "color": "#fff"
       },
-      "legend": { "display": false }
+      "legend": {
+        "display": false
+      }
     },
     "scales": {
       "x": {
         "type": "linear",
         "min": 0,
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       },
       "y": {
-        "ticks": { "color": "#fff" }
+        "ticks": {
+          "color": "#fff"
+        }
       }
     }
   }
@@ -554,14 +684,17 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 <details>
 <summary><b>Show data table</b></summary>
 
-| Benchmark (1000 Negatives)       |     ns/op    | Memory (B/op) | Allocations/op |
+| Benchmark (1000 Negatives) |     ns/op    | Memory (B/op) | Allocations/op |
 | :------------------------------- | :----------: | :-----------: | :------------: |
-| **`sfixed64` (Fixed)**           | **2,126 ns** |    8,256 B    |        2       |
-| **`sint64` (Sint)**              |   2,768 ns   |    8,256 B    |        2       |
-| **`sfixed64` (Fixed) + vtproto** |   3,181 ns   |    8,192 B    |        1       |
-| **`sint64` (Sint) + vtproto**    |   3,539 ns   |    8,192 B    |        1       |
-| **`int64` (Varint)**             |   9,556 ns   |    8,256 B    |        2       |
-| **`int64` (Varint) + vtproto**   |   10,798 ns  |    8,192 B    |        1       |
+| **`sfixed64 (Fixed) + hyperpb Shared`** | **1,473 ns** |    10,419 B    |        1       |
+| **`sint64 (ZigZag) + hyperpb Shared`** | 1,854 ns |    2,067 B    |        1       |
+| **`sfixed64 (Fixed)`** | 2,465 ns |    8,256 B    |        2       |
+| **`sint64 (ZigZag)`** | 3,062 ns |    8,256 B    |        2       |
+| **`sfixed64 (Fixed) + vtproto`** | 3,230 ns |    8,192 B    |        1       |
+| **`sint64 (ZigZag) + vtproto`** | 3,650 ns |    8,192 B    |        1       |
+| **`int64 (Varint) + hyperpb Shared`** | 7,445 ns |    13,654 B    |        1       |
+| **`int64 (Varint)`** | 9,819 ns |    8,256 B    |        2       |
+| **`int64 (Varint) + vtproto`** | 14,518 ns |    8,192 B    |        1       |
 
 </details>
   {{< /tab >}}
@@ -569,43 +702,45 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 
 ### What the Results Mean
 
-The results split into three useful cases.
+The value distribution matters a lot, so I read the results in three buckets.
 
-For small positive values, varints get their best chance to win. A thousand `int64` values serialize to only 1,003 bytes, while the same number of `sfixed64` values takes 8,003 bytes. Even so, the fixed-size path is faster in both directions: much faster when marshaling, and slightly faster when unmarshaling. In this benchmark, the cost of variable-length encoding outweighed the cost of writing the larger fixed-width payload. The smaller varint payload helps during reads, but it does not fully erase the cost of decoding variable-length integers. That is the most interesting case, because it is where fixed-size integers look worst on paper and still win on CPU.
+For small positive values, varints get their best chance to win. A thousand `int64` values serialize to only 1,003 bytes, while the same number of `sfixed64` values takes 8,003 bytes. Even so, the fixed-size path is faster during marshaling. In the standard Go protobuf unmarshaling path, `sfixed64` is still faster than `int64`, but only by a small margin. The fastest parse in this section comes from `hyperpb.Shared` on the compact varint payload, which is a different parse model and benefits from reading far fewer input bytes. That is the most interesting case, because it is where fixed-size integers look worst on paper and where implementation details matter most.
 
-For large positive values, the byte-size argument disappears. The values in this benchmark require 8 bytes as varints, which puts them at the same payload size as `sfixed64`. Once the wire size is equal, fixed-width encoding wins clearly because it avoids the varint loop entirely.
+For large positive values, the byte-size argument mostly disappears in this benchmark. The values here require 8 bytes each as varints, which puts the packed payload at the same size as `sfixed64`. Other ranges can land at 6, 7, 9, or 10 bytes, so this is not a universal statement about all large values. But once the wire size is equal, fixed-width encoding wins clearly because it avoids the varint loop entirely.
 
 Negative values are where plain `int64` looks worst. Protobuf encodes negative `int64` values as large varints, so the payload grows to 10,003 bytes for 1,000 elements. ZigZag encoding fixes the wire-size problem by mapping small negative values back near zero before varint encoding. That makes `sint64` a much better choice than plain `int64` for small signed values.
 
-But ZigZag still uses varints. It saves bytes, not CPU. In these benchmarks, `sfixed64` remained the fastest option for negative values because it kept the encode and decode paths fixed-width and predictable.
+ZigZag does not remove the varint loop. For negative values, it can save both bytes and CPU by turning 10-byte plain `int64` varints into short varints. In these standard runtime results, negative `int64` unmarshaling takes 9,819 ns/op, while negative `sint64` takes 3,062 ns/op. But ZigZag remains a variable-length encoding. In the standard and vtprotobuf paths, `sfixed64` remained the fastest negative-value option because it kept the encode and decode paths fixed-width and predictable. With `hyperpb.Shared`, the fixed and ZigZag paths were faster still, which points to the parser and memory model mattering just as much as the integer encoding in some workloads.
 
 ---
 
 ## The vtprotobuf Surprise
 
-One result surprised me. vtprotobuf did not improve the `sfixed64` benchmarks. In several cases, the standard Go protobuf runtime was actually faster.
+One result surprised me. The vtprotobuf result is not just that `sfixed64` failed to improve. In these unmarshaling benchmarks, vtprotobuf was slower than the standard Go protobuf path across every tested 64-bit integer shape.
 
-That looked strange at first. vtprotobuf generates optimized marshal and unmarshal methods to bypass reflection, so I expected it to win across the board. But for this specific benchmark, we accidentally tested a case where the standard runtime is already very hard to beat.
+That looked strange at first. vtprotobuf generates auxiliary optimized marshal and unmarshal methods, so I expected it to win more often. But for this specific benchmark, we tested a case where the standard runtime is already very hard to beat.
 
-A packed repeated `sfixed64` field is just a length prefix followed by fixed-width values. For this packed scalar case, the standard runtime appears to hit a very efficient path: read the length, allocate the slice, and decode fixed-width values with very little per-field overhead.
+A packed repeated `sfixed64` field is a length-delimited payload containing fixed-width values. For this packed scalar case, the standard runtime appears to hit a very efficient path: read the length-delimited field, size the slice, and decode fixed-width values with very little repeated field-dispatch overhead.
 
 vtprotobuf, on the other hand, generates straightforward Go code. When it unmarshals a `sfixed64` slice, it generates a `for` loop that iterates through the buffer 8 bytes at a time. For this narrow scalar case, generated code does not automatically beat the runtime's specialized path.
 
-Code generation is incredible for eliminating protobuf's structural overhead on complex nested messages. But this benchmark is a reminder that the big CPU difference here is not standard protobuf vs. vtprotobuf. It is varint vs. fixed-width encoding.
+That does not mean vtprotobuf is slow in general. Code generation can help a lot on complex nested messages, where field dispatch, sizing, and allocation patterns dominate more of the runtime. But this benchmark is a reminder that the result is not simply "codegen beats runtime." For this packed scalar workload, the more important difference is long varints vs. fixed-width encoding.
 
 ---
 
 ## Choosing the Right Integer Type
 
-So the practical model is simple:
+The schema-design advice I'd take from this is:
 
 | Type                   | Best for                                          | Avoid when                                   |
 | :--------------------- | :------------------------------------------------ | :------------------------------------------- |
 | `int64`                | Small non-negative values where wire size matters | Values may be negative or large in hot paths |
-| `sint64`               | Small signed values where wire size matters       | CPU is the main bottleneck                   |
+| `sint64`               | Small signed values where wire size matters       | Hot repeated fields where CPU dominates      |
 | `fixed64` / `sfixed64` | Hot, repeated, CPU-bound fields                   | Small values in bandwidth-sensitive APIs     |
 
 That is the trade: `int64` optimizes for small positive values, `sint64` optimizes for compact signed values, and fixed-size integers optimize for predictable CPU work.
+
+This is mainly a schema-design choice. Do not change an existing field from `int64` to `fixed64`, or from `sint64` to `sfixed64`, in place unless you control every producer and consumer and have a migration plan. The varint types use protobuf wire type `VARINT`, while `fixed64` and `sfixed64` use wire type `I64`, so old readers will not interpret the field the same way.
 
 To put this into practice:
 - **Use `fixed64` / `sfixed64`** for hot, repeated, or CPU-bound fields (such as database IDs, timestamps, byte offsets, coordinate offsets, or high-range counters).
@@ -622,12 +757,12 @@ But varints save bytes by spending CPU.
 
 That trade-off is easy to ignore because the cost is hidden inside serialization. You do not see it in the schema. You just write `int64`, generate code, and move on with your life.
 
-In these Go benchmarks, fixed-size integers were consistently faster for both marshaling and unmarshaling. The gap was small for tiny positive values, large for large values, and enormous for negative values encoded as plain `int64`.
+In the standard Go protobuf and vtprotobuf paths, fixed-size integers were faster across these benchmark cases. The main exception was `hyperpb.Shared` on small positive varints, where the much smaller payload parsed fastest. The gap was small for tiny positive values in the standard runtime, large for large values, and enormous for negative values encoded as plain `int64`.
 
 The lesson is not that every protobuf integer should become fixed-width. The lesson is that integer encoding deserves a place in the performance conversation.
 
 If a protobuf field is cold, use the boring default and move on.
 
-If a protobuf field is hot, repeated, and CPU-bound, `fixed64` and `sfixed64` are not obscure schema trivia. They are a real optimization lever.
+If a protobuf field is hot, repeated, CPU-bound, and you are designing the schema up front, `fixed64` and `sfixed64` are not obscure schema trivia. They are a real optimization lever when the wire-size trade-off is acceptable.
 
-Varints save bytes. Fixed integers save CPU.
+Varints save bytes. Fixed integers save CPU by avoiding variable-length integer work.
