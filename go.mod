@@ -4,19 +4,19 @@ go 1.26.3
 
 tool (
 	github.com/fogleman/primitive
-	github.com/playwright-community/playwright-go/cmd/playwright
+	github.com/mxschmitt/playwright-go/cmd/playwright
 )
 
 require (
 	github.com/disintegration/imaging v1.6.2
 	github.com/fogleman/gg v1.3.0
 	github.com/fogleman/primitive v0.0.0-20200504002142-0373c216458b
-	github.com/playwright-community/playwright-go v0.5200.1
+	github.com/mxschmitt/playwright-go v0.6100.0
 )
 
 require (
-	github.com/deckarep/golang-set/v2 v2.7.0 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
+	github.com/deckarep/golang-set/v2 v2.8.0 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.5 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect

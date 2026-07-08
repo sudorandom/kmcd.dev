@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os/exec"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 )
 
 // setts from the assets directory can be referenced
