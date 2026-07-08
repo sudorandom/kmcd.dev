@@ -14,52 +14,10 @@
       </mask>
     </defs>
 
-    <!-- Base Layer (Subtle Background) -->
-    <g class="circuit-base">
-      <path d="M40,0 L40,300 L80,340 L80,650 L50,680 L50,900" />
-      <path d="M150,0 L150,200 L110,240 L110,850 L140,880 L140,1150" />
-      <path d="M260,0 L260,350 L220,390 L220,950 L250,980 L250,1350" />
-      <path d="M80,450 L130,500 L130,800" />
-      <path d="M220,550 L170,600 L170,1050" />
-      <path d="M110,320 L60,370 L60,600 L80,620 L80,780" />
-      <path d="M140,950 L190,1000 L190,1400" />
-      
-      <!-- Circle Pads -->
-      <circle cx="50" cy="900" r="4" class="outline-pad" />
-      <circle cx="140" cy="1150" r="3.5" />
-      <circle cx="250" cy="1350" r="3.5" />
-      <circle cx="80" cy="450" r="3.5" />
-      <circle cx="130" cy="800" r="4" class="outline-pad" />
-      <circle cx="220" cy="550" r="4" class="outline-pad" />
-      <circle cx="170" cy="1050" r="3.5" />
-      <circle cx="110" cy="320" r="3.5" />
-      <circle cx="80" cy="780" r="4" class="outline-pad" />
-      <circle cx="140" cy="950" r="4" class="outline-pad" />
-      <circle cx="190" cy="1400" r="3.5" />
-    </g>
+    <!-- Circuit paths are generated on page load. -->
+    <g class="circuit-base" data-circuit-layer="desktop-base"></g>
     <!-- Glow Layer (Lights up and fades) -->
-    <g class="circuit-glow" mask="url(#circuit-mask)">
-      <path d="M40,0 L40,300 L80,340 L80,650 L50,680 L50,900" />
-      <path d="M150,0 L150,200 L110,240 L110,850 L140,880 L140,1150" />
-      <path d="M260,0 L260,350 L220,390 L220,950 L250,980 L250,1350" />
-      <path d="M80,450 L130,500 L130,800" />
-      <path d="M220,550 L170,600 L170,1050" />
-      <path d="M110,320 L60,370 L60,600 L80,620 L80,780" />
-      <path d="M140,950 L190,1000 L190,1400" />
-      
-      <!-- Circle Pads -->
-      <circle cx="50" cy="900" r="4" class="outline-pad" />
-      <circle cx="140" cy="1150" r="3.5" />
-      <circle cx="250" cy="1350" r="3.5" />
-      <circle cx="80" cy="450" r="3.5" />
-      <circle cx="130" cy="800" r="4" class="outline-pad" />
-      <circle cx="220" cy="550" r="4" class="outline-pad" />
-      <circle cx="170" cy="1050" r="3.5" />
-      <circle cx="110" cy="320" r="3.5" />
-      <circle cx="80" cy="780" r="4" class="outline-pad" />
-      <circle cx="140" cy="950" r="4" class="outline-pad" />
-      <circle cx="190" cy="1400" r="3.5" />
-    </g>
+    <g class="circuit-glow" data-circuit-layer="desktop-glow" mask="url(#circuit-mask)"></g>
   </svg>
 
   <!-- Mobile (Horizontal) Circuit -->
@@ -77,52 +35,154 @@
       </mask>
     </defs>
 
-    <!-- Base Layer -->
-    <g class="circuit-base">
-      <path d="M0,20 L350,20 L380,50 L650,50" />
-      <path d="M0,60 L250,60 L280,30 L550,30 L570,50 L850,50" />
-      <path d="M200,20 L230,50 L480,50 L500,30 L800,30" />
-      <path d="M600,30 L630,10 L920,10" />
-      
-      <!-- Pads -->
-      <circle cx="650" cy="50" r="3.5" />
-      <circle cx="850" cy="50" r="4" class="outline-pad" />
-      <circle cx="800" cy="30" r="3.5" />
-      <circle cx="920" cy="10" r="4" class="outline-pad" />
-      <circle cx="200" cy="20" r="4" class="outline-pad" />
-      <circle cx="600" cy="30" r="3.5" />
-    </g>
+    <!-- Circuit paths are generated on page load. -->
+    <g class="circuit-base" data-circuit-layer="mobile-base"></g>
     <!-- Glow Layer -->
-    <g class="circuit-glow" mask="url(#circuit-mask-horizontal)">
-      <path d="M0,20 L350,20 L380,50 L650,50" />
-      <path d="M0,60 L250,60 L280,30 L550,30 L570,50 L850,50" />
-      <path d="M200,20 L230,50 L480,50 L500,30 L800,30" />
-      <path d="M600,30 L630,10 L920,10" />
-      
-      <!-- Pads -->
-      <circle cx="650" cy="50" r="3.5" />
-      <circle cx="850" cy="50" r="4" class="outline-pad" />
-      <circle cx="800" cy="30" r="3.5" />
-      <circle cx="920" cy="10" r="4" class="outline-pad" />
-      <circle cx="200" cy="20" r="4" class="outline-pad" />
-      <circle cx="600" cy="30" r="3.5" />
-    </g>
+    <g class="circuit-glow" data-circuit-layer="mobile-glow" mask="url(#circuit-mask-horizontal)"></g>
   </svg>
 </div>
 
 <script>
+  const circuitSvgNS = 'http://www.w3.org/2000/svg';
+
+  function circuitRand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function circuitPick(values) {
+    return values[circuitRand(0, values.length - 1)];
+  }
+
+  function circuitPath(points) {
+    return points.map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x},${point.y}`).join(' ');
+  }
+
+  function appendCircuitShape(layer, shape) {
+    const path = document.createElementNS(circuitSvgNS, 'path');
+    path.setAttribute('d', shape.path);
+    layer.appendChild(path);
+
+    shape.pads.forEach((pad) => {
+      const circle = document.createElementNS(circuitSvgNS, 'circle');
+      circle.setAttribute('cx', pad.x);
+      circle.setAttribute('cy', pad.y);
+      circle.setAttribute('r', pad.outline ? '4' : '3.5');
+      if (pad.outline) {
+        circle.setAttribute('class', 'outline-pad');
+      }
+      layer.appendChild(circle);
+    });
+  }
+
+  function renderCircuitLayers(baseSelector, glowSelector, shapes) {
+    const base = document.querySelector(baseSelector);
+    const glow = document.querySelector(glowSelector);
+    if (!base || !glow) return;
+
+    base.replaceChildren();
+    glow.replaceChildren();
+
+    shapes.forEach((shape) => {
+      appendCircuitShape(base, shape);
+      appendCircuitShape(glow, shape);
+    });
+  }
+
+  function createDesktopCircuit() {
+    const tracks = [38, 78, 118, 158, 198, 238, 262];
+    const shapes = [];
+
+    for (let i = 0; i < 7; i++) {
+      const startX = circuitPick(tracks);
+      let x = startX;
+      let y = i < 3 ? 0 : circuitRand(260, 980);
+      const points = [{ x, y }];
+      const segmentCount = circuitRand(3, 5);
+
+      for (let j = 0; j < segmentCount; j++) {
+        y = Math.min(1480, y + circuitRand(130, 260));
+        points.push({ x, y });
+
+        if (j < segmentCount - 1 && Math.random() > 0.25) {
+          const direction = Math.random() > 0.5 ? 1 : -1;
+          x = Math.max(30, Math.min(270, x + direction * circuitPick([30, 40, 50])));
+          points.push({ x, y: Math.min(1480, y + circuitPick([30, 40, 50])) });
+          y = points[points.length - 1].y;
+        }
+      }
+
+      shapes.push({
+        path: circuitPath(points),
+        pads: points.slice(1).filter(() => Math.random() > 0.35).map((point) => ({
+          x: point.x,
+          y: point.y,
+          outline: Math.random() > 0.55,
+        })),
+      });
+    }
+
+    return shapes;
+  }
+
+  function createMobileCircuit() {
+    const rows = [10, 20, 30, 40, 50, 60, 70];
+    const shapes = [];
+
+    for (let i = 0; i < 5; i++) {
+      let x = i < 2 ? 0 : circuitRand(120, 520);
+      let y = circuitPick(rows);
+      const points = [{ x, y }];
+      const segmentCount = circuitRand(3, 5);
+
+      for (let j = 0; j < segmentCount; j++) {
+        x = Math.min(980, x + circuitRand(120, 260));
+        points.push({ x, y });
+
+        if (j < segmentCount - 1 && Math.random() > 0.3) {
+          y = circuitPick(rows.filter((row) => row !== y));
+          points.push({ x: Math.min(980, x + circuitPick([20, 30, 40])), y });
+          x = points[points.length - 1].x;
+        }
+      }
+
+      shapes.push({
+        path: circuitPath(points),
+        pads: points.slice(1).filter(() => Math.random() > 0.35).map((point) => ({
+          x: point.x,
+          y: point.y,
+          outline: Math.random() > 0.55,
+        })),
+      });
+    }
+
+    return shapes;
+  }
+
+  function randomizeCircuitDesign() {
+    renderCircuitLayers(
+      '[data-circuit-layer="desktop-base"]',
+      '[data-circuit-layer="desktop-glow"]',
+      createDesktopCircuit()
+    );
+    renderCircuitLayers(
+      '[data-circuit-layer="mobile-base"]',
+      '[data-circuit-layer="mobile-glow"]',
+      createMobileCircuit()
+    );
+  }
+
   function spawnPulseVertical() {
     const mask = document.getElementById('circuit-mask');
     if (!mask) return;
 
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    const rect = document.createElementNS(circuitSvgNS, 'rect');
     rect.setAttribute('x', '0');
     rect.setAttribute('y', '-240');
     rect.setAttribute('width', '300');
     rect.setAttribute('height', '240');
     rect.setAttribute('fill', 'url(#sweep-grad)');
 
-    const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    const anim = document.createElementNS(circuitSvgNS, 'animate');
     anim.setAttribute('attributeName', 'y');
     anim.setAttribute('from', '-240');
     anim.setAttribute('to', '1500');
@@ -148,14 +208,14 @@
     const mask = document.getElementById('circuit-mask-horizontal');
     if (!mask) return;
 
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    const rect = document.createElementNS(circuitSvgNS, 'rect');
     rect.setAttribute('x', '-300');
     rect.setAttribute('y', '0');
     rect.setAttribute('width', '180');
     rect.setAttribute('height', '80');
     rect.setAttribute('fill', 'url(#sweep-grad-horizontal)');
 
-    const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    const anim = document.createElementNS(circuitSvgNS, 'animate');
     anim.setAttribute('attributeName', 'x');
     anim.setAttribute('from', '-180');
     anim.setAttribute('to', '1000');
@@ -191,6 +251,7 @@
 
   // Trigger the page-load pulse automatically on DOM load
   document.addEventListener('DOMContentLoaded', () => {
+    randomizeCircuitDesign();
     spawnPulseVertical();
     spawnPulseHorizontal();
   });
