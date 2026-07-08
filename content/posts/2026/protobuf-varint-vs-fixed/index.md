@@ -357,35 +357,11 @@ Serialization benchmarks measure the cost of converting Go structs into protobuf
 
 ### Marshaling Takeaways
 
-For marshaling, fixed-size integers are the clear CPU winner.
+For marshaling, fixed-size integers are the clear CPU winner. The most surprising result is the small-positive case, where a thousand `sfixed64` values produce an 8,003-byte payload compared to the compact 1,003 bytes of standard `int64` varints. Even though the fixed-size version writes **8x more bytes to memory**, it is still **2.2x faster (a 54% reduction in marshaling time)**. This proves that the CPU cycles spent calculating variable-length boundaries are significantly more expensive than memory writes under normal operations.
 
-The most surprising result is the small-positive case. A thousand `sfixed64` values produce an 8,003-byte payload, while a thousand small `int64` values produce a 1,003-byte payload. The fixed-size version writes about 8x more data.
+Once values grow large or become negative, the fixed-size advantage becomes even more stark. For large positive values, the fixed-size path is **4.2x faster** than standard `int64`. At this point, varints no longer save any bytes (both payloads are 8,003 bytes), meaning all of the varint bitwise shifting is pure overhead. 
 
-And it is still faster.
-
-For small positive values:
-
-* `int64` takes **3,735 ns/op**
-* `sfixed64` takes **1,703 ns/op**
-* `sfixed64` is about **2.2x faster**
-
-That is the core tension of this article. Varints are much smaller here, but encoding them still costs CPU.
-
-For large positive values, the contest is not close:
-
-* `int64` takes **7,046 ns/op**
-* `sfixed64` takes **1,686 ns/op**
-* `sfixed64` is about **4.2x faster**
-
-This is where fixed-size integers shine. Once varints no longer save bytes, they are mostly just extra work.
-
-For negative values, plain `int64` is the worst of both worlds:
-
-* `int64` takes **7,572 ns/op**
-* `sint64` takes **4,532 ns/op**
-* `sfixed64` takes **1,659 ns/op**
-
-ZigZag helps a lot because it avoids the 10-byte negative-varint encoding. Fixed-size integers are still faster because they avoid the varint loop entirely.
+For negative values, standard `int64` is the worst of both worlds. Sign extension blows the payload up to 10,003 bytes and slows serialization down to the absolute slowest tier in our tests. Switching to `sfixed64` reduces the wire size by 20% and speeds up marshaling by **4.5x** (a **78% reduction in latency**). While ZigZag encoding (`sint64`) fixes this wire bloat by reducing the payload to 1,363 bytes, it remains **2.7x slower** than the fixed-size path because it still relies on a varint encoding loop.
 
 ---
 
@@ -593,29 +569,11 @@ Deserialization benchmarks measure the cost of parsing protobuf binary data back
 
 ### Unmarshaling Takeaways
 
-The unmarshaling results tell the same story, but with a few interesting details.
+The unmarshaling results tell a similar story, but with some notable nuances. For small positive values, the gap is narrower: the fixed-size path (`sfixed64`) is only **1.2x faster (a 20% latency reduction)** compared to standard `int64`. This is because the varint payload is 8x smaller on the wire. Reading 1,003 bytes instead of 8,003 bytes from memory provides a cache benefit that partially offsets the bitwise decoding loops.
 
-For small positive values, fixed-size integers still win:
+However, once values grow large, they erase this cache advantage because the varint payload size matches the fixed-size layout. With no cache advantage to lean on, the fixed-size path becomes **3.9x faster (a 74% reduction in unmarshaling time)**. 
 
-* `int64` takes **2,577 ns/op**
-* `sfixed64` takes **2,045 ns/op**
-* `sfixed64` is about **1.3x faster**
-
-That gap is smaller than the marshaling gap. This makes sense. The varint payload is much smaller, so the decoder reads far fewer bytes. The smaller payload offsets some of the continuation-bit decoding overhead.
-
-But once values get large, fixed-size integers pull away again:
-
-* `int64` takes **8,076 ns/op**
-* `sfixed64` takes **2,080 ns/op**
-* `sfixed64` is about **3.9x faster**
-
-The negative-value case is even more brutal:
-
-* `int64` takes **9,513 ns/op**
-* `sint64` takes **2,754 ns/op**
-* `sfixed64` takes **2,062 ns/op**
-
-Plain `int64` is slow here because it has to parse 10-byte negative varints. ZigZag fixes most of the damage by making the payload tiny. Fixed-size integers are still fastest because their decoding path is simpler and predictable.
+Negative numbers show the absolute limits of varint performance. Standard `int64` has to parse 10-byte sign-extended varints, resulting in the slowest unmarshal path. While ZigZag (`sint64`) resolves the wire bloat by shrinking the payload by 86%, it is still **25% slower** than `sfixed64` because it must still run the decoding loop. The fixed-size path remains the fastest and most predictable across the board, finishing **4.6x faster** than standard `int64` for negative values.
 
 ---
 
@@ -660,56 +618,21 @@ That does not make fixed-size integers free. The encoder still writes bytes. The
 
 ### The Size vs. CPU Crossover
 
-The small-positive benchmark is the most interesting case because it is where fixed-size integers look worst on paper.
+The small-positive benchmark is the most interesting case because it is where fixed-size integers look worst on paper: the fixed-size payload (8,003 bytes) is **8x larger** than the varint payload (1,003 bytes).
 
-For 1,000 values from `0` to `99`:
+Yet, even when writing 8x more data, the fixed-size path remains **2.2x faster to marshal** and **1.2x faster to unmarshal**.
 
-* `int64` payload: **1,003 bytes**
-* `sfixed64` payload: **8,003 bytes**
+While the unmarshaling gap narrows because the decoder only has to read 1,003 bytes (reducing memory bus overhead), the fixed-size path still wins by avoiding the bitwise decoding loops entirely.
 
-The fixed-size version is roughly 8x larger.
-
-Despite that, `sfixed64` was still faster:
-
-* Marshal: **1,703 ns/op** for `sfixed64` vs. **3,735 ns/op** for `int64`
-* Unmarshal: **2,045 ns/op** for `sfixed64` vs. **2,577 ns/op** for `int64`
-
-The unmarshal gap narrows because the varint payload is much smaller. Reading 1,003 bytes instead of 8,003 bytes matters. But the fixed-size path still wins in this benchmark.
-
-For large positive values, the wire-size argument disappears:
-
-* `int64` payload: **8,003 bytes**
-* `sfixed64` payload: **8,003 bytes**
-
-Same size. Very different CPU cost.
-
-The fixed-size version is about **4.2x faster to marshal** and **3.9x faster to unmarshal**.
-
-That is the cleanest result in the article. When the wire size is the same, fixed-size integers are much faster.
+When values grow large (in the range of $2^{50}$), the wire-size argument vanishes—both formats produce exactly 8,003 bytes. Here, the fixed-size path is **4.2x faster to marshal** and **3.9x faster to unmarshal**. When the wire size is identical, the CPU overhead of varints becomes pure, unmitigated waste.
 
 ### The Negative Integer Gotcha
 
-Plain `int64` is a bad fit for negative values.
+Plain `int64` is a disastrous choice for negative numbers. Because negative integers are sign-extended to 64 bits, encoding negative values as standard varints results in a massive **10,003-byte** payload for 1,000 elements.
 
-For 1,000 values from `-100` to `-1`:
+While ZigZag encoding (`sint64`) acts as a great wire-size compromise—shrinking the payload by **86%** down to 1,363 bytes—fixed-size integers (`sfixed64`) still dominate on CPU efficiency. The fixed-size path unmarshals **3.4x faster** than ZigZag, and **4.6x faster** than standard sign-extended `int64`.
 
-* `int64` payload: **10,003 bytes**
-* `sint64` payload: **1,363 bytes**
-* `sfixed64` payload: **8,003 bytes**
-
-ZigZag is the wire-size champion here. It turns small negative values into small unsigned varints, so the payload stays compact.
-
-But fixed-size integers still win on CPU:
-
-* `int64` unmarshal: **9,513 ns/op**
-* `sint64` unmarshal: **2,754 ns/op**
-* `sfixed64` unmarshal: **2,062 ns/op**
-
-This gives us two different lessons.
-
-If you care about bytes and your values can be negative, use `sint64` instead of `int64`.
-
-If you care about CPU and can afford 8 bytes per value, `sfixed64` is faster.
+This highlights two distinct architectural lessons. If you are strictly constrained by bandwidth and must store negative numbers, you should always choose `sint` over `int` to avoid sign-extension payload bloat. On the other hand, if you are CPU-bound and can afford the 8-byte layout, you should choose `sfixed` to maximize serialization and decoding throughput.
 
 ---
 
@@ -723,11 +646,7 @@ For CPU-bound protobuf workloads, I would think about integer types like this:
 | **`sint`** | Slightly larger than `int` | Similar to `int`    | Smallest payload    | Medium   |
 | **`int`** | Smallest payload           | Larger varints      | Worst payload       | Highest  |
 
-That is the real model:
-
-* `int64` optimizes for small positive values.
-* `sint64` optimizes for small signed values.
-* `sfixed64` optimizes for predictable CPU work.
+That is the real model: `int64` optimizes for small positive values, `sint64` optimizes for small signed values, and `sfixed64` optimizes for predictable CPU work.
 
 The protobuf type is not just a semantic choice. It is also a performance choice.
 

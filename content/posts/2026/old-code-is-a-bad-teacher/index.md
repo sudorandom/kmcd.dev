@@ -1,6 +1,6 @@
 ---
 title: "Old Code Is a Bad Teacher"
-date: "2026-08-04T10:00:00Z"
+date: "2026-08-11T10:00:00Z"
 categories: ["article"]
 tags: ["software-engineering", "architecture", "technical-debt", "productivity"]
 description: "Large codebases teach developers by example. When obsolete patterns remain searchable and copyable, technical debt spreads unless you clearly mark what not to imitate."
