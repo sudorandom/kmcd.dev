@@ -541,11 +541,6 @@ ul.icons li a {
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.1;
-
-  &.active-trigger {
-    animation: fadeOutCircuit 3.5s ease forwards;
-  }
 
   .outline-pad {
     fill: none !important;
@@ -574,18 +569,18 @@ ul.icons li a {
   }
 
   .circuit-base {
-    stroke: rgba(255, 255, 255, 0.08);
+    stroke: rgba(255, 255, 255, 0.014);
     stroke-width: 1.5px;
     fill: none;
 
     circle {
-      fill: rgba(255, 255, 255, 0.12);
+      fill: rgba(255, 255, 255, 0.018);
     }
 
     [data-theme=light] & {
-      stroke: rgba(0, 0, 0, 0.05);
+      stroke: rgba(0, 0, 0, 0.009);
       circle {
-        fill: rgba(0, 0, 0, 0.08);
+        fill: rgba(0, 0, 0, 0.012);
       }
     }
   }
@@ -607,14 +602,5 @@ ul.icons li a {
         fill: $light-accent-color;
       }
     }
-  }
-}
-
-@keyframes fadeOutCircuit {
-  0%, 75% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.1;
   }
 }
