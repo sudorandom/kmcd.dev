@@ -9,7 +9,8 @@
     {{ end }}
     
         <div class="sidebar">
-            <div class="sidebar-sticky" style="position: relative;">
+            {{ partial "circuit-bg.html" . }}
+            <div class="sidebar-sticky" style="position: relative; z-index: 2;">
 
 
                 {{ partial "header.html" . }}

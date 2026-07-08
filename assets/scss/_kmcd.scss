@@ -179,12 +179,14 @@ body .cover-inner .post-title em {
     }
     .sidebar .menu {
         width: 100%;
+        background: transparent !important;
     }
     .sidebar .menu__inner {
         flex-direction: column;
         align-items: flex-start;
         padding: 0 0 0 1.5em;
         width: 100%;
+        background: transparent !important;
     }
     .sidebar .menu__inner li {
         margin: 0;
@@ -530,4 +532,81 @@ ul.icons li a {
             opacity: 0.4;
         }
     }
+}
+
+/* Circuit Background & Sweep Animations */
+.circuit-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.1;
+
+  &.active-trigger {
+    animation: fadeOutCircuit 3.5s ease forwards;
+  }
+
+  .outline-pad {
+    fill: none !important;
+  }
+
+  .desktop-circuit {
+    display: none;
+    @media (min-width: 769px) {
+      display: block;
+    }
+  }
+
+  .mobile-circuit {
+    display: block;
+    @media (min-width: 769px) {
+      display: none;
+    }
+  }
+
+  .circuit-base {
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1.5px;
+    fill: none;
+
+    circle {
+      fill: rgba(255, 255, 255, 0.12);
+    }
+
+    [data-theme=light] & {
+      stroke: rgba(0, 0, 0, 0.05);
+      circle {
+        fill: rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+
+  .circuit-glow {
+    stroke: $dark-accent-color;
+    stroke-width: 2px;
+    fill: none;
+    filter: drop-shadow(0 0 4px rgba(45, 212, 191, 0.7));
+
+    circle {
+      fill: $dark-accent-color;
+    }
+
+    [data-theme=light] & {
+      stroke: $light-accent-color;
+      filter: drop-shadow(0 0 4px rgba(0, 122, 120, 0.7));
+      circle {
+        fill: $light-accent-color;
+      }
+    }
+  }
+}
+
+@keyframes fadeOutCircuit {
+  0%, 75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
 }

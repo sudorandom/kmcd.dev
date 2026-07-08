@@ -424,7 +424,7 @@
           {{ range $filteredRelatedPages | first 4 }}
           <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
           {{ end }}
-          <li><a href="/random/">Go to a random page</a> <a href="/random/" aria-label="Go to a random page"><i class="fa-solid fa-dice"></i></a></li>
+          <li><a href="#" onclick="triggerCircuitAnimation(event)">Re-trigger circuit animation</a> <a href="#" onclick="triggerCircuitAnimation(event)" aria-label="Re-trigger circuit animation"><i class="fa-solid fa-bolt"></i></a></li>
         </ul>
       </div>
     </div>

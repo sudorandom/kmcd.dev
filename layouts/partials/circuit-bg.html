@@ -1,0 +1,197 @@
+<div class="circuit-bg active-trigger" aria-hidden="true">
+  <!-- Desktop (Vertical) Circuit -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 1500" class="desktop-circuit" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="sweep-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="white" stop-opacity="0" />
+        <stop offset="30%" stop-color="white" stop-opacity="1" />
+        <stop offset="70%" stop-color="white" stop-opacity="1" />
+        <stop offset="100%" stop-color="white" stop-opacity="0" />
+      </linearGradient>
+      
+      <mask id="circuit-mask">
+        <!-- Dynamic pulse rects spawn here -->
+      </mask>
+    </defs>
+
+    <!-- Base Layer (Subtle Background) -->
+    <g class="circuit-base">
+      <path d="M40,0 L40,300 L80,340 L80,650 L50,680 L50,900" />
+      <path d="M150,0 L150,200 L110,240 L110,850 L140,880 L140,1150" />
+      <path d="M260,0 L260,350 L220,390 L220,950 L250,980 L250,1350" />
+      <path d="M80,450 L130,500 L130,800" />
+      <path d="M220,550 L170,600 L170,1050" />
+      <path d="M110,320 L60,370 L60,600 L80,620 L80,780" />
+      <path d="M140,950 L190,1000 L190,1400" />
+      
+      <!-- Circle Pads -->
+      <circle cx="50" cy="900" r="4" class="outline-pad" />
+      <circle cx="140" cy="1150" r="3.5" />
+      <circle cx="250" cy="1350" r="3.5" />
+      <circle cx="80" cy="450" r="3.5" />
+      <circle cx="130" cy="800" r="4" class="outline-pad" />
+      <circle cx="220" cy="550" r="4" class="outline-pad" />
+      <circle cx="170" cy="1050" r="3.5" />
+      <circle cx="110" cy="320" r="3.5" />
+      <circle cx="80" cy="780" r="4" class="outline-pad" />
+      <circle cx="140" cy="950" r="4" class="outline-pad" />
+      <circle cx="190" cy="1400" r="3.5" />
+    </g>
+    <!-- Glow Layer (Lights up and fades) -->
+    <g class="circuit-glow" mask="url(#circuit-mask)">
+      <path d="M40,0 L40,300 L80,340 L80,650 L50,680 L50,900" />
+      <path d="M150,0 L150,200 L110,240 L110,850 L140,880 L140,1150" />
+      <path d="M260,0 L260,350 L220,390 L220,950 L250,980 L250,1350" />
+      <path d="M80,450 L130,500 L130,800" />
+      <path d="M220,550 L170,600 L170,1050" />
+      <path d="M110,320 L60,370 L60,600 L80,620 L80,780" />
+      <path d="M140,950 L190,1000 L190,1400" />
+      
+      <!-- Circle Pads -->
+      <circle cx="50" cy="900" r="4" class="outline-pad" />
+      <circle cx="140" cy="1150" r="3.5" />
+      <circle cx="250" cy="1350" r="3.5" />
+      <circle cx="80" cy="450" r="3.5" />
+      <circle cx="130" cy="800" r="4" class="outline-pad" />
+      <circle cx="220" cy="550" r="4" class="outline-pad" />
+      <circle cx="170" cy="1050" r="3.5" />
+      <circle cx="110" cy="320" r="3.5" />
+      <circle cx="80" cy="780" r="4" class="outline-pad" />
+      <circle cx="140" cy="950" r="4" class="outline-pad" />
+      <circle cx="190" cy="1400" r="3.5" />
+    </g>
+  </svg>
+
+  <!-- Mobile (Horizontal) Circuit -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 80" class="mobile-circuit" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="sweep-grad-horizontal" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="white" stop-opacity="0" />
+        <stop offset="30%" stop-color="white" stop-opacity="1" />
+        <stop offset="70%" stop-color="white" stop-opacity="1" />
+        <stop offset="100%" stop-color="white" stop-opacity="0" />
+      </linearGradient>
+      
+      <mask id="circuit-mask-horizontal">
+        <!-- Dynamic pulse rects spawn here -->
+      </mask>
+    </defs>
+
+    <!-- Base Layer -->
+    <g class="circuit-base">
+      <path d="M0,20 L350,20 L380,50 L650,50" />
+      <path d="M0,60 L250,60 L280,30 L550,30 L570,50 L850,50" />
+      <path d="M200,20 L230,50 L480,50 L500,30 L800,30" />
+      <path d="M600,30 L630,10 L920,10" />
+      
+      <!-- Pads -->
+      <circle cx="650" cy="50" r="3.5" />
+      <circle cx="850" cy="50" r="4" class="outline-pad" />
+      <circle cx="800" cy="30" r="3.5" />
+      <circle cx="920" cy="10" r="4" class="outline-pad" />
+      <circle cx="200" cy="20" r="4" class="outline-pad" />
+      <circle cx="600" cy="30" r="3.5" />
+    </g>
+    <!-- Glow Layer -->
+    <g class="circuit-glow" mask="url(#circuit-mask-horizontal)">
+      <path d="M0,20 L350,20 L380,50 L650,50" />
+      <path d="M0,60 L250,60 L280,30 L550,30 L570,50 L850,50" />
+      <path d="M200,20 L230,50 L480,50 L500,30 L800,30" />
+      <path d="M600,30 L630,10 L920,10" />
+      
+      <!-- Pads -->
+      <circle cx="650" cy="50" r="3.5" />
+      <circle cx="850" cy="50" r="4" class="outline-pad" />
+      <circle cx="800" cy="30" r="3.5" />
+      <circle cx="920" cy="10" r="4" class="outline-pad" />
+      <circle cx="200" cy="20" r="4" class="outline-pad" />
+      <circle cx="600" cy="30" r="3.5" />
+    </g>
+  </svg>
+</div>
+
+<script>
+  function spawnPulseVertical() {
+    const mask = document.getElementById('circuit-mask');
+    if (!mask) return;
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', '0');
+    rect.setAttribute('y', '-240');
+    rect.setAttribute('width', '300');
+    rect.setAttribute('height', '240');
+    rect.setAttribute('fill', 'url(#sweep-grad)');
+
+    const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    anim.setAttribute('attributeName', 'y');
+    anim.setAttribute('from', '-240');
+    anim.setAttribute('to', '1500');
+    anim.setAttribute('dur', '1.6s');
+    anim.setAttribute('begin', 'indefinite');
+    anim.setAttribute('repeatCount', '1');
+    anim.setAttribute('fill', 'freeze');
+    anim.setAttribute('keyTimes', '0; 1');
+    anim.setAttribute('keySplines', '0.4 0 0.2 1');
+    anim.setAttribute('calcMode', 'spline');
+
+    rect.appendChild(anim);
+    mask.appendChild(rect);
+
+    anim.beginElement();
+
+    setTimeout(() => {
+      rect.remove();
+    }, 1800);
+  }
+
+  function spawnPulseHorizontal() {
+    const mask = document.getElementById('circuit-mask-horizontal');
+    if (!mask) return;
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', '-300');
+    rect.setAttribute('y', '0');
+    rect.setAttribute('width', '180');
+    rect.setAttribute('height', '80');
+    rect.setAttribute('fill', 'url(#sweep-grad-horizontal)');
+
+    const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    anim.setAttribute('attributeName', 'x');
+    anim.setAttribute('from', '-180');
+    anim.setAttribute('to', '1000');
+    anim.setAttribute('dur', '1.6s');
+    anim.setAttribute('begin', 'indefinite');
+    anim.setAttribute('repeatCount', '1');
+    anim.setAttribute('fill', 'freeze');
+    anim.setAttribute('keyTimes', '0; 1');
+    anim.setAttribute('keySplines', '0.4 0 0.2 1');
+    anim.setAttribute('calcMode', 'spline');
+
+    rect.appendChild(anim);
+    mask.appendChild(rect);
+
+    anim.beginElement();
+
+    setTimeout(() => {
+      rect.remove();
+    }, 1800);
+  }
+
+  function triggerCircuitAnimation(e) {
+    if (e) e.preventDefault();
+    const bg = document.querySelector('.circuit-bg');
+    if (bg) {
+      bg.classList.remove('active-trigger');
+      void bg.offsetWidth; // trigger reflow
+      bg.classList.add('active-trigger');
+    }
+    spawnPulseVertical();
+    spawnPulseHorizontal();
+  }
+
+  // Trigger the page-load pulse automatically on DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    spawnPulseVertical();
+    spawnPulseHorizontal();
+  });
+</script>
