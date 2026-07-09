@@ -22,9 +22,9 @@ If the checkout service starts timing out, you can often find the obvious broken
 
 But clearing the alert only proves that the immediate symptom went away. It does not prove that the team understands the failure.
 
-A complete investigation answers three questions: how it broke, why it broke, and why we thought it was a good idea to begin with. The best teams work through all three.
+A complete investigation answers three questions: what failed, what allowed it to fail, and what old constraint made the broken design seem reasonable. Skipping any of them leaves you guessing.
 
-## Phase 1: Identifying the Mechanics
+## Phase 1: What failed
 
 An alert is just a symptom. A 5xx spike, a crash loop, or a latency page tells you something is wrong, but it does not explain what failed.
 
@@ -38,23 +38,21 @@ That level of detail matters because it narrows the problem from "the system is 
 
 Suppose checkout starts timing out during peak traffic. Metrics show the latency spike is isolated to one endpoint. Traces show most of the time is spent waiting on a database query. The query text has not changed, but the database plan has.
 
-Now you have mechanics.
-
 The service is not generically slow. One request path is issuing a query that scans far more rows than it used to. Under normal traffic, the query finishes slowly enough to be annoying but not slow enough to page anyone. Under peak traffic, it saturates the database connection pool and causes checkout requests to pile up.
 
-Ideally, you can reproduce the issue. Reproducing the same traffic level, data shape, or race condition turns a theory into something you can test. It lets you prove your fix works instead of deploying a change and hoping the alert stays quiet.
+Ideally, you can reproduce the issue. Reproducing the same traffic level, data shape, or race condition turns a theory into something you can test.
 
 But production failures are not always polite enough to be reproducible. Some depend on timing, traffic mix, bad data, cloud provider behavior, or a specific sequence of events that you may never recreate exactly.
 
-When you cannot reproduce the issue, you still need a clear enough explanation to make predictions. What evidence should exist if your theory is correct? What metric should move? What log line should appear? What change should prevent the failure from happening again?
+When that happens, the next best thing is a theory that makes predictions. What evidence should exist if your theory is correct? What metric should move? What log line should appear? What change should prevent the failure from happening again?
 
 That is the real goal of Phase 1: explain the failure well enough that your fix is not just a lucky guess.
 
-## Phase 2: Finding the Conditions
+## Phase 2: What made the failure possible
 
 Once you know how the system broke, ask why that failure was possible.
 
-A timeout is not the whole cause. A nil pointer dereference is not the whole cause. A panic is not the whole cause. Those are consequences. They are where the system finally admitted something had gone wrong.
+A timeout, nil pointer dereference, or panic is not the whole cause. It is where the system finally admitted something had gone wrong.
 
 The more useful question is: what conditions allowed this failure to happen?
 
@@ -64,11 +62,9 @@ So you keep digging.
 
 The query slowed down because an automated migration cleanup tool dropped an index it flagged as unused. The tool flagged it as unused because it only analyzed recent production traffic. It missed the seasonal promotion path, which only runs during large campaigns and uses a different filter pattern.
 
-Now the investigation is getting somewhere.
+The failed query matters, but the query is not the whole story. The dangerous condition was that the index looked unused to automation but was still required by a low-frequency business process. The migration review process did not catch that distinction. The available index-usage data did not make it visible. The tests did not include the data shape that made the query expensive.
 
-The failed query matters, but the query is not the whole story. The deeper problem is that the system had an index that looked unused to automation but was still required by a low-frequency business process. The migration review process did not catch that distinction. The observability around index usage did not make it visible. The tests did not include the data shape that made the query expensive.
-
-That gives you a different class of fix.
+That changes what you fix.
 
 You can restore the index. You probably should. Production is on fire, and nobody gets bonus points for admiring the flames.
 
@@ -78,7 +74,7 @@ The point is not to find one magical "root cause" and declare the mystery solved
 
 This is the useful part of the [Five Whys](https://en.wikipedia.org/wiki/Five_whys) technique: not mechanically asking "why" five times, but refusing to stop at the first plausible answer. Keep asking why until you find the conditions that made the failure possible, likely, or invisible.
 
-## Phase 3: Understanding the Original Intent
+## Phase 3: Why the old decision seemed reasonable
 
 This is the part most investigations skip.
 
@@ -90,7 +86,7 @@ But code rarely enters a codebase as random nonsense. It usually solved a real p
 
 Before you change the strange part, dig into the history. Run [`git blame`](https://git-scm.com/docs/git-blame), read the old pull request, search for the related ticket, and check whether there was an architecture decision record, or [ADR](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions). You are reconstructing the original engineer's mental model.
 
-This is not about assigning blame. It is about [Chesterton's Fence](https://en.wikipedia.org/wiki/G._K._Chesterton#Chesterton's_fence): don't tear something down until you understand why it was built.
+This is not about assigning blame. It is [Chesterton's Fence](https://en.wikipedia.org/wiki/G._K._Chesterton#Chesterton's_fence) applied to software: don't tear something down until you understand why it was built.
 
 ```go
 // Why is this limit 47 and not 50?
@@ -113,28 +109,14 @@ That history matters.
 
 Without it, you might remove a safeguard because it looks like dead code. You might "simplify" a limit that was quietly protecting a dependency. You might replace a weird workaround with a cleaner bug.
 
-Understanding the original intent does not mean preserving the old decision forever. It means you change the system with your eyes open.
+Understanding the original intent does not mean preserving the old decision forever. It means you know which constraint you are removing, replacing, or deciding no longer matters.
 
 Sometimes the conclusion is: this made sense then, but it does not anymore.
 
 That is a good outcome. Now you can remove it deliberately, document why the old constraint no longer applies, and leave the next person a better trail than the one you found.
 
-## The Payoff
+Not every alert requires a week of archaeology, but stopping at the failing line leaves the system ready to surprise you again.
 
-Going through all three phases takes more time than closing the ticket, but it is how a team stops buying the same incident twice.
+The depth of the investigation should match the risk, but the habit should be the same: do not confuse the line that failed with the reason the system failed.
 
-The first time, you fix a timeout.
-
-The second time, you notice three teams have been fighting the same database assumption.
-
-The third time, you stop treating it as a bug and start treating it as architecture.
-
-That is the real value of a good investigation. It updates the team's understanding of the system. It turns one annoying failure into better tooling, better reviews, better tests, and better design constraints.
-
-Not every incident needs a week-long archaeology project. Some bugs are small. Some fixes are obvious. Sometimes the right answer really is "we forgot to check for nil."
-
-But when a failure exposes a surprising system behavior, a hidden dependency, or a piece of code nobody understands anymore, stopping at the failing line is too shallow.
-
-The investigation is not done when the alert clears.
-
-It is done when you actually learn something.
+Fixing the code restores the service. Understanding the context fixes the system.
