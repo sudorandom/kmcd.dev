@@ -22,7 +22,7 @@ If the checkout service starts timing out, you can often find the obvious broken
 
 But clearing the alert only proves that the immediate symptom went away. It does not prove that the team understands the failure.
 
-A complete investigation answers three questions: what failed, what allowed it to fail, and what old constraint made the broken design seem reasonable. Skipping any of them leaves you guessing.
+A complete investigation answers three questions: what failed, what allowed it to fail, and **what old constraint made the broken design seem reasonable**.
 
 ## Phase 1: What failed
 
@@ -60,7 +60,7 @@ In the checkout example, the immediate problem might be a full table scan. The q
 
 So you keep digging.
 
-The query slowed down because an automated migration cleanup tool dropped an index it flagged as unused. The tool flagged it as unused because it only analyzed recent production traffic. It missed the seasonal promotion path, which only runs during large campaigns and uses a different filter pattern.
+The query slowed down because an engineer deliberately dropped the index to save database storage and improve write latency. A database observability tool had flagged the index as unused over a 30-day window, prompting a cleanup PR. The reviewer saw the telemetry recommendation and approved it. Both of them missed the seasonal promotion path, which only runs during large yearly campaigns and relies entirely on that specific index.
 
 The failed query matters, but the query is not the whole story. The dangerous condition was that the index looked unused to automation but was still required by a low-frequency business process. The migration review process did not catch that distinction. The available index-usage data did not make it visible. The tests did not include the data shape that made the query expensive.
 
@@ -82,7 +82,7 @@ Once you find the broken code, the temptation is to clean it up. Delete the weir
 
 Sometimes that is exactly right. Sometimes the old code really is just wrong.
 
-But code rarely enters a codebase as random nonsense. It usually solved a real problem under constraints that existed at the time. Those constraints may be gone now. They may still exist. You need to know which.
+But code rarely enters a codebase as random nonsense. *Well, maybe it does a bit more, now...* But usually all code solved a real problem under constraints that existed at the time. Those constraints may be gone now or this section is code is being executed for purposes it was never intended for originally.
 
 Before you change the strange part, dig into the history. Run [`git blame`](https://git-scm.com/docs/git-blame), read the old pull request, search for the related ticket, and check whether there was an architecture decision record, or [ADR](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions). You are reconstructing the original engineer's mental model.
 
@@ -101,7 +101,7 @@ Or maybe it is nonsense.
 
 You do not know until you check.
 
-The same applies to the checkout incident. Why did that index exist in the first place? Why did the seasonal promotion path use a different filter pattern? Why did the migration cleanup tool trust recent traffic as a complete signal? Why did nobody document that the index was tied to campaign traffic?
+The same applies to the checkout incident. Why did that index exist in the first place? Why did the seasonal promotion path use a different filter pattern? Why did the engineering team trust a 30-day metric as a complete signal for safe deletion? Why did nobody document that the index was tied strictly to Black Friday traffic?
 
 Those questions can be uncomfortable because they reveal old tradeoffs. Maybe the team moved fast because the promotion system had to launch before Black Friday. Maybe the seasonal path was supposed to be temporary. Maybe the database was small enough at the time that nobody cared about the query plan. Maybe the engineer who knew all of this left two years ago, and the only remaining documentation is a comment in a migration file that says "needed for campaign traffic."
 
@@ -115,8 +115,6 @@ Sometimes the conclusion is: this made sense then, but it does not anymore.
 
 That is a good outcome. Now you can remove it deliberately, document why the old constraint no longer applies, and leave the next person a better trail than the one you found.
 
-Not every alert requires a week of archaeology, but stopping at the failing line leaves the system ready to surprise you again.
-
-The depth of the investigation should match the risk, but the habit should be the same: do not confuse the line that failed with the reason the system failed.
+Not every alert requires a week of archaeology, but stopping at the immediate fix guarantees the system will surprise you again.
 
 Fixing the code restores the service. Understanding the context fixes the system.
