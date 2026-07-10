@@ -9,7 +9,6 @@ cover: "cover.svg"
 images: ["/posts/closing-the-alert-is-not-enough/cover.svg"]
 type: "posts"
 devtoSkip: true
-draft: true
 ---
 
 Clearing an alert can be quick. Understanding a failure is harder.
