@@ -176,28 +176,14 @@
     if (!mask) return;
 
     const rect = document.createElementNS(circuitSvgNS, 'rect');
+    rect.setAttribute('class', 'circuit-pulse-vertical');
     rect.setAttribute('x', '0');
     rect.setAttribute('y', '-240');
     rect.setAttribute('width', '300');
     rect.setAttribute('height', '240');
     rect.setAttribute('fill', 'url(#sweep-grad)');
 
-    const anim = document.createElementNS(circuitSvgNS, 'animate');
-    anim.setAttribute('attributeName', 'y');
-    anim.setAttribute('from', '-240');
-    anim.setAttribute('to', '1500');
-    anim.setAttribute('dur', '1.6s');
-    anim.setAttribute('begin', 'indefinite');
-    anim.setAttribute('repeatCount', '1');
-    anim.setAttribute('fill', 'freeze');
-    anim.setAttribute('keyTimes', '0; 1');
-    anim.setAttribute('keySplines', '0.4 0 0.2 1');
-    anim.setAttribute('calcMode', 'spline');
-
-    rect.appendChild(anim);
     mask.appendChild(rect);
-
-    anim.beginElement();
 
     setTimeout(() => {
       rect.remove();
@@ -209,28 +195,14 @@
     if (!mask) return;
 
     const rect = document.createElementNS(circuitSvgNS, 'rect');
-    rect.setAttribute('x', '-300');
+    rect.setAttribute('class', 'circuit-pulse-horizontal');
+    rect.setAttribute('x', '-180');
     rect.setAttribute('y', '0');
     rect.setAttribute('width', '180');
     rect.setAttribute('height', '80');
     rect.setAttribute('fill', 'url(#sweep-grad-horizontal)');
 
-    const anim = document.createElementNS(circuitSvgNS, 'animate');
-    anim.setAttribute('attributeName', 'x');
-    anim.setAttribute('from', '-180');
-    anim.setAttribute('to', '1000');
-    anim.setAttribute('dur', '1.6s');
-    anim.setAttribute('begin', 'indefinite');
-    anim.setAttribute('repeatCount', '1');
-    anim.setAttribute('fill', 'freeze');
-    anim.setAttribute('keyTimes', '0; 1');
-    anim.setAttribute('keySplines', '0.4 0 0.2 1');
-    anim.setAttribute('calcMode', 'spline');
-
-    rect.appendChild(anim);
     mask.appendChild(rect);
-
-    anim.beginElement();
 
     setTimeout(() => {
       rect.remove();
@@ -249,7 +221,7 @@
     spawnPulseHorizontal();
   }
 
-  // Trigger the page-load pulse automatically on DOM load
+  // Trigger the page-load pulse automatically on DOM load.
   document.addEventListener('DOMContentLoaded', () => {
     randomizeCircuitDesign();
     spawnPulseVertical();

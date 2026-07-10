@@ -604,3 +604,37 @@ ul.icons li a {
     }
   }
 }
+
+@keyframes circuit-pulse-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(1740px);
+  }
+}
+
+@keyframes circuit-pulse-horizontal {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(1180px);
+  }
+}
+
+.circuit-pulse-vertical,
+.circuit-pulse-horizontal {
+  animation-duration: 1.6s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+.circuit-pulse-vertical {
+  animation-name: circuit-pulse-vertical;
+}
+
+.circuit-pulse-horizontal {
+  animation-name: circuit-pulse-horizontal;
+}
