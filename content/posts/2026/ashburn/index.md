@@ -1,10 +1,9 @@
 ---
 categories: ["article", "analysis", "dataviz"]
-tags: ["ashburn", "virginia", "us-east-1", "data-centers", "infrastructure", "peering", "aws", "latency"]
+tags: ["ashburn", "virginia", "data-centers", "infrastructure", "peering", "aws", "latency"]
 keywords: ["internet capital of the world", "data center alley", "ashburn virginia internet", "us-east-1 map", "mae-east history", "northern virginia fiber map"]
-series: ["Internet Map"]
-date: "2026-03-23T10:00:00Z"
-description: "Why a suburb in Northern Virginia rivals the world's largest cities."
+date: "2026-08-25T10:00:00Z"
+description: "Why a suburb in Northern Virginia rivals the world's largest internet hubs."
 cover: "ashburn-cover.svg"
 images: ["posts/ashburn/cover.svg"]
 featured: false
@@ -13,194 +12,68 @@ title: "The Gravity of Ashburn, Virginia"
 slug: "ashburn"
 type: "posts"
 canonical_url: https://kmcd.dev/posts/ashburn
-draft: true
 ---
 
-Where is the actual center of the Internet?
+Where is the center of the internet? There is no single correct answer. You could measure submarine cables, network interconnection, cloud capacity, traffic, or the number of people online, and each would produce a different map.
 
-If you asked a random person, they might guess San Francisco.
-A network engineer might point to New York or London, places where finance and submarine cables intersect.
+But one result from my 2026 Internet Map caught me completely off guard. When I ranked American metro areas by the amount of publicly routed IPv4 address space geolocated to them, the top result was not New York, Chicago, or Silicon Valley. It was Ashburn, Virginia, a suburb about 30 miles northwest of Washington, D.C. In this article, “Ashburn” refers to the broader Northern Virginia data-center and interconnection cluster centered there.
 
-Both answers sound reasonable, but they are wrong. If you define “center” as the largest concentration of publicly routed IPv4 address space, the answer isn’t a global city at all. It’s a suburb about 30 miles west of Washington, D.C.
+{{< figure src="ashburn.jpg" attrlink="ashburn.jpg" caption="A data center in Ashburn, Virginia; [By Vahurzpu - Own work, CC BY-SA 4.0](https://commons.wikimedia.org/w/index.php?curid=95951368)">}}
 
-{{< figure src="ashburn.jpg" attrlink="ashburn.jpg" caption="A datacenter in Ashburn, Virginia; [By Vahurzpu - Own work, CC BY-SA 4.0](https://commons.wikimedia.org/w/index.php?curid=95951368)">}}
-
-**Ashburn, Virginia.**
-
-When I was compiling the data for the 2026 Internet Map last month, one specific result caught me completely off guard. Looking at the top five list for the United States (shown below), a single suburb in Northern Virginia dwarfed massive hubs like Seattle and Chicago combined. I actually had to double check my numbers to make sure I had not made a mistake.
-
-| Rank | City | IP Dominance |
-| :--- | :--- | :--- |
+| Rank  | Metro area  |    IP dominance |
+| :---- | :---------- | --------------: |
 | **1** | **Ashburn** | **100,934,452** |
-| 2 | New York | 69,322,932 |
-| 3 | Seattle | 30,696,072 |
-| 4 | Chicago | 28,980,879 |
-| 5 | Columbus | 22,291,535 |
+| 2     | New York    |      69,322,932 |
+| 3     | Seattle     |      30,696,072 |
+| 4     | Chicago     |      28,980,879 |
+| 5     | Columbus    |      22,291,535 |
 
-There was no bug.
-
-What the ranking actually captured wasn’t population or economic activity. It was how much infrastructure is physically sitting in one place. By that measure, Ashburn isn’t just ahead. It’s in a different category.
+Ashburn reached roughly 101 million IPv4 addresses, substantially more than New York and more than Seattle and Chicago combined. The ranking was not measuring population or economic activity. It was picking up the enormous concentration of internet infrastructure in Northern Virginia.
 
 {{< image src="center-of-everything.png" width="500px" class="center" >}}
 
-## What “Center” Means
+## What the Number Means
 
-This article uses two metrics, and neither is perfect:
+IP dominance is the number of publicly routed IPv4 addresses geolocated to a metro area. It is not a count of users, servers, or traffic. An IP address may represent a virtual machine, load balancer, edge node, corporate gateway, or thousands of users behind carrier-grade NAT. Geolocation is also imperfect: prefixes may be registered at an office, announced from several regions, or associated with the nearest recognizable city rather than the exact location of the hardware.
 
-- **Peering Bandwidth**: the amount of public interconnection capacity available at Internet Exchange Points in a city
-- **IP Dominance**: the number of publicly routed IPv4 addresses geolocated to that metro area
+IPv6 is excluded because its enormous allocation sizes make address counts mostly reflect allocation policy rather than physical infrastructure. So the exact totals should not be taken literally. But large, persistent concentrations of IPv4 space can still reveal where cloud providers, hosting companies, content networks, and other publicly reachable systems have accumulated.
 
-Peering bandwidth tells you how much traffic can flow through a place.
+Ashburn also has about 32.68 Tbps of public peering capacity in my dataset, measured as the combined port capacity available through public Internet Exchange Points. That places it behind New York and Chicago, but still among the largest interconnection markets in the United States. What makes Ashburn unusual is the combination: a large interconnection market and an enormous concentration of geolocated address space.
 
-IP dominance is closer to answering a different question: where does the infrastructure actually live?
+## Why Ashburn?
 
-To estimate it, I aggregated announced IPv4 prefixes from global BGP tables and mapped them to metro regions using commercial geolocation datasets and operator disclosures.
+Northern Virginia got an early start. MAE-East was one of the first major commercial internet exchange points in the United States. It connected networks around Washington, D.C., before expanding into facilities in Vienna, Reston, and Ashburn. Providers established points of presence nearby, carriers installed fiber, and data-center operators built around that growing network ecosystem.
 
-That sounds precise. It isn’t.
+MAE-East eventually declined, but the infrastructure and network presence remained. By then, the region had developed a feedback loop: a network benefits from locating near its carriers, customers, cloud providers, and peers, and every new participant makes the location more useful to the next one. Over time, Ashburn accumulated data centers, exchange fabrics, private connections, cloud regions, and long-haul fiber routes. AWS’s `us-east-1` is the best-known example, but it is only one part of the cluster.
 
-For one thing, an IP address does not equal a user or even a single machine. Technologies like carrier-grade NAT allow thousands of users to share a much smaller pool of public IPv4 addresses. A residential ISP might represent an entire city's worth of customers behind a relatively small prefix.
+Virginia reinforced that growth with available land, access to power, and tax exemptions for qualifying data-center equipment. Ashburn became important because so much of the internet already had a reason to be there.
 
-Data centers behave differently. Large blocks of IPv4 space are often allocated directly to infrastructure such as load balancers, virtual machines, and edge nodes. Many of these are globally reachable and persistently assigned. That skews the numbers heavily toward places where hardware is concentrated.
+## The Power Problem
 
-There’s also the IPv6 problem.
+That advantage now has a serious limit: electricity. Data centers need enormous amounts of electricity delivered to a specific site through transmission lines and substations. Adding generation elsewhere on the regional grid does not immediately solve a local shortage; the power has to reach the facility on a predictable schedule. In Northern Virginia, data-center construction has often moved faster than the grid could expand, leaving some projects facing multiyear waits for full electrical service.
 
-IPv6 address space is vast and unevenly deployed. Some networks aggressively advertise large aggregates; others are far more conservative. The result is that IPv6 counts tend to reflect allocation strategy more than physical presence. For now, including it introduces more distortion than clarity, so it’s excluded from this analysis.
+[PJM’s 2026 forecast](https://www.pjm.com/-/media/DotCom/library/reports-notices/load-forecast/2026-load-report.pdf) shows peak load in the Dominion zone rising by more than 20 gigawatts by the late 2030s. PJM explicitly attributes much of that increase to data-center growth. Transmission corridors, substations, and generation all take years to permit and construct. Land is already expensive, and new infrastructure faces increasing political resistance.
 
-Even within IPv4, geolocation is fuzzy. Prefixes don’t always map cleanly to where hardware sits. Any dataset like this involves approximation layered on top of incomplete information.
+For the first time, Ashburn’s network gravity may be weaker than the pull of power that can actually be delivered elsewhere.
 
-So IP dominance isn’t a count of users, and it’s not a direct count of servers.
+## AI Changes the Equation
 
-But at global scale, it’s still a useful signal. Big, persistent concentrations of address space tend to follow big, persistent concentrations of infrastructure.
+Artificial intelligence makes the power problem more severe. Many existing data centers were designed around rack densities in the low tens of kilowatts, while NVIDIA documents roughly 120 kW of power consumption for a single [GB200 NVL72 rack](https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html). That much power becomes heat. Conventional air cooling becomes difficult and inefficient, pushing new AI systems toward direct-to-chip liquid cooling and other designs that require different electrical, plumbing, and heat-rejection infrastructure.
 
-And that’s the signal this article is trying to isolate.
+Some newer Ashburn campuses can support these systems. Older facilities may require major upgrades, and not every building can be economically converted. AI workloads also change the importance of location. Customer-facing services benefit from being close to users, networks, databases, and other cloud systems, but large model-training clusters are different. They still need substantial connectivity, but metro-level latency matters less than power availability and the high-bandwidth network inside the campus.
 
-## The Numbers
+That gives operators more freedom to build training clusters in places with available electricity, land, and cooling capacity. The likely result is not a complete migration away from Ashburn, but a division of labor: new training clusters can be built elsewhere, latency-sensitive inference remains distributed near users and major network hubs, and Ashburn continues to host cloud services, storage, interconnection, and the systems connecting everything together.
 
-On public peering capacity alone, Ashburn sits comfortably in the top tier.
+## Ashburn May Be Unbundled
 
-| City | Public Peering Capacity |
-| :--- | :--- |
-| **New York** | 44.60 Tbps |
-| **Chicago** | 34.92 Tbps |
-| **Ashburn** | 32.68 Tbps |
+Another city does not need to recreate Ashburn to weaken its dominance. Ashburn became powerful because connectivity was difficult to reproduce. For the next generation of data centers, power may be the harder resource to secure. Long-haul fiber can be extended to a new campus; delivering hundreds of megawatts of firm power on a predictable schedule is much harder.
 
-These numbers place it alongside heavyweights like Frankfurt, Amsterdam, London, and Singapore.
+Ashburn’s thousands of existing interconnections cannot simply be packed into trucks and moved elsewhere. It will remain one of the world’s most important places for exchanging traffic.
 
-But when we look at IP dominance, the ranking changes dramatically.
+But the center of interconnection and the center of computation may begin to separate.
 
-| Rank | City | IP Dominance |
-| :--- | :--- | :--- |
-| **1** | **Ashburn** | **100,934,452** |
-| 2 | New York | 69,322,932 |
-| 3 | Seattle | 30,696,072 |
-| 4 | Chicago | 28,980,879 |
-| 5 | Columbus | 22,291,535 |
+Ashburn may not be replaced by one competing hub.
 
-Ashburn, a town of around 50,000 people, hosts more IPv4 space than a New York metro area of 20 million.
-
-It hosts nearly three times as many addresses as Seattle, the home of AWS us-west-2 and Google’s Oregon cloud region.
-
-That gap isn’t a rounding error or a quirk of the dataset. It reflects a tangible difference in how cloud providers and carriers distribute their hardware.
-
-```mermaid
-pie title North American IP Dominance
-    "Ashburn (100M)" : 100
-    "New York (69M)" : 69
-    "Seattle (30M)" : 30
-    "Chicago (28M)" : 28
-    "Columbus (22M)" : 22
-    "Rest of North America (914M)" : 914
-```
-
-## What Peering Actually Means
-
-To make sense of why Ashburn pulls so far ahead, you have to look at how networks actually connect to each other.
-
-The internet isn’t a single cohesive entity. It’s a loose federation of thousands of independently operated networks—Autonomous Systems—that agree to pass traffic back and forth.
-
-Everything you experience online depends on how and where those systems interconnect. They do this in two primary ways:
-
-1. **Private Peering via Cross-Connects**
-2. **Public Peering via Internet Exchange Points**
-
-### Private Peering and Cross-Connects
-
-Inside large data center facilities, networks can establish direct, physical links between their routers. These are called cross-connects, and they usually consist of short runs of dark fiber connecting cabinets within the same building or campus.
-
-If Netflix and Comcast both maintain routers in the same facility, they can run a direct cross-connect between their respective hardware. This allows their traffic to flow freely without needing to transit through a third-party carrier.
-
-This direct connection significantly reduces latency, slashes transit costs, and minimizes the risk of packet loss. While powerful, private cross-connects require both networks to be physically present in the exact same building. That spatial requirement is the spark that starts an infrastructure cluster.
-
-### Public Peering at IXPs
-
-While private peering connects two networks directly, public peering scales the concept up. An Internet Exchange Point (IXP) acts as a shared switching fabric where many networks can interconnect over a common Ethernet platform.
-
-Instead of running dozens of individual dark fiber cross-connects to every single partner, a network simply connects once to the exchange switch. From that single physical port, it can establish BGP sessions to peer with hundreds of other networks simultaneously.
-
-Think of an IXP as a high-speed meet-me room operating at a metropolitan scale.
-
-Distance adds latency—roughly 8 to 10 milliseconds for every 1,000 miles of fiber. That makes physical proximity to these shared switches incredibly valuable. Ashburn hosts several major IXPs, each aggregating hundreds of distinct networks. Once an exchange reaches critical mass, the math heavily favors joining it. If your upstream providers, major customers, and biggest competitors are already plugged into the same building, deploying somewhere else is an active disadvantage. You go where the network already is. It’s a simple, pragmatic feedback loop that quietly turned a Virginia suburb into a global chokepoint.
-
-## The Town Itself
-
-Ashburn is a census-designated place in Loudoun County. Aside from the occasional hum of cooling towers, it looks like a standard American suburb.
-
-Drive along the Dulles Greenway, however, and the scale of the digital footprint becomes obvious. You pass endless rows of reinforced concrete data centers, collectively spanning tens of millions of square feet of raised floor space.
-
-They host infrastructure for:
-
-- Amazon Web Services us-east-1
-- Major financial clearing networks
-- Federal systems
-- Global content delivery networks
-- Hyperscale AI clusters
-
-You might have heard the old statistic that 70 percent of the world's internet traffic flows through Northern Virginia. That’s likely an exaggeration today, but regional operators estimate the actual number is still between 20 and 25 percent.
-
-Even at that lower bound, the sheer volume of global traffic moving through this single county is staggering.
-
-## Why Here?
-
-Ashburn’s dominance wasn't planned by a single entity; it emerged from four reinforcing factors.
-
-### 1. Early Interconnection History
-
-MAE-East put Northern Virginia on the map in the 1990s as one of the first major U.S. exchange points. Early internet companies set up shop nearby to cut transit costs, laying down dense fiber trenches that subsequent networks simply reused, expanded, and built upon.
-
-### 2. Latency Economics
-
-Distance is a physical constraint. If AWS is serving out of Ashburn, the SaaS platforms built on top of it need to be right next door to minimize API latency. Financial traders, content delivery networks, and enterprise databases all stack physically close to each other to shave off single-digit milliseconds.
-
-### 3. Power and Land
-
-Data centers are exceptionally power-hungry. Loudoun County saw the trend early and built out the heavy transmission infrastructure and dedicated substations required to support hyperscale campuses long before other municipalities understood the demand.
-
-### 4. Tax Policy
-
-Virginia offers significant sales and use tax exemptions on qualifying data center equipment, such as servers and cooling systems. When you are a hyperscale cloud provider refreshing hundreds of thousands of servers every few years, those tax breaks translate into massive capital savings.
-
-## Will It Move?
-
-Texas and Oregon are booming, while global hubs in Europe and Asia are growing fast.
-
-Northern Virginia is also hitting real physical limits: severe power grid constraints, rising land prices, pushback from residents over noise and water usage, and a lack of easily developable parcels.
-
-But Ashburn's real moat isn't cheap land anymore; it's the tangled web of thousands of existing cross-connects. Moving away means convincing your entire digital supply chain to pack up and move with you. With AI workloads demanding tight physical coupling between massive compute clusters and deep data stores, new infrastructure continues to gravitate toward existing data gravity wells.
-
-For the foreseeable future, the center holds.
-
-## Methodology
-
-To build this dataset, publicly routed IPv4 prefixes were collected from global BGP routing tables. These prefixes were then aggregated by metropolitan area using a combination of commercial IP geolocation datasets and public facility disclosures. CDN and cloud prefixes were included in these counts provided they successfully geolocated within the specific metro boundaries.
-
-Note that IPv6 address space was excluded from this analysis to avoid the allocation distortions currently present in IPv6 routing. All figures reflect a data snapshot collected on February 1st, 2026.
-
-## The Gravity of Interconnection
-
-We like to think of the internet as an omnipresent cloud—abstract, evenly distributed, and placeless.
-
-In reality, it’s a massively heavy physical machine made of concrete, dark fiber, and cooling towers. When you measure the internet by where that machinery actually sits, the map doesn't point to Silicon Valley, London, or Wall Street.
-
-It points straight to Ashburn.
+It may be unbundled.
 
 **[Explore Ashburn on the Map »](https://map.kmcd.dev/?lat=39.0438&lng=-77.4874&z=7.00&year=2026)**
