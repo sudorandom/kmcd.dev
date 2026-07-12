@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -10,13 +11,16 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/quic-go/quic-go/http3"
 	"github.com/quic-go/webtransport-go"
 	"golang.org/x/sync/errgroup"
 )
 
 func main() {
 	if err := run(); err != nil {
-		log.Fatal(err)
+		if !errors.Is(err, context.Canceled) {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -26,7 +30,7 @@ func run() error {
 
 	dialer := &webtransport.Dialer{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			NextProtos: []string{http3.NextProtoH3},
 		},
 	}
 
@@ -54,8 +58,7 @@ func run() error {
 				return gctx.Err()
 			case t := <-ticker.C:
 				msg := fmt.Sprintf("Hello! The time is now %v", t.Format(time.DateTime))
-				_, err = stream.Write([]byte(msg))
-				if err != nil {
+				if _, err := stream.Write([]byte(msg)); err != nil {
 					return err
 				}
 				log.Printf("Wrote: %s", msg)
@@ -84,5 +87,8 @@ func run() error {
 	log.Println("Running, press CTRL+C to stop...")
 	defer log.Println("shutting down")
 
-	return g.Wait()
+	if err := g.Wait(); err != nil && ctx.Err() == nil {
+		return err
+	}
+	return nil
 }

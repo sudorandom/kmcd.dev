@@ -1,0 +1,12 @@
+{
+  "name": "grpc-webtransport-go-sample",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test --project=chrome",
+    "test:e2e:chrome": "playwright test --project=chrome"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

@@ -11,8 +11,8 @@ async fn main() -> Result<()> {
     let server_addr: SocketAddr = "0.0.0.0:4434".parse()?;
 
     let certificate = Certificate::load(
-        "../go/localhost+1.pem",
-        "../go/localhost+1-key.pem",
+        "../go/localhost.pem",
+        "../go/localhost-key.pem",
     )?;
 
     let server = Server::builder()
