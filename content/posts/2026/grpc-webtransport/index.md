@@ -13,7 +13,6 @@ slug: "grpc-webtransport"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/grpc-webtransport/
-draft: true
 ---
 
 “Streaming data” on the web might mean consuming a response as bytes arrive, receiving server events, using a long-lived bidirectional channel, or sharing one connection between independent streams. These workloads have different requirements, but we often reduce the choice to HTTP requests or WebSockets.
