@@ -1,0 +1,22 @@
+[
+  {
+    "adapter": "protobuf-es",
+    "bytes": 71341,
+    "gzipBytes": 19141
+  },
+  {
+    "adapter": "ts-proto",
+    "bytes": 16058,
+    "gzipBytes": 5166
+  },
+  {
+    "adapter": "protobufjs",
+    "bytes": 55572,
+    "gzipBytes": 15685
+  },
+  {
+    "adapter": "google-protobuf",
+    "bytes": 252699,
+    "gzipBytes": 43671
+  }
+]

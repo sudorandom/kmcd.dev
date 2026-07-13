@@ -1,0 +1,19 @@
+version: v2
+clean: true
+plugins:
+  - local: protoc-gen-es
+    out: gen/protobuf-es
+    opt:
+      - target=ts
+  - local: protoc-gen-ts_proto
+    out: gen/ts-proto
+    opt:
+      - env=browser
+      - esModuleInterop=true
+      - forceLong=number
+      - oneof=unions-value
+  - local: protoc-gen-js
+    out: gen/google-protobuf
+    opt:
+      - import_style=commonjs
+      - binary

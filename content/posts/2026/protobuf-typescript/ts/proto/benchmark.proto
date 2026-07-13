@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package benchmark;
+
+message BenchmarkMessage {
+  uint32 id = 1;
+  string name = 2;
+  string email = 3;
+  repeated string tags = 4;
+  map<string, int32> scores = 5;
+  repeated Item items = 6;
+  oneof payload {
+    string note = 7;
+    bytes attachment = 8;
+  }
+  bool active = 9;
+}
+
+message Item {
+  string sku = 1;
+  uint32 quantity = 2;
+  double price = 3;
+  repeated uint32 samples = 4;
+}

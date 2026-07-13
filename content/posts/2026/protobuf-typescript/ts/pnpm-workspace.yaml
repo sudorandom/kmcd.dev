@@ -1,0 +1,6 @@
+allowBuilds:
+  '@protocolbuffers/protoc-gen-js': true
+  esbuild: true
+minimumReleaseAgeExclude:
+  - protobufjs-cli@2.6.1
+  - protobufjs@8.7.1

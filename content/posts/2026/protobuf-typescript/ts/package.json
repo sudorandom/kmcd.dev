@@ -1,0 +1,31 @@
+{
+  "name": "protobuf-typescript-benchmarks",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.12.0",
+  "scripts": {
+    "clean": "rm -rf gen dist results",
+    "generate": "buf generate && mv gen/google-protobuf/benchmark_pb.js gen/google-protobuf/benchmark_pb.cjs && mkdir -p gen/protobufjs && pbjs -t static-module -w commonjs -o gen/protobufjs/benchmark.cjs proto/benchmark.proto && pbts -o gen/protobufjs/benchmark.d.cts gen/protobufjs/benchmark.cjs",
+    "build": "node scripts/build.ts",
+    "typecheck": "tsc --noEmit",
+    "benchmark": "node scripts/benchmark.ts",
+    "bench": "pnpm generate && pnpm build && pnpm benchmark"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "2.12.1",
+    "google-protobuf": "4.0.2",
+    "long": "5.3.2",
+    "protobufjs": "8.7.1"
+  },
+  "devDependencies": {
+    "@bufbuild/protoc-gen-es": "2.12.1",
+    "@playwright/test": "1.61.1",
+    "@protocolbuffers/protoc-gen-js": "4.0.2",
+    "@types/google-protobuf": "3.15.12",
+    "@types/node": "24.10.1",
+    "esbuild": "0.28.1",
+    "protobufjs-cli": "2.6.1",
+    "ts-proto": "2.12.0",
+    "typescript": "7.0.2"
+  }
+}
