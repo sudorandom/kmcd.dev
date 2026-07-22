@@ -13,15 +13,15 @@ type: "posts"
 devtoSkip: true
 ---
 
-In my [previous article](/posts/hidden-cost-of-google-protobuf-value/), I explored the performance bottlenecks of using dynamic JSON structures like `google.protobuf.Value` and official `protojson` in Go. The benchmark results pointed at the same culprit over and over: reflection, pointer chasing, and descriptor traversal were showing up as real latency and allocation costs.
+In my [previous article](/posts/hidden-cost-of-google-protobuf-value/), I explored the performance bottlenecks of using dynamic JSON structures like `google.protobuf.Value` and official `protojson` in Go. The benchmark results pointed at the same culprit over and over: reflection, pointer chasing, and descriptor traversal were showing up as real latency and allocation costs. The benchmark results also pointed out that protojson was consistently *really slow*.
 
-ProtoJSON sits in an awkward place. It gives Protobuf-backed APIs a JSON representation that human operators, browsers, API gateways, and debugging tools can work with, but Go’s official `protojson` implementation pays heavily for this generality. To resolve field names, enum values, presence semantics, and message structure at runtime, it has to walk message descriptors using Protobuf reflection (`protoreflect`) and allocate intermediate values.
+ProtoJSON sits in an awkward place. It gives Protobuf-backed APIs a JSON representation that human operators, browsers, API gateways, and debugging tools can work with, but Go’s official `protojson` implementation pays heavily for these abilities. To resolve field names, enum values, presence semantics, and message structure at runtime, it has to walk message descriptors using Protobuf reflection (`protoreflect`) and allocate intermediate values.
 
 This is the right tradeoff for correctness and compatibility. But it made me wonder: *how much of this cost is fundamental to ProtoJSON, and how much comes from repeatedly resolving schema mappings at runtime?*
 
-So I built [protojsonx](https://github.com/sudorandom/protojsonx), partly as an experiment and partly because I wanted to know whether ProtoJSON was inherently slow or whether Go’s implementation was paying too much runtime bookkeeping cost. It implements two strategies: compiling descriptors into flat offset layout tables once at startup (**Runtime Table Mode**), and generating static, reflection-free parsing routines via a protoc plugin (**Generated Plugin Mode**).
+So I built [protojsonx](https://github.com/sudorandom/protojsonx), partly as an experiment and partly because I wanted to know whether ProtoJSON was inherently slow or whether Go’s implementation was just lacking optimizations. This library implements two strategies: compiling descriptors into flat offset layout tables once at startup (**Runtime Table Mode**), and generating static, reflection-free parsing routines via a protoc plugin (**Generated Plugin Mode**).
 
-In this post, I'll walk through benchmark results comparing standard `protojson`, standard struct-based JSON (`encoding/json` and `encoding/json/v2` currently living at [`github.com/go-json-experiment/json`](https://github.com/go-json-experiment/json)), `protojsonx` in both modes, and raw binary Protobuf (`proto` and `vtproto`). Moving schema work out of the hot path gets ProtoJSON much closer to standard JSON and binary protobuf than I expected.
+In this post, I'll walk through benchmark results comparing standard `protojson`, standard struct-based JSON (`encoding/json` and `encoding/json/v2` currently living at [`github.com/go-json-experiment/json`](https://github.com/go-json-experiment/json)), `protojsonx` in both modes, and raw binary Protobuf (`proto` and `vtproto`). Moving reflection out of the hot path ends up getting ProtoJSON performance much closer to binary protobuf and easily out-performs `encoding/json` and `encoding/json/v2`.
 
 {{< github-repo repo="sudorandom/protojsonx" description="An experimental faster ProtoJSON encoder and decoder for Go." >}}
 
@@ -36,7 +36,7 @@ In this post, I'll walk through benchmark results comparing standard `protojson`
 To make serialization faster, it implements two key optimization strategies:
 
 *   **Runtime Table Mode**: This mode implements the startup compilation strategy. It builds flat offset tables at initialization, allowing it to marshal and unmarshal structures using fast, sequential offset arithmetic instead of per-call descriptor traversal.
-*   **Generated Plugin Mode**: For the highest-performance path, `protojsonx` provides a protoc plugin (`protoc-gen-go-protojsonx`) that generates type-specific marshaling and unmarshaling methods directly. At that point, a lot of the runtime bookkeeping disappears. The remaining cost is less about “what field is this?” and more about the unavoidable work of reading or writing JSON.
+*   **Generated Plugin Mode**: For the highest-performance path, `protojsonx` provides a protoc plugin (`protoc-gen-go-protojsonx`) that generates type-specific marshaling and unmarshaling methods directly. At that point, a lot of the runtime bookkeeping disappears. The remaining cost is less about “what field is this?” and more about the unavoidable work of reading or writing JSON. This strategy also inceases the binary size, which may or may not be appropriate.
 
 ---
 
@@ -724,7 +724,7 @@ To ensure these results are reproducible, here are the environment parameters an
     go test -bench=. -benchmem -benchtime=5s -count=5 > results.txt
     ```
 
-All benchmarks were run on an otherwise idle machine using a multi-run sequence to reduce noise. All runs were performed on an AC-powered, thermally-settled machine to prevent thermal throttling or low-power state interference. The command writes the five raw runs for each benchmark to `results.txt`; the article tables report arithmetic means for `ns/op`, `B/op`, and `allocs/op` computed from those raw rows. For stricter statistical comparison, I would increase the run count and summarize with `benchstat`.
+The command writes the five raw runs for each benchmark to `results.txt`; the article tables report arithmetic means for `ns/op`, `B/op`, and `allocs/op` computed from those raw rows. For stricter statistical comparison, I would increase the run count and summarize with `benchstat`.
 
 I left `GOMAXPROCS` at Go’s default for this machine, which was 8.
 
