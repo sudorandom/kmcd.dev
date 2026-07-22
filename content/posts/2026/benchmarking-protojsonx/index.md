@@ -21,7 +21,7 @@ This is the right tradeoff for correctness and compatibility. But it made me won
 
 So I built [protojsonx](https://github.com/sudorandom/protojsonx), partly as an experiment and partly because I wanted to know whether ProtoJSON was inherently slow or whether Go’s implementation was paying too much runtime bookkeeping cost. It implements two strategies: compiling descriptors into flat offset layout tables once at startup (**Runtime Table Mode**), and generating static, reflection-free parsing routines via a protoc plugin (**Generated Plugin Mode**).
 
-In this post, we'll look at the benchmarks comparing standard `protojson`, raw struct-based JSON serializers (`encoding/json` and `encoding/json/v2` currently living at [`github.com/go-json-experiment/json`](https://github.com/go-json-experiment/json)), `protojsonx` in both modes, and raw binary Protobuf (`proto` and the optimized reflection-free `vtproto`). The interesting part is that moving schema work out of the hot path gets ProtoJSON much closer to ordinary JSON and binary protobuf than I expected.
+In this post, I'll walk through benchmark results comparing standard `protojson`, standard struct-based JSON (`encoding/json` and `encoding/json/v2` currently living at [`github.com/go-json-experiment/json`](https://github.com/go-json-experiment/json)), `protojsonx` in both modes, and raw binary Protobuf (`proto` and `vtproto`). Moving schema work out of the hot path gets ProtoJSON much closer to standard JSON and binary protobuf than I expected.
 
 {{< github-repo repo="sudorandom/protojsonx" description="An experimental faster ProtoJSON encoder and decoder for Go." >}}
 
@@ -47,7 +47,7 @@ I used the benchmark suite from my previous article, running on Go 1.26 on an Ap
 * **Medium:** A nested user signup event containing actor object, string tags, and metadata map.
 * **Large:** An array repeating the Medium object 100 times.
 
-### The Rules of the Game
+### Methodology Notes
 
 All tests use equivalent payload shapes and measure end-to-end marshal/unmarshal cost, including allocations. The generic JSON cases use plain Go structs with similar fields, while the protobuf cases use generated protobuf messages.
 
@@ -57,7 +57,7 @@ I also included `hyperpb`, a descriptor/layout-driven dynamic protobuf parser bu
 
 ### Payload Sizes
 
-Serialization output size matters, especially when comparing JSON and binary protobuf. These are the payload sizes produced by the benchmark fixtures:
+Serialization output size matters, especially when comparing JSON and binary protobuf. These are the payload sizes produced by the benchmark payloads:
 
 | Payload | ProtoJSON bytes | generic JSON bytes | binary proto bytes |
 | :--- | ---: | ---: | ---: |
@@ -67,18 +67,7 @@ Serialization output size matters, especially when comparing JSON and binary pro
 
 The ProtoJSON and generic JSON sizes are close, but not byte-identical. Binary protobuf is much smaller for these payloads, so the binary rows should be read as a compact binary reference point rather than a JSON-format comparison.
 
-### Headline Results
-
-Before the full tables, here is the short version for the fastest JSON path in each group:
-
-| Operation | Best JSON option | Compared with official protojson | Compared with encoding/json |
-| :--- | :--- | ---: | ---: |
-| Small marshal | protojsonx generated | 6.0x faster | 1.8x faster |
-| Medium marshal | protojsonx generated | 7.0x faster | 1.6x faster |
-| Large marshal | protojsonx generated | 8.1x faster | 1.5x faster |
-| Small unmarshal | protojsonx generated | 6.9x faster | 5.5x faster |
-| Medium unmarshal | protojsonx generated | 5.1x faster | 4.1x faster |
-| Large unmarshal | protojsonx generated | 5.1x faster | 3.7x faster |
+**Overall, `protojsonx` generated code consistently beats both `encoding/json` and `encoding/json/v2`, while runtime table mode beats `encoding/json` and remains competitive with `encoding/json/v2`.** In fact, for marshaling, generated `protojsonx` comes surprisingly close to the speed of binary protobuf parsing. On average across payloads, generated code is about 6x to 8x faster at marshaling and 5x to 7x faster at unmarshaling than official `protojson`, while outperforming standard `encoding/json` by roughly 1.5x to 2x on marshal and 4x to 5x on unmarshal.
 
 ---
 
@@ -175,13 +164,13 @@ Marshaling is the happier path here. The encoder already has typed Go values in 
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 612 ns | 512 B | 12 | 1.0x (Baseline) |
-| **encoding/json** | 183 ns | 64 B | 1 | - |
-| **encoding/json/v2** | 289 ns | 112 B | 2 | - |
+| **encoding/json** | 183 ns | 64 B | 1 | 3.3x faster |
+| **encoding/json/v2** | 289 ns | 112 B | 2 | 2.1x faster |
 | **protojsonx (Runtime Tables)** | **142 ns** | **64 B** | **1** | **4.3x faster** |
 | **protojsonx (Generated Plugin)** | **102 ns** | **64 B** | **1** | **6.0x faster** |
-| **proto.Marshal** | 83 ns | 32 B | 1 | - |
-| **vtproto** | 25 ns | 32 B | 1 | - |
-| **hyperpb + Shared** | 296 ns | 144 B | 7 | - |
+| **proto.Marshal** | 83 ns | 32 B | 1 | 7.4x faster |
+| **vtproto** | 25 ns | 32 B | 1 | 24.5x faster |
+| **hyperpb + Shared** | 296 ns | 144 B | 7 | 2.1x faster |
 
 </details>
   {{< /tab >}}
@@ -273,13 +262,13 @@ Marshaling is the happier path here. The encoder already has typed Go values in 
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 2,227 ns | 1,722 B | 34 | 1.0x (Baseline) |
-| **encoding/json** | 521 ns | 464 B | 2 | - |
-| **encoding/json/v2** | 803 ns | 608 B | 3 | - |
+| **encoding/json** | 521 ns | 464 B | 2 | 4.3x faster |
+| **encoding/json/v2** | 803 ns | 608 B | 3 | 2.8x faster |
 | **protojsonx (Runtime Tables)** | **404 ns** | **320 B** | **1** | **5.5x faster** |
 | **protojsonx (Generated Plugin)** | **318 ns** | **320 B** | **1** | **7.0x faster** |
-| **proto.Marshal** | 285 ns | 176 B | 1 | - |
-| **vtproto** | 103 ns | 176 B | 1 | - |
-| **hyperpb + Shared** | 1,062 ns | 744 B | 17 | - |
+| **proto.Marshal** | 285 ns | 176 B | 1 | 7.8x faster |
+| **vtproto** | 103 ns | 176 B | 1 | 21.6x faster |
+| **hyperpb + Shared** | 1,062 ns | 744 B | 17 | 2.1x faster |
 
 </details>
   {{< /tab >}}
@@ -371,13 +360,13 @@ Marshaling is the happier path here. The encoder already has typed Go values in 
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 223,838 ns | 243,749 B | 2728 | 1.0x (Baseline) |
-| **encoding/json** | 41,250 ns | 32,823 B | 2 | - |
-| **encoding/json/v2** | 62,036 ns | 32,856 B | 3 | - |
+| **encoding/json** | 41,250 ns | 32,823 B | 2 | 5.4x faster |
+| **encoding/json/v2** | 62,036 ns | 32,856 B | 3 | 3.6x faster |
 | **protojsonx (Runtime Tables)** | **31,134 ns** | **32,797 B** | **1** | **7.2x faster** |
 | **protojsonx (Generated Plugin)** | **27,601 ns** | **32,784 B** | **1** | **8.1x faster** |
-| **proto.Marshal** | 25,131 ns | 18,432 B | 1 | - |
-| **vtproto** | 7,575 ns | 18,432 B | 1 | - |
-| **hyperpb + Shared** | 103,495 ns | 107,216 B | 1022 | - |
+| **proto.Marshal** | 25,131 ns | 18,432 B | 1 | 8.9x faster |
+| **vtproto** | 7,575 ns | 18,432 B | 1 | 29.5x faster |
+| **hyperpb + Shared** | 103,495 ns | 107,216 B | 1022 | 2.2x faster |
 
 </details>
   {{< /tab >}}
@@ -385,13 +374,13 @@ Marshaling is the happier path here. The encoder already has typed Go values in 
 
 ### Takeaways: Marshaling
 
-Most of the marshaling performance gain comes from compiling descriptors up-front. Standard `protojson` spends its cycles querying Go’s reflection and descriptor trees on the fly, creating a continuous stream of allocations. Compiling those layout mappings once at startup (**Runtime Table Mode**) allows the serialization process to bypass runtime lookup loops entirely, converting the fields to JSON via sequential offset math.
+Most of the marshaling performance gain comes from compiling descriptors up front. Standard `protojson` spends its time querying reflection and descriptor trees on every call, creating a steady stream of allocations. Compiling those layout mappings once at startup (**Runtime Table Mode**) bypasses runtime descriptor lookups entirely, converting fields to JSON with sequential offset math.
 
-The generated plugin goes one step further. Instead of building layout tables at startup, it writes the field access code directly into the generated Go file. That removes another layer of lookup and assertion work from the hot path.
+The generated plugin takes this a step further by writing field access code directly into the generated `.pb.go` files, removing the generic lookup layer altogether.
 
-The tradeoff is the usual one for generated code: in a large schema repository, generating specialized JSON routines for hundreds of message types can increase compiled binary size.
+The trade-off is typical for generated code: in a repository with hundreds of message types, generating specialized JSON routines will increase binary size.
 
-For these fixtures, schema-guided ProtoJSON marshaling beats both `encoding/json` and `encoding/json/v2`, and the generated encoder lands close to standard binary `proto.Marshal`. `hyperpb + Shared` is slower on marshal here, which fits its design: it is much more interesting as a read-oriented parser than as a serializer.
+For these benchmark payloads, schema-guided ProtoJSON marshaling beats both `encoding/json` and `encoding/json/v2`, with the generated encoder landing right next to standard binary `proto.Marshal` (27.6 µs vs 25.1 µs on the large payload).
 
 ---
 
@@ -492,14 +481,14 @@ Unmarshaling is the harder side of the benchmark. The decoder has to turn string
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 934 ns | 336 B | 14 | 1.0x (Baseline) |
-| **encoding/json** | 752 ns | 280 B | 6 | - |
-| **encoding/json/v2** | 339 ns | 48 B | 1 | - |
+| **encoding/json** | 752 ns | 280 B | 6 | 1.2x faster |
+| **encoding/json/v2** | 339 ns | 48 B | 1 | 2.8x faster |
 | **protojsonx (Runtime Tables)** | **267 ns** | **96 B** | **3** | **3.5x faster** |
 | **protojsonx (Generated Plugin)** | **136 ns** | **96 B** | **2** | **6.9x faster** |
-| **proto.Unmarshal** | 114 ns | 96 B | 2 | - |
-| **vtproto** | 25 ns | 16 B | 1 | - |
-| **hyperpb** | 360 ns | 798 B | 4 | - |
-| **hyperpb + Shared** | 125 ns | 65 B | 1 | - |
+| **proto.Unmarshal** | 114 ns | 96 B | 2 | 8.2x faster |
+| **vtproto** | 25 ns | 16 B | 1 | 37.4x faster |
+| **hyperpb** | 360 ns | 798 B | 4 | 2.6x faster |
+| **hyperpb + Shared** | 125 ns | 65 B | 1 | 7.5x faster |
 
 </details>
   {{< /tab >}}
@@ -595,14 +584,14 @@ Unmarshaling is the harder side of the benchmark. The decoder has to turn string
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 3,703 ns | 1,304 B | 58 | 1.0x (Baseline) |
-| **encoding/json** | 2,937 ns | 688 B | 19 | - |
-| **encoding/json/v2** | 1,133 ns | 256 B | 4 | - |
+| **encoding/json** | 2,937 ns | 688 B | 19 | 1.3x faster |
+| **encoding/json/v2** | 1,133 ns | 256 B | 4 | 3.3x faster |
 | **protojsonx (Runtime Tables)** | **1,108 ns** | **576 B** | **16** | **3.3x faster** |
 | **protojsonx (Generated Plugin)** | **720 ns** | **528 B** | **14** | **5.1x faster** |
-| **proto.Unmarshal** | 571 ns | 560 B | 15 | - |
-| **vtproto** | 322 ns | 432 B | 14 | - |
-| **hyperpb** | 638 ns | 1,446 B | 5 | - |
-| **hyperpb + Shared** | 290 ns | 357 B | 1 | - |
+| **proto.Unmarshal** | 571 ns | 560 B | 15 | 6.5x faster |
+| **vtproto** | 322 ns | 432 B | 14 | 11.5x faster |
+| **hyperpb** | 638 ns | 1,446 B | 5 | 5.8x faster |
+| **hyperpb + Shared** | 290 ns | 357 B | 1 | 12.8x faster |
 
 </details>
   {{< /tab >}}
@@ -698,14 +687,14 @@ Unmarshaling is the harder side of the benchmark. The decoder has to turn string
 | Format / Serializer | ns/op | Memory (B/op) | Allocations/op | Speed vs protojson |
 | :--- | :---: | :---: | :---: | :---: |
 | **protojson** | 377,892 ns | 119,256 B | 5713 | 1.0x (Baseline) |
-| **encoding/json** | 272,103 ns | 70,584 B | 1216 | - |
-| **encoding/json/v2** | 108,811 ns | 54,305 B | 309 | - |
+| **encoding/json** | 272,103 ns | 70,584 B | 1216 | 1.4x faster |
+| **encoding/json/v2** | 108,811 ns | 54,305 B | 309 | 3.5x faster |
 | **protojsonx (Runtime Tables)** | **111,141 ns** | **62,232 B** | **1709** | **3.4x faster** |
 | **protojsonx (Generated Plugin)** | **73,389 ns** | **55,008 B** | **1407** | **5.1x faster** |
-| **proto.Unmarshal** | 54,923 ns | 58,232 B | 1509 | - |
-| **vtproto** | 36,002 ns | 58,168 B | 1508 | - |
-| **hyperpb** | 24,835 ns | 60,053 B | 12 | - |
-| **hyperpb + Shared** | 18,163 ns | 21,863 B | 1 | - |
+| **proto.Unmarshal** | 54,923 ns | 58,232 B | 1509 | 6.9x faster |
+| **vtproto** | 36,002 ns | 58,168 B | 1508 | 10.5x faster |
+| **hyperpb** | 24,835 ns | 60,053 B | 12 | 15.2x faster |
+| **hyperpb + Shared** | 18,163 ns | 21,863 B | 1 | 20.8x faster |
 
 </details>
   {{< /tab >}}
@@ -713,38 +702,13 @@ Unmarshaling is the harder side of the benchmark. The decoder has to turn string
 
 ### Takeaways: Unmarshaling
 
-Decode is where the generated code earns its keep. If you’ve ever looked at Go’s standard `protojson` decoder, it spends a lot of time matching string keys against descriptors, allocating intermediate maps, and resolving types at runtime. Compiling direct field assignments into the generated decoder cuts out a lot of that work: 5.1x to 6.9x faster than official `protojson` on these static payloads. It also reduces heap churn substantially; unmarshaling the Large payload drops from over 5,700 allocations down to just 1,407.
+Decoding is where generated code really pays off. Standard `protojson` spends significant CPU time matching string keys against descriptors, allocating temporary maps, and resolving types at runtime. Generating direct field assignments cuts out that overhead—running 5x to 7x faster than official `protojson` on these payloads. Heap churn also drops dramatically; unmarshaling the large payload requires only ~1,400 allocations compared to over 5,700 with `protojson`.
 
-The interesting part is that the generated JSON decoder beats both `encoding/json` and `encoding/json/v2` in these fixtures. It still does not catch binary protobuf, but it gets close enough that ProtoJSON stops looking like an automatic performance disaster.
-
-That said, unmarshaling still has a wider performance gap relative to binary Protobuf than marshaling does. This is a fundamental constraint of the JSON format itself. A binary decoder can skip fields using length prefixes and parse integer types with very little overhead. A JSON decoder, by contrast, is forced to parse string layouts, handle token boundaries, and instantiate nested objects and map fields on the fly. But even with these structural constraints, the reflection-free generated code narrows the gap significantly, turning what used to be a large bottleneck into a much smaller and more predictable cost.
+The generated JSON decoder beats both `encoding/json` and `encoding/json/v2` across all test payloads. While JSON parsing is fundamentally constrained by being a text format (requiring string tokenization and boundary checks), eliminating runtime reflection makes ProtoJSON performance competitive enough for hot paths where it previously wasn't.
 
 ---
 
-## How protojsonx Compares to Generic JSON & Binary Formats
 
-The basic idea held up: **moving schema work out of the hot path can make ProtoJSON faster than Go's standard library `encoding/json` package for these fixtures.**
-
-The **`encoding/json/v2` package also looks very strong.** Under unmarshaling, it cuts a lot of latency and allocation overhead compared with `encoding/json` (e.g. unmarshaling the Large payload drops from 272,103 ns/op down to 108,811 ns/op).
-
-The experimental `encoding/json/v2` package gets close to `protojsonx` Runtime Table Mode, but the generated `protojsonx` path was still the fastest JSON option in these benchmarks.
-
-A rough summary of the benchmark results looks like this:
-
-| Format / Serializer | Role in these benchmarks | Notes |
-| :--- | :--- | :--- |
-| **Official `protojson`** | Slowest JSON path | Most general and most dynamic |
-| **`encoding/json`** | Standard JSON baseline | General-purpose reflection-based JSON |
-| **`encoding/json/v2`** | Faster generic JSON baseline | Official v2 prototype; much better on unmarshal |
-| **`protojsonx` Runtime Table Mode** | Fast dynamic ProtoJSON | Descriptor work moved to startup |
-| **`protojsonx` Generated Plugin Mode** | Fastest JSON path here | Type-specific generated code |
-| **Standard binary `proto`** | Binary protobuf baseline | Compact protobuf wire format |
-| **`vtproto`** | Fast generated binary baseline | Strongest generated marshal path here |
-| **`hyperpb + Shared`** | Binary decode reference | Very fast reusable-storage decode path |
-
-For static-message marshaling, `protojsonx` with the plugin gets much closer to standard binary Protobuf than official `protojson`, and in these benchmarks it beats generic `encoding/json` and `encoding/json/v2`.
-
----
 
 ## Methodology
 
@@ -770,11 +734,11 @@ As always with microbenchmarks, the exact numbers matter less than the overall s
 
 ## Try it Out & Give Feedback!
 
-`protojsonx` is still highly experimental and early-stage software. It passes the official Protobuf conformance tests, which gives me confidence that the core serialization and parsing behavior is on the right track, but I would not treat it as boring infrastructure yet.
+`protojsonx` is still highly experimental software. It passes the official Protobuf conformance tests, which gives me confidence in its core parsing and serialization logic, but don't run it in critical production paths without thorough testing.
 
 If you are serving JSON APIs backed by Protobuf and `protojson` is showing up in your profiles, I’d love for you to try it against your own schemas.
 
-I’m especially interested in results from real production-shaped messages: large repeated fields, maps, oneofs, well-known types, custom `json_name` usage, and other cases that are more interesting than tiny benchmark fixtures.
+I’m especially interested in results from real production-shaped messages: large repeated fields, maps, oneofs, well-known types, custom `json_name` usage, and other cases that are more interesting than simple benchmark payloads.
 
 You can find the code and instructions on GitHub:
 * **GitHub Repository**: [sudorandom/protojsonx](https://github.com/sudorandom/protojsonx)
