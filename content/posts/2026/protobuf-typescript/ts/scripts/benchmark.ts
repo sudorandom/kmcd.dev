@@ -3,7 +3,7 @@ import { cpus, release, totalmem } from "node:os";
 import { chromium } from "@playwright/test";
 import type { BenchmarkAdapter } from "../shared/contract.js";
 
-const adapters = ["protobuf-es", "ts-proto", "protobufjs", "google-protobuf"] as const;
+const adapters = ["protobuf-es", "ts-proto", "protobufjs", "protobufjs-reflection", "google-protobuf"] as const;
 const iterations = Number.parseInt(process.env.BENCH_ITERATIONS ?? "20000", 10);
 const samples = Number.parseInt(process.env.BENCH_SAMPLES ?? "20", 10);
 const warmupIterations = Math.max(1000, Math.floor(iterations / 4));

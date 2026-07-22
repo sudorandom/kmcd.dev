@@ -2,7 +2,7 @@ import { gzipSync } from "node:zlib";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { build } from "esbuild";
 
-const adapters = ["protobuf-es", "ts-proto", "protobufjs", "google-protobuf"] as const;
+const adapters = ["protobuf-es", "ts-proto", "protobufjs", "protobufjs-reflection", "google-protobuf"] as const;
 const outputDirectory = new URL("../dist/", import.meta.url);
 const resultsDirectory = new URL("../results/", import.meta.url);
 

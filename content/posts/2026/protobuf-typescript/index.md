@@ -2,8 +2,8 @@
 categories: ["article"]
 tags: ["typescript", "protobuf", "javascript"]
 date: "2026-09-09T10:00:00Z"
-title: "Choosing the Right TypeScript Protocol Buffers Implementation"
-description: "An in-depth technical comparison of the TypeScript Protobuf ecosystem. Evaluate Protobuf-ES (@bufbuild/protobuf), ts-proto, protobuf.js, and google-protobuf across code generation, module compliance, and modern Protobuf feature support like Editions and Oneofs."
+title: "Comparing TypeScript Protobuf Libraries in 2026"
+description: "Benchmarking Protobuf-ES, ts-proto, protobuf.js, and google-protobuf in the browser reveals sharp trade-offs between speed, bundle size, and spec compliance."
 cover: "cover.png"
 images: ["/posts/protobuf-typescript/cover.png"]
 featuredalt: ""
@@ -16,90 +16,144 @@ canonical_url: https://kmcd.dev/posts/protobuf-typescript/
 draft: true
 ---
 
-Protocol Buffers offer a robust framework for schema-first API design, but the TypeScript ecosystem has historically been fragmented. Choosing the right generator and runtime library significantly impacts your application bundle size, developer experience, and runtime performance.
+I expected the newer TypeScript Protobuf libraries to perform similarly once bundled. Instead, the results split sharply between runtime speed, bundle-size scaling, and specification support. `protobuf.js` was dramatically faster than everything else, while Protobuf-ES had the strongest conformance results and the slowest bundle growth as schemas expanded.
 
-This article compares the major TypeScript implementations of Protocol Buffers available today to help you select the best fit for your stack.
-
-## The Contenders
-
-### 1. Protobuf-ES (`@bufbuild/protobuf`)
-[`@bufbuild/protobuf`](https://github.com/bufbuild/protobuf-es) is the modern implementation developed by Buf and designed from the ground up for modern JavaScript and TypeScript environments. It is my default recommendation for greenfield projects.
-* **API & Ergonomics:** It generates clean, plain JavaScript objects that conform to native TypeScript interfaces. Instead of heavy class constructors or getter/setter methods, you can work with fields directly using standard property access. Oneofs are natively supported as type-safe discriminated unions, which fits idiomatic TypeScript perfectly.
-* **Module Compliance:** Features full native ECMAScript Module (ESM) compliance by default, making it easily tree-shakable.
-* **Codegen Flow:** Integrates directly with the standard `protoc` compiler or Buf plugins (`protoc-gen-es`), requiring minimal build steps.
-* **Proto2 Extensions:** Fully supports typed proto2 extensions and registry APIs.
-* **Tooling Friction:** Low. A single generator plugin and runtime package provide everything you need without separate compilation wrappers.
-
-### 2. `ts-proto`
-[`ts-proto`](https://github.com/stephenh/ts-proto) is a popular community utility that functions as a plugin for the standard `protoc` compiler. It focuses on generating clean, raw TypeScript interfaces rather than classes, making it a favorite for frontend developers who prefer functional patterns.
-* **API & Ergonomics:** Generates pure, clean TypeScript interfaces with structural typing. However, by default, `ts-proto` maps `oneof` fields to flat, optional properties (e.g. `note?: string; image?: Image;`), which allows developers to write type-unsafe states (like setting both fields simultaneously). To get type-safe discriminated unions similar to Protobuf-ES, you must pass the `oneof=unions-value` configuration flag. Furthermore, because it avoids traditional class wrappers, operations like serialization and deserialization are handled through external helper methods (`ScaleMessage.encode`, `ScaleMessage.decode`) rather than methods bound to the objects.
-* **Module Compliance:** Offers solid support for both ESM and CommonJS.
-* **Codegen Flow:** Integrates as a `protoc` plugin (`protoc-gen-ts_proto`).
-* **Proto2 Extensions:** Has basic support, but lacks complete extension registry coverage.
-* **Tooling Friction:** High. It relies on a sprawling, brittle matrix of configuration flags. Getting the desired imports, typing defaults, and environment setups require stringing together a long, complex list of command-line arguments.
-
-### 3. `protobuf.js`
-[`protobuf.js`](https://github.com/protobufjs/protobuf.js) is the historical workhorse of the JavaScript ecosystem. While highly flexible, it represents a legacy era of JavaScript tooling.
-* **API & Ergonomics:** Its generated code leans heavily toward legacy JavaScript patterns, constructing ES5-style functions and nested namespaces. Working with TypeScript requires a secondary step to generate definitions, and oneofs are represented as virtual property string mappings rather than type-safe discriminated unions.
-* **Module Compliance:** Limited. The runtime supports CommonJS, AMD, and global scripts, but does not provide modern ESM structures natively.
-* **Codegen Flow:** Requires a custom, multi-step pipeline using its own command-line utilities `pbjs` (to compile schemas to JS) and `pbts` (to compile the JS into TypeScript definition files).
-* **Proto2 Extensions:** Poor support. The static generator breaks when compiling grouped proto2 extensions.
-* **Tooling Friction:** High. The multi-step build flow, custom wrappers, and separate declaration files add considerable build-step complexity.
-
-### 4. `google-protobuf`
-[`google-protobuf`](https://github.com/protocolbuffers/protobuf-javascript) is the official implementation maintained by Google. It is primarily built to align with Java and C++ conventions rather than idiomatic JavaScript.
-* **API & Ergonomics:** Ergonomics are notoriously poor for TypeScript developers. Working with messages requires calling Java-style getter and setter methods (e.g., `message.setName()`, `message.getName()`) instead of accessing properties directly. Oneofs are managed via a complex helper maze and `*Case()` enums.
-* **Module Compliance:** Lacks native ESM support, export statements are CommonJS-only, and ES6 imports are not natively implemented.
-* **Codegen Flow:** Uses the standard `protoc` compiler with Google's JS plugin.
-* **Proto2 Extensions:** Supported, but relies on older, clunky extension APIs.
-* **Tooling Friction:** High. Requires community-maintained typings (`@types/google-protobuf`) to work with TypeScript, and its class-heavy, CommonJS format makes it difficult to tree-shake or bundle.
-
-## Architectural Philosophies
-
-The contenders in this comparison fall into two main design camps:
-
-* **Runtime-Driven Engines (Protobuf-ES and `google-protobuf`):** These libraries ship a single, centralized runtime engine. Instead of generating complete, duplicated serialization loops for every single message type, they generate lightweight schema metadata and let the runtime handle the heavy lifting. Protobuf-ES implements this with modern, native ESM modules and clean TypeScript interfaces, allowing bundlers like Vite, Rollup, or Webpack to easily tree-shake unused message definitions. By contrast, `google-protobuf` relies on a legacy, Java-like class getter/setter wrapping pattern and CommonJS, which is highly resistant to modern tree-shaking.
-* **Direct Code Generators (`ts-proto` and `protobuf.js`):** These tools generate self-contained, hardcoded codec loops for each message. Because they output standalone functions or customized constructor classes for every message type, they bypass the need for a runtime interpreter. This gives them a very low starting bundle floor and high runtime throughput, but they pay for it with linear bundle growth at scale and major specification gaps.
-
-## Conformance First: Why Correctness is Non-Negotiable
-
-When choosing a Protocol Buffers implementation, **specification conformance is the most critical metric**. Protobuf is not just a serialization format; it is a strict, cross-language communication contract. Relying on a non-conforming library introduces silent, dangerous failure modes in production.
-
-If your library does not strictly adhere to the specification, you risk:
-* **Interoperability Failures:** A Go or Java backend might encode maps, unknown fields, or extensions that your TypeScript frontend silently ignores, corrupts, or fails to parse entirely.
-* **Security & Validation Bugs:** Conformance tests verify bound checks, UTF-8 validation, and invalid inputs. Non-conforming parsers can crash or exhibit undefined behavior when exposed to malicious or malformed network payloads.
-* **ProtoJSON Incompatibilities:** The mapping between JSON and Protobuf is strictly specified (e.g., camelCase conversion, 64-bit integer strings, enum representations). A non-conforming library can write JSON that other conforming services reject.
-
-Buf runs and publishes a reproducible conformance test score using Google's official conformance runner. Here is how the contenders stack up:
-
-| Implementation | Highest Edition Tested | Required Failures | Recommended Failures |
-| :--- | :---: | ---: | ---: |
-| **Protobuf-ES** | 2024 | **0** | **12** |
-| **protobuf-ts** | proto3 | **6** | **7** |
-| **google-protobuf** | 2023 | **1,169** | **389** |
-| **ts-proto** | proto3 | **751** | **613** |
-| **protobuf.js** | 2024 | **1,847** | **579** |
-
-Protobuf-ES is the only runtime in this list that passes **100% of the required conformance tests** for the latest Edition 2024. While libraries like `ts-proto` and `protobuf.js` perform well in isolated tests, they do so by cutting corners on specification coverage (JSON serialization quirks, presence checks, and oneof edge cases).
-
-### ProtoJSON, Reflection, and the Network Tab DX
-
-While binary Protobuf is optimal for backend-to-backend communication, frontend developers heavily favor **ProtoJSON** in web applications. Utilizing JSON over the wire—such as ConnectRPC's JSON transport—allows developers to inspect API requests and responses directly within the browser's native **Network Tab** without installing custom decoding tools or browser extensions.
-
-However, ProtoJSON is deceptively difficult to implement correctly. It relies on **runtime reflection** to translate between schema descriptors and JSON keys (handling camelCase conversion, serializing 64-bit integers as strings to prevent JavaScript float precision loss, and decoding dynamic wrappers like `google.protobuf.Struct` or `google.protobuf.Value`).
-
-This is where the architectural difference between runtimes becomes a critical developer experience factor:
-* **Protobuf-ES** retains schema descriptors and reflection metadata. This allows its runtime engine to handle ProtoJSON dynamically and pass 100% of the specification checks out of the box.
-* **ts-proto** completely strips out reflection descriptors to optimize for initial bundle size. As a result, its ProtoJSON capability is heavily compromised, rendering it incapable of parsing dynamic fields or conforming to strict ProtoJSON specs.
+The results ultimately pushed me toward Protobuf-ES as the best default for new browser applications, although the other libraries still win in specific situations.
 
 ---
 
-## Bundle Size & Scaling Behavior
+## Generated API Comparison
 
-In frontend web development, single-schema measurements do not tell the whole story. The architectural approach of each library determines how it scales as your application grows.
+Before looking at benchmarks, it is worth comparing the code each generator expects you to write.
 
-Below is the scaling behavior of these architectures as the schema footprint expands (note the logarithmic scale on the y-axis, which is required to display both the low-end crossover and the multi-megabyte overhead of other engines on the same plot):
+### Implementations at a Glance
 
+| Library / Mode | API Style | Module Format | Oneof Representation | Runtime Descriptors |
+| :--- | :--- | :--- | :--- | :--- |
+| **Protobuf-ES** | Plain objects (`create`) + functions | Native ESM | Type-safe discriminated union (`case`/`value`) | Yes |
+| **`ts-proto`** | Interfaces + static methods (`User.create`) | ESM / CommonJS | Flat optional fields (or discriminated union via option) | No |
+| **`protobuf.js` (Static)** | Plain objects + static methods | ESM (via `--wrap`) / CommonJS | Property assignment + active case string property | No |
+| **`google-protobuf`** | Getter / Setter class instances (`new User()`) | CommonJS only | Enums and individual getters (`hasNote()`, `getNote()`) | Limited / Legacy |
+
+### Code Examples
+
+#### Protobuf-ES (`@bufbuild/protobuf` v2.12.1)
+
+```typescript
+import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
+import { UserSchema } from "./gen/protobuf-es/user_pb.js";
+
+// Message construction via helper
+const user = create(UserSchema, {
+  id: 42,
+  name: "Alice",
+  payload: { case: "note", value: "hello" }
+});
+
+const bytes = toBinary(UserSchema, user);
+const decoded = fromBinary(UserSchema, bytes);
+
+// Discriminated union narrowing
+if (decoded.payload.case === "note") {
+  console.log(decoded.payload.value.toUpperCase());
+}
+```
+
+Protobuf-ES v2 dropped class wrappers in favor of plain JavaScript objects and standalone functions. The discriminated union representation is especially nice for `oneof` fields. The catch is that operations such as `create`, `toBinary`, and `fromBinary` also need the message descriptor (`UserSchema`).
+
+#### `ts-proto` (v2.12.0)
+
+```typescript
+import { User } from "./gen/ts-proto/user.js";
+
+// Message construction
+const user = User.create({
+  id: 42,
+  name: "Alice",
+  payload: { $case: "note", value: "hello" }
+});
+
+const bytes = User.encode(user).finish();
+const decoded = User.decode(bytes);
+
+if (decoded.payload?.$case === "note") {
+  console.log(decoded.payload.value.toUpperCase());
+}
+```
+
+By default, `ts-proto` emits separate optional properties for `oneof` fields, allowing several alternatives to be populated at once. The example above uses `oneof=unions-value`, which generates a proper discriminated union instead. This is a good API, but you have to know to enable it.
+
+#### `protobuf.js` (Static Mode v8.7.1)
+
+```typescript
+import pkg from "./gen/protobufjs/benchmark.cjs";
+const { User } = pkg.benchmark;
+
+const user = User.create({
+  id: 42,
+  name: "Alice",
+  note: "hello"
+});
+
+const bytes = User.encode(user).finish();
+const decoded = User.decode(bytes);
+
+// Virtual property holds the active field name
+if (decoded.payload === "note") {
+  console.log(decoded.note.toUpperCase());
+}
+```
+
+Static `protobuf.js` generates JavaScript codecs alongside TypeScript declarations rather than native TypeScript source. Its message API is straightforward, but `oneof` fields are represented indirectly: the value lives in a normal property while a separate string property identifies which variant is active.
+
+*(Note: While static mode is used for our primary comparison, `protobuf.js` also offers a reflection mode that parses raw `.proto` definitions at runtime. Reflection mode is included in our browser performance benchmark because it uses a distinct JIT codec strategy).*
+
+```typescript
+import { User } from "./gen/google-protobuf/user_pb.cjs";
+
+const user = new User();
+user.setId(42);
+user.setName("Alice");
+
+const bytes = user.serializeBinary();
+const decoded = User.deserializeBinary(bytes);
+```
+
+`google-protobuf` replicates Java and C++ getter/setter patterns in JavaScript. It lacks native ESM exports, handles `oneof` checks via numeric case enums, and feels out of place in a modern TypeScript codebase.
+
+---
+
+## Conformance and Spec Support
+
+The upstream Protobuf conformance suite (v28.2) evaluates how strictly each library enforces binary and ProtoJSON specifications.
+
+| Tested Library | Syntax / Edition | Binary Failures | ProtoJSON Failures | Total Required Failures |
+| :--- | :---: | :---: | :---: | :---: |
+| **Protobuf-ES** | Edition 2024 | 0 | 0 | **0** |
+| **protobuf.js** (Static) | Edition 2024 | 6 | 38 | **44** |
+| **google-protobuf** | Edition 2023 | 14 | 32 | **46** |
+| **`ts-proto`** | proto3 | 515 | 849 | **1,364** |
+
+Each implementation was tested against the newest syntax it claims to support, so the totals also reflect differences in edition support rather than only bugs in shared proto3 behavior.
+
+### Where the Failures Come From
+
+The largest divide is not binary encoding performance but access to schema metadata. Protobuf-ES retains descriptors at runtime, which gives it enough information to handle `Any`, ProtoJSON field-name mapping, validation annotations (via `@bufbuild/protovalidate`), and newer edition behavior. It passed every required test across both binary and ProtoJSON suites.
+
+`ts-proto` deliberately removes that metadata. That produces lightweight TypeScript interfaces without an accompanying reflection model, but it also makes some specification behavior impossible to implement generically at runtime. Its high failure count (515 binary, 849 ProtoJSON) is therefore less a collection of isolated bugs than a consequence of the library’s architecture.
+
+`protobuf.js` and `google-protobuf` land between those extremes. Both handle the core binary format well (recording 44 and 46 total failures respectively), but their failures cluster around newer editions and ProtoJSON edge cases.
+
+---
+
+## Bundle-Size Scaling Behavior
+
+For both benchmark sections, I generated the same schema across all four toolchains. Every implementation produced the same 294-byte wire payload, and browser decoding includes complete JavaScript object materialization rather than lazy field access.
+
+The bundle-size results mostly come down to whether serialization logic lives in a shared runtime or is generated separately for every message type.
+
+{{< tabs >}}
+  {{< tab name="Minified Size" >}}
 {{< chart >}}
 {
   "type": "line",
@@ -124,7 +178,7 @@ Below is the scaling behavior of these architectures as the schema footprint exp
       },
       {
         "label": "protobuf.js (Minified KiB)",
-        "data": [49.59, 69.78, 95.00, 145.51, 297.04, 549.58, 2573.80, 5104.09],
+        "data": [49.60, 69.81, 95.06, 145.63, 297.33, 550.17, 2576.73, 5109.95],
         "borderColor": "rgba(135, 206, 250, 1)",
         "backgroundColor": "rgba(135, 206, 250, 0.05)",
         "tension": 0.1,
@@ -144,7 +198,7 @@ Below is the scaling behavior of these architectures as the schema footprint exp
     "plugins": {
       "title": {
         "display": true,
-        "text": "Bundle Size Scaling Behavior up to 1000 Message Types: lower is better",
+        "text": "Bundle Size Scaling Behavior (Minified Size): lower is better",
         "color": "#fff"
       }
     },
@@ -163,41 +217,108 @@ Below is the scaling behavior of these architectures as the schema footprint exp
   }
 }
 {{< /chart >}}
+  {{< /tab >}}
+  {{< tab name="Gzipped Size" >}}
+{{< chart >}}
+{
+  "type": "line",
+  "data": {
+    "labels": ["1", "5", "10", "20", "50", "100", "500", "1000"],
+    "datasets": [
+      {
+        "label": "Protobuf-ES (Gzip KiB)",
+        "data": [16.71, 16.98, 17.06, 17.17, 17.52, 18.10, 22.33, 26.19],
+        "borderColor": "rgba(0, 191, 255, 1)",
+        "backgroundColor": "rgba(0, 191, 255, 0.05)",
+        "tension": 0.1,
+        "fill": false
+      },
+      {
+        "label": "ts-proto (Gzip KiB)",
+        "data": [3.91, 4.07, 4.25, 4.57, 5.47, 6.84, 17.07, 29.10],
+        "borderColor": "rgba(255, 165, 0, 1)",
+        "backgroundColor": "rgba(255, 165, 0, 0.05)",
+        "tension": 0.1,
+        "fill": false
+      },
+      {
+        "label": "protobuf.js (Gzip KiB)",
+        "data": [13.79, 14.16, 14.58, 15.33, 17.50, 20.82, 43.61, 71.42],
+        "borderColor": "rgba(135, 206, 250, 1)",
+        "backgroundColor": "rgba(135, 206, 250, 0.05)",
+        "tension": 0.1,
+        "fill": false
+      },
+      {
+        "label": "google-protobuf (Gzip KiB)",
+        "data": [41.55, 42.13, 42.89, 44.28, 48.24, 54.09, 98.32, 152.84],
+        "borderColor": "rgba(186, 85, 211, 1)",
+        "backgroundColor": "rgba(186, 85, 211, 0.05)",
+        "tension": 0.1,
+        "fill": false
+      }
+    ]
+  },
+  "options": {
+    "plugins": {
+      "title": {
+        "display": true,
+        "text": "Bundle Size Scaling Behavior (Gzipped Size): lower is better",
+        "color": "#fff"
+      },
+      "legend": {
+        "display": false
+      }
+    },
+    "scales": {
+      "x": {
+        "ticks": { "color": "#fff" },
+        "title": { "display": true, "text": "Number of Message Types", "color": "#fff" }
+      },
+      "y": {
+        "type": "logarithmic",
+        "min": 1,
+        "ticks": { "color": "#fff" },
+        "title": { "display": true, "text": "Bundle Size (KiB, Log Scale)", "color": "#fff" }
+      }
+    }
+  }
+}
+{{< /chart >}}
+  {{< /tab >}}
+{{< /tabs >}}
 
 <details>
 <summary><b>Show complete scaling data table</b></summary>
 
-| Message Types | Protobuf-ES | `ts-proto` | `protobuf.js` | `google-protobuf` |
-| :--- | ---: | ---: | ---: | ---: |
-| **1** | **63.05 KiB** | 11.86 KiB | 49.59 KiB | 241.99 KiB |
-| **5** | **63.75 KiB** | 18.52 KiB | 69.78 KiB | 257.62 KiB |
-| **10** | **64.63 KiB** | 26.86 KiB | 95.00 KiB | 277.19 KiB |
-| **20** | **66.39 KiB** | 43.54 KiB | 145.51 KiB | 316.61 KiB |
-| **50** | **71.70 KiB** | 93.61 KiB | 297.04 KiB | 434.85 KiB |
-| **100** | **80.54 KiB** | 177.06 KiB | 549.58 KiB | 631.95 KiB |
-| **500** | **152.15 KiB** | 844.64 KiB | 2,573.80 KiB | 2,221.80 KiB |
-| **1000** | **241.67 KiB** | 1,679.11 KiB | 5,104.09 KiB | 4,209.13 KiB |
+| Message Types | Protobuf-ES (Min / Gzip) | `ts-proto` (Min / Gzip) | `protobuf.js` (Min / Gzip) | `google-protobuf` (Min / Gzip) |
+| :--- | :---: | :---: | :---: | :---: |
+| **1** | 63.05 KiB / 16.71 KiB | **11.86 KiB / 3.91 KiB** | 49.60 KiB / 13.79 KiB | 241.99 KiB / 41.55 KiB |
+| **5** | 63.75 KiB / 16.98 KiB | **18.52 KiB / 4.07 KiB** | 69.81 KiB / 14.16 KiB | 257.62 KiB / 42.13 KiB |
+| **10** | 64.63 KiB / 17.06 KiB | **26.86 KiB / 4.25 KiB** | 95.06 KiB / 14.58 KiB | 277.19 KiB / 42.89 KiB |
+| **20** | 66.39 KiB / 17.17 KiB | **43.54 KiB / 4.57 KiB** | 145.63 KiB / 15.33 KiB | 316.61 KiB / 44.28 KiB |
+| **50** | **71.70 KiB** / 17.52 KiB | 93.61 KiB / **5.47 KiB** | 297.33 KiB / 17.50 KiB | 434.85 KiB / 48.24 KiB |
+| **100** | **80.54 KiB** / 18.10 KiB | 177.06 KiB / **6.84 KiB** | 550.17 KiB / 20.82 KiB | 631.95 KiB / 54.09 KiB |
+| **500** | **152.15 KiB** / 22.33 KiB | 844.64 KiB / **17.07 KiB** | 2,576.73 KiB / 43.61 KiB | 2,221.80 KiB / 98.32 KiB |
+| **1000** | **241.67 KiB / 26.19 KiB** | 1,679.11 KiB / 29.10 KiB | 5,109.95 KiB / 71.42 KiB | 4,209.13 KiB / 152.84 KiB |
 
 </details>
 
-The scaling behavior reveals a fundamental architectural divide in how these libraries are constructed.
+Protobuf-ES begins with a relatively large runtime (~63 KiB minified), but adding message types is cheap because generated files contain mostly descriptors rather than serialization logic. It adds only ~0.18 KiB per message type.
 
-Protobuf-ES utilizes a shared-runtime approach where the encoding and decoding engine is bundled inside the library itself, leaving generated files as lightweight schema descriptors. This results in an incredibly flat scaling curve, adding only **~0.18 KiB** per message type. Even when scaling up to 1,000 message types, the entire bundled output remains a lean **241.67 KiB**.
+The other three libraries put substantially more codec logic into every generated message.
 
-By contrast, `ts-proto`, `google-protobuf`, and `protobuf.js` generate complete, self-contained control loops, ES5 constructors, helper validation routines, and object converters (`toObject`/`fromObject`) for every single message. Because this logic is duplicated for each type rather than shared in a runtime, their bundle sizes scale linearly:
-* **`ts-proto`** adds **~1.67 KiB** per message type, starting as the lightest choice but swelling to **1.64 MiB** at 1,000 types. The crossover point where Protobuf-ES becomes lighter than `ts-proto` occurs around **30 message types**.
-* **`google-protobuf`** suffers from verbose class and getter/setter boilerplate, adding **~3.97 KiB** per message and ballooning to **4.11 MiB** at scale. Protobuf-ES becomes more compact than `google-protobuf` at any footprint beyond just **5 message types**.
-* **`protobuf.js`** exhibits the steepest growth at **~5.05 KiB** per message, culminating in a **4.98 MiB** bundle for 1,000 message types.
+`ts-proto` starts at only 11.86 KiB, making it the clear winner for tiny schemas. That advantage shrinks quickly because each message adds roughly 1.67 KiB of generated codec logic. It crosses Protobuf-ES at about 35 message types and reaches 1.64 MiB at 1,000.
 
-For large microservices or monorepos, selecting an engine with inline code generation can quietly introduce megabytes of JavaScript to your client bundle.
+`protobuf.js` and `google-protobuf` scale even more aggressively. At 1,000 types, their minified bundles reach roughly 4.99 MiB and 4.11 MiB respectively.
+
+The gzip results initially make `ts-proto` look much closer to Protobuf-ES than the minified output suggests (~29.10 KiB vs ~26.19 KiB at 1,000 messages). Because `ts-proto` generates repetitive codec structures, gzip compresses the text effectively for network transport. However, network transfer is only part of the cost; browser engines still have to parse, compile, and evaluate the full 1.64 MiB of uncompressed JavaScript, consuming memory and main-thread time.
 
 ---
 
 ## Browser Runtime Performance
 
-I evaluated the performance of these libraries in a headless Chromium page (Playwright) using 20 samples of 20,000 operations (following a 5,000-iteration warmup). Each operation processes a 294-byte message containing scalar types, nested messages, repeated fields, maps, and oneofs.
-
-Here is how the Contenders compare in encode and decode throughput:
+Bundle size is only half of the comparison. The implementations also take very different approaches to encoding and decoding at runtime.
 
 {{< tabs >}}
   {{< tab name="Encode Throughput" >}}
@@ -209,27 +330,31 @@ Here is how the Contenders compare in encode and decode throughput:
       "Protobuf-ES",
       "ts-proto",
       "protobuf.js",
+      "protobuf.js (Reflection)",
       "google-protobuf"
     ],
     "datasets": [
       {
         "label": "Encode Throughput (ops/s)",
         "data": [
-          49517,
-          54720,
-          980392,
-          73760
+          50176,
+          52569,
+          863931,
+          851064,
+          72886
         ],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(135, 206, 250, 0.75)",
+          "rgba(30, 144, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(135, 206, 250, 1)",
+          "rgba(30, 144, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -275,27 +400,31 @@ Here is how the Contenders compare in encode and decode throughput:
       "Protobuf-ES",
       "ts-proto",
       "protobuf.js",
+      "protobuf.js (Reflection)",
       "google-protobuf"
     ],
     "datasets": [
       {
         "label": "Decode Throughput (ops/s)",
         "data": [
-          210526,
-          496278,
-          900901,
-          303260
+          209534,
+          498132,
+          858369,
+          911162,
+          273224
         ],
         "backgroundColor": [
           "rgba(0, 191, 255, 0.75)",
           "rgba(255, 165, 0, 0.75)",
           "rgba(135, 206, 250, 0.75)",
+          "rgba(30, 144, 255, 0.75)",
           "rgba(186, 85, 211, 0.75)"
         ],
         "borderColor": [
           "rgba(0, 191, 255, 1)",
           "rgba(255, 165, 0, 1)",
           "rgba(135, 206, 250, 1)",
+          "rgba(30, 144, 255, 1)",
           "rgba(186, 85, 211, 1)"
         ],
         "borderWidth": 1
@@ -337,32 +466,59 @@ Here is how the Contenders compare in encode and decode throughput:
 <details>
 <summary><b>Show complete performance data table</b></summary>
 
-| Implementation | Encode (ops/s) | Decode (ops/s) | Wire size |
-| :--- | ---: | ---: | ---: |
-| **Protobuf-ES** | 49,517 | 210,526 | 294 B |
-| **ts-proto** | 54,720 | 496,278 | 294 B |
-| **protobuf.js** | 980,392 | 900,901 | 294 B |
-| **google-protobuf** | 73,760 | 303,260 | 294 B |
+| Implementation | Encode Throughput Median (Min - Max ops/s) | Decode Throughput Median (Min - Max ops/s) | Wire Size |
+| :--- | :---: | :---: | :---: |
+| **Protobuf-ES** | 50,176 (47,416 - 54,540) | 209,534 (163,532 - 212,993) | 294 B |
+| **ts-proto** | 52,569 (47,015 - 66,823) | 498,132 (373,134 - 519,481) | 294 B |
+| **protobuf.js** (Static) | 863,931 (823,045 - 877,193) | 858,369 (833,333 - 873,362) | 294 B |
+| **protobuf.js** (Reflection) | 851,064 (806,452 - 877,193) | 911,162 (888,889 - 934,579) | 294 B |
+| **google-protobuf** | 72,886 (63,032 - 93,897) | 273,224 (145,560 - 280,505) | 294 B |
 
 </details>
 
-The performance numbers reflect a direct correlation with the underlying runtime designs.
+In a typical request-driven web application, protobuf serialization is unlikely to be the bottleneck. Even Protobuf-ES, the slowest encoder in the test, executes over 50,000 serialization operations per second on a single thread—far more throughput than most browser applications consume while waiting on network round-trips or rendering UI updates.
 
-The standout throughput leader is `protobuf.js`, which is engineered specifically for raw speed. It generates custom, highly optimized codecs at runtime using dynamic JIT compilation (`new Function`) and employs a zero-allocation buffer pooling strategy. While this makes it incredibly fast, the use of `eval`-based JIT compilation prevents it from running in strict browser environments with Content Security Policies (CSPs) that ban `unsafe-eval`.
+However, when serialization really is on the hot path, the implementation details matter a lot:
 
-For the other contenders, decoding performance highlights the cost of Protobuf-ES's reflection layer. Because `ts-proto` compiles direct property assignments into static files, V8 can optimize the object properties instantly, yielding a 2.3x speed advantage in decode throughput over Protobuf-ES's descriptor-driven parser.
+The surprising result is `protobuf.js`. Both its static and reflection modes sustain roughly 850,000 operations per second, more than an order of magnitude above Protobuf-ES and `ts-proto` when encoding. Reflection mode generates specialized codecs with `new Function`, while static mode moves that work to build time and achieves nearly identical performance without requiring CSP `unsafe-eval`.
 
-On the encoding side, however, both Protobuf-ES and `ts-proto` share the same core `fork().join()` writer architecture under the hood. For every nested sub-message, map, or packed repeated field, the writer spins up a temporary buffer, serializes the sub-component, and then merges it back into the parent array. This process creates high garbage collection (GC) pressure from continuous array allocations, which is why their encoding speeds are comparable and substantially slower than the pooled approach in `protobuf.js`.
+`ts-proto` is much more competitive when decoding, reaching roughly 498,000 operations per second by assigning fields directly into plain objects. Its encoding result, however, is almost identical to Protobuf-ES.
 
+`google-protobuf` requires a caveat: its normal lazy-decoding behavior does not produce the same fully materialized object shape as the other libraries. Calling `.toObject()` makes the comparison fairer, but also reduces its measured throughput.
 
+---
 
-## Verdict
+## Benchmark Setup and Reproducibility
 
-For modern web applications and TypeScript projects, **Protobuf-ES is the clear, definitive recommendation**.
+I generated the same schema across all four toolchains, bundled each output with esbuild, and ran the resulting code in Chromium.
 
-While it does not win runtime throughput microbenchmarks, it wins where it matters most: **correctness, specification compliance, and real-world bundle size efficiency**.
+<details>
+<summary><b>Show hardware, environment, and verification details</b></summary>
 
-* **Stellar Conformance:** Protobuf-ES is the only engine tested that achieves 100% correctness (0 required failures) on the latest specifications. A fast serialization library that quietly drops fields, encodes oneofs incorrectly, or fails to parse standard formats is a liability in production.
-* **Massive Scaling Advantages:** Although libraries like `ts-proto` offer a smaller initial foot-in-the-door size for a single message, they scale linearly. For large applications, microservice architectures, or monorepos with hundreds of message types, `ts-proto`, `protobuf.js`, and `google-protobuf` swell into megabytes of compiled JavaScript code. Protobuf-ES's shared-runtime architecture scales flatly, saving your users from downloading massive JavaScript bundles.
+* **Hardware & OS:** Apple M1 Pro (8-core CPU, 16 GB RAM), macOS 15.1.
+* **Execution Environments:** Node.js 22.x and headless Chromium 120.0.6099.28 (Playwright 1.61.1).
+* **Library Versions:**
+  * **Protobuf-ES** (`@bufbuild/protobuf`): `2.12.1`
+  * **`ts-proto`**: `2.12.0`
+  * **`protobuf.js`**: `8.7.1` (compiled in static-module mode)
+  * **`google-protobuf`**: `4.0.2`
+* **Bundling & Optimization:** `esbuild 0.28.1` targeting `chrome120` in production mode.
+* **Benchmark Harness:** Warmup of 5,000 iterations followed by 20 samples of 20,000 operations per sample. Encoding measures total materialization (`toBinary()` or `.finish()`), while decoding measures complete JS object instantiation.
+* **Correctness Verification:**
+  1. Serialized payload verified at exactly 294 bytes across all generators.
+  2. Cross-decoding verified across all contender outputs.
+  3. Field content equality checked across nested structs, maps, oneofs, and repeated fields.
 
-If you are building a small project and bundle size is your single absolute bottleneck, you might consider **ts-proto**, provided you are willing to audit its conformance limitations. Reach for **protobuf.js** if your stack requires dynamic runtime schema parsing, and treat **google-protobuf** as a legacy fallback only. But for any scale-oriented production environment, Protobuf-ES represents the most correct, maintainable, and client-efficient choice.
+</details>
+
+Benchmark adapter definitions are located in [`ts/adapters/`](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/protobuf-typescript/ts/adapters/), and the runner script is available at [`ts/scripts/benchmark.ts`](https://github.com/sudorandom/kmcd.dev/blob/main/content/posts/2026/protobuf-typescript/ts/scripts/benchmark.ts).
+
+---
+
+## Final Recommendations
+
+After running these tests, Protobuf-ES is the library I would choose for a new browser application. It is not the fastest implementation, and it carries more initial runtime weight than `ts-proto`, but it has the best overall combination of API design, conformance, module support, and bundle-size scaling.
+
+There are two meaningful exceptions. For a small, self-contained schema, `ts-proto` can save a noticeable amount of initial bundle weight. For applications processing protobuf messages continuously, such as high-frequency WebSocket streams or browser-side data pipelines, the throughput advantage of static `protobuf.js` is large enough to matter.
+
+I would not start a new TypeScript application with `google-protobuf`. Its CommonJS output and getter/setter API are difficult to justify unless compatibility with an existing codebase requires it.

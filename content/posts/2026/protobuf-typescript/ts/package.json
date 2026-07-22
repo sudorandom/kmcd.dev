@@ -5,7 +5,7 @@
   "packageManager": "pnpm@11.12.0",
   "scripts": {
     "clean": "rm -rf gen dist results",
-    "generate": "buf generate && mv gen/google-protobuf/benchmark_pb.js gen/google-protobuf/benchmark_pb.cjs && mkdir -p gen/protobufjs && pbjs -t static-module -w commonjs -o gen/protobufjs/benchmark.cjs proto/benchmark.proto && pbts -o gen/protobufjs/benchmark.d.cts gen/protobufjs/benchmark.cjs",
+    "generate": "buf generate && mv gen/google-protobuf/benchmark_pb.js gen/google-protobuf/benchmark_pb.cjs && mkdir -p gen/protobufjs && pbjs -t static-module -w commonjs -o gen/protobufjs/benchmark.cjs proto/benchmark.proto && pbts -o gen/protobufjs/benchmark.d.cts gen/protobufjs/benchmark.cjs && pbjs -t json -o gen/protobufjs/benchmark.json proto/benchmark.proto",
     "build": "node scripts/build.ts",
     "typecheck": "tsc --noEmit",
     "benchmark": "node scripts/benchmark.ts",

@@ -5,7 +5,7 @@
     "protobufEsGzip": 17115,
     "tsProtoMin": 12140,
     "tsProtoGzip": 4008,
-    "protobufjsMin": 50783,
+    "protobufjsMin": 50789,
     "protobufjsGzip": 14121,
     "googleProtobufMin": 247793,
     "googleProtobufGzip": 42550
@@ -16,8 +16,8 @@
     "protobufEsGzip": 17385,
     "tsProtoMin": 18965,
     "tsProtoGzip": 4164,
-    "protobufjsMin": 71454,
-    "protobufjsGzip": 14497,
+    "protobufjsMin": 71484,
+    "protobufjsGzip": 14498,
     "googleProtobufMin": 263801,
     "googleProtobufGzip": 43145
   },
@@ -27,8 +27,8 @@
     "protobufEsGzip": 17467,
     "tsProtoMin": 27500,
     "tsProtoGzip": 4350,
-    "protobufjsMin": 97284,
-    "protobufjsGzip": 14927,
+    "protobufjsMin": 97344,
+    "protobufjsGzip": 14929,
     "googleProtobufMin": 283845,
     "googleProtobufGzip": 43921
   },
@@ -38,8 +38,8 @@
     "protobufEsGzip": 17585,
     "tsProtoMin": 44590,
     "tsProtoGzip": 4676,
-    "protobufjsMin": 149004,
-    "protobufjsGzip": 15690,
+    "protobufjsMin": 149124,
+    "protobufjsGzip": 15694,
     "googleProtobufMin": 324205,
     "googleProtobufGzip": 45338
   },
@@ -49,8 +49,8 @@
     "protobufEsGzip": 17943,
     "tsProtoMin": 95857,
     "tsProtoGzip": 5603,
-    "protobufjsMin": 304164,
-    "protobufjsGzip": 17910,
+    "protobufjsMin": 304464,
+    "protobufjsGzip": 17923,
     "googleProtobufMin": 445285,
     "googleProtobufGzip": 49397
   },
@@ -60,8 +60,8 @@
     "protobufEsGzip": 18534,
     "tsProtoMin": 181307,
     "tsProtoGzip": 7007,
-    "protobufjsMin": 562774,
-    "protobufjsGzip": 21305,
+    "protobufjsMin": 563374,
+    "protobufjsGzip": 21323,
     "googleProtobufMin": 647119,
     "googleProtobufGzip": 55387
   },
@@ -71,8 +71,8 @@
     "protobufEsGzip": 22863,
     "tsProtoMin": 864907,
     "tsProtoGzip": 17481,
-    "protobufjsMin": 2635574,
-    "protobufjsGzip": 44653,
+    "protobufjsMin": 2638574,
+    "protobufjsGzip": 44658,
     "googleProtobufMin": 2275119,
     "googleProtobufGzip": 100683
   },
@@ -82,8 +82,8 @@
     "protobufEsGzip": 26819,
     "tsProtoMin": 1719407,
     "tsProtoGzip": 29799,
-    "protobufjsMin": 5226584,
-    "protobufjsGzip": 73136,
+    "protobufjsMin": 5232584,
+    "protobufjsGzip": 73134,
     "googleProtobufMin": 4310153,
     "googleProtobufGzip": 156504
   }

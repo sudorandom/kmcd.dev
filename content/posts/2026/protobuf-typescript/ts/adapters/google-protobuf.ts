@@ -39,7 +39,8 @@ export function decode(iterations: number): number {
   let checksum = 0;
   for (let index = 0; index < iterations; index++) {
     const decoded = generated.BenchmarkMessage.deserializeBinary(encoded);
-    checksum += decoded.getId() + decoded.getName().length + decoded.getTagsList().length + decoded.getItemsList().length + decoded.getNote().length;
+    const obj = decoded.toObject();
+    checksum += obj.id + obj.name.length + obj.tagsList.length + obj.itemsList.length + (obj.note?.length ?? 0);
   }
   return checksum;
 }
