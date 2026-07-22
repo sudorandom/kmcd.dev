@@ -1,8 +1,23 @@
 /*
   X-Content-Type-Options: nosniff
   Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload" env=HTTPS
-  Cache-Control: max-age=31536000, public
+  Cache-Control: no-cache
   X-Frame-Options: deny
   Referrer-Policy: no-referrer
   Feature-Policy: microphone 'none'; payment 'none'; geolocation 'none'; midi 'none'; sync-xhr 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'
   X-XSS-Protection: 1; mode=block
+
+/posts/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.wasm
+  Cache-Control: public, max-age=31536000, immutable
