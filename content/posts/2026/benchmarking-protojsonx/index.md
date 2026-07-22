@@ -21,7 +21,7 @@ This is the right tradeoff for correctness and compatibility. But it made me won
 
 So I built [protojsonx](https://github.com/sudorandom/protojsonx), partly as an experiment and partly because I wanted to know whether ProtoJSON was inherently slow or whether Go’s implementation was paying too much runtime bookkeeping cost. It implements two strategies: compiling descriptors into flat offset layout tables once at startup (**Runtime Table Mode**), and generating static, reflection-free parsing routines via a protoc plugin (**Generated Plugin Mode**).
 
-In this post, we'll look at the benchmarks comparing standard `protojson`, raw struct-based JSON serializers (`encoding/json` and `encoding/json/v2` currently living at `github.com/go-json-experiment/json`), `protojsonx` in both modes, and raw binary Protobuf (`proto` and the optimized reflection-free `vtproto`). The interesting part is that moving schema work out of the hot path gets ProtoJSON much closer to ordinary JSON and binary protobuf than I expected.
+In this post, we'll look at the benchmarks comparing standard `protojson`, raw struct-based JSON serializers (`encoding/json` and `encoding/json/v2` currently living at [`github.com/go-json-experiment/json`](https://github.com/go-json-experiment/json)), `protojsonx` in both modes, and raw binary Protobuf (`proto` and the optimized reflection-free `vtproto`). The interesting part is that moving schema work out of the hot path gets ProtoJSON much closer to ordinary JSON and binary protobuf than I expected.
 
 {{< github-repo repo="sudorandom/protojsonx" description="An experimental faster ProtoJSON encoder and decoder for Go." >}}
 
@@ -391,7 +391,7 @@ The generated plugin goes one step further. Instead of building layout tables at
 
 The tradeoff is the usual one for generated code: in a large schema repository, generating specialized JSON routines for hundreds of message types can increase compiled binary size.
 
-For these fixtures, schema-guided ProtoJSON marshaling beats both `encoding/json` and `encoding/json/v2` (`github.com/go-json-experiment/json`), and the generated encoder lands close to standard binary `proto.Marshal`. `hyperpb + Shared` is slower on marshal here, which fits its design: it is much more interesting as a read-oriented parser than as a serializer.
+For these fixtures, schema-guided ProtoJSON marshaling beats both `encoding/json` and `encoding/json/v2`, and the generated encoder lands close to standard binary `proto.Marshal`. `hyperpb + Shared` is slower on marshal here, which fits its design: it is much more interesting as a read-oriented parser than as a serializer.
 
 ---
 
@@ -715,7 +715,7 @@ Unmarshaling is the harder side of the benchmark. The decoder has to turn string
 
 Decode is where the generated code earns its keep. If you’ve ever looked at Go’s standard `protojson` decoder, it spends a lot of time matching string keys against descriptors, allocating intermediate maps, and resolving types at runtime. Compiling direct field assignments into the generated decoder cuts out a lot of that work: 5.1x to 6.9x faster than official `protojson` on these static payloads. It also reduces heap churn substantially; unmarshaling the Large payload drops from over 5,700 allocations down to just 1,407.
 
-The interesting part is that the generated JSON decoder beats both `encoding/json` and `encoding/json/v2` (`go-json-experiment/json`) in these fixtures. It still does not catch binary protobuf, but it gets close enough that ProtoJSON stops looking like an automatic performance disaster.
+The interesting part is that the generated JSON decoder beats both `encoding/json` and `encoding/json/v2` in these fixtures. It still does not catch binary protobuf, but it gets close enough that ProtoJSON stops looking like an automatic performance disaster.
 
 That said, unmarshaling still has a wider performance gap relative to binary Protobuf than marshaling does. This is a fundamental constraint of the JSON format itself. A binary decoder can skip fields using length prefixes and parse integer types with very little overhead. A JSON decoder, by contrast, is forced to parse string layouts, handle token boundaries, and instantiate nested objects and map fields on the fly. But even with these structural constraints, the reflection-free generated code narrows the gap significantly, turning what used to be a large bottleneck into a much smaller and more predictable cost.
 
@@ -725,7 +725,7 @@ That said, unmarshaling still has a wider performance gap relative to binary Pro
 
 The basic idea held up: **moving schema work out of the hot path can make ProtoJSON faster than Go's standard library `encoding/json` package for these fixtures.**
 
-The external **`github.com/go-json-experiment/json` package (the prototype implementation for `encoding/json/v2`) also looks very strong.** Under unmarshaling, it cuts a lot of latency and allocation overhead compared with `encoding/json` (e.g. unmarshaling the Large payload drops from 272,103 ns/op down to 108,811 ns/op).
+The **`encoding/json/v2` package also looks very strong.** Under unmarshaling, it cuts a lot of latency and allocation overhead compared with `encoding/json` (e.g. unmarshaling the Large payload drops from 272,103 ns/op down to 108,811 ns/op).
 
 The experimental `encoding/json/v2` package gets close to `protojsonx` Runtime Table Mode, but the generated `protojsonx` path was still the fastest JSON option in these benchmarks.
 
@@ -735,14 +735,14 @@ A rough summary of the benchmark results looks like this:
 | :--- | :--- | :--- |
 | **Official `protojson`** | Slowest JSON path | Most general and most dynamic |
 | **`encoding/json`** | Standard JSON baseline | General-purpose reflection-based JSON |
-| **`encoding/json/v2` (`go-json-experiment/json`)** | Faster generic JSON baseline | Official v2 prototype; much better on unmarshal |
+| **`encoding/json/v2`** | Faster generic JSON baseline | Official v2 prototype; much better on unmarshal |
 | **`protojsonx` Runtime Table Mode** | Fast dynamic ProtoJSON | Descriptor work moved to startup |
 | **`protojsonx` Generated Plugin Mode** | Fastest JSON path here | Type-specific generated code |
 | **Standard binary `proto`** | Binary protobuf baseline | Compact protobuf wire format |
 | **`vtproto`** | Fast generated binary baseline | Strongest generated marshal path here |
 | **`hyperpb + Shared`** | Binary decode reference | Very fast reusable-storage decode path |
 
-For static-message marshaling, `protojsonx` with the plugin gets much closer to standard binary Protobuf than official `protojson`, and in these benchmarks it beats generic `encoding/json` and `encoding/json/v2` (`go-json-experiment/json`).
+For static-message marshaling, `protojsonx` with the plugin gets much closer to standard binary Protobuf than official `protojson`, and in these benchmarks it beats generic `encoding/json` and `encoding/json/v2`.
 
 ---
 
