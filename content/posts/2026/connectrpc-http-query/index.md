@@ -1,6 +1,6 @@
 ---
 title: "It's Time for ConnectRPC to Adopt HTTP QUERY"
-date: 2026-08-04T15:45:12+02:00
+date: "2026-07-28T10:00:00Z"
 tags: ["connectrpc", "http", "networking", "api", "protobuf", "golang"]
 categories: ["Backend Engineering"]
 slug: "connectrpc-http-query"

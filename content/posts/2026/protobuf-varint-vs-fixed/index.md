@@ -1,6 +1,6 @@
 ---
 title: "Varints Save Bytes. Fixed Integers Save CPU"
-date: "2026-07-28T10:00:00Z"
+date: "2026-08-04T10:00:00Z"
 categories: ["article"]
 tags: ["protobuf", "go", "performance", "software-architecture"]
 description: "Do fixed-size integers really serialize faster than varints? We measure the encoding and decoding overhead with Go and vtproto benchmarks."
