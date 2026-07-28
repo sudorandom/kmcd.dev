@@ -73,7 +73,7 @@
       {{ $y := add $yOffsetRect (mul $index (add $rectFontSize 25)) }}
       {{ $rectFilters = $rectFilters | append (images.Text $line (dict
           "size" $rectFontSize
-          "x" 80
+          "x" 120
           "y" $y
           "color" "#2dd4bf"
           "font" $font)) }}
@@ -125,7 +125,7 @@
       {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize 20)) }}
       {{ $squareFilters = $squareFilters | append (images.Text $line (dict
           "size" $squareFontSize
-          "x" 50
+          "x" 80
           "y" $y
           "color" "#2dd4bf"
           "font" $font)) }}
