@@ -11,13 +11,13 @@ type: "posts"
 devtoSkip: true
 ---
 
-When you define an integer field in a Protocol Buffers schema, you probably type `int64` without thinking twice. It is a reasonable default. Varint encoding compresses small numbers into just a byte or two, keeping network payloads lean.
+When you define an integer field in a Protocol Buffers schema, `int64` is a common default. Varint encoding compresses small numbers into a byte or two, keeping network payloads lean.
 
-However, that compression happens at the expense of CPU cycles. To read or write a varint, the CPU must process the value byte by byte, checking continuation bits and shifting payloads along the way. When a field is hot, repeated, and sitting in an internal backend service, CPU time often matters much more than shaving off a few network bytes.
+However, that compression comes at the cost of CPU cycles. To read or write a varint, the CPU must process the value byte by byte, checking continuation bits and shifting payloads. When a field sits in a high-throughput backend service, CPU efficiency often matters far more than saving a few wire bytes.
 
-Protobuf also provides fixed-size integers: `fixed32`, `fixed64`, `sfixed32`, and `sfixed64`. These use a constant-width, little-endian representation on the wire. While they take more bytes for small values, the CPU path is substantially simpler.
+Protobuf also provides fixed-size integers (`fixed32`, `fixed64`, `sfixed32`, `sfixed64`), which use a constant-width, little-endian format. While taking more bytes for small values, their CPU path is dramatically simpler.
 
-To see how much difference this actually makes in Go, I benchmarked the CPU overhead of standard varints against fixed-size integers and ZigZag encoding across three different parsing implementations. In a packed repeated 64-bit workload, fixed-size integers are up to 4.4x faster to marshal and 4.5x faster to unmarshal using the standard Go protobuf runtime, especially when values are large or negative. The wire-size trade-off is real, but so is the CPU overhead of decoding long varints in a hot loop.
+In Go benchmarks across standard `google.golang.org/protobuf`, PlanetScale `vtprotobuf`, and `hyperpb`, fixed-size integers prove up to 4.5x faster to encode and decode for packed 64-bit arrays—especially when values are large or negative. Here is how wire formats, CPU overhead, and runtime implementations interact in practice.
 
 ## How the Wire Formats Actually Differ
 
@@ -29,15 +29,10 @@ Protobuf integer types divide into three encoding groups:
 
 ### Standard Varints (`int32` / `int64`)
 
-Varints use protobuf's [Base 128 Varint](https://protobuf.dev/programming-guides/encoding/#varints) format. Each byte reserves its most significant bit as a continuation flag. If the bit is set, another byte follows. The remaining 7 bits carry the actual payload.
+Varints use protobuf's [Base 128 Varint](https://protobuf.dev/programming-guides/encoding/#varints) format. Each byte reserves its MSB as a continuation flag, leaving 7 bits for payload:
 
-This makes small integers very compact:
-
-* `42` fits in a single byte.
-* Larger numbers require more bytes.
-* A 64-bit integer can take up to 10 bytes.
-
-Under the hood, the encoder must iterate over the value 7 bits at a time, setting continuation flags until the remaining bits are zero (note that `v` must be cast to an unsigned integer like `uint64` so that right-shifting logical shifts zeroes into high bits rather than preserving the sign bit):
+* Small numbers (`< 128`) fit in 1 byte.
+* Larger numbers require up to 10 bytes for 64-bit integers.
 
 ```go
 for v >= 1<<7 {
@@ -48,33 +43,24 @@ for v >= 1<<7 {
 buf[idx] = byte(v)
 ```
 
-The decoder performs this work in reverse by reading a byte, checking the flag, shifting the bits into position, and accumulating the result. For a single scalar, this overhead is negligible. When processing slices of thousands of integers in high-throughput services, those bit-shifting loops add up quickly.
+The decoder reverses this bit by bit. While negligible for scalars, this loop adds noticeable overhead over millions of elements in hot paths.
 
-Negative values are particularly punishing here. In two's-complement representation, a negative number has its highest bits set—specifically bit 63. Because Base 128 varints only pack 7 payload bits per byte, that set 63rd bit forces the parser to evaluate all 10 bytes every single time, regardless of how close the actual value is to zero. When encoded as a standard `int32` or `int64` varint, protobuf treats it as a massive unsigned number, forcing the maximum 10-byte encoding every time. If your schema uses plain `int64` for numbers that frequently dip below zero, you are paying the maximum wire size and the maximum CPU decoding cost simultaneously.
+Negative numbers are particularly penalizing: two's-complement representation sets bit 63. Because Base 128 packs only 7 bits per byte, negative integers encoded as standard `int32`/`int64` force the maximum 10-byte encoding every single time—maximizing both wire size and CPU decoding cycles simultaneously.
 
 ### ZigZag Varints (`sint32` / `sint64`)
 
-ZigZag encoding solves the negative-number penalty by mapping signed integers to unsigned integers before applying varint compression:
+ZigZag encoding solves this penalty by mapping signed integers to unsigned values (`0 -> 0`, `-1 -> 1`, `1 -> 2`, `-2 -> 3`), keeping small absolute values small on the wire.
 
-* `0` maps to `0`
-* `-1` maps to `1`
-* `1` maps to `2`
-* `-2` maps to `3`
-
-By interleaving positive and negative numbers, values close to zero remain small after mapping and compress into just one or two bytes on the wire.
-
-While this fixes the network bloat of negative numbers, it does not eliminate the CPU overhead. ZigZag still relies on varint encoding after the bitwise mapping step. For negative values, shorter varints mean fewer loops and less CPU time than a 10-byte plain `int64`, but the parser still has to execute the continuation-bit loop.
+However, ZigZag only solves payload bloat, not CPU cost. The parser still runs the varint continuation loop for every byte.
 
 ### Fixed-Size Integers (`fixed` / `sfixed`)
 
-Fixed-size integers abandon small-value compression entirely in favor of predictable memory layouts:
+Fixed-size integers skip small-value compression entirely:
 
-* `fixed32` and `sfixed32` always consume 4 bytes.
-* `fixed64` and `sfixed64` always consume 8 bytes.
+* `fixed32` / `sfixed32`: 4 bytes
+* `fixed64` / `sfixed64`: 8 bytes
 
-The wire format is simply a raw little-endian integer. Because the parser knows the exact byte length in advance, it reads the data directly without evaluating continuation bits or assembling 7-bit chunks.
-
-In Go protobuf schemas, `fixed32` and `fixed64` represent unsigned integers (`uint32` and `uint64`), while `sfixed32` and `sfixed64` represent signed integers (`int32` and `int64`).
+Represented as raw little-endian values, the parser reads them directly without continuation checks or bit assembly. In Go schemas, `fixed32`/`fixed64` map to `uint32`/`uint64`, while `sfixed32`/`sfixed64` map to `int32`/`int64`.
 
 ## The Benchmark Setup
 
@@ -652,25 +638,21 @@ Deserialization benchmarks measure the CPU cost of parsing wire data back into a
 
 ## Analyzing the Numbers
 
-The value distribution dictates the parsing cost. Break the results down by shape:
+### 1. Value Distribution Impacts Performance
 
-**Small Positive:** Varints get their best opportunity to shine here. Because 1,000 integers pack into just 1,003 bytes, `int64` requires significantly less memory bandwidth than the 8,003-byte payload of `sfixed64`. Despite the 8x larger payload, fixed-size integers still marshal faster in Go because the encoder skips the continuation loop. During standard unmarshaling, `sfixed64` maintains a slight lead over `int64` (2,366 ns vs. 2,538 ns). The fastest result overall is `hyperpb.Shared` reading the tiny 1,003-byte varint payload in 478 ns, proving that specialized dynamic parsers with memory arenas can exploit ultra-compact payloads effectively.
+* **Small Positive:** Varints shine on wire efficiency (1,003 B vs 8,003 B). Yet even with 8x larger payloads, `sfixed64` marshals faster in Go by skipping continuation loops. Standard unmarshaling is neck-and-neck (`sfixed64` at 2,366 ns vs `int64` at 2,538 ns). `hyperpb.Shared` leverages the compact varint payload best, reaching 478 ns via specialized arena parsing.
+* **Large Positive:** At $2^{50}$, varints take 8 bytes—matching `sfixed64` payload size. Without size savings, varint decoding overhead dominates: `int64` unmarshaling takes 8,383 ns in standard Go runtime vs 2,505 ns for `sfixed64` (a 3.3x speedup).
+* **Negative:** Plain `int64` expands to 10 bytes per value (9,819 ns unmarshal). `sint64` (ZigZag) shrinks wire size back to 1,363 B (3,062 ns unmarshal). `sfixed64` still beats ZigZag at 2,465 ns because flat memory copies beat bit-shifting loops.
 
-**Large Positive:** When numbers cross the $2^{50}$ threshold, standard varints take 8 bytes each. Once the wire size matches fixed-width integers, the varint compression advantage vanishes. Unmarshaling large `int64` values takes 8,383 ns in the standard runtime, compared to just 2,505 ns for `sfixed64` (a 3.3x speedup). Avoiding the bitwise reconstruction loop entirely yields massive CPU gains when payloads are identically sized.
+### 2. Why Standard Go Runtime Beat Generated Code on Scalar Slices
 
-**Negative:** Plain `int64` falls off a cliff when encoding negative integers, consuming 10 bytes per value and taking 9,819 ns to unmarshal in the standard Go runtime. ZigZag encoding (`sint64`) successfully rescues network bandwidth by shrinking the payload to 1,363 bytes, cutting CPU decoding time to 3,062 ns. Yet `sfixed64` still beats ZigZag cleanly at 2,465 ns because constant-width memory reads outperform bit-shifting loops.
+PlanetScale's `vtprotobuf` generated code was unexpectedly slower than standard `google.golang.org/protobuf` when unmarshaling scalar slices (e.g. `int64 (Varint) + vtproto` at 14,518 ns vs standard runtime at 9,819 ns for negative numbers).
 
-### Why Standard Go Runtime Beat Generated Code on Scalars
+While `vtprotobuf` eliminates reflection overhead on struct fields, packed repeated fixed-width fields are continuous byte blocks.
 
-One counterintuitive result stands out: PlanetScale's `vtprotobuf` generated code was slower than the standard `google.golang.org/protobuf` runtime across every unmarshaling test for scalar slices.
+The standard Go runtime hits an optimized fast path: it reads total length, allocates the destination slice at once, and copies raw bytes into memory using `memmove` primitives.
 
-This anomaly is especially pronounced for negative varints (`int64 (Varint) + vtproto` at 14,518 ns/op vs standard runtime at 9,819 ns/op). Because `vtprotobuf` generates inline decoding loops without table-driven decoding or specialized unrolling for 10-byte sequences, its per-byte bounds checking and continuation bit checks execute sequentially in Go code for all 10 bytes on every negative element.
-
-While `vtprotobuf` typically excels at eliminating reflection overhead in complex nested messages, primitive scalar slices behave differently in Go. A packed repeated `sfixed64` field is fundamentally a length-delimited buffer of constant-width little-endian bytes.
-
-When the standard Go protobuf runtime decodes a packed fixed-width slice, it hits an optimized fast path: it reads the byte length, sizes and allocates the destination slice in one go, and copies the raw bytes directly into the slice's backing array using `memmove` primitives. There is almost zero per-element dispatch overhead.
-
-By contrast, `vtprotobuf` generates straightforward, unrolled Go code. When unmarshaling that same slice, it outputs a standard `for` loop that iterates over the buffer, reading values 8 bytes at a time:
+In contrast, `vtprotobuf` generates an explicit Go loop:
 
 ```go
 for len(b) > 0 {
@@ -680,7 +662,7 @@ for len(b) > 0 {
 }
 ```
 
-In a CPU-bound benchmark processing contiguous arrays of primitive integers, an iterated Go loop cannot compete with the runtime's direct memory block copying. Generated code does not automatically beat a highly optimized standard runtime on bulk memory operations.
+In CPU-bound array parsing, an explicit Go element-by-element loop cannot compete with bulk memory block copying. Generated code does not automatically beat runtime primitives for bulk primitive data.
 
 ## Choosing the Right Integer Type
 
