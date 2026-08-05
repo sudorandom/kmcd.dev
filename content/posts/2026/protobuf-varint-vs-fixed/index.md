@@ -641,7 +641,7 @@ Deserialization benchmarks measure the CPU cost of parsing wire data back into a
 ### 1. Value Distribution Impacts Performance
 
 * **Small Positive:** Varints shine on wire efficiency (1,003 B vs 8,003 B). Yet even with 8x larger payloads, `sfixed64` marshals faster in Go by skipping continuation loops. Standard unmarshaling is neck-and-neck (`sfixed64` at 2,366 ns vs `int64` at 2,538 ns). `hyperpb.Shared` leverages the compact varint payload best, reaching 478 ns via specialized arena parsing.
-* **Large Positive:** At $2^{50}$, varints take 8 bytes—matching `sfixed64` payload size. Without size savings, varint decoding overhead dominates: `int64` unmarshaling takes 8,383 ns in standard Go runtime vs 2,505 ns for `sfixed64` (a 3.3x speedup).
+* **Large Positive:** At `2^50`, varints take 8 bytes, which matches `sfixed64` payload size. Without size savings, varint decoding overhead shows its cost: `int64` unmarshaling takes 8,383 ns in standard Go runtime vs 2,505 ns for `sfixed64` (a 3.3x speedup).
 * **Negative:** Plain `int64` expands to 10 bytes per value (9,819 ns unmarshal). `sint64` (ZigZag) shrinks wire size back to 1,363 B (3,062 ns unmarshal). `sfixed64` still beats ZigZag at 2,465 ns because flat memory copies beat bit-shifting loops.
 
 ### 2. Why Standard Go Runtime Beat Generated Code on Scalar Slices
