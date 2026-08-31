@@ -1,0 +1,262 @@
+{{- $baseUrl := strings.TrimRight "/" site.BaseURL -}}
+{{- $authorName := or site.Params.author.name "Kevin McDonald" -}}
+{{- $authorUrl := printf "%s/me/" $baseUrl -}}
+{{- $siteDescription := or site.Params.Description site.Params.Subtitle "Depth-first search into networking, programming, random tech topics." -}}
+
+{{- $sameAs := slice -}}
+{{- with site.Params.social -}}
+  {{- range . -}}
+    {{- with .url -}}
+      {{- $sameAs = $sameAs | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $author := dict
+  "@type" "Person"
+  "@id" (printf "%s/#author" $baseUrl)
+  "name" $authorName
+  "url" $authorUrl
+  "sameAs" $sameAs
+-}}
+
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" (printf "%s/#website" $baseUrl)
+  "url" (printf "%s/" $baseUrl)
+  "name" site.Title
+  "description" $siteDescription
+  "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+  "inLanguage" (or site.Language.LanguageCode "en")
+  "potentialAction" (dict
+    "@type" "SearchAction"
+    "target" (printf "%s/search/?q={search_term_string}" $baseUrl)
+    "query-input" "required name=search_term_string"
+  )
+-}}
+
+{{- $graph := slice $website $author -}}
+
+{{- /* BreadcrumbList */ -}}
+{{- if not .IsHome -}}
+  {{- $crumbs := slice -}}
+  {{- $crumbs = $crumbs | append (dict
+    "@type" "ListItem"
+    "position" 1
+    "name" "Home"
+    "item" (printf "%s/" $baseUrl)
+  ) -}}
+
+  {{- if and .Section (ne .Section "") -}}
+    {{- $sectionPage := site.GetPage (printf "/%s" .Section) -}}
+    {{- $sectionName := .Section | humanize | title -}}
+    {{- $sectionUrl := printf "%s/%s/" $baseUrl .Section -}}
+    {{- with $sectionPage -}}
+      {{- $sectionName = .Title -}}
+      {{- $sectionUrl = .Permalink -}}
+    {{- end -}}
+
+    {{- if .IsPage -}}
+      {{- $crumbs = $crumbs | append (dict
+        "@type" "ListItem"
+        "position" 2
+        "name" $sectionName
+        "item" $sectionUrl
+      ) -}}
+      {{- $crumbs = $crumbs | append (dict
+        "@type" "ListItem"
+        "position" 3
+        "name" .Title
+        "item" .Permalink
+      ) -}}
+    {{- else -}}
+      {{- $crumbs = $crumbs | append (dict
+        "@type" "ListItem"
+        "position" 2
+        "name" (or .Title $sectionName)
+        "item" .Permalink
+      ) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $crumbs = $crumbs | append (dict
+      "@type" "ListItem"
+      "position" 2
+      "name" .Title
+      "item" .Permalink
+    ) -}}
+  {{- end -}}
+
+  {{- $breadcrumbList := dict
+    "@type" "BreadcrumbList"
+    "@id" (printf "%s#breadcrumb" .Permalink)
+    "itemListElement" $crumbs
+  -}}
+  {{- $graph = $graph | append $breadcrumbList -}}
+{{- end -}}
+
+{{- /* Page / Post Specific Schema */ -}}
+{{- if .IsHome -}}
+  {{- $homePage := dict
+    "@type" "WebPage"
+    "@id" (printf "%s/#webpage" $baseUrl)
+    "url" (printf "%s/" $baseUrl)
+    "name" site.Title
+    "description" $siteDescription
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "about" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $homePage -}}
+
+{{- else if and .IsPage (eq .Type "posts") -}}
+  {{- $pageDescription := or .Description .Summary (printf "%s by %s" .Title $authorName) | plainify | htmlUnescape | chomp -}}
+  {{- $images := slice -}}
+  {{- with .Params.cover -}}
+    {{- $coverRes := $.Resources.GetMatch . -}}
+    {{- if $coverRes -}}
+      {{- $images = $images | append $coverRes.Permalink -}}
+    {{- else -}}
+      {{- with resources.Get . -}}
+        {{- $images = $images | append .Permalink -}}
+      {{- else -}}
+        {{- $images = $images | append (. | absURL) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if eq (len $images) 0 -}}
+    {{- with resources.Get "images/site_cover.png" -}}
+      {{- $images = $images | append .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $keywords := slice -}}
+  {{- with .Params.tags -}}
+    {{- range . -}}
+      {{- $keywords = $keywords | append . -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $categories := slice -}}
+  {{- with .Params.categories -}}
+    {{- range . -}}
+      {{- $categories = $categories | append . -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $datePublished := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- with .PublishDate -}}
+    {{- $datePublished = .Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- end -}}
+  {{- $dateModified := .Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+
+  {{- $blogPost := dict
+    "@type" "BlogPosting"
+    "@id" .Permalink
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "headline" .Title
+    "name" .Title
+    "description" $pageDescription
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "datePublished" $datePublished
+    "dateModified" $dateModified
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+    "wordCount" .WordCount
+  -}}
+
+  {{- if gt (len $images) 0 -}}
+    {{- $blogPost = merge $blogPost (dict "image" $images) -}}
+  {{- end -}}
+  {{- if gt (len $keywords) 0 -}}
+    {{- $blogPost = merge $blogPost (dict "keywords" (delimit $keywords ", ")) -}}
+  {{- end -}}
+  {{- if gt (len $categories) 0 -}}
+    {{- $blogPost = merge $blogPost (dict "articleSection" (index $categories 0)) -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $blogPost -}}
+
+{{- else if and .IsPage (eq .Type "prompts") -}}
+  {{- $images := slice -}}
+  {{- with partial "prompts/load-cover.html" . -}}
+    {{- $images = $images | append .Permalink -}}
+  {{- end -}}
+
+  {{- $datePublished := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
+
+  {{- $promptPost := dict
+    "@type" "BlogPosting"
+    "@id" .Permalink
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "headline" .Title
+    "name" .Title
+    "description" .Title
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "datePublished" $datePublished
+    "dateModified" $datePublished
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+    "articleSection" "Daily Prompt"
+    "keywords" "daily prompt, dailyprompt"
+  -}}
+
+  {{- if gt (len $images) 0 -}}
+    {{- $promptPost = merge $promptPost (dict "image" $images) -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $promptPost -}}
+
+{{- else if and .IsPage (or (eq .Slug "me") (eq .Layout "me")) -}}
+  {{- $profilePage := dict
+    "@type" "ProfilePage"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "description" (or .Description $siteDescription)
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "mainEntity" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $profilePage -}}
+
+{{- else if .IsPage -}}
+  {{- $pageDescription := or .Description .Summary $siteDescription | plainify | htmlUnescape | chomp -}}
+  {{- $genericPage := dict
+    "@type" "WebPage"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "description" $pageDescription
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $genericPage -}}
+
+{{- else -}}
+  {{- /* Section, Taxonomy, or Term List Page */ -}}
+  {{- $collectionPage := dict
+    "@type" "CollectionPage"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "description" (or .Description (printf "List of %s on kmcd.dev" .Title))
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $collectionPage -}}
+
+{{- end -}}
+
+{{- $jsonLd := dict
+  "@context" "https://schema.org"
+  "@graph" $graph
+-}}
+
+<script type="application/ld+json">
+{{ $jsonLd | jsonify (dict "indent" "  ") | safeJS }}
+</script>

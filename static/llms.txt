@@ -39,11 +39,6 @@ Kevin McDonald writes extensive series building core internet protocols and tool
 ### Tools
 - [HTTP Version Tool](https://kmcd.dev/http/): A utility to check which version of HTTP (HTTP/1.0, HTTP/1.1, HTTP/2, or HTTP/3) your browser uses to connect, along with request information like ASN and user-agent.
 
-### Finished & Archived Projects
-- [evepraisal.com](https://kmcd.dev/posts/evepraisal.com/): A bulk-price estimator for EVE Online that helped shape the game's economy (now shut down). GitHub: [evepraisal/go-evepraisal](https://github.com/evepraisal/go-evepraisal).
-- [softlayer-python](https://github.com/softlayer/softlayer-python): Python libraries and CLI for interacting with the SoftLayer/IBM Cloud API.
-- [swftp](https://github.com/softlayer/swftp): An FTP/SFTP interface for OpenStack Object Storage (swift) written in Twisted Python.
-
 ## Core Content Sections
 - [Posts](https://kmcd.dev/posts/): A collection of technical posts covering Go, protobuf, network protocols (HTTP/1.1, HTTP/2, BGP, gNMI, YANG), CLI tools, and development adventures.
 - [Prompts](https://kmcd.dev/prompts/): Quick notes, developer logs, and prompts.

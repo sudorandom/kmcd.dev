@@ -139,12 +139,45 @@ mediaTypes:
   application/wasm:
     suffixes:
       - wasm
+  text/markdown:
+    suffixes:
+      - md
 
 outputFormats:
   jsonfeed:
     mediaType: "application/json"
     baseName: "feed"
     isPlainText: true
+  markdown:
+    mediaType: "text/markdown"
+    isPlainText: true
+    rel: "alternate"
+    ugly: true
+  llms:
+    mediaType: "text/plain"
+    baseName: "llms"
+    isPlainText: true
+    rel: "alternate"
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - jsonfeed
+    - llms
+  page:
+    - HTML
+    - markdown
+  section:
+    - HTML
+    - RSS
+    - jsonfeed
+  taxonomy:
+    - HTML
+    - RSS
+  term:
+    - HTML
+    - RSS
 
 related:
   includeNewer: true

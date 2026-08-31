@@ -85,7 +85,7 @@
     })();
 </script>
 
-{{ template "_internal/schema.html" . }}
+{{ partial "jsonld.html" . }}
 {{ template "_internal/twitter_cards.html" . }}
 
 {{ if isset .Site.Taxonomies "series" }}
@@ -109,10 +109,21 @@
 
 
 <!-- JSON Feed -->
-{{ if .OutputFormats.Get "json" }}
-<link href="{{ if .OutputFormats.Get "json" }}{{ .Site.BaseURL }}feed.json{{ end }}" rel="alternate"
-    type="application/json" title="{{ .Site.Title }}" />
-{{ end }}
+{{ with .OutputFormats.Get "jsonfeed" -}}
+<link rel="alternate" type="application/json" href="{{ .Permalink }}" title="{{ $.Site.Title }}" />
+{{ else }}
+<link rel="alternate" type="application/json" href="{{ (printf "%sfeed.json" site.BaseURL) | safeURL }}" title="{{ site.Title }}" />
+{{ end -}}
+
+<!-- LLMs.txt for AI agents / scrapers -->
+{{ with .OutputFormats.Get "llms" -}}
+<link rel="alternate" type="text/plain" href="{{ .Permalink }}" title="LLMs.txt" />
+{{ end -}}
+
+<!-- Raw Markdown for scraping/LLMs -->
+{{ with .OutputFormats.Get "markdown" -}}
+<link rel="alternate" type="text/markdown" href="{{ .Permalink }}" title="{{ $.Title }} (Markdown)" />
+{{ end -}}
 
 <!-- Custom head tags -->
 {{- if templates.Exists "partials/extra-head.html" -}}

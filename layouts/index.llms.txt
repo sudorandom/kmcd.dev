@@ -1,0 +1,31 @@
+# {{ site.Title }}
+
+> {{ or site.Params.Description site.Params.Subtitle "Depth-first search into networking, programming, web development and random tech topics by Kevin McDonald." }}
+
+## About
+- Author: {{ or site.Params.author.name "Kevin McDonald" }}
+- URL: {{ site.BaseURL }}
+- About Page: {{ printf "%sme/" site.BaseURL }}
+- RSS Feed: {{ printf "%sposts/index.xml" site.BaseURL }}
+- JSON Feed: {{ printf "%sfeed.json" site.BaseURL }}
+
+## Blog Posts
+{{- range where site.RegularPages "Type" "posts" }}
+{{- $mdLink := "" -}}
+{{- with .OutputFormats.Get "markdown" -}}
+  {{- $mdLink = .Permalink -}}
+{{- end }}
+- [{{ .Title }}]({{ .Permalink }}){{ with $mdLink }} ([Markdown]({{ . }})){{ end }}: {{ or .Description .Summary | plainify | htmlUnescape | chomp }}
+{{- end }}
+
+## Interactive Projects & Visualizations
+- [Live Internet Map](https://livemap.kmcd.dev): Real-time BGP routing updates visualization.
+- [Internet Infrastructure Map](https://map.kmcd.dev): Interactive map of submarine fiber optic cables and IXPs from 1989 to 2025.
+- [Let's Learn About BGP](https://bgp.kmcd.dev): Interactive guide on BGP routing and RPKI security test.
+- [FauxRPC](https://fauxrpc.com): Fake gRPC/gRPC-Web/Connect/REST server directly from Protobuf definitions.
+- [WordSeq](https://wordseq.com): Daily word puzzle game.
+
+## Key Sections
+- [Daily Prompts]({{ printf "%sprompts/" site.BaseURL }}): Daily questions and reflections on software engineering, tech culture, routine, and life.
+- [Stuff]({{ printf "%sstuff/" site.BaseURL }}): Additional tools, utilities, and visualizations.
+- [Links]({{ printf "%slinks/" site.BaseURL }}): Curated list of favorite blogs, tools, and technical resources.
