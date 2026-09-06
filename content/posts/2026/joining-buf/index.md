@@ -3,8 +3,8 @@ categories: ["article"]
 tags: ["career"]
 date: "2026-09-06T10:00:00Z"
 description: "A check-in for my career"
-cover: "cover.png"
-images: ["/posts/joining-buf/cover.png"]
+cover: "cover.svg"
+images: ["/posts/joining-buf/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
