@@ -1,2 +1,2 @@
-{{- $images := (resources.Match "images/prompt_covers/*") -}}
+{{- $images := (resources.Match "images/prompt_covers/*.png") -}}
 {{- return (index $images (mod .Date.Day (len $images))) -}}
