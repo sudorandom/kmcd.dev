@@ -1,0 +1,168 @@
+/* Chroma Syntax Highlighting for Hugo code blocks */
+pre.chroma,
+.highlight pre {
+  background-color: var(--code-bg) !important;
+  border: 1px solid var(--code-border) !important;
+  border-radius: 6px;
+  padding: 16px !important;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+[data-theme="light"] pre.chroma,
+[data-theme="light"] .highlight pre {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.chroma {
+  background-color: transparent !important;
+}
+
+:root, [data-theme="dark"] {
+  .bg { color:#d8dee9; }
+  .chroma { color:#d8dee9; }
+  .chroma .err { color:#bf616a }
+  .chroma .lnlinks { outline:none;text-decoration:none;color:inherit }
+  .chroma .lntd { vertical-align:top;padding:0;margin:0;border:0; }
+  .chroma .lntable { border-spacing:0;padding:0;margin:0;border:0; }
+  .chroma .hl { background-color:#424853 }
+  .chroma .lnt { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6c6f74 }
+  .chroma .ln { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#6c6f74 }
+  .chroma .line { display:flex; }
+  .chroma .k { color:#81a1c1;font-weight:bold }
+  .chroma .kc { color:#81a1c1;font-weight:bold }
+  .chroma .kd { color:#81a1c1;font-weight:bold }
+  .chroma .kn { color:#81a1c1;font-weight:bold }
+  .chroma .kp { color:#81a1c1 }
+  .chroma .kr { color:#81a1c1;font-weight:bold }
+  .chroma .kt { color:#81a1c1 }
+  .chroma .na { color:#8fbcbb }
+  .chroma .nc { color:#8fbcbb }
+  .chroma .no { color:#8fbcbb }
+  .chroma .nd { color:#d08770 }
+  .chroma .ni { color:#d08770 }
+  .chroma .ne { color:#bf616a }
+  .chroma .nl { color:#8fbcbb }
+  .chroma .nn { color:#8fbcbb }
+  .chroma .py { color:#8fbcbb }
+  .chroma .nt { color:#81a1c1 }
+  .chroma .nb { color:#81a1c1 }
+  .chroma .bp { color:#81a1c1 }
+  .chroma .nf { color:#88c0d0 }
+  .chroma .fm { color:#88c0d0 }
+  .chroma .s { color:#a3be8c }
+  .chroma .sa { color:#a3be8c }
+  .chroma .sb { color:#a3be8c }
+  .chroma .sc { color:#a3be8c }
+  .chroma .dl { color:#a3be8c }
+  .chroma .sd { color:#616e87 }
+  .chroma .s2 { color:#a3be8c }
+  .chroma .se { color:#ebcb8b }
+  .chroma .sh { color:#a3be8c }
+  .chroma .si { color:#a3be8c }
+  .chroma .sx { color:#a3be8c }
+  .chroma .sr { color:#ebcb8b }
+  .chroma .s1 { color:#a3be8c }
+  .chroma .ss { color:#a3be8c }
+  .chroma .m { color:#b48ead }
+  .chroma .mb { color:#b48ead }
+  .chroma .mf { color:#b48ead }
+  .chroma .mh { color:#b48ead }
+  .chroma .mi { color:#b48ead }
+  .chroma .il { color:#b48ead }
+  .chroma .mo { color:#b48ead }
+  .chroma .o { color:#81a1c1 }
+  .chroma .ow { color:#81a1c1;font-weight:bold }
+  .chroma .p { color:#eceff4 }
+  .chroma .c { color:#616e87;font-style:italic }
+  .chroma .ch { color:#616e87;font-style:italic }
+  .chroma .cm { color:#616e87;font-style:italic }
+  .chroma .c1 { color:#616e87;font-style:italic }
+  .chroma .cs { color:#616e87;font-style:italic }
+  .chroma .cp { color:#5e81ac;font-style:italic }
+  .chroma .cpf { color:#5e81ac;font-style:italic }
+  .chroma .gd { color:#bf616a }
+  .chroma .ge { font-style:italic }
+  .chroma .gr { color:#bf616a }
+  .chroma .gh { color:#88c0d0;font-weight:bold }
+  .chroma .gi { color:#a3be8c }
+  .chroma .gp { color:#4c566a;font-weight:bold }
+  .chroma .gs { font-weight:bold }
+  .chroma .gu { color:#88c0d0;font-weight:bold }
+  .chroma .gt { color:#bf616a }
+}
+
+[data-theme="light"] {
+  .bg { color: #1f2328; }
+  .chroma { color: #1f2328; }
+  .chroma .err { color:#f6f8fa;background-color:#82071e }
+  .chroma .lnlinks { outline:none;text-decoration:none;color:inherit }
+  .chroma .lntd { vertical-align:top;padding:0;margin:0;border:0; }
+  .chroma .lntable { border-spacing:0;padding:0;margin:0;border:0; }
+  .chroma .hl { background-color:#e5e5e5 }
+  .chroma .lnt { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f }
+  .chroma .ln { white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f }
+  .chroma .line { display:flex; }
+  .chroma .k { color:#cf222e }
+  .chroma .kc { color:#cf222e }
+  .chroma .kd { color:#cf222e }
+  .chroma .kn { color:#cf222e }
+  .chroma .kp { color:#cf222e }
+  .chroma .kr { color:#cf222e }
+  .chroma .kt { color:#cf222e }
+  .chroma .na { color:#1f2328 }
+  .chroma .nc { color:#1f2328 }
+  .chroma .no { color:#0550ae }
+  .chroma .nd { color:#0550ae }
+  .chroma .ni { color:#6639ba }
+  .chroma .nl { color:#900;font-weight:bold }
+  .chroma .nn { color:#24292e }
+  .chroma .nx { color:#1f2328 }
+  .chroma .nt { color:#0550ae }
+  .chroma .nb { color:#6639ba }
+  .chroma .bp { color:#6a737d }
+  .chroma .nv { color:#953800 }
+  .chroma .vc { color:#953800 }
+  .chroma .vg { color:#953800 }
+  .chroma .vi { color:#953800 }
+  .chroma .vm { color:#953800 }
+  .chroma .nf { color:#6639ba }
+  .chroma .fm { color:#6639ba }
+  .chroma .s { color:#0a3069 }
+  .chroma .sa { color:#0a3069 }
+  .chroma .sb { color:#0a3069 }
+  .chroma .sc { color:#0a3069 }
+  .chroma .dl { color:#0a3069 }
+  .chroma .sd { color:#0a3069 }
+  .chroma .s2 { color:#0a3069 }
+  .chroma .se { color:#0a3069 }
+  .chroma .sh { color:#0a3069 }
+  .chroma .si { color:#0a3069 }
+  .chroma .sx { color:#0a3069 }
+  .chroma .sr { color:#0a3069 }
+  .chroma .s1 { color:#0a3069 }
+  .chroma .ss { color:#032f62 }
+  .chroma .m { color:#0550ae }
+  .chroma .mb { color:#0550ae }
+  .chroma .mf { color:#0550ae }
+  .chroma .mh { color:#0550ae }
+  .chroma .mi { color:#0550ae }
+  .chroma .il { color:#0550ae }
+  .chroma .mo { color:#0550ae }
+  .chroma .o { color:#0550ae }
+  .chroma .ow { color:#0550ae }
+  .chroma .p { color:#1f2328 }
+  .chroma .c { color:#57606a }
+  .chroma .ch { color:#57606a }
+  .chroma .cm { color:#57606a }
+  .chroma .c1 { color:#57606a }
+  .chroma .cs { color:#57606a }
+  .chroma .cp { color:#57606a }
+  .chroma .cpf { color:#57606a }
+  .chroma .gd { color:#82071e;background-color:#ffebe9 }
+  .chroma .ge { color:#1f2328 }
+  .chroma .gi { color:#116329;background-color:#dafbe1 }
+  .chroma .go { color:#1f2328 }
+  .chroma .gl { text-decoration:underline }
+  .chroma .w { color:#fff }
+}

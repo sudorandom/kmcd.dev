@@ -42,13 +42,14 @@
     type="text/css" async>
 
 
-{{ $options := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
-{{ with resources.Get "scss/main.scss" | css.Sass $options | resources.Fingerprint }}
-    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
+{{ $mainOptions := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
+{{ with resources.Get "scss/main.scss" | css.Sass $mainOptions | resources.Fingerprint }}
+    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}">
 {{ end }}
 
-{{ with resources.Get "scss/style.scss" | css.Sass $options | resources.Fingerprint }}
-    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}" async>
+{{ $styleOptions := (dict "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true) }}
+{{ with resources.Get "scss/style.scss" | css.Sass $styleOptions | resources.Fingerprint }}
+    <link rel="stylesheet" type="text/css" href="{{ .RelPermalink }}">
 {{ end }}
 
 {{ range $val := $.Site.Params.customCSS }}
@@ -69,7 +70,18 @@
 
 <script>
     (function() {
-        const chosenTheme = window.localStorage && window.localStorage.getItem("theme");
+        const urlParams = new URLSearchParams(window.location.search);
+        const themeParam = urlParams.get("theme");
+        const paletteParam = urlParams.get("palette");
+
+        if (themeParam && window.localStorage) {
+            window.localStorage.setItem("theme", themeParam);
+        }
+        if (paletteParam && window.localStorage) {
+            window.localStorage.setItem("palette", paletteParam);
+        }
+
+        const chosenTheme = themeParam || (window.localStorage && window.localStorage.getItem("theme"));
         const chosenThemeIsDark = chosenTheme == "dark";
         const chosenThemeIsLight = chosenTheme == "light";
 
@@ -82,6 +94,9 @@
         } else {
             document.documentElement.setAttribute("data-theme", "dark");
         }
+
+        const chosenPalette = paletteParam || (window.localStorage && window.localStorage.getItem("palette")) || "monochrome";
+        document.documentElement.setAttribute("data-palette", chosenPalette);
     })();
 </script>
 

@@ -98,8 +98,8 @@ details table {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   
   [data-theme=dark] & {
-    background-color: #1f2a35;
-    border: 1px solid #3b5065;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
   }
   
   [data-theme=light] & {
@@ -120,14 +120,7 @@ details table {
   }
 
   thead tr {
-    [data-theme=dark] & {
-      background-color: #232f3c !important;
-      color: $dark-accent-color !important;
-    }
-    
-    [data-theme=light] & {
-      background-color: #f1f3f5 !important;
-      color: $light-accent-color !important;
-    }
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-contrast) !important;
   }
 }

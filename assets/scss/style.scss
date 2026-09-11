@@ -120,37 +120,21 @@ main {
 
 .posts-footer-archive {
     text-align: center;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px auto 30px;
-    max-width: 400px;
-    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin: 30px auto;
+    max-width: 320px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    
-    [data-theme=light] & {
-        background: #e0e0e0;
-        border: 1px solid #dee2e6;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        color: $light-accent-color;
-        &:hover {
-            background: #d0d0d0;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-    }
-    [data-theme=dark] & {
-        background: #161e26;
-        border: 1px solid #34495e;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        color: $dark-accent-color;
-        &:hover {
-            background: #2c3e50;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-        }
-    }
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-contrast);
 
     &:hover {
-        transform: translateY(-2px);
+        background: var(--bg-tertiary);
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
     }
 }
 
@@ -193,12 +177,12 @@ main {
 }
 
 .post-item {
-    padding: 10px, 0;
+    padding: 10px 0;
 }
 
 .post-item:hover {
     [data-theme=dark] & {
-        background: rgb(40, 55, 69);
+        background: var(--badge-bg);
     }
 }
 
@@ -236,8 +220,8 @@ main {
         }
 
         .post-card-content h3 {
-            color: $dark-accent-color;
-            a { color: $dark-accent-color; }
+            color: var(--text-contrast);
+            a { color: var(--text-contrast); }
         }
     }
 
@@ -291,26 +275,16 @@ main {
             font-size: 0.75rem;
             padding: 2px 8px;
             border-radius: 4px;
-            color: #fff;
+            color: var(--text-secondary);
             font-weight: bold;
             text-decoration: none;
-            
-            [data-theme=dark] & {
-                background: rgba($dark-accent-color, 0.2);
-                border: 1px solid $dark-accent-color;
-                &:hover {
-                    background: $dark-accent-color;
-                    color: #000;
-                }
-            }
-            [data-theme=light] & {
-                background: rgba($light-accent-color, 0.1);
-                border: 1px solid $light-accent-color;
-                color: $light-accent-color;
-                &:hover {
-                    background: $light-accent-color;
-                    color: #fff;
-                }
+            background: var(--badge-bg);
+            border: 1px solid var(--border-secondary);
+
+            &:hover {
+                background: var(--accent-primary);
+                color: var(--bg-primary);
+                border-color: var(--accent-primary);
             }
         }
     }
@@ -327,23 +301,20 @@ main {
 }
 
 .post.on-list h3 {
-    font-family: "Orbitron", sans-serif;
+    font-family: inherit;
     font-size: 1.25rem;
     width: 100%;
     margin-top: 0;
     margin-bottom: 0;
-    
-    [data-theme=dark] & {
-        color: $dark-accent-color;
-        a { color: $dark-accent-color; }
-    }
-    [data-theme=light] & {
-        color: $light-accent-color;
-        a { color: $light-accent-color; }
-    }
+    color: var(--text-contrast);
     
     a {
+        color: var(--text-contrast);
         text-decoration: none;
+
+        &:hover {
+            color: var(--accent-primary);
+        }
     }
 }
 
@@ -521,14 +492,9 @@ ul.icons {
 }
 
 .links-box {
-    border-radius: 10px;
-    padding: 20px;
-    [data-theme=light] & {
-        background: #fafafa;
-    }
-    [data-theme=dark] & {
-        background: #1f2a35;
-    }
+    border-radius: 0;
+    padding: 0;
+    background: transparent !important;
 }
 
 .links-box h2 {
@@ -607,7 +573,10 @@ ul.icons {
             color: #fff;
 
             h3 a {
-                color: $dark-accent-color;
+                color: var(--text-contrast);
+                &:hover {
+                    color: var(--accent-primary);
+                }
             }
         }
     }
@@ -653,21 +622,18 @@ ul.icons {
     }
 }
 
-.projects-box h2, h3 {
-    font-family: "Orbitron", sans-serif;
+.projects-box h2, .projects-box h3 {
+    font-family: inherit;
     margin-top: 0;
+    color: var(--text-contrast);
     
-    [data-theme=dark] & {
-        color: $dark-accent-color;
-        a { color: $dark-accent-color; }
-    }
-    [data-theme=light] & {
-        color: $light-accent-color;
-        a { color: $light-accent-color; }
-    }
-
     a {
+        color: var(--text-contrast);
         text-decoration: none;
+
+        &:hover {
+            color: var(--accent-primary);
+        }
     }
 }
 
@@ -682,8 +648,7 @@ ul.icons {
 
 .project-icons a:hover i {
     animation: wiggle 0.5s ease;
-    [data-theme=dark] & { color: $dark-accent-color; }
-    [data-theme=light] & { color: $light-accent-color; }
+    color: var(--accent-primary);
 }
 
 .shop-wrapper {
@@ -693,14 +658,9 @@ ul.icons {
 }
 
 .shop-box {
-    border-radius: 10px;
-    padding: 20px;
-    [data-theme=light] & {
-        background: #fafafa;
-    }
-    [data-theme=dark] & {
-        background: #1f2a35;
-    }
+    border-radius: 0;
+    padding: 0;
+    background: transparent !important;
 }
 
 .shop-box h2 {
@@ -716,17 +676,12 @@ ul.icons {
 }
 
 .main-box {
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px 0 10px 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 10px 0;
     display: flex;
     flex-direction: column;
-    [data-theme=light] & {
-        background: #f5f5f5;
-    }
-    [data-theme=dark] & {
-        background: #080b0f;
-    }
+    background: transparent !important;
 }
 
 @keyframes wiggle {
@@ -744,8 +699,7 @@ ul.icons {
 
 .main-box h2 a:hover i {
     animation: wiggle 0.5s ease;
-    [data-theme=dark] & { color: $dark-accent-color; }
-    [data-theme=light] & { color: $light-accent-color; }
+    color: var(--accent-primary);
 }
 
 .main-box h1 {
@@ -831,37 +785,32 @@ ul.icons {
     z-index: 2;
 
     .post-title a {
-        color: $dark-accent-color;
+        color: var(--text-contrast);
     }
 
     .post-info-2 a {
-        color: $dark-accent-color;
+        color: var(--text-secondary);
     }
 
     .post-excerpt {
-        color: #ccc;
+        color: var(--text-secondary);
     }
 
     i,
     .post-title strong,
     .post-title em {
-        color: $dark-accent-color !important;
+        color: inherit !important;
     }
 }
 
 .prompt-outer {
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px 0 10px 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 10px 0;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    [data-theme=light] & {
-        background: #fafafa;
-    }
-    [data-theme=dark] & {
-        background: #1f2a35;
-    }
+    background: transparent !important;
 }
 
 .prompt-box {
@@ -883,45 +832,45 @@ ul.icons {
 #search {
     padding: 15px;
     [data-theme=dark] & {
-        background-color: $dark-background;
-        color: $dark-color;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
 
-        --pagefind-ui-primary: #{$dark-accent-color};
-        --pagefind-ui-text: #{$dark-color};
-        --pagefind-ui-background: #{$dark-background};
-        --pagefind-ui-border: #{$dark-border-color};
-        --pagefind-ui-tag: #{$dark-background-secondary};
+        --pagefind-ui-primary: var(--accent-primary);
+        --pagefind-ui-text: var(--text-primary);
+        --pagefind-ui-background: var(--bg-primary);
+        --pagefind-ui-border: var(--border-primary);
+        --pagefind-ui-tag: var(--bg-secondary);
 
         .pagefind-ui__result-title,
         .pagefind-ui__result-link {
-            color: $dark-accent-color !important;
+            color: var(--text-contrast) !important;
         }
 
         .pagefind-ui__result-excerpt {
-            color: $dark-color !important;
+            color: var(--text-primary) !important;
         }
 
         .pagefind-ui__search-input,
         .pagefind-ui__search-clear {
-            background-color: $dark-background-secondary !important;
-            color: $dark-color !important;
-            border-color: $dark-border-color !important;
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-primary) !important;
         }
 
         .pagefind-ui__search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5) !important;
+            color: var(--text-secondary) !important;
             opacity: 1 !important;
         }
     }
     [data-theme=light] & {
-        background-color: $light-background;
-        color: $light-color;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
 
-        --pagefind-ui-primary: #{$light-accent-color};
-        --pagefind-ui-text: #{$light-color};
-        --pagefind-ui-background: #{$light-background};
-        --pagefind-ui-border: #{$light-border-color};
-        --pagefind-ui-tag: #{$light-background-secondary};
+        --pagefind-ui-primary: var(--accent-primary);
+        --pagefind-ui-text: var(--text-primary);
+        --pagefind-ui-background: var(--bg-primary);
+        --pagefind-ui-border: var(--border-primary);
+        --pagefind-ui-tag: var(--bg-secondary);
     }
 }
 
@@ -936,13 +885,13 @@ ul.icons {
     .node path,
     .node label-box,
     g.actor rect {
-        fill: #f5f5f5 !important;
-        stroke: $light-accent-color !important;
+        fill: var(--bg-secondary) !important;
+        stroke: var(--accent-primary) !important;
         stroke-width: 1.5px !important;
 
         [data-theme=dark] & {
-            fill: #1f2a35 !important;
-            stroke: $dark-accent-color !important;
+            fill: var(--bg-secondary) !important;
+            stroke: var(--accent-primary) !important;
         }
     }
 
@@ -1130,3 +1079,5 @@ figure img {
     max-width: 100%;
 }
 @import "webmentions";
+@import "theme-system";
+@import "chroma";

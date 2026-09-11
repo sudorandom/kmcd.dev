@@ -1,24 +1,13 @@
-.post-preview .post {
-    max-height: 26rem;
-    position: relative;
-    overflow: hidden;
+.post-preview .post,
+.post-preview .post-summary {
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
 }
-.post-preview .post::after {
-    content: '\00a0';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 3;
-    width: 100%;
-    text-align: center;
-    margin: 0;
-    padding-top: 16rem;
-    pointer-events: none;
-    background-image: linear-gradient(to bottom, rgba(40, 40, 40, 0), $light-background);
-    
-    [data-theme=dark] & {
-        background-image: linear-gradient(to bottom, rgba(40, 40, 40, 0), #161e26);
-    }
+.post-preview .post::after,
+.post-preview .post-summary::after {
+    display: none !important;
+    content: none !important;
 }
 
 .post-title, .post-meta {
@@ -379,11 +368,7 @@ ul.icons li a {
 
     &:hover:not(.disabled) {
       opacity: 1;
-      color: $light-accent-color;
-
-      [data-theme=dark] & {
-        color: $dark-accent-color;
-      }
+      color: var(--accent-primary);
     }
 
     &.disabled {
@@ -480,8 +465,7 @@ ul.icons li a {
 
         &.status-completed {
             .quest-marker {
-                color: #2dd4bf;
-                text-shadow: 0 0 6px rgba(45, 212, 191, 0.4);
+                color: var(--accent-primary);
             }
         }
 
@@ -528,7 +512,7 @@ ul.icons li a {
         }
 
         &.status-completed, &.status-active {
-            background: #2dd4bf;
+            background: var(--accent-primary);
             opacity: 0.4;
         }
     }
@@ -586,21 +570,12 @@ ul.icons li a {
   }
 
   .circuit-glow {
-    stroke: $dark-accent-color;
+    stroke: var(--accent-primary);
     stroke-width: 2px;
     fill: none;
-    filter: drop-shadow(0 0 4px rgba(45, 212, 191, 0.7));
 
     circle {
-      fill: $dark-accent-color;
-    }
-
-    [data-theme=light] & {
-      stroke: $light-accent-color;
-      filter: drop-shadow(0 0 4px rgba(0, 122, 120, 0.7));
-      circle {
-        fill: $light-accent-color;
-      }
+      fill: var(--accent-primary);
     }
   }
 }

@@ -22,20 +22,20 @@ details > summary {
         background-color: #ebecf0;
     }
     details > summary {
-        color: $light-accent-color;
+        color: var(--accent-primary);
     }
 }
 
 [data-theme=dark] {
     details {
-        background-color: #2c3a47;
-        border-color: #3b5065;
+        background-color: var(--bg-secondary);
+        border-color: var(--border-primary);
     }
     details:hover {
-        background-color: #324251;
+        background-color: var(--bg-tertiary);
     }
     details > summary {
-        color: $dark-accent-color;
+        color: var(--accent-primary);
     }
 }
 
@@ -69,18 +69,18 @@ details > summary {
 
 [data-theme=light] {
     .details-github-link {
-        color: #222; // $light-color
+        color: #222;
         &:hover {
-            color: $light-accent-color;
+            color: var(--accent-primary);
         }
     }
 }
 
 [data-theme=dark] {
     .details-github-link {
-        color: white; // $dark-color
+        color: white;
         &:hover {
-            color: #a2a2dd; // $dark-color-secondary
+            color: var(--accent-primary);
         }
     }
 }
@@ -93,14 +93,7 @@ details > summary {
   a {
     text-decoration: none;
 
-    [data-theme=light] & {
-      color: $light-accent-color;
-    }
-
-    [data-theme=dark] & {
-      color: $dark-accent-color;
-    }
-
+    color: var(--accent-primary);
     &:hover {
       text-decoration: underline;
     }
@@ -122,8 +115,8 @@ details > summary {
   }
 
   [data-theme=dark] & {
-    background-color: #1f2a35 !important;
-    border: 1px solid #3b5065 !important;
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-primary) !important;
   }
 
   hr {
@@ -160,11 +153,7 @@ details > summary {
 
     &:target {
       animation: highlight 3s ease-out;
-      background-color: rgba($light-accent-color, 0.1);
-
-      [data-theme=dark] & {
-        background-color: rgba(162, 162, 221, 0.15);
-      }
+      background-color: var(--badge-bg);
     }
 
     &::before {
@@ -174,12 +163,8 @@ details > summary {
       font-weight: 800;
       font-size: 1rem;
       font-family: monospace;
-      [data-theme=light] & {
-        color: $light-accent-color;
-      }
-      [data-theme=dark] & {
-        color: $dark-accent-color;
-      }    }
+      color: var(--accent-primary);
+    }
   }
 }
 
@@ -203,13 +188,7 @@ details > summary {
   align-items: center;
   font-size: 0.85rem;
   padding: 0 2px;
-
-  [data-theme=light] & {
-    color: $light-accent-color;
-  }
-  [data-theme=dark] & {
-    color: $dark-accent-color;
-  }
+  color: var(--accent-primary);
   &:hover {
     opacity: 0.8;
   }
@@ -219,10 +198,7 @@ details > summary {
   transform: translateY(-1px);
 }
 @keyframes highlight {
-  0% { background-color: rgba($light-accent-color, 0.3); }
-  [data-theme=dark] {
-    0% { background-color: rgba(162, 162, 221, 0.4); }
-  }
+  0% { background-color: var(--badge-bg); }
   100% { background-color: transparent; }
 }
 
@@ -290,24 +266,16 @@ details > summary {
   }
 
   [data-theme=dark] & {
-    background: linear-gradient(135deg, #1e293b, #151f28);
-    border-color: #334155;
-    color: $dark-color;
+    background: var(--bg-secondary);
+    border-color: var(--border-primary);
+    color: var(--text-primary);
   }
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     
-    [data-theme=light] & {
-      border-color: $light-accent-color;
-      background: linear-gradient(135deg, #ffffff, #f1f5f9);
-    }
-    
-    [data-theme=dark] & {
-      border-color: $dark-accent-color;
-      background: linear-gradient(135deg, #1e293b, #1e293b);
-    }
+    border-color: var(--accent-primary);
   }
 
   .github-repo-card-header {
@@ -347,14 +315,7 @@ details > summary {
     font-weight: 700;
     font-family: monospace;
     letter-spacing: -0.025em;
-
-    [data-theme=light] & {
-      color: $light-accent-color;
-    }
-
-    [data-theme=dark] & {
-      color: $dark-accent-color;
-    }
+    color: var(--accent-primary);
   }
 
   .github-repo-description {

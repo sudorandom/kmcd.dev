@@ -5,6 +5,7 @@ copyright: "All Rights Reserved"
 IsMultiLingual: false
 defaultContentLanguage: en
 enableGitInfo: true
+summaryLength: 90
 
 pagination:
   pagerSize: 50
@@ -130,7 +131,7 @@ markup:
     lineNoStart: 1
     lineNos: false
     lineNumbersInTable: true
-    noClasses: true
+    noClasses: false
     noHl: false
     style: nord
     tabWidth: 4

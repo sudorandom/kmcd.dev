@@ -250,30 +250,9 @@
   // Hover states
   &:hover {
     transform: translateY(-2px);
-    
-    [data-theme=dark] & {
-      border-color: $dark-accent-color;
-      box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
-      color: $dark-accent-color;
-    }
-    
-    [data-theme=light] & {
-      border-color: $light-accent-color;
-      box-shadow: 0 4px 15px rgba(0, 122, 120, 0.15);
-      color: $light-accent-color;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      border-color: $dark-accent-color;
-      box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
-      color: $dark-accent-color;
-    }
-
-    @media (prefers-color-scheme: light) {
-      border-color: $light-accent-color;
-      box-shadow: 0 4px 15px rgba(0, 122, 120, 0.15);
-      color: $light-accent-color;
-    }
+    border-color: var(--border-primary);
+    box-shadow: none;
+    color: var(--accent-primary);
   }
 
   &.next:hover .button__icon {

@@ -4,8 +4,8 @@ tags: ["typescript", "protobuf", "javascript"]
 date: "2026-09-09T10:00:00Z"
 title: "Comparing TypeScript Protobuf Libraries in 2026"
 description: "Benchmarking Protobuf-ES, ts-proto, protobuf.js, and google-protobuf in the browser reveals sharp trade-offs between speed, bundle size, and spec compliance."
-cover: "cover.png"
-images: ["/posts/protobuf-typescript/cover.png"]
+cover: "cover.svg"
+images: ["/posts/protobuf-typescript/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

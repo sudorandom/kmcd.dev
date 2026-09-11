@@ -1,0 +1,59 @@
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <a href="{{ .Site.BaseURL | relLangURL }}" class="site-brand">
+      <span>{{ .Site.Title }}</span>
+    </a>
+
+    <nav class="site-nav" id="site-nav">
+      <ul class="nav-links">
+        {{ $currentPage := . }}
+        {{ range .Site.Menus.main }}
+          {{ $menuURL := .URL | relLangURL }}
+          {{ $isActive := false }}
+          {{ if $currentPage.IsMenuCurrent "main" . }}
+            {{ $isActive = true }}
+          {{ else if $currentPage.HasMenuCurrent "main" . }}
+            {{ $isActive = true }}
+          {{ else if and (ne .Identifier "") (or (eq $currentPage.Section .Identifier) (eq $currentPage.Type .Identifier)) }}
+            {{ $isActive = true }}
+          {{ else if eq $currentPage.RelPermalink $menuURL }}
+            {{ $isActive = true }}
+          {{ else if and (ne $menuURL "/") (hasPrefix $currentPage.RelPermalink $menuURL) }}
+            {{ $isActive = true }}
+          {{ end }}
+          <li>
+            <a href="{{ $menuURL }}" class="{{ if $isActive }}active{{ end }}">
+              {{ .Name }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="social-links hide-on-phone">
+        <a href="https://github.com/sudorandom" target="_blank" rel="noopener" title="GitHub">github</a>
+        <span class="action-sep">|</span>
+        <a href="https://bsky.app/profile/kmcd.dev" target="_blank" rel="noopener" title="Bluesky">bluesky</a>
+        <span class="action-sep">|</span>
+        <a href="{{ "posts/index.xml" | absLangURL }}" target="_blank" title="RSS Feed">rss</a>
+      </div>
+
+      <div class="theme-control-capsule not-selectable">
+        {{ partial "palette-switcher.html" . }}
+        <span class="theme-capsule-divider" aria-hidden="true"></span>
+        <button type="button" class="theme-toggle theme-toggle-btn not-selectable" aria-label="Toggle Light and Dark Mode" title="Toggle Light / Dark Mode">
+          {{ partial "theme-toggle-icon.html" . }}
+        </button>
+      </div>
+
+      <button class="mobile-menu-trigger hide-on-desktop not-selectable" id="mobile-menu-trigger" aria-label="Toggle Navigation">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>

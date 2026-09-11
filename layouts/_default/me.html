@@ -1,188 +1,441 @@
 {{ define "main" }}
 
-<main class="post">
-    <article>
-        {{if not .Params.hideTitle }}
-        <h1 class="post-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a
-                href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
-        {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
-        {{ end }}
-        <span id="personal">
-            <h2>Personal</h2>
-        </span>
-        <div class="main-wrapper">
-            <div class="main-box main-box">
-                <figure style="float:left;padding:10px;">
-                    {{ $meimg := (resources.Get "images/me.png").Resize "300x webp" }}
-                    <img src="{{ $meimg.Permalink }}" style="border-radius:10px;" width="$meimg.Width"
-                        height="$meimg.Width" alt="Me, Kevin McDonald" />
-                </figure>
-                <p>
-                    Hello! My name is <strong>Kevin McDonald</strong>. I am a <strong>software engineer</strong> living
-                    in Copenhagen.
-                </p>
+<div class="post-layout-wrapper">
+  <main class="layout-split">
+    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
+    <aside class="tree-nav">
+      <div class="toc-title">Contents</div>
+      <nav class="tree-nav-content">
+        <ul>
+          <li><a href="#personal">Personal</a></li>
+          <li><a href="#professional">Professional</a></li>
+          <li><a href="#social">Social</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#support">Support Me</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-                <p>
-                    Having grown up in <strong>Texas</strong>, mostly around the DFW area, I now find myself living in
-                    the beautiful city of <strong>Copenhagen, Denmark</strong>. In 2021, my wife and I decided to embark
-                    on this adventure to raise our daughter and embrace a new way of living. As a part of this new life,
-                    I've taken up cycling as my main mode of transportation (I don't even own a car!), and I'm even
-                    learning Danish. My daughter attends a Danish kindergarten and is growing up bilingual. At this
-                    point she identifies more as Danish than American. This journey has been difficult at times but it
-                    has also been incredibly rewarding.
-                </p>
+    <!-- MAIN ARTICLE COLUMN -->
+    <article class="post-container me-container">
 
-                <p>
-                    Video games used to be a big part of how I spent my free time. I got really into Halo/Halo 2 in high
-                    school, World of Warcraft in college and Eve Online in my 20s (see the Evepraisal project below).
-                    Now-a-days I really only play casual games, usually roguelikes, but the interest is still there. I
-                    just don't have the time!
-                </p>
+      <!-- PAGE HEADER -->
+      <div class="post-header me-page-header">
+        <h1 class="post-title-text">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}<a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
+        {{ with .Params.Subtitle }}<div class="post-lead">{{ . }}</div>{{ end }}
 
-                <p>
-                    I read Sci-Fi and fantasy books, usually in audiobook form. I sometimes read non-fiction on topics
-                    like popular science and software engineering.
-                </p>
+        <div class="me-identity-badges">
+          <span class="me-badge me-badge-highlight"><i class="fa-solid fa-terminal"></i> DevRel @ Buf</span>
+          <span class="me-badge me-badge-highlight"><i class="fa-solid fa-code"></i> Protobuf &bull; ConnectRPC &bull; Go</span>
+          <span class="me-badge"><i class="fa-solid fa-location-dot"></i> Copenhagen, Denmark</span>
+          <span class="me-badge"><i class="fa-brands fa-apple"></i> ex-Apple</span>
+          <span class="me-badge"><i class="fa-solid fa-bicycle"></i> Cyclist</span>
+        </div>
+      </div>
+
+      <!-- PERSONAL SECTION -->
+      <section class="me-section">
+        <h2 id="personal" class="me-section-heading"><i class="fa-solid fa-user"></i> Personal</h2>
+
+        <div class="me-card">
+          <div class="me-personal-layout">
+            {{ $meimg := (resources.Get "images/me.png").Resize "600x webp" }}
+            {{ if $meimg }}
+            <div class="me-personal-photo">
+              <img src="{{ $meimg.Permalink }}" 
+                   alt="Kevin McDonald" 
+                   width="{{ $meimg.Width }}" 
+                   height="{{ $meimg.Height }}" 
+                   style="aspect-ratio: {{ $meimg.Width }} / {{ $meimg.Height }};"
+                   fetchpriority="high"
+                   decoding="async" />
             </div>
+            {{ end }}
+            <div class="me-personal-bio">
+              <p>
+                Hello! My name is <strong>Kevin McDonald</strong>. I am a <strong>software engineer</strong> living in Copenhagen.
+              </p>
+              <p>
+                Having grown up in <strong>Texas</strong>, mostly around the DFW area, I now find myself living in the beautiful city of <strong>Copenhagen, Denmark</strong>. In 2021, my wife and I decided to embark on this adventure to raise our daughter and embrace a new way of living. As a part of this new life, I've taken up cycling as my main mode of transportation (I don't even own a car!), and I'm even learning Danish. My daughter attends a Danish kindergarten and is growing up bilingual. At this point she identifies more as Danish than American. This journey has been difficult at times but it has also been incredibly rewarding.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            Video games used to be a big part of how I spent my free time. I got really into Halo/Halo 2 in high school, World of Warcraft in college and Eve Online in my 20s (see the Evepraisal project on my stuff page). Now-a-days I really only play casual games, usually roguelikes, but the interest is still there. I just don't have the time!
+          </p>
+
+          <p>
+            I read Sci-Fi and fantasy books, usually in audiobook form. I sometimes read non-fiction on topics like popular science and software engineering.
+          </p>
+        </div>
+      </section>
+
+      <!-- PROFESSIONAL SECTION -->
+      <section class="me-section">
+        <h2 id="professional" class="me-section-heading"><i class="fa-solid fa-briefcase"></i> Professional</h2>
+
+        <!-- Career Highlights Timeline -->
+        <div class="me-timeline">
+          <!-- Buf -->
+          <div class="me-timeline-item me-timeline-item-featured">
+            <div class="me-timeline-main">
+              <div class="me-timeline-header">
+                <span class="me-timeline-company"><a href="https://buf.build/" target="_blank" rel="noopener">Buf Technologies</a></span>
+                <span class="me-timeline-badge me-timeline-current"><i class="fa-solid fa-bolt"></i> Current</span>
+              </div>
+              <div class="me-timeline-role">Developer Relations (DevRel) &bull; Copenhagen, Denmark (Remote)</div>
+              <p class="me-timeline-desc">
+                Advocating for schema-first API development, Protobuf, and ConnectRPC. Creating educational resources like <a href="https://protobuf.com" target="_blank" rel="noopener">protobuf.com</a> (with in-browser WebAssembly Protobuf runtime), authoring technical articles on the <a href="https://buf.build/blog" target="_blank" rel="noopener">Buf blog</a>, and building open-source tooling across the Protobuf ecosystem.
+              </p>
+            </div>
+          </div>
+
+          <!-- SYBO -->
+          <div class="me-timeline-item">
+            <div class="me-timeline-main">
+              <div class="me-timeline-header">
+                <span class="me-timeline-company"><a href="https://sybogames.com" target="_blank" rel="noopener">SYBO</a></span>
+                <span class="me-timeline-badge">Alum</span>
+              </div>
+              <div class="me-timeline-role">Backend Engineer &bull; Copenhagen, Denmark</div>
+              <p class="me-timeline-desc">
+                Engineered high-throughput backend services and player data infrastructure for Subway Surfers. Built internal developer tools, evaluated API attack surfaces, developed proof-of-concept exploits to secure player systems, and championed cybersecurity practices.
+              </p>
+            </div>
+          </div>
+
+          <!-- Apple -->
+          <div class="me-timeline-item">
+            <div class="me-timeline-main">
+              <div class="me-timeline-header">
+                <span class="me-timeline-company"><a href="https://www.apple.com" target="_blank" rel="noopener">Apple</a></span>
+                <span class="me-timeline-badge">Alum</span>
+              </div>
+              <div class="me-timeline-role">Systems &amp; Tools Engineer</div>
+              <p class="me-timeline-desc">
+                Focused on distributed internal developer tools, test automation infrastructure, and system reliability across large-scale engineering operations.
+              </p>
+            </div>
+            {{ $appleBadge := $.Page.Resources.GetMatch "apple_badge.jpg" }}
+            {{ if $appleBadge }}
+            {{ $appleBadgeResized := $appleBadge.Resize "240x webp" }}
+            <div class="me-timeline-thumb">
+              <img src="{{ $appleBadgeResized.Permalink }}" 
+                   alt="Apple Badge" 
+                   width="{{ $appleBadgeResized.Width }}" 
+                   height="{{ $appleBadgeResized.Height }}" 
+                   style="aspect-ratio: {{ $appleBadgeResized.Width }} / {{ $appleBadgeResized.Height }};"
+                   decoding="async" />
+              <span class="me-timeline-thumb-caption">Apple Badge</span>
+            </div>
+            {{ end }}
+          </div>
+
+          <!-- SoftLayer / IBM -->
+          <div class="me-timeline-item">
+            <div class="me-timeline-main">
+              <div class="me-timeline-header">
+                <span class="me-timeline-company"><a href="https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer" target="_blank" rel="noopener">SoftLayer / IBM Cloud</a></span>
+                <span class="me-timeline-badge">Alum</span>
+              </div>
+              <div class="me-timeline-role">Backend Engineer &amp; SDK Lead</div>
+              <p class="me-timeline-desc">
+                Architected cloud object storage systems (OpenStack Swift), high-throughput network polling pipelines, and metrics infrastructure. Authored and maintained the official <code>softlayer-python</code> SDK/CLI and built <code>swftp</code> (an FTP/SFTP gateway for OpenStack Swift built with Twisted Python).
+              </p>
+            </div>
+          </div>
         </div>
 
-        <span id="professional">
-            <h2>Professional</h2>
-        </span>
-        <div class="main-wrapper">
-            <div class="main-box main-box">
-                <figure style="float:right;padding:10px;">
-                    {{ $appleBadgeImg := ($.Page.Resources.GetMatch "apple_badge.jpg").Resize "200x webp" }}
-                    <img src="{{ $appleBadgeImg.Permalink }}" style="border-radius:10px;" width="$appleBadgeImg.Width"
-                        height="$appleBadgeImg.Width" alt="Apple Badge" />
-                </figure>
-                <p>
-                    I previously worked for <a href="https://www.apple.com" target="_blank">Apple</a> and <a
-                        href="https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer">SoftLayer</a> (before and after IBM). I
-                    currently work for <a href="https://sybogames.com">SYBO</a>. If you want the full details of my work
-                    history, see my <a href="https://www.linkedin.com/in/sudorandom/" target="_blank">profile on
-                        linkedin</a>.
-                </p>
-                <p>
-                    I began my career pursuing "full stack" but now I am solidly a backend engineer. I have gravitated
-                    more towards backend systems, and specifically internal tools. However, I have a wide variety of
-                    experiences. I have been the primary developer for several public-facing products. I have delved
-                    into data engineering with designing ETL pipelines, network pollers, and metric systems. I've
-                    developed insights that have made measurable impacts on product design and has directly led to
-                    saving and earning millions of dollars monthly. I have also dipped my toe into cybersecurity by
-                    looking at the attack surface of my current company's APIs and developed reasonable exploits and
-                    proof of concepts to demonstrate the need to focus on this topic more. This has directly lead to
-                    fixing those particular exploits, more attention to security best practices and was a piece of
-                    evidence for creating a real cybersecurity team at that company.
-                </p>
-                <p>
-                    I tend to get interested in network protocols and dissecting how they work. I have dived deep into
-                    gRPC, SNMP, HTTP/2, gNMI, NETCONF and TL1. I don't see myself stopping any time soon with this. My
-                    current working programming language is <strong>Go</strong>, but I have previously worked with
-                    <strong>Elixir, Clojure, Python, Java, and PHP</strong> as my working programming language in the
-                    past.
-                </p>
-            </div>
-        </div>
+        <div class="me-card">
+          <p>
+            I previously worked for <a href="https://www.apple.com" target="_blank" rel="noopener">Apple</a>, <a href="https://en.wikipedia.org/wiki/IBM_Cloud#SoftLayer" target="_blank" rel="noopener">SoftLayer</a> (before and after IBM), and <a href="https://sybogames.com" target="_blank" rel="noopener">SYBO</a>. I currently work in Developer Relations for <a href="https://buf.build/" target="_blank" rel="noopener">Buf Technologies</a>, helping developers build schema-first APIs with Protobuf and ConnectRPC. If you want the full details of my career history, view my complete profile on <a href="https://www.linkedin.com/in/sudorandom/" target="_blank" rel="noopener">LinkedIn <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px;"></i></a>.
+          </p>
 
-        {{- with .Site.Params.social }}
-        <span id="social">
-            <h2>Social</h2>
-        </span>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <p>
-                    You can find me at the following places! Feel free to shoot me a message!
-                <ul>
-                    {{ range . -}}
-                    {{ $url := .url | urls.Parse -}}
-                    <li>
-                        <a href="{{ .url }}" target="_blank" rel="me" title="{{ .name | humanize }}">{{ $url.Host }}{{
-                            $url.Path }}</a>
-                    </li>
-                    {{- end -}}
-                </ul>
-                </p>
-                <p>
-                    My online alias is <strong><code>sudorandom</code></strong>. The username "sudorandom" is, of course
-                    a pun. It mixes "sudo" (which gives a single linux command super user privileges) with
-                    "pseudorandom" like things that seem unpredictable but are computer-made, so they follow strict
-                    rules.
-                </p>
-            </div>
-        </div>
-        {{- end }}
+          <p>
+            I began my career pursuing "full stack" but now I am solidly a backend engineer. I have gravitated towards backend systems, distributed architectures, and specifically developer tooling. I've been the primary developer for several public-facing products and internal platforms. I've delved into data engineering—designing high-scale ETL pipelines, network pollers, and metric collection systems. Along the way, I've tracked down bugs and developed insights that directly led to saving and earning millions of dollars monthly.
+          </p>
 
-        <span id="support">
-            <h2>Projects</h2>
-        </span>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <p>
-                    The list of my projects (old and ongoing) can be found on my <a href="/stuff/">stuff page</a>.
-                </p>
-            </div>
-        </div>
+          <p>
+            I have also dipped my toes into cybersecurity by evaluating API attack surfaces, developing exploits and proof-of-concept demonstrations to highlight vulnerabilities. This directly led to remediating exploits, elevating organizational focus on security best practices, and helping establish dedicated security functions.
+          </p>
 
-        <span id="support">
-            <h2>Support Me</h2>
-        </span>
-        <div class="projects-wrapper">
-            <div class="projects-box">
-                <p>
-                    Here is what I have available on <a
-                        href="https://displate.com/artsysquirrrels/computer-generated?art=5dd499109f9ea">displate.com</a>.
-                    They sell metal posters that you can hang on your wall using magnets, which makes it easy to switch
-                    them out to keep your walls looking fresh. Consider buying one of mine for your home! Or at least
-                    using my affiliate link to order other posters from displate: <a
-                        href="http://displate.com/?art=5dd499109f9ea">displate.com/?art=5dd499109f9ea</a>
-                </p>
+          <p>
+            I have a deep curiosity for network protocols and dissecting how they work under the hood. I have dived deep into gRPC, ConnectRPC, Protobuf, OpenAPI, WebTransport, HTTP/2, HTTP/3, QUIC, BGP, gNMI, YANG, NETCONF, SNMP, and TL1—even maintaining forks of Go to support legacy network hardware and obscure TLS extensions. My current primary programming language is <strong>Go</strong>, but I work extensively with <strong>TypeScript, Rust, Python, WebAssembly, Elixir, Clojure, Java, and PHP</strong>.
+          </p>
 
-                <div id="macy-container">
-                    <div class="grid-item">
-                        <a href="https://displate.com/displate/6788735?art=5dd499109f9ea" target="_blank">
-                            {{ partial "bigimg.html" (dict "page" . "src" "displate_nocountrylines_geo-mercator.webp"
-                            "alt" "Map of the Internet (no country lines)") }}
-                        </a>
-                    </div>
-                    <div class="grid-item">
-                        <a href="https://displate.com/displate/6785800?art=5dd499109f9ea" target="_blank">
-                            {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator-2.webp" "alt" "Map of the Internet") }}
-                        </a>
-                    </div>
-                    <div class="grid-item">
-                        <a href="https://displate.com/displate/5622874?art=5dd499109f9ea" target="_blank">
-                            {{ partial "bigimg.html" (dict "page" . "src" "displate_sun-spectrum-visible-fade.webp"
-                            "alt" "Spectrum of the sun") }}
-                        </a>
-                    </div>
-                    <div class="grid-item">
-                        <a href="https://displate.com/displate/5703123?art=5dd499109f9ea" target="_blank">
-                            {{ partial "bigimg.html" (dict "page" . "src" "displate_geo-mercator.webp" "alt" "Map of the Internet (underwater cables)") }}
-                        </a>
-                    </div>
-                    <div class="grid-item">
-                        <a href="https://displate.com/displate/4635891?art=5dd499109f9ea" target="_blank">
-                            {{ partial "bigimg.html" (dict "page" . "src" "displate_random-hex.webp" "alt" "Random spelled out in hexadecimal") }}
-                        </a>
-                    </div>
-                </div>
+          <!-- Technical Skills Matrix -->
+          <div class="me-skills-matrix">
+            <div class="me-skills-group">
+              <div class="me-skills-title"><i class="fa-solid fa-code"></i> APIs &amp; Schemas</div>
+              <div class="me-skills-chips">
+                <span class="me-chip me-chip-highlight">Protobuf</span>
+                <span class="me-chip me-chip-highlight">ConnectRPC</span>
+                <span class="me-chip me-chip-highlight">gRPC</span>
+                <span class="me-chip">OpenAPI</span>
+                <span class="me-chip">Schema-First APIs</span>
+                <span class="me-chip">protoc Plugins</span>
+                <span class="me-chip">protovalidate &amp; CEL</span>
+                <span class="me-chip">ProtoJSON</span>
+              </div>
             </div>
+
+            <div class="me-skills-group">
+              <div class="me-skills-title"><i class="fa-solid fa-terminal"></i> Languages</div>
+              <div class="me-skills-chips">
+                <span class="me-chip me-chip-highlight">Go (Primary)</span>
+                <span class="me-chip">TypeScript</span>
+                <span class="me-chip">Rust</span>
+                <span class="me-chip">Python</span>
+                <span class="me-chip">WebAssembly (WASM)</span>
+                <span class="me-chip">Elixir</span>
+                <span class="me-chip">Clojure</span>
+                <span class="me-chip">Java</span>
+                <span class="me-chip">PHP</span>
+                <span class="me-chip">SQL</span>
+              </div>
+            </div>
+
+            <div class="me-skills-group">
+              <div class="me-skills-title"><i class="fa-solid fa-network-wired"></i> Protocols &amp; Networking</div>
+              <div class="me-skills-chips">
+                <span class="me-chip">BGP</span>
+                <span class="me-chip">HTTP/2 &amp; HTTP/3</span>
+                <span class="me-chip">QUIC &amp; WebTransport</span>
+                <span class="me-chip">gNMI</span>
+                <span class="me-chip">YANG</span>
+                <span class="me-chip">NETCONF</span>
+                <span class="me-chip">SNMP</span>
+                <span class="me-chip">TL1</span>
+                <span class="me-chip">RPKI</span>
+              </div>
+            </div>
+
+            <div class="me-skills-group">
+              <div class="me-skills-title"><i class="fa-solid fa-layer-group"></i> Architecture &amp; Focus</div>
+              <div class="me-skills-chips">
+                <span class="me-chip me-chip-highlight">Developer Relations</span>
+                <span class="me-chip">Internal Dev Tooling</span>
+                <span class="me-chip">Distributed Systems</span>
+                <span class="me-chip">Cloud Object Storage</span>
+                <span class="me-chip">ETL Pipelines &amp; Polling</span>
+                <span class="me-chip">API Security &amp; PoCs</span>
+                <span class="me-chip">High-Concurrency Game Backends</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <!-- SOCIAL SECTION -->
+      <section class="me-section">
+        <h2 id="social" class="me-section-heading"><i class="fa-solid fa-comments"></i> Social</h2>
+
+        <div class="me-card">
+          <p>
+            You can find me at the following places! Feel free to shoot me a message:
+          </p>
+
+          <div class="me-social-grid">
+            <a href="https://github.com/sudorandom" target="_blank" rel="me noopener" class="me-social-card" title="GitHub">
+              <i class="fa-brands fa-github"></i>
+              <div class="me-social-info">
+                <div class="me-social-name">GitHub</div>
+                <div class="me-social-handle">@sudorandom</div>
+              </div>
+              <span class="me-social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+
+            <a href="https://bsky.app/profile/kmcd.dev" target="_blank" rel="me noopener" class="me-social-card" title="Bluesky">
+              <i class="fa-brands fa-bluesky"></i>
+              <div class="me-social-info">
+                <div class="me-social-name">Bluesky</div>
+                <div class="me-social-handle">@kmcd.dev</div>
+              </div>
+              <span class="me-social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+
+            <a href="https://infosec.exchange/@sudorandom" target="_blank" rel="me noopener" class="me-social-card" title="Mastodon">
+              <i class="fa-brands fa-mastodon"></i>
+              <div class="me-social-info">
+                <div class="me-social-name">Mastodon</div>
+                <div class="me-social-handle">@sudorandom</div>
+              </div>
+              <span class="me-social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+
+            <a href="https://linkedin.com/in/sudorandom" target="_blank" rel="me noopener" class="me-social-card" title="LinkedIn">
+              <i class="fa-brands fa-linkedin"></i>
+              <div class="me-social-info">
+                <div class="me-social-name">LinkedIn</div>
+                <div class="me-social-handle">in/sudorandom</div>
+              </div>
+              <span class="me-social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+
+            <a href="/index.xml" target="_blank" class="me-social-card" title="RSS Feed">
+              <i class="fa-solid fa-rss"></i>
+              <div class="me-social-info">
+                <div class="me-social-name">RSS Feed</div>
+                <div class="me-social-handle">kmcd.dev/feed</div>
+              </div>
+              <span class="me-social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+            </a>
+          </div>
+
+          <div class="me-callout">
+            <i class="fa-solid fa-terminal"></i>
+            <p>
+              My online alias is <strong><code>sudorandom</code></strong>. The username "sudorandom" is, of course, a pun. It mixes "sudo" (which gives a single Linux command superuser privileges) with "pseudorandom" (things that seem unpredictable but are computer-generated, following strict rules).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS SECTION -->
+      <section class="me-section">
+        <h2 id="projects" class="me-section-heading"><i class="fa-solid fa-laptop-code"></i> Projects</h2>
+
+        <div class="me-card">
+          <p>
+            The comprehensive list of all my software projects, interactive tools, and experiments (both ongoing and completed) lives on my <a href="/stuff/">stuff page</a>.
+          </p>
+
+          <a href="/stuff/" class="me-all-projects-cta">
+            <span class="me-cta-text">
+              <i class="fa-solid fa-boxes-stacked"></i> Browse all projects and tools on /stuff/
+            </span>
+            <span class="me-cta-arrow">
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <!-- SUPPORT ME & DISPLATE POSTERS -->
+      <section class="me-section">
+        <h2 id="support" class="me-section-heading"><i class="fa-solid fa-heart"></i> Support Me</h2>
+
+        <div class="me-card">
+          <p>
+            Here is what I have available on <a href="https://displate.com/artsysquirrrels/computer-generated?art=5dd499109f9ea" target="_blank" rel="noopener">displate.com</a>. They sell metal posters that you can hang on your wall using magnets, which makes it easy to switch them out to keep your walls looking fresh. Consider buying one of mine for your home! Or at least using my affiliate link to order other posters from Displate: <a href="http://displate.com/?art=5dd499109f9ea" target="_blank" rel="noopener">displate.com/?art=5dd499109f9ea</a>
+          </p>
+
+          <div class="me-displate-grid">
+            <!-- Poster 1 -->
+            {{ $p1 := $.Page.Resources.GetMatch "displate_nocountrylines_geo-mercator.webp" }}
+            {{ if $p1 }}
+            {{ $p1r := $p1.Resize "480x webp" }}
+            <a href="https://displate.com/displate/6788735?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+              <div class="me-displate-media">
+                <span class="me-displate-badge">Metal Poster</span>
+                <img src="{{ $p1r.Permalink }}" 
+                     alt="Map of the Internet (no country lines)" 
+                     class="me-displate-img" 
+                     width="{{ $p1r.Width }}" 
+                     height="{{ $p1r.Height }}" 
+                     style="aspect-ratio: {{ $p1r.Width }} / {{ $p1r.Height }};"
+                     decoding="async" />
+              </div>
+              <div class="me-displate-footer">
+                <span class="me-displate-title">Map of the Internet (no country lines)</span>
+                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </div>
+            </a>
+            {{ end }}
+
+            <!-- Poster 2 -->
+            {{ $p2 := $.Page.Resources.GetMatch "displate_geo-mercator-2.webp" }}
+            {{ if $p2 }}
+            {{ $p2r := $p2.Resize "480x webp" }}
+            <a href="https://displate.com/displate/6785800?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+              <div class="me-displate-media">
+                <span class="me-displate-badge">Metal Poster</span>
+                <img src="{{ $p2r.Permalink }}" 
+                     alt="Map of the Internet" 
+                     class="me-displate-img" 
+                     width="{{ $p2r.Width }}" 
+                     height="{{ $p2r.Height }}" 
+                     style="aspect-ratio: {{ $p2r.Width }} / {{ $p2r.Height }};"
+                     decoding="async" />
+              </div>
+              <div class="me-displate-footer">
+                <span class="me-displate-title">Map of the Internet</span>
+                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </div>
+            </a>
+            {{ end }}
+
+            <!-- Poster 3 -->
+            {{ $p3 := $.Page.Resources.GetMatch "displate_sun-spectrum-visible-fade.webp" }}
+            {{ if $p3 }}
+            {{ $p3r := $p3.Resize "480x webp" }}
+            <a href="https://displate.com/displate/5622874?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+              <div class="me-displate-media">
+                <span class="me-displate-badge">Metal Poster</span>
+                <img src="{{ $p3r.Permalink }}" 
+                     alt="Spectrum of the sun" 
+                     class="me-displate-img" 
+                     width="{{ $p3r.Width }}" 
+                     height="{{ $p3r.Height }}" 
+                     style="aspect-ratio: {{ $p3r.Width }} / {{ $p3r.Height }};"
+                     decoding="async" />
+              </div>
+              <div class="me-displate-footer">
+                <span class="me-displate-title">Spectrum of the Sun</span>
+                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </div>
+            </a>
+            {{ end }}
+
+            <!-- Poster 4 -->
+            {{ $p4 := $.Page.Resources.GetMatch "displate_geo-mercator.webp" }}
+            {{ if $p4 }}
+            {{ $p4r := $p4.Resize "480x webp" }}
+            <a href="https://displate.com/displate/5703123?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+              <div class="me-displate-media">
+                <span class="me-displate-badge">Metal Poster</span>
+                <img src="{{ $p4r.Permalink }}" 
+                     alt="Map of the Internet (underwater cables)" 
+                     class="me-displate-img" 
+                     width="{{ $p4r.Width }}" 
+                     height="{{ $p4r.Height }}" 
+                     style="aspect-ratio: {{ $p4r.Width }} / {{ $p4r.Height }};"
+                     decoding="async" />
+              </div>
+              <div class="me-displate-footer">
+                <span class="me-displate-title">Map of the Internet (underwater cables)</span>
+                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </div>
+            </a>
+            {{ end }}
+
+            <!-- Poster 5 -->
+            {{ $p5 := $.Page.Resources.GetMatch "displate_random-hex.webp" }}
+            {{ if $p5 }}
+            {{ $p5r := $p5.Resize "480x webp" }}
+            <a href="https://displate.com/displate/4635891?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+              <div class="me-displate-media">
+                <span class="me-displate-badge">Metal Poster</span>
+                <img src="{{ $p5r.Permalink }}" 
+                     alt="Random spelled out in hexadecimal" 
+                     class="me-displate-img" 
+                     width="{{ $p5r.Width }}" 
+                     height="{{ $p5r.Height }}" 
+                     style="aspect-ratio: {{ $p5r.Width }} / {{ $p5r.Height }};"
+                     decoding="async" />
+              </div>
+              <div class="me-displate-footer">
+                <span class="me-displate-title">Random in Hexadecimal</span>
+                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+              </div>
+            </a>
+            {{ end }}
+          </div>
+        </div>
+      </section>
+
     </article>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/macy@2"></script>
-<script defer>
-    (function () {
-        var macy = Macy({
-            container: '#macy-container',
-            trueOrder: false,
-            waitForImages: false,
-            margin: 10,
-            columns: 3
-        });
-    })();
-</script>
-</main>
+  </main>
+</div>
 {{ end }}

@@ -35,7 +35,7 @@ $media-size-laptop: "(max-width: 1200px)";
 /* Content */
 $max-width: 860px;
 
-/* Primary color */
-$primary-color: #007a78;
-$light-accent-color: #007a78;
-$dark-accent-color: #2dd4bf;
+/* Primary & accent color fallbacks */
+$primary-color: #71717a;
+$light-accent-color: #18181b;
+$dark-accent-color: #f4f4f5;

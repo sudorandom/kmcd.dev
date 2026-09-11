@@ -1,438 +1,115 @@
 {{ define "main" }}
-  <main class="post">
-    <div style="position: relative;">
-        <!-- Custom Minimap setup -->
-        <style>
-            #minimap {
-                position: fixed;
-                top: 0;
-                right: 0;
-                width: 100px;
-                height: 100%;
-                z-index: 999;
-                background: transparent;
-                border-left: 1px solid rgba(150, 150, 150, 0.1);
-                opacity: 0.6;
-                transition: opacity 0.2s, background-color 0.2s;
-                cursor: pointer;
-                user-select: none;
-                -webkit-user-select: none;
-            }
-            #minimap:hover {
-                opacity: 1.0;
-                background: rgba(150, 150, 150, 0.05);
-            }
-            @media (min-width: 1700px) {
-                #minimap {
-                    left: calc(19rem + 75rem + 2rem);
-                    right: auto;
-                }
-            }
-            @media (min-width: 2100px) {
-                #minimap {
-                    left: calc(19rem + 90rem + 2rem);
-                    right: auto;
-                }
-            }
-        </style>
-        <div id="minimap" class="hide-on-phone hide-on-tablet hide-on-laptop">
-            <canvas id="minimap-canvas" style="display: block; width: 100%; height: 100%;"></canvas>
-        </div>
-        <script>
-            window.addEventListener('load', function() {
-                var content = document.querySelector('main.post');
-                if (!content) return;
-                
-                var minimap = document.getElementById('minimap');
-                var canvas = document.getElementById('minimap-canvas');
-                var ctx = canvas.getContext('2d');
-                
-                var cachedElements = [];
-                var lastContentHeight = 0;
-                var currentScale = 1;
-                var currentMinimapScrollY = 0;
-                
-                function updateElementsCache() {
-                    cachedElements = [];
-                    var contentRect = content.getBoundingClientRect();
-                    var contentLeft = contentRect.left + window.scrollX;
-                    
-                    var selectors = [
-                        { selector: 'p, li, blockquote, table, pre code', type: 'text' },
-                        { selector: 'pre', type: 'block' },
-                        { selector: 'h1, h2, h3, h4, h5, h6', type: 'heading' },
-                        { selector: 'img, svg, canvas', type: 'media' }
-                    ];
-                    
-                    for (var s = 0; s < selectors.length; s++) {
-                        var sel = selectors[s];
-                        var elements = content.querySelectorAll(sel.selector);
-                        for (var i = 0; i < elements.length; i++) {
-                            var el = elements[i];
-                            if (el.id === 'minimap' || el.closest('#minimap')) continue;
-                            
-                            var rect = el.getBoundingClientRect();
-                            if (rect.height === 0 || rect.width === 0) continue;
-                            
-                            cachedElements.push({
-                                top: rect.top + window.scrollY,
-                                left: rect.left + window.scrollX,
-                                width: rect.width,
-                                height: rect.height,
-                                type: sel.type
-                            });
-                        }
-                    }
-                    lastContentHeight = content.clientHeight;
-                }
-                
-                function draw() {
-                    var clientWidth = canvas.clientWidth;
-                    var clientHeight = canvas.clientHeight;
-                    if (clientWidth === 0 || clientHeight === 0) return;
-                    
-                    var dpr = window.devicePixelRatio || 1;
-                    if (canvas.width !== clientWidth * dpr || canvas.height !== clientHeight * dpr) {
-                        canvas.width = clientWidth * dpr;
-                        canvas.height = clientHeight * dpr;
-                    }
-                    
-                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                    ctx.clearRect(0, 0, clientWidth, clientHeight);
-                    
-                    var documentHeight = document.documentElement.scrollHeight;
-                    var windowHeight = window.innerHeight;
-                    var scrollY = window.scrollY;
-                    
-                    var contentRect = content.getBoundingClientRect();
-                    var contentWidth = contentRect.width;
-                    var contentLeft = contentRect.left + window.scrollX;
-                    
-                    var scale = clientWidth / contentWidth;
-                    currentScale = scale;
-                    var scaledHeight = documentHeight * scale;
-                    
-                    var minimapScrollY = 0;
-                    if (scaledHeight > clientHeight) {
-                        var scrollPercent = scrollY / (documentHeight - windowHeight);
-                        if (isNaN(scrollPercent)) scrollPercent = 0;
-                        if (scrollPercent > 1) scrollPercent = 1;
-                        if (scrollPercent < 0) scrollPercent = 0;
-                        minimapScrollY = scrollPercent * (scaledHeight - clientHeight);
-                    }
-                    currentMinimapScrollY = minimapScrollY;
-                    
-                    var theme = document.documentElement.getAttribute('data-theme');
-                    var isDarkMode = theme === 'dark' || 
-                                     (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                    
-                    var textCol = isDarkMode ? 'rgba(255, 255, 255, 0.15)' : '#d0d0d0';
-                    var blockCol = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : '#e5e5e5';
-                    var headingCol = isDarkMode ? 'rgba(45, 212, 191, 0.7)' : 'rgba(0, 122, 120, 0.6)';
-                    var mediaCol = isDarkMode ? 'rgba(129, 140, 248, 0.4)' : 'rgba(79, 70, 229, 0.35)';
-                    
-                    // Draw elements from cache
-                    for (var i = 0; i < cachedElements.length; i++) {
-                        var el = cachedElements[i];
-                        var x = (el.left - contentLeft) * scale;
-                        var y = el.top * scale - minimapScrollY;
-                        var w = el.width * scale;
-                        var h = el.height * scale;
-                        
-                        if (el.type === 'text') ctx.fillStyle = textCol;
-                        else if (el.type === 'block') ctx.fillStyle = blockCol;
-                        else if (el.type === 'heading') ctx.fillStyle = headingCol;
-                        else if (el.type === 'media') ctx.fillStyle = mediaCol;
-                        
-                        ctx.fillRect(x, y, w, h);
-                    }
-                    
-                    // Draw viewport indicator (slider)
-                    var viewportTop = scrollY * scale - minimapScrollY;
-                    var viewportHeight = windowHeight * scale;
-                    
-                    // Viewport highlight
-                    ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)';
-                    ctx.fillRect(0, viewportTop, clientWidth, viewportHeight);
-                    
-                    // Viewport borders
-                    ctx.strokeStyle = isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(0.5, viewportTop, clientWidth - 1, viewportHeight);
-                }
-                
-                updateElementsCache();
-                draw();
-                
-                if (window.ResizeObserver) {
-                    var resizeObserver = new ResizeObserver(function() {
-                        updateElementsCache();
-                        draw();
-                    });
-                    resizeObserver.observe(content);
-                }
-                
-                window.addEventListener('scroll', draw);
-                window.addEventListener('resize', function() {
-                    updateElementsCache();
-                    draw();
-                });
-                
-                // Fallback timeouts to ensure late-rendering items are cached
-                setTimeout(function() {
-                    updateElementsCache();
-                    draw();
-                }, 1000);
-                setTimeout(function() {
-                    updateElementsCache();
-                    draw();
-                }, 3000);
-                
-                // Click and drag support
-                var isDragging = false;
-                
-                function scrollToMinimapY(clientY, dragging) {
-                    var rect = minimap.getBoundingClientRect();
-                    var clickY = clientY - rect.top;
-                    
-                    var windowHeight = window.innerHeight;
-                    var documentHeight = document.documentElement.scrollHeight;
-                    
-                    if (documentHeight <= windowHeight) return; // Document not scrollable
-                    
-                    var scaledHeight = documentHeight * currentScale;
-                    var viewportHeight = windowHeight * currentScale;
-                    var trackHeight = scaledHeight > windowHeight ? windowHeight : scaledHeight;
-                    
-                    var targetScrollY;
-                    if (dragging) {
-                        var maxSliderTop = trackHeight - viewportHeight;
-                        if (maxSliderTop <= 0) return;
-                        
-                        var boxTop = clickY - viewportHeight / 2;
-                        if (boxTop < 0) boxTop = 0;
-                        if (boxTop > maxSliderTop) boxTop = maxSliderTop;
-                        
-                        var scrollPercent = boxTop / maxSliderTop;
-                        targetScrollY = scrollPercent * (documentHeight - windowHeight);
-                    } else {
-                        var Y_doc = (clickY + currentMinimapScrollY) / currentScale;
-                        targetScrollY = Y_doc - windowHeight / 2;
-                    }
-                    
-                    window.scrollTo({ top: targetScrollY, behavior: dragging ? 'auto' : 'smooth' });
-                }
-                
-                minimap.addEventListener('mousedown', function(e) {
-                    isDragging = true;
-                    e.preventDefault();
-                    scrollToMinimapY(e.clientY, false);
-                });
-                
-                window.addEventListener('mousemove', function(e) {
-                    if (isDragging) {
-                        e.preventDefault();
-                        scrollToMinimapY(e.clientY, true);
-                    }
-                });
-                
-                window.addEventListener('mouseup', function() {
-                    isDragging = false;
-                });
-                
-                minimap.addEventListener('touchstart', function(e) {
-                    isDragging = true;
-                    if(e.touches.length > 0) scrollToMinimapY(e.touches[0].clientY, false);
-                }, {passive: true});
-                
-                window.addEventListener('touchmove', function(e) {
-                    if (isDragging && e.touches.length > 0) {
-                        scrollToMinimapY(e.touches[0].clientY, true);
-                    }
-                }, {passive: true});
-                
-                window.addEventListener('touchend', function() {
-                    isDragging = false;
-                });
-            });
-        </script>
-    <div class="main-wrapper">
-    <div class="post-header">
-        <div class="cover-outer cover-{{ or $.Params.CoverPosition "bottom" }}">
-          <div class="cover-inner">
-            <div class="post-title">
-              <span class="post-meta">
-                {{- with $.Date -}}
-                {{ .Format "2006-01-02" }}
-                {{- end }}
-                &nbsp;&bull;&nbsp; {{ $.Page.WordCount }} words
-                &nbsp;&bull;&nbsp; {{ $.Page.ReadingTime }} minutes
-                {{- with $.Params.tags -}}
-                  {{ range first 5 . }}
-                  &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
-                  {{ end }}
-                  {{- if gt (len .) 5 -}}
-                  &nbsp;&bull;&nbsp; {{ sub (len .) 5 }} more
-                  {{- end -}}
-                {{- end -}}
-              </span>
-              <h1 class="post-title-text">
-                <a href="{{ $.Permalink }}">{{- with $.Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ $.Title | markdownify }}</a>
-              </h1>
-            </div>
-            {{ with $.Params.Description }}
-              <div class="post-excerpt">{{ . }}</div>
+{{- $hasTOC := and .TableOfContents (strings.Contains (string .TableOfContents) "<li") -}}
+<div class="post-layout-wrapper">
+  <main class="layout-split{{ if not $hasTOC }} no-toc{{ end }}">
+    {{- if $hasTOC }}
+    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
+    <aside class="tree-nav">
+      <div class="toc-title">Contents</div>
+      <nav class="tree-nav-content">
+        {{ .TableOfContents }}
+      </nav>
+    </aside>
+    {{- end }}
+
+    <!-- MAIN ARTICLE -->
+    <article class="post-container">
+      <div class="post-header">
+        <div class="post-title">
+          <h1 class="post-title-text">{{- with $.Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ $.Title | markdownify }}</h1>
+          <div class="post-meta-line">
+            <a href="/me/" class="author-name">{{ $.Site.Params.author.name }}</a>
+            <a href="https://bsky.app/profile/kmcd.dev" class="handle" target="_blank" rel="noopener">[@sudorandom]</a>
+            <span class="sep">|</span>
+            <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+            <span class="sep">|</span>
+            <span>{{ .ReadingTime }} min read</span>
+            {{ with .Params.tags }}
+            <span class="sep">|</span>
+            <span class="tag-badge">[{{ range $i, $e := first 4 . }}{{ if $i }}, {{ end }}<a href="{{ (urlize (printf "tags/%s" $e )) | absLangURL }}/">#{{ $e }}</a>{{ end }}]</span>
             {{ end }}
           </div>
         </div>
-
-      <div class="post-inner">
-
-      <article>
-        {{- if .Params.toc }}
-          <hr />
-          <aside id="toc">
-            <div class="toc-title">Table of Contents</div>
-            {{ .TableOfContents }}
-          </aside>
-          <hr />
-        {{- end }}
-
-        {{ if .Params.Audio }}
-          <div class="post-audio">
-            <audio controls>
-              <source src="{{ .Params.Audio }}">
-            </audio>
-          </div>
+        {{ with $.Params.Description }}
+          <div class="post-lead">{{ . }}</div>
         {{ end }}
+      </div>
 
-        {{- with (.GetTerms "series") -}}
-        {{- $series := slice -}}
-        {{- range . -}}
-          {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Name) -}}
-        {{- end -}}
-        <p>
-          <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
-        </p>
-        {{- end -}}
-
-        <div class="post-content">
-          {{ .Content }}
+      {{ if .Params.Audio }}
+        <div class="post-audio" style="margin-bottom: 24px;">
+          <audio controls style="width: 100%;">
+            <source src="{{ .Params.Audio }}">
+          </audio>
         </div>
-      </article>
-      </div>
-    </div>
-    </div>
+      {{ end }}
 
-    <div class="main-wrapper">
-      <div class="main-box">
+      {{- with (.GetTerms "series") -}}
+      {{- $series := slice -}}
+      {{- range . -}}
+        {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Name) -}}
+      {{- end -}}
+      <div class="series-notice" style="margin-bottom: 24px; padding: 10px 14px; background: var(--bg-secondary); border-left: 2px solid var(--accent-primary); font-size: 14px;">
+        <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
+      </div>
+      {{- end -}}
+
+      <div class="blog-content post-content">
+        {{ .Content }}
+      </div>
+
+      <hr class="dot-fill" />
+
+      <!-- Sharing & Metadata -->
+      <div class="main-box" style="margin-top: 32px;">
         <h3>Share this post</h3>
-          <div class="author-box-content" style="align-items: center; justify-content: center;">
-              <div class="author-box-text" style="width: 100%;">
-                  {{- $url := .Permalink -}}
-                  {{- if .Params.canonical_url -}}
-                      {{- $url = .Params.canonical_url -}}
-                  {{- end -}}
-                  <p>
-                      If you liked this post, please consider sharing it on 
-                      <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ .Title | safeHTML }}" target="_blank" rel="noopener">Hacker News</a>, 
-                      <a href="https://lobste.rs/stories/new?url={{ $url }}&title={{ .Title | safeHTML }}" target="_blank" rel="noopener">Lobsters</a>, or 
-                      <a href="https://www.reddit.com/submit?url={{ $url }}&title={{ .Title | safeHTML }}" target="_blank" rel="noopener">Reddit</a>. And follow this blog <a href="/posts/index.xml" target="_blank">with RSS</a> <a href="/posts/index.xml" target="_blank" aria-label="RSS Feed for posts"><i class="fa-solid fa-rss"></i></a>
-                  </p>
-              </div>
-          </div>
+        <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">
+          {{- $url := .Permalink -}}
+          {{- if .Params.canonical_url -}}
+              {{- $url = .Params.canonical_url -}}
+          {{- end -}}
+          If you liked this post, please consider sharing it on 
+          <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ .Title | safeHTML }}" target="_blank" rel="noopener">Hacker News</a>, 
+          <a href="https://lobste.rs/stories/new?url={{ $url }}&title={{ .Title | safeHTML }}" target="_blank" rel="noopener">Lobsters</a>, or 
+          <a href="https://bsky.app/intent/compose?text={{ .Title | urlquery }}%20{{ $url }}" target="_blank" rel="noopener">Bluesky</a>. 
+          And follow this blog <a href="/posts/index.xml" target="_blank">with RSS</a>.
+        </p>
       </div>
-    </div>
 
-    {{- with (.GetTerms "series") -}}
-    {{- range . -}}
-    <div class="main-wrapper">
-    <div class="main-box">
-    {{- $seriesPages := .Pages.ByDate -}}
-    {{- $nextPage := "" -}}
-    {{- $foundCurrent := false -}}
-
-    {{- /* We need to find next page before rendering header to put it there */ -}}
-    {{- range $seriesPages -}}
-      {{- if eq .File.UniqueID $.File.UniqueID -}}
-        {{- $foundCurrent = true -}}
-      {{- else if and $foundCurrent (not $nextPage) -}}
-        {{- $nextPage = . -}}
-      {{- end -}}
-    {{- end -}}
-
-    <div class="series-header">
-      <h3>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h3>
-      {{- if $nextPage -}}
-      <div class="button next small">
-        <a href="{{ $nextPage.Permalink }}">
-          <span class="button__text">Next: {{ $nextPage.Name }}</span>
-          <span class="button__icon"><i class="fa-solid fa-arrow-right"></i></span>
-        </a>
-      </div>
-      {{- end -}}
-    </div>
-
-    <ol>
-      {{- range $seriesPages -}}
-      <li>
-        {{- if eq .File.UniqueID $.File.UniqueID -}}
-          <b>{{ .Name }}</b>
-        {{- else -}}
-          <a href="{{ .Permalink }}">{{ .Name }}</a>
+      {{- with (.GetTerms "series") -}}
+      {{- range . -}}
+      <div class="main-box" style="margin-top: 24px;">
+        {{- $seriesPages := .Pages.ByDate -}}
+        {{- $nextPage := "" -}}
+        {{- $foundCurrent := false -}}
+        {{- range $seriesPages -}}
+          {{- if eq .File.UniqueID $.File.UniqueID -}}
+            {{- $foundCurrent = true -}}
+          {{- else if and $foundCurrent (not $nextPage) -}}
+            {{- $nextPage = . -}}
+          {{- end -}}
         {{- end -}}
-      </li>
-      {{- end -}}
-    </ol>
-    </div>
-    </div>
-  {{- end -}}
-  {{- end -}}
-
-    {{ partial "webmentions.html" . }}
-
-    <div class="main-wrapper">
-      <div class="main-box">
-          <h3>See Also</h3>
-
-          {{ $currentPage := . }}
-          {{ $currentSeriesTerms := .GetTerms "series" }}
-          {{ $currentSeriesName := "" }}
-          {{ if $currentSeriesTerms }}
-            {{/* Assuming a post is primarily associated with its first series for this check */}}
-            {{ $currentSeriesName = (index $currentSeriesTerms 0).Name }}
-          {{ end }}
-
-          {{ $filteredRelatedPages := slice }}
-          {{ range .Site.RegularPages.Related . }}
-            {{ $isSameSeries := false }}
-            {{ if $currentSeriesName }}
-              {{ $relatedPageSeriesTerms := .GetTerms "series" }}
-              {{ if $relatedPageSeriesTerms }}
-                {{ $relatedPageSeriesName := (index $relatedPageSeriesTerms 0).Name }}
-                {{ if eq $relatedPageSeriesName $currentSeriesName }}
-                  {{ $isSameSeries = true }}
-                {{ end }}
-              {{ end }}
-            {{ end }}
-
-            {{ if not $isSameSeries }}
-              {{ $filteredRelatedPages = $filteredRelatedPages | append . }}
-            {{ end }}
-          {{ end }}
-          <ul>
-          {{ range $filteredRelatedPages | first 4 }}
-          <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-          {{ end }}
-          <li><a href="#" onclick="triggerCircuitAnimation(event)">Re-trigger circuit animation</a> <a href="#" onclick="triggerCircuitAnimation(event)" aria-label="Re-trigger circuit animation"><i class="fa-solid fa-bolt"></i></a></li>
-        </ul>
+        <h3>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h3>
+        <ol style="margin-top: 12px;">
+          {{- range $seriesPages -}}
+          <li>
+            {{- if eq .File.UniqueID $.File.UniqueID -}}
+              <b>{{ .Name }}</b>
+            {{- else -}}
+              <a href="{{ .Permalink }}">{{ .Name }}</a>
+            {{- end -}}
+          </li>
+          {{- end -}}
+        </ol>
       </div>
-    </div>
+      {{- end -}}
+      {{- end -}}
 
-    <div class="main-wrapper">
-      {{ partial "pagination-single.html" . }}
-    </div>
+      {{ partial "webmentions.html" . }}
+
+      <div style="margin-top: 32px;">
+        {{ partial "pagination-single.html" . }}
+      </div>
+    </article>
   </main>
-
 </div>
 {{ end }}

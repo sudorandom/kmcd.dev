@@ -87,7 +87,7 @@
     color: #666;
 
     a {
-      color: $light-accent-color;
+      color: var(--accent-primary);
       text-decoration: underline;
 
       &:hover {
@@ -118,7 +118,7 @@
       color: #ccc;
 
       a {
-        color: $dark-accent-color;
+        color: var(--accent-primary);
       }
     }
   }

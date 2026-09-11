@@ -8,21 +8,13 @@
         <body class="page-{{ .Type }}">
     {{ end }}
     
-        <div class="sidebar">
-            {{ partial "circuit-bg.html" . }}
-            <div class="sidebar-sticky" style="position: relative; z-index: 2;">
+        {{ partial "site-header.html" . }}
 
-
-                {{ partial "header.html" . }}
-
-                {{ block "footer" . }}
-                    {{ partial "footer.html" . }}
-                {{ end }}
-            </div>
-        </div>
-        <div class="content container">
+        <div class="site-main container">
             {{ block "main" . }}{{ end }}
         </div>
+
+        {{ partial "site-footer.html" . }}
 
         {{ partial "javascript.html" . }}
     </body>

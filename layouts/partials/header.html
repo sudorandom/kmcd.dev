@@ -1,5 +1,8 @@
 {{- if .Site.Params.EnableThemeToggle }}
-<span class="theme-toggle not-selectable desktop-only-theme-toggle">{{ partial "theme-toggle-icon.html" . }}</span>
+<div class="theme-and-palette-controls not-selectable desktop-only-theme-toggle">
+    {{ partial "palette-switcher.html" . }}
+    <span class="theme-toggle not-selectable">{{ partial "theme-toggle-icon.html" . }}</span>
+</div>
 {{- end}}
 <header class="page-header">
     <span class="page-header__inner">
@@ -53,7 +56,10 @@
             {{- end -}}
 
             {{- if .Site.Params.EnableThemeToggle }}
-                <span class="theme-toggle not-selectable mobile-only">{{ partial "theme-toggle-icon.html" . }}</span>
+                <div class="theme-and-palette-controls not-selectable mobile-only">
+                    {{ partial "palette-switcher.html" . }}
+                    <span class="theme-toggle not-selectable">{{ partial "theme-toggle-icon.html" . }}</span>
+                </div>
             {{- end}}
         </span>
 

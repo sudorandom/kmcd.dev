@@ -42,28 +42,14 @@
   margin-bottom: -1px;
   border-radius: 0;
 
-  [data-theme=light] & {
-    color: #555;
-    &:hover {
-      color: $light-accent-color;
-    }
-    &.active {
-      color: $light-accent-color;
-      border-bottom-color: $light-accent-color;
-      background-color: #fafafa;
-    }
+  color: var(--text-secondary);
+  &:hover {
+    color: var(--accent-primary);
   }
-
-  [data-theme=dark] & {
-    color: #aaa;
-    &:hover {
-      color: $dark-accent-color;
-    }
-    &.active {
-      color: $dark-accent-color;
-      border-bottom-color: $dark-accent-color;
-      background-color: #2c3a47;
-    }
+  &.active {
+    color: var(--text-contrast);
+    border-bottom-color: var(--accent-primary);
+    background-color: var(--bg-secondary);
   }
 }
 

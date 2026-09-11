@@ -1,0 +1,14 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-copyright">
+      &copy; {{ now.Format "2006" }} {{ .Site.Params.author.name | default .Site.Title }} &mdash; {{ .Site.Copyright | default "All Rights Reserved" }}
+    </div>
+    <div class="footer-links">
+      {{ range .Site.Params.social }}
+        <a href="{{ .url }}" target="_blank" rel="noopener">{{ .name | title }}</a>
+      {{ end }}
+      <a href="{{ "posts/index.xml" | absLangURL }}" target="_blank">RSS Feed</a>
+      <a href="#top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Top &uarr;</a>
+    </div>
+  </div>
+</footer>

@@ -96,12 +96,7 @@
             margin-right: 5px;
             text-decoration: none;
             
-            [data-theme=light] & {
-                color: $light-accent-color;
-            }
-            [data-theme=dark] & {
-                color: $dark-accent-color;
-            }
+            color: var(--accent-primary);
             
             &:hover {
                 text-decoration: underline;

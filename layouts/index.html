@@ -18,127 +18,161 @@
                 {{ $PageContext = .Site }}
             {{ end }}
             
-            <div class="main-heading">
-                <div class="posts-header section-title">
-                    <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
-                </div>
-            </div>
-
-            <div class="posts-list">
-                {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
-                <div class="post-preview on-list">
-                    <div class="post-title">
-                        <span class="post-meta">
-                            {{- with .Date -}}
-                            {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
-                            {{- end }}
-                            &nbsp;&bull;&nbsp; {{ .WordCount }} words
-                            &nbsp;&bull;&nbsp; {{ .ReadingTime }} minutes
-                            {{- with .Params.tags -}}
-                                {{ range first 5 . }}
-                                &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
-                                {{ end }}
-                                {{- if gt (len .) 5 -}}
-                                &nbsp;&bull;&nbsp; {{ sub (len .) 5 }} more
-                                {{- end -}}
-                            {{- end -}}
-                        </span>
-                        <h1>
-                            <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                        </h1>
-                    </div>
-                    <div class="post post-summary" onclick="location.href='{{ .Permalink }}'" style="cursor: pointer;">
-                        {{ .Content }}
-                    </div>
-                </div>
-                {{ end }}
-            </div>
-
-            <div class="main-heading">
-                <div class="posts-header section-title">
-                    <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
-                </div>
-            </div>
-
-            <div class="posts-list">
-                {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
-                <div class="post-preview on-list">
-                    <div class="post-title">
-                        <span class="post-meta">
-                            {{- with .Date -}}
-                            <small>{{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}</small>
-                            {{- end }}
-                            <small class="reading-time"> &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read</small>
-                        </span>
-                        <h1>
-                            <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                        </h1>
-                    </div>
-                    <div class="post post-summary" onclick="location.href='{{ .Permalink }}'" style="cursor: pointer;">
-                        {{ .Content }}
-                    </div>
-                </div>
-                {{ end }}
-                <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
-                    Check out the archive for more.
-                </div>
-            </div>
-
-        <div class="main-heading">
-            <div class="posts-header section-title">
-                <h3><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h3>
-            </div>
-            <div class="projects-wrapper two-columns">
-                {{ $projects := slice 
-                    (dict "title" "protoc-gen-connect-openapi" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
-                    (dict "title" "fauxrpc" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
-                    (dict "title" "ProtoDocs" "url" "https://protodocs.dev/" "desc" "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs." "post" "posts/2026/introducing-protodocs/index.md" "cover" "cover.svg")
-                    (dict "title" "protobuf.kmcd.dev" "url" "https://protobuf.kmcd.dev" "desc" "An interactive playground for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency." "post" "posts/2026/interactive-protobuf/index.md" "cover" "cover.svg")
-                    (dict "title" "Internet Maps" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg" "youtube" "UCA9eO4Gt-Ua6lAEGzWQHQFA" "wide" true)
-                }}
-
-                {{ range $projects }}
-                    {{ $projectPage := $.Site.GetPage .post }}
-                    {{ $bgURL := "" }}
-                    {{ if $projectPage }}
-                        {{ if .cover }}
-                            {{ $resource := $projectPage.Resources.GetMatch .cover }}
-                            {{ if $resource }}
-                                {{ if eq $resource.MediaType.SubType "svg" }}
-                                    {{ $bgURL = $resource.Permalink }}
-                                {{ else }}
-                                    {{ $bgURL = ($resource.Fill "800x400 webp").Permalink }}
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-                    {{ end }}
-                    <div class="projects-box with-bg{{ if .wide }} wide{{ end }}" 
-                        style="{{ if $bgURL }}background-image: url('{{ $bgURL }}');{{ end }} {{ if .url }}cursor: pointer;{{ end }}" 
-                        {{ if .url }}onclick="if(!event.target.closest('a')){ window.open('{{ .url }}', '_blank'); }"{{ end }}>
-                        <div class="projects-box-content">
-                            <div class="project-info-wrapper">
-                                {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
-                                {{ if .desc }}<p>{{ .desc | safeHTML }}</p>{{ end }}
-                            </div>
-                            {{ if .youtube }}
-                            <div class="video-box-wrapper">
-                                <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                                    <iframe
-                                        title="YouTube Live Stream"
-                                        src="https://www.youtube-nocookie.com/embed/live_stream?channel={{ .youtube }}"
-                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-                                        frameborder="0"
-                                        referrerpolicy="strict-origin-when-cross-origin"
-                                        allowfullscreen>
-                                    </iframe>
-                                </div>
-                            </div>
-                            {{ end }}
+            <div class="home-columns-container">
+                <!-- Left Column (2/3 width): Latest & Featured Posts -->
+                <div class="home-posts-col">
+                    <div class="main-heading">
+                        <div class="posts-header section-title">
+                            <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
                         </div>
                     </div>
-                {{ end }}
+
+                    <div class="posts-list">
+                        {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+                        <div class="post-preview on-list">
+                            <div class="post-title">
+                                <span class="post-meta">
+                                    {{- with .Date -}}
+                                    {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
+                                    {{- end }}
+                                    &nbsp;&bull;&nbsp; {{ .WordCount }} words
+                                    &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read
+                                    {{- with .Params.tags -}}
+                                        {{ range first 3 . }}
+                                        &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                        {{ end }}
+                                    {{- end -}}
+                                </span>
+                                <h1>
+                                    <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
+                                </h1>
+                            </div>
+                            <div class="post-summary">
+                                <a href="{{ .Permalink }}" class="post-summary-link" aria-label="Read {{ .Title }}">
+                                    <span class="post-summary-text">
+                                        {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
+                                        {{- $summary = chomp $summary -}}
+                                        {{- if not (hasSuffix $summary "...") -}}
+                                            {{- $summary = printf "%s..." $summary -}}
+                                        {{- end -}}
+                                        {{ $summary }}
+                                    </span>
+                                    <span class="read-more-link">Click to read more &rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                        {{ end }}
+                    </div>
+
+                    <div class="main-heading">
+                        <div class="posts-header section-title">
+                            <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
+                        </div>
+                    </div>
+
+                    <div class="posts-list">
+                        {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
+                        <div class="post-preview on-list">
+                            <div class="post-title">
+                                <span class="post-meta">
+                                    {{- with .Date -}}
+                                    {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
+                                    {{- end }}
+                                    &nbsp;&bull;&nbsp; {{ .WordCount }} words
+                                    &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read
+                                    {{- with .Params.tags -}}
+                                        {{ range first 3 . }}
+                                        &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                        {{ end }}
+                                    {{- end -}}
+                                </span>
+                                <h1>
+                                    <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
+                                </h1>
+                            </div>
+                            <div class="post-summary">
+                                <a href="{{ .Permalink }}" class="post-summary-link" aria-label="Read {{ (or .Params.featuredTitle .Title) }}">
+                                    <span class="post-summary-text">
+                                        {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
+                                        {{- $summary = chomp $summary -}}
+                                        {{- if not (hasSuffix $summary "...") -}}
+                                            {{- $summary = printf "%s..." $summary -}}
+                                        {{- end -}}
+                                        {{ $summary }}
+                                    </span>
+                                    <span class="read-more-link">Click to read more &rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                        {{ end }}
+                        <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
+                            Check out the archive for more &rarr;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (1/3 width): Major Projects -->
+                <aside class="home-projects-col" aria-label="Major Projects">
+                    <div class="main-heading">
+                        <div class="posts-header section-title">
+                            <h3><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h3>
+                        </div>
+                    </div>
+                    <div class="projects-wrapper">
+                        {{ $projects := slice 
+                            (dict "title" "protoc-gen-connect-openapi" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
+                            (dict "title" "fauxrpc" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
+                            (dict "title" "ProtoDocs" "url" "https://protodocs.dev/" "desc" "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs." "post" "posts/2026/introducing-protodocs/index.md" "cover" "cover.svg")
+                            (dict "title" "protobuf.kmcd.dev" "url" "https://protobuf.kmcd.dev" "desc" "An interactive playground for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency." "post" "posts/2026/interactive-protobuf/index.md" "cover" "cover.svg")
+                            (dict "title" "Internet Maps" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
+                        }}
+
+                        {{ range $projects }}
+                            {{ $projectPage := $.Site.GetPage .post }}
+                            {{ $bgURL := "" }}
+                            {{ if $projectPage }}
+                                {{ if .cover }}
+                                    {{ $resource := $projectPage.Resources.GetMatch .cover }}
+                                    {{ if $resource }}
+                                        {{ if eq $resource.MediaType.SubType "svg" }}
+                                            {{ $bgURL = $resource.Permalink }}
+                                        {{ else }}
+                                            {{ $bgURL = ($resource.Fill "800x400 webp").Permalink }}
+                                        {{ end }}
+                                    {{ end }}
+                                {{ end }}
+                            {{ end }}
+                            <div class="projects-box with-bg{{ if .wide }} wide{{ end }}" 
+                                style="{{ if $bgURL }}background-image: url('{{ $bgURL }}');{{ end }} {{ if .url }}cursor: pointer;{{ end }}" 
+                                {{ if .url }}onclick="if(!event.target.closest('a')){ window.open('{{ .url }}', '_blank'); }"{{ end }}>
+                                <div class="projects-box-content">
+                                    <div class="project-info-wrapper">
+                                        {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
+                                        {{ if .desc }}<p>{{ .desc | safeHTML }}</p>{{ end }}
+                                    </div>
+                                    {{ if .youtube }}
+                                    <div class="video-box-wrapper">
+                                        <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                                            <iframe
+                                                title="YouTube Live Stream"
+                                                src="https://www.youtube-nocookie.com/embed/live_stream?channel={{ .youtube }}"
+                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                                frameborder="0"
+                                                referrerpolicy="strict-origin-when-cross-origin"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                    {{ end }}
+                                </div>
+                            </div>
+                        {{ end }}
+                    </div>
+                    <div class="projects-footer-archive" onclick="location.href='/stuff/'" style="cursor: pointer;">
+                        Check out all projects on /stuff/ &rarr;
+                    </div>
+                </aside>
             </div>
-        </div>
         {{ end }}
         <!-- End Posts -->
         </div>
