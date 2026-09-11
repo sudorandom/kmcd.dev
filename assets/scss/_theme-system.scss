@@ -1463,14 +1463,20 @@ h1.post-title > i,
 
       p {
         margin: 0 !important;
-        font-size: 13.5px !important;
-        line-height: 1.55 !important;
-        color: var(--text-secondary) !important;
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+        color: var(--text-primary) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 
         a {
           color: var(--accent-primary) !important;
           text-decoration: underline !important;
           text-underline-offset: 3px !important;
+          font-weight: 500;
+
+          &:hover {
+            color: var(--accent-primary-hover) !important;
+          }
         }
       }
     }
@@ -1501,14 +1507,14 @@ h1.post-title > i,
 /* Dark theme overlay for projects */
 [data-theme="dark"] .home-projects-col .projects-box.with-bg::before,
 :root:not([data-theme]) .home-projects-col .projects-box.with-bg::before {
-  background: rgba(18, 18, 20, 0.78) !important;
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px) !important;
+  background: rgba(12, 12, 15, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
 [data-theme="dark"] .home-projects-col .projects-box.with-bg:hover::before,
 :root:not([data-theme]) .home-projects-col .projects-box.with-bg:hover::before {
-  background: rgba(18, 18, 20, 0.68) !important;
+  background: rgba(12, 12, 15, 0.80) !important;
 }
 
 /* Light theme overlay for projects */
