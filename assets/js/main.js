@@ -1,78 +1,47 @@
 /**
- * Theming.
- *
- * Supports the preferred color scheme of the operation system as well as
- * the theme choice of the user.
- *
+ * Theming & Palette System.
+ * Supports OS preference, manual theme (light/dark), palette selection,
+ * and an expandable capsule control (click-only, no hover preview).
  */
-const themeToggles = document.querySelectorAll(".theme-toggle");
+let currentTheme = "dark";
 
 // Detect the color scheme the operating system prefers.
 function detectOSColorTheme() {
   const chosenTheme = window.localStorage && window.localStorage.getItem("theme");
-  const chosenThemeIsDark = chosenTheme == "dark";
-  const chosenThemeIsLight = chosenTheme == "light";
-
-  if (chosenThemeIsDark) {
-    document.documentElement.setAttribute("data-theme", "dark");
-  } else if (chosenThemeIsLight) {
-    document.documentElement.setAttribute("data-theme", "light");
-  } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.documentElement.setAttribute("data-theme", "dark");
+  if (chosenTheme === "dark" || chosenTheme === "light") {
+    currentTheme = chosenTheme;
+  } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    currentTheme = "light";
   } else {
-    document.documentElement.setAttribute("data-theme", "dark");
+    currentTheme = "dark";
   }
+  document.documentElement.setAttribute("data-theme", currentTheme);
 }
 
-// Switch the theme.
-let isThemeToggling = false;
-function switchTheme(e) {
-  if (e) {
-    if (e.stopPropagation) e.stopPropagation();
-    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-  }
-  if (isThemeToggling) return;
-  isThemeToggling = true;
-  setTimeout(() => { isThemeToggling = false; }, 200);
-
-  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-
+function setTheme(theme) {
+  if (!theme) return;
+  currentTheme = theme;
   try {
     if (window.localStorage) {
-      window.localStorage.setItem("theme", newTheme);
+      window.localStorage.setItem("theme", theme);
     }
   } catch (err) {
     console.warn("Could not write theme to localStorage", err);
   }
-
-  document.documentElement.setAttribute("data-theme", newTheme);
+  document.documentElement.setAttribute("data-theme", theme);
 }
 
-// Event listener
-if (themeToggles.length > 0) {
-  themeToggles.forEach(toggle => {
-    toggle.addEventListener("click", switchTheme, false);
-  });
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => e.matches && detectOSColorTheme());
-  window
-    .matchMedia("(prefers-color-scheme: light)")
-    .addEventListener("change", (e) => e.matches && detectOSColorTheme());
-
-  detectOSColorTheme();
-} else {
-  localStorage.removeItem("theme");
+function switchTheme() {
+  const nextTheme = currentTheme === "dark" ? "light" : "dark";
+  setTheme(nextTheme);
 }
 
 /**
- * Palette Switcher with Live Hover Preview & Auto-Revert.
+ * Palette Switcher.
  */
-let committedPalette = "monochrome";
-let previewedPalette = "monochrome";
+let currentPalette = "monochrome";
 
-function updatePaletteActiveUI(activePalette, originPalette) {
+function updatePaletteActiveUI(activePalette) {
   document.querySelectorAll(".palette-dot-btn").forEach(btn => {
     const target = btn.getAttribute("data-palette-target");
     if (target === activePalette) {
@@ -82,27 +51,12 @@ function updatePaletteActiveUI(activePalette, originPalette) {
       btn.classList.remove("active");
       btn.setAttribute("aria-checked", "false");
     }
-
-    // If previewing a different palette, mark the original committed button with a subtle ring
-    if (originPalette && target === originPalette && activePalette !== originPalette) {
-      btn.classList.add("committed-origin");
-    } else {
-      btn.classList.remove("committed-origin");
-    }
   });
 }
 
-function previewPalette(paletteName) {
-  if (!paletteName || previewedPalette === paletteName) return;
-  previewedPalette = paletteName;
-  document.documentElement.setAttribute("data-palette", paletteName);
-  updatePaletteActiveUI(paletteName, committedPalette);
-}
-
-function commitPalette(paletteName) {
+function setPalette(paletteName) {
   if (!paletteName) return;
-  committedPalette = paletteName;
-  previewedPalette = paletteName;
+  currentPalette = paletteName;
   if (window.localStorage) {
     try {
       window.localStorage.setItem("palette", paletteName);
@@ -111,175 +65,185 @@ function commitPalette(paletteName) {
     }
   }
   document.documentElement.setAttribute("data-palette", paletteName);
-  updatePaletteActiveUI(paletteName, paletteName);
+  updatePaletteActiveUI(paletteName);
 }
 
-function revertPalette() {
-  if (previewedPalette === committedPalette) return;
-  previewedPalette = committedPalette;
-  document.documentElement.setAttribute("data-palette", committedPalette);
-  updatePaletteActiveUI(committedPalette, committedPalette);
-}
+/**
+ * Initialize theme, palette, and capsule trigger/auto-collapse behaviors.
+ */
+function initThemeAndPaletteControls() {
+  let initialPalette = (window.localStorage && window.localStorage.getItem("palette")) || "monochrome";
+  if (initialPalette === "planetscale-orange") {
+    initialPalette = "orange";
+    try { window.localStorage.setItem("palette", "orange"); } catch (e) {}
+  }
+  currentPalette = initialPalette;
+  document.documentElement.setAttribute("data-palette", currentPalette);
+  updatePaletteActiveUI(currentPalette);
 
-function initPalette() {
-  let initial = (window.localStorage && window.localStorage.getItem("palette")) || "monochrome";
-  if (initial === "planetscale-orange") {
-    initial = "orange";
-    if (window.localStorage) {
-      try { window.localStorage.setItem("palette", "orange"); } catch (e) {}
+  detectOSColorTheme();
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => e.matches && detectOSColorTheme());
+  window
+    .matchMedia("(prefers-color-scheme: light)")
+    .addEventListener("change", (e) => e.matches && detectOSColorTheme());
+
+  // Standalone theme toggles outside the capsule (if any)
+  document.querySelectorAll(".theme-toggle").forEach(toggle => {
+    if (!toggle.closest(".theme-control-capsule")) {
+      toggle.addEventListener("click", switchTheme);
+    }
+  });
+
+  const capsule = document.querySelector(".theme-control-capsule");
+  if (!capsule) return;
+
+  const triggerBtn = capsule.querySelector(".capsule-trigger-btn");
+  const optionsContainer = capsule.querySelector(".capsule-options");
+  const themeToggleBtn = capsule.querySelector(".theme-toggle-btn");
+  const paletteBtns = capsule.querySelectorAll(".palette-dot-btn");
+
+  let collapseTimer = null;
+  let idleTimer = null;
+
+  if (optionsContainer) {
+    optionsContainer.querySelectorAll("button").forEach(btn => btn.setAttribute("tabindex", "-1"));
+  }
+
+  function resetIdleTimer() {
+    clearTimeout(idleTimer);
+    if (capsule.classList.contains("expanded")) {
+      idleTimer = setTimeout(() => {
+        collapseCapsule();
+      }, 5000);
     }
   }
-  committedPalette = initial;
-  previewedPalette = committedPalette;
-  document.documentElement.setAttribute("data-palette", committedPalette);
-  updatePaletteActiveUI(committedPalette, committedPalette);
 
-  // Capsule collapse timer (1 second delay on unhover)
-  let collapseTimer = null;
+  function expandCapsule() {
+    capsule.classList.add("expanded");
+    if (triggerBtn) {
+      triggerBtn.setAttribute("aria-expanded", "true");
+      triggerBtn.setAttribute("title", "Close appearance settings");
+    }
+    if (optionsContainer) {
+      optionsContainer.setAttribute("aria-hidden", "false");
+      optionsContainer.querySelectorAll("button").forEach(btn => btn.setAttribute("tabindex", "0"));
+    }
+    resetIdleTimer();
+  }
 
-  function scheduleCollapse(capsule) {
+  function collapseCapsule() {
+    clearTimeout(collapseTimer);
+    clearTimeout(idleTimer);
+    capsule.classList.remove("expanded");
+    if (triggerBtn) {
+      triggerBtn.setAttribute("aria-expanded", "false");
+      triggerBtn.setAttribute("title", "Theme and appearance settings");
+    }
+    if (optionsContainer) {
+      optionsContainer.setAttribute("aria-hidden", "true");
+      optionsContainer.querySelectorAll("button").forEach(btn => btn.setAttribute("tabindex", "-1"));
+    }
+    if (capsule.contains(document.activeElement) && document.activeElement !== triggerBtn) {
+      triggerBtn.focus();
+    }
+  }
+
+  function scheduleCollapse(delay = 2000) {
     clearTimeout(collapseTimer);
     collapseTimer = setTimeout(() => {
-      capsule.classList.remove("expanded");
-      revertPalette();
-    }, 1000);
+      collapseCapsule();
+    }, delay);
   }
 
-  function cancelCollapse(capsule) {
+  function cancelCollapse() {
     clearTimeout(collapseTimer);
-    capsule.classList.add("expanded");
+    resetIdleTimer();
   }
 
-  // Direct dot interactions
-  document.querySelectorAll(".palette-dot-btn").forEach(btn => {
-    btn.addEventListener("mouseenter", () => {
-      const capsule = btn.closest(".theme-control-capsule");
-      if (capsule) cancelCollapse(capsule);
-      const target = btn.getAttribute("data-palette-target");
-      if (target) previewPalette(target);
+  // 1. Trigger button click expands/collapses the options
+  if (triggerBtn) {
+    triggerBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (capsule.classList.contains("expanded")) {
+        collapseCapsule();
+      } else {
+        expandCapsule();
+      }
     });
+  }
 
+  // If clicked anywhere on capsule while collapsed, expand it
+  capsule.addEventListener("click", (e) => {
+    if (!capsule.classList.contains("expanded")) {
+      expandCapsule();
+    }
+  });
+
+  // 2. Dark/Light toggle button inside options: click only (no hover preview)
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      cancelCollapse();
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+      setTheme(nextTheme);
+      scheduleCollapse(1200);
+    });
+  }
+
+  // 3. Palette dots inside options: click only (no hover preview)
+  paletteBtns.forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const capsule = btn.closest(".theme-control-capsule");
-      if (capsule) cancelCollapse(capsule);
+      cancelCollapse();
       const target = btn.getAttribute("data-palette-target");
-      if (target) commitPalette(target);
-    });
-
-    btn.addEventListener("focus", () => {
-      const capsule = btn.closest(".theme-control-capsule");
-      if (capsule) cancelCollapse(capsule);
-      const target = btn.getAttribute("data-palette-target");
-      if (target) previewPalette(target);
-    });
-  });
-
-  // Track mouse movement across the palette-switcher container for gap/padding hover preview
-  document.querySelectorAll(".palette-switcher").forEach(switcher => {
-    switcher.addEventListener("mousemove", (e) => {
-      const capsule = switcher.closest(".theme-control-capsule");
-      if (capsule) cancelCollapse(capsule);
-
-      const clickX = e.clientX;
-      let closestBtn = null;
-      let minDistance = Infinity;
-      switcher.querySelectorAll(".palette-dot-btn").forEach(btn => {
-        const rect = btn.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(clickX - center);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closestBtn = btn;
-        }
-      });
-      if (closestBtn) {
-        const target = closestBtn.getAttribute("data-palette-target");
-        if (target) previewPalette(target);
-      }
-    });
-
-    switcher.addEventListener("click", (e) => {
-      const clickX = e.clientX;
-      let closestBtn = null;
-      let minDistance = Infinity;
-      switcher.querySelectorAll(".palette-dot-btn").forEach(btn => {
-        const rect = btn.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(clickX - center);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closestBtn = btn;
-        }
-      });
-      if (closestBtn) {
-        const target = closestBtn.getAttribute("data-palette-target");
-        if (target) commitPalette(target);
+      if (target) {
+        setPalette(target);
+        scheduleCollapse(1200);
       }
     });
   });
 
-  // Delegate hover, unhover (with 1s delay), and clicks on .theme-control-capsule
-  document.querySelectorAll(".theme-control-capsule").forEach(capsule => {
-    capsule.addEventListener("mouseenter", () => {
-      cancelCollapse(capsule);
-    });
+  // 4. Mouse tracking across capsule for keepalive and auto-collapse
+  capsule.addEventListener("mouseenter", () => {
+    cancelCollapse();
+  });
 
-    capsule.addEventListener("mouseleave", () => {
-      scheduleCollapse(capsule);
-    });
+  capsule.addEventListener("mousemove", () => {
+    cancelCollapse();
+  });
 
-    capsule.addEventListener("focusin", () => {
-      cancelCollapse(capsule);
-    });
+  capsule.addEventListener("mouseleave", () => {
+    if (capsule.classList.contains("expanded")) {
+      scheduleCollapse(2000);
+    }
+  });
 
-    capsule.addEventListener("focusout", (e) => {
-      if (!capsule.contains(e.relatedTarget)) {
-        scheduleCollapse(capsule);
-      }
-    });
+  // Keep alive when focused, collapse when focus leaves
+  capsule.addEventListener("focusin", () => {
+    cancelCollapse();
+    resetIdleTimer();
+  });
 
-    capsule.addEventListener("click", (e) => {
-      cancelCollapse(capsule);
-      // If the click directly hit a button, the button's own stopPropagation already handled it
-      if (e.target.closest(".theme-toggle") || e.target.closest(".palette-dot-btn")) {
-        return;
-      }
-      const paletteSwitcher = capsule.querySelector(".palette-switcher");
-      // If the palette switcher is collapsed (width 0 or hidden), any click on the capsule toggles the theme
-      const isExpanded = paletteSwitcher && paletteSwitcher.offsetWidth > 10;
-      if (!isExpanded) {
-        switchTheme(e);
-        return;
-      }
+  capsule.addEventListener("focusout", (e) => {
+    if (!capsule.contains(e.relatedTarget)) {
+      scheduleCollapse(1200);
+    }
+  });
 
-      const divider = capsule.querySelector(".theme-capsule-divider");
-      if (divider) {
-        const divRect = divider.getBoundingClientRect();
-        if (e.clientX >= divRect.left) {
-          // Clicked anywhere on the right side of divider -> trigger theme toggle
-          switchTheme(e);
-          return;
-        }
-      }
-      // Clicked on the left side -> commit closest palette button
-      const clickX = e.clientX;
-      let closestBtn = null;
-      let minDistance = Infinity;
-      capsule.querySelectorAll(".palette-dot-btn").forEach(btn => {
-        const rect = btn.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(clickX - center);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closestBtn = btn;
-        }
-      });
-      if (closestBtn) {
-        const target = closestBtn.getAttribute("data-palette-target");
-        if (target) commitPalette(target);
-      }
-    });
+  // 5. Outside clicks & escape key
+  document.addEventListener("click", (e) => {
+    if (!capsule.contains(e.target) && capsule.classList.contains("expanded")) {
+      collapseCapsule();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && capsule.classList.contains("expanded")) {
+      collapseCapsule();
+    }
   });
 }
 
@@ -411,7 +375,7 @@ function initTocScrollSpy() {
 }
 
 function initAll() {
-  initPalette();
+  initThemeAndPaletteControls();
   initTocScrollSpy();
 }
 

@@ -746,13 +746,21 @@ footer.site-footer {
   user-select: none;
   transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 
-  &:hover,
-  &:focus-within,
   &.expanded {
     border-color: var(--text-secondary);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 
-    .palette-switcher {
-      max-width: 140px;
+    .capsule-trigger-btn {
+      color: var(--text-contrast);
+      background: var(--badge-bg);
+
+      .capsule-trigger-icon {
+        transform: rotate(15deg);
+      }
+    }
+
+    .capsule-options {
+      max-width: 240px;
       opacity: 1;
       pointer-events: auto;
       margin-right: 2px;
@@ -764,6 +772,58 @@ footer.site-footer {
       margin: 0 4px;
     }
   }
+
+  .capsule-trigger-btn:focus-visible,
+  .theme-toggle-btn:focus-visible,
+  .palette-dot-btn:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 1px;
+  }
+}
+
+.capsule-trigger-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  outline: none;
+  line-height: 1;
+  height: 26px;
+  width: 26px;
+  min-width: 26px;
+  border-radius: 9999px;
+  transition: color 0.15s ease, background-color 0.15s ease, transform 0.2s ease;
+
+  &:hover {
+    color: var(--text-contrast);
+    background: var(--badge-bg);
+  }
+
+  .capsule-trigger-icon {
+    width: 15px;
+    height: 15px;
+    display: block;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+}
+
+.capsule-options {
+  display: inline-flex;
+  align-items: center;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.25s ease;
 }
 
 .theme-capsule-divider {
@@ -819,14 +879,6 @@ footer.site-footer {
   background: transparent;
   border: none;
   padding: 0;
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              margin 0.25s ease;
 }
 
 .palette-dot-btn {
@@ -863,13 +915,6 @@ footer.site-footer {
       .palette-dot {
         transform: scale(1.25);
       }
-    }
-  }
-
-  &.committed-origin {
-    .palette-dot {
-      box-shadow: 0 0 0 1.5px var(--bg-secondary), 0 0 0 2.5px var(--text-disabled);
-      opacity: 0.85;
     }
   }
 }
