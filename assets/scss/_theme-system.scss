@@ -370,6 +370,12 @@ header.site-header {
    4. TWO-COLUMN SPLIT LAYOUT FOR ARTICLES
    -------------------------------------------------------------------------- */
 
+.post-layout-wrapper {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 main.layout-split {
   display: flex;
   flex-direction: row-reverse;
@@ -377,6 +383,8 @@ main.layout-split {
   align-items: flex-start;
   justify-content: flex-end;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0 !important;
   margin-bottom: 60px;
 }
@@ -468,6 +476,10 @@ article.post-container {
   flex: 1;
   min-width: 0;
   max-width: 780px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* --------------------------------------------------------------------------
@@ -667,7 +679,30 @@ pre {
   border: 1px solid var(--code-border) !important;
   border-radius: 6px;
   padding: 16px !important;
+  max-width: 100% !important;
+  overflow-x: auto;
+  box-sizing: border-box;
   transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.post-content table,
+article table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+
+.post-content img,
+.post-content video,
+.post-content iframe,
+.post-content svg,
+.d2-diagram-wrapper,
+.d2-diagram-wrapper svg {
+  max-width: 100% !important;
+  height: auto;
+  box-sizing: border-box;
 }
 
 [data-theme="light"] pre {
@@ -715,6 +750,7 @@ footer.site-footer {
 
 .site-footer .footer-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
 
   a {
@@ -953,15 +989,31 @@ footer.site-footer {
 @media (max-width: 900px) {
   main.layout-split {
     flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
   }
 
   aside.tree-nav {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     position: static;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border-secondary);
     max-height: none;
+
+    a {
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+  }
+
+  article.post-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
   }
 
   .post-header .post-title,
@@ -984,6 +1036,12 @@ footer.site-footer {
 }
 
 @media (max-width: 684px) {
+  .content.container,
+  .site-main.container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
   .site-nav .nav-links {
     flex-wrap: wrap;
     gap: 12px;
