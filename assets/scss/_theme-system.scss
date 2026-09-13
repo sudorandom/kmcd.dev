@@ -694,10 +694,10 @@ article table {
   border-collapse: collapse;
 }
 
-.post-content img,
+.post-content img:not(.compare-wrapper img),
 .post-content video,
 .post-content iframe,
-.post-content svg,
+.post-content svg:not(.compare-container svg),
 .d2-diagram-wrapper,
 .d2-diagram-wrapper svg {
   max-width: 100% !important;
