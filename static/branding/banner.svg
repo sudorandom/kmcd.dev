@@ -353,7 +353,4 @@
     <circle cx="1809" cy="437" r="3.2248241205203536" stroke="none" fill="#f4f4f5" />
     <circle cx="39" cy="114" r="3.893041955038099" stroke="none" fill="#f4f4f5" />
   </g>
-  <rect x="80" y="140" width="1400" height="230" fill="#18181b" opacity="0.85" rx="20"/>
-  <text x="120" y="250" font-family="monospace" font-size="110" fill="#f4f4f5" font-weight="bold">kmcd.dev</text>
-  <text x="125" y="325" font-family="monospace" font-size="40" fill="#a1a1aa">> depth-first search into systems, networking, and the web</text>
 </svg>
