@@ -38,7 +38,6 @@ params:
   socialIcons: true
   # homeTitle: "Title"
   # homeSubtitle: "Subtitle"
-  ShowReadingTime: true
   LastModDisplay: false
   logo:
     logoText: "kmcd.dev"
@@ -101,10 +100,6 @@ menu:
       name: "me"
       url: "/me/"
       weight: 4
-    - identifier: "links"
-      name: "links"
-      url: "/links/"
-      weight: 5
     - identifier: "search"
       name: "search"
       url: "/search/"

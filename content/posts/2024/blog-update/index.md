@@ -41,7 +41,7 @@ I originally used the [Hello Friend 4s3ti](https://github.com/coolapso/hugo-them
 I updated the projects page to be more... clear. The image gallery format just wasn't working to show what I worked on. I'm not an artist and I should come to terms with that! See the page [here](/stuff/).
 
 ### Links Page
-I have become a fan of the "small web" and I feel like link pages bring some of that small web feeling back. See mine, [here](/links/).
+I have become a fan of the "small web" and I feel like link pages bring some of that small web feeling back. (My links page has since been retired.)
 
 ## Technologies
 Some may be interested to know how this blog is built. The source code is available here on GitHub at [sudorandom/kmcd.dev](https://github.com/sudorandom/kmcd.dev/). An enterprising reader could get sneak-peaks by watching this repo 👀

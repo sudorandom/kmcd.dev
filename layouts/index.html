@@ -36,7 +36,6 @@
                                     {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
                                     {{- end }}
                                     &nbsp;&bull;&nbsp; {{ .WordCount }} words
-                                    &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read
                                     {{- with .Params.tags -}}
                                         {{ range first 3 . }}
                                         &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
@@ -79,7 +78,6 @@
                                     {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
                                     {{- end }}
                                     &nbsp;&bull;&nbsp; {{ .WordCount }} words
-                                    &nbsp;&bull;&nbsp; {{ .ReadingTime }} min read
                                     {{- with .Params.tags -}}
                                         {{ range first 3 . }}
                                         &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>

@@ -1,0 +1,62 @@
+{{ $posts := .RegularPages.ByDate.Reverse }}
+{{ if eq .Kind "taxonomy" }}
+    {{ $posts = (where site.RegularPages "Type" "posts").ByDate.Reverse }}
+{{ end }}
+{{ $years := $posts.GroupByDate "2006" }}
+{{ $maxCount := 1 }}
+{{ range $years }}
+    {{ $maxCount = math.Max $maxCount (len .Pages) }}
+{{ end }}
+{{ $tags := slice }}
+{{ range site.Taxonomies.tags.Alphabetical }}
+    {{ $count := len (intersect .Pages $posts) }}
+    {{ if $count }}
+        {{ $tags = $tags | append (dict "page" .Page "count" $count) }}
+    {{ end }}
+{{ end }}
+{{ $tags = sort $tags "count" "desc" }}
+<main class="posts post-archive">
+    <h1 class="page-title">{{ with .Params.TitleIcon }}<i class="fa-solid {{ . }}" aria-hidden="true"></i> {{ end }}{{ if eq .Kind "term" }}#{{ .Title | lower }}{{ else }}{{ .Title }}{{ end }}</h1>
+    {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
+    {{ with .Content }}<div class="content">{{ . }}</div>{{ end }}
+
+    <div class="archive-browse">
+    <nav class="archive-years" aria-labelledby="archive-years-title">
+        <h2 id="archive-years-title">Posts by year</h2>
+        <ul class="archive-year-chart">
+        {{ range $years }}
+            <li>
+                <a href="#year-{{ .Key }}" aria-label="{{ .Key }}: {{ len .Pages }} posts">
+                    <span class="archive-year-label">{{ .Key }}</span>
+                    <span class="archive-year-track" aria-hidden="true"><span class="archive-year-bar" style="{{ printf "width: %.2f%%" (mul 100 (div (float (len .Pages)) $maxCount)) | safeCSS }}"></span></span>
+                    <span class="archive-count">{{ len .Pages }}</span>
+                </a>
+            </li>
+        {{ end }}
+        </ul>
+    </nav>
+
+    {{ with $tags }}
+    <section class="archive-tags" aria-labelledby="archive-tags-title">
+        <h2 id="archive-tags-title">Explore by tag</h2>
+        {{ partial "archive-tags.html" . }}
+    </section>
+    {{ end }}
+    </div>
+
+    {{ range $years }}
+    <section class="archive-year" aria-labelledby="year-{{ .Key }}">
+        <h2 id="year-{{ .Key }}">{{ .Key }} <span class="archive-count">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span></h2>
+        <ul class="archive-entries">
+            {{ range .Pages }}
+            <li>
+                <a href="{{ .RelPermalink }}">
+                    <span>{{ if .Draft }}<strong>DRAFT: </strong>{{ end }}{{ .Title }}</span>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+    {{ end }}
+</main>

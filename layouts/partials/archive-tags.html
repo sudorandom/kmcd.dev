@@ -1,0 +1,11 @@
+<ul class="archive-tag-cloud" id="archive-tag-cloud">
+    {{ range $index, $tag := . }}
+    <li{{ if ge $index 12 }} class="archive-tag-extra" hidden{{ end }}><a href="{{ $tag.page.RelPermalink }}">#{{ $tag.page.LinkTitle | lower }} <span class="archive-count">({{ $tag.count }})</span></a></li>
+    {{ end }}
+    {{ if gt (len .) 12 }}
+    <li class="archive-tags-control" hidden><button type="button" class="archive-tags-toggle" aria-expanded="false" aria-controls="archive-tag-cloud" data-expand-label="Show all {{ len . }} tags">Show all {{ len . }} tags</button></li>
+    {{ end }}
+</ul>
+<noscript>
+    <style>.post-archive .archive-tag-cloud > .archive-tag-extra[hidden] { display: inline-block; }</style>
+</noscript>

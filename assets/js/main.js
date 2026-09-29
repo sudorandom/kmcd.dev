@@ -374,7 +374,38 @@ function initTocScrollSpy() {
   onScroll();
 }
 
+function initArchiveTags() {
+  const cloud = document.getElementById("archive-tag-cloud");
+  const button = cloud?.querySelector(".archive-tags-toggle");
+  if (!button) return;
+
+  const extraTags = Array.from(cloud.children).filter(item => !item.classList.contains("archive-tags-control")).slice(12);
+  const setExpanded = expanded => {
+    extraTags.forEach(tag => { tag.hidden = !expanded; });
+    button.setAttribute("aria-expanded", String(expanded));
+    button.textContent = expanded ? "Show fewer tags" : button.dataset.expandLabel;
+  };
+
+  setExpanded(false);
+  button.parentElement.hidden = false;
+  const browse = cloud.closest(".archive-browse");
+  let animation;
+  button.addEventListener("click", () => {
+    const startHeight = browse?.getBoundingClientRect().height;
+    animation?.cancel();
+    setExpanded(button.getAttribute("aria-expanded") !== "true");
+    if (browse && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const endHeight = browse.getBoundingClientRect().height;
+      animation = browse.animate([
+        { height: `${startHeight}px`, overflow: "clip" },
+        { height: `${endHeight}px`, overflow: "clip" },
+      ], { duration: 280, easing: "ease-in-out" });
+    }
+  });
+}
+
 function initAll() {
+  initArchiveTags();
   initThemeAndPaletteControls();
   initTocScrollSpy();
 }
@@ -384,4 +415,3 @@ if (document.readyState === "loading") {
 } else {
   initAll();
 }
-

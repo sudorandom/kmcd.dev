@@ -2277,7 +2277,7 @@ blockquote {
     }
   }
 
-  .post-title-with-reading-time {
+  .post-title-wrapper {
     display: inline-flex;
     align-items: baseline;
     gap: 10px;
@@ -2290,12 +2290,6 @@ blockquote {
     font-weight: 500;
   }
 
-  .reading-time {
-    color: var(--text-secondary) !important;
-    font-size: 0.85em;
-    font-style: italic;
-    white-space: nowrap;
-  }
 
   .post-day {
     color: var(--text-secondary) !important;

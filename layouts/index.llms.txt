@@ -28,4 +28,3 @@
 ## Key Sections
 - [Daily Prompts]({{ printf "%sprompts/" site.BaseURL }}): Daily questions and reflections on software engineering, tech culture, routine, and life.
 - [Stuff]({{ printf "%sstuff/" site.BaseURL }}): Additional tools, utilities, and visualizations.
-- [Links]({{ printf "%slinks/" site.BaseURL }}): Curated list of favorite blogs, tools, and technical resources.

@@ -22,8 +22,6 @@
             <a href="https://bsky.app/profile/kmcd.dev" class="handle" target="_blank" rel="noopener">[@sudorandom]</a>
             <span class="sep">|</span>
             <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
-            <span class="sep">|</span>
-            <span>{{ .ReadingTime }} min read</span>
             {{ with .Params.tags }}
             <span class="sep">|</span>
             <span class="tag-badge">[{{ range $i, $e := first 4 . }}{{ if $i }}, {{ end }}<a href="{{ (urlize (printf "tags/%s" $e )) | absLangURL }}/">#{{ $e }}</a>{{ end }}]</span>

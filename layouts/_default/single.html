@@ -263,9 +263,8 @@
                     {{- with $.Date -}}
                     {{ .Format "2006-01-02" }}
                     {{- end }}
-                    {{- if or $.Page.WordCount $.Page.ReadingTime }}
+                    {{- if $.Page.WordCount }}
                     &nbsp;&bull;&nbsp; {{ $.Page.WordCount }} words
-                    &nbsp;&bull;&nbsp; {{ $.Page.ReadingTime }} minutes
                     {{- end }}
                     {{- with $.Params.tags -}}
                       {{ range first 5 . }}
