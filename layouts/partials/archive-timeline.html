@@ -1,0 +1,29 @@
+{{ $history := .history }}
+{{ with $history.months }}
+{{ $monthCount := len . }}
+<figure class="archive-timeline" aria-label="Monthly post history">
+    <div class="archive-timeline-years" style="{{ printf "--month-count: %d" $monthCount | safeCSS }}">
+        {{ range $index, $month := . }}
+        {{ if or (eq $index 0) (eq (int .date.Month) 1) }}
+        {{ $span := int (math.Min (sub 13 (int .date.Month)) (sub $monthCount $index)) }}
+        <div class="archive-timeline-year" style="{{ printf "grid-column: span %d" $span | safeCSS }}"><span>{{ .date.Format "2006" }}</span></div>
+        {{ end }}
+        {{ end }}
+    </div>
+    <div class="archive-timeline-bars">
+        {{ range . }}
+        {{ $label := printf "%s: %d posts" (.date.Format "January 2006") .count }}
+        {{ if eq .count 1 }}{{ $label = printf "%s: 1 post" (.date.Format "January 2006") }}{{ end }}
+        <div class="archive-timeline-month{{ if eq .count 0 }} is-empty{{ end }}" data-month="{{ .key }}" data-count="{{ .count }}" style="{{ printf "--month-height: %.2f%%" (mul 100 (div (float .count) $history.maximum)) | safeCSS }}">
+            {{ if .count }}
+            <a href="#month-{{ .key }}" aria-label="{{ $label }}"><span class="archive-timeline-bar" aria-hidden="true"></span></a>
+            {{ else }}
+            <span class="archive-timeline-empty" tabindex="0" role="img" aria-label="{{ $label }}"><span class="archive-timeline-bar" aria-hidden="true"></span></span>
+            {{ end }}
+            <span class="archive-timeline-tooltip" aria-hidden="true">{{ $label }}</span>
+        </div>
+        {{ end }}
+    </div>
+    <figcaption><span>{{ (index . 0).date.Format "Jan 2006" }}</span><span>Monthly posts</span><span>Today</span></figcaption>
+</figure>
+{{ end }}

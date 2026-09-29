@@ -9,9 +9,9 @@
   .archive-browse {
     display: flow-root;
     box-sizing: border-box;
-    margin: 28px 0;
+    margin: 28px 0 12px;
     padding: 20px 0;
-    border-block: 1px solid var(--border-secondary);
+    border-top: 1px solid var(--border-secondary);
 
     > * { min-width: 0; }
 
@@ -158,6 +158,7 @@
     li {
       min-width: 0;
       border-bottom: 1px dashed var(--border-secondary);
+      scroll-margin-top: 100px;
     }
 
     a {
@@ -185,5 +186,103 @@
     @media (max-width: 700px) {
       grid-template-columns: minmax(0, 1fr);
     }
+  }
+
+  .archive-timeline {
+    position: relative;
+    margin: 12px 0 20px;
+    width: 100%;
+
+    figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
+      color: var(--text-secondary);
+      font-size: 0.7rem;
+    }
+  }
+
+  .archive-timeline-bars {
+    display: flex;
+    gap: 2px;
+    height: 42px;
+    border-bottom: 1px solid var(--border-secondary);
+  }
+
+  .archive-timeline-years {
+    display: grid;
+    grid-template-columns: repeat(var(--month-count), minmax(0, 1fr));
+    gap: 2px;
+    padding-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .archive-timeline-year {
+    min-width: 0;
+    height: 14px;
+    border: 1px solid var(--border-secondary);
+    border-bottom: 0;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+
+    span {
+      display: block;
+      width: fit-content;
+      margin: -0.8em auto 0;
+      padding: 0 4px;
+      background: var(--bg-primary);
+    }
+  }
+
+  .archive-timeline-month {
+    flex: 1;
+    min-width: 0;
+
+    > a, > .archive-timeline-empty {
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+    }
+
+    .archive-timeline-bar {
+      width: 100%;
+      height: var(--month-height);
+      background: var(--accent-primary);
+      opacity: 0.8;
+      border-radius: 2px 2px 0 0;
+    }
+
+    &.is-empty .archive-timeline-bar {
+      height: 1px;
+      background: var(--text-secondary);
+    }
+
+    &:hover, &:focus-within {
+      .archive-timeline-bar { opacity: 1; }
+      .archive-timeline-tooltip { display: block; }
+    }
+
+    > :focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .archive-timeline-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    padding: 4px 8px;
+    border: 1px solid var(--border-secondary);
+    border-radius: 4px;
+    background: var(--bg-primary);
+    color: var(--text-contrast);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    pointer-events: none;
   }
 }

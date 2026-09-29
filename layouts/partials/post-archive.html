@@ -3,6 +3,7 @@
     {{ $posts = (where site.RegularPages "Type" "posts").ByDate.Reverse }}
 {{ end }}
 {{ $years := $posts.GroupByDate "2006" }}
+{{ $history := partial "archive-history-data.html" $posts }}
 {{ $maxCount := 1 }}
 {{ range $years }}
     {{ $maxCount = math.Max $maxCount (len .Pages) }}
@@ -44,17 +45,22 @@
     {{ end }}
     </div>
 
+    {{ partial "archive-timeline.html" (dict "history" $history) }}
+
     {{ range $years }}
     <section class="archive-year" aria-labelledby="year-{{ .Key }}">
         <h2 id="year-{{ .Key }}">{{ .Key }} <span class="archive-count">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span></h2>
         <ul class="archive-entries">
+            {{ $previousMonth := "" }}
             {{ range .Pages }}
-            <li>
+            {{ $month := .Date.Format "2006-01" }}
+            <li{{ if ne $month $previousMonth }} id="month-{{ $month }}"{{ end }}>
                 <a href="{{ .RelPermalink }}">
                     <span>{{ if .Draft }}<strong>DRAFT: </strong>{{ end }}{{ .Title }}</span>
                     <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
                 </a>
             </li>
+            {{ $previousMonth = $month }}
             {{ end }}
         </ul>
     </section>

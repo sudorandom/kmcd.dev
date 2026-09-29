@@ -1,0 +1,21 @@
+{{- $today := now -}}
+{{- $history := (where (where site.RegularPages "Type" "posts") "Date" "le" $today).ByDate -}}
+{{- $months := slice -}}
+{{- $maximum := 1 -}}
+{{- with $history -}}
+    {{- $start := time.AsTime (printf "%s-01" ((index . 0).Date.Format "2006-01")) -}}
+    {{- $counts := dict -}}
+    {{- range where $ "Date" "le" $today -}}
+        {{- $key := .Date.Format "2006-01" -}}
+        {{- $count := add (index $counts $key | default 0) 1 -}}
+        {{- $counts = merge $counts (dict $key $count) -}}
+        {{- $maximum = math.Max $maximum $count -}}
+    {{- end -}}
+    {{- $length := add (mul (sub $today.Year $start.Year) 12) (sub (int $today.Month) (int $start.Month)) -}}
+    {{- range seq 0 $length -}}
+        {{- $date := $start.AddDate 0 . 0 -}}
+        {{- $key := $date.Format "2006-01" -}}
+        {{- $months = $months | append (dict "date" $date "key" $key "count" (index $counts $key | default 0)) -}}
+    {{- end -}}
+{{- end -}}
+{{- return (dict "months" $months "maximum" $maximum "today" $today) -}}
