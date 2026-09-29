@@ -1,23 +1,12 @@
+# Cache pages and assets for at most one day before requiring revalidation.
+# Keep this in one rule: Pages
+# combines matching Cache-Control headers instead of replacing earlier values.
+# Avoid immutable caching for files whose URLs can stay the same across builds.
 /*
   X-Content-Type-Options: nosniff
   Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload" env=HTTPS
-  Cache-Control: no-cache
+  Cache-Control: public, max-age=86400, must-revalidate
   X-Frame-Options: deny
   Referrer-Policy: no-referrer
   Feature-Policy: microphone 'none'; payment 'none'; geolocation 'none'; midi 'none'; sync-xhr 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'
   X-XSS-Protection: 1; mode=block
-
-/posts/*
-  Cache-Control: public, max-age=86400, must-revalidate
-
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.js
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.css
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.wasm
-  Cache-Control: public, max-age=31536000, immutable
