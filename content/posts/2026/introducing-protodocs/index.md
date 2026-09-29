@@ -2,7 +2,7 @@
 title: "Introducing ProtoDocs"
 date: "2026-06-23T10:00:00Z"
 categories: ["article", "project"]
-tags: ["protobuf", "grpc", "connectrpc", "documentation", "go", "rpc"]
+tags: ["protobuf", "grpc", "connectrpc", "documentation", "golang", "rpc"]
 description: "A protobuf-first documentation browser for APIs that need clearer generated docs."
 cover: "cover.svg"
 images: ["/posts/introducing-protodocs/cover.png"]

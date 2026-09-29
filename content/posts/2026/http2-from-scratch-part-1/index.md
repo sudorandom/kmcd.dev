@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["go", "http2", "protocols", "networking"]
+tags: ["golang", "http2", "protocols", "networking"]
 date: "2026-02-11T10:00:00Z"
 description: "Re-building the web in Go to learn more about it"
 cover: "cover.svg"

@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["networking", "http", "go", "golang", "tutorial", "web", "webdev"]
+tags: ["networking", "http", "golang", "tutorial", "web", "webdev"]
 series: ["HTTP from Scratch"]
 date: "2024-08-13"
 description: "Laying the Foundation: Building the Web with HTTP/1.0."

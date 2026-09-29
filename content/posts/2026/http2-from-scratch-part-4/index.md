@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["go", "http2", "protocols", "networking"]
+tags: ["golang", "http2", "protocols", "networking"]
 date: "2026-03-11T10:00:00Z"
 description: "More HPACK and using http.Request and http.Response"
 cover: "cover.svg"

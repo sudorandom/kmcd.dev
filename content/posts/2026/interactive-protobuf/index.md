@@ -1,6 +1,6 @@
 ---
 categories: ["article", "project"]
-tags: ["protobuf", "wasm", "go", "webassembly", "dataviz"]
+tags: ["protobuf", "wasm", "golang", "webassembly", "dataviz"]
 date: "2026-06-25T10:00:00Z"
 description: "Announcing protobuf.kmcd.dev, an interactive explainer and playground for exploring the binary details of Protocol Buffers."
 cover: "cover.svg"

@@ -1,6 +1,6 @@
 ---
 categories: ["article", "tutorial"]
-tags: ["networking", "grpc", "go", "golang", "tutorial", "protobuf"]
+tags: ["networking", "grpc", "golang", "tutorial", "protobuf"]
 series: ["gRPC from Scratch"]
 date: "2024-05-07"
 description: "Let's look under the hood of gRPC by getting into the weeds of protocol buffers."

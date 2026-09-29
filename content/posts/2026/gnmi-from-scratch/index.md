@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["go", "gnmi", "connectrpc", "grpc", "networking", "telemetry"]
+tags: ["golang", "gnmi", "connectrpc", "grpc", "networking", "telemetry"]
 date: "2026-01-06T10:00:00Z"
 description: "Building a gNMI server from scratch in Go using ConnectRPC."
 cover: "cover.svg"

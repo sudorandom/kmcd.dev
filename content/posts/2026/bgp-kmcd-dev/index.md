@@ -1,6 +1,6 @@
 ---
 categories: ["article", "project"]
-tags: ["dataviz", "internet-map", "networking", "bgp", "rust", "go", "grpc", "protobuf", "education"]
+tags: ["dataviz", "internet-map", "networking", "bgp", "rust", "golang", "grpc", "protobuf", "education"]
 date: "2026-05-12T10:00:00Z"
 description: "How a live BGP map evolved into an interactive explainer on internet routing."
 cover: "cover.svg"

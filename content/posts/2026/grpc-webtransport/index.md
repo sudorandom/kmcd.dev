@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["streaming", "webtransport", "http3", "grpc", "go"]
+tags: ["streaming", "webtransport", "http3", "grpc", "golang"]
 date: "2026-09-01T10:00:00Z"
 description: "A practical look at streaming data in the browser, from response streams and WebSockets to WebTransport over HTTP/3."
 cover: "cover.png"

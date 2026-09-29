@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["connectrpc", "grpc", "protobuf", "api", "rpc", "go", "golang", "http3", "openapi"]
+tags: ["connectrpc", "grpc", "protobuf", "api", "rpc", "golang", "http3", "openapi"]
 date: "2026-05-05T10:00:00Z"
 description: "Reflecting on two years of ConnectRPC: How it evolved from a gRPC alternative to a complete API ecosystem."
 cover: "cover.svg"

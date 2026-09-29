@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["gamedev", "react", "wordseq", "typescript", "go", "games"]
+tags: ["gamedev", "react", "wordseq", "typescript", "golang", "games"]
 date: "2025-05-14T10:00:00Z"
 description: "Taking a peek under the covers of making a daily puzzle game"
 cover: "cover.png"

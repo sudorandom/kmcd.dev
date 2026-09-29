@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["networking", "http", "go", "golang", "tutorial", "web", "webdev"]
+tags: ["networking", "http", "golang", "tutorial", "web", "webdev"]
 series: ["HTTP from Scratch"]
 date: "2026-02-04"
 description: "When the web became whole."

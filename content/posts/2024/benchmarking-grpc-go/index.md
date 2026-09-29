@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "golang", "go", "benchmark", "performance", "protobuf"]
+tags: ["grpc", "golang", "benchmark", "performance", "protobuf"]
 date: "2024-05-21"
 description: "Let's so how fast gRPC can go in Go."
 cover: "cover.jpg"

@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["fauxrpc", "connectrpc", "grpc", "protobuf", "api", "rpc", "go", "golang", "http3"]
+tags: ["fauxrpc", "connectrpc", "grpc", "protobuf", "api", "rpc", "golang", "http3"]
 date: "2026-06-30T10:00:00Z"
 description: "Stop writing mock stubs by hand. How FauxRPC uses smart proxying, reflection, and CEL to automate your API testing."
 featuredalt: ""

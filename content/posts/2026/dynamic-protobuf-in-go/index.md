@@ -2,7 +2,7 @@
 title: "Making Dynamic Protobuf Fast in Go"
 date: "2026-07-07T10:00:00Z"
 categories: ["article"]
-tags: ["protobuf", "go", "performance", "software-architecture"]
+tags: ["protobuf", "golang", "performance", "software-architecture"]
 description: "Using Buf’s hyperpb to speed up FauxRPC’s runtime-loaded Protobuf request path."
 cover: "cover.svg"
 images: ["/posts/dynamic-protobuf-in-go/cover.svg"]

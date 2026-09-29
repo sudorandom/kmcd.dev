@@ -1,6 +1,6 @@
 ---
 categories: ["opinion"]
-tags: ["go", "wasm"]
+tags: ["golang", "wasm"]
 date: "2026-05-19T10:00:00Z"
 description: "Bringing Go libraries to life with WebAssembly."
 cover: "cover.svg"

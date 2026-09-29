@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["protobuf", "grpc", "api", "microservices", "datapipelines", "connectrpc", "go", "typescript", "architecture"]
+tags: ["protobuf", "grpc", "api", "microservices", "datapipelines", "connectrpc", "golang", "typescript", "architecture"]
 keywords: ["protobuf unknown fields", "schema evolution", "api gateway", "data preservation", "forward compatibility", "proto3"]
 date: "2026-04-16"
 description: "How Protobuf unknown fields enable seamless schema evolution and robust middleware."

@@ -2,7 +2,7 @@
 title: "The CPU Cost of Protobuf Varints in Go"
 date: "2026-08-04T10:00:00Z"
 categories: ["article"]
-tags: ["protobuf", "go", "performance", "software-architecture"]
+tags: ["protobuf", "golang", "performance", "software-architecture"]
 description: "Do fixed-size integers serialize faster than varints? We benchmark the CPU overhead of continuation-bit parsing using Go, vtprotobuf, and hyperpb."
 slug: "protobuf-varint-vs-fixed"
 cover: "cover.svg"

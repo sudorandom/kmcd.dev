@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["grpc", "connectrpc", "openapi", "protobuf", "protoc", "rpc", "go", "golang"]
+tags: ["grpc", "connectrpc", "openapi", "protobuf", "protoc", "rpc", "golang"]
 date: "2024-09-25T10:00:00Z"
 description: "gRPC can be pretty, too."
 cover: "cover.jpg"

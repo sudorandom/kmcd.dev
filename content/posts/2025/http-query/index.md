@@ -1,6 +1,6 @@
 ---
 categories: ["article"]
-tags: ["http", "protocols", "api", "webdev", "go"]
+tags: ["http", "protocols", "api", "webdev", "golang"]
 date: "2025-06-04T10:00:00Z"
 cover: "cover.png"
 images: ["/posts/wordseq/wordseq.svg"]
