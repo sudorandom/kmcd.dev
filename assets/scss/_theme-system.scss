@@ -1,17 +1,15 @@
 /* ==========================================================================
    Modern Typography, Layout & Multi-Palette System for kmcd.dev
-   Default Palette: Minimal Monochrome
-   Available Palettes: monochrome, nord, warm-amber, orange
+   Default Palette: Orange
+   Available Palettes: orange, monochrome, nord, warm-amber
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. COLOR PALETTES DEFINITIONS
    -------------------------------------------------------------------------- */
 
-/* Fallback & Default: Monochrome Dark */
-:root,
-[data-palette="monochrome"][data-theme="dark"],
-:root[data-theme="dark"]:not([data-palette]) {
+/* Monochrome Dark */
+[data-palette="monochrome"][data-theme="dark"] {
   --bg-primary: #121214;
   --bg-secondary: #18181b;
   --bg-tertiary: #27272a;
@@ -33,8 +31,7 @@
 }
 
 /* Monochrome Light */
-[data-palette="monochrome"][data-theme="light"],
-:root[data-theme="light"]:not([data-palette]) {
+[data-palette="monochrome"][data-theme="light"] {
   --bg-primary: #ffffff;
   --bg-secondary: #f4f4f5;
   --bg-tertiary: #e4e4e7;
@@ -143,9 +140,11 @@
   --link-underline: rgba(180, 83, 9, 0.35);
 }
 
-/* Original Orange Dark */
+/* Fallback & Default: Original Orange Dark */
+:root,
 [data-palette="orange"][data-theme="dark"],
-[data-palette="planetscale-orange"][data-theme="dark"] {
+[data-palette="planetscale-orange"][data-theme="dark"],
+:root[data-theme="dark"]:not([data-palette]) {
   --bg-primary: #111111;
   --bg-secondary: #1a1a1a;
   --bg-tertiary: #242424;
@@ -168,7 +167,8 @@
 
 /* Original Orange Light */
 [data-palette="orange"][data-theme="light"],
-[data-palette="planetscale-orange"][data-theme="light"] {
+[data-palette="planetscale-orange"][data-theme="light"],
+:root[data-theme="light"]:not([data-palette]) {
   --bg-primary: #fafafa;
   --bg-secondary: #f0f0f0;
   --bg-tertiary: #e5e5e5;
@@ -922,9 +922,10 @@ footer.site-footer {
   border: none;
   cursor: pointer;
   height: 26px;
-  min-width: 24px;
-  padding: 0 5px;
-  border-radius: 9999px;
+  width: 26px;
+  min-width: 26px;
+  padding: 0;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1049,6 +1050,59 @@ footer.site-footer {
 
   .hide-on-phone {
     display: none !important;
+  }
+
+  .theme-control-capsule {
+    cursor: default;
+    padding: 5px 8px;
+
+    .capsule-trigger-btn {
+      display: none;
+    }
+
+    .capsule-options {
+      max-width: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      margin-right: 0 !important;
+    }
+
+    .palette-switcher {
+      gap: 4px;
+    }
+
+    .palette-dot-btn {
+      height: 34px;
+      width: 34px;
+      min-width: 34px;
+      padding: 0;
+      border-radius: 6px;
+
+      .palette-dot {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    .theme-capsule-divider {
+      opacity: 1 !important;
+      width: 1px !important;
+      height: 20px;
+      margin: 0 6px !important;
+    }
+
+    .theme-toggle-btn {
+      height: 34px;
+      width: 34px;
+      min-width: 34px;
+      padding: 0;
+      border-radius: 6px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
   }
 }
 

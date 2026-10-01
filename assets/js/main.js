@@ -39,7 +39,7 @@ function switchTheme() {
 /**
  * Palette Switcher.
  */
-let currentPalette = "monochrome";
+let currentPalette = "orange";
 
 function updatePaletteActiveUI(activePalette) {
   document.querySelectorAll(".palette-dot-btn").forEach(btn => {
@@ -72,7 +72,7 @@ function setPalette(paletteName) {
  * Initialize theme, palette, and capsule trigger/auto-collapse behaviors.
  */
 function initThemeAndPaletteControls() {
-  let initialPalette = (window.localStorage && window.localStorage.getItem("palette")) || "monochrome";
+  let initialPalette = (window.localStorage && window.localStorage.getItem("palette")) || "orange";
   if (initialPalette === "planetscale-orange") {
     initialPalette = "orange";
     try { window.localStorage.setItem("palette", "orange"); } catch (e) {}
@@ -108,12 +108,16 @@ function initThemeAndPaletteControls() {
   let collapseTimer = null;
   let idleTimer = null;
 
+  const mobileQuery = window.matchMedia("(max-width: 684px)");
+  const isMobileCapsule = () => mobileQuery.matches;
+
   if (optionsContainer) {
     optionsContainer.querySelectorAll("button").forEach(btn => btn.setAttribute("tabindex", "-1"));
   }
 
   function resetIdleTimer() {
     clearTimeout(idleTimer);
+    if (isMobileCapsule()) return;
     if (capsule.classList.contains("expanded")) {
       idleTimer = setTimeout(() => {
         collapseCapsule();
@@ -135,6 +139,7 @@ function initThemeAndPaletteControls() {
   }
 
   function collapseCapsule() {
+    if (isMobileCapsule()) return;
     clearTimeout(collapseTimer);
     clearTimeout(idleTimer);
     capsule.classList.remove("expanded");
@@ -152,6 +157,7 @@ function initThemeAndPaletteControls() {
   }
 
   function scheduleCollapse(delay = 2000) {
+    if (isMobileCapsule()) return;
     clearTimeout(collapseTimer);
     collapseTimer = setTimeout(() => {
       collapseCapsule();
@@ -162,6 +168,26 @@ function initThemeAndPaletteControls() {
     clearTimeout(collapseTimer);
     resetIdleTimer();
   }
+
+  function updateMobileState() {
+    if (isMobileCapsule()) {
+      clearTimeout(collapseTimer);
+      clearTimeout(idleTimer);
+      capsule.classList.add("expanded");
+      if (triggerBtn) {
+        triggerBtn.setAttribute("aria-expanded", "true");
+      }
+      if (optionsContainer) {
+        optionsContainer.setAttribute("aria-hidden", "false");
+        optionsContainer.querySelectorAll("button").forEach(btn => btn.setAttribute("tabindex", "0"));
+      }
+    } else {
+      collapseCapsule();
+    }
+  }
+
+  mobileQuery.addEventListener("change", updateMobileState);
+  updateMobileState();
 
   // 1. Trigger button click expands/collapses the options
   if (triggerBtn) {
@@ -193,7 +219,7 @@ function initThemeAndPaletteControls() {
     });
   }
 
-  // 3. Palette dots inside options: click only (no hover preview)
+  // 3. Palette dots inside options: click anywhere in the square section
   paletteBtns.forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -205,6 +231,33 @@ function initThemeAndPaletteControls() {
       }
     });
   });
+
+  const paletteSwitcher = capsule.querySelector(".palette-switcher");
+  if (paletteSwitcher) {
+    paletteSwitcher.addEventListener("click", (e) => {
+      if (e.target.closest(".palette-dot-btn")) return;
+      const clickX = e.clientX;
+      let closestBtn = null;
+      let minDistance = Infinity;
+      paletteBtns.forEach(pBtn => {
+        const rect = pBtn.getBoundingClientRect();
+        const center = rect.left + rect.width / 2;
+        const dist = Math.abs(clickX - center);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestBtn = pBtn;
+        }
+      });
+      if (closestBtn) {
+        cancelCollapse();
+        const target = closestBtn.getAttribute("data-palette-target");
+        if (target) {
+          setPalette(target);
+          scheduleCollapse(1200);
+        }
+      }
+    });
+  }
 
   // 4. Mouse tracking across capsule for keepalive and auto-collapse
   capsule.addEventListener("mouseenter", () => {
