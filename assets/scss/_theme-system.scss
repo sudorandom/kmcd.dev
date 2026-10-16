@@ -205,6 +205,8 @@ html, body {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace !important;
   font-size: 15px;
   line-height: 1.6;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-wrap: pretty;

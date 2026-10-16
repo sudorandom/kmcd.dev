@@ -17,9 +17,10 @@ body {
   font-display: auto;
   font-size: 1.1rem;
   line-height: 1.54;
-  text-rendering: optimizeLegibility;
+  text-rendering: auto;
   -webkit-font-smoothing: antialiased;
-  font-feature-settings: "liga", "tnum", "case", "calt", "zero", "ss01", "locl";
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
   -webkit-overflow-scrolling: touch;
   -webkit-text-size-adjust: 100%;
 
@@ -142,6 +143,7 @@ a {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 
   &.left {
     margin-right: auto;
@@ -160,6 +162,20 @@ img {
     max-width: 25%;
     margin: auto;
   }
+
+  &.img-fade-in {
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+
+    &.is-loaded {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+      opacity: 1;
+    }
+  }
 }
 
 .center img {
@@ -168,9 +184,14 @@ img {
 }
 
 figure {
-  display: table;
+  display: block;
   max-width: 100%;
   margin: 0;
+
+  img {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   &.left {
     margin-right: auto;
@@ -210,6 +231,8 @@ figure {
   figcaption {
     font-size: 14px;
     margin-top: 5px;
+    padding: 0 1rem;
+    box-sizing: border-box;
     color: #666;
 
     [data-theme=dark] & {

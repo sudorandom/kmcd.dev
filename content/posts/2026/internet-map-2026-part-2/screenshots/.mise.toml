@@ -1,0 +1,12 @@
+[tools]
+node = "22.22.2"
+pnpm = "10.33.2"
+
+[tasks.install]
+description = "Install Playwright dependencies"
+run = "pnpm install"
+
+[tasks.screenshots]
+description = "Generate all screenshots for the blog post"
+depends = ["install"]
+run = "node screenshots.js"

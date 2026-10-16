@@ -44,12 +44,18 @@
 
     {{ $imgWidth := 0 }}
     {{ $imgHeight := 0 }}
+    {{ if and $image (not $isSVG) }}
+        {{ $imgWidth = $image.Width }}
+        {{ $imgHeight = $image.Height }}
+    {{ end }}
     {{ with .Get "width" }}
         {{ $cleanedWidth := replace . "px" "" | int }}
-        {{ $imgWidth = $cleanedWidth }}
-        {{ if and (not $isSVG) (not $animate) }}
-            {{ $imgHeight = div (mul $imgWidth 630) 1200 }}
+        {{ if and $imgWidth $imgHeight }}
+            {{ $imgHeight = div (mul $cleanedWidth $imgHeight) $imgWidth }}
+        {{ else if and (not $isSVG) (not $animate) }}
+            {{ $imgHeight = div (mul $cleanedWidth 630) 1200 }}
         {{ end }}
+        {{ $imgWidth = $cleanedWidth }}
     {{ end }}
 
     {{ $finalSrc := "" }}
@@ -60,9 +66,12 @@
     {{ end }}
 
     <img src="{{ $finalSrc }}"
+         class="img-fade-in"
+         onload="this.classList.add('is-loaded')"
          alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
          {{- with $imgWidth }} width="{{ . }}"{{ end -}}
          {{- with $imgHeight }} height="{{ . }}"{{ end -}}
+         {{- if and $imgWidth $imgHeight }} style="aspect-ratio: {{ $imgWidth }} / {{ $imgHeight }};"{{ end -}}
          {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
     /><!-- Closing img tag -->
     </a>

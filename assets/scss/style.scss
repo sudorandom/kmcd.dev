@@ -1027,6 +1027,11 @@ figure img {
 
 .diagram-wrapper {
     text-align: center;
+
+    figcaption {
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
 }
 
 .diagram {
@@ -1039,6 +1044,7 @@ figure img {
     }
     border-radius: 8px;
     display: inline-block;
+    width: 100%;
     max-width: 100%;
 }
 

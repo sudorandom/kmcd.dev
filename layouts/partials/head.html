@@ -70,6 +70,21 @@
 
 <script>
     (function() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                if (registrations.length > 0) {
+                    Promise.all(registrations.map(function(r) { return r.unregister(); })).then(function() {
+                        if (window.caches) {
+                            caches.keys().then(function(names) {
+                                return Promise.all(names.map(function(n) { return caches.delete(n); }));
+                            }).then(function() { window.location.reload(); });
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        }
         const urlParams = new URLSearchParams(window.location.search);
         const themeParam = urlParams.get("theme");
         const paletteParam = urlParams.get("palette");

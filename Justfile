@@ -1,6 +1,6 @@
 run:
   ./ensure-build-server.sh
-  hugo server -w --buildDrafts --buildFuture --minify
+  hugo server -w --buildDrafts --buildFuture --minify --noHTTPCache
 
 build:
   ./ensure-build-server.sh

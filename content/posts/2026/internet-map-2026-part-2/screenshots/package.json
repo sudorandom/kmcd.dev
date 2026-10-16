@@ -1,0 +1,11 @@
+{
+  "name": "internet-map-2026-part-2-screenshots",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "screenshots": "node screenshots.js"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}

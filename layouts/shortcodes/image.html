@@ -5,11 +5,21 @@
         {{ if not $should_skip_fit }}
             {{ $image = $image.Fit (or (.Get "fit") "2000x1600 webp") }}
         {{ end }}
+        {{ $isSVG := eq $image.MediaType.SubType "svg" }}
+        {{ $imgWidth := .Get "width" }}
+        {{ $imgHeight := .Get "height" }}
+        {{ if and (not $isSVG) (not $imgWidth) }}
+            {{ $imgWidth = $image.Width }}
+        {{ end }}
+        {{ if and (not $isSVG) (not $imgHeight) }}
+            {{ $imgHeight = $image.Height }}
+        {{ end }}
         <img src="{{ $image.Permalink }}"
+             class="img-fade-in{{ with .Get "class" }} {{ . }}{{ end }}"
+             onload="this.classList.add('is-loaded')"
              alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
-             {{- with .Get "class" }} class="{{ . }}"{{ end -}}
-             {{- with .Get "width" }} width="{{ . }}"{{ end -}}
-             {{- with .Get "height" }} height="{{ . }}"{{ end -}}
+             {{- with $imgWidth }} width="{{ . }}"{{ end -}}
+             {{- with $imgHeight }} height="{{ . }}"{{ end -}}
              {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
         /><!-- Closing img tag -->
     {{ else }}

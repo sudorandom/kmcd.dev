@@ -457,7 +457,19 @@ function initArchiveTags() {
   });
 }
 
+function initImageFadeIn() {
+  document.querySelectorAll("img.img-fade-in").forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add("is-loaded");
+    } else {
+      img.addEventListener("load", () => img.classList.add("is-loaded"), { once: true });
+      img.addEventListener("error", () => img.classList.add("is-loaded"), { once: true });
+    }
+  });
+}
+
 function initAll() {
+  initImageFadeIn();
   initArchiveTags();
   initThemeAndPaletteControls();
   initTocScrollSpy();
