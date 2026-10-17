@@ -63,9 +63,9 @@ The search bar in the toolbar also filters both the 3D globe and 2D map across c
 
 ## Performance
 
-Putting all of those cities and cables onto a 3D globe at once initially made the page very slow, especially when zooming in and out.
+Putting all of those cities and cables onto a 3D globe at once initially made the page very slow, both on initial load and when zooming in and out.
 
-To keep the map at 60 FPS, I moved the city clustering calculations into a Web Worker and split the city data into smaller files that load as you zoom in. Hovering over a cable also used to rebuild its Three.js geometry on every mouse move; now all the cables are merged into a single mesh and I just update a texture to highlight the selected one. I also turned off raycasting on the background country polygons.
+To keep initial page loads fast and the map running at 60 FPS, the initial view loads a pre-clustered global overview while a Web Worker streams in regional city tiles on demand as you zoom in and handles the clustering off the main thread. I also shrank the initial download by delta-encoding the country boundary GeoJSON and trimming coordinate precision on the cable routes. Hovering over a cable used to rebuild its Three.js geometry on every mouse move; now all the cables are merged into a single mesh and I just update a texture to highlight the selected one, with raycasting turned off on the background country polygons.
 
 ## Historical Data
 
