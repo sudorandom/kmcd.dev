@@ -91,14 +91,8 @@ I also wanted `map.kmcd.dev` to show active internet disruptions alongside the p
 
 Countries with an active outage highlight in red on the globe, and clicking the alert badge links out to the incident on Cloudflare Radar. When I first added this, I forgot to hide the alerts when scrubbing the timeline slider, so for a day or two it looked like Cloudflare was reporting live outages in 1995.
 
-## Kiosk Mode
+## End
 
-I also added a **Kiosk Mode** (`?mode=ambient`) that hides all of the UI controls and slowly rotates the globe. If you want the globe to spin in the normal view too, there is a rotation speed button in the top bar.
-
-{{< diagram >}}
-{{< figure src="kiosk-plash.png" alt="The map running in Plash on my desktop" caption="Running map.kmcd.dev in kiosk mode as a macOS desktop wallpaper with Plash." loading="lazy" >}}
-{{< /diagram >}}
-
-I use this with **[Plash](https://sindresorhus.com/plash)** on macOS, which lets you run a webpage as your desktop wallpaper. Pointing Plash at `map.kmcd.dev/?mode=ambient` gives me a slowly rotating globe on my desktop that highlights active internet outages as they happen.
+We'll have to see what direction this takes next year. I'm really happy with how the project has evolved, starting as a simple rendering of submarine cables and growing into a map that glues together routing tables, peering databases, historical archives, and live outage feeds into a single view.
 
 You can explore the updated map here: **[map.kmcd.dev](https://map.kmcd.dev)**
