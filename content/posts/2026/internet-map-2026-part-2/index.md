@@ -23,7 +23,7 @@ In my [February post](/posts/internet-map-2026/) about the [Internet Infrastruct
 
 ## 3D Globe
 
-Up until now, the map used [Leaflet](https://leafletjs.com/). The tileset I was using with Leaflet dropped its free tier and started requiring a paid API key. I found an alternative for a while, but I didn't like how things felt. This update is essentially the end result of that saga: I replaced Leaflet with **Three.js** and instead of the usual map tiling, I now use an SVG for the country lines and rasterize it (with a cache) to an offscreen `<canvas>` texture for the visible viewport when zoom settles, so you don't lose fidelity or see super blurry borders. The **3D Globe** is now the default, though you can still switch back to the 2D view (which swaps to an orthographic Web Mercator Three.js scene while keeping your camera position synced).
+Up until now, the map used [Leaflet](https://leafletjs.com/). The tileset I was using with Leaflet dropped its free tier and started requiring a paid API key. I found an alternative for a while, but I didn't like how things felt. This update is the end result of that saga: I replaced Leaflet with **Three.js** and ditched standard map tiles altogether. Instead, I use an SVG for the country lines and rasterize it (with a cache) to an offscreen `<canvas>` texture for the visible viewport whenever zoom settles, so borders stay sharp at any zoom level. The **3D Globe** is now the default, though you can still switch back to the 2D view (which swaps to an orthographic Web Mercator Three.js scene while keeping your camera position synced).
 
 {{< diagram >}}
 {{< compare before="view-globe.png" after="view-2d.png" caption="The 3D Globe and the 2D map." >}}
@@ -37,7 +37,7 @@ For the cables on the 3D globe, I added two ways to view them. In **Arches** mod
 
 ## More BGP Data
 
-In [Part 1](/posts/internet-map-2026/), I only mapped IPv4 BGP routes and filtered out smaller cities to keep the map from bogging down. This time I added IPv6 routes, kept all of the smaller cities on the map, and pulled historical GeoIP snapshots for each year back to 2010 instead of relying on a single modern database. Zooming in also adds text labels for the largest cities in view.
+In [Part 1](/posts/internet-map-2026/), I only mapped IPv4 BGP routes and filtered out smaller cities to keep the map from bogging down. This time I added IPv6 routes (measured by announced subnet count rather than raw address count so a single `/64` doesn't dwarf the entire IPv4 internet), kept all of the smaller cities on the map, and pulled historical GeoIP snapshots for each year back to 2010 instead of relying on a single modern database. Zooming in also adds text labels for the largest cities in view.
 
 {{< diagram >}}
 {{< figure src="hub-closeup.png" alt="Zoomed-in view of Western Europe showing city labels and BGP cities" caption="Western Europe with individual BGP cities and city labels." loading="lazy" >}}
@@ -52,7 +52,7 @@ Rather than manually running the data scripts once a year, the map data now upda
 You can toggle individual layers (text labels, outage alerts, cable display mode, peering capacity, IPv4 addresses, and IPv6 subnets) from the layers menu in the top toolbar:
 
 {{< diagram width="300px" >}}
-{{< figure src="layers-menu.png" alt="The layers menu in the top toolbar" caption="The layers menu for toggling text, outage alerts, cable display mode, peering, IPv4 space, and IPv6 subnets." loading="lazy" >}}
+{{< figure src="layers-menu.png" width="600px" alt="The layers menu in the top toolbar" caption="The layers menu for toggling text, outage alerts, cable display mode, peering, IPv4 space, and IPv6 subnets." loading="lazy" >}}
 {{< /diagram >}}
 
 The search bar in the toolbar also filters both the 3D globe and 2D map across cables, cities, and countries at once. For example, filtering for `France` isolates every submarine cable landing in France alongside its peering and BGP cities:
@@ -65,7 +65,7 @@ The search bar in the toolbar also filters both the 3D globe and 2D map across c
 
 Putting all of those cities and cables onto a 3D globe at once initially made the page very slow, both on initial load and when zooming in and out.
 
-To keep initial page loads fast and the map running at 60 FPS, the initial view loads a pre-clustered global overview while a Web Worker streams in regional city tiles on demand as you zoom in and handles the clustering off the main thread. I also shrank the initial download by delta-encoding the country boundary GeoJSON and trimming coordinate precision on the cable routes. Hovering over a cable used to rebuild its Three.js geometry on every mouse move; now all the cables are merged into a single mesh and I just update a texture to highlight the selected one, with raycasting turned off on the background country polygons.
+To keep initial page loads fast and the map running at 60 FPS, the initial view loads a pre-clustered global overview while a Web Worker streams in regional city tiles on demand as you zoom in and handles the clustering off the main thread. I also shrank the initial download by delta-encoding the country boundary GeoJSON and trimming coordinate precision on the cable routes. Hovering over a cable used to rebuild its Three.js geometry on every mouse move. Now all cables are merged into a single mesh where a texture update highlights the selected route, and raycasting is disabled on the background country polygons.
 
 ## Historical Data
 
@@ -83,13 +83,13 @@ There is also a new **Statistics** panel that updates as you move the timeline s
 
 ## Outage Alerts
 
-I also wanted `map.kmcd.dev` to show active internet disruptions alongside the physical and routing layers. The map now pulls outage and anomaly alerts from **Cloudflare Radar** and **IODA** every 15 minutes and overlays them directly onto the globe.
+I also wanted `map.kmcd.dev` to show active internet disruptions alongside the physical and routing layers. The map now pulls outage and anomaly alerts from **[Cloudflare Radar](https://radar.cloudflare.com/outage-center)** and **[IODA](https://ioda.inetintel.cc.gatech.edu/)** (Internet Outage Detection and Analysis) every 15 minutes and overlays them directly onto the globe.
 
 {{< diagram >}}
 {{< figure src="cloudflare-alerts.png" alt="Active outage alert on the map" caption="Active outage alerts on the map, with links to Cloudflare Radar." loading="lazy" >}}
 {{< /diagram >}}
 
-Countries with an active outage highlight in red on the globe, and clicking the alert badge links out to the incident on Cloudflare Radar. When I first added this, I forgot to hide the alerts when scrubbing the timeline slider, so for a day or two it looked like Cloudflare was reporting live outages in 1995.
+Countries with an active outage highlight in red on the globe, and clicking the alert badge opens the incident details with a link out to the upstream outage report. When I first added this, I forgot to hide the alerts when scrubbing the timeline slider, so for a day or two it looked like Cloudflare was reporting live outages in 1995.
 
 ## End
 
