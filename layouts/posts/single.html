@@ -2,21 +2,11 @@
 {{- $hasTOC := and .TableOfContents (strings.Contains (string .TableOfContents) "<li") -}}
 <div class="post-layout-wrapper">
   <main class="layout-split{{ if not $hasTOC }} no-toc{{ end }}">
-    {{- if $hasTOC }}
-    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
-    <aside class="tree-nav">
-      <div class="toc-title">Contents</div>
-      <nav class="tree-nav-content">
-        {{ .TableOfContents }}
-      </nav>
-    </aside>
-    {{- end }}
-
     <!-- MAIN ARTICLE -->
     <article class="post-container">
       <div class="post-header">
         <div class="post-title">
-          <h1 class="post-title-text">{{- with $.Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ $.Title | markdownify }}</h1>
+          <h1 class="post-title-text">{{- with $.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ $.Title | markdownify }}</h1>
           <div class="post-meta-line">
             <a href="/me/" class="author-name">{{ $.Site.Params.author.name }}</a>
             <a href="https://bsky.app/profile/kmcd.dev" class="handle" target="_blank" rel="noopener">[@sudorandom]</a>
@@ -33,9 +23,18 @@
         {{ end }}
       </div>
 
+      {{- if $hasTOC }}
+      <details class="mobile-toc-drawer">
+        <summary class="toc-title">Contents</summary>
+        <nav class="tree-nav-content" aria-label="Mobile Table of Contents">
+          {{ .TableOfContents }}
+        </nav>
+      </details>
+      {{- end }}
+
       {{ if .Params.Audio }}
-        <div class="post-audio" style="margin-bottom: 24px;">
-          <audio controls style="width: 100%;">
+        <div class="post-audio">
+          <audio controls>
             <source src="{{ .Params.Audio }}">
           </audio>
         </div>
@@ -46,7 +45,7 @@
       {{- range . -}}
         {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Name) -}}
       {{- end -}}
-      <div class="series-notice" style="margin-bottom: 24px; padding: 10px 14px; background: var(--bg-secondary); border-left: 2px solid var(--accent-primary); font-size: 14px;">
+      <div class="series-notice">
         <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
       </div>
       {{- end -}}
@@ -58,9 +57,9 @@
       <hr class="dot-fill" />
 
       <!-- Sharing & Metadata -->
-      <div class="main-box" style="margin-top: 32px;">
-        <h3>Share this post</h3>
-        <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">
+      <div class="main-box post-footer-box">
+        <h2>Share this post</h2>
+        <p class="post-footer-box-desc">
           {{- $url := .Permalink -}}
           {{- if .Params.canonical_url -}}
               {{- $url = .Params.canonical_url -}}
@@ -75,7 +74,7 @@
 
       {{- with (.GetTerms "series") -}}
       {{- range . -}}
-      <div class="main-box" style="margin-top: 24px;">
+      <div class="main-box post-footer-box post-series-box">
         {{- $seriesPages := .Pages.ByDate -}}
         {{- $nextPage := "" -}}
         {{- $foundCurrent := false -}}
@@ -86,8 +85,8 @@
             {{- $nextPage = . -}}
           {{- end -}}
         {{- end -}}
-        <h3>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h3>
-        <ol style="margin-top: 12px;">
+        <h2>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h2>
+        <ol class="series-post-list">
           {{- range $seriesPages -}}
           <li>
             {{- if eq .File.UniqueID $.File.UniqueID -}}
@@ -104,10 +103,20 @@
 
       {{ partial "webmentions.html" . }}
 
-      <div style="margin-top: 32px;">
+      <div class="post-pagination-wrap">
         {{ partial "pagination-single.html" . }}
       </div>
     </article>
+
+    {{- if $hasTOC }}
+    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
+    <aside class="tree-nav" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <nav class="tree-nav-content">
+        {{ .TableOfContents }}
+      </nav>
+    </aside>
+    {{- end }}
   </main>
 </div>
 {{ end }}

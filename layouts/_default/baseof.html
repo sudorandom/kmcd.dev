@@ -7,10 +7,11 @@
     {{ block "body" . }}
         <body class="page-{{ .Type }}">
     {{ end }}
-    
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
         {{ partial "site-header.html" . }}
 
-        <div class="site-main container">
+        <div class="site-main container" id="main-content">
             {{ block "main" . }}{{ end }}
         </div>
 

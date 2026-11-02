@@ -38,8 +38,6 @@
 
 
 <!-- CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
-    type="text/css" async>
 
 
 {{ $mainOptions := (dict "targetPath" "main.css" "outputStyle" "compressed" "enableSourceMap" true) }}
@@ -107,7 +105,7 @@
         } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
             document.documentElement.setAttribute("data-theme", "dark");
         } else {
-            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.setAttribute("data-theme", "light");
         }
 
         const chosenPalette = paletteParam || (window.localStorage && window.localStorage.getItem("palette")) || "orange";

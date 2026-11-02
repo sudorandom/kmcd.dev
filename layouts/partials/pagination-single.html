@@ -1,9 +1,8 @@
 {{ if and (not $.Site.Params.DisableReadOtherPosts) (or .NextInSection .PrevInSection) }}
-    <div class="pagination">
+    <nav class="pagination" aria-label="Post navigation">
         {{ if .Site.Params.ReadOtherPosts }}
         <div class="pagination__title">
             <span class="pagination__title-h">{{ .Site.Params.ReadOtherPosts }}</span>
-            <hr />
         </div>
         {{ end }}
 
@@ -11,7 +10,7 @@
             {{ if .NextInSection }}
             <span class="button previous">
                 <a href="{{ .NextInSection.Permalink }}">
-                    <span class="button__icon">←</span>
+                    <span class="button__label"><span class="button__icon">←</span> Newer Post</span>
                     <span class="button__text">{{ .NextInSection.Title }}</span>
                 </a>
             </span>
@@ -20,11 +19,11 @@
             {{ if .PrevInSection }}
             <span class="button next">
                 <a href="{{ .PrevInSection.Permalink }}">
+                    <span class="button__label">Older Post <span class="button__icon">→</span></span>
                     <span class="button__text">{{ .PrevInSection.Title }}</span>
-                    <span class="button__icon">→</span>
                 </a>
             </span>
             {{ end }}
         </div>
-    </div>
+    </nav>
 {{ end }}

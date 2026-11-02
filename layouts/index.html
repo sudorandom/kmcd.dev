@@ -2,13 +2,6 @@
 {{ define "main" }}
     <main role="main">
         <div class="home-content-container">
-        <div class="main-heading">
-            {{ with .Content }}
-                {{ . }}
-            {{ end }}
-        </div>
-
-
         <!-- Start Posts -->
         {{ if .Site.Params.showPosts }}
             {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
@@ -17,18 +10,34 @@
             {{ if .IsHome }}
                 {{ $PageContext = .Site }}
             {{ end }}
-            
+            {{ $latestPosts := first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+            {{ $latestPermalinks := slice }}
+            {{ range $latestPosts }}
+                {{ $latestPermalinks = $latestPermalinks | append .Permalink }}
+            {{ end }}
+
             <div class="home-columns-container">
-                <!-- Left Column (2/3 width): Latest & Featured Posts -->
+                <!-- Left Column (2/3 width): Hero Banner, Latest & Featured Posts -->
                 <div class="home-posts-col">
+                    <section class="riso-hero-banner" aria-label="Introduction">
+                        <span class="riso-hero-sticker">★ HAND-CRAFTED PACKETS</span>
+                        <h1 class="riso-hero-title">Depth-first search into networking, programming &amp; random tech rabbit holes.</h1>
+                        <p class="riso-hero-lead">
+                            Field notes, protocol experiments, and questionable engineering side-quests by <a href="/me/">Kevin McDonald</a>.
+                        </p>
+                        {{ with .Content }}
+                            {{ . }}
+                        {{ end }}
+                    </section>
+
                     <div class="main-heading">
                         <div class="posts-header section-title">
-                            <h3><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h3>
+                            <h2><i class="fa-solid fa-file-lines"></i> &nbsp; Latest Posts</h2>
                         </div>
                     </div>
 
                     <div class="posts-list">
-                        {{ range first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+                        {{ range $latestPosts }}
                         <div class="post-preview on-list">
                             <div class="post-title">
                                 <span class="post-meta">
@@ -42,12 +51,12 @@
                                         {{ end }}
                                     {{- end -}}
                                 </span>
-                                <h1>
-                                    <a href="{{ .Permalink }}">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title | markdownify }}</a>
-                                </h1>
+                                <h3>
+                                    <a href="{{ .Permalink }}">{{- with .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ .Title | markdownify }}</a>
+                                </h3>
                             </div>
                             <div class="post-summary">
-                                <a href="{{ .Permalink }}" class="post-summary-link" aria-label="Read {{ .Title }}">
+                                <a href="{{ .Permalink }}" class="post-summary-link" tabindex="-1" aria-hidden="true">
                                     <span class="post-summary-text">
                                         {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
                                         {{- $summary = chomp $summary -}}
@@ -65,12 +74,14 @@
 
                     <div class="main-heading">
                         <div class="posts-header section-title">
-                            <h3><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h3>
+                            <h2><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h2>
                         </div>
                     </div>
 
                     <div class="posts-list">
-                        {{ range first 3 (where $PageContext.RegularPages ".Params.featured" true) }}
+                        {{ $featuredCandidates := where $PageContext.RegularPages ".Params.featured" true }}
+                        {{ $featuredPosts := where $featuredCandidates "Permalink" "not in" $latestPermalinks }}
+                        {{ range first 3 $featuredPosts }}
                         <div class="post-preview on-list">
                             <div class="post-title">
                                 <span class="post-meta">
@@ -84,12 +95,12 @@
                                         {{ end }}
                                     {{- end -}}
                                 </span>
-                                <h1>
+                                <h3>
                                     <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                                </h1>
+                                </h3>
                             </div>
                             <div class="post-summary">
-                                <a href="{{ .Permalink }}" class="post-summary-link" aria-label="Read {{ (or .Params.featuredTitle .Title) }}">
+                                <a href="{{ .Permalink }}" class="post-summary-link" tabindex="-1" aria-hidden="true">
                                     <span class="post-summary-text">
                                         {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
                                         {{- $summary = chomp $summary -}}
@@ -103,9 +114,9 @@
                             </div>
                         </div>
                         {{ end }}
-                        <div class="posts-footer-archive" onclick="location.href='/posts/'" style="cursor: pointer;">
+                        <a href="{{ "posts/" | relLangURL }}" class="posts-footer-archive">
                             Check out the archive for more &rarr;
-                        </div>
+                        </a>
                     </div>
                 </div>
 
@@ -113,62 +124,33 @@
                 <aside class="home-projects-col" aria-label="Major Projects">
                     <div class="main-heading">
                         <div class="posts-header section-title">
-                            <h3><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h3>
+                            <h2><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h2>
                         </div>
                     </div>
                     <div class="projects-wrapper">
                         {{ $projects := slice 
-                            (dict "title" "protoc-gen-connect-openapi" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
-                            (dict "title" "fauxrpc" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
-                            (dict "title" "ProtoDocs" "url" "https://protodocs.dev/" "desc" "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs." "post" "posts/2026/introducing-protodocs/index.md" "cover" "cover.svg")
-                            (dict "title" "protobuf.kmcd.dev" "url" "https://protobuf.kmcd.dev" "desc" "An interactive playground for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency." "post" "posts/2026/interactive-protobuf/index.md" "cover" "cover.svg")
-                            (dict "title" "Internet Maps" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
+                            (dict "title" "Internet Maps" "tag" "DATAVIZ" "tagClass" "tag-sunflower" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\" rel=\"noopener\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\" rel=\"noopener\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\" rel=\"noopener\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
+                            (dict "title" "protoc-gen-connect-openapi" "tag" "OPENAPI + CONNECT" "tagClass" "tag-teal" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
+                            (dict "title" "fauxrpc" "tag" "PROTOBUF + GO" "tagClass" "tag-coral" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
+                            (dict "title" "ProtoDocs" "tag" "API DOCS" "tagClass" "tag-sunflower" "url" "https://protodocs.dev/" "desc" "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs." "post" "posts/2026/introducing-protodocs/index.md" "cover" "cover.svg")
                         }}
 
                         {{ range $projects }}
-                            {{ $projectPage := $.Site.GetPage .post }}
-                            {{ $bgURL := "" }}
-                            {{ if $projectPage }}
-                                {{ if .cover }}
-                                    {{ $resource := $projectPage.Resources.GetMatch .cover }}
-                                    {{ if $resource }}
-                                        {{ if eq $resource.MediaType.SubType "svg" }}
-                                            {{ $bgURL = $resource.Permalink }}
-                                        {{ else }}
-                                            {{ $bgURL = ($resource.Fill "800x400 webp").Permalink }}
-                                        {{ end }}
-                                    {{ end }}
-                                {{ end }}
-                            {{ end }}
-                            <div class="projects-box with-bg{{ if .wide }} wide{{ end }}" 
-                                style="{{ if $bgURL }}background-image: url('{{ $bgURL }}');{{ end }} {{ if .url }}cursor: pointer;{{ end }}" 
-                                {{ if .url }}onclick="if(!event.target.closest('a')){ window.open('{{ .url }}', '_blank'); }"{{ end }}>
+                            {{ $proj := . }}
+                            <div class="projects-box{{ if .wide }} wide{{ end }}">
                                 <div class="projects-box-content">
                                     <div class="project-info-wrapper">
-                                        {{ if .title }}<h3><a href="{{ .url }}" target="_blank">{{ .title }}</a></h3>{{ end }}
+                                        {{ with .tag }}<span class="project-tag-pill {{ $proj.tagClass }}">{{ . }}</span>{{ end }}
+                                        {{ if .title }}<h3><a href="{{ .url }}" target="_blank" rel="noopener">{{ .title }}</a></h3>{{ end }}
                                         {{ if .desc }}<p>{{ .desc | safeHTML }}</p>{{ end }}
                                     </div>
-                                    {{ if .youtube }}
-                                    <div class="video-box-wrapper">
-                                        <div class="video-box" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                                            <iframe
-                                                title="YouTube Live Stream"
-                                                src="https://www.youtube-nocookie.com/embed/live_stream?channel={{ .youtube }}"
-                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-                                                frameborder="0"
-                                                referrerpolicy="strict-origin-when-cross-origin"
-                                                allowfullscreen>
-                                            </iframe>
-                                        </div>
-                                    </div>
-                                    {{ end }}
                                 </div>
                             </div>
                         {{ end }}
                     </div>
-                    <div class="projects-footer-archive" onclick="location.href='/stuff/'" style="cursor: pointer;">
+                    <a href="{{ "stuff/" | relLangURL }}" class="projects-footer-archive">
                         Check out all projects on /stuff/ &rarr;
-                    </div>
+                    </a>
                 </aside>
             </div>
         {{ end }}

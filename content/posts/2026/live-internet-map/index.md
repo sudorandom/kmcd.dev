@@ -8,7 +8,6 @@ images: ["/posts/live-internet-map/map.png"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""
-featured: true
 title: "Building a Live BGP Map"
 slug: "live-internet-map"
 type: "posts"

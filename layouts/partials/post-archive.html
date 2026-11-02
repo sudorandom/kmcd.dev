@@ -48,16 +48,22 @@
     {{ partial "archive-timeline.html" (dict "history" $history) }}
 
     {{ range $years }}
-    <section class="archive-year" aria-labelledby="year-{{ .Key }}">
-        <h2 id="year-{{ .Key }}">{{ .Key }} <span class="archive-count">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span></h2>
-        <ul class="archive-entries">
+    <section class="posts-group prompts-month-section" aria-labelledby="year-{{ .Key }}">
+        <div class="prompts-month-header">
+            <h2 id="year-{{ .Key }}"><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> &nbsp;{{ .Key }}</h2>
+            <span class="prompts-month-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
+        </div>
+        <ul class="prompts-ticket-grid">
             {{ $previousMonth := "" }}
             {{ range .Pages }}
             {{ $month := .Date.Format "2006-01" }}
-            <li{{ if ne $month $previousMonth }} id="month-{{ $month }}"{{ end }}>
-                <a href="{{ .RelPermalink }}">
-                    <span>{{ if .Draft }}<strong>DRAFT: </strong>{{ end }}{{ .Title }}</span>
-                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
+            <li class="prompt-ticket-item"{{ if ne $month $previousMonth }} id="month-{{ $month }}"{{ end }}>
+                <a href="{{ .RelPermalink }}" class="prompt-ticket-link">
+                    <span class="prompt-ticket-top">
+                        <time class="post-day prompt-ticket-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
+                        <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
+                    </span>
+                    <span class="post-title prompt-ticket-question">{{ if .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end }}{{ .Title }}</span>
                 </a>
             </li>
             {{ $previousMonth = $month }}

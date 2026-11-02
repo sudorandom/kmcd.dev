@@ -10,29 +10,31 @@
         {{ end }}
 
         {{ range $paginator.Pages.GroupByDate "2006" }}
-            <div class="posts-group main-wrapper">
-                <div class="main-box">
-                    <h2>{{ .Key }}</h2>
-                    <ul class="posts-list">
-                        {{ range .Pages }}
-                            <li class="post-item">
-                                <a href="{{.Permalink}}">
-                                    <span class="post-title-wrapper">
-                                        <span class="post-title">{{- with .Draft }}<strong>DRAFT: &nbsp;</strong>{{ end -}}{{ .Title }}</span>
-                                    </span>
-                                    <span class="post-day">
+            <section class="posts-group prompts-month-section">
+                <div class="prompts-month-header">
+                    <h2><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> &nbsp;{{ .Key }}</h2>
+                    <span class="prompts-month-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
+                </div>
+                <ul class="prompts-ticket-grid">
+                    {{ range .Pages }}
+                        <li class="prompt-ticket-item">
+                            <a href="{{ .Permalink }}" class="prompt-ticket-link">
+                                <span class="prompt-ticket-top">
+                                    <span class="post-day prompt-ticket-date">
                                         {{ if .Site.Params.dateformShort }}
                                             {{ .Date.Format .Site.Params.dateformShort }}
                                         {{ else }}
-                                            {{ .Date.Format "Jan 2"}}
+                                            {{ .Date.Format "Jan 2" }}
                                         {{ end }}
                                     </span>
-                                </a>
-                            </li>
-                        {{ end }}
-                    </ul>
-                </div>
-            </div>
+                                    <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
+                                </span>
+                                <span class="post-title prompt-ticket-question">{{- with .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ .Title }}</span>
+                            </a>
+                        </li>
+                    {{ end }}
+                </ul>
+            </section>
         {{ end }}
     {{ partial "pagination-list.html" . }}
     </main>

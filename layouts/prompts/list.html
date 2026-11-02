@@ -1,37 +1,128 @@
 {{ define "main" }}
-    {{ $paginator := .Paginate .Data.Pages }}
-    
-    <main class="posts">
-        <h1 class="page-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}{{ .Title }}</h1>
+    {{ $allPrompts := .Data.Pages.ByDate.Reverse }}
+    {{ $paginator := .Paginate $allPrompts }}
+    {{ $latestPrompt := index $allPrompts 0 }}
+
+    <main class="posts prompts-page" id="main-content">
+        <h1 class="page-title">{{ with .Params.TitleIcon }}<i class="fa-solid {{ . }}"></i> {{ end }}{{ .Title }}</h1>
         {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
 
         {{ if .Content }}
-            <div class="content">{{ .Content }}</div>
+            <div class="content prompts-intro-content">{{ .Content }}</div>
+        {{ end }}
+
+        {{ with $latestPrompt }}
+        <!-- Interactive Risograph Daily Prompt Deck -->
+        <section class="riso-hero-banner prompts-hero-deck" id="prompts-hero-deck" aria-label="Featured Daily Prompt">
+            <span class="riso-hero-sticker" id="prompt-deck-badge">★ PROMPT OF THE DAY</span>
+            <div class="prompt-deck-meta">
+                <span class="prompt-deck-date" id="prompt-deck-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                <span class="prompt-deck-counter" id="prompt-deck-counter">{{ len $allPrompts }} prompts in the deck</span>
+            </div>
+            <h2 class="riso-hero-title prompt-deck-question" id="prompt-deck-question">
+                <a href="{{ .Permalink }}" id="prompt-deck-title-link">{{ .Title }}</a>
+            </h2>
+            <div class="prompt-deck-actions">
+                <button type="button" class="prompt-shuffle-btn" id="prompt-shuffle-btn">
+                    <i class="fa-solid fa-dice"></i> Draw Random Prompt
+                </button>
+                <a href="{{ .Permalink }}" class="prompt-deck-btn prompt-deck-btn-secondary" id="prompt-open-btn">
+                    Open Prompt &rarr;
+                </a>
+            </div>
+        </section>
         {{ end }}
 
         {{ range $paginator.Pages.GroupByDate "January 2006" }}
-            <div class="posts-group main-wrapper">
-                <div class="main-box">
-                    <h2>{{ .Key }}</h2>
-                    <ul class="posts-list">
-                        {{ range .Pages }}
-                            <li class="post-item">
-                                <a href="{{.Permalink}}">
-                                    <span class="post-title">{{ .Title }}</span>
-                                    <span class="post-day">
+            <section class="posts-group prompts-month-section">
+                <div class="prompts-month-header">
+                    <h2><i class="fa-regular fa-calendar-days"></i> &nbsp;{{ .Key }}</h2>
+                    <span class="prompts-month-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}prompt{{ else }}prompts{{ end }}</span>
+                </div>
+                <ul class="prompts-ticket-grid">
+                    {{ range .Pages }}
+                        <li class="prompt-ticket-item">
+                            <a href="{{ .Permalink }}" class="prompt-ticket-link">
+                                <span class="prompt-ticket-top">
+                                    <span class="post-day prompt-ticket-date">
                                         {{ if .Site.Params.dateformShort }}
                                             {{ .Date.Format .Site.Params.dateformShort }}
                                         {{ else }}
-                                            {{ .Date.Format "Jan 2"}}
+                                            {{ .Date.Format "Jan 2" }}
                                         {{ end }}
                                     </span>
-                                </a>
-                            </li>
-                        {{ end }}
-                    </ul>
-                </div>
-            </div>
+                                    <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
+                                </span>
+                                <span class="post-title prompt-ticket-question">{{ .Title }}</span>
+                            </a>
+                        </li>
+                    {{ end }}
+                </ul>
+            </section>
         {{ end }}
-    {{ partial "pagination-list.html" . }}
+
+        {{ partial "pagination-list.html" . }}
+
+        <script>
+        (function() {
+            const prompts = [
+                {{- range $i, $p := $allPrompts -}}
+                {{- if $i }},{{ end -}}
+                {"title":{{ $p.Title | jsonify }},"url":{{ $p.Permalink | jsonify }},"date":{{ ($p.Date.Format "Jan 2, 2006") | jsonify }},"iso":{{ ($p.Date.Format "2006-01-02") | jsonify }}}
+                {{- end -}}
+            ];
+            if (!prompts.length) return;
+
+            const deck = document.getElementById('prompts-hero-deck');
+            const badge = document.getElementById('prompt-deck-badge');
+            const dateEl = document.getElementById('prompt-deck-date');
+            const counterEl = document.getElementById('prompt-deck-counter');
+            const titleLink = document.getElementById('prompt-deck-title-link');
+            const openBtn = document.getElementById('prompt-open-btn');
+            const shuffleBtn = document.getElementById('prompt-shuffle-btn');
+
+            function renderPrompt(item, idx, isRandom) {
+                if (!item) return;
+                const cleanTitle = typeof item.title === 'string' && item.title.startsWith('"') ? JSON.parse(item.title) : item.title;
+                const cleanUrl = typeof item.url === 'string' && item.url.startsWith('"') ? JSON.parse(item.url) : item.url;
+                const cleanDate = typeof item.date === 'string' && item.date.startsWith('"') ? JSON.parse(item.date) : item.date;
+
+                if (badge) badge.textContent = isRandom ? '🎲 RANDOM DRAW' : '★ PROMPT OF THE DAY';
+                if (dateEl) dateEl.textContent = cleanDate;
+                if (counterEl) counterEl.textContent = isRandom ? ('Card #' + (prompts.length - idx) + ' of ' + prompts.length) : (prompts.length + ' prompts in the deck');
+                if (titleLink) {
+                    titleLink.textContent = cleanTitle;
+                    titleLink.href = cleanUrl;
+                }
+                if (openBtn) openBtn.href = cleanUrl;
+            }
+
+            // Default to today's date (or the latest prompt on or before today)
+            const todayIso = new Date().toISOString().slice(0, 10);
+            let todayIdx = prompts.findIndex(function(p) {
+                const iso = typeof p.iso === 'string' && p.iso.startsWith('"') ? JSON.parse(p.iso) : p.iso;
+                return iso <= todayIso;
+            });
+            if (todayIdx === -1) todayIdx = 0;
+            renderPrompt(prompts[todayIdx], todayIdx, false);
+
+            let currentIdx = todayIdx;
+            if (shuffleBtn) {
+                shuffleBtn.addEventListener('click', function() {
+                    let nextIdx = Math.floor(Math.random() * prompts.length);
+                    if (prompts.length > 1 && nextIdx === currentIdx) {
+                        nextIdx = (nextIdx + 1) % prompts.length;
+                    }
+                    currentIdx = nextIdx;
+                    if (deck) {
+                        deck.classList.remove('deck-shuffling');
+                        void deck.offsetWidth;
+                        deck.classList.add('deck-shuffling');
+                    }
+                    renderPrompt(prompts[currentIdx], currentIdx, true);
+                });
+            }
+        })();
+        </script>
     </main>
 {{ end }}

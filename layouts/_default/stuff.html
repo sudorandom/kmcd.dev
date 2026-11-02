@@ -2,45 +2,6 @@
 
 <div class="post-layout-wrapper">
   <main class="layout-split">
-    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
-    <aside class="tree-nav">
-      <div class="toc-title">Contents</div>
-      <nav class="tree-nav-content">
-        <ul>
-          <li>
-            <a href="#ongoing-projects">Ongoing Projects</a>
-            <ul>
-              <li><a href="#live-internet-map">Live Internet Map</a></li>
-              <li><a href="#internet-infrastructure-map">Internet Infrastructure Map</a></li>
-              <li><a href="#bgp">Let's Learn About BGP</a></li>
-              <li><a href="#fauxrpc">FauxRPC</a></li>
-              <li><a href="#protodocs">ProtoDocs</a></li>
-              <li><a href="#protobuf">protobuf.kmcd.dev</a></li>
-              <li><a href="#protoc-gen-connect-openapi">protoc-gen-connect-openapi</a></li>
-              <li><a href="#kmcd-dev">kmcd.dev</a></li>
-              <li><a href="#phreak">phreak.kmcd.dev</a></li>
-              <li><a href="#morse">morse.kmcd.dev</a></li>
-              <li><a href="#wordseq">wordseq</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#tools">Tools</a>
-            <ul>
-              <li><a href="#http-tool">HTTP Version Tool</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#finished-projects">Finished Projects</a>
-            <ul>
-              <li><a href="#evepraisal">evepraisal.com</a></li>
-              <li><a href="#softlayer-python">softlayer-python</a></li>
-              <li><a href="#swftp">swftp</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-
     <!-- MAIN ARTICLE COLUMN -->
     <article class="post-container stuff-container">
       {{ if not .Params.hideTitle }}
@@ -50,6 +11,17 @@
       </div>
       {{ end }}
 
+      <details class="mobile-toc-drawer">
+        <summary class="toc-title">Contents</summary>
+        <nav class="tree-nav-content" aria-label="Mobile Table of Contents">
+          <ul>
+            <li><a href="#ongoing-projects">Ongoing Projects</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#finished-projects">Finished Projects</a></li>
+          </ul>
+        </nav>
+      </details>
+
       <!-- ONGOING PROJECTS -->
       <section class="stuff-section">
         <h2 id="ongoing-projects" class="stuff-section-heading">Ongoing Projects</h2>
@@ -58,8 +30,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://livemap.kmcd.dev" target="_blank" rel="noopener">Live Internet Map</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/live-internet-map/" title="Read Post" aria-label="Read Post about Live Internet Map"><i class="fa-solid fa-book"></i></a>
-              <a href="https://livemap.kmcd.dev" target="_blank" rel="noopener" title="Visit Live Internet Map" aria-label="Visit Live Internet Map"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/live-internet-map/" title="Read Post" aria-label="Read Post about Live Internet Map"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://livemap.kmcd.dev" target="_blank" rel="noopener" title="Visit Live Internet Map" aria-label="Visit Live Internet Map"><i class="fa-solid fa-globe"></i> <span>Site</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -83,8 +55,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://map.kmcd.dev" target="_blank" rel="noopener">Internet Infrastructure Map</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/internet-map-2025/" title="Read Post" aria-label="Read Post about Internet Infrastructure Map"><i class="fa-solid fa-book"></i></a>
-              <a href="https://map.kmcd.dev" target="_blank" rel="noopener" title="Visit Internet Infrastructure Map" aria-label="Visit Internet Infrastructure Map"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/internet-map-2025/" title="Read Post" aria-label="Read Post about Internet Infrastructure Map"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://map.kmcd.dev" target="_blank" rel="noopener" title="Visit Internet Infrastructure Map" aria-label="Visit Internet Infrastructure Map"><i class="fa-solid fa-globe"></i> <span>Site</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -109,8 +81,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://bgp.kmcd.dev" target="_blank" rel="noopener">Let's Learn About BGP</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/bgp-kmcd.dev/" title="Read Post" aria-label="Read Post about Let's Learn About BGP"><i class="fa-solid fa-book"></i></a>
-              <a href="https://bgp.kmcd.dev" target="_blank" rel="noopener" title="Visit Let's Learn About BGP" aria-label="Visit Let's Learn About BGP"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/bgp-kmcd.dev/" title="Read Post" aria-label="Read Post about Let's Learn About BGP"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://bgp.kmcd.dev" target="_blank" rel="noopener" title="Visit Let's Learn About BGP" aria-label="Visit Let's Learn About BGP"><i class="fa-solid fa-globe"></i> <span>Site</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -135,9 +107,9 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://fauxrpc.com" target="_blank" rel="noopener">FauxRPC</a></h3>
             <div class="project-card-actions">
-              <a href="https://github.com/sudorandom/fauxrpc" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
-              <a href="/posts/fauxrpc/" title="Read Post" aria-label="Read Post about FauxRPC"><i class="fa-solid fa-book"></i></a>
-              <a href="https://fauxrpc.com" target="_blank" rel="noopener" title="Documentation" aria-label="Documentation"><i class="fa-solid fa-globe"></i></a>
+              <a href="https://github.com/sudorandom/fauxrpc" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
+              <a href="/posts/fauxrpc/" title="Read Post" aria-label="Read Post about FauxRPC"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://fauxrpc.com" target="_blank" rel="noopener" title="Documentation" aria-label="Documentation"><i class="fa-solid fa-globe"></i> <span>Docs</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -162,9 +134,9 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://protodocs.dev/" target="_blank" rel="noopener">ProtoDocs</a></h3>
             <div class="project-card-actions">
-              <a href="https://github.com/sudorandom/protodocs" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
-              <a href="/posts/introducing-protodocs/" title="Read Post" aria-label="Read Post about ProtoDocs"><i class="fa-solid fa-book"></i></a>
-              <a href="https://protodocs.dev/" target="_blank" rel="noopener" title="Documentation Browser" aria-label="Documentation Browser"><i class="fa-solid fa-globe"></i></a>
+              <a href="https://github.com/sudorandom/protodocs" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
+              <a href="/posts/introducing-protodocs/" title="Read Post" aria-label="Read Post about ProtoDocs"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://protodocs.dev/" target="_blank" rel="noopener" title="Documentation Browser" aria-label="Documentation Browser"><i class="fa-solid fa-globe"></i> <span>Docs</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -185,40 +157,13 @@
           </div>
         </div>
 
-        <div class="project-card" id="protobuf">
-          <div class="project-card-header">
-            <h3 class="project-card-title"><a href="https://protobuf.kmcd.dev" target="_blank" rel="noopener">protobuf.kmcd.dev</a></h3>
-            <div class="project-card-actions">
-              <a href="https://github.com/sudorandom/protobuf.kmcd.dev" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
-              <a href="/posts/interactive-protobuf/" title="Read Post" aria-label="Read Post about protobuf.kmcd.dev"><i class="fa-solid fa-book"></i></a>
-              <a href="https://protobuf.kmcd.dev" target="_blank" rel="noopener" title="Interactive Playground" aria-label="Interactive Playground"><i class="fa-solid fa-globe"></i></a>
-            </div>
-          </div>
-          <div class="project-card-body">
-            <div class="project-card-desc">
-              <p>
-                An interactive playground for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency. Natively powered by Go compilers compiled to WebAssembly.
-              </p>
-            </div>
-            {{ $protobufImg := (resources.Get "images/screenshots/protobuf.png") }}
-            {{ if $protobufImg }}
-            {{ $resizedProtobufImg := $protobufImg.Resize "400x webp" }}
-            <div class="project-card-thumb">
-              <a href="https://protobuf.kmcd.dev" target="_blank" rel="noopener">
-                <img src="{{ $resizedProtobufImg.Permalink }}" alt="Screenshot of protobuf playground" loading="lazy">
-              </a>
-            </div>
-            {{ end }}
-          </div>
-        </div>
-
         <div class="project-card" id="protoc-gen-connect-openapi">
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener">protoc-gen-connect-openapi</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/protoc-gen-connect-openapi/" title="Read Post" aria-label="Read Post about protoc-gen-connect-openapi"><i class="fa-solid fa-book"></i></a>
-              <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
-              <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener" title="Go Package Docs" aria-label="Go Package Docs"><i class="fa-brands fa-golang"></i></a>
+              <a href="/posts/protoc-gen-connect-openapi/" title="Read Post" aria-label="Read Post about protoc-gen-connect-openapi"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
+              <a href="https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener" title="Go Package Docs" aria-label="Go Package Docs"><i class="fa-brands fa-golang"></i> <span>Pkg</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -243,7 +188,7 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://kmcd.dev" target="_blank" rel="noopener">kmcd.dev</a></h3>
             <div class="project-card-actions">
-              <a href="https://github.com/sudorandom/kmcd.dev" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
+              <a href="https://github.com/sudorandom/kmcd.dev" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -268,8 +213,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://phreak.kmcd.dev" target="_blank" rel="noopener">phreak.kmcd.dev</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/can-you-hack-a-phone-with-your-voice/" title="Read Post" aria-label="Read Post about phreak.kmcd.dev"><i class="fa-solid fa-book"></i></a>
-              <a href="https://phreak.kmcd.dev" target="_blank" rel="noopener" title="Visit Simulator" aria-label="Visit Simulator"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/can-you-hack-a-phone-with-your-voice/" title="Read Post" aria-label="Read Post about phreak.kmcd.dev"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://phreak.kmcd.dev" target="_blank" rel="noopener" title="Visit Simulator" aria-label="Visit Simulator"><i class="fa-solid fa-globe"></i> <span>Play</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -294,8 +239,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://morse.kmcd.dev" target="_blank" rel="noopener">morse.kmcd.dev</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/morse/" title="Read Post" aria-label="Read Post about morse.kmcd.dev"><i class="fa-solid fa-book"></i></a>
-              <a href="https://morse.kmcd.dev" target="_blank" rel="noopener" title="Play Game" aria-label="Play Game"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/morse/" title="Read Post" aria-label="Read Post about morse.kmcd.dev"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://morse.kmcd.dev" target="_blank" rel="noopener" title="Play Game" aria-label="Play Game"><i class="fa-solid fa-globe"></i> <span>Play</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -320,8 +265,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://wordseq.com" target="_blank" rel="noopener">wordseq</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/wordseq/" title="Read Post" aria-label="Read Post about wordseq"><i class="fa-solid fa-book"></i></a>
-              <a href="https://wordseq.com" target="_blank" rel="noopener" title="Play Wordseq" aria-label="Play Wordseq"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/wordseq/" title="Read Post" aria-label="Read Post about wordseq"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://wordseq.com" target="_blank" rel="noopener" title="Play Wordseq" aria-label="Play Wordseq"><i class="fa-solid fa-globe"></i> <span>Play</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -351,8 +296,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="/http/">HTTP Version Tool</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/http-tool/" title="Read Post" aria-label="Read Post about HTTP Version Tool"><i class="fa-solid fa-book"></i></a>
-              <a href="/http/" title="Launch Tool" aria-label="Launch HTTP Version Tool"><i class="fa-solid fa-globe"></i></a>
+              <a href="/posts/http-tool/" title="Read Post" aria-label="Read Post about HTTP Version Tool"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="/http/" title="Launch Tool" aria-label="Launch HTTP Version Tool"><i class="fa-solid fa-globe"></i> <span>Launch</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -382,8 +327,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="/posts/evepraisal.com/">evepraisal.com</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/evepraisal.com/" title="Read Post" aria-label="Read Post about evepraisal"><i class="fa-solid fa-book"></i></a>
-              <a href="https://github.com/evepraisal/go-evepraisal" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
+              <a href="/posts/evepraisal.com/" title="Read Post" aria-label="Read Post about evepraisal"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://github.com/evepraisal/go-evepraisal" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -408,8 +353,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://github.com/softlayer/softlayer-python" target="_blank" rel="noopener">softlayer-python</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/softlayer-python/" title="Read Post" aria-label="Read Post about softlayer-python"><i class="fa-solid fa-book"></i></a>
-              <a href="https://github.com/softlayer/softlayer-python" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
+              <a href="/posts/softlayer-python/" title="Read Post" aria-label="Read Post about softlayer-python"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://github.com/softlayer/softlayer-python" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -434,8 +379,8 @@
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://github.com/softlayer/swftp" target="_blank" rel="noopener">swftp</a></h3>
             <div class="project-card-actions">
-              <a href="/posts/swftp/" title="Read Post" aria-label="Read Post about swftp"><i class="fa-solid fa-book"></i></a>
-              <a href="https://github.com/softlayer/swftp" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i></a>
+              <a href="/posts/swftp/" title="Read Post" aria-label="Read Post about swftp"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://github.com/softlayer/swftp" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository"><i class="fa-brands fa-github"></i> <span>Code</span></a>
             </div>
           </div>
           <div class="project-card-body">
@@ -457,6 +402,44 @@
         </div>
       </section>
     </article>
+
+    <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
+    <aside class="tree-nav" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <nav class="tree-nav-content">
+        <ul>
+          <li>
+            <a href="#ongoing-projects">Ongoing Projects</a>
+            <ul>
+              <li><a href="#live-internet-map">Live Internet Map</a></li>
+              <li><a href="#internet-infrastructure-map">Internet Infrastructure Map</a></li>
+              <li><a href="#bgp">Let's Learn About BGP</a></li>
+              <li><a href="#fauxrpc">FauxRPC</a></li>
+              <li><a href="#protodocs">ProtoDocs</a></li>
+              <li><a href="#protoc-gen-connect-openapi">protoc-gen-connect-openapi</a></li>
+              <li><a href="#kmcd-dev">kmcd.dev</a></li>
+              <li><a href="#phreak">phreak.kmcd.dev</a></li>
+              <li><a href="#morse">morse.kmcd.dev</a></li>
+              <li><a href="#wordseq">wordseq</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#tools">Tools</a>
+            <ul>
+              <li><a href="#http-tool">HTTP Version Tool</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#finished-projects">Finished Projects</a>
+            <ul>
+              <li><a href="#evepraisal">evepraisal.com</a></li>
+              <li><a href="#softlayer-python">softlayer-python</a></li>
+              <li><a href="#swftp">swftp</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </aside>
   </main>
 </div>
 
