@@ -1,5 +1,9 @@
 {{- $targetURL := printf "%s%s" (strings.TrimSuffix "/" site.Params.productionURL) .RelPermalink -}}
-<div class="main-box webmentions" id="webmentions" data-url="{{ or .Params.canonical_url $targetURL }}">
+{{- $ownAvatar := "" -}}
+{{- with resources.Get "images/me.png" -}}
+    {{- $ownAvatar = (.Fill "256x256 Center").RelPermalink -}}
+{{- end -}}
+<div class="main-box webmentions" id="webmentions" data-url="{{ or .Params.canonical_url $targetURL }}" data-own-avatar="{{ $ownAvatar }}">
     <div class="webmentions-container">
         <div class="webmentions-header">
             <h3>Mentions</h3>
@@ -18,10 +22,14 @@
         if (!container) return;
 
         const target = container.getAttribute('data-url');
+        const OWN_AVATAR = container.getAttribute('data-own-avatar');
         const countEl = document.getElementById('webmentions-count');
         const listEl = document.getElementById('webmentions-list');
         const moreEl = document.getElementById('webmentions-more');
         const moreButton = document.getElementById('webmentions-more-button');
+
+        const BSKY_PROFILE = 'https://bsky.app/profile/kmcd.dev';
+        const MASTO_PROFILE = 'https://infosec.exchange/@sudorandom';
 
         let allMentions = [];
         let displayCount = 10;
@@ -44,11 +52,58 @@
             'rsvp': 'fa-calendar-check'
         };
 
+        function normalizeUrl(u) {
+            return (u || '').trim().replace(/\/+$/, '').toLowerCase();
+        }
+
+        function isOwnAuthorUrl(u) {
+            const norm = normalizeUrl(u);
+            return norm === normalizeUrl(BSKY_PROFILE) ||
+                norm === normalizeUrl(MASTO_PROFILE) ||
+                norm === 'https://kmcd.dev';
+        }
+
         async function fetchMentions() {
             try {
-                const response = await fetch(`https://webmention.io/api/mentions.jf2?target=${target}`);
+                const response = await fetch(`https://webmention.io/api/mentions.jf2?target=${encodeURIComponent(target)}`);
                 const data = await response.json();
-                allMentions = data.children || [];
+                const wmMentions = data.children || [];
+
+                const ownRootRefs = new Map();
+                const existingUrls = new Set(wmMentions.map(m => normalizeUrl(m.url)));
+
+                const addOwnRootRef = (url, authorUrl) => {
+                    const key = normalizeUrl(url);
+                    if (!key || existingUrls.has(key) || ownRootRefs.has(key)) return;
+                    ownRootRefs.set(key, {
+                        type: 'entry',
+                        author: {
+                            name: 'Kevin McDonald',
+                            url: authorUrl,
+                            photo: OWN_AVATAR
+                        },
+                        url: url,
+                        published: null,
+                        'wm-property': 'mention-of'
+                    });
+                };
+
+                for (const m of wmMentions) {
+                    const wmSource = decodeURIComponent(decodeURIComponent(m['wm-source'] || ''));
+                    const mastoMatch = wmSource.match(/brid\.gy\/(?:comment|like|repost)\/mastodon\/@sudorandom@infosec\.exchange\/(\d+)/);
+                    if (mastoMatch) {
+                        addOwnRootRef(`${MASTO_PROFILE}/${mastoMatch[1]}`, MASTO_PROFILE);
+                    }
+                    const bskyMatch = wmSource.match(/brid\.gy\/(?:comment|like|repost)\/bluesky\/[^/]+\/at:\/\/did:plc:lmglfmg7ro47foznc2t4svty\/app\.bsky\.feed\.post\/([a-z0-9]+)/);
+                    if (bskyMatch) {
+                        addOwnRootRef(`${BSKY_PROFILE}/post/${bskyMatch[1]}`, BSKY_PROFILE);
+                    }
+                }
+
+                allMentions = [
+                    ...ownRootRefs.values(),
+                    ...wmMentions
+                ];
                 
                 if (allMentions.length === 0) {
                     return;
@@ -78,7 +133,9 @@
                 const author = mention.author || {};
                 const authorName = (author.name && author.name !== 'Anonymous') ? author.name : (domain || 'Anonymous');
                 const authorUrl = author.url || mention.url;
-                const avatar = author.photo || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                const avatar = (OWN_AVATAR && isOwnAuthorUrl(authorUrl))
+                    ? OWN_AVATAR
+                    : (author.photo || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
                 const type = mention['wm-property'];
                 const typeText = typeMap[type] || 'mentioned';
                 const icon = iconMap[type] || 'fa-link';
@@ -124,6 +181,7 @@
                         <div class="webmentions-content">
                             <div>
                                 <a href="${authorUrl}" class="webmention-author" target="_blank" rel="noopener noreferrer">${authorName}</a>
+                                ${domain ? `<span class="webmention-domain">on <a href="${mention.url}" target="_blank" rel="noopener noreferrer">${domain}</a></span>` : ''}
                                 <span class="webmention-type">
                                     <i class="fa-solid ${icon}"></i> ${typeText}
                                 </span>
