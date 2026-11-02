@@ -1135,22 +1135,45 @@ footer.site-footer {
     justify-content: space-between;
   }
 
+  .site-brand {
+    order: 1;
+  }
+
   .header-actions {
+    order: 2;
     width: auto;
+    margin-left: auto;
     justify-content: flex-end;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
   }
 }
 
 @media (max-width: 684px) {
+  header.site-header,
   .content.container,
   .site-main.container {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
 
+  .site-header .header-inner {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
   .site-nav .nav-links {
     flex-wrap: wrap;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 2px;
+
+    a {
+      font-size: 13.5px;
+      padding: 5px 6px;
+    }
   }
 
   .hide-on-phone {
