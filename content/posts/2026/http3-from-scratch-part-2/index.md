@@ -112,15 +112,15 @@ type Conn interface {
 
 ### The Server Loop
 
-Back in [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we sent and received `SETTINGS` frames on `Stream 0`. QUIC doesn't reserve stream `0` for connection settings (in fact, we already used stream `0` for our echo request in Part 1). Instead, [RFC 9114 Section 6.2.1](https://www.rfc-editor.org/rfc/rfc9114.html#name-control-streams) says that both the client and server have to open a separate one-way control stream when they connect. The first byte written to a one-way stream is a varint identifying its stream type (`0x00` for a control stream), followed immediately by a `SETTINGS` frame (`0x04`):
+Back in [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we sent and received SETTINGS frames on Stream 0. QUIC doesn't reserve stream 0 for connection settings—in fact, we already used stream 0 for our echo request in Part 1. Instead, [RFC 9114 Section 6.2.1](https://www.rfc-editor.org/rfc/rfc9114.html#name-control-streams) says that both the client and server have to open a separate one-way control stream when they connect. The first byte written to a one-way stream is a varint identifying its stream type (`0x00` for a control stream), followed immediately by a SETTINGS frame:
 
 {{< image src="h3-server-streams.svg" width="820px" class="center" inline="true" >}}
 
-When I first wrote `sendControlStreamSettings`, I put `defer uni.Close()` at the top of the function out of habit, and `quic-go` immediately dropped the connection with `H3_CLOSED_CRITICAL_STREAM`. Unlike a request stream, the control stream has to stay open for the entire connection because closing it sends a `FIN` bit that the peer treats as a connection error:
+When I first wrote `sendControlStreamSettings`, I put `defer uni.Close()` at the top of the function out of habit, and `quic-go` immediately dropped the connection with `H3_CLOSED_CRITICAL_STREAM`. Unlike a request stream, the control stream has to stay open for the entire connection because closing it sends a FIN bit that the peer treats as a connection error:
 
 {{< image src="control-stream-meme.jpg" width="480px" class="center" >}}
 
-For each new QUIC connection in `server.go`, we open our control stream to send `SETTINGS`, start a background goroutine to read the client's unidirectional streams, and then accept bidirectional request streams in a loop:
+For each new QUIC connection in `server.go`, we open our control stream to send our settings, start a background goroutine to read the client's unidirectional streams, and then accept bidirectional request streams in a loop:
 
 ```go
 func (s *Server) handleConnection(ctx context.Context, conn Conn) error {
@@ -164,11 +164,11 @@ func sendControlStreamSettings(ctx context.Context, conn Conn) error {
 }
 ```
 
-We pass `0` for `SettingsQPACKMaxTableCapacity` because our `QPACKDecoder` from Part 1 only supports the static table and string literals, so we don't want `curl` or Chrome sending us dynamic table updates.
+We set `SettingsQPACKMaxTableCapacity` to `0` because our QPACK decoder from Part 1 only supports the static table and string literals, so we don't want curl or Chrome sending us dynamic table updates.
 
 #### Implementing http.Handler
 
-In `handleRequestStream`, we read the first `HEADERS` frame from the stream, decode the QPACK headers into an `*http.Request`, and pass it to `s.Handler.ServeHTTP`:
+In `handleRequestStream`, we read the first HEADERS frame from the stream, decode the QPACK headers into an `*http.Request`, and pass it to `s.Handler.ServeHTTP`:
 
 ```go
 func (s *Server) handleRequestStream(ctx context.Context, conn Conn, stream Stream) error {
@@ -193,13 +193,13 @@ func (s *Server) handleRequestStream(ctx context.Context, conn Conn, stream Stre
 }
 ```
 
-Notice that `req.Body` is an `&h3BodyReader{stream: stream}` and `w` is an `&h3ResponseWriter`. `h3BodyReader.Read` calls `ReadFrame(stream)` to read `DATA` frames from the QUIC stream into the caller's byte slice, and `h3ResponseWriter` writes the QPACK `HEADERS` frame and `DATA` frames back out to the stream.
+Here `h3BodyReader` reads DATA frames from the QUIC stream as the handler reads the request body, and `h3ResponseWriter` encodes the response headers and body back out to the stream.
 
 ### Building the Client
 
 For `client.go`, I wanted the same `Do(req *http.Request) (*http.Response, error)` signature that we built in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/).
 
-The client does the exact same dance as the server, just in reverse: dial QUIC, open a control stream to send `SETTINGS`, open a bidirectional stream for the request, write `HEADERS` (and `DATA` if there's a body), and close the write side of the stream so the server sees `EOF`:
+The client does the exact same dance as the server, just in reverse: dial QUIC, open a control stream to send our settings, open a bidirectional stream for the request, write the HEADERS and DATA frames, and close the write side of the stream so the server sees `EOF`:
 
 ```go
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
@@ -228,7 +228,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 }
 ```
 
-Notice that we can reuse `h3BodyReader` for `resp.Body` too! Just like the bug we hit in the HTTP/2 client, we can't `defer conn.Close()` inside `Do` because the caller hasn't read `resp.Body` yet. Instead, we pass `closer: conn` into `h3BodyReader` so the QUIC connection closes when the caller calls `resp.Body.Close()`.
+We reuse `h3BodyReader` for `resp.Body` too. Just like the bug we hit in the HTTP/2 client, we can't `defer conn.Close()` inside `Do` because the caller hasn't read the response body yet. Instead, we pass `closer: conn` into `h3BodyReader` so the QUIC connection closes when the caller calls `resp.Body.Close()`.
 
 ### Running It
 

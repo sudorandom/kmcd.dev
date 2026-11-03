@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/tls"
-	"encoding/binary"
 	"errors"
 	"io"
 	"net"
@@ -12,8 +11,6 @@ import (
 	"sync/atomic"
 )
 
-// Stream, ReceiveStream, SendStream, Conn, and Listener are the exact interfaces
-// our HTTP/3 Server and Client from Part 2 use!
 type Stream interface {
 	io.ReadWriteCloser
 	StreamID() int64
@@ -45,13 +42,12 @@ type Listener interface {
 	Close() error
 }
 
-// toyQUICStream implements an independent byte stream over UDP with offset reassembly!
-type toyQUICStream struct {
+type quicStream struct {
 	id          uint64
-	conn        *toyQUICConn
+	conn        *quicConn
 	mu          sync.Mutex
 	cond        *sync.Cond
-	chunks      map[uint64][]byte // out-of-order and in-order chunks keyed by stream byte offset
+	chunks      map[uint64][]byte
 	readOffset  uint64
 	writeOffset uint64
 	finReceived bool
@@ -59,8 +55,8 @@ type toyQUICStream struct {
 	closed      bool
 }
 
-func newToyQUICStream(id uint64, conn *toyQUICConn) *toyQUICStream {
-	s := &toyQUICStream{
+func newQUICStream(id uint64, conn *quicConn) *quicStream {
+	s := &quicStream{
 		id:     id,
 		conn:   conn,
 		chunks: make(map[uint64][]byte),
@@ -69,12 +65,9 @@ func newToyQUICStream(id uint64, conn *toyQUICConn) *toyQUICStream {
 	return s
 }
 
-func (s *toyQUICStream) StreamID() int64 { return int64(s.id) }
+func (s *quicStream) StreamID() int64 { return int64(s.id) }
 
-// pushFrame inserts an incoming STREAM frame at its exact byte offset and wakes any blocked Reader.
-// Notice how packet reordering on UDP or loss on another stream never blocks this stream if its
-// own contiguous bytes have arrived!
-func (s *toyQUICStream) pushFrame(offset uint64, data []byte, fin bool) {
+func (s *quicStream) pushFrame(offset uint64, data []byte, fin bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -90,7 +83,7 @@ func (s *toyQUICStream) pushFrame(offset uint64, data []byte, fin bool) {
 	s.cond.Broadcast()
 }
 
-func (s *toyQUICStream) Read(p []byte) (int, error) {
+func (s *quicStream) Read(p []byte) (int, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -116,9 +109,7 @@ func (s *toyQUICStream) Read(p []byte) (int, error) {
 	}
 }
 
-// Write chops data into <=1000-byte STREAM frames so each QUIC packet fits comfortably
-// inside a single standard 1200+ byte UDP datagram without IP fragmentation.
-func (s *toyQUICStream) Write(p []byte) (int, error) {
+func (s *quicStream) Write(p []byte) (int, error) {
 	total := 0
 	const maxChunk = 1000
 	for len(p) > 0 {
@@ -133,7 +124,7 @@ func (s *toyQUICStream) Write(p []byte) (int, error) {
 		s.writeOffset += uint64(len(chunk))
 		s.mu.Unlock()
 
-		err := s.conn.sendFrame(QUICFrame{
+		err := s.conn.send1RTTFrame(QUICFrame{
 			Type:     QUICFrameStreamBase,
 			StreamID: s.id,
 			Offset:   offset,
@@ -147,13 +138,12 @@ func (s *toyQUICStream) Write(p []byte) (int, error) {
 	return total, nil
 }
 
-// Close sends an empty STREAM frame with the FIN bit set, signaling end-of-stream to the peer.
-func (s *toyQUICStream) Close() error {
+func (s *quicStream) Close() error {
 	s.mu.Lock()
 	offset := s.writeOffset
 	s.mu.Unlock()
 
-	return s.conn.sendFrame(QUICFrame{
+	return s.conn.send1RTTFrame(QUICFrame{
 		Type:     QUICFrameStreamBase,
 		StreamID: s.id,
 		Offset:   offset,
@@ -161,16 +151,24 @@ func (s *toyQUICStream) Close() error {
 	})
 }
 
-type toyQUICConn struct {
+type quicConn struct {
 	udpConn      net.PacketConn
 	remoteAddr   net.Addr
-	localConnID  uint64
-	remoteConnID uint64
+	localConnID  []byte
+	remoteConnID []byte
 	isServer     bool
 	pktNum       atomic.Uint32
 
-	mu         sync.Mutex
-	streams    map[uint64]*toyQUICStream
+	tlsConn           *tls.QUICConn
+	readKeys          [4]*packetKeys
+	writeKeys         [4]*packetKeys
+	expectedReadPN    [4]uint64
+	cryptoWriteOffset [4]uint64
+	cryptoReadOffset  [4]uint64
+	cryptoReadChunks  [4]map[uint64][]byte
+
+	mu          sync.Mutex
+	streams     map[uint64]*quicStream
 	nextBidiSeq uint64
 	nextUniSeq  uint64
 
@@ -181,44 +179,220 @@ type toyQUICConn struct {
 	cancel       context.CancelFunc
 }
 
-func newToyQUICConn(udpConn net.PacketConn, remoteAddr net.Addr, localCID, remoteCID uint64, isServer bool) *toyQUICConn {
+func newQUICConn(udpConn net.PacketConn, remoteAddr net.Addr, localCID, remoteCID []byte, isServer bool, tlsConn *tls.QUICConn) *quicConn {
 	ctx, cancel := context.WithCancel(context.Background())
-	return &toyQUICConn{
+	c := &quicConn{
 		udpConn:      udpConn,
 		remoteAddr:   remoteAddr,
-		localConnID:  localCID,
-		remoteConnID: remoteCID,
+		localConnID:  append([]byte(nil), localCID...),
+		remoteConnID: append([]byte(nil), remoteCID...),
 		isServer:     isServer,
-		streams:      make(map[uint64]*toyQUICStream),
+		tlsConn:      tlsConn,
+		streams:      make(map[uint64]*quicStream),
 		acceptBidiCh: make(chan Stream, 32),
 		acceptUniCh:  make(chan ReceiveStream, 32),
 		handshakeCh:  make(chan struct{}),
 		ctx:          ctx,
 		cancel:       cancel,
 	}
+	for i := range c.cryptoReadChunks {
+		c.cryptoReadChunks[i] = make(map[uint64][]byte)
+	}
+	return c
 }
 
-func (c *toyQUICConn) sendFrame(f QUICFrame) error {
-	pkt := Packet{
-		IsLongHeader: false, // 1-RTT Short Header packet
-		DestConnID:   c.remoteConnID,
-		PacketNumber: c.pktNum.Add(1),
-		Frames:       []QUICFrame{f},
+func levelIndex(l tls.QUICEncryptionLevel) int {
+	switch l {
+	case tls.QUICEncryptionLevelInitial:
+		return 0
+	case tls.QUICEncryptionLevelHandshake:
+		return 1
+	case tls.QUICEncryptionLevelApplication:
+		return 2
+	default:
+		return 3
 	}
-	_, err := c.udpConn.WriteTo(EncodePacket(pkt), c.remoteAddr)
+}
+
+func (c *quicConn) getReadKeys(isLong bool, longType uint8) (*packetKeys, uint64) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if !isLong {
+		return c.readKeys[2], c.expectedReadPN[2]
+	}
+	if longType == PacketTypeInitial {
+		return c.readKeys[0], c.expectedReadPN[0]
+	}
+	if longType == PacketTypeHandshake {
+		return c.readKeys[1], c.expectedReadPN[1]
+	}
+	return nil, 0
+}
+
+func (c *quicConn) sendPacketAtLevel(level int, frames []QUICFrame) error {
+	c.mu.Lock()
+	keys := c.writeKeys[level]
+	dcid := append([]byte(nil), c.remoteConnID...)
+	scid := append([]byte(nil), c.localConnID...)
+	c.mu.Unlock()
+	if keys == nil {
+		return errors.New("missing write keys for level")
+	}
+
+	pkt := Packet{
+		Version:      QUICVersion1,
+		DestConnID:   dcid,
+		SrcConnID:    scid,
+		PacketNumber: c.pktNum.Add(1),
+		Frames:       frames,
+	}
+	minSize := 0
+	switch level {
+	case 0:
+		pkt.IsLongHeader = true
+		pkt.LongType = PacketTypeInitial
+		if !c.isServer {
+			minSize = 1200 // RFC 9000 Section 14.1 minimum client Initial size
+		}
+	case 1:
+		pkt.IsLongHeader = true
+		pkt.LongType = PacketTypeHandshake
+	case 2:
+		pkt.IsLongHeader = false
+	}
+
+	raw, err := EncodeProtectedPacket(pkt, keys, minSize)
+	if err != nil {
+		return err
+	}
+	_, err = c.udpConn.WriteTo(raw, c.remoteAddr)
 	return err
 }
 
-func (c *toyQUICConn) handlePacket(pkt Packet) {
-	var shouldAck bool
-	for _, f := range pkt.Frames {
-		switch f.Type {
-		case QUICFrameCrypto:
-			shouldAck = true
+func (c *quicConn) send1RTTFrame(f QUICFrame) error {
+	return c.sendPacketAtLevel(2, []QUICFrame{f})
+}
+
+func (c *quicConn) drainTLSEvents() error {
+	for {
+		ev := c.tlsConn.NextEvent()
+		switch ev.Kind {
+		case tls.QUICNoEvent:
+			return nil
+
+		case tls.QUICSetReadSecret:
+			keys, err := derivePacketKeys(ev.Suite, ev.Data)
+			if err != nil {
+				return err
+			}
+			c.mu.Lock()
+			c.readKeys[levelIndex(ev.Level)] = keys
+			c.mu.Unlock()
+
+		case tls.QUICSetWriteSecret:
+			keys, err := derivePacketKeys(ev.Suite, ev.Data)
+			if err != nil {
+				return err
+			}
+			c.mu.Lock()
+			c.writeKeys[levelIndex(ev.Level)] = keys
+			c.mu.Unlock()
+
+		case tls.QUICWriteData:
+			idx := levelIndex(ev.Level)
+			data := ev.Data
+			const maxChunk = 900
+			for len(data) > 0 {
+				chunk := data
+				if len(chunk) > maxChunk {
+					chunk = data[:maxChunk]
+				}
+				data = data[len(chunk):]
+
+				c.mu.Lock()
+				offset := c.cryptoWriteOffset[idx]
+				c.cryptoWriteOffset[idx] += uint64(len(chunk))
+				c.mu.Unlock()
+
+				err := c.sendPacketAtLevel(idx, []QUICFrame{{
+					Type:         QUICFrameCrypto,
+					CryptoOffset: offset,
+					CryptoData:   append([]byte(nil), chunk...),
+				}})
+				if err != nil {
+					return err
+				}
+			}
+
+		case tls.QUICHandshakeDone:
+			if c.isServer {
+				_ = c.send1RTTFrame(QUICFrame{Type: QUICFrameHandshakeDone})
+			}
 			select {
 			case <-c.handshakeCh:
 			default:
 				close(c.handshakeCh)
+			}
+		}
+	}
+}
+
+func (c *quicConn) handlePacket(pkt Packet) {
+	level := 2
+	tlsLevel := tls.QUICEncryptionLevelApplication
+	if pkt.IsLongHeader {
+		if len(pkt.SrcConnID) > 0 {
+			c.mu.Lock()
+			c.remoteConnID = append([]byte(nil), pkt.SrcConnID...)
+			c.mu.Unlock()
+		}
+		if pkt.LongType == PacketTypeInitial {
+			level = 0
+			tlsLevel = tls.QUICEncryptionLevelInitial
+		} else if pkt.LongType == PacketTypeHandshake {
+			level = 1
+			tlsLevel = tls.QUICEncryptionLevelHandshake
+		}
+	}
+
+	c.mu.Lock()
+	if uint64(pkt.PacketNumber)+1 > c.expectedReadPN[level] {
+		c.expectedReadPN[level] = uint64(pkt.PacketNumber) + 1
+	}
+	c.mu.Unlock()
+
+	var shouldAck bool
+	for _, f := range pkt.Frames {
+		switch f.Type {
+		case QUICFramePing, QUICFrameHandshakeDone, QUICFrameNewConnectionID:
+			shouldAck = true
+
+		case QUICFramePathChallenge:
+			shouldAck = true
+			_ = c.sendPacketAtLevel(level, []QUICFrame{{
+				Type: QUICFramePathResponse,
+				Data: f.Data,
+			}})
+
+		case QUICFrameCrypto:
+			shouldAck = true
+			c.mu.Lock()
+			c.cryptoReadChunks[level][f.CryptoOffset] = append([]byte(nil), f.CryptoData...)
+			var contiguous []byte
+			for {
+				chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
+				if !ok {
+					break
+				}
+				delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
+				c.cryptoReadOffset[level] += uint64(len(chunk))
+				contiguous = append(contiguous, chunk...)
+			}
+			c.mu.Unlock()
+
+			if len(contiguous) > 0 && c.tlsConn != nil {
+				_ = c.tlsConn.HandleData(tlsLevel, contiguous)
+				_ = c.drainTLSEvents()
 			}
 
 		case QUICFrameStreamBase:
@@ -226,7 +400,7 @@ func (c *toyQUICConn) handlePacket(pkt Packet) {
 			c.mu.Lock()
 			st, exists := c.streams[f.StreamID]
 			if !exists {
-				st = newToyQUICStream(f.StreamID, c)
+				st = newQUICStream(f.StreamID, c)
 				c.streams[f.StreamID] = st
 				isPeerInitiated := (f.StreamID&StreamIDServerInitiated != 0) != c.isServer
 				if isPeerInitiated {
@@ -242,48 +416,54 @@ func (c *toyQUICConn) handlePacket(pkt Packet) {
 
 		case QUICFrameConnectionClose:
 			c.cancel()
+			c.mu.Lock()
+			for _, st := range c.streams {
+				st.mu.Lock()
+				st.closed = true
+				st.cond.Broadcast()
+				st.mu.Unlock()
+			}
+			c.mu.Unlock()
 		}
 	}
 
 	if shouldAck {
-		_ = c.sendFrame(QUICFrame{
+		_ = c.sendPacketAtLevel(level, []QUICFrame{{
 			Type:         QUICFrameAck,
 			LargestAcked: uint64(pkt.PacketNumber),
-		})
+		}})
 	}
 }
 
-func (c *toyQUICConn) OpenStreamSync(ctx context.Context) (Stream, error) {
+func (c *quicConn) OpenStreamSync(ctx context.Context) (Stream, error) {
 	c.mu.Lock()
 	seq := c.nextBidiSeq
 	c.nextBidiSeq++
-	// Stream ID: sequence in upper bits, bit 1 = 0 (bidirectional), bit 0 = initiator
 	streamID := seq << 2
 	if c.isServer {
 		streamID |= StreamIDServerInitiated
 	}
-	st := newToyQUICStream(streamID, c)
+	st := newQUICStream(streamID, c)
 	c.streams[streamID] = st
 	c.mu.Unlock()
 	return st, nil
 }
 
-func (c *toyQUICConn) OpenUniStreamSync(ctx context.Context) (SendStream, error) {
+func (c *quicConn) OpenUniStreamSync(ctx context.Context) (SendStream, error) {
 	c.mu.Lock()
 	seq := c.nextUniSeq
 	c.nextUniSeq++
-	// Stream ID: sequence in upper bits, bit 1 = 1 (unidirectional), bit 0 = initiator
 	streamID := (seq << 2) | StreamIDUnidirectional
 	if c.isServer {
 		streamID |= StreamIDServerInitiated
 	}
-	st := newToyQUICStream(streamID, c)
+	st := newQUICStream(streamID, c)
 	c.streams[streamID] = st
 	c.mu.Unlock()
 	return st, nil
 }
 
-func (c *toyQUICConn) AcceptStream(ctx context.Context) (Stream, error) {
+func (c *quicConn) AcceptStream(ctx context.Context) (Stream, error) {
 	select {
 	case st := <-c.acceptBidiCh:
 		return st, nil
@@ -294,7 +474,7 @@ func (c *toyQUICConn) AcceptStream(ctx context.Context) (Stream, error) {
 	}
 }
 
-func (c *toyQUICConn) AcceptUniStream(ctx context.Context) (ReceiveStream, error) {
+func (c *quicConn) AcceptUniStream(ctx context.Context) (ReceiveStream, error) {
 	select {
 	case st := <-c.acceptUniCh:
 		return st, nil
@@ -305,11 +485,11 @@ func (c *toyQUICConn) AcceptUniStream(ctx context.Context) (ReceiveStream, error
 	}
 }
 
-func (c *toyQUICConn) RemoteAddr() net.Addr     { return c.remoteAddr }
-func (c *toyQUICConn) Context() context.Context { return c.ctx }
+func (c *quicConn) RemoteAddr() net.Addr     { return c.remoteAddr }
+func (c *quicConn) Context() context.Context { return c.ctx }
 
-func (c *toyQUICConn) CloseWithError(code uint64, desc string) error {
-	_ = c.sendFrame(QUICFrame{
+func (c *quicConn) CloseWithError(code uint64, desc string) error {
+	_ = c.send1RTTFrame(QUICFrame{
 		Type:         QUICFrameConnectionClose,
 		ErrorCode:    code,
 		ReasonPhrase: desc,
@@ -321,77 +501,89 @@ func (c *toyQUICConn) CloseWithError(code uint64, desc string) error {
 	return nil
 }
 
-// toyQUICListener multiplexes multiple QUIC connections over a single UDP socket
-// using their 64-bit Destination Connection ID!
-type toyQUICListener struct {
-	udpConn  net.PacketConn
-	mu       sync.Mutex
-	conns    map[uint64]*toyQUICConn
-	acceptCh chan Conn
-	closed   chan struct{}
+type quicListener struct {
+	udpConn   net.PacketConn
+	tlsConfig *tls.Config
+	mu        sync.Mutex
+	conns     map[string]*quicConn
+	acceptCh  chan Conn
+	closed    chan struct{}
 }
 
-func ListenToyQUIC(addr string, _ *tls.Config) (Listener, error) {
+func ListenQUIC(addr string, tlsConf *tls.Config) (Listener, error) {
 	udpConn, err := net.ListenPacket("udp", addr)
 	if err != nil {
 		return nil, err
 	}
-	l := &toyQUICListener{
-		udpConn:  udpConn,
-		conns:    make(map[uint64]*toyQUICConn),
-		acceptCh: make(chan Conn, 16),
-		closed:   make(chan struct{}),
+	l := &quicListener{
+		udpConn:   udpConn,
+		tlsConfig: tlsConf,
+		conns:     make(map[string]*quicConn),
+		acceptCh:  make(chan Conn, 16),
+		closed:    make(chan struct{}),
 	}
 	go l.readLoop()
 	return l, nil
 }
 
-func (l *toyQUICListener) readLoop() {
+func (l *quicListener) readLoop() {
 	buf := make([]byte, 65535)
 	for {
 		n, raddr, err := l.udpConn.ReadFrom(buf)
 		if err != nil {
 			return
 		}
-		pkt, err := DecodePacket(buf[:n])
-		if err != nil {
-			continue
-		}
+		datagram := buf[:n]
 
 		l.mu.Lock()
-		conn, exists := l.conns[pkt.DestConnID]
-		if !exists && pkt.IsLongHeader && pkt.LongType == PacketTypeInitial {
-			serverCID := randomConnID()
-			conn = newToyQUICConn(l.udpConn, raddr, serverCID, pkt.SrcConnID, true)
-			l.conns[serverCID] = conn
-			// Also map the client's initial destination CID so 0-RTT or early packets route properly
-			l.conns[pkt.DestConnID] = conn
+		conn := l.conns[raddr.String()]
+		if conn == nil && len(datagram) > 6 && datagram[0]&0x80 != 0 {
+			dcidLen := int(datagram[5])
+			if len(datagram) >= 6+dcidLen+1 {
+				initialDCID := append([]byte(nil), datagram[6:6+dcidLen]...)
+				scidLen := int(datagram[6+dcidLen])
+				var clientSCID []byte
+				if len(datagram) >= 7+dcidLen+scidLen {
+					clientSCID = append([]byte(nil), datagram[7+dcidLen:7+dcidLen+scidLen]...)
+				}
+				serverCID := randomConnID()
+				srvTLS := l.tlsConfig.Clone()
+				srvTLS.MinVersion = tls.VersionTLS13
+				tlsConn := tls.QUICServer(&tls.QUICConfig{TLSConfig: srvTLS})
+				tlsConn.SetTransportParameters(marshalTransportParams(serverCID))
+				_ = tlsConn.Start(context.Background())
 
-			// Respond with a Long Header Handshake packet carrying a CRYPTO frame and ACK
-			respPkt := Packet{
-				IsLongHeader: true,
-				LongType:     PacketTypeHandshake,
-				Version:      QUICVersion1,
-				DestConnID:   pkt.SrcConnID,
-				SrcConnID:    serverCID,
-				PacketNumber: conn.pktNum.Add(1),
-				Frames: []QUICFrame{
-					{Type: QUICFrameAck, LargestAcked: uint64(pkt.PacketNumber)},
-					{Type: QUICFrameCrypto, CryptoData: []byte("SERVER_HELLO_ALPN_H3")},
-				},
+				conn = newQUICConn(l.udpConn, raddr, serverCID, clientSCID, true, tlsConn)
+				wKeys, rKeys, _ := deriveInitialKeys(initialDCID, false)
+				conn.writeKeys[0] = wKeys
+				conn.readKeys[0] = rKeys
+				l.conns[raddr.String()] = conn
+
+				go func(c *quicConn) {
+					select {
+					case <-c.handshakeCh:
+						l.acceptCh <- c
+					case <-l.closed:
+					}
+				}(conn)
 			}
-			_, _ = l.udpConn.WriteTo(EncodePacket(respPkt), raddr)
-			l.acceptCh <- conn
 		}
 		l.mu.Unlock()
 
-		if conn != nil {
+		if conn == nil {
+			continue
+		}
+		pkts, err := DecodeCoalescedPackets(datagram, len(conn.localConnID), conn.getReadKeys)
+		if err != nil {
+			continue
+		}
+		for _, pkt := range pkts {
 			conn.handlePacket(pkt)
 		}
 	}
 }
 
-func (l *toyQUICListener) Accept(ctx context.Context) (Conn, error) {
+func (l *quicListener) Accept(ctx context.Context) (Conn, error) {
 	select {
 	case c := <-l.acceptCh:
 		return c, nil
@@ -402,27 +594,50 @@ func (l *toyQUICListener) Accept(ctx context.Context) (Conn, error) {
 	}
 }
 
-func (l *toyQUICListener) Addr() net.Addr { return l.udpConn.LocalAddr() }
-func (l *toyQUICListener) Close() error {
+func (l *quicListener) Addr() net.Addr { return l.udpConn.LocalAddr() }
+func (l *quicListener) Close() error {
 	close(l.closed)
 	return l.udpConn.Close()
 }
 
-// DialToyQUIC establishes a QUIC connection over UDP by sending an Initial Long Header packet
-// with a CRYPTO frame and waiting for the server's Handshake response.
-func DialToyQUIC(ctx context.Context, addr string, _ *tls.Config) (Conn, error) {
+func DialQUIC(ctx context.Context, addr string, tlsConf *tls.Config) (Conn, error) {
 	raddr, err := net.ResolveUDPAddr("udp", addr)
 	if err != nil {
 		return nil, err
 	}
-	udpConn, err := net.ListenPacket("udp", "127.0.0.1:0")
+	bindAddr := ":0"
+	if raddr.IP.IsLoopback() {
+		bindAddr = "127.0.0.1:0"
+	}
+	udpConn, err := net.ListenPacket("udp", bindAddr)
 	if err != nil {
 		return nil, err
 	}
 
+	host, _, _ := net.SplitHostPort(addr)
+	conf := tlsConf.Clone()
+	conf.MinVersion = tls.VersionTLS13
+	if conf.ServerName == "" {
+		conf.ServerName = host
+	}
+	if len(conf.NextProtos) == 0 {
+		conf.NextProtos = []string{"h3"}
+	}
+
 	clientCID := randomConnID()
 	initialDestCID := randomConnID()
-	conn := newToyQUICConn(udpConn, raddr, clientCID, initialDestCID, false)
+
+	tlsConn := tls.QUICClient(&tls.QUICConfig{TLSConfig: conf})
+	tlsConn.SetTransportParameters(marshalTransportParams(clientCID))
+
+	conn := newQUICConn(udpConn, raddr, clientCID, initialDestCID, false, tlsConn)
+	wKeys, rKeys, err := deriveInitialKeys(initialDestCID, true)
+	if err != nil {
+		udpConn.Close()
+		return nil, err
+	}
+	conn.writeKeys[0] = wKeys
+	conn.readKeys[0] = rKeys
 
 	go func() {
 		buf := make([]byte, 65535)
@@ -432,30 +647,21 @@ func DialToyQUIC(ctx context.Context, addr string, _ *tls.Config) (Conn, error) 
 				conn.cancel()
 				return
 			}
-			pkt, err := DecodePacket(buf[:n])
+			pkts, err := DecodeCoalescedPackets(buf[:n], len(conn.localConnID), conn.getReadKeys)
 			if err != nil {
 				continue
 			}
-			if pkt.IsLongHeader && pkt.SrcConnID != 0 {
-				conn.remoteConnID = pkt.SrcConnID
+			for _, pkt := range pkts {
+				conn.handlePacket(pkt)
 			}
-			conn.handlePacket(pkt)
 		}
 	}()
 
-	// Send Initial Packet with ClientHello CRYPTO frame
-	initPkt := Packet{
-		IsLongHeader: true,
-		LongType:     PacketTypeInitial,
-		Version:      QUICVersion1,
-		DestConnID:   initialDestCID,
-		SrcConnID:    clientCID,
-		PacketNumber: conn.pktNum.Add(1),
-		Frames: []QUICFrame{
-			{Type: QUICFrameCrypto, CryptoData: []byte("CLIENT_HELLO_ALPN_H3")},
-		},
+	if err := tlsConn.Start(ctx); err != nil {
+		udpConn.Close()
+		return nil, err
 	}
-	if _, err := udpConn.WriteTo(EncodePacket(initPkt), raddr); err != nil {
+	if err := conn.drainTLSEvents(); err != nil {
 		udpConn.Close()
 		return nil, err
 	}
@@ -469,8 +675,8 @@ func DialToyQUIC(ctx context.Context, addr string, _ *tls.Config) (Conn, error) 
 	}
 }
 
-func randomConnID() uint64 {
-	var b [8]byte
-	_, _ = rand.Read(b[:])
-	return binary.BigEndian.Uint64(b[:])
+func randomConnID() []byte {
+	b := make([]byte, 8)
+	_, _ = rand.Read(b)
+	return b
 }

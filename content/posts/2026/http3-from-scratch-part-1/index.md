@@ -52,9 +52,9 @@ stream.Close()
 reply, _ := io.ReadAll(stream)
 ```
 
-Notice that the client calls `stream.Close()` *before* calling `io.ReadAll(stream)`. In `quic-go`, `stream.Close()` only closes our write side of the stream (which sends a `FIN` bit on that stream), so we can still read the server's response afterward. Because QUIC streams already have a `FIN` bit, we won't need an `END_STREAM` flag on our HTTP/3 frames like we had in HTTP/2.
+Notice that the client calls `stream.Close()` *before* calling `io.ReadAll(stream)`. In `quic-go`, closing a stream only closes our write side (sending a FIN bit on that stream), so we can still read the server's response afterward. Because QUIC streams already have their own FIN bit, HTTP/3 frames don't need an `END_STREAM` flag like HTTP/2 had.
 
-I also ran into the same bug here that I hit with `defer conn.Close()` in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/). In my first draft of `runEchoServer`, I put `defer conn.CloseWithError(0, "done")` at the top of the server function. When the server handler returned, `CloseWithError` immediately sent a `CONNECTION_CLOSE` packet and killed the connection before the client finished reading the response. Instead, the server should only call `stream.Close()` and wait on `<-conn.Context().Done()` until the client disconnects.
+I also ran into the same bug here that I hit with `defer conn.Close()` in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/). In my first draft of the echo server, I deferred `conn.CloseWithError(0, "done")` at the top of the handler. When the handler returned, `CloseWithError` immediately sent a connection-close packet and killed the connection before the client finished reading the response. Instead, the server should only close the stream and wait on `<-conn.Context().Done()` until the client disconnects.
 
 ### Reusing HTTP/2 Framing
 
@@ -62,11 +62,11 @@ When you open [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114.html), 
 
 {{< image src="h3-unmasking.jpg" width="420px" class="center" >}}
 
-In [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we built a parser for HTTP/2's 9-byte frame header (`Length`, `Type`, `Flags`, and `StreamID`). Why did HTTP/2 have `StreamID` and `Flags` on every frame? Because all of those frames were being sent over a single TCP connection, so HTTP/2 had to handle its own stream IDs and `END_STREAM` / `END_HEADERS` flags. In HTTP/3, each request already has its own QUIC stream and QPACK header blocks aren't split across `CONTINUATION` frames. As a result, HTTP/3 drops `StreamID` and `Flags` from the frame header completely, leaving only `Type` and `Length`:
+In [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we built a parser for HTTP/2's 9-byte frame header (Length, Type, Flags, and Stream ID). Why did HTTP/2 need a Stream ID and Flags on every frame? Because all of those frames were multiplexed over a single TCP connection, so HTTP/2 had to track its own stream IDs and end-of-stream or end-of-headers flags. In HTTP/3, each request gets its own QUIC stream and QPACK header blocks aren't split across continuation frames. As a result, HTTP/3 drops Stream ID and Flags from the frame header completely, leaving only **Type** and **Length**:
 
 {{< image src="h2-vs-h3-frame.svg" width="800px" class="center" inline="true" >}}
 
-The frame `Type` identifiers also use the same values we had in HTTP/2:
+The remaining frame types keep the same numeric values we used in HTTP/2:
 
 ```go
 const (
@@ -82,13 +82,13 @@ type Frame struct {
 }
 ```
 
-Frame types `0x02`, `0x03`, `0x05`, and `0x06` from HTTP/2 (`PRIORITY`, `RST_STREAM`, `PUSH_PROMISE`, and `PING`) are gone here. Stream resets and pings moved into QUIC itself, and priority frames and Server Push were removed.
+Several frame types from HTTP/2 (`PRIORITY`, `RST_STREAM`, `PUSH_PROMISE`, and `PING`) are gone here. Stream resets and pings moved into QUIC itself, and priority frames and Server Push were removed.
 
-The main difference in the wire format is that `Type` and `Length` use QUIC variable-length integers ([RFC 9000 Section 16](https://www.rfc-editor.org/rfc/rfc9000.html#name-variable-length-integer-enc)) instead of fixed-width integers. If you've used the varint tool on [protobuf.com](https://protobuf.com), you might remember that Protobuf varints use the most significant bit of each byte as a continuation flag. Instead of checking a continuation bit on every byte, a QUIC varint uses the top two bits of the first byte (`00`, `01`, `10`, or `11`) to encode whether the number is 1, 2, 4, or 8 bytes long.
+The main difference in the wire format is that Type and Length use [QUIC variable-length integers](https://www.rfc-editor.org/rfc/rfc9000.html#name-variable-length-integer-enc) instead of fixed-width integers. If you've used the varint tool on [protobuf.com](https://protobuf.com), you might remember that Protobuf varints use the most significant bit of each byte as a continuation flag. Instead of checking a continuation bit on every byte, a QUIC varint uses the top two bits of the first byte to encode whether the integer is 1, 2, 4, or 8 bytes long.
 
 {{< image src="quic-varint.svg" width="800px" class="center" inline="true" >}}
 
-In `ReadVarint`, we grab that first byte, shift the top two bits down with `first[0] >> 6`, and use `1 << prefix` to figure out how many bytes to read:
+In `ReadVarint`, we read that first byte, shift its top two bits down with `first[0] >> 6`, and use `1 << prefix` to figure out how many bytes to read:
 
 ```go
 func ReadVarint(r io.Reader) (uint64, error) {
@@ -140,11 +140,11 @@ The issue is HPACK's dynamic table. In HTTP/2, every `HEADERS` frame that insert
 
 With QUIC, packets on different streams can arrive out of order. If a packet on Stream 0 gets dropped on the network while a packet on Stream 4 arrives, QUIC can deliver Stream 4 right away. But if Stream 4's headers referenced a dynamic table entry that was supposed to be created by Stream 0's lost packet, the decoder wouldn't be able to read Stream 4 until Stream 0 was retransmitted. We'd be right back to head-of-line blocking.
 
-To get around this, HTTP/3 uses QPACK ([RFC 9204](https://www.rfc-editor.org/rfc/rfc9204.html)). In QPACK, any dynamic table updates happen on separate unidirectional streams instead of inside the request streams, and every `HEADERS` frame starts with a 2-byte prefix (`Required Insert Count` and `Delta Base`). The static table is also bigger than HPACK's (99 entries starting at index 0, compared to 61 entries starting at index 1 in HPACK) and includes common headers like `content-type: application/json` (46) and `:status: 200` (25).
+To get around this, HTTP/3 uses QPACK ([RFC 9204](https://www.rfc-editor.org/rfc/rfc9204.html)). In QPACK, any dynamic table updates happen on separate unidirectional streams instead of inside the request streams, and every HEADERS frame starts with a 2-byte prefix (Required Insert Count and Delta Base). The static table is also bigger than HPACK's (99 entries starting at index 0, compared to 61 entries starting at index 1 in HPACK) and includes common headers like `content-type: application/json` and `:status: 200`.
 
 {{< image src="qpack-wire.svg" width="800px" class="center" inline="true" >}}
 
-If we don't use the dynamic table and only encode headers using the 99-entry static table and string literals, we don't have to open the encoder/decoder streams at all, and the 2-byte prefix at the beginning of every `HEADERS` frame is just `0x00, 0x00`. [RFC 9204 Section 4.1](https://www.rfc-editor.org/rfc/rfc9204.html#section-4.1) also keeps the same integer encoding (`decodeInt`, `encodeInt`) and Huffman table (`golang.org/x/net/http2/hpack`) that HPACK used. We can reuse those functions from our HTTP/2 package and just change the bitmasks on the first byte of each field line:
+If we don't use the dynamic table and only encode headers using the 99-entry static table and string literals, we don't have to open the encoder/decoder streams at all, and the 2-byte prefix at the beginning of every HEADERS frame is just two zero bytes. [RFC 9204 Section 4.1](https://www.rfc-editor.org/rfc/rfc9204.html#section-4.1) also keeps the same integer encoding and Huffman table (`golang.org/x/net/http2/hpack`) that HPACK used, so we can reuse those helpers from our HTTP/2 package and just change the bitmasks on the first byte of each field line:
 
 ```go
 func (d *QPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {

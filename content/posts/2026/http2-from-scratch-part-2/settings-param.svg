@@ -1,0 +1,57 @@
+<svg class="h3-diagram" viewBox="0 0 880 124" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #1E1E2E;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+    }
+  </style>
+
+  <!-- Bit offsets -->
+  <g fill="var(--text-sub)" font-size="11">
+    <text x="24" y="24">0</text>
+    <text x="296" y="24" text-anchor="end">15</text>
+    <text x="318" y="24">16</text>
+    <text x="856" y="24" text-anchor="end">47</text>
+  </g>
+
+  <!-- Boxes -->
+  <g transform="translate(0 32)">
+    <!-- Identifier (16 bits) -->
+    <rect x="20" y="0" width="280" height="72" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="160" y="33" fill="var(--c-purple)" font-size="16" font-weight="700" text-anchor="middle">Identifier</text>
+    <text x="160" y="55" fill="var(--text-sub)" font-size="12" text-anchor="middle">16 bits (2 Bytes)</text>
+
+    <!-- Value (32 bits) -->
+    <rect x="314" y="0" width="546" height="72" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="587" y="33" fill="var(--c-blue)" font-size="16" font-weight="700" text-anchor="middle">Value</text>
+    <text x="587" y="55" fill="var(--text-sub)" font-size="12" text-anchor="middle">32 bits (4 Bytes)</text>
+  </g>
+</svg>

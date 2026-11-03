@@ -103,22 +103,23 @@ Nothing has changed with the sequence of events from HTTP/0.9. It still looks li
 
 ```mermaid
 sequenceDiagram
-    actor Client
+    participant Client
+    participant Server
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Client ->> Server: TCP SYN
         Server ->> Client: TCP SYN-ACK
         Client ->> Server: TCP ACK
     end
 
-    rect rgb(200,80,96)
-        Client ->> Server: HTTP Request
-        Server ->> Client: HTTP Response
+    rect rgba(244, 63, 94, 0.14)
+        Client ->> Server: GET /index.html HTTP/1.0 (+ Headers)
+        Server ->> Client: HTTP/1.0 200 OK (+ Headers & Body)
     end
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Server ->> Client: TCP FIN
-		Client ->> Server: TCP ACK
+        Client ->> Server: TCP ACK
     end
 ```
 

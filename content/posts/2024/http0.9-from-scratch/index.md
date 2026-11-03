@@ -63,22 +63,23 @@ Again, this is an extremely simple protocol at this point. Request a resource an
 
 ```mermaid
 sequenceDiagram
-    actor Client
+    participant Client
+    participant Server
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Client ->> Server: TCP SYN
         Server ->> Client: TCP SYN-ACK
         Client ->> Server: TCP ACK
     end
 
-    rect rgb(200,80,96)
-        Client ->> Server: HTTP Request
-        Server ->> Client: HTTP Response
+    rect rgba(244, 63, 94, 0.14)
+        Client ->> Server: GET /index.html
+        Server ->> Client: <html>Hello World!</html>
     end
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Server ->> Client: TCP FIN
-		Client ->> Server: TCP ACK
+        Client ->> Server: TCP ACK
     end
 ```
 

@@ -41,22 +41,23 @@ As the internet evolved better security practices, we've layered TLS on top of T
 
 ```mermaid
 sequenceDiagram
-    actor Client
+    participant Client
+    participant Server
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Client ->> Server: TCP SYN
         Server ->> Client: TCP SYN-ACK
         Client ->> Server: TCP ACK
     end
 
-    rect rgb(102,81,145)
+    rect rgba(139, 92, 246, 0.14)
         Client ->> Server: TLS Client Hello
         Server ->> Client: TLS Server Hello
         Client ->> Server: TLS Server Finished
         Server ->> Client: TLS Client Finished
     end
 
-    rect rgb(200,80,96)
+    rect rgba(244, 63, 94, 0.14)
         Client ->> Server: HTTP Request
         Server ->> Client: HTTP Response
     end
@@ -66,15 +67,16 @@ Yes, this process involves **three round trips** before the client even sends a 
 
 ```mermaid
 sequenceDiagram
-	    actor Client
+    participant Client
+    participant Server
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Client ->> Server: QUIC
         Server ->> Client: QUIC
         Client ->> Server: QUIC
     end
 
-    rect rgb(200,80,96)
+    rect rgba(244, 63, 94, 0.14)
         Client ->> Server: HTTP Request
         Server ->> Client: HTTP Response
     end
@@ -84,19 +86,20 @@ But wait, we can actually go further. With a feature called `0-RTT`, the number 
 
 ```mermaid
 sequenceDiagram
-    actor Client
+    participant Client
+    participant Server
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Client ->> Server: QUIC
     end
-    rect rgb(200,80,96)
+    rect rgba(244, 63, 94, 0.14)
         Client ->> Server: HTTP Request
     end
 
-    rect rgb(47,75,124)
+    rect rgba(59, 130, 246, 0.14)
         Server ->> Client: QUIC
     end
-    rect rgb(200,80,96)
+    rect rgba(244, 63, 94, 0.14)
         Server ->> Client: HTTP Response
     end
 ```

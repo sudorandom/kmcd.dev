@@ -19,8 +19,7 @@ type Client struct {
 func NewClient() *Client {
 	return &Client{
 		TLSConfig: &tls.Config{
-			InsecureSkipVerify: true,
-			NextProtos:         []string{"h3"},
+			NextProtos: []string{"h3"},
 		},
 		DialFunc: DialQUIC,
 	}

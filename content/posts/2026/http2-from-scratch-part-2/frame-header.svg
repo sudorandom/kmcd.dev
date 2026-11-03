@@ -1,0 +1,95 @@
+<svg class="h3-diagram" viewBox="0 0 880 128" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-green: #A6E3A1;
+      --bg-green: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #1E1E2E;
+      --c-yellow: #F9E2AF;
+      --bg-yellow: #1E1E2E;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-green: #0F766E;
+        --bg-green: #E6F7F4;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+        --c-yellow: #B45309;
+        --bg-yellow: #FFF6D6;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-green: #0F766E;
+      --bg-green: #E6F7F4;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+      --c-yellow: #B45309;
+      --bg-yellow: #FFF6D6;
+    }
+  </style>
+
+  <!-- Bit offsets -->
+  <g fill="var(--text-sub)" font-size="11">
+    <text x="24" y="24">0</text>
+    <text x="186" y="24" text-anchor="end">23</text>
+    <text x="204" y="24">24</text>
+    <text x="306" y="24" text-anchor="end">31</text>
+    <text x="324" y="24">32</text>
+    <text x="426" y="24" text-anchor="end">39</text>
+    <text x="466" y="24" text-anchor="middle">40</text>
+    <text x="506" y="24">41</text>
+    <text x="706" y="24" text-anchor="end">71</text>
+    <text x="724" y="24">72...</text>
+  </g>
+
+  <!-- Boxes -->
+  <g transform="translate(0 32)">
+    <!-- Length (24 bits) -->
+    <rect x="20" y="0" width="170" height="74" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="105" y="34" fill="var(--c-blue)" font-size="16" font-weight="700" text-anchor="middle">Length</text>
+    <text x="105" y="56" fill="var(--text-sub)" font-size="12" text-anchor="middle">24 bits (3B)</text>
+
+    <!-- Type (8 bits) -->
+    <rect x="200" y="0" width="110" height="74" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+    <text x="255" y="34" fill="var(--c-green)" font-size="16" font-weight="700" text-anchor="middle">Type</text>
+    <text x="255" y="56" fill="var(--text-sub)" font-size="12" text-anchor="middle">8 bits (1B)</text>
+
+    <!-- Flags (8 bits) -->
+    <rect x="320" y="0" width="110" height="74" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="375" y="34" fill="var(--c-yellow)" font-size="16" font-weight="700" text-anchor="middle">Flags</text>
+    <text x="375" y="56" fill="var(--text-sub)" font-size="12" text-anchor="middle">8 bits (1B)</text>
+
+    <!-- R (1 bit) -->
+    <rect x="440" y="0" width="52" height="74" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="466" y="34" fill="var(--c-purple)" font-size="16" font-weight="700" text-anchor="middle">R</text>
+    <text x="466" y="56" fill="var(--text-sub)" font-size="11" text-anchor="middle">1 bit</text>
+
+    <!-- Stream Identifier (31 bits) -->
+    <rect x="502" y="0" width="208" height="74" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="606" y="34" fill="var(--c-purple)" font-size="16" font-weight="700" text-anchor="middle">Stream Identifier</text>
+    <text x="606" y="56" fill="var(--text-sub)" font-size="12" text-anchor="middle">31 bits</text>
+
+    <!-- Payload -->
+    <rect x="720" y="0" width="140" height="74" rx="8" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="2" stroke-dasharray="6,4" />
+    <text x="790" y="34" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">Payload</text>
+    <text x="790" y="56" fill="var(--text-sub)" font-size="12" text-anchor="middle">Length bytes</text>
+  </g>
+</svg>

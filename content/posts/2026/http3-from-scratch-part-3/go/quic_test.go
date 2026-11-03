@@ -9,11 +9,9 @@ import (
 )
 
 func TestOutOfOrderStreamReassembly(t *testing.T) {
-	conn := &toyQUICConn{}
-	st := newToyQUICStream(0, conn)
+	conn := &quicConn{}
+	st := newQUICStream(0, conn)
 
-	// Push chunk 2 (offset 6, "world!") BEFORE chunk 1 (offset 0, "hello ")
-	// to simulate out-of-order UDP packet arrival!
 	st.pushFrame(6, []byte("world!"), true)
 	st.pushFrame(0, []byte("hello "), false)
 
@@ -26,7 +24,7 @@ func TestOutOfOrderStreamReassembly(t *testing.T) {
 	}
 }
 
-func TestEndToEndHTTP3OverToyQUIC(t *testing.T) {
+func TestEndToEndHTTP3OverQUIC(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -37,18 +35,23 @@ func TestEndToEndHTTP3OverToyQUIC(t *testing.T) {
 		_, _ = w.Write([]byte("echo: " + string(b)))
 	})
 
-	listener, err := ListenToyQUIC("127.0.0.1:0", nil)
+	tlsConf, err := generateTLSConfig("h3")
+	if err != nil {
+		t.Fatal(err)
+	}
+	listener, err := ListenQUIC("127.0.0.1:0", tlsConf)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer listener.Close()
 
-	srv := &Server{Handler: mux}
+	srv := &Server{Handler: mux, TLSConfig: tlsConf}
 	go func() {
 		_ = srv.ServeListener(ctx, listener)
 	}()
 
 	client := NewClient()
+	client.TLSConfig.InsecureSkipVerify = true
 	req, _ := http.NewRequestWithContext(ctx, "POST", "https://"+listener.Addr().String()+"/test", strings.NewReader("digging downward"))
 	resp, err := client.Do(req)
 	if err != nil {

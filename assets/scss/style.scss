@@ -830,6 +830,8 @@ ul.icons {
     .node label-box,
     g.actor rect,
     rect.actor,
+    g.actor-man circle,
+    g.actor-man line,
     .labelBox {
         fill: #313244 !important;
         stroke: #cba6f7 !important;
@@ -839,6 +841,11 @@ ul.icons {
             fill: #f3e8ff !important;
             stroke: #6d28d9 !important;
         }
+    }
+
+    // Sequence diagram highlight rects (rect rgb/rgba)
+    rect.rect {
+        rx: 8px;
     }
 
     // Node & sequence diagram texts
@@ -1084,7 +1091,8 @@ figure img {
 svg.d2-svg,
 svg#d2-svg {
     // Transparent outer canvas background so diagrams sit cleanly on the page card
-    > rect.fill-N7 {
+    > rect.fill-N7,
+    .blend + rect.fill-N5 {
         fill: transparent !important;
     }
 
@@ -1110,7 +1118,8 @@ svg#d2-svg {
 
     // Light Mode (Cream Paper & Spot Inks)
     [data-theme=light] & {
-        > rect.fill-N7 {
+        > rect.fill-N7,
+        .blend + rect.fill-N5 {
             fill: transparent !important;
         }
         .fill-N7 { fill: #f6efe0 !important; }

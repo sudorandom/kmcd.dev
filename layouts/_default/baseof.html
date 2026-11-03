@@ -1,5 +1,13 @@
+{{- $schemaType := "https://schema.org/WebPage" -}}
+{{- if or .IsHome (and .IsSection (eq .Section "posts")) -}}
+    {{- $schemaType = "https://schema.org/Blog" -}}
+{{- else if and .IsPage (or (eq .Type "posts") (eq .Type "prompts")) -}}
+    {{- $schemaType = "https://schema.org/BlogPosting" -}}
+{{- else if and .IsPage (or (eq .Slug "me") (eq .Layout "me")) -}}
+    {{- $schemaType = "https://schema.org/ProfilePage" -}}
+{{- end -}}
 <!DOCTYPE html>
-<html lang="{{ .Site.Language }}">
+<html lang="{{ .Site.Language }}" itemscope itemtype="{{ $schemaType }}">
     <head>
         {{ partial "head.html" . }}
     </head>

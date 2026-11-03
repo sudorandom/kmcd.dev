@@ -26,15 +26,7 @@ According to the specification, every HTTP/2 frame begins with a fixed 9-byte he
 
 The 9-byte header is laid out precisely. Using a packet visualization, we can see how the bits are packed together:
 
-```mermaid
-packet-beta
-0-23: "Length (24 bits)"
-24-31: "Type (8 bits)"
-32-39: "Flags (8 bits)"
-40: "R (Reserved)"
-41-71: "Stream Identifier (31 bits)"
-
-```
+{{< image src="frame-header.svg" width="820px" class="center" inline="true" >}}
 
 The header fields serve specific purposes:
 
@@ -105,13 +97,7 @@ Immediately after receiving our preface, the server will send a `SETTINGS` frame
 
 The payload of a SETTINGS frame consists of a series of 6-byte parameters:
 
-```mermaid
-packet-beta
-title SETTINGS Parameter (6 Bytes)
-0-15: "Identifier (16 bits)"
-16-47: "Value (32 bits)"
-
-```
+{{< image src="settings-param.svg" width="820px" class="center" inline="true" >}}
 
 For now, the most important thing is that we simply **acknowledge** these settings. HTTP/2 requires that when you receive a SETTINGS frame, the client must send back a SETTINGS frame with the `ACK` flag set (bit `0x1`). If you don't, the server will eventually assume the client is unresponsive and close the connection.
 

@@ -2,21 +2,15 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
+	"time"
 )
 
-// ListenQUIC and DialQUIC now point to our own UDP-based QUIC implementation!
-var (
-	ListenQUIC = ListenToyQUIC
-	DialQUIC   = DialToyQUIC
-)
-
-// HTTP/3 Unidirectional Stream Types & Settings Constants (from Part 2)
 const (
 	StreamTypeControl             uint64 = 0x00
 	SettingsQPACKMaxTableCapacity uint64 = 0x01
@@ -24,61 +18,47 @@ const (
 )
 
 func main() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.Header().Set("X-Transport", "toy-quic-udp")
-		fmt.Fprintf(w, "HTTP/3 on homemade QUIC! Method=%s Path=%s\n", r.Method, r.URL.Path)
-	})
-	mux.HandleFunc("/headers", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(r.Header)
-	})
-	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		_, _ = io.Copy(w, r.Body)
-	})
-
-	listener, err := ListenQUIC("127.0.0.1:0", nil)
-	if err != nil {
-		log.Fatal(err)
+	targetURL := "https://kmcd.dev/"
+	if len(os.Args) > 1 {
+		targetURL = os.Args[1]
+		if !strings.Contains(targetURL, "://") {
+			targetURL = "https://" + targetURL
+		}
 	}
-	defer listener.Close()
 
-	srv := &Server{Handler: mux}
-	go func() {
-		_ = srv.ServeListener(ctx, listener)
-	}()
-
-	addr := listener.Addr().String()
-	fmt.Printf("Homemade QUIC + HTTP/3 server listening on UDP %s\n\n", addr)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
 	client := NewClient()
 
-	// 1. GET /hello over our own HTTP/3 + QPACK + QUIC + UDP stack!
-	req1, _ := http.NewRequestWithContext(ctx, "GET", "https://"+addr+"/hello", nil)
-	req1.Header.Set("User-Agent", "kmcd-full-scratch/1.0")
-	resp1, err := client.Do(req1)
+	req, err := http.NewRequestWithContext(ctx, "GET", targetURL, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	body1, _ := io.ReadAll(resp1.Body)
-	resp1.Body.Close()
-	fmt.Printf("[GET /hello] Status: %s | X-Transport: %s | Body: %s",
-		resp1.Status, resp1.Header.Get("X-Transport"), string(body1))
+	req.Header.Set("User-Agent", "kmcd-h3-scratch/1.0")
 
-	// 2. POST /echo over our own HTTP/3 + QPACK + QUIC + UDP stack!
-	req2, _ := http.NewRequestWithContext(ctx, "POST", "https://"+addr+"/echo",
-		strings.NewReader("Zero quic-go imports! Pure UDP -> QUIC -> QPACK -> HTTP/3!"))
-	resp2, err := client.Do(req2)
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
 	}
-	body2, _ := io.ReadAll(resp2.Body)
-	resp2.Body.Close()
-	fmt.Printf("[POST /echo] Status: %s | Body: %s\n", resp2.Status, string(body2))
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	preview := body
+	if len(preview) > 200 {
+		preview = preview[:200]
+	}
+
+	fmt.Printf("URL:          %s\n", targetURL)
+	fmt.Printf("Proto:        %s\n", resp.Proto)
+	fmt.Printf("Status:       %s\n", resp.Status)
+	fmt.Printf("Server:       %s\n", resp.Header.Get("Server"))
+	fmt.Printf("Content-Type: %s\n", resp.Header.Get("Content-Type"))
+	fmt.Printf("Alt-Svc:      %s\n", resp.Header.Get("Alt-Svc"))
+	fmt.Printf("Body Length:  %d bytes\n", len(body))
+	fmt.Printf("Body Preview: %s\n", string(preview))
 }

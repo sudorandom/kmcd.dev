@@ -97,13 +97,14 @@
 {{- /* Page / Post Specific Schema */ -}}
 {{- if .IsHome -}}
   {{- $homePage := dict
-    "@type" "WebPage"
-    "@id" (printf "%s/#webpage" $baseUrl)
+    "@type" "Blog"
+    "@id" (printf "%s/#blog" $baseUrl)
     "url" (printf "%s/" $baseUrl)
     "name" site.Title
     "description" $siteDescription
     "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
-    "about" (dict "@id" (printf "%s/#author" $baseUrl))
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
     "inLanguage" (or site.Language.LanguageCode "en")
   -}}
   {{- $graph = $graph | append $homePage -}}
@@ -152,7 +153,7 @@
   {{- $blogPost := dict
     "@type" "BlogPosting"
     "@id" .Permalink
-    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "isPartOf" (dict "@type" "Blog" "@id" (printf "%s/#blog" $baseUrl) "name" site.Title)
     "headline" .Title
     "name" .Title
     "description" $pageDescription
@@ -189,7 +190,7 @@
   {{- $promptPost := dict
     "@type" "BlogPosting"
     "@id" .Permalink
-    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "isPartOf" (dict "@type" "Blog" "@id" (printf "%s/#blog" $baseUrl) "name" site.Title)
     "headline" .Title
     "name" .Title
     "description" .Title
@@ -236,6 +237,20 @@
     "inLanguage" (or site.Language.LanguageCode "en")
   -}}
   {{- $graph = $graph | append $genericPage -}}
+
+{{- else if and .IsSection (eq .Section "posts") -}}
+  {{- $blogSection := dict
+    "@type" "Blog"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "description" (or .Description $siteDescription)
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $blogSection -}}
 
 {{- else -}}
   {{- /* Section, Taxonomy, or Term List Page */ -}}
