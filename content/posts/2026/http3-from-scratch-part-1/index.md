@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["golang", "http3", "quic", "protocols", "networking"]
-date: "2026-11-10T10:00:00Z"
+date: "2026-11-12T10:00:00Z"
 description: "Building HTTP/3 from scratch: HTTP/3 framing and QPACK over QUIC streams in Go."
 cover: "cover.svg"
 images: ["/posts/http3-from-scratch-part-1/cover.svg"]
@@ -14,7 +14,6 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http3-from-scratch-part-1/
 series: ["HTTP from Scratch"]
-draft: true
 ---
 
 In my previous posts in this series ([HTTP/0.9](/posts/http0.9-from-scratch/), [HTTP/1.0](/posts/http1.0-from-scratch/), [HTTP/1.1](/posts/http1.1-from-scratch/), and [HTTP/2](/posts/http2-from-scratch-part-1/)), I always started with a raw TCP socket. We would dial a port, wrap the connection in TLS, and then build the HTTP parser on top of it.

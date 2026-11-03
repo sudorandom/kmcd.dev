@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["golang", "http3", "quic", "protocols", "networking"]
-date: "2026-11-17T10:00:00Z"
+date: "2026-11-19T10:00:00Z"
 description: "Negotiating HTTP/3 with Alt-Svc and DNS, forcing local browsers onto QUIC, and building a full HTTP/3 server and client."
 cover: "cover.svg"
 images: ["/posts/http3-from-scratch-part-2/cover.svg"]
@@ -14,7 +14,6 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http3-from-scratch-part-2/
 series: ["HTTP from Scratch"]
-draft: true
 ---
 
 In [Part 1](/posts/http3-from-scratch-part-1/), we opened and closed streams over QUIC, wrote our HTTP/3 variable-length integer (`varint`) framing, and adapted our HTTP/2 HPACK code into a QPACK encoder and decoder.

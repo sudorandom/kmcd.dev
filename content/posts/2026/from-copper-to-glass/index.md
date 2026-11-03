@@ -2,17 +2,15 @@
 categories: ["article", "project", "dataviz"]
 tags: ["dataviz", "internet-map", "internet", "networking", "bgp", "fiber-optics", "radio", "satellites", "telegraph", "history", "map", "world", "infrastructure"]
 keywords: ["physical internet", "how the internet works", "submarine cable history", "undersea telegraph cable", "vlf radio stations", "shortwave radio trunks", "coaxial submarine cable", "tat-1", "tat-8", "communications satellites", "satnet", "starlink vs fiber optic bandwidth", "undersea fiber optic cables", "terrestrial backbone corridors", "edfa amplifier", "roadm", "ixp peering", "bgp routing", "decommissioned submarine cables"]
-date: "2026-11-03T10:00:00Z"
+date: "2026-11-05T10:00:00Z"
 description: "Adding a visual history of global communications at map.kmcd.dev/learn/, backfilling decommissioned telegraph and coaxial cables, mapping intercontinental radio trunks, and adding terrestrial backbone corridors."
 cover: "cover.webp"
 images: ["posts/from-copper-to-glass/cover.webp"]
-featured: true
 linktitle: ""
 title: "The Physical Internet: From Copper to Glass"
 slug: "from-copper-to-glass"
 type: "posts"
 canonical_url: https://kmcd.dev/posts/from-copper-to-glass
-draft: true
 ---
 
 I originally built the [Internet Infrastructure Map](https://map.kmcd.dev) because I thought undersea fiber-optic cables were interesting. Since then, I've been slowly piecing the history of the global Internet together. After adding historical fiber cables, I started backfilling old telegraph and coaxial cables. Then I finally added radio systems to the map, stopping short of the monumental task of mapping satellites. I also built a new page at **[map.kmcd.dev/learn/](https://map.kmcd.dev/learn/)** to walk through the technological history that led to our modern internet.

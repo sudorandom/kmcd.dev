@@ -1,7 +1,7 @@
 ---
 categories: ["article"]
 tags: ["golang", "http3", "quic", "udp", "protocols", "networking"]
-date: "2026-11-24T10:00:00Z"
+date: "2026-11-26T10:00:00Z"
 description: "Digging all the way down to UDP: implementing QUIC packets, stream multiplexing, and plugging in our HTTP/3 server and client."
 cover: "cover.svg"
 images: ["/posts/http3-from-scratch-part-3/cover.svg"]
@@ -14,7 +14,6 @@ type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http3-from-scratch-part-3/
 series: ["HTTP from Scratch"]
-draft: true
 ---
 
 In [Part 1](/posts/http3-from-scratch-part-1/) and [Part 2](/posts/http3-from-scratch-part-2/), we wrote our HTTP/3 framing, QPACK encoder and decoder, control streams, and `Server` and `Client` types in Go. At the end of Part 2, our HTTP/3 client and server could talk to `curl`, `quic-go`, and Chrome, but we were still using `quic-go` to handle the UDP sockets and QUIC streams.
