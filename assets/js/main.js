@@ -644,37 +644,43 @@ function initKeyboardShortcuts() {
 
     if (e.altKey) return;
 
+    // Ignore key auto-repeat on 'g' while holding 'g' for a chord like g+r
+    if (gPending && e.repeat && e.key.toLowerCase() === "g") {
+      return;
+    }
+
     // Handle 'g' chord sequences (g h, g p, g d, g s, g m, g r, g g)
     if (gPending) {
+      const k = e.key.toLowerCase();
       clearGPending();
-      if (e.key === "h") {
+      if (k === "h") {
         e.preventDefault();
         window.location.href = "/";
-      } else if (e.key === "p") {
+      } else if (k === "p") {
         e.preventDefault();
         window.location.href = "/posts/";
-      } else if (e.key === "d") {
+      } else if (k === "d") {
         e.preventDefault();
         window.location.href = "/prompts/";
-      } else if (e.key === "s") {
+      } else if (k === "s") {
         e.preventDefault();
         window.location.href = "/stuff/";
-      } else if (e.key === "m") {
+      } else if (k === "m") {
         e.preventDefault();
         window.location.href = "/me/";
-      } else if (e.key === "r") {
+      } else if (k === "r") {
         e.preventDefault();
         window.location.href = "/random/";
-      } else if (e.key === "g") {
+      } else if (k === "g") {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
     }
 
-    if (e.key === "g") {
+    if (e.key === "g" && !e.shiftKey) {
       gPending = true;
-      gTimer = setTimeout(clearGPending, 1000);
+      gTimer = setTimeout(clearGPending, 1200);
       return;
     }
 

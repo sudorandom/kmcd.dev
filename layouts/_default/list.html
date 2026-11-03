@@ -1,6 +1,4 @@
 {{ define "main" }}
-    {{ $paginator := .Paginate .Data.Pages }}
-    
     <main class="posts">
         <h1 class="page-title">{{ with .Params.TitleIcon}}<i class="fa-solid {{ . }}"></i> {{end}}{{ .Title }}</h1>
         {{ with .Params.Subtitle }}<div class="post-excerpt">{{ . }}</div>{{ end }}
@@ -9,33 +7,82 @@
             <div class="content">{{ .Content }}</div>
         {{ end }}
 
-        {{ range $paginator.Pages.GroupByDate "2006" }}
-            <section class="posts-group prompts-month-section">
-                <div class="prompts-month-header">
-                    <h2><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> &nbsp;{{ .Key }}</h2>
-                    <span class="prompts-month-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
-                </div>
-                <ul class="prompts-ticket-grid">
-                    {{ range .Pages }}
-                        <li class="prompt-ticket-item">
-                            <a href="{{ .Permalink }}" class="prompt-ticket-link">
-                                <span class="prompt-ticket-top">
-                                    <span class="post-day prompt-ticket-date">
-                                        {{ if .Site.Params.dateformShort }}
-                                            {{ .Date.Format .Site.Params.dateformShort }}
-                                        {{ else }}
-                                            {{ .Date.Format "Jan 2" }}
-                                        {{ end }}
+        {{ if eq .Kind "taxonomy" }}
+            {{- $items := slice -}}
+            {{- range .Data.Pages -}}
+                {{- $d := .Date -}}
+                {{- if and $d.IsZero (gt (len .Pages) 0) -}}
+                    {{- $d = (index .Pages.ByDate.Reverse 0).Date -}}
+                {{- end -}}
+                {{- $items = $items | append (dict "page" . "date" $d "year" ($d.Format "2006") "sortKey" ($d.Format "2006-01-02T15:04:05")) -}}
+            {{- end -}}
+            {{- $items = sort $items "sortKey" "desc" -}}
+            {{- $years := slice -}}
+            {{- range $items -}}
+                {{- if not (in $years .year) -}}
+                    {{- $years = $years | append .year -}}
+                {{- end -}}
+            {{- end -}}
+            {{- range $year := $years -}}
+                {{- $yearItems := where $items "year" $year -}}
+                <section class="posts-group prompts-month-section">
+                    <div class="prompts-month-header">
+                        <h2><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> &nbsp;{{ $year }}</h2>
+                        <span class="prompts-month-badge">{{ len $yearItems }} {{ if eq (len $yearItems) 1 }}series{{ else }}series{{ end }}</span>
+                    </div>
+                    <ul class="prompts-ticket-grid">
+                        {{ range $yearItems }}
+                            {{- $p := .page -}}
+                            {{- $d := .date -}}
+                            <li class="prompt-ticket-item">
+                                <a href="{{ $p.Permalink }}" class="prompt-ticket-link">
+                                    <span class="prompt-ticket-top">
+                                        <span class="post-day prompt-ticket-date">
+                                            {{ if $p.Site.Params.dateformShort }}
+                                                {{ $d.Format $p.Site.Params.dateformShort }}
+                                            {{ else }}
+                                                {{ $d.Format "Jan 2" }}
+                                            {{ end }}
+                                        </span>
+                                        <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
                                     </span>
-                                    <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
-                                </span>
-                                <span class="post-title prompt-ticket-question">{{- with .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ .Title }}</span>
-                            </a>
-                        </li>
-                    {{ end }}
-                </ul>
-            </section>
+                                    <span class="post-title prompt-ticket-question">{{- with $p.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ $p.Title }}</span>
+                                </a>
+                            </li>
+                        {{ end }}
+                    </ul>
+                </section>
+            {{- end -}}
+        {{ else }}
+            {{ $paginator := .Paginate .Data.Pages }}
+            {{ range $paginator.Pages.GroupByDate "2006" }}
+                <section class="posts-group prompts-month-section">
+                    <div class="prompts-month-header">
+                        <h2><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> &nbsp;{{ .Key }}</h2>
+                        <span class="prompts-month-badge">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</span>
+                    </div>
+                    <ul class="prompts-ticket-grid">
+                        {{ range .Pages }}
+                            <li class="prompt-ticket-item">
+                                <a href="{{ .Permalink }}" class="prompt-ticket-link">
+                                    <span class="prompt-ticket-top">
+                                        <span class="post-day prompt-ticket-date">
+                                            {{ if .Site.Params.dateformShort }}
+                                                {{ .Date.Format .Site.Params.dateformShort }}
+                                            {{ else }}
+                                                {{ .Date.Format "Jan 2" }}
+                                            {{ end }}
+                                        </span>
+                                        <span class="prompt-ticket-arrow" aria-hidden="true">&rarr;</span>
+                                    </span>
+                                    <span class="post-title prompt-ticket-question">{{- with .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ .Title }}</span>
+                                </a>
+                            </li>
+                        {{ end }}
+                    </ul>
+                </section>
+            {{ end }}
+            {{ partial "pagination-list.html" . }}
         {{ end }}
-    {{ partial "pagination-list.html" . }}
     </main>
 {{ end }}
