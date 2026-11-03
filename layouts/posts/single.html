@@ -3,10 +3,10 @@
 <div class="post-layout-wrapper">
   <main class="layout-split{{ if not $hasTOC }} no-toc{{ end }}">
     <!-- MAIN ARTICLE -->
-    <article class="post-container">
+    <article class="post-container" data-pagefind-body>
       {{- with (.GetTerms "series") -}}
         {{- range first 1 . -}}
-          <a href="{{ .Permalink }}" class="riso-series-sticker">★ {{ .Name }} series</a>
+          <a href="{{ .Permalink }}" class="riso-series-sticker" data-pagefind-ignore>★ {{ .Name }} series</a>
         {{- end -}}
       {{- end -}}
       {{- with .Params.cover -}}
@@ -19,15 +19,15 @@
           {{- end -}}
           {{- $pos := $.Params.coverPosition | default "center" -}}
           {{- if eq $pos "middle" -}}{{- $pos = "center" -}}{{- end -}}
-          <div class="post-cover-banner">
+          <div class="post-cover-banner" data-pagefind-ignore>
             <img src="{{ $coverURL }}" alt="" class="post-cover-img" style="object-position: center {{ $pos }};" loading="eager" decoding="async" />
           </div>
         {{- end -}}
       {{- end -}}
       <div class="post-header">
         <div class="post-title">
-          <h1 class="post-title-text">{{- with $.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ $.Title | markdownify }}</h1>
-          <div class="post-meta-line">
+          <h1 class="post-title-text">{{- with $.Draft }}<span class="riso-draft-badge" data-pagefind-ignore>DRAFT</span> {{ end -}}{{ $.Title | markdownify }}</h1>
+          <div class="post-meta-line" data-pagefind-ignore>
             <a href="/me/" class="author-name">{{ $.Site.Params.author.name }}</a>
             <a href="https://bsky.app/profile/kmcd.dev" class="handle" target="_blank" rel="noopener">[@sudorandom]</a>
             <span class="sep">|</span>
@@ -44,7 +44,7 @@
       </div>
 
       {{- if $hasTOC }}
-      <details class="mobile-toc-drawer">
+      <details class="mobile-toc-drawer" data-pagefind-ignore>
         <summary class="toc-title">Contents</summary>
         <nav class="tree-nav-content" aria-label="Mobile Table of Contents">
           {{ .TableOfContents }}
@@ -67,7 +67,7 @@
       <hr class="dot-fill" />
 
       <!-- Sharing & Metadata -->
-      <div class="main-box post-footer-box post-share-box">
+      <div class="main-box post-footer-box post-share-box" data-pagefind-ignore>
         {{- $url := .Permalink -}}
         {{- if .Params.canonical_url -}}
             {{- $url = .Params.canonical_url -}}
@@ -98,7 +98,7 @@
 
       {{- with (.GetTerms "series") -}}
       {{- range . -}}
-      <div class="main-box post-footer-box post-series-box">
+      <div class="main-box post-footer-box post-series-box" data-pagefind-ignore>
         {{- $seriesPages := .Pages.ByDate -}}
         {{- $total := len $seriesPages -}}
         {{- $currentIdx := -1 -}}
@@ -144,16 +144,18 @@
       {{- end -}}
       {{- end -}}
 
-      {{ partial "webmentions.html" . }}
+      <div data-pagefind-ignore>
+        {{ partial "webmentions.html" . }}
+      </div>
 
-      <div class="post-pagination-wrap">
+      <div class="post-pagination-wrap" data-pagefind-ignore>
         {{ partial "pagination-single.html" . }}
       </div>
     </article>
 
     {{- if $hasTOC }}
     <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
-    <aside class="tree-nav" aria-label="Table of Contents">
+    <aside class="tree-nav" aria-label="Table of Contents" data-pagefind-ignore>
       <div class="toc-title">Contents</div>
       <nav class="tree-nav-content">
         {{ .TableOfContents }}

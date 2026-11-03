@@ -1,0 +1,97 @@
+<svg class="h3-diagram" viewBox="0 0 880 260" xmlns="http://www.w3.org/2000/svg" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-heading: #CDD6F4;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-green: #A6E3A1;
+      --bg-green: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #1E1E2E;
+      --c-yellow: #F9E2AF;
+      --bg-yellow: #1E1E2E;
+      --c-red: #F38BA8;
+      --bg-red: #1E1E2E;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-heading: #141A2E;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-green: #0F766E;
+        --bg-green: #E6F7F4;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+        --c-yellow: #B45309;
+        --bg-yellow: #FFF6D6;
+        --c-red: #B8251B;
+        --bg-red: #FFE5E0;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-heading: #141A2E;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-green: #0F766E;
+      --bg-green: #E6F7F4;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+      --c-yellow: #B45309;
+      --bg-yellow: #FFF6D6;
+      --c-red: #B8251B;
+      --bg-red: #FFE5E0;
+    }
+  </style>
+
+  <!-- HTTP/2 Row -->
+  <text x="20" y="32" fill="var(--text-heading)" font-size="14" font-weight="700">HTTP/2 Frame</text>
+  <g transform="translate(20 44)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect x="0" y="0" width="140" height="64" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="70" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Length</text>
+    <text x="70" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">24 bits</text>
+
+    <rect x="150" y="0" width="110" height="64" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+    <text x="205" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Type</text>
+    <text x="205" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">8 bits</text>
+
+    <rect x="270" y="0" width="120" height="64" rx="8" fill="var(--bg-red)" stroke="var(--c-red)" stroke-width="2" stroke-dasharray="5,4" opacity="0.85" />
+    <text x="330" y="30" fill="var(--c-red)" font-size="16" font-weight="700" text-anchor="middle" text-decoration="line-through">Flags</text>
+    <text x="330" y="50" fill="var(--c-red)" font-size="12" text-anchor="middle">8 bits</text>
+
+    <rect x="400" y="0" width="180" height="64" rx="8" fill="var(--bg-red)" stroke="var(--c-red)" stroke-width="2" stroke-dasharray="5,4" opacity="0.85" />
+    <text x="490" y="30" fill="var(--c-red)" font-size="16" font-weight="700" text-anchor="middle" text-decoration="line-through">Stream ID</text>
+    <text x="490" y="50" fill="var(--c-red)" font-size="12" text-anchor="middle">1 + 31 bits</text>
+
+    <rect x="590" y="0" width="250" height="64" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="715" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Payload</text>
+    <text x="715" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">Length bytes</text>
+  </g>
+
+  <!-- HTTP/3 Row -->
+  <text x="20" y="162" fill="var(--text-heading)" font-size="14" font-weight="700">HTTP/3 Frame</text>
+  <g transform="translate(20 174)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect x="0" y="0" width="220" height="64" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+    <text x="110" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Type</text>
+    <text x="110" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">Varint (1–8B)</text>
+
+    <rect x="232" y="0" width="220" height="64" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="342" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Length</text>
+    <text x="342" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">Varint (1–8B)</text>
+
+    <rect x="464" y="0" width="376" height="64" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="652" y="30" fill="var(--text-main)" font-size="16" font-weight="700" text-anchor="middle">Payload</text>
+    <text x="652" y="50" fill="var(--text-sub)" font-size="12" text-anchor="middle">Length bytes</text>
+  </g>
+</svg>

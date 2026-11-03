@@ -1,0 +1,99 @@
+<svg class="h3-diagram" viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-heading: #CDD6F4;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-green: #A6E3A1;
+      --bg-green: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #1E1E2E;
+      --c-yellow: #F9E2AF;
+      --bg-yellow: #1E1E2E;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-heading: #141A2E;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-green: #0F766E;
+        --bg-green: #E6F7F4;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+        --c-yellow: #B45309;
+        --bg-yellow: #FFF6D6;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-heading: #141A2E;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-green: #0F766E;
+      --bg-green: #E6F7F4;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+      --c-yellow: #B45309;
+      --bg-yellow: #FFF6D6;
+    }
+  </style>
+
+  <!-- Long Header -->
+  <text x="20" y="30" fill="var(--text-heading)" font-size="14" font-weight="700">Long Header Packet (Handshake)</text>
+  <g transform="translate(20 42)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect x="0" y="0" width="95" height="64" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="47" y="30" fill="var(--c-purple)" font-size="15" font-weight="700" text-anchor="middle">1|1|Type</text>
+    <text x="47" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">1 byte</text>
+
+    <rect x="105" y="0" width="115" height="64" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="162" y="30" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">Version</text>
+    <text x="162" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">4 bytes</text>
+
+    <rect x="230" y="0" width="145" height="64" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+    <text x="302" y="30" fill="var(--c-green)" font-size="15" font-weight="700" text-anchor="middle">Dest Conn ID</text>
+    <text x="302" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">Len + ID</text>
+
+    <rect x="385" y="0" width="145" height="64" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="457" y="30" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">Src Conn ID</text>
+    <text x="457" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">Len + ID</text>
+
+    <rect x="540" y="0" width="110" height="64" rx="8" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="2" />
+    <text x="595" y="30" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">Packet #</text>
+    <text x="595" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">1–4 bytes</text>
+
+    <rect x="660" y="0" width="180" height="64" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="750" y="30" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">QUIC Frames</text>
+    <text x="750" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">CRYPTO, ACK...</text>
+  </g>
+
+  <!-- Short Header -->
+  <text x="20" y="156" fill="var(--text-heading)" font-size="14" font-weight="700">Short Header Packet (1-RTT Data)</text>
+  <g transform="translate(20 168)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect x="0" y="0" width="115" height="64" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="57" y="30" fill="var(--c-purple)" font-size="15" font-weight="700" text-anchor="middle">0|1|Flags</text>
+    <text x="57" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">1 byte</text>
+
+    <rect x="127" y="0" width="210" height="64" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+    <text x="232" y="30" fill="var(--c-green)" font-size="15" font-weight="700" text-anchor="middle">Dest Conn ID</text>
+    <text x="232" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">8 bytes</text>
+
+    <rect x="349" y="0" width="140" height="64" rx="8" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="2" />
+    <text x="419" y="30" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">Packet #</text>
+    <text x="419" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">1–4 bytes</text>
+
+    <rect x="501" y="0" width="339" height="64" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+    <text x="670" y="30" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">QUIC Frames</text>
+    <text x="670" y="50" fill="var(--text-sub)" font-size="11" text-anchor="middle">STREAM, ACK, PING...</text>
+  </g>
+</svg>

@@ -1,0 +1,91 @@
+<svg class="h3-diagram" viewBox="0 0 880 185" xmlns="http://www.w3.org/2000/svg" font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-heading: #CDD6F4;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #313244;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-heading: #141A2E;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-heading: #141A2E;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+    }
+  </style>
+
+  <!-- First Byte Bits -->
+  <text x="20" y="28" fill="var(--text-heading)" font-size="14" font-weight="700">First Byte</text>
+  <g transform="translate(20 40)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <!-- 2-bit prefix -->
+    <rect x="0" y="0" width="46" height="52" rx="6" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="23" y="32" fill="var(--c-purple)" font-size="16" font-weight="700" text-anchor="middle">b7</text>
+    <rect x="52" y="0" width="46" height="52" rx="6" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="75" y="32" fill="var(--c-purple)" font-size="16" font-weight="700" text-anchor="middle">b6</text>
+
+    <!-- 6-bit value -->
+    <rect x="110" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="133" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b5</text>
+    <rect x="162" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="185" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b4</text>
+    <rect x="214" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="237" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b3</text>
+    <rect x="266" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="289" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b2</text>
+    <rect x="318" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="341" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b1</text>
+    <rect x="370" y="0" width="46" height="52" rx="6" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="393" y="32" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">b0</text>
+
+    <path d="M 4 62 L 4 70 L 94 70 L 94 62" fill="none" stroke="var(--c-purple)" stroke-width="2" />
+    <text x="49" y="88" fill="var(--c-purple)" font-size="13" font-weight="700" text-anchor="middle">Length Prefix</text>
+    <text x="49" y="106" fill="var(--text-sub)" font-size="12" font-weight="600" text-anchor="middle">b &gt;&gt; 6</text>
+
+    <path d="M 114 62 L 114 70 L 412 70 L 412 62" fill="none" stroke="var(--c-blue)" stroke-width="2" />
+    <text x="263" y="88" fill="var(--c-blue)" font-size="13" font-weight="700" text-anchor="middle">Value Bits</text>
+    <text x="263" y="106" fill="var(--text-sub)" font-size="12" font-weight="600" text-anchor="middle">b &amp; 0x3f</text>
+  </g>
+
+  <!-- Prefix Legend on Right -->
+  <text x="485" y="28" fill="var(--text-heading)" font-size="14" font-weight="700">Prefix Values</text>
+  <g transform="translate(485 40)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <rect x="0" y="0" width="180" height="52" rx="6" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="1.5" />
+    <text x="90" y="24" fill="var(--c-purple)" font-weight="700" text-anchor="middle">00 → 1 Byte</text>
+    <text x="90" y="42" fill="var(--text-sub)" font-size="12" text-anchor="middle">6-bit (max 63)</text>
+
+    <rect x="194" y="0" width="180" height="52" rx="6" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="1.5" />
+    <text x="284" y="24" fill="var(--c-purple)" font-weight="700" text-anchor="middle">01 → 2 Bytes</text>
+    <text x="284" y="42" fill="var(--text-sub)" font-size="12" text-anchor="middle">14-bit (max 16,383)</text>
+
+    <rect x="0" y="64" width="180" height="52" rx="6" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="1.5" />
+    <text x="90" y="88" fill="var(--c-purple)" font-weight="700" text-anchor="middle">10 → 4 Bytes</text>
+    <text x="90" y="106" fill="var(--text-sub)" font-size="12" text-anchor="middle">30-bit</text>
+
+    <rect x="194" y="64" width="180" height="52" rx="6" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="1.5" />
+    <text x="284" y="88" fill="var(--c-purple)" font-weight="700" text-anchor="middle">11 → 8 Bytes</text>
+    <text x="284" y="106" fill="var(--text-sub)" font-size="12" text-anchor="middle">62-bit</text>
+  </g>
+</svg>

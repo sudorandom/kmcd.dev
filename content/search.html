@@ -14,21 +14,30 @@ devtoSkip: true
 <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
 <script src="/pagefind/pagefind-ui.js"></script>
 <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('DOMContentLoaded', () => {
+        const searchRoot = document.querySelector("#search");
+        if (!searchRoot) return;
+
         new PagefindUI({
             element: "#search",
             showSubResults: true,
+            showImages: false,
             resetStyles: false,
             autofocus: true,
         });
+
+        const getSearchInput = () =>
+            searchRoot.querySelector(".pagefind-ui__search-input, input[type='text'], input");
+
         const focusSearchInput = () => {
-            const input = document.querySelector("#search .pagefind-ui__search-input, #search input[type='text'], #search input");
+            const input = getSearchInput();
             if (input) {
                 input.focus();
                 return true;
             }
             return false;
         };
+
         if (!focusSearchInput()) {
             requestAnimationFrame(() => {
                 if (!focusSearchInput()) {
@@ -36,5 +45,120 @@ devtoSkip: true
                 }
             });
         }
+
+        let selectedIndex = -1;
+        let lastFirstHref = "";
+        let lastResultCount = 0;
+
+        const getResults = () =>
+            Array.from(searchRoot.querySelectorAll(".pagefind-ui__result"));
+
+        const applySelection = (scroll = true) => {
+            const results = getResults();
+            if (results.length === 0) {
+                selectedIndex = -1;
+                return;
+            }
+            if (selectedIndex >= results.length) {
+                selectedIndex = results.length - 1;
+            }
+
+            results.forEach((el, idx) => {
+                const isSelected = idx === selectedIndex;
+                el.classList.toggle("is-selected", isSelected);
+                el.setAttribute("aria-selected", isSelected ? "true" : "false");
+            });
+
+            if (selectedIndex >= 0 && scroll && results[selectedIndex]) {
+                results[selectedIndex].scrollIntoView({
+                    block: "nearest",
+                    behavior: "smooth",
+                });
+            }
+        };
+
+        const setSelectedIndex = (nextIndex, scroll = true) => {
+            const results = getResults();
+            if (results.length === 0) {
+                selectedIndex = -1;
+                return;
+            }
+            if (nextIndex < 0) {
+                selectedIndex = -1;
+                applySelection(false);
+                const input = getSearchInput();
+                if (input) {
+                    input.focus();
+                    input.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                }
+                return;
+            }
+            selectedIndex = Math.min(nextIndex, results.length - 1);
+            applySelection(scroll);
+        };
+
+        const observer = new MutationObserver(() => {
+            const results = getResults();
+            if (results.length === 0) {
+                selectedIndex = -1;
+                lastFirstHref = "";
+                lastResultCount = 0;
+                return;
+            }
+            const firstLink = results[0].querySelector(".pagefind-ui__result-link");
+            const firstHref = firstLink ? firstLink.getAttribute("href") || "" : "";
+
+            if (firstHref && firstHref !== lastFirstHref) {
+                selectedIndex = -1;
+                lastFirstHref = firstHref;
+                lastResultCount = results.length;
+                applySelection(false);
+            } else if (results.length !== lastResultCount) {
+                lastResultCount = results.length;
+                applySelection(false);
+            }
+        });
+
+        observer.observe(searchRoot, { childList: true, subtree: true });
+
+        document.addEventListener("keydown", (e) => {
+            const modal = document.querySelector(".shortcuts-modal-backdrop:not([hidden])");
+            if (modal || e.altKey) return;
+
+            if (e.key === "ArrowDown" && !e.metaKey && !e.ctrlKey) {
+                const results = getResults();
+                if (results.length === 0) return;
+                e.preventDefault();
+                setSelectedIndex(selectedIndex + 1);
+                return;
+            }
+
+            if (e.key === "ArrowUp" && !e.metaKey && !e.ctrlKey) {
+                const results = getResults();
+                if (results.length === 0 || selectedIndex < 0) return;
+                e.preventDefault();
+                setSelectedIndex(selectedIndex - 1);
+                return;
+            }
+
+            if (e.key === "Enter") {
+                const results = getResults();
+                if (selectedIndex >= 0 && selectedIndex < results.length) {
+                    const selectedEl = results[selectedIndex];
+                    const link = selectedEl.querySelector(
+                        ".pagefind-ui__result-inner > .pagefind-ui__result-title .pagefind-ui__result-link, .pagefind-ui__result-link"
+                    );
+                    if (link && link.href) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (e.metaKey || e.ctrlKey) {
+                            window.open(link.href, "_blank", "noopener");
+                        } else {
+                            window.location.href = link.href;
+                        }
+                    }
+                }
+            }
+        }, true);
     });
 </script>

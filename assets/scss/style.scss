@@ -811,51 +811,6 @@ ul.icons {
     text-align: left;
 }
 
-#search {
-    padding: 15px;
-    [data-theme=dark] & {
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-
-        --pagefind-ui-primary: var(--accent-primary);
-        --pagefind-ui-text: var(--text-primary);
-        --pagefind-ui-background: var(--bg-primary);
-        --pagefind-ui-border: var(--border-primary);
-        --pagefind-ui-tag: var(--bg-secondary);
-
-        .pagefind-ui__result-title,
-        .pagefind-ui__result-link {
-            color: var(--text-contrast) !important;
-        }
-
-        .pagefind-ui__result-excerpt {
-            color: var(--text-primary) !important;
-        }
-
-        .pagefind-ui__search-input,
-        .pagefind-ui__search-clear {
-            background-color: var(--bg-secondary) !important;
-            color: var(--text-primary) !important;
-            border-color: var(--border-primary) !important;
-        }
-
-        .pagefind-ui__search-input::placeholder {
-            color: var(--text-secondary) !important;
-            opacity: 1 !important;
-        }
-    }
-    [data-theme=light] & {
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-
-        --pagefind-ui-primary: var(--accent-primary);
-        --pagefind-ui-text: var(--text-primary);
-        --pagefind-ui-background: var(--bg-primary);
-        --pagefind-ui-border: var(--border-primary);
-        --pagefind-ui-tag: var(--bg-secondary);
-    }
-}
-
 .mermaid {
     display: flex;
     justify-content: center;

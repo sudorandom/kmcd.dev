@@ -4053,4 +4053,235 @@ p a,
   }
 }
 
+/* --------------------------------------------------------------------------
+   Pagefind Search UI (Risograph Zine Cards)
+   -------------------------------------------------------------------------- */
+#search {
+  padding: 8px 0 24px 0 !important;
+  background: transparent !important;
+
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--accent-primary);
+  --pagefind-ui-text: var(--text-primary);
+  --pagefind-ui-background: var(--bg-secondary);
+  --pagefind-ui-border: var(--ink-border);
+  --pagefind-ui-tag: var(--bg-tertiary);
+  --pagefind-ui-border-width: 2px;
+  --pagefind-ui-border-radius: 12px;
+  --pagefind-ui-font: var(--font-sans);
+
+  .pagefind-ui__form::before {
+    background-color: var(--text-secondary) !important;
+    top: 18px !important;
+    left: 18px !important;
+  }
+
+  .pagefind-ui__search-input {
+    height: 54px !important;
+    padding: 0 84px 0 48px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 16.5px !important;
+    font-weight: 600 !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-contrast) !important;
+    border: 2.5px solid var(--ink-border) !important;
+    border-radius: 14px !important;
+    box-shadow: 4px 4px 0px var(--ink-border) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      outline: none !important;
+      border-color: var(--accent-primary) !important;
+      box-shadow: 5px 5px 0px var(--accent-primary) !important;
+    }
+  }
+
+  .pagefind-ui__search-clear {
+    top: 9px !important;
+    right: 10px !important;
+    height: 36px !important;
+    padding: 0 12px !important;
+    border-radius: 8px !important;
+    border: 1.5px solid var(--border-primary) !important;
+    background: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-contrast) !important;
+      border-color: var(--accent-primary) !important;
+    }
+  }
+
+  .pagefind-ui__message {
+    font-family: var(--font-mono) !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: var(--text-secondary) !important;
+    padding: 18px 0 14px 0 !important;
+  }
+
+  .pagefind-ui__results {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pagefind-ui__result {
+    position: relative;
+    list-style: none !important;
+    display: block !important;
+    padding: 20px 24px !important;
+    margin: 0 !important;
+    border: 2px solid var(--ink-border) !important;
+    border-radius: 14px !important;
+    background: var(--bg-secondary) !important;
+    box-shadow: 4px 4px 0px var(--ink-border) !important;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+
+    &:hover {
+      transform: translate(-1.5px, -1.5px);
+      border-color: var(--accent-primary) !important;
+      box-shadow: 5px 5px 0px var(--ink-border) !important;
+    }
+
+    &.is-selected {
+      transform: translate(-2px, -2px);
+      border-color: var(--accent-primary) !important;
+      box-shadow: 6px 6px 0px var(--accent-primary) !important;
+      background: var(--bg-tertiary) !important;
+
+      > .pagefind-ui__result-inner > .pagefind-ui__result-title {
+        padding-right: 78px !important;
+
+        .pagefind-ui__result-link {
+          color: var(--accent-primary) !important;
+        }
+      }
+
+      &::after {
+        content: "↵ ENTER";
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        border: 1.5px solid var(--accent-primary);
+        background: var(--accent-primary);
+        color: #ffffff;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        line-height: 1.2;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .pagefind-ui__result-thumb {
+    display: none !important;
+  }
+
+  .pagefind-ui__result-inner {
+    margin: 0 !important;
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pagefind-ui__result-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: var(--font-display) !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+
+    .pagefind-ui__result-link {
+      color: var(--text-contrast) !important;
+      text-decoration: none !important;
+
+      &:hover {
+        color: var(--accent-primary) !important;
+        text-decoration: underline !important;
+        text-decoration-thickness: 2px !important;
+        text-underline-offset: 3px !important;
+      }
+    }
+  }
+
+  .pagefind-ui__result-excerpt {
+    margin: 0 !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14.5px !important;
+    line-height: 1.58 !important;
+    color: var(--text-secondary) !important;
+  }
+
+  mark {
+    background: rgba(45, 212, 191, 0.22) !important;
+    color: #5eead4 !important;
+    padding: 1px 5px !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+  }
+
+  .pagefind-ui__result-nested {
+    margin: 10px 0 0 0 !important;
+    padding: 12px 0 0 14px !important;
+    border-top: 1.5px dashed var(--border-secondary) !important;
+    border-left: 2.5px solid var(--border-primary) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .pagefind-ui__result-title {
+      font-size: 1rem !important;
+      font-weight: 700 !important;
+
+      &::before {
+        color: var(--accent-primary) !important;
+      }
+    }
+
+    .pagefind-ui__result-excerpt {
+      font-size: 13.5px !important;
+      margin-bottom: 4px !important;
+    }
+  }
+
+  .pagefind-ui__button {
+    margin-top: 18px !important;
+    height: 44px !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-contrast) !important;
+    border: 2px solid var(--ink-border) !important;
+    border-radius: 10px !important;
+    box-shadow: 3px 3px 0px var(--ink-border) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      transform: translate(-1.5px, -1.5px);
+      background: var(--accent-primary) !important;
+      color: #ffffff !important;
+    }
+  }
+}
+
+[data-theme="light"] #search mark {
+  background: #ffe066 !important;
+  color: #141a2e !important;
+}
+
 

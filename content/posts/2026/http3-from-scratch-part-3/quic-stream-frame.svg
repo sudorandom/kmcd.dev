@@ -1,0 +1,68 @@
+<svg class="h3-diagram" viewBox="0 0 880 116" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+  <style>
+    .h3-diagram {
+      --bg-neutral: #1E1E2E;
+      --c-border: #585B70;
+      --text-main: #CDD6F4;
+      --text-sub: #A6ADC8;
+      --c-blue: #89B4FA;
+      --bg-blue: #1E1E2E;
+      --c-green: #A6E3A1;
+      --bg-green: #1E1E2E;
+      --c-purple: #CBA6F7;
+      --bg-purple: #1E1E2E;
+      --c-yellow: #F9E2AF;
+      --bg-yellow: #1E1E2E;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .h3-diagram {
+        --bg-neutral: #F6EFE0;
+        --c-border: #475569;
+        --text-main: #141A2E;
+        --text-sub: #434E70;
+        --c-blue: #0369A1;
+        --bg-blue: #EDF6FF;
+        --c-green: #0F766E;
+        --bg-green: #E6F7F4;
+        --c-purple: #6D28D9;
+        --bg-purple: #F3E8FF;
+        --c-yellow: #B45309;
+        --bg-yellow: #FFF6D6;
+      }
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg-neutral: #F6EFE0;
+      --c-border: #475569;
+      --text-main: #141A2E;
+      --text-sub: #434E70;
+      --c-blue: #0369A1;
+      --bg-blue: #EDF6FF;
+      --c-green: #0F766E;
+      --bg-green: #E6F7F4;
+      --c-purple: #6D28D9;
+      --bg-purple: #F3E8FF;
+      --c-yellow: #B45309;
+      --bg-yellow: #FFF6D6;
+    }
+  </style>
+
+  <rect x="20" y="20" width="210" height="76" rx="8" fill="var(--bg-purple)" stroke="var(--c-purple)" stroke-width="2" />
+  <text x="125" y="50" fill="var(--c-purple)" font-size="15" font-weight="700" text-anchor="middle">00001|OFF|LEN|FIN</text>
+  <text x="125" y="74" fill="var(--text-sub)" font-size="12" text-anchor="middle">Type (0x08..0x0f)</text>
+
+  <rect x="242" y="20" width="140" height="76" rx="8" fill="var(--bg-green)" stroke="var(--c-green)" stroke-width="2" />
+  <text x="312" y="50" fill="var(--c-green)" font-size="15" font-weight="700" text-anchor="middle">Stream ID</text>
+  <text x="312" y="74" fill="var(--text-sub)" font-size="12" text-anchor="middle">Varint</text>
+
+  <rect x="394" y="20" width="140" height="76" rx="8" fill="var(--bg-blue)" stroke="var(--c-blue)" stroke-width="2" />
+  <text x="464" y="50" fill="var(--c-blue)" font-size="15" font-weight="700" text-anchor="middle">Offset</text>
+  <text x="464" y="74" fill="var(--text-sub)" font-size="12" text-anchor="middle">if OFF=1</text>
+
+  <rect x="546" y="20" width="130" height="76" rx="8" fill="var(--bg-yellow)" stroke="var(--c-yellow)" stroke-width="2" />
+  <text x="611" y="50" fill="var(--c-yellow)" font-size="15" font-weight="700" text-anchor="middle">Length</text>
+  <text x="611" y="74" fill="var(--text-sub)" font-size="12" text-anchor="middle">if LEN=1</text>
+
+  <rect x="688" y="20" width="172" height="76" rx="8" fill="var(--bg-neutral)" stroke="var(--c-border)" stroke-width="2" />
+  <text x="774" y="50" fill="var(--text-main)" font-size="15" font-weight="700" text-anchor="middle">Stream Data</text>
+  <text x="774" y="74" fill="var(--text-sub)" font-size="12" text-anchor="middle">HTTP/3 Frames</text>
+</svg>
