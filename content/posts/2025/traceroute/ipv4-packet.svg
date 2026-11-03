@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 390" class="h3-diagram">
+  <style>
+    .h3-diagram {
+      --bg: #1e1e2e;
+      --surface: #313244;
+      --surface-alt: #26273a;
+      --border: #45475a;
+      --text: #cdd6f4;
+      --subtext: #a6adc8;
+      --muted: #7f849c;
+      --purple: #cba6f7;
+      --purple-bg: rgba(203, 166, 247, 0.14);
+      --blue: #89b4fa;
+      --blue-bg: rgba(137, 180, 250, 0.14);
+      --teal: #2dd4bf;
+      --teal-bg: rgba(45, 212, 191, 0.12);
+      --coral: #f38ba8;
+      --coral-bg: rgba(243, 139, 168, 0.20);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg: #f6efe0;
+      --surface: #fbf5e8;
+      --surface-alt: #efe6d5;
+      --border: #c7b89c;
+      --text: #141a2e;
+      --subtext: #434e70;
+      --muted: #64748b;
+      --purple: #6d28d9;
+      --purple-bg: rgba(109, 40, 217, 0.10);
+      --blue: #0284c7;
+      --blue-bg: rgba(2, 132, 199, 0.10);
+      --teal: #0d9488;
+      --teal-bg: rgba(13, 148, 136, 0.10);
+      --coral: #e11d48;
+      --coral-bg: rgba(225, 29, 72, 0.14);
+    }
+    .card { fill: var(--bg); stroke: var(--border); stroke-width: 2; rx: 12; }
+    .title { fill: var(--text); font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .bit-tick { fill: var(--muted); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; }
+    .byte-label { fill: var(--muted); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; }
+    .field { fill: var(--surface); stroke: var(--purple); stroke-width: 1.5; }
+    .field-addr { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 1.5; }
+    .field-ttl { fill: var(--coral-bg); stroke: var(--coral); stroke-width: 2; }
+    .field-opt { fill: var(--surface-alt); stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .field-data { fill: var(--teal-bg); stroke: var(--teal); stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .fname { fill: var(--text); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-anchor: middle; }
+    .fname-sm { fill: var(--text); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-anchor: middle; }
+    .fsub { fill: var(--subtext); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-anchor: middle; }
+    .fttl { fill: var(--coral); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-anchor: middle; }
+  </style>
+
+  <rect x="4" y="4" width="812" height="382" class="card"/>
+  <text x="28" y="30" class="title">IPv4 Packet Header (32-Bit Words)</text>
+
+  <!-- Bit ruler across 32 bits (x=84 to x=788, width=704, 22px per bit) -->
+  <text x="88" y="50" class="bit-tick">0</text>
+  <text x="164" y="50" class="bit-tick" text-anchor="end">3</text>
+  <text x="176" y="50" class="bit-tick">4</text>
+  <text x="252" y="50" class="bit-tick" text-anchor="end">7</text>
+  <text x="264" y="50" class="bit-tick">8</text>
+  <text x="428" y="50" class="bit-tick" text-anchor="end">15</text>
+  <text x="440" y="50" class="bit-tick">16</text>
+  <text x="496" y="50" class="bit-tick" text-anchor="end">18</text>
+  <text x="506" y="50" class="bit-tick">19</text>
+  <text x="784" y="50" class="bit-tick" text-anchor="end">31</text>
+
+  <!-- Row 1: Bytes 0-3 (y=56, h=44) -->
+  <text x="72" y="82" class="byte-label" text-anchor="end">0–3 B</text>
+  <rect x="84" y="56" width="88" height="44" class="field"/>
+  <text x="128" y="76" class="fname-sm">Version</text>
+  <text x="128" y="91" class="fsub">4 bits</text>
+
+  <rect x="172" y="56" width="88" height="44" class="field"/>
+  <text x="216" y="76" class="fname-sm">IHL</text>
+  <text x="216" y="91" class="fsub">4 bits</text>
+
+  <rect x="260" y="56" width="176" height="44" class="field"/>
+  <text x="348" y="76" class="fname">Type of Service</text>
+  <text x="348" y="91" class="fsub">8 bits (TOS / DSCP)</text>
+
+  <rect x="436" y="56" width="352" height="44" class="field"/>
+  <text x="612" y="76" class="fname">Total Length</text>
+  <text x="612" y="91" class="fsub">16 bits</text>
+
+  <!-- Row 2: Bytes 4-7 (y=102, h=44) -->
+  <text x="72" y="128" class="byte-label" text-anchor="end">4–7 B</text>
+  <rect x="84" y="102" width="352" height="44" class="field"/>
+  <text x="260" y="122" class="fname">Identification</text>
+  <text x="260" y="137" class="fsub">16 bits</text>
+
+  <rect x="436" y="102" width="66" height="44" class="field"/>
+  <text x="469" y="122" class="fname-sm">Flags</text>
+  <text x="469" y="137" class="fsub">3b</text>
+
+  <rect x="502" y="102" width="286" height="44" class="field"/>
+  <text x="645" y="122" class="fname">Fragment Offset</text>
+  <text x="645" y="137" class="fsub">13 bits</text>
+
+  <!-- Row 3: Bytes 8-11 (y=148, h=44) -->
+  <text x="72" y="174" class="byte-label" text-anchor="end">8–11 B</text>
+  <rect x="84" y="148" width="176" height="44" class="field-ttl"/>
+  <text x="172" y="168" class="fttl">TTL (Time to Live)</text>
+  <text x="172" y="183" class="fsub">8 bits (Hop Limit)</text>
+
+  <rect x="260" y="148" width="176" height="44" class="field"/>
+  <text x="348" y="168" class="fname">Protocol</text>
+  <text x="348" y="183" class="fsub">8 bits (1=ICMP, 17=UDP)</text>
+
+  <rect x="436" y="148" width="352" height="44" class="field"/>
+  <text x="612" y="168" class="fname">Header Checksum</text>
+  <text x="612" y="183" class="fsub">16 bits</text>
+
+  <!-- Row 4: Bytes 12-15 (y=194, h=42) -->
+  <text x="72" y="219" class="byte-label" text-anchor="end">12–15 B</text>
+  <rect x="84" y="194" width="704" height="42" class="field-addr"/>
+  <text x="436" y="213" class="fname">Source IP Address</text>
+  <text x="436" y="228" class="fsub">32 bits</text>
+
+  <!-- Row 5: Bytes 16-19 (y=238, h=42) -->
+  <text x="72" y="263" class="byte-label" text-anchor="end">16–19 B</text>
+  <rect x="84" y="238" width="704" height="42" class="field-addr"/>
+  <text x="436" y="257" class="fname">Destination IP Address</text>
+  <text x="436" y="272" class="fsub">32 bits</text>
+
+  <!-- Row 6: Options (y=282, h=40) -->
+  <text x="72" y="306" class="byte-label" text-anchor="end">20+ B</text>
+  <rect x="84" y="282" width="704" height="40" class="field-opt"/>
+  <text x="436" y="300" class="fname">Options &amp; Padding</text>
+  <text x="436" y="314" class="fsub">0 to 320 bits (present only if IHL &gt; 5)</text>
+
+  <!-- Row 7: Data Payload (y=324, h=44) -->
+  <text x="72" y="350" class="byte-label" text-anchor="end">Payload</text>
+  <rect x="84" y="324" width="704" height="44" class="field-data"/>
+  <text x="436" y="344" class="fname">Data Payload (Encapsulated ICMP, UDP, or TCP Packet)</text>
+  <text x="436" y="359" class="fsub">Variable Length</text>
+</svg>

@@ -112,7 +112,6 @@ AS200 -> AS300: "Hey New York, I can get you to Tokyo via London (AS200) and AS1
 AS300 -> User: "I'll take the path through London, it's only 2 hops away." {
 style: {
 stroke-dash: 3
-font-color: "#ecf0f1"
 }
 }
 {{< /d2 >}}
@@ -283,7 +282,6 @@ classes: {
       stroke: "#e74c3c"
       stroke-width: 2
       stroke-dash: 5
-      font-color: "#ecf0f1"
     }
   }
   scenario_box: {
@@ -292,14 +290,12 @@ classes: {
       stroke: "#555555"
       stroke-width: 1
       border-radius: 10
-      font-color: "#ecf0f1"
     }
   }
   invisible_box: {
     style: {
       fill: transparent
       stroke: transparent
-      font-color: "#ecf0f1"
     }
   }
 }
@@ -315,7 +311,7 @@ classes: {
     direction: down
     B1: Browser 1 (Renderer) {class: browser}
     B2: Browser 2 (Renderer) {class: browser}
-    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent}}
     BN: Browser N (Renderer) {class: browser}
   }
 
@@ -359,14 +355,12 @@ classes: {
     style: {
       stroke: "#2ecc71"
       stroke-width: 2
-      font-color: "#ecf0f1"
     }
   }
   neutral_connection: {
     style: {
       stroke: "#95a5a6"
       stroke-width: 2
-      font-color: "#ecf0f1"
     }
   }
   scenario_box: {
@@ -375,14 +369,12 @@ classes: {
       stroke: "#555555"
       stroke-width: 1
       border-radius: 10
-      font-color: "#ecf0f1"
     }
   }
   invisible_box: {
     style: {
       fill: transparent
       stroke: transparent
-      font-color: "#ecf0f1"
     }
   }
 }
@@ -399,7 +391,7 @@ classes: {
     direction: down
     B1: Browser 1 (Renderer) {class: browser}
     B2: Browser 2 (Renderer) {class: browser}
-    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    B3: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent}}
     BN: Browser N (Renderer) {class: browser}
   }
 
@@ -480,7 +472,6 @@ classes: {
     style: {
       stroke: "#2ecc71"
       stroke-width: 2
-      font-color: "#ecf0f1"
     }
   }
   scenario_box: {
@@ -489,14 +480,12 @@ classes: {
       stroke: "#555555"
       stroke-width: 1
       border-radius: 10
-      font-color: "#ecf0f1"
     }
   }
   invisible_box: {
     style: {
       fill: transparent
       stroke: transparent
-      font-color: "#ecf0f1"
     }
   }
 }
@@ -515,7 +504,7 @@ classes: {
     D1: Web Browser {class: browser}
     D2: Mobile Phone {class: mobile}
     D3: Smart TV {class: tv}
-    D4: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent; font-color: "#ecf0f1"}}
+    D4: ... {shape: circle; width: 20; height: 20; style: {stroke: transparent; fill: transparent}}
     DN: Any Screen {class: device}
   }
 

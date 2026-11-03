@@ -1,8 +1,35 @@
-<div class="rpki-check" style="background-color: #1f2835; border: 2px solid #42a5f5; border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
-    <h3 style="color: #42a5f5; margin-top: 0;">Is your ISP BGP safe?</h3>
-    <p style="color: #cccccc; margin-bottom: 1rem;">
+<div class="rpki-check-card">
+    <h3 class="rpki-check-title">🛡️ Is your ISP BGP safe?</h3>
+    <p class="rpki-check-desc">
         This tool checks if your ISP is filtering BGP routes based on RPKI.
         It attempts to fetch two resources: one from a validly signed prefix and one from an invalidly signed prefix.
-        This is built using the same endpoints as <a href="https://isbgpsafeyet.com/" style="color: #42a5f5; text-decoration: none; border-bottom: 1px dashed #42a5f5;">isbgpsafeyet.com</a>. Go there for more information.
-    </p>    {{ partial "rpki-check-logic.html" . }}
+        This is built using the same endpoints as <a href="https://isbgpsafeyet.com/" target="_blank" rel="noopener">isbgpsafeyet.com</a>.
+    </p>
+    {{ partial "rpki-check-logic.html" . }}
 </div>
+<style>
+.rpki-check-card {
+    background-color: #1e1e2e;
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--riso-shadow-sm);
+}
+[data-theme="light"] .rpki-check-card {
+    background-color: #f6efe0;
+    border-color: #0284c7;
+}
+.rpki-check-title {
+    color: #38bdf8;
+    margin-top: 0 !important;
+    margin-bottom: 0.65rem !important;
+}
+[data-theme="light"] .rpki-check-title {
+    color: #0369a1;
+}
+.rpki-check-desc {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+</style>

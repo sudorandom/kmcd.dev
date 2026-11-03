@@ -859,7 +859,9 @@ ul.icons {
     .loopText,
     .loopText > tspan,
     .labelText,
-    .labelText > tspan {
+    .labelText > tspan,
+    .pieTitleText,
+    .legend text {
         color: #cdd6f4 !important;
         fill: #cdd6f4 !important;
         font-family: var(--font-sans) !important;
@@ -868,6 +870,12 @@ ul.icons {
             color: #141a2e !important;
             fill: #141a2e !important;
         }
+    }
+
+    text.slice {
+        fill: #141a2e !important;
+        font-family: var(--font-sans) !important;
+        font-weight: 700 !important;
     }
 
     // Edges, lifelines, and arrows
@@ -1094,6 +1102,12 @@ svg#d2-svg {
     > rect.fill-N7,
     .blend + rect.fill-N5 {
         fill: transparent !important;
+    }
+
+    // Hide hatched sketch overlay when a shape explicitly sets fill="transparent"
+    path[fill="transparent"] ~ [class*="sketch-overlay-"],
+    rect[fill="transparent"] ~ [class*="sketch-overlay-"] {
+        display: none !important;
     }
 
     // Dark Mode (Catppuccin Mocha / Riso Dark)

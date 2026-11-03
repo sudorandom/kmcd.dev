@@ -78,10 +78,10 @@ direction: down
 
 classes: {
   rust_box: {
-    style: { fill: "#f4e4d4"; stroke: "#a72145"; stroke-width: 2 }
+    style: { stroke: "#e11d48"; stroke-width: 2 }
   }
   go_box: {
-    style: { fill: "#e0f7fa"; stroke: "#00acc1"; stroke-width: 2 }
+    style: { stroke: "#06b6d4"; stroke-width: 2 }
   }
 }
 

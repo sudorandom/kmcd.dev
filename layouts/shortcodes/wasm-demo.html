@@ -96,50 +96,35 @@
 
 <style>
 .wasm-demo {
-    border: 1px solid var(--border-color);
+    --wasm-bg: #1e1e2e;
+    --wasm-surface: #313244;
+    --wasm-text: #cdd6f4;
+    --wasm-border: #45475a;
+    --wasm-accent: var(--accent-primary, #cba6f7);
+    --wasm-success: #10b981;
+    --wasm-error: #f43f5e;
+    --wasm-status-bg: rgba(255, 255, 255, 0.08);
+
+    border: 2px solid var(--wasm-border);
     padding: 1.25rem;
     border-radius: 12px;
-    background: var(--bg-secondary);
-    color: var(--text-main);
+    background: var(--wasm-bg);
+    color: var(--wasm-text);
     margin: 2rem 0;
     font-family: inherit;
+    box-shadow: var(--riso-shadow-sm);
+    box-sizing: border-box;
 }
 
-/* Light theme colors (default) */
-:root {
-    --bg-secondary: #fafafa;
-    --bg-tertiary: #e0e0e0;
-    --text-main: #222;
-    --border-color: #dcdcdc;
-    --accent-color: var(--accent-primary, #71717a);
-    --success-color: #28a745;
-    --error-color: #dc3545;
-    --status-bg: rgba(0, 0, 0, 0.05);
-}
-
-/* Dark theme colors */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-secondary: #283745;
-        --bg-tertiary: #3b5065;
-        --text-main: #ffffff;
-        --border-color: #3b5065;
-        --accent-color: var(--accent-primary, #e4e4e7);
-        --success-color: #34ce57;
-        --error-color: #ff4b5c;
-        --status-bg: rgba(255, 255, 255, 0.1);
-    }
-}
-
-/* Specific theme overrides */
-[data-theme=dark] {
-    --accent-color: var(--accent-primary, #e4e4e7);
-    --status-bg: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme=light] {
-    --accent-color: var(--accent-primary, #18181b);
-    --status-bg: rgba(0, 0, 0, 0.05);
+[data-theme="light"] .wasm-demo {
+    --wasm-bg: #f6efe0;
+    --wasm-surface: #fbf5e8;
+    --wasm-text: #141a2e;
+    --wasm-border: #c7b89c;
+    --wasm-accent: var(--accent-primary, #6d28d9);
+    --wasm-success: #059669;
+    --wasm-error: #e11d48;
+    --wasm-status-bg: rgba(20, 26, 46, 0.07);
 }
 
 .wasm-demo-header {
@@ -154,7 +139,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    opacity: 0.8;
+    opacity: 0.85;
 }
 
 #wasm-status {
@@ -163,10 +148,10 @@
     gap: 0.5rem;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    background: var(--status-bg);
+    background: var(--wasm-status-bg);
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-main);
+    color: var(--wasm-text);
 }
 
 .status-dot {
@@ -182,10 +167,10 @@
 }
 
 .wasm-status-ready .status-dot {
-    background-color: var(--success-color);
+    background-color: var(--wasm-success);
 }
 .wasm-status-error .status-dot {
-    background-color: var(--error-color);
+    background-color: var(--wasm-error);
 }
 
 @keyframes wasm-pulse {
@@ -200,19 +185,20 @@
 
 .wasm-demo-controls input {
     width: 100%;
+    box-sizing: border-box;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
+    border: 1.5px solid var(--wasm-border);
     border-radius: 8px;
-    background: var(--bg-tertiary);
-    color: var(--text-main);
+    background: var(--wasm-surface);
+    color: var(--wasm-text);
     font-size: 1rem;
     outline: none;
     transition: all 0.2s;
 }
 
 .wasm-demo-controls input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.1);
+    border-color: var(--wasm-accent);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
 .wasm-demo-controls input:disabled {
@@ -221,23 +207,26 @@
 }
 
 .wasm-demo-output {
-    padding: 1.25rem;
-    background: var(--bg-tertiary);
+    padding: 1rem 1.25rem;
+    background: var(--wasm-surface);
+    border: 1.5px solid var(--wasm-border);
+    border-left: 4px solid var(--wasm-accent);
     border-radius: 8px;
-    font-family: 'Fira Code', 'Courier New', monospace;
+    font-family: var(--font-mono, 'Fira Code', 'Courier New', monospace);
     font-size: 0.95rem;
-    color: var(--text-main);
-    border-left: 4px solid var(--accent-color);
-    word-break: break-all;
-    min-height: 4rem;
+    color: var(--wasm-text);
+    word-break: break-word;
+    min-height: 3.5rem;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .wasm-demo-output strong {
     margin-right: 0.75rem;
-    color: var(--accent-color);
+    color: var(--wasm-accent);
     font-size: 0.85rem;
     text-transform: uppercase;
+    flex-shrink: 0;
 }
 </style>

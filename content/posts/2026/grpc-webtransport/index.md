@@ -36,7 +36,7 @@ direction: right
 
 classes: {
   endpoint: {
-    style: { fill: "#102a2e"; stroke: "#2dd4bf"; font-color: "#e6fffb"; stroke-width: 2 }
+    style: { fill: "#102a2e"; stroke: "#14b8a6"; font-color: "#e6fffb"; stroke-width: 2 }
   }
 }
 
@@ -45,8 +45,8 @@ browser.class: endpoint
 server: Server
 server.class: endpoint
 
-browser -> server: Request { style: { stroke: "#2dd4bf"; font-color: "#2dd4bf"; stroke-width: 3 } }
-server -> browser: Response stream { style: { stroke: "#2dd4bf"; font-color: "#2dd4bf"; stroke-width: 3 } }
+browser -> server: Request { style: { stroke: "#14b8a6"; stroke-width: 3 } }
+server -> browser: Response stream { style: { stroke: "#14b8a6"; stroke-width: 3 } }
 {{< /d2 >}}
 
 They are not enough when the client also needs to stream data, or when both sides need to communicate independently over the same call.
@@ -64,7 +64,7 @@ direction: right
 
 classes: {
   endpoint: {
-    style: { fill: "#102a2e"; stroke: "#2dd4bf"; font-color: "#e6fffb"; stroke-width: 2 }
+    style: { fill: "#102a2e"; stroke: "#14b8a6"; font-color: "#e6fffb"; stroke-width: 2 }
   }
 }
 
@@ -73,7 +73,7 @@ browser.class: endpoint
 server: Server
 server.class: endpoint
 
-browser <-> server: One ordered stream { style: { stroke: "#2dd4bf"; font-color: "#2dd4bf"; stroke-width: 3 } }
+browser <-> server: One ordered stream { style: { stroke: "#14b8a6"; stroke-width: 3 } }
 {{< /d2 >}}
 
 The problems start when we need several independent streams. We can multiplex all of them onto one WebSocket, but then we have to build a protocol with custom frames and stream IDs, plus routing, lifecycle, cancellation, backpressure, and error isolation on top of a single ordered connection. At that point, we are reimplementing a rough version of HTTP/2 in application code. It is a substantial and complex piece of infrastructure. Because every logical stream ultimately shares one ordered TCP byte stream, packet loss stalls unrelated streams until the missing data is retransmitted.
@@ -95,10 +95,10 @@ direction: right
 
 classes: {
   endpoint: {
-    style: { fill: "#102a2e"; stroke: "#2dd4bf"; font-color: "#e6fffb"; stroke-width: 2 }
+    style: { fill: "#102a2e"; stroke: "#14b8a6"; font-color: "#e6fffb"; stroke-width: 2 }
   }
   stream: {
-    style: { stroke: "#2dd4bf"; font-color: "#2dd4bf"; stroke-width: 3 }
+    style: { stroke: "#14b8a6"; stroke-width: 3 }
   }
 }
 

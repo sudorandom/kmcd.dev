@@ -31,34 +31,34 @@ client: Client {
   shape: person
 }
 
-fauxrpc: FauxRPC Proxy {
-  style.fill: "#1e1e2e"
-  style.stroke: "#cba6f7"
-}
+fauxrpc: FauxRPC Proxy
 
-upstream: Backend Server {
-  style.fill: "#11111b"
-  style.stroke: "#f38ba8"
-}
+upstream: Backend Server
 
 client -> fauxrpc: "Request" {
-  style.stroke: "#89b4fa"
+  style.stroke: "#3b82f6"
+  style.stroke-width: 2
 }
 
 # Scenario A: Implemented endpoints
 fauxrpc -> upstream: "Forward" {
-  style.stroke: "#89b4fa"
+  style.stroke: "#3b82f6"
+  style.stroke-width: 2
 }
 upstream -> fauxrpc: "Response" {
-  style.stroke: "#a6e3a1"
+  style.stroke: "#10b981"
+  style.stroke-width: 2
 }
 fauxrpc -> client: "Return Response" {
-  style.stroke: "#a6e3a1"
+  style.stroke: "#10b981"
+  style.stroke-width: 2
 }
 
 # Scenario B: Unimplemented endpoints (Fallback)
 fauxrpc -> client: "Return Fake/Stub Response\n(if backend returns Unimplemented)" {
-  style.stroke: "#f9e2af"
+  style.stroke: "#d97706"
+  style.stroke-width: 2
+  style.stroke-dash: 4
 }
 ```
 

@@ -66,11 +66,11 @@ Additionally, with tools like [OpenAPI-Generator](https://openapi-generator.tech
 ```mermaid
 flowchart LR
 
-protobuf(Protobuf) -->|protoc-gen-connect-openapi| openapi(OpenAPI)
-openapi -->|elements| docs(Gorgeous\nAPI Documentation)
+protobuf("Protobuf") -->|protoc-gen-connect-openapi| openapi("OpenAPI")
+openapi -->|elements| docs("Gorgeous<br/>API Documentation")
 openapi -->|redocly| docs
-openapi -->|openapi-generator| other-languages(Languages that\nConnect doesn't\n support yet)
-openapi -->|other tool| ???(Something equally amazing)
+openapi -->|openapi-generator| other-languages("Languages that<br/>Connect doesn't<br/>support yet")
+openapi -->|other tool| more("Something equally amazing")
 click elements "https://github.com/stoplightio/elements" _blank
 click openapi-generator "https://github.com/OpenAPITools/openapi-generator" _blank
 ```

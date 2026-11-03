@@ -94,13 +94,13 @@ So let's put all of this together. Here's the basic dataflow diagram for Eveprai
 
 ```mermaid
 flowchart TD
-    esi["ESI\nEvery 6 minutes"]
+    esi["ESI<br/>Every 6 minutes"]
     pricedb[Prices DB]
-    static-data-export["Static Data Export\nEvery 6 hours"]
+    static-data-export["Static Data Export<br/>Every 6 hours"]
     typedb[Types DB]
 
     parser[Parser]    
-    pasted-text["Posted Appraisal Text\nFrom a user"]
+    pasted-text["Posted Appraisal Text<br/>From a user"]
     appraisal[Appraisal Logic]
     appraisaldb[Appraisal DB]
 

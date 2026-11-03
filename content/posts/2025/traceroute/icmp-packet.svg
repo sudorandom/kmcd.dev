@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 226" class="h3-diagram">
+  <style>
+    .h3-diagram {
+      --bg: #1e1e2e;
+      --surface: #313244;
+      --border: #45475a;
+      --text: #cdd6f4;
+      --subtext: #a6adc8;
+      --muted: #7f849c;
+      --purple: #cba6f7;
+      --purple-bg: rgba(203, 166, 247, 0.14);
+      --blue: #89b4fa;
+      --blue-bg: rgba(137, 180, 250, 0.14);
+      --teal: #2dd4bf;
+      --teal-bg: rgba(45, 212, 191, 0.12);
+      --amber: #f9e2af;
+      --amber-bg: rgba(249, 226, 175, 0.14);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    [data-theme="light"] .h3-diagram {
+      --bg: #f6efe0;
+      --surface: #fbf5e8;
+      --border: #c7b89c;
+      --text: #141a2e;
+      --subtext: #434e70;
+      --muted: #64748b;
+      --purple: #6d28d9;
+      --purple-bg: rgba(109, 40, 217, 0.10);
+      --blue: #0284c7;
+      --blue-bg: rgba(2, 132, 199, 0.10);
+      --teal: #0d9488;
+      --teal-bg: rgba(13, 148, 136, 0.10);
+      --amber: #d97706;
+      --amber-bg: rgba(217, 119, 6, 0.12);
+    }
+    .card { fill: var(--bg); stroke: var(--border); stroke-width: 2; rx: 12; }
+    .title { fill: var(--text); font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .bit-tick { fill: var(--muted); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; }
+    .byte-label { fill: var(--muted); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; }
+    .field-type { fill: var(--purple-bg); stroke: var(--purple); stroke-width: 1.75; }
+    .field-code { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 1.75; }
+    .field { fill: var(--surface); stroke: var(--purple); stroke-width: 1.5; }
+    .field-id { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 1.5; }
+    .field-data { fill: var(--teal-bg); stroke: var(--teal); stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .fname { fill: var(--text); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; text-anchor: middle; }
+    .fsub { fill: var(--subtext); font-family: 'Fira Code', 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-anchor: middle; }
+  </style>
+
+  <rect x="4" y="4" width="812" height="218" class="card"/>
+  <text x="28" y="30" class="title">ICMP Packet Format (8-Byte Header + Payload)</text>
+
+  <!-- Bit ruler across 32 bits (x=84 to x=788, width=704, 22px per bit) -->
+  <text x="88" y="50" class="bit-tick">0</text>
+  <text x="252" y="50" class="bit-tick" text-anchor="end">7</text>
+  <text x="264" y="50" class="bit-tick">8</text>
+  <text x="428" y="50" class="bit-tick" text-anchor="end">15</text>
+  <text x="440" y="50" class="bit-tick">16</text>
+  <text x="784" y="50" class="bit-tick" text-anchor="end">31</text>
+
+  <!-- Row 1: Bytes 0-3 (y=56, h=48) -->
+  <text x="72" y="84" class="byte-label" text-anchor="end">0–3 B</text>
+  <rect x="84" y="56" width="176" height="48" class="field-type"/>
+  <text x="172" y="77" class="fname">Type (8 bits)</text>
+  <text x="172" y="94" class="fsub">8=Req, 0=Reply, 11=TTL</text>
+
+  <rect x="260" y="56" width="176" height="48" class="field-code"/>
+  <text x="348" y="77" class="fname">Code (8 bits)</text>
+  <text x="348" y="94" class="fsub">Subtype (e.g., 0)</text>
+
+  <rect x="436" y="56" width="352" height="48" class="field"/>
+  <text x="612" y="77" class="fname">Checksum (16 bits)</text>
+  <text x="612" y="94" class="fsub">16-bit one's complement sum</text>
+
+  <!-- Row 2: Bytes 4-7 (y=106, h=48) -->
+  <text x="72" y="134" class="byte-label" text-anchor="end">4–7 B</text>
+  <rect x="84" y="106" width="352" height="48" class="field-id"/>
+  <text x="260" y="127" class="fname">Identifier (16 bits)</text>
+  <text x="260" y="144" class="fsub">Process ID (Echo) / Unused (Time Exceeded)</text>
+
+  <rect x="436" y="106" width="352" height="48" class="field-id"/>
+  <text x="612" y="127" class="fname">Sequence Number (16 bits)</text>
+  <text x="612" y="144" class="fsub">Hop / Probe Number (Echo) / Unused</text>
+
+  <!-- Row 3: Bytes 8+ (y=156, h=48) -->
+  <text x="72" y="184" class="byte-label" text-anchor="end">8+ B</text>
+  <rect x="84" y="156" width="704" height="48" class="field-data"/>
+  <text x="436" y="177" class="fname">Data Payload (Variable Length)</text>
+  <text x="436" y="194" class="fsub">Echo data, or original IPv4 header + first 8 bytes of expired packet</text>
+</svg>

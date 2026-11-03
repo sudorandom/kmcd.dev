@@ -30,7 +30,7 @@ Here's what a typical workflow can look like when working with protobufs:
 Let's visualize this traditional workflow to highlight these pain points:
 
 {{< diagram >}}
-{{< image src="workflow-legacy.svg" height="600px" class="center" >}}
+{{< image src="workflow-legacy.svg" width="350px" class="center" >}}
 {{< /diagram >}}
 
 ### What's Missing?

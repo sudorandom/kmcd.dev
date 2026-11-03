@@ -1,250 +1,383 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language }}">
-    <head>
-        {{ partial "head.html" . }}
-    </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <nav class="nav">
-                <div class="nav-left" style="margin-top: 1rem;">
-                    <a class="nav-item" href="{{ .Site.BaseURL }}"><i class="fa-solid fa-arrow-left"></i> Back to kmcd.dev</a>
-                </div>
-            </nav>
-        </header>
-        <main class="post">
+{{ define "main" }}
 
-    <div class="main-wrapper">
-        <div class="main-box">
-            <!-- HTTP Version Detection Results - Dynamically Populated -->
-            <div id="loading-state" hidden>
-                <div style="background-color: #2a2a2a; border: 2px solid #888888; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <div class="spinner" style="margin: 0 auto 1rem auto;"></div>
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #888888;">Detecting HTTP Version...</h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Please wait while we analyze your connection.</p>
-                </div>
+<div class="post-layout-wrapper">
+    <main class="post">
+        <article class="post-container http-tool-container">
+            <div class="post-header">
+                <h1 class="post-title-text">
+                    {{ with .Params.TitleIcon }}<i class="fa-solid {{ . }}"></i> {{ end }}
+                    <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+                </h1>
             </div>
-            <div id="http10-header" hidden>
-                <div style="background-color: #2a1f1f; border: 2px solid #ff6b6b; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #ff6b6b;">🐌 You are using <a href="#http10" style="color: #ff6b6b; text-decoration: underline; margin-left:10px">HTTP/1.0</a></h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The original HTTP protocol from 1996. I see you have an eye for vintage software.</p>
-                    <div style="text-align: right;">
-                        <a href="#http10" class="button" style="margin-top: 1rem; background-color: #ff6b6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/1.0</a>
+
+            <div class="post-content">
+                <!-- HTTP Version Detection Results - Dynamically Populated -->
+                <div id="loading-state" hidden>
+                    <div class="http-card http-card--neutral">
+                        <div class="spinner" style="margin: 0 auto 1rem auto;"></div>
+                        <h2 class="http-card-hero-title">Detecting HTTP Version...</h2>
+                        <p class="http-card-desc">Please wait while we analyze your connection.</p>
                     </div>
                 </div>
-            </div>
 
-            <div id="http11-header" hidden>
-                <div style="background-color: #2a241f; border: 2px solid #ffa726; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #ffa726;">📡 You are using <a href="#http11" style="color: #ffa726; text-decoration: underline; margin-left:10px">HTTP/1.1</a></h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">The most widely used HTTP version. It's the reliable workhorse of the internet, but it's starting to show its age.</p>
-                    <div style="text-align: right;">
-                        <a href="#http11" class="button" style="margin-top: 1rem; background-color: #ffa726; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/1.1</a>
+                <div id="http10-header" hidden>
+                    <div class="http-card http-card--h10">
+                        <h2 class="http-card-hero-title">🐌 You are using <a href="#http10">HTTP/1.0</a></h2>
+                        <p class="http-card-desc">The classic HTTP protocol from 1996. I see you have an eye for vintage software.</p>
+                        <div class="http-card-actions">
+                            <a href="#http10" class="http-card-btn">Learn more about HTTP/1.0</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="http2-header" hidden>
-                <div style="background-color: #1f2328; border: 2px solid #42a5f5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #42a5f5;">🚀 You are using <a href="#http2" style="color: #42a5f5; text-decoration: underline; margin-left:10px">HTTP/2</a></h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">A major upgrade that's faster and more efficient. If you refresh this page, there's a chance you might connect with HTTP/3 instead! This is caused by the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Alt-Svc" style="color: #42a5f5;">Alt-Svc header</a> or the <a href="https://blog.cloudflare.com/speeding-up-https-and-http-3-negotiation-with-dns" style="color: #42a5f5;">HTTPS DNS Entry</a> being read by your browser.
-                    </p>
-                    <div style="text-align: right;">
-                        <a href="#http2" class="button" style="margin-top: 1rem; background-color: #42a5f5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/2</a>
+                <div id="http11-header" hidden>
+                    <div class="http-card http-card--h11">
+                        <h2 class="http-card-hero-title">📡 You are using <a href="#http11">HTTP/1.1</a></h2>
+                        <p class="http-card-desc">The longtime workhorse of the web. Reliable and ubiquitous, though starting to show its age.</p>
+                        <div class="http-card-actions">
+                            <a href="#http11" class="http-card-btn">Learn more about HTTP/1.1</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="http3-header" hidden>
-                <div style="background-color: #1f2a1f; border: 2px solid #66bb6a; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #66bb6a;">✨ You are using <a href="#http3" style="color: #66bb6a; text-decoration: underline; margin-left:10px">HTTP/3</a></h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Congratulations! You're on the cutting edge, using the fastest and most modern HTTP protocol available.
-                    </p>
-                    <div style="text-align: right;">
-                        <a href="#http3" class="button" style="margin-top: 1rem; background-color: #66bb6a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Learn more about HTTP/3</a>
+                <div id="http2-header" hidden>
+                    <div class="http-card http-card--h2">
+                        <h2 class="http-card-hero-title">🚀 You are using <a href="#http2">HTTP/2</a></h2>
+                        <p class="http-card-desc">
+                            A binary, multiplexed upgrade over HTTP/1.1. If you refresh this page, your browser may upgrade to HTTP/3 via the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Alt-Svc"><code>Alt-Svc</code> header</a> or the <a href="https://blog.cloudflare.com/speeding-up-https-and-http-3-negotiation-with-dns"><code>HTTPS</code> DNS record</a>.
+                        </p>
+                        <div class="http-card-actions">
+                            <a href="#http2" class="http-card-btn">Learn more about HTTP/2</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="httpunknown-header" hidden>
-                <div style="background-color: #2a1f2a; border: 2px solid #ab47bc; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.8rem; color: #ab47bc;">❓ You are using <span class="data-http-version" style="color: #ab47bc; margin-left:10px">???</span></h2>
-                    <p style="margin: 0.5rem 0 0 0; color: #cccccc;">Well, this is unexpected. You're using a version of HTTP that this page doesn't recognize. Maybe you're from the future, or maybe something's a little off. Either way, consider me impressed!
-                    </p>
-                </div>
-            </div>
-
-            <!-- Dynamic indicator -->
-            <div id="dynamic-indicator" hidden style="background-color: #1f2835; border-left: 4px solid #42a5f5; padding: 1rem; margin-bottom: 1rem;">
-                <p style="margin: 0; color: #cccccc;"><strong style="color: #42a5f5;">🔄 This content is dynamically generated</strong> based on your actual HTTP connection. Try refreshing the page or opening it in different browsers to see how the protocol varies!</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2835; border: 2px solid #42a5f5; border-radius: 8px;">
-            <h3 id="http11" style="color: #42a5f5; margin-top: 0;">📊 More Info</h3>
-            <div id="clientDataWrapper" hidden>
-                <p style="color: #cccccc;">By the way, here is more information that is revealed about you from the request your browser made:</p>
-
-                <div id="http3-retry-note" hidden style="background-color: #1e2a35; border-left: 4px solid #42a5f5; padding: 1rem; margin-bottom: 1rem;">
-                    <p style="margin: 0; color: #cccccc;">
-                        <strong style="color: #42a5f5;">💡 Fun Fact:</strong> It took multiple requests for your browser to connect with HTTP/3. This is common as browsers often discover HTTP/3 support via headers like <code>Alt-Svc</code> on the first few connections.
-                    </p>
+                <div id="http3-header" hidden>
+                    <div class="http-card http-card--h3">
+                        <h2 class="http-card-hero-title">✨ You are using <a href="#http3">HTTP/3</a></h2>
+                        <p class="http-card-desc">Congratulations! You're on the cutting edge, using HTTP over QUIC + UDP.</p>
+                        <div class="http-card-actions">
+                            <a href="#http3" class="http-card-btn">Learn more about HTTP/3</a>
+                        </div>
+                    </div>
                 </div>
 
-                <table style="color: #cccccc;">
-                    <tr>
-                        <th style="color: #42a5f5;">HTTP Version</th>
-                        <td><span id="data-http-version" class="emphasized-text"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">IP Address</th>
-                        <td><span id="data-ip"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank" style="color: #42a5f5;">(?)</a></th>
-                        <td><span id="data-asn"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">City</th>
-                        <td><span id="data-city"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">Postal Code</th>
-                        <td><span id="data-postal-code"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">Country</th>
-                        <td><span id="data-country"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">Continent</th>
-                        <td><span id="data-continent"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">Geo Coordinates</th>
-                        <td><span id="data-geo"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">Time Zone</th>
-                        <td><span id="data-tz"></span></td>
-                    </tr>
-                    <tr>
-                        <th style="color: #42a5f5;">User Agent</th>
-                        <td><span id="data-useragent"></span></td>
-                    </tr>
-                </table>
+                <div id="httpunknown-header" hidden>
+                    <div class="http-card http-card--unknown">
+                        <h2 class="http-card-hero-title">❓ You are using <span class="data-http-version">???</span></h2>
+                        <p class="http-card-desc">
+                            Could not detect a recognized HTTP version header (for example, when previewing locally without the Cloudflare edge worker). You can test specific states using <a href="?version=HTTP/3"><code>?version=HTTP/3</code></a> or <a href="?version=HTTP/2"><code>?version=HTTP/2</code></a>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Dynamic indicator -->
+                <div id="dynamic-indicator" hidden class="http-callout">
+                    <p><strong>🔄 Dynamically detected:</strong> This result is read live from the edge connection your browser used to fetch this page. Try refreshing or testing with <code>curl</code> below!</p>
+                </div>
+
+                <div class="http-card http-card--h2" id="more-info">
+                    <h3 class="http-card-title">📊 Connection &amp; Request Details</h3>
+                    <div id="clientDataWrapper" hidden>
+                        <p>Here is the connection metadata seen at the edge for your browser's request:</p>
+
+                        <div id="http3-retry-note" hidden class="http-callout">
+                            <p>
+                                <strong>💡 Fun Fact:</strong> It took multiple requests for your browser to upgrade to HTTP/3. Browsers often discover HTTP/3 support via the <code>Alt-Svc</code> response header on the initial HTTP/2 connection.
+                            </p>
+                        </div>
+
+                        <table class="http-info-table">
+                            <tr>
+                                <th>HTTP Version</th>
+                                <td><span id="data-http-version" class="emphasized-text"></span></td>
+                            </tr>
+                            <tr>
+                                <th>IP Address</th>
+                                <td><span id="data-ip"></span></td>
+                            </tr>
+                            <tr>
+                                <th>ASN <a href="https://en.wikipedia.org/wiki/Autonomous_system_(Internet)" target="_blank" rel="noopener">(?)</a></th>
+                                <td><span id="data-asn"></span></td>
+                            </tr>
+                            <tr>
+                                <th>City</th>
+                                <td><span id="data-city"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Postal Code</th>
+                                <td><span id="data-postal-code"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Country</th>
+                                <td><span id="data-country"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Continent</th>
+                                <td><span id="data-continent"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Geo Coordinates</th>
+                                <td><span id="data-geo"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Time Zone</th>
+                                <td><span id="data-tz"></span></td>
+                            </tr>
+                            <tr>
+                                <th>User Agent</th>
+                                <td><span id="data-useragent"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    {{ .Content }}
+                </div>
+
+                <div class="http-card http-card--rpki">
+                    <h3 class="http-card-title">🛡️ RPKI Check</h3>
+                    <p>
+                        Is your ISP BGP safe? This check tests whether your ISP filters invalid BGP route announcements using RPKI by fetching resources from both validly and invalidly signed prefixes (powered by <a href="https://isbgpsafeyet.com/" target="_blank" rel="noopener">isbgpsafeyet.com</a>).
+                    </p>
+                    {{ partial "rpki-check-logic.html" . }}
+                </div>
+
+                <div class="http-card http-card--h3" id="http3">
+                    <h3 class="http-card-title">✨ HTTP/3</h3>
+                    <p>
+                        HTTP/3 replaces TCP with <strong>QUIC</strong>, a multiplexed transport protocol built over UDP with TLS 1.3 integrated directly into the handshake. Because each stream is independent at the transport layer, a lost UDP packet only stalls the single stream it belongs to—eliminating transport-layer head-of-line blocking.
+                    </p>
+                    <p>
+                        Browsers typically discover HTTP/3 support in two ways:
+                    </p>
+                    <ul>
+                        <li><strong>Alternative Service (<code>Alt-Svc</code>) header:</strong> A server sends <code>Alt-Svc: h3=":443"</code> on an HTTP/1.1 or HTTP/2 response so subsequent connections upgrade to QUIC on UDP port 443.</li>
+                        <li><strong><code>HTTPS</code> DNS record:</strong> A DNS record advertising <code>alpn="h3"</code> alongside the IP address, allowing the browser to speak HTTP/3 on the very first request.</li>
+                    </ul>
+                    <ul class="http-links">
+                        <li><a href="/posts/http3-from-scratch-part-1/">Read: HTTP/3 From Scratch (3-Part Series)</a></li>
+                        <li><a href="https://http.dev/3" target="_blank" rel="noopener">http.dev/3</a></li>
+                        <li><a href="https://www.rfc-editor.org/rfc/rfc9114" target="_blank" rel="noopener">RFC 9114 (HTTP/3)</a> &amp; <a href="https://www.rfc-editor.org/rfc/rfc9000" target="_blank" rel="noopener">RFC 9000 (QUIC)</a></li>
+                    </ul>
+                </div>
+
+                <div class="http-card http-card--h2" id="http2">
+                    <h3 class="http-card-title">🚀 HTTP/2</h3>
+                    <p>
+                        HTTP/2 replaced plain-text lines with a binary framing layer and introduced stream multiplexing, HPACK header compression, and flow control over a single TCP connection.
+                    </p>
+                    <p>
+                        This solved HTTP-layer head-of-line blocking, though a single lost TCP packet still stalls all active streams at the OS kernel level until retransmitted.
+                    </p>
+                    <ul class="http-links">
+                        <li><a href="/posts/http2-from-scratch-part-1/">Read: HTTP/2 From Scratch (4-Part Series)</a></li>
+                        <li><a href="https://http.dev/2" target="_blank" rel="noopener">http.dev/2</a></li>
+                        <li><a href="https://www.rfc-editor.org/rfc/rfc9113" target="_blank" rel="noopener">RFC 9113</a> (obsoletes <a href="https://www.rfc-editor.org/rfc/rfc7540" target="_blank" rel="noopener">RFC 7540</a>)</li>
+                    </ul>
+                </div>
+
+                <div class="http-card http-card--h11" id="http11">
+                    <h3 class="http-card-title">📡 HTTP/1.1</h3>
+                    <p>
+                        HTTP/1.1 made persistent connections (<code>Keep-Alive</code>) the default so browsers could reuse a single TCP connection across multiple requests, and added chunked transfer encoding for streaming responses of unknown length.
+                    </p>
+                    <p>
+                        Because responses must still be returned strictly in order on each connection, a slow response holds up every queued request behind it (HTTP head-of-line blocking).
+                    </p>
+                    <ul class="http-links">
+                        <li><a href="/posts/http1.1-from-scratch/">Read: HTTP/1.1 From Scratch</a></li>
+                        <li><a href="https://http.dev/1.1" target="_blank" rel="noopener">http.dev/1.1</a></li>
+                        <li><a href="https://www.rfc-editor.org/rfc/rfc9112" target="_blank" rel="noopener">RFC 9112</a></li>
+                    </ul>
+                </div>
+
+                <div class="http-card http-card--h10" id="http10">
+                    <h3 class="http-card-title">🐌 HTTP/1.0</h3>
+                    <p>
+                        HTTP/1.0 introduced the anatomy we recognize today: status codes (<code>200 OK</code>, <code>404 Not Found</code>), request and response headers (<code>Content-Type</code>, <code>Content-Length</code>), and methods like <code>POST</code> and <code>HEAD</code>.
+                    </p>
+                    <p>
+                        Without persistent connections by default, every single image or stylesheet required a fresh TCP three-way handshake.
+                    </p>
+                    <ul class="http-links">
+                        <li><a href="/posts/http1.0-from-scratch/">Read: HTTP/1.0 From Scratch</a></li>
+                        <li><a href="https://http.dev/1.0" target="_blank" rel="noopener">http.dev/1.0</a></li>
+                        <li><a href="https://www.rfc-editor.org/rfc/rfc1945" target="_blank" rel="noopener">RFC 1945</a></li>
+                    </ul>
+                </div>
+
+                <div class="http-card http-card--neutral" id="http09">
+                    <h3 class="http-card-title">📜 HTTP/0.9</h3>
+                    <p>
+                        The original 1991 one-line protocol: no headers, no status codes, and only a single method (<code>GET /path</code>). The server wrote back raw HTML bytes and immediately closed the TCP connection.
+                    </p>
+                    <ul class="http-links">
+                        <li><a href="/posts/http0.9-from-scratch/">Read: HTTP/0.9 From Scratch</a></li>
+                        <li><a href="https://http.dev/0.9" target="_blank" rel="noopener">http.dev/0.9</a></li>
+                    </ul>
+                </div>
             </div>
-
-            {{ .Content }}
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2a2a; border: 2px solid #00acc1; border-radius: 8px;">
-            <h3 style="color: #00acc1; margin-top: 0;">🛡️ RPKI Check</h3>
-            <p style="color: #cccccc;">
-                Is your ISP BGP safe? This tool checks if your ISP is filtering BGP routes based on RPKI by attempting to fetch resources from both valid and invalidly signed prefixes.
-                This is built using the same endpoints as <a href="https://isbgpsafeyet.com/" style="color: #00acc1; text-decoration: none; border-bottom: 1px dashed #00acc1;">isbgpsafeyet.com</a>. Go there for more information.
-            </p>
-            {{ partial "rpki-check-logic.html" . }}
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2a1f; border: 2px solid #66bb6a; border-radius: 8px;">
-            <h3 id="http3" style="color: #66bb6a; margin-top: 0;">✨ HTTP/3</h3>
-            <p style="color: #cccccc;">
-                HTTP/3 improves upon HTTP/2 by using QUIC, a new transport protocol built on UDP. This finally eliminates head-of-line blocking entirely and allows for zero round-trip time (0-RTT) connection resumption.
-            </p>
-            <p style="color: #cccccc;">
-                This could lead to seamless network switching in the future, for example, moving from Wi-Fi to cellular without a noticeable interruption.
-            </p>
-            <p style="color: #cccccc;">
-                Browsers can discover HTTP/3 support in two main ways:
-            </p>
-            <ul style="color: #cccccc;">
-                <li><strong>Alternative Service (<code>Alt-Svc</code>) header:</strong> The server can send an <code>Alt-Svc</code> header in an HTTP/1.1 or HTTP/2 response to indicate that HTTP/3 is available on a specific host and port.</li>
-                <li><strong>HTTPS DNS record:</strong> A newer method involves a special <code>HTTPS</code> DNS record that signals HTTP/3 support directly, allowing a browser to connect using HTTP/3 on the very first request.</li>
-            </ul>
-            <ul>
-                <li><a href="https://http.dev/3" target="_blank" style="color: #66bb6a;">http.dev/3</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc9114" target="_blank" style="color: #66bb6a;">RFC 9114</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #1f2328; border: 2px solid #42a5f5; border-radius: 8px;">
-            <h3 id="http2" style="color: #42a5f5; margin-top: 0;">🚀 HTTP/2</h3>
-            <p style="color: #cccccc;">
-                HTTP/2 introduced a binary encoding format, making it more compact and efficient to parse. Its biggest feature was multiplexing, which allows multiple requests and responses to be sent in parallel over a single connection using "streams".
-            </p>
-            <p style="color: #cccccc;">
-                This solved the head-of-line blocking at the HTTP level, but the problem still existed at the TCP level.
-            </p>
-            <ul>
-                <li><a href="https://http.dev/2" target="_blank" style="color: #42a5f5;">http.dev/2</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc7540" target="_blank" style="color: #42a5f5;">RFC 7540</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #2a241f; border: 2px solid #ffa726; border-radius: 8px;">
-            <h3 id="http11" style="color: #ffa726; margin-top: 0;">📡 HTTP/1.1</h3>
-            <p style="color: #cccccc;">
-                HTTP/1.1 solved the connection problem by introducing persistent connections, allowing multiple requests to be sent over a single TCP connection. It also added chunked encoding, which allows a response to be sent in pieces.
-            </p>
-            <p style="color: #cccccc;">
-                While a huge improvement, it still suffered from head-of-line blocking, where a slow request could hold up all the requests behind it.
-            </p>
-            <ul>
-                <li><a href="https://http.dev/1.1" target="_blank" style="color: #ffa726;">http.dev/1.1</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc2616" target="_blank" style="color: #ffa726;">RFC 2616 (obsoleted)</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc7230" target="_blank" style="color: #ffa726;">RFC 7230</a> - <a href="https://www.rfc-editor.org/rfc/rfc7235" target="_blank" style="color: #ffa726;">RFC 7235</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #2a1f1f; border: 2px solid #ff6b6b; border-radius: 8px;">
-            <h3 id="http10" style="color: #ff6b6b; margin-top: 0;">🐌 HTTP/1.0</h3>
-            <p style="color: #cccccc;">
-                This version brought many of the features we recognize today, including request methods (like GET and POST), HTTP headers for passing metadata, and status codes to indicate the outcome of a request.
-            </p>
-            <p style="color: #cccccc;">
-                However, it required a new TCP connection for every single request, which was inefficient and slow.
-            </p>
-            <ul>
-                <li><a href="https://http.dev/1.0" target="_blank" style="color: #ff6b6b;">http.dev/1.0</a></li>
-                <li><a href="https://www.rfc-editor.org/rfc/rfc1945" target="_blank" style="color: #ff6b6b;">RFC 1945</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="main-box" style="background-color: #2a2a2a; border: 2px solid #888888; border-radius: 8px;">
-            <h3 id="http09" style="color: #888888; margin-top: 0;">📜 HTTP/0.9</h3>
-            <p style="color: #cccccc;">
-                The simplest protocol, HTTP/0.9, had no headers, status codes, or even different request methods. A request was a single line, and the server's response was just the HTML file.
-            </p>
-            <ul>
-                <li><a href="https://http.dev/0.9" target="_blank" style="color: #ff6b6b;">http.dev/0.9</a></li>
-            </ul>
-        </div>
-    </div>
-</main>
+        </article>
+    </main>
+</div>
 
 <style>
+.http-card {
+    --card-bg: #1e1e2e;
+    --card-border: #45475a;
+    --card-accent: #cba6f7;
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--riso-shadow-sm);
+    color: var(--text-primary);
+}
+[data-theme="light"] .http-card {
+    --card-bg: #f6efe0;
+    --card-border: #c7b89c;
+}
+
+.http-card--h3 {
+    --card-border: #10b981;
+    --card-accent: #34d399;
+}
+[data-theme="light"] .http-card--h3 {
+    --card-border: #059669;
+    --card-accent: #047857;
+}
+
+.http-card--h2 {
+    --card-border: #3b82f6;
+    --card-accent: #60a5fa;
+}
+[data-theme="light"] .http-card--h2 {
+    --card-border: #0284c7;
+    --card-accent: #0369a1;
+}
+
+.http-card--rpki {
+    --card-border: #06b6d4;
+    --card-accent: #22d3ee;
+}
+[data-theme="light"] .http-card--rpki {
+    --card-border: #0d9488;
+    --card-accent: #0f766e;
+}
+
+.http-card--h11 {
+    --card-border: #f59e0b;
+    --card-accent: #fbbf24;
+}
+[data-theme="light"] .http-card--h11 {
+    --card-border: #d97706;
+    --card-accent: #b45309;
+}
+
+.http-card--h10 {
+    --card-border: #f43f5e;
+    --card-accent: #fb7185;
+}
+[data-theme="light"] .http-card--h10 {
+    --card-border: #e11d48;
+    --card-accent: #be123c;
+}
+
+.http-card--unknown {
+    --card-border: #a855f7;
+    --card-accent: #c084fc;
+}
+[data-theme="light"] .http-card--unknown {
+    --card-border: #7c3aed;
+    --card-accent: #6d28d9;
+}
+
+.http-card--neutral {
+    --card-border: #6c7086;
+    --card-accent: #a6adc8;
+}
+[data-theme="light"] .http-card--neutral {
+    --card-border: #64748b;
+    --card-accent: #334155;
+}
+
+.http-card-hero-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    font-size: 1.75rem !important;
+    color: var(--card-accent) !important;
+}
+.http-card-hero-title a {
+    color: var(--card-accent) !important;
+    text-decoration: underline;
+    margin-left: 6px;
+}
+
+.http-card-title {
+    margin-top: 0 !important;
+    margin-bottom: 0.75rem !important;
+    color: var(--card-accent) !important;
+}
+
+.http-card-desc {
+    margin: 0.65rem 0 0 0;
+}
+
+.http-card-actions {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.http-card-btn {
+    background-color: var(--card-border);
+    color: #ffffff !important;
+    padding: 8px 18px;
+    text-decoration: none !important;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: opacity 0.15s ease;
+}
+.http-card-btn:hover {
+    opacity: 0.9;
+}
+
+.http-callout {
+    background: rgba(59, 130, 246, 0.10);
+    border-left: 4px solid var(--card-accent, #3b82f6);
+    border-radius: 8px;
+    padding: 0.9rem 1.15rem;
+    margin: 1rem 0;
+}
+.http-callout p {
+    margin: 0;
+}
+
+.http-info-table {
+    width: 100%;
+    margin: 1rem 0;
+}
+.http-info-table th {
+    color: var(--card-accent);
+    text-align: left;
+    padding: 6px 12px 6px 0;
+    white-space: nowrap;
+}
+.http-info-table td {
+    padding: 6px 0;
+    word-break: break-word;
+}
+
 .spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #888888;
+    border: 4px solid rgba(150, 150, 150, 0.25);
+    border-top: 4px solid var(--card-accent);
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    animation: spin 2s linear infinite;
+    animation: spin 1.2s linear infinite;
 }
 @keyframes spin {
     from { transform: rotate(0deg); }
@@ -253,92 +386,63 @@
 </style>
 
 <script>
-// Check for query parameter override first
 const searchParams = new URLSearchParams(window.location.search);
 const hasQueryOverride = searchParams.has('version');
 
-// Function to display the HTTP version results
 function displayHTTPVersion(httpVersion, props = {}) {
-    console.log("displayHTTPVersion called with:", httpVersion);
-    // Hide loading state
     document.getElementById("loading-state")?.setAttribute("hidden", true);
-    console.log("Loading state should be hidden now");
-    
-    // Show dynamic indicator
     document.getElementById("dynamic-indicator")?.removeAttribute("hidden");
 
     switch (httpVersion) {
     case 'HTTP/1.0':
         document.getElementById("http10-header")?.removeAttribute("hidden");
-        document.getElementById("cover-unknown")?.setAttribute("hidden", true);
-        document.getElementById("cover-http10")?.removeAttribute("hidden");
         break;
     case 'HTTP/1.1':
         document.getElementById("http11-header")?.removeAttribute("hidden");
-        document.getElementById("cover-unknown")?.setAttribute("hidden", true);
-        document.getElementById("cover-http11")?.removeAttribute("hidden");
         break;
     case 'HTTP/2':
         document.getElementById("http2-header")?.removeAttribute("hidden");
-        document.getElementById("cover-unknown")?.setAttribute("hidden", true);
-        document.getElementById("cover-http2")?.removeAttribute("hidden");
         break;
     case 'HTTP/3':
         document.getElementById("http3-header")?.removeAttribute("hidden");
-        document.getElementById("cover-unknown")?.setAttribute("hidden", true);
-        document.getElementById("cover-http3")?.removeAttribute("hidden");
         break;
     default:
         document.getElementById("httpunknown-header")?.removeAttribute("hidden");
     }
 
-    for (elem of document.getElementsByClassName("data-http-version")) {
-        elem.innerHTML = httpVersion
+    for (const elem of document.getElementsByClassName("data-http-version")) {
+        elem.textContent = httpVersion;
     }
 
-    // Only populate additional data if we have it (from actual HTTP detection)
     const filteredProps = Object.fromEntries(Object.entries(props).filter(([_, v]) => v != null));
     if (Object.keys(filteredProps).length > 0) {
-        document.getElementById("clientDataWrapper").removeAttribute("hidden");
-        document.getElementById("data-http-version").innerHTML = httpVersion;
-        document.getElementById("data-asn").innerHTML = props.asnum;
-        document.getElementById("data-city").innerHTML = props.city;
-        document.getElementById("data-continent").innerHTML = props.continent;
-        document.getElementById("data-country").innerHTML = props.country;
-        document.getElementById("data-ip").innerHTML = props.ip;
+        document.getElementById("clientDataWrapper")?.removeAttribute("hidden");
+        document.getElementById("data-http-version").textContent = httpVersion;
+        document.getElementById("data-asn").textContent = props.asnum || '';
+        document.getElementById("data-city").textContent = props.city || '';
+        document.getElementById("data-continent").textContent = props.continent || '';
+        document.getElementById("data-country").textContent = props.country || '';
+        document.getElementById("data-ip").textContent = props.ip || '';
         if (props.lat && props.lon) {
-            document.getElementById("data-geo").innerHTML = `(${props.lat}, ${props.lon})`;
+            document.getElementById("data-geo").textContent = `(${props.lat}, ${props.lon})`;
         }
-        document.getElementById("data-postal-code").innerHTML = props.postalCode;
-        document.getElementById("data-tz").innerHTML = props.tzName;
-        document.getElementById("data-useragent").innerHTML = props.useragent;
+        document.getElementById("data-postal-code").textContent = props.postalCode || '';
+        document.getElementById("data-tz").textContent = props.tzName || '';
+        document.getElementById("data-useragent").textContent = props.useragent || '';
     }
 }
 
 if (hasQueryOverride) {
-    // If we have a query parameter, use it immediately without any HTTP detection
-    console.log("Using query override:", searchParams.get('version'));
-    const httpVersion = searchParams.get('version');
-    displayHTTPVersion(httpVersion);
+    displayHTTPVersion(searchParams.get('version'));
 } else {
-    // Only show loading state if we need to do actual HTTP detection
-    console.log("No query override, showing loading state");
     document.getElementById("loading-state")?.removeAttribute("hidden");
 
     async function getHTTPVersion() {
         try {
-            // Check if a custom URL is specified in query parameters
             const fetchUrl = `https://kmcd.dev/http/?t=${Date.now()}`;
-            
             const resp = await fetch(fetchUrl);
             if (!resp.ok) {
                 throw new Error(`resp status: ${resp.status}`);
-            }
-            // the server is configured to always return a header containing the http version used on the edge.
-            console.log("HTTP response headers:", resp.headers);
-            console.log("Available headers to JS:");
-            for (let [key, value] of resp.headers.entries()) {
-                console.log(`  ${key}: ${value}`);
             }
             return {
                 httpVersion: resp.headers.get('x-kmcd-http-request-version'),
@@ -354,7 +458,7 @@ if (hasQueryOverride) {
                 regionCode: resp.headers.get('x-kmcd-region-code'),
                 tzName: resp.headers.get('x-kmcd-tz-name'),
                 useragent: resp.headers.get('x-kmcd-user-agent'),
-            }
+            };
         } catch (error) {
             console.error(error.message);
             return {};
@@ -371,7 +475,6 @@ if (hasQueryOverride) {
                 }
                 return props;
             }
-            // wait a bit before retrying
             if (i < 2) {
                 await new Promise(resolve => setTimeout(resolve, 200));
             }
@@ -381,14 +484,9 @@ if (hasQueryOverride) {
 
     getHTTPVersionWithRetries().then((props) => {
         const httpVersion = props.httpVersion || "???";
-        console.log(props);
         displayHTTPVersion(httpVersion, props);
     });
 }
-
 </script>
 
-        </main>
-    </div>
-</body>
-</html>
+{{ end }}

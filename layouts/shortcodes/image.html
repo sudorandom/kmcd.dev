@@ -19,7 +19,7 @@
             {{- $cleanSVG := replaceRE "^<\\?xml[^>]*\\?>" "" $image.Content -}}
             {{- $cleanSVG = replaceRE `preserveAspectRatio="xMinYMin meet" viewBox="0 0 ([0-9]+) ([0-9]+)"` `preserveAspectRatio="xMinYMin meet" width="$1" viewBox="0 0 $1 $2"` $cleanSVG -}}
             <div class="svg-diagram-inline{{ with .Get "class" }} {{ . }}{{ end }}"
-                 style="display: block; max-width: 100%;{{- with $imgWidth }} width: {{ . }};{{ end -}}{{- with $imgHeight }} height: {{ . }};{{ end -}}{{ if eq (.Get "class") "center" }} margin-left: auto; margin-right: auto;{{ end }}">
+                 style="display: block; max-width: 100%;{{- with $imgWidth }} width: {{ . }};{{ end -}}{{ if eq (.Get "class") "center" }} margin-left: auto; margin-right: auto;{{ end }}">
                 {{ $cleanSVG | safeHTML }}
             </div>
         {{ else }}

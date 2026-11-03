@@ -55,23 +55,7 @@ To fully understand how `traceroute` works, we should understand the basic struc
 
 All network traffic on the internet is encapsulated within IP packets. The IP header contains crucial information for routing, including source and destination IP addresses, and, most importantly for `traceroute`, the Time-To-Live (TTL) field.
 
-```mermaid
-packet
-0-3: "Version"
-4-7: "IHL"
-8-15: "Type of Service (TOS)"
-16-31: "Total Length"
-32-47: "Identification"
-48-50: "Flags"
-51-63: "Fragment Offset"
-64-71: "TTL"
-72-79: "Protocol"
-80-95: "Header Checksum"
-96-127: "Source IP Address"
-128-159: "Destination IP Address"
-160-191: "Options & Padding"
-192-223: "Data (Variable Length)"
-```
+{{< image src="ipv4-packet.svg" width="820px" class="center" inline="true" >}}
 
 Mostly, I want you to note the Time-To-Live (TTL) field, which is central to how traceroute operates. We'll touch more on TTLs a little bit later. But first, let's look at the structure of ICMP packets.
 
@@ -79,15 +63,7 @@ Mostly, I want you to note the Time-To-Live (TTL) field, which is central to how
 
 ICMP messages, including the Echo Request/Reply used by `ping` and the Time Exceeded messages used by `traceroute`, are themselves encapsulated within an IP packet's payload. The ICMP header specifies the message type (e.g., Echo Request, Echo Reply, Time Exceeded) and a code, along with a checksum for integrity. For Echo messages, it also includes an identifier and sequence number.
 
-```mermaid
-packet
-0-7: "Type (e.g., 8=Request, 0=Reply)"
-8-15: "Code (e.g., 0)"
-16-31: "Checksum"
-32-47: "Identifier (BE) / (Varies by Type)"
-48-63: "Sequence Number (BE) / (Varies by Type)"
-64-95: "Data Payload (variable length)"
-```
+{{< image src="icmp-packet.svg" width="820px" class="center" inline="true" >}}
 
 Crucially, since ICMP messages are encapsulated within IP packets, it is the *enclosing IP packet* that carries the TTL field and other IP header information, not the ICMP message itself. The ICMP header defines the specific control message, while the IP header handles its transport.
 
