@@ -358,9 +358,10 @@ function initTocScrollSpy() {
     }
 
     // Auto-scroll the tree-nav container if needed so active item is in view
-    if (treeNav.scrollHeight > treeNav.clientHeight) {
+    const scrollBox = treeNav.querySelector(".tree-nav-card") || treeNav;
+    if (scrollBox.scrollHeight > scrollBox.clientHeight) {
       const linkRect = target.link.getBoundingClientRect();
-      const navRect = treeNav.getBoundingClientRect();
+      const navRect = scrollBox.getBoundingClientRect();
       if (linkRect.top < navRect.top + 30 || linkRect.bottom > navRect.bottom - 30) {
         target.link.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
@@ -499,6 +500,7 @@ function initKeyboardShortcuts() {
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>d</kbd></dt><dd>Go to Daily Prompts</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>s</kbd></dt><dd>Go to Stuff</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>m</kbd></dt><dd>Go to About Me</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>r</kbd></dt><dd>Go to Random Page</dd></div>
             </dl>
           </div>
           <div class="shortcuts-modal__section">
@@ -642,7 +644,7 @@ function initKeyboardShortcuts() {
 
     if (e.altKey) return;
 
-    // Handle 'g' chord sequences (g h, g p, g d, g s, g m, g g)
+    // Handle 'g' chord sequences (g h, g p, g d, g s, g m, g r, g g)
     if (gPending) {
       clearGPending();
       if (e.key === "h") {
@@ -660,6 +662,9 @@ function initKeyboardShortcuts() {
       } else if (e.key === "m") {
         e.preventDefault();
         window.location.href = "/me/";
+      } else if (e.key === "r") {
+        e.preventDefault();
+        window.location.href = "/random/";
       } else if (e.key === "g") {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -697,11 +702,199 @@ function initKeyboardShortcuts() {
   });
 }
 
+function initMascotScrollMood() {
+  const mascots = Array.from(document.querySelectorAll(".toc-mascot"));
+  const panels = Array.from(document.querySelectorAll("[data-nibble-panel]"));
+  const restoreBars = Array.from(document.querySelectorAll("[data-nibble-restore-bar]"));
+  const restoreBtns = Array.from(document.querySelectorAll(".nibble-restore-btn, [data-nibble-restore]"));
+
+  function syncRestoreButtons() {
+    let isHidden = false;
+    try {
+      isHidden = localStorage.getItem("kmcd-hide-nibble") === "1";
+    } catch (e) {}
+    restoreBars.forEach(bar => {
+      bar.hidden = !isHidden;
+    });
+    restoreBtns.forEach(btn => {
+      if (btn.classList.contains("nibble-restore-btn")) {
+        btn.hidden = !isHidden;
+      }
+    });
+  }
+
+  syncRestoreButtons();
+
+  function updateMood() {
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+    const mood = progress >= 0.88 ? "3" : progress >= 0.58 ? "2" : progress >= 0.25 ? "1" : "0";
+
+    mascots.forEach(el => {
+      if (el.getAttribute("data-mood") === "bye") return;
+      if (el.getAttribute("data-mood") !== mood) {
+        el.setAttribute("data-mood", mood);
+      }
+    });
+  }
+
+  const farewells = ["Bye! o/", "See ya! o/", "FIN/ACK! o/", "EOF! o/"];
+  const greetings = ["Hi again! o/", "SYN/ACK! o/", "Back online!", "Beep! o/"];
+  const rightClickTricks = [
+    { trick: "jump", mood: "bye", ping: true, duration: 1400 },
+    { trick: "flip", mood: "3", text: "DO A BARREL ROLL!", duration: 750 },
+    { trick: "disco", mood: "3", text: "OVERCLOCKING!!", duration: 1500 },
+    { trick: "glitch", mood: "2", text: "segfault (core dumped)", duration: 1100 },
+    { trick: "jump", mood: "3", text: "418 I'm a teapot", duration: 1200 },
+  ];
+  let trickIndex = 0;
+
+  mascots.forEach(mascot => {
+    let trickTimer = null;
+    mascot.addEventListener("contextmenu", async (e) => {
+      e.preventDefault();
+      const panel = mascot.closest(".toc-mascot-panel");
+      const speech = panel ? panel.querySelector(".nibble-speech") : null;
+      const item = rightClickTricks[trickIndex % rightClickTricks.length];
+      trickIndex++;
+
+      if (trickTimer) clearTimeout(trickTimer);
+      mascot.removeAttribute("data-trick");
+      void mascot.offsetWidth; // restart CSS animation
+
+      if (item.ping) {
+        mascot.setAttribute("data-mood", "2");
+        if (speech) {
+          speech.textContent = "PING...";
+          speech.hidden = false;
+        }
+        const t0 = performance.now();
+        try {
+          await fetch(window.location.pathname, { method: "HEAD", cache: "no-store" });
+          const rtt = (performance.now() - t0).toFixed(1);
+          mascot.setAttribute("data-trick", item.trick);
+          mascot.setAttribute("data-mood", item.mood);
+          if (speech) {
+            speech.textContent = `PONG! time=${rtt}ms`;
+            speech.hidden = false;
+          }
+        } catch (err) {
+          mascot.setAttribute("data-trick", "glitch");
+          mascot.setAttribute("data-mood", "2");
+          if (speech) {
+            speech.textContent = "Destination Unreachable";
+            speech.hidden = false;
+          }
+        }
+      } else {
+        mascot.setAttribute("data-trick", item.trick);
+        mascot.setAttribute("data-mood", item.mood);
+        if (speech) {
+          speech.textContent = item.text;
+          speech.hidden = false;
+        }
+      }
+
+      trickTimer = setTimeout(() => {
+        mascot.removeAttribute("data-trick");
+        if (speech) speech.hidden = true;
+        mascot.removeAttribute("data-mood");
+        updateMood();
+      }, item.duration);
+    });
+  });
+
+  panels.forEach(panel => {
+    const closeBtn = panel.querySelector(".nibble-close-btn");
+    if (!closeBtn) return;
+
+    closeBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const mascot = panel.querySelector(".toc-mascot");
+      const speech = panel.querySelector(".nibble-speech");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (mascot) {
+        mascot.setAttribute("data-mood", "bye");
+      }
+      if (speech) {
+        speech.textContent = farewells[Math.floor(Math.random() * farewells.length)];
+        speech.hidden = false;
+      }
+
+      const waveDuration = reducedMotion ? 450 : 900;
+      const fadeDuration = reducedMotion ? 0 : 260;
+
+      setTimeout(() => {
+        panel.classList.add("is-dismissing");
+        setTimeout(() => {
+          try {
+            localStorage.setItem("kmcd-hide-nibble", "1");
+          } catch (err) {}
+          panels.forEach(p => {
+            p.hidden = true;
+            p.classList.remove("is-dismissing");
+          });
+          syncRestoreButtons();
+        }, fadeDuration);
+      }, waveDuration);
+    });
+  });
+
+  restoreBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      try {
+        localStorage.removeItem("kmcd-hide-nibble");
+      } catch (err) {}
+      syncRestoreButtons();
+      const allPanels = Array.from(document.querySelectorAll(".toc-mascot-panel"));
+      allPanels.forEach(p => {
+        p.hidden = false;
+        p.classList.remove("is-dismissing");
+        const speech = p.querySelector(".nibble-speech");
+        const mascot = p.querySelector(".toc-mascot");
+        if (mascot) {
+          mascot.setAttribute("data-mood", "bye");
+        }
+        if (speech) {
+          speech.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+          speech.hidden = false;
+        }
+        setTimeout(() => {
+          if (speech) speech.hidden = true;
+          if (mascot) mascot.removeAttribute("data-mood");
+          updateMood();
+        }, reducedMotion ? 450 : 900);
+      });
+    });
+  });
+
+  if (mascots.length === 0) return;
+
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateMood();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener("resize", updateMood, { passive: true });
+  updateMood();
+}
+
 function initAll() {
   initImageFadeIn();
   initArchiveTags();
   initThemeAndPaletteControls();
   initTocScrollSpy();
+  initMascotScrollMood();
   initKeyboardShortcuts();
 }
 

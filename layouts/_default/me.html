@@ -27,6 +27,7 @@
             <li><a href="#professional">Professional</a></li>
             <li><a href="#social">Social</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#nibble">Nibble</a></li>
             <li><a href="#support">Support Me</a></li>
           </ul>
         </nav>
@@ -311,6 +312,25 @@
         </div>
       </section>
 
+      <!-- NIBBLE SECTION -->
+      <section class="me-section">
+        <h2 id="nibble" class="me-section-heading"><i class="fa-solid fa-robot"></i> Nibble</h2>
+
+        <div class="me-card me-nibble-card">
+          <div class="me-nibble-showcase">
+            {{ partial "toc-mascot.html" (dict "permanent" true) }}
+          </div>
+          <div class="me-nibble-copy">
+            <p>
+              <strong>Nibble</strong> is the little robot hanging out in the sidebar. Clicking him (or pressing <kbd>g</kbd> + <kbd>r</kbd>) takes you to a <a href="/random/">random article</a>, and right-clicking him pokes him. If he's in your way, you can hide him with the <strong>&times;</strong> button.
+            </p>
+            <button type="button" class="nibble-restore-btn" hidden>
+              <i class="fa-solid fa-rotate-left"></i> Bring Nibble back to sidebar
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- SUPPORT ME & DISPLATE POSTERS -->
       <section class="me-section">
         <h2 id="support" class="me-section-heading"><i class="fa-solid fa-heart"></i> Support Me</h2>
@@ -438,16 +458,19 @@
 
     <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
     <aside class="tree-nav" aria-label="Table of Contents">
-      <div class="toc-title">Contents</div>
-      <nav class="tree-nav-content">
-        <ul>
-          <li><a href="#personal">Personal</a></li>
-          <li><a href="#professional">Professional</a></li>
-          <li><a href="#social">Social</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#support">Support Me</a></li>
-        </ul>
-      </nav>
+      <div class="tree-nav-card">
+        <div class="toc-title">Contents</div>
+        <nav class="tree-nav-content">
+          <ul>
+            <li><a href="#personal">Personal</a></li>
+            <li><a href="#professional">Professional</a></li>
+            <li><a href="#social">Social</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#nibble">Nibble</a></li>
+            <li><a href="#support">Support Me</a></li>
+          </ul>
+        </nav>
+      </div>
     </aside>
   </main>
 </div>

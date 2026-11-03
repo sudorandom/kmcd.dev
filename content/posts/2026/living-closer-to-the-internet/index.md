@@ -2,7 +2,6 @@
 categories: ["article", "analysis", "dataviz"]
 tags: ["dataviz", "internet-map", "internet", "networking", "bgp", "ixp", "peering", "latency", "fiber-optics", "infrastructure"]
 keywords: ["internet exchange point latency", "trombone routing", "hairpin routing", "peering vs transit", "ixp map", "local peering latency", "private network interconnect"]
-series: ["Internet Map"]
 date: "2026-10-24T10:00:00Z"
 description: "Why gigabit fiber in your apartment still comes with a latency penalty if your city lacks an active Internet Exchange Point."
 cover: "cover.png"

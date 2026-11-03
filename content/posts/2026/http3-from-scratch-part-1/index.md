@@ -234,7 +234,7 @@ If you really want to see how trailers work in HTTP/3, you can reference my PRs 
 
 ### Running the Demo
 
-In `main.go`, we run our raw QUIC echo test followed by a full HTTP/3 request/response round trip over a QUIC stream:
+In `main.go`, I wired up the raw QUIC echo test followed by an HTTP/3 request and response over a QUIC stream:
 
 ```shell
 $ go run .
@@ -250,12 +250,12 @@ $ go run .
 [H3 Client] Body: Hello over HTTP/3! You sent 12 bytes.
 ```
 
-We just encoded an `*http.Request` into QPACK binary headers and HTTP/3 `HEADERS` + `DATA` frames, shipped it across an encrypted QUIC stream, decoded it on the server, and sent back a QPACK-compressed `*http.Response`.
+That's our first real `*http.Request` encoded into QPACK headers and HTTP/3 `HEADERS` + `DATA` frames, sent across a QUIC stream, and answered with a QPACK-encoded `*http.Response`.
 
 ### What's Next?
 
-If you pointed `curl --http3` or Chrome at our Step 2 listener right now, it wouldn't quite work yet. Real HTTP/3 clients and servers also open a unidirectional **Control Stream** (`0x00`) as soon as they connect to exchange `SETTINGS` frames (`0x04`), and browsers need a way to know that your server supports HTTP/3 on UDP.
+If you pointed `curl --http3` or Chrome at our listener right now, they would hang up on us immediately. Real HTTP/3 peers expect both sides to open a one-way **Control Stream** (`0x00`) as soon as the connection starts and swap `SETTINGS` frames (`0x04`). Plus, browsers need a way to find out that your server speaks HTTP/3 over UDP in the first place.
 
-In **Part 2**, we'll cover HTTP/3 discovery (`Alt-Svc` and DNS `HTTPS` records), how to force local browsers and `curl` onto HTTP/3, and how to wire these framing functions into an `http.Handler` server loop and a `Client`.
+In **Part 2**, we'll look at how browsers discover HTTP/3 (`Alt-Svc` and DNS `HTTPS` records), how to convince Chrome and `curl` to talk HTTP/3 to `localhost`, and wrap our framing code into a proper `http.Handler` server and `Client`.
 
-The complete runnable code and tests for this article are available on GitHub in [http3-from-scratch-part-1/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-1/go).
+See all of the code mentioned in this article in [http3-from-scratch-part-1/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-1/go).

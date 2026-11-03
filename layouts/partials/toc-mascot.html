@@ -1,0 +1,216 @@
+{{- $permanent := false -}}
+{{- if reflect.IsMap . -}}
+  {{- $permanent = .permanent -}}
+{{- end -}}
+<div class="toc-mascot-wrap">
+  <div class="toc-mascot-panel"{{ if not $permanent }} data-nibble-panel{{ end }}>
+    <div class="nibble-panel-header">
+      <span class="nibble-panel-title">Nibble</span>
+      {{- if not $permanent }}
+      <button type="button" class="nibble-close-btn" aria-label="Hide Nibble" title="Hide Nibble">&times;</button>
+      {{- end }}
+    </div>
+  <div class="nibble-speech" hidden>Bye! o/</div>
+  <div class="toc-mascot" data-mood="0">
+    <a href="/random/" class="toc-mascot-link" aria-label="Random post">
+      <span class="sr-only">Random post</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="112" height="112" shape-rendering="crispEdges" aria-hidden="true">
+        <!-- Floating Packet Sparkles -->
+        <g class="bot-packets-l">
+          <rect x="3" y="9" width="1" height="1" class="am" />
+          <rect x="4" y="10" width="1" height="1" class="cy" />
+          <rect x="2" y="16" width="1" height="1" class="gn" />
+        </g>
+        <g class="bot-packets-r">
+          <rect x="28" y="8" width="1" height="1" class="cy" />
+          <rect x="27" y="9" width="1" height="1" class="am" />
+          <rect x="29" y="15" width="1" height="1" class="gn" />
+        </g>
+
+        <!-- Floating Pixel Heart (Shown at max happiness / end of page) -->
+        <g class="bot-heart">
+          <rect x="22" y="2" width="2" height="1" class="bl" />
+          <rect x="25" y="2" width="2" height="1" class="bl" />
+          <rect x="21" y="3" width="7" height="2" class="bl" />
+          <rect x="22" y="5" width="5" height="1" class="bl" />
+          <rect x="23" y="6" width="3" height="1" class="bl" />
+          <rect x="24" y="7" width="1" height="1" class="bl" />
+          <rect x="22" y="3" width="1" height="1" class="wh" />
+        </g>
+
+        <g class="bot-body">
+          <!-- Top Telemetry Antenna (Bobbing ball tip) -->
+          <g class="bot-antenna">
+            <rect x="15" y="1" width="2" height="1" class="cy bot-ant-tip" />
+            <rect x="14" y="2" width="4" height="2" class="cy bot-ant-tip" />
+            <rect x="15" y="2" width="1" height="1" class="wh" />
+            <rect x="15" y="4" width="2" height="2" class="mt" />
+          </g>
+
+          <!-- Robot Ear Transceivers -->
+          <g class="bot-ear-l">
+            <rect x="6" y="12" width="1" height="4" class="mt" />
+            <rect x="5" y="13" width="1" height="2" class="cy" />
+          </g>
+          <g class="bot-ear-r">
+            <rect x="25" y="12" width="1" height="4" class="mt" />
+            <rect x="26" y="13" width="1" height="2" class="gn" />
+          </g>
+
+          <!-- Hoodie Outer Outline (Rounder Chibi Head & Body) -->
+          <rect x="10" y="6" width="12" height="1" class="ol" />
+          <rect x="8" y="7" width="2" height="1" class="ol" />
+          <rect x="22" y="7" width="2" height="1" class="ol" />
+          <rect x="7" y="8" width="1" height="10" class="ol" />
+          <rect x="24" y="8" width="1" height="10" class="ol" />
+          <rect x="8" y="18" width="1" height="7" class="ol" />
+          <rect x="23" y="18" width="1" height="7" class="ol" />
+          <rect x="9" y="25" width="14" height="1" class="ol" />
+
+          <!-- Hoodie Dome & Rim Highlights -->
+          <rect x="10" y="7" width="12" height="1" class="hl" />
+          <rect x="8" y="8" width="2" height="1" class="hl" />
+          <rect x="22" y="8" width="2" height="1" class="hl" />
+          <rect x="8" y="9" width="1" height="9" class="hl" />
+          <rect x="23" y="9" width="1" height="9" class="hl" />
+          <rect x="9" y="9" width="1" height="9" class="hd" />
+          <rect x="22" y="9" width="1" height="9" class="hd" />
+
+          <!-- Robot Metal Chassis (Inside Hood) -->
+          <rect x="10" y="8" width="12" height="1" class="ml" />
+          <rect x="10" y="9" width="12" height="2" class="mt" />
+          <rect x="10" y="11" width="1" height="6" class="mt" />
+          <rect x="21" y="11" width="1" height="6" class="mt" />
+          <rect x="10" y="17" width="12" height="1" class="mt" />
+
+          <!-- Router Status LEDs on Forehead (RX / ACT / TX) -->
+          <rect x="12" y="9" width="1" height="1" class="gn bot-led-1" />
+          <rect x="14" y="9" width="1" height="1" class="am bot-led-2" />
+          <rect x="16" y="9" width="1" height="1" class="cy bot-led-3" />
+
+          <!-- Dark CRT Visor Screen -->
+          <rect x="11" y="11" width="10" height="6" class="sc" />
+
+          <!-- Cute Cheek Blushes -->
+          <rect x="11" y="15" width="1" height="1" class="bl" />
+          <rect x="20" y="15" width="1" height="1" class="bl" />
+
+          <!-- Mood 0 Eyes: Chill / Sleepy half-lidded -->
+          <g class="bot-eyes-0">
+            <rect x="12" y="13" width="3" height="2" class="cy" />
+            <rect x="12" y="13" width="1" height="1" class="wh" />
+            <rect x="17" y="13" width="3" height="2" class="cy" />
+            <rect x="17" y="13" width="1" height="1" class="wh" />
+          </g>
+
+          <!-- Mood 1 Eyes: Curious / Standard 3x3 -->
+          <g class="bot-eyes-1">
+            <rect x="12" y="12" width="3" height="3" class="cy" />
+            <rect x="12" y="12" width="1" height="1" class="wh" />
+            <rect x="17" y="12" width="3" height="3" class="cy" />
+            <rect x="17" y="12" width="1" height="1" class="wh" />
+          </g>
+
+          <!-- Mood 2 Eyes: Starry / Extra Sparkly -->
+          <g class="bot-eyes-2">
+            <rect x="12" y="12" width="3" height="3" class="cy" />
+            <rect x="12" y="12" width="1" height="1" class="wh" />
+            <rect x="14" y="14" width="1" height="1" class="wh" />
+            <rect x="17" y="12" width="3" height="3" class="cy" />
+            <rect x="17" y="12" width="1" height="1" class="wh" />
+            <rect x="19" y="14" width="1" height="1" class="wh" />
+          </g>
+
+          <!-- Mood 3 / Bye Eyes: Happy ^ ^ Arches -->
+          <g class="bot-eyes-3">
+            <rect x="12" y="13" width="1" height="1" class="cy" />
+            <rect x="13" y="12" width="1" height="1" class="wh" />
+            <rect x="14" y="13" width="1" height="1" class="cy" />
+            <rect x="17" y="13" width="1" height="1" class="cy" />
+            <rect x="18" y="12" width="1" height="1" class="wh" />
+            <rect x="19" y="13" width="1" height="1" class="cy" />
+          </g>
+
+          <!-- Mood 0 Mouth: Little flat prompt -->
+          <g class="bot-mouth-0">
+            <rect x="15" y="16" width="2" height="1" class="gn" />
+          </g>
+
+          <!-- Mood 1 Mouth: Gentle small smile -->
+          <g class="bot-mouth-1">
+            <rect x="14" y="16" width="3" height="1" class="gn" />
+            <rect x="17" y="15" width="1" height="1" class="gn" />
+          </g>
+
+          <!-- Mood 2 Mouth: Cute curved smile -->
+          <g class="bot-mouth-2">
+            <rect x="14" y="15" width="1" height="1" class="gn" />
+            <rect x="15" y="16" width="2" height="1" class="gn" />
+            <rect x="17" y="15" width="1" height="1" class="gn" />
+          </g>
+
+          <!-- Mood 3 Mouth: Big open :D grin -->
+          <g class="bot-mouth-3">
+            <rect x="14" y="15" width="4" height="1" class="gn" />
+            <rect x="15" y="16" width="2" height="1" class="bl" />
+          </g>
+
+          <!-- Hoodie Torso & Sleeves -->
+          <rect x="9" y="18" width="14" height="7" class="hd" />
+          <rect x="9" y="18" width="1" height="6" class="hl" />
+          <rect x="22" y="18" width="1" height="6" class="hl" />
+
+          <!-- Glowing Hoodie Drawstrings -->
+          <rect x="13" y="18" width="1" height="3" class="gn" />
+          <rect x="18" y="18" width="1" height="3" class="gn" />
+
+          <!-- Glowing Cyberdeck / Terminal -->
+          <rect x="13" y="22" width="6" height="1" class="gn" />
+          <rect x="12" y="23" width="8" height="2" class="cy" />
+          <rect x="13" y="23" width="6" height="1" class="wh" />
+
+          <!-- Robot Clamp Hands (Typing) -->
+          <rect x="10" y="22" width="2" height="1" class="ml bot-hand-l" />
+          <rect x="20" y="22" width="2" height="1" class="ml bot-hand-r" />
+
+          <!-- Waving Right Arm (Shown when saying goodbye) -->
+          <g class="bot-hand-wave">
+            <rect x="24" y="17" width="2" height="2" class="hd" />
+            <rect x="25" y="15" width="2" height="2" class="ml" />
+            <rect x="26" y="14" width="1" height="1" class="cy" />
+          </g>
+
+          <!-- Stubby Robot Feet / Treads -->
+          <g class="bot-foot-l">
+            <rect x="11" y="26" width="3" height="2" class="mt" />
+            <rect x="11" y="28" width="3" height="1" class="ol" />
+            <rect x="12" y="26" width="1" height="1" class="ml" />
+          </g>
+          <g class="bot-foot-r">
+            <rect x="18" y="26" width="3" height="2" class="mt" />
+            <rect x="18" y="28" width="3" height="1" class="ol" />
+            <rect x="19" y="26" width="1" height="1" class="ml" />
+          </g>
+        </g>
+      </svg>
+    </a>
+  </div>
+  </div>
+  {{- if not $permanent }}
+  <div class="nibble-restore-bar" data-nibble-restore-bar hidden>
+    <span class="nibble-sleeping-label">Nibble is offline</span>
+    <button type="button" class="nibble-wake-link" data-nibble-restore>Bring him back</button>
+  </div>
+  <script>
+    try {
+      if (localStorage.getItem('kmcd-hide-nibble') === '1') {
+        var wrap = document.currentScript.parentElement;
+        var panel = wrap.querySelector('[data-nibble-panel]');
+        var bar = wrap.querySelector('[data-nibble-restore-bar]');
+        if (panel) panel.hidden = true;
+        if (bar) bar.hidden = false;
+      }
+    } catch (e) {}
+  </script>
+  {{- end }}
+</div>

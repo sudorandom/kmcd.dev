@@ -25,18 +25,18 @@ Before we get to the server loop, there's an obvious question to answer: since w
 
 ### Negotiating HTTP/3
 
-With HTTP/2, negotiation happens inside the same connection. Both HTTP/1.1 and HTTP/2 run over TCP and TLS. When a browser connects to TCP port 443, it sends an ALPN (Application-Layer Protocol Negotiation) list in its TLS `ClientHello` with `["h2", "http/1.1"]`. The server selects `"h2"` during the handshake and the connection continues as HTTP/2.
+With HTTP/2, protocol negotiation was easy because HTTP/1.1 and HTTP/2 both live on top of TCP and TLS. As we saw in [HTTP/2 From Scratch: Part 1](/posts/http2-from-scratch-part-1/), the client passes `NextProtos: []string{"h2", "http/1.1"}` in its TLS `ClientHello` on TCP port 443 and the server picks `h2` during the handshake.
 
-With HTTP/3, you can't negotiate a UDP protocol inside a TCP handshake without paying for a TCP+TLS connection first. Browsers use two main ways to discover HTTP/3 support.
+We can't do that for HTTP/3 since QUIC uses UDP instead of TCP, so browsers have two ways to learn that a host supports HTTP/3.
 
 #### The Alt-Svc Header
-If you look back at the `openssl s_client` output in [HTTP/2 From Scratch: Part 1](/posts/http2-from-scratch-part-1/), you can see this response header from `kmcd.dev`:
+If you scroll back to the `openssl s_client` dump in [HTTP/2 From Scratch: Part 1](/posts/http2-from-scratch-part-1/), you might have noticed this header in the response from `kmcd.dev`:
 
 ```http
 alt-svc: h3=":443"; ma=86400
 ```
 
-[Alternative Services (`Alt-Svc`, RFC 7838)](https://www.rfc-editor.org/rfc/rfc7838.html) lets an HTTP/1.1 or HTTP/2 server over TCP advertise that the same origin is also available over `h3` on UDP port 443, and that the client can cache that hint for 86,400 seconds (24 hours). The first request still goes over TCP, and the browser opens a QUIC connection on UDP in the background for later requests:
+That's [HTTP Alternative Services](https://www.rfc-editor.org/rfc/rfc7838.html). When you visit `kmcd.dev` for the first time over TCP, that header tells your browser that port 443 also speaks `h3` over UDP for the next 86,400 seconds (24 hours), so the browser can switch to QUIC on the next request:
 
 ```d2
 shape: sequence_diagram
@@ -52,10 +52,10 @@ Browser -> UDP: "GET / (HTTP/3)"
 UDP -> Browser: "200 OK"
 ```
 
-Because TCP ports and UDP ports are separate in the OS, a single Go binary can listen on TCP `:8443` (serving HTTP/1.1 or HTTP/2 with an `Alt-Svc` header) and UDP `:8443` (serving HTTP/3) at the same time.
+Since TCP and UDP ports are separate, a Go server can listen on TCP `:8443` and UDP `:8443` at the same time in the same binary.
 
 #### DNS HTTPS Records
-Relying on `Alt-Svc` still means the first visit uses TCP. [RFC 9460](https://www.rfc-editor.org/rfc/rfc9460.html) added the `HTTPS` DNS record type so clients can find out about HTTP/3 during DNS resolution. When a browser looks up a domain, it queries `A`, `AAAA`, and `HTTPS` records together. If the `HTTPS` record includes `alpn="h3"`, the browser can start with a QUIC handshake on UDP right away:
+Cloudflare also publishes an `HTTPS` DNS record ([RFC 9460](https://www.rfc-editor.org/rfc/rfc9460.html)) for `kmcd.dev`. If you run `dig kmcd.dev HTTPS`, you'll see `alpn="h3,h2"` in the answer. Browsers check for that `HTTPS` record when resolving the domain name, so they can connect to UDP port 443 on the very first request without doing a TCP round trip first:
 
 ```d2
 shape: sequence_diagram
@@ -72,22 +72,22 @@ UDP -> Browser: "HTTP/3 Response"
 
 ### Testing Locally
 
-Testing an HTTP/3 server on `localhost` in a browser can be frustrating if you don't know about Chrome's certificate rules. With HTTP/1.1 or HTTP/2, you can click through Chrome's self-signed certificate warning page and the browser will load the site. Even if you do that, Chrome will still refuse to use QUIC/HTTP/3 on an untrusted certificate and will stay on TCP without showing an error. And unless you pass a flag or serve `Alt-Svc` on TCP first, the browser won't try UDP on `localhost:8443` anyway.
+Pointing Chrome at our own Go server on `localhost:8443` has two catches. On TCP, we can use a self-signed certificate and click past Chrome's warning screen, but Chrome's QUIC client rejects self-signed certs outright. And without a DNS `HTTPS` record or an `Alt-Svc` header for `localhost:8443`, Chrome has no reason to try UDP on that port.
 
-To avoid certificate issues locally, I use [`mkcert`](https://github.com/FiloSottile/mkcert) (configured in `.mise.toml`) to create a locally trusted certificate:
+To get a certificate that Chrome actually trusts on `localhost`, I added [`mkcert`](https://github.com/FiloSottile/mkcert) to `.mise.toml` and generated a local cert:
 
 ```shell
 $ mkcert -install
 $ mkcert localhost 127.0.0.1
 ```
 
-Once you have a valid cert, you can test with `curl` using `--http3-only` (which forces UDP instead of falling back to TCP):
+Testing with `curl` is much simpler since `curl --http3-only -k` still allows self-signed certs over QUIC (note that macOS's built-in `/usr/bin/curl` doesn't have HTTP/3 enabled, so I used the `curl` binary from `mise`):
 
 ```shell
 $ curl --http3-only -k -v https://127.0.0.1:8443/headers
 ```
 
-Or if you want to test with Chrome directly without running a companion TCP server for `Alt-Svc`, you can launch Chrome with `--origin-to-force-quic-on`:
+And to make Chrome talk HTTP/3 directly to `localhost:8443` without running a separate TCP server for `Alt-Svc`, you can pass `--origin-to-force-quic-on`:
 
 ```shell
 $ open -a "Google Chrome" --args \
@@ -96,9 +96,9 @@ $ open -a "Google Chrome" --args \
     https://localhost:8443/
 ```
 
-### The Transport Interface
+### Wrapping the QUIC Connection
 
-Since we are running on `quic-go` in this post and swapping in our own UDP QUIC code in Part 3, we define a small `Conn` interface in `transport.go`:
+In `transport.go`, I put a small `Conn` interface around `quic-go`. Right now those methods just call into `quic-go`, and in Part 3 we'll swap in our own UDP implementation behind the same interface:
 
 ```go
 type Conn interface {
@@ -109,21 +109,19 @@ type Conn interface {
 }
 ```
 
-The interface has methods for both bidirectional streams (`AcceptStream` / `OpenStreamSync`) and unidirectional streams (`AcceptUniStream` / `OpenUniStreamSync`). We need the unidirectional streams for the HTTP/3 control stream.
+`AcceptStream` and `OpenStreamSync` are the bidirectional stream methods we used in Part 1, and `AcceptUniStream` and `OpenUniStreamSync` open the one-way streams that we'll use for the HTTP/3 control stream.
 
 ### The Server Loop
 
-In HTTP/2, connection-wide frames like `SETTINGS` and `GOAWAY` were sent on `Stream 0`. In HTTP/3, `Stream 0` is just the first client-initiated bidirectional request stream.
-
-Instead, [RFC 9114 Section 6.2.1](https://www.rfc-editor.org/rfc/rfc9114.html#name-control-streams) specifies that both the client and server open a unidirectional control stream (`Stream Type = 0x00`) when a connection starts and send a `SETTINGS` frame (`0x04`) as its first frame. Each HTTP request and response uses a separate bidirectional stream:
+Back in [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we sent and received `SETTINGS` frames on `Stream 0`. QUIC doesn't reserve stream `0` for connection settings (in fact, we already used stream `0` for our echo request in Part 1). Instead, [RFC 9114 Section 6.2.1](https://www.rfc-editor.org/rfc/rfc9114.html#name-control-streams) says that both the client and server have to open a separate one-way control stream when they connect. The first byte written to a one-way stream is a varint identifying its stream type (`0x00` for a control stream), followed immediately by a `SETTINGS` frame (`0x04`):
 
 {{< image src="h3-server-streams.svg" width="820px" class="center" inline="true" >}}
 
-One important rule in the spec is that you cannot close the control stream while the connection is open. If you add `defer uni.Close()` after writing your `SETTINGS` frame, the other side treats that `FIN` bit as a fatal `H3_CLOSED_CRITICAL_STREAM` error and closes the connection:
+When I first wrote `sendControlStreamSettings`, I put `defer uni.Close()` at the top of the function out of habit, and `quic-go` immediately dropped the connection with `H3_CLOSED_CRITICAL_STREAM`. Unlike a request stream, the control stream has to stay open for the entire connection because closing it sends a `FIN` bit that the peer treats as a connection error:
 
 {{< image src="control-stream-meme.jpg" width="480px" class="center" >}}
 
-Here is how `Server.handleConnection` in `server.go` sets up a connection:
+For each new QUIC connection in `server.go`, we open our control stream to send `SETTINGS`, start a background goroutine to read the client's unidirectional streams, and then accept bidirectional request streams in a loop:
 
 ```go
 func (s *Server) handleConnection(ctx context.Context, conn Conn) error {
@@ -143,7 +141,7 @@ func (s *Server) handleConnection(ctx context.Context, conn Conn) error {
 }
 ```
 
-In `sendControlStreamSettings`, we write the stream type varint (`0x00` for the control stream) followed by the `SETTINGS` frame (`0x04`) with `SettingsQPACKMaxTableCapacity (0x01) = 0`:
+In `sendControlStreamSettings`, we open a one-way stream, write the `0x00` control stream type varint, and write a `SETTINGS` frame (`0x04`) with `SettingsQPACKMaxTableCapacity` set to `0`:
 
 ```go
 func sendControlStreamSettings(ctx context.Context, conn Conn) error {
@@ -167,11 +165,11 @@ func sendControlStreamSettings(ctx context.Context, conn Conn) error {
 }
 ```
 
-Advertising `SettingsQPACKMaxTableCapacity = 0` tells the peer not to insert entries into the QPACK dynamic table and to stick to the 99-entry static table and string literals. That lets our `QPACKDecoder` from Part 1 handle headers from real clients like `curl` and Chrome without needing dynamic table state synchronization.
+We pass `0` for `SettingsQPACKMaxTableCapacity` because our `QPACKDecoder` from Part 1 only supports the static table and string literals, so we don't want `curl` or Chrome sending us dynamic table updates.
 
-#### Handling Requests
+#### Implementing http.Handler
 
-For each bidirectional request stream, `handleRequestStream` reads the initial `HEADERS` frame, builds an `*http.Request`, and passes it to `s.Handler.ServeHTTP(w, req)`:
+In `handleRequestStream`, we read the first `HEADERS` frame from the stream, decode the QPACK headers into an `*http.Request`, and pass it to `s.Handler.ServeHTTP`:
 
 ```go
 func (s *Server) handleRequestStream(ctx context.Context, conn Conn, stream Stream) error {
@@ -196,13 +194,13 @@ func (s *Server) handleRequestStream(ctx context.Context, conn Conn, stream Stre
 }
 ```
 
-Rather than reading the entire request body into memory upfront, `h3BodyReader` reads `DATA` frames from the QUIC stream as the handler calls `req.Body.Read(p)`. On the write side, `h3ResponseWriter` implements `http.ResponseWriter`: `WriteHeader` encodes and writes the `HEADERS` frame, and `Write(p)` sends `p` inside an HTTP/3 `DATA` frame.
+Notice that `req.Body` is an `&h3BodyReader{stream: stream}` and `w` is an `&h3ResponseWriter`. `h3BodyReader.Read` calls `ReadFrame(stream)` to read `DATA` frames from the QUIC stream into the caller's byte slice, and `h3ResponseWriter` writes the QPACK `HEADERS` frame and `DATA` frames back out to the stream.
 
 ### Building the Client
 
-On the client side (`client.go`), we want a `Client` with a standard `Do(req *http.Request) (*http.Response, error)` method, similar to what we built in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/).
+For `client.go`, I wanted the same `Do(req *http.Request) (*http.Response, error)` signature that we built in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/).
 
-`Client.Do` runs the same sequence from the client side:
+The client does the exact same dance as the server, just in reverse: dial QUIC, open a control stream to send `SETTINGS`, open a bidirectional stream for the request, write `HEADERS` (and `DATA` if there's a body), and close the write side of the stream so the server sees `EOF`:
 
 ```go
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
@@ -231,11 +229,11 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 }
 ```
 
-We reuse `h3BodyReader` for `resp.Body` as well. When the caller closes `resp.Body`, it closes the underlying QUIC connection.
+Notice that we can reuse `h3BodyReader` for `resp.Body` too! Just like the bug we hit in the HTTP/2 client, we can't `defer conn.Close()` inside `Do` because the caller hasn't read `resp.Body` yet. Instead, we pass `closer: conn` into `h3BodyReader` so the QUIC connection closes when the caller calls `resp.Body.Close()`.
 
-### The Result
+### Running It
 
-In `main.go`, we register three routes (`/`, `/headers`, and `/echo`) on a standard `http.NewServeMux()` and call them using our HTTP/3 `Client`:
+In `main.go`, we set up an `http.NewServeMux()` with three routes (`/`, `/headers`, and `/echo`) and call them with our `Client`:
 
 ```shell
 $ go run .
@@ -258,12 +256,10 @@ PASS
 ok  	http3-part-2	0.398s
 ```
 
-Both tests pass, confirming that our framing, control stream setup, and QPACK code interoperate with `quic-go`'s HTTP/3 implementation.
-
 ### What's Next?
 
-Now that we have a working HTTP/3 server and client, we can look at the transport layer underneath it.
+Our HTTP/3 server and client can now talk to `quic-go` and `curl`, but we are still relying on `quic-go` to open the UDP sockets and manage the QUIC streams underneath.
 
-In **Part 3**, we'll drop down to **UDP**. We'll look at how QUIC avoids transport-layer head-of-line blocking, how 1-RTT and 0-RTT handshakes work, how QUIC frames packets and streams over UDP datagrams, and replace `quic-go` with our own QUIC transport layer.
+In **Part 3**, we'll see why HTTP/2 still suffers from head-of-line blocking at the TCP layer, how QUIC fixes it, how QUIC packets and stream frames are laid out on the wire, and swap out `quic-go` for our own toy QUIC transport.
 
-The complete runnable code and tests for this article are available on GitHub in [http3-from-scratch-part-2/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-2/go).
+See all of the code mentioned in this article in [http3-from-scratch-part-2/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-2/go).

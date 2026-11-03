@@ -17,50 +17,35 @@ series: ["HTTP from Scratch"]
 draft: true
 ---
 
-In [Part 1](/posts/http3-from-scratch-part-1/) and [Part 2](/posts/http3-from-scratch-part-2/), we built an HTTP/3 server and client in Go. We wrote the variable-length integer framing, QPACK header compression, unidirectional control streams, and `http.Handler` / `http.Client` adapters on top of a `Conn` and `Stream` interface backed by `quic-go`.
+In [Part 1](/posts/http3-from-scratch-part-1/) and [Part 2](/posts/http3-from-scratch-part-2/), we wrote our HTTP/3 framing, QPACK encoder and decoder, control streams, and `Server` and `Client` types in Go. At the end of Part 2, our HTTP/3 client and server could talk to `curl`, `quic-go`, and Chrome, but we were still using `quic-go` to handle the UDP sockets and QUIC streams.
 
-In this final part, we'll remove `quic-go` from `go.mod`, look at how QUIC works on the wire, write a small QUIC packet and `STREAM` framing layer over UDP sockets (`net.PacketConn`), and run our HTTP/3 server and client from Part 2 on top of it.
+In this post, we'll remove `quic-go` and implement our own QUIC packet and stream layer over UDP.
 
-### QUIC Foundations
+### Leaving TCP Behind
 
-Before writing the UDP socket code, it's worth reviewing why QUIC ([RFC 9000](https://www.rfc-editor.org/rfc/rfc9000.html)) is structured this way.
-
-#### Why UDP?
-If TCP had problems with head-of-line blocking and handshake round trips, why not update TCP in the OS kernel instead of building a new protocol on UDP?
-
-In practice, two things get in the way: middleboxes and OS upgrade cycles. Many firewalls, NATs, and routers inspect TCP headers and drop packets with unfamiliar TCP options or new IP protocol numbers. Even without middleboxes, rolling out kernel-level TCP changes across every server, phone, and laptop takes years.
-
-UDP avoids both issues. A UDP header is just 8 bytes (`Source Port`, `Dest Port`, `Length`, `Checksum`) followed by payload bytes. UDP doesn't provide connection state, ordering, retransmissions, or congestion control, which means network hardware mostly forwards UDP packets without meddling with their contents. That lets QUIC implement stream multiplexing, reliability, and encryption in user space.
-
-#### Independent Streams
-In HTTP/2 over TCP, multiple HTTP streams share a single TCP byte stream. If Packet 1 (carrying data for Stream 0) is dropped on the network while Packet 2 (carrying data for Stream 4) arrives, the OS kernel holds Packet 2 in its buffer until Packet 1 is retransmitted:
+At the end of [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/), I talked about why HTTP/2 only solved head-of-line blocking at the application layer. Since HTTP/2 multiplexes all of its streams over a single TCP connection, it still inherits TCP's strict sequential packet ordering. If a TCP packet carrying bytes for `Stream 0` gets dropped on the network while a packet for `Stream 4` arrives, the OS kernel holds `Stream 4`'s bytes in its buffer until the lost packet for `Stream 0` is retransmitted:
 
 {{< image src="holb.png" width="420px" class="center" >}}
 
-In QUIC, each UDP datagram carries one or more **QUIC frames**, and `STREAM` frames include both a `Stream ID` and a byte `Offset`.
+As I mentioned back then, the only ways around this were to make big changes to TCP (which isn't going to happen with how many routers and firewalls inspect TCP headers) or abandon TCP for UDP. QUIC ([RFC 9000](https://www.rfc-editor.org/rfc/rfc9000.html)) takes the UDP route. Since UDP datagrams are just 8 bytes of port and length headers followed by raw bytes, QUIC can manage its own streams and retransmissions on top of `net.PacketConn` without one lost packet stalling every other stream on the connection.
 
-If a UDP packet for `Stream 0` is lost, only `Stream 0` has to wait for retransmission. `Stream 4` and `Stream 8` can still be read by the HTTP/3 layer right away. Within a single stream, if chunk 2 (`Offset=1000`) arrives before chunk 1 (`Offset=0`), the stream buffer stores chunk 2 at offset 1000 and hands both chunks to `Read` once chunk 1 arrives.
+And as I wrote about in [gRPC Over HTTP/3](/posts/grpc-over-http3/), QUIC also folds the TLS 1.3 handshake into its own `CRYPTO` frames (`0x06`) instead of waiting for a separate TCP 3-way handshake to finish first, which gets new connections down to 1-RTT (or 0-RTT when resuming a session).
 
-#### Faster Handshakes
-As I showed in [gRPC Over HTTP/3](/posts/grpc-over-http3/), TCP with TLS requires a 3-way TCP handshake (`SYN`, `SYN-ACK`, `ACK`) before the TLS handshake (`ClientHello`, `ServerHello`) can start.
+### Debugging QUIC Traffic
 
-QUIC combines these steps by putting TLS 1.3 handshake messages inside QUIC `CRYPTO` frames (`0x06`) in the first `Initial` UDP packet. That reduces a new connection handshake to **1-RTT**. When a client reconnects to a server where it already has a cached session ticket and transport parameters, it can also send **0-RTT** packets carrying encrypted HTTP/3 `HEADERS` and `DATA` frames along with the `Initial` packet.
+One downside of moving from HTTP/1.1 on TCP to QUIC on UDP is that you can't just use `nc` or `telnet` to see what your server is doing.
 
-### Debugging QUIC
+When I was working on my `quic-go` PRs, I used Wireshark with `SSLKEYLOGFILE=/tmp/keys.log`. If you set that environment variable when running `quic-go`, `curl`, or Chrome, they dump their TLS keys to `/tmp/keys.log`. You can configure that path in Wireshark under *Preferences -> Protocols -> TLS* and Wireshark will decrypt the UDP datagrams and show you the `CRYPTO`, `ACK`, and `STREAM` frames inside. `quic-go` also has a `QLOGDIR` environment variable that writes JSON trace files you can open in [qvis.quictools.info](https://qvis.quictools.info/).
 
-With HTTP/1.1, you can test a server using `telnet` or `nc`. With QUIC over UDP, the wire format is binary and encrypted from the first packet.
+### QUIC Packets and STREAM Frames
 
-When I'm debugging real QUIC traffic, I usually rely on Wireshark with `SSLKEYLOGFILE`. Both `quic-go` and browsers support exporting TLS keys to a file if you set `SSLKEYLOGFILE=/tmp/keys.log` in your environment. Once you point Wireshark at that file under *Preferences -> Protocols -> TLS*, it decrypts the QUIC packets and lets you inspect the `CRYPTO`, `ACK`, `STREAM`, and `HTTP/3` frames inside each datagram. Another useful tool is `qlog`: if you set `QLOGDIR=/tmp/qlog` when running a `quic-go` program, it writes JSON trace files that you can load into [qvis.quictools.info](https://qvis.quictools.info/) to see packet timelines and flow control state. And for our own QUIC framing code here, unit tests that push out-of-order `STREAM` frames into a stream buffer are the fastest way to check reassembly edge cases.
-
-### Packet and Frame Layout
-
-[RFC 9000 Section 17](https://www.rfc-editor.org/rfc/rfc9000.html#name-packet-formats) defines two packet header formats, selected by the top bit of the first byte (`Header Form`):
+When we read a UDP datagram from `net.PacketConn`, we first need to parse the QUIC packet header ([RFC 9000 Section 17](https://www.rfc-editor.org/rfc/rfc9000.html#name-packet-formats)). The highest bit of the first byte tells us whether we're looking at a **Long Header** (used during the handshake) or a **Short Header** (used for 1-RTT data):
 
 {{< image src="quic-packets.svg" width="820px" class="center" inline="true" >}}
 
-Notice that QUIC packets include a **Connection ID** even though UDP already has a source IP and port. This supports **Connection Migration**. If your phone moves from Wi-Fi to cellular, your source IP address and UDP port change. A TCP connection breaks because it is tied to the 4-tuple `(SrcIP, SrcPort, DstIP, DstPort)`. A QUIC server routes packets by their `Destination Connection ID`, so an existing connection and its open HTTP/3 streams can continue across the new network path.
+Notice that both packet headers include a **Destination Connection ID** (`DestConnID`). With TCP, a connection is identified by the client and server IP and port, so if you switch from Wi-Fi to mobile data and your IP address changes, your TCP connection dies. In QUIC, the server looks up the connection in a map using `DestConnID` instead of the UDP source address.
 
-The payload of a QUIC packet contains one or more **QUIC Frames** ([RFC 9000 Section 19](https://www.rfc-editor.org/rfc/rfc9000.html#name-frame-types-and-formats)). Here are the structs we use in `quic_frame.go`:
+Inside the packet payload is a sequence of QUIC frames ([RFC 9000 Section 19](https://www.rfc-editor.org/rfc/rfc9000.html#name-frame-types-and-formats)). Here are the `Packet` and `QUICFrame` structs we use in `quic_frame.go`:
 
 ```go
 type Packet struct {
@@ -74,20 +59,19 @@ type Packet struct {
 }
 
 type QUICFrame struct {
-	Type     uint64 // PING (0x01), ACK (0x02), CRYPTO (0x06), STREAM (0x08..0x0f), CONNECTION_CLOSE (0x1d)
+	Type     uint64
 	StreamID uint64
 	Offset   uint64
 	Fin      bool
 	Data     []byte
-	// ... ACK, CRYPTO, and CONNECTION_CLOSE fields ...
 }
 ```
 
-Most of the work happens in the **`STREAM` frame (`0x08` to `0x0f`)**. The lowest 3 bits of the frame type act as flags (`OFF = 0x04`, `LEN = 0x02`, `FIN = 0x01`), and the lowest 2 bits of the `Stream ID` indicate who opened the stream and whether it is bidirectional or unidirectional:
+The frame type we care about most for HTTP/3 is the **`STREAM` frame (`0x08` to `0x0f`)**. In a `STREAM` frame, the lowest 3 bits of the frame type byte tell the parser whether the `Offset` field (`0x04`), `Length` field (`0x02`), and `FIN` bit (`0x01`) are present:
 
 {{< image src="quic-stream-frame.svg" width="820px" class="center" inline="true" >}}
 
-When encoding a `STREAM` frame in `AppendQUICFrame`, we set the low bits on the type byte whenever `Offset > 0` or `Fin == true`:
+In `AppendQUICFrame`, we set those bits on `QUICFrameStreamBase` (`0x08`) and encode the fields with the `AppendVarint` function we wrote in Part 1:
 
 ```go
 frameType := QUICFrameStreamBase | StreamFlagLEN
@@ -106,22 +90,13 @@ buf = AppendVarint(buf, uint64(len(f.Data)))
 buf = append(buf, f.Data...)
 ```
 
-| Low 2 Bits | Meaning | Stream IDs |
-| :--- | :--- | :--- |
-| `0b00` (`0x0`) | Client Bidirectional (Requests) | `0, 4, 8...` |
-| `0b01` (`0x1`) | Server Bidirectional | `1, 5, 9...` |
-| `0b10` (`0x2`) | Client Unidirectional (Control) | `2, 6, 10...` |
-| `0b11` (`0x3`) | Server Unidirectional (Control) | `3, 7, 11...` |
+The `Stream ID` varint in that diagram also uses its lowest two bits as flags: bit `0` is `0` for client-initiated streams and `1` for server-initiated streams, and bit `1` is `0` for bidirectional streams and `1` for unidirectional streams. That explains the stream numbers we saw in Part 1 and Part 2: client request streams have `0b00` in the bottom two bits (`0, 4, 8...`), the client's control stream has `0b10` (`2`), and the server's control stream has `0b11` (`3`).
 
-Encoding the initiator and direction in the lowest two bits of the `Stream ID` lets the client and server open new streams concurrently without coordinating IDs. That's why our client's first request in Part 1 used `Stream 0`, its unidirectional control stream used `Stream 2`, and the server's unidirectional control stream used `Stream 3`.
+What about QUIC packet encryption? In a real QUIC stack like `quic-go`, the payload of every QUIC packet is encrypted with keys from the TLS 1.3 handshake in the `CRYPTO` frames. Just like I skipped implementing Huffman trees in HTTP/2 Part 4 and skipped HTTP trailers in Part 1, I'm not implementing RFC 9001 TLS packet header protection here. Our toy `quic_conn.go` sends the encoded `Packet` bytes directly over the UDP socket.
 
-*(Note: A full QUIC implementation like `quic-go` encrypts packet payloads and protects header bits using keys derived from the TLS 1.3 handshake in `CRYPTO` frames. In our toy transport here, we leave the frames unencrypted over UDP so we can focus on packet headers, connection IDs, `ACK` frames, and stream multiplexing without adding a full TLS 1.3 packet protector.)*
+### Reassembling Streams Over UDP
 
-### Streams Over UDP
-
-Now let's look at how `quic_conn.go` builds ordered streams on top of `net.ListenPacket("udp", addr)`.
-
-Each `toyQUICStream` stores incoming slices of data in a map keyed by their byte `Offset` (`chunks map[uint64][]byte`), along with `readOffset` and `finOffset`:
+How do we turn unordered UDP datagrams into an `io.Reader` stream that delivers bytes in order? In `quic_conn.go`, each `toyQUICStream` keeps a `chunks map[uint64][]byte` that maps a byte `Offset` to its data slice, along with `readOffset` and `finOffset`:
 
 ```go
 func (s *toyQUICStream) pushFrame(offset uint64, data []byte, fin bool) {
@@ -139,7 +114,7 @@ func (s *toyQUICStream) pushFrame(offset uint64, data []byte, fin bool) {
 }
 ```
 
-When the HTTP/3 server or client calls `stream.Read(p)`, it checks whether a chunk is available at `s.readOffset`:
+When the HTTP/3 server or client calls `stream.Read(p)`, we check if `s.chunks` has an entry for the current `s.readOffset`. If the next chunk hasn't arrived yet, `Read` blocks on `s.cond.Wait()`:
 
 ```go
 func (s *toyQUICStream) Read(p []byte) (int, error) {
@@ -160,13 +135,11 @@ func (s *toyQUICStream) Read(p []byte) (int, error) {
 }
 ```
 
-If two UDP datagrams arrive out of order so `offset=6 ("world!")` shows up before `offset=0 ("hello ")`, `s.chunks[6]` stays in the map until `offset=0` arrives. Once `offset=0` is received, `Read` returns `"hello world!"` in order and then returns `io.EOF`. Other streams on the connection (`s.conn.streams[otherStreamID]`) have their own `chunks` map and `readOffset`, so they aren't blocked while one stream waits on a missing offset.
+If `offset=6 ("world!")` arrives on the UDP socket before `offset=0 ("hello ")`, `pushFrame` stores `"world!"` at `s.chunks[6]` and `Read` waits until `offset=0` shows up. Once `offset=0` arrives, `Read` reads `"hello "`, advances `s.readOffset` to `6`, and can immediately read `"world!"` on the next call. And since every `toyQUICStream` has its own `chunks` map, a delayed packet on `Stream 0` won't block `Read` on `Stream 4`.
 
-At the connection level, `DialToyQUIC` opens a UDP socket, picks a 64-bit Connection ID, and sends a Long Header `Initial` packet with a `CRYPTO` frame (`CLIENT_HELLO_ALPN_H3`). On the server side, `toyQUICListener.readLoop()` reads UDP datagrams and routes packets for existing connections by `pkt.DestConnID`. When an `Initial` packet arrives for a new connection, the listener creates a `toyQUICConn`, sends back a Long Header `Handshake` packet (`ACK` + `CRYPTO` frame), and hands the connection to `Accept()`. Inside the connection, `handlePacket` dispatches incoming `STREAM` frames by `f.StreamID`, initializes peer-opened streams based on the low 2 bits of `StreamID`, and replies with `ACK` frames.
+### Running HTTP/3 on Our UDP Transport
 
-### Plugging in HTTP/3
-
-Here is our `go.mod` for Part 3:
+With `quic_frame.go` and `quic_conn.go` in place, we can drop `github.com/quic-go/quic-go` from `go.mod`:
 
 ```go
 module http3-part-3
@@ -176,9 +149,9 @@ go 1.25.5
 require golang.org/x/net v0.55.0
 ```
 
-`github.com/quic-go/quic-go` is no longer in `go.mod`. The only external dependency is `golang.org/x/net` for the Huffman table in `qpack.go` that we also used in the HTTP/2 posts.
+The only dependency left in `go.mod` is `golang.org/x/net` for the HPACK/QPACK Huffman table from [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/).
 
-We copy `frame.go`, `qpack.go`, `server.go`, and `client.go` as-is from Part 2, wire `ListenQUIC` and `DialQUIC` to `ListenToyQUIC` and `DialToyQUIC` in `main.go`, and run the tests and demo:
+In `transport.go`, we wire `ListenQUIC` and `DialQUIC` up to `ListenToyQUIC` and `DialToyQUIC` and run the tests and demo with our `server.go` and `client.go` from Part 2:
 
 ```shell
 $ go test -v ./...
@@ -193,15 +166,13 @@ $ go run .
 Homemade QUIC + HTTP/3 server listening on UDP 127.0.0.1:58114
 
 [GET /hello] Status: 200 OK | X-Transport: toy-quic-udp | Body: HTTP/3 on homemade QUIC! Method=GET Path=/hello
-[POST /echo] Status: 200 OK | Body: Zero quic-go imports! Pure UDP -> QUIC -> QPACK -> HTTP/3!
+[POST /echo] Status: 200 OK | Body: Echoing over our own UDP QUIC streams!
 ```
-
-When `client.Do(req)` runs here, `Client` encodes the `*http.Request` headers with QPACK in `qpack.go`, writes those headers and the body into HTTP/3 `HEADERS` (`0x01`) and `DATA` (`0x00`) frames in `frame.go`, and sends a `SETTINGS` (`0x04`) frame on unidirectional Control Stream `2`. Underneath, `toyQUICConn` wraps those stream writes into `STREAM` (`0x08..0x0f`) frames with stream IDs, byte offsets, and `FIN` bits inside QUIC Short Header packets and sends them over a `net.PacketConn` UDP socket. On the server side, `toyQUICListener` matches the incoming UDP packets by `Destination Connection ID`, sends `ACK` (`0x02`) frames, reassembles the stream chunks in `toyQUICStream`, and passes the streams up to our HTTP/3 `Server`, which decodes the QPACK headers, calls the `http.ServeMux` handler, and writes the HTTP/3 response back across the QUIC streams over UDP.
 
 ### Wrapping Up
 
-Across this series ([HTTP/0.9](/posts/http0.9-from-scratch/), [HTTP/1.0](/posts/http1.0-from-scratch/), [HTTP/1.1](/posts/http1.1-from-scratch/), [HTTP/2](/posts/http2-from-scratch-part-1/), and now **HTTP/3**), we went from sending a single line of text (`GET /index.html`) over a TCP socket to multiplexing binary frames and QPACK headers over UDP streams.
+That brings us to the end of the HTTP/3 posts and the "HTTP from Scratch" series ([HTTP/0.9](/posts/http0.9-from-scratch/), [HTTP/1.0](/posts/http1.0-from-scratch/), [HTTP/1.1](/posts/http1.1-from-scratch/), [HTTP/2](/posts/http2-from-scratch-part-1/), and now **HTTP/3**).
 
-Building the HTTP/3 framing and QPACK layer first before writing the QUIC transport underneath turned out to be a much nicer way to learn both protocols. Working with QUIC streams from the HTTP/3 side first makes it much clearer why QUIC's packet headers, stream IDs, and offset framing work the way they do.
+Starting at the top with `quic-go` in Part 1 and Part 2 before writing the UDP packet code here in Part 3 worked out much better than I expected when I started planning these posts. By the time we got to `STREAM` frames and stream ID bitmasks in this post, we had already seen how HTTP/3 uses them from the application side.
 
-The complete runnable code and tests for this article are available on GitHub in [http3-from-scratch-part-3/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-3/go).
+See all of the code mentioned in this article in [http3-from-scratch-part-3/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-3/go).

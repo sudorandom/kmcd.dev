@@ -114,9 +114,31 @@
                             </div>
                         </div>
                         {{ end }}
-                        <a href="{{ "posts/" | relLangURL }}" class="posts-footer-archive">
-                            Check out the archive for more &rarr;
-                        </a>
+                        {{- $allPosts := where $PageContext.RegularPages "Type" $contentTypeName -}}
+                        {{- $totalWords := 0 -}}
+                        {{- range $allPosts -}}
+                            {{- $totalWords = add $totalWords .WordCount -}}
+                        {{- end -}}
+                        <div class="archive-cta-card">
+                            <div class="archive-cta-mascot">
+                                {{ partial "toc-mascot.html" . }}
+                            </div>
+                            <div class="archive-cta-body">
+                                <span class="archive-cta-kicker">★ DEEP IN THE STACKS</span>
+                                <h3 class="archive-cta-title">Still scrolling? The rabbit hole goes way deeper.</h3>
+                                <p class="archive-cta-desc">
+                                    There are <strong>{{ len $allPosts }} articles</strong> ({{ lang.FormatNumberCustom 0 $totalWords }} words of networking, protocols, and questionable side-quests) waiting in the archive.
+                                </p>
+                                <div class="archive-cta-actions">
+                                    <a href="{{ "posts/" | relLangURL }}" class="posts-footer-archive">
+                                        <i class="fa-solid fa-box-archive"></i> Dive into all {{ len $allPosts }} posts &rarr;
+                                    </a>
+                                    <a href="{{ "random/" | relLangURL }}" class="posts-footer-random">
+                                        <i class="fa-solid fa-dice"></i> Let Nibble pick one
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -141,7 +163,7 @@
                                 <div class="projects-box-content">
                                     <div class="project-info-wrapper">
                                         {{ with .tag }}<span class="project-tag-pill {{ $proj.tagClass }}">{{ . }}</span>{{ end }}
-                                        {{ if .title }}<h3><a href="{{ .url }}" target="_blank" rel="noopener">{{ .title }}</a></h3>{{ end }}
+                                        {{ if .title }}<h3><a href="{{ .url }}" class="project-main-link" target="_blank" rel="noopener">{{ .title }}</a></h3>{{ end }}
                                         {{ if .desc }}<p>{{ .desc | safeHTML }}</p>{{ end }}
                                     </div>
                                 </div>

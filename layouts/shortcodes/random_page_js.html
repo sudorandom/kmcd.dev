@@ -1,7 +1,13 @@
+{{- $cutoff := now.AddDate -2 0 0 -}}
 <script type="text/javascript">
-const pages = [{{ range (where .Site.RegularPages "Type" "posts") }}{{ if not .IsHome }}"{{ .Permalink }}",{{ end }}
-{{ end }}
+const allPages = [
+{{- range (where .Site.RegularPages "Type" "posts") -}}
+  {{- if and (not .IsHome) (ge .Date $cutoff) }}
+  "{{ .Permalink }}",
+  {{- end -}}
+{{- end }}
 ];
-let random_idx = Math.floor(Math.random() * (pages.length - 1));
-window.location = pages[random_idx];
+const pages = allPages.length > 1 ? allPages.filter(p => p !== document.referrer) : allPages;
+const randomIdx = Math.floor(Math.random() * pages.length);
+window.location = pages[randomIdx];
 </script>

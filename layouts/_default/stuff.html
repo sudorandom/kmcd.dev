@@ -405,40 +405,43 @@
 
     <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
     <aside class="tree-nav" aria-label="Table of Contents">
-      <div class="toc-title">Contents</div>
-      <nav class="tree-nav-content">
-        <ul>
-          <li>
-            <a href="#ongoing-projects">Ongoing Projects</a>
-            <ul>
-              <li><a href="#live-internet-map">Live Internet Map</a></li>
-              <li><a href="#internet-infrastructure-map">Internet Infrastructure Map</a></li>
-              <li><a href="#bgp">Let's Learn About BGP</a></li>
-              <li><a href="#fauxrpc">FauxRPC</a></li>
-              <li><a href="#protodocs">ProtoDocs</a></li>
-              <li><a href="#protoc-gen-connect-openapi">protoc-gen-connect-openapi</a></li>
-              <li><a href="#kmcd-dev">kmcd.dev</a></li>
-              <li><a href="#phreak">phreak.kmcd.dev</a></li>
-              <li><a href="#morse">morse.kmcd.dev</a></li>
-              <li><a href="#wordseq">wordseq</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#tools">Tools</a>
-            <ul>
-              <li><a href="#http-tool">HTTP Version Tool</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#finished-projects">Finished Projects</a>
-            <ul>
-              <li><a href="#evepraisal">evepraisal.com</a></li>
-              <li><a href="#softlayer-python">softlayer-python</a></li>
-              <li><a href="#swftp">swftp</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div class="tree-nav-card">
+        <div class="toc-title">Contents</div>
+        <nav class="tree-nav-content">
+          <ul>
+            <li>
+              <a href="#ongoing-projects">Ongoing Projects</a>
+              <ul>
+                <li><a href="#live-internet-map">Live Internet Map</a></li>
+                <li><a href="#internet-infrastructure-map">Internet Infrastructure Map</a></li>
+                <li><a href="#bgp">Let's Learn About BGP</a></li>
+                <li><a href="#fauxrpc">FauxRPC</a></li>
+                <li><a href="#protodocs">ProtoDocs</a></li>
+                <li><a href="#protoc-gen-connect-openapi">protoc-gen-connect-openapi</a></li>
+                <li><a href="#kmcd-dev">kmcd.dev</a></li>
+                <li><a href="#phreak">phreak.kmcd.dev</a></li>
+                <li><a href="#morse">morse.kmcd.dev</a></li>
+                <li><a href="#wordseq">wordseq</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#tools">Tools</a>
+              <ul>
+                <li><a href="#http-tool">HTTP Version Tool</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#finished-projects">Finished Projects</a>
+              <ul>
+                <li><a href="#evepraisal">evepraisal.com</a></li>
+                <li><a href="#softlayer-python">softlayer-python</a></li>
+                <li><a href="#swftp">swftp</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      {{ partial "toc-mascot.html" . }}
     </aside>
   </main>
 </div>

@@ -156,10 +156,13 @@
     {{- if $hasTOC }}
     <!-- RIGHT SIDEBAR: TREE-NAV TOC -->
     <aside class="tree-nav" aria-label="Table of Contents" data-pagefind-ignore>
-      <div class="toc-title">Contents</div>
-      <nav class="tree-nav-content">
-        {{ .TableOfContents }}
-      </nav>
+      <div class="tree-nav-card">
+        <div class="toc-title">Contents</div>
+        <nav class="tree-nav-content">
+          {{ .TableOfContents }}
+        </nav>
+      </div>
+      {{ partial "toc-mascot.html" . }}
     </aside>
     {{- end }}
   </main>

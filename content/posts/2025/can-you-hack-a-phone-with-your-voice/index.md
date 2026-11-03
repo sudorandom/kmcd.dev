@@ -35,7 +35,7 @@ I tossed a link up [on Mastodon](https://infosec.exchange/@sudorandom/1147040134
 
 But beyond the fun of watching the stats climb, something even more incredible happened.
 
-#### How Mastodon Gave Me a History Lesson
+## How Mastodon Gave Me a History Lesson
 
 The most incredible outcome of this little project was the history lesson I received from the community. I put out a simple app, and what I got back was a [masterclass in telecommunications history](https://infosec.exchange/@sudorandom/114704013454618750). The replies were flooded with fascinating details from people who were there, engineers, and fellow enthusiasts. The thread felt like old friends sharing stories and personal anecdotes around a campfire.
 
