@@ -14,14 +14,24 @@
         {{ if and (not $isSVG) (not $imgHeight) }}
             {{ $imgHeight = $image.Height }}
         {{ end }}
-        <img src="{{ $image.Permalink }}"
-             class="img-fade-in{{ with .Get "class" }} {{ . }}{{ end }}"
-             onload="this.classList.add('is-loaded')"
-             alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
-             {{- with $imgWidth }} width="{{ . }}"{{ end -}}
-             {{- with $imgHeight }} height="{{ . }}"{{ end -}}
-             {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
-        /><!-- Closing img tag -->
+        {{ $shouldInlineSVG := and $isSVG (or (eq (.Get "inline") "true") (in $image.Content "d2-svg") (in $image.Content "h3-diagram")) }}
+        {{ if $shouldInlineSVG }}
+            {{- $cleanSVG := replaceRE "^<\\?xml[^>]*\\?>" "" $image.Content -}}
+            {{- $cleanSVG = replaceRE `preserveAspectRatio="xMinYMin meet" viewBox="0 0 ([0-9]+) ([0-9]+)"` `preserveAspectRatio="xMinYMin meet" width="$1" viewBox="0 0 $1 $2"` $cleanSVG -}}
+            <div class="svg-diagram-inline{{ with .Get "class" }} {{ . }}{{ end }}"
+                 style="display: block; max-width: 100%;{{- with $imgWidth }} width: {{ . }};{{ end -}}{{- with $imgHeight }} height: {{ . }};{{ end -}}{{ if eq (.Get "class") "center" }} margin-left: auto; margin-right: auto;{{ end }}">
+                {{ $cleanSVG | safeHTML }}
+            </div>
+        {{ else }}
+            <img src="{{ $image.Permalink }}"
+                 class="img-fade-in{{ with .Get "class" }} {{ . }}{{ end }}"
+                 onload="this.classList.add('is-loaded')"
+                 alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify }}{{ end }}"
+                 {{- with $imgWidth }} width="{{ . }}"{{ end -}}
+                 {{- with $imgHeight }} height="{{ . }}"{{ end -}}
+                 {{- with .Get "loading" }} loading="{{ . }}"{{ end -}}
+            /><!-- Closing img tag -->
+        {{ end }}
     {{ else }}
         {{ warnf "Image not found: %s in %s" (.Get "src") $.Page.File.Path }}
     {{ end }}

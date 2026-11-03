@@ -468,11 +468,241 @@ function initImageFadeIn() {
   });
 }
 
+function initKeyboardShortcuts() {
+  let gPending = false;
+  let gTimer = null;
+  let modalEl = null;
+
+  function ensureModal() {
+    if (modalEl) return modalEl;
+    modalEl = document.createElement("div");
+    modalEl.className = "shortcuts-modal-backdrop";
+    modalEl.setAttribute("role", "dialog");
+    modalEl.setAttribute("aria-modal", "true");
+    modalEl.setAttribute("aria-labelledby", "shortcuts-modal-title");
+    modalEl.hidden = true;
+    modalEl.innerHTML = `
+      <div class="shortcuts-modal">
+        <div class="shortcuts-modal__header">
+          <h2 id="shortcuts-modal-title">Keyboard Shortcuts</h2>
+          <button type="button" class="shortcuts-modal__close" aria-label="Close shortcuts menu">&times;</button>
+        </div>
+        <div class="shortcuts-modal__grid">
+          <div class="shortcuts-modal__section">
+            <h3>Navigation</h3>
+            <dl class="shortcuts-list">
+              <div><dt><kbd>[</kbd> <span class="kbd-then">/</span> <kbd>]</kbd></dt><dd>Prev / next post</dd></div>
+              <div><dt><kbd>Shift</kbd> <span class="kbd-then">+</span> <kbd>[</kbd> <span class="kbd-then">/</span> <kbd>]</kbd></dt><dd>Prev / next in series</dd></div>
+              <div><dt><kbd>/</kbd></dt><dd>Search site</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>h</kbd></dt><dd>Go to Home</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>p</kbd></dt><dd>Go to Posts</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>d</kbd></dt><dd>Go to Daily Prompts</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>s</kbd></dt><dd>Go to Stuff</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>m</kbd></dt><dd>Go to About Me</dd></div>
+            </dl>
+          </div>
+          <div class="shortcuts-modal__section">
+            <h3>Reading &amp; Actions</h3>
+            <dl class="shortcuts-list">
+              <div><dt><kbd>?</kbd></dt><dd>Toggle this help menu</dd></div>
+              <div><dt><kbd>j</kbd> <span class="kbd-then">/</span> <kbd>k</kbd></dt><dd>Scroll down / up</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>g</kbd></dt><dd>Scroll to top</dd></div>
+              <div><dt><kbd>G</kbd></dt><dd>Scroll to bottom</dd></div>
+              <div><dt><kbd>t</kbd></dt><dd>Toggle dark / light mode</dd></div>
+              <div><dt><kbd>Esc</kbd></dt><dd>Close menu / unfocus input</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalEl);
+
+    modalEl.querySelector(".shortcuts-modal__close")?.addEventListener("click", () => {
+      toggleModal(false);
+    });
+    modalEl.addEventListener("click", (ev) => {
+      if (ev.target === modalEl) {
+        toggleModal(false);
+      }
+    });
+    return modalEl;
+  }
+
+  function toggleModal(forceState) {
+    const el = ensureModal();
+    const nextState = typeof forceState === "boolean" ? forceState : el.hidden;
+    el.hidden = !nextState;
+  }
+
+  window.toggleShortcutsModal = toggleModal;
+
+  function clearGPending() {
+    gPending = false;
+    if (gTimer) {
+      clearTimeout(gTimer);
+      gTimer = null;
+    }
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+
+    const target = e.target;
+    const isInput =
+      target &&
+      (target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable);
+
+    if (e.key === "Escape") {
+      if (modalEl && !modalEl.hidden) {
+        e.preventDefault();
+        toggleModal(false);
+        return;
+      }
+      if (isInput && typeof target.blur === "function") {
+        target.blur();
+      }
+      clearGPending();
+      return;
+    }
+
+    if (isInput) return;
+
+    // '?' toggles the shortcuts modal
+    if (e.key === "?") {
+      e.preventDefault();
+      clearGPending();
+      toggleModal();
+      return;
+    }
+
+    // '/' navigates to /search/ (or focuses search box if already on /search/)
+    if (e.key === "/") {
+      e.preventDefault();
+      clearGPending();
+      const existingSearchInput = document.querySelector(
+        "#search .pagefind-ui__search-input, #search input[type='text'], #search input"
+      );
+      if (existingSearchInput) {
+        existingSearchInput.focus();
+        if (typeof existingSearchInput.select === "function") {
+          existingSearchInput.select();
+        }
+      } else {
+        window.location.href = "/search/";
+      }
+      return;
+    }
+
+    // Shift + '[' ('{') -> Previous post in current series
+    if (e.key === "{" || (e.code === "BracketLeft" && e.shiftKey && !e.altKey)) {
+      clearGPending();
+      const seriesPrev = document.querySelector(".post-series-box .series-step.is-prev a");
+      if (seriesPrev && seriesPrev.href) {
+        e.preventDefault();
+        window.location.href = seriesPrev.href;
+      }
+      return;
+    }
+
+    // Shift + ']' ('}') -> Next post in current series
+    if (e.key === "}" || (e.code === "BracketRight" && e.shiftKey && !e.altKey)) {
+      clearGPending();
+      const seriesNext = document.querySelector(".post-series-box .series-step.is-next a");
+      if (seriesNext && seriesNext.href) {
+        e.preventDefault();
+        window.location.href = seriesNext.href;
+      }
+      return;
+    }
+
+    // '[' or physical BracketLeft -> Previous post / page
+    if (e.key === "[" || (e.code === "BracketLeft" && !e.shiftKey && !e.altKey)) {
+      clearGPending();
+      const prevLink = document.querySelector(".pagination .button.previous a");
+      if (prevLink && prevLink.href) {
+        e.preventDefault();
+        window.location.href = prevLink.href;
+      }
+      return;
+    }
+
+    // ']' or physical BracketRight -> Next post / page
+    if (e.key === "]" || (e.code === "BracketRight" && !e.shiftKey && !e.altKey)) {
+      clearGPending();
+      const nextLink = document.querySelector(".pagination .button.next a");
+      if (nextLink && nextLink.href) {
+        e.preventDefault();
+        window.location.href = nextLink.href;
+      }
+      return;
+    }
+
+    if (e.altKey) return;
+
+    // Handle 'g' chord sequences (g h, g p, g d, g s, g m, g g)
+    if (gPending) {
+      clearGPending();
+      if (e.key === "h") {
+        e.preventDefault();
+        window.location.href = "/";
+      } else if (e.key === "p") {
+        e.preventDefault();
+        window.location.href = "/posts/";
+      } else if (e.key === "d") {
+        e.preventDefault();
+        window.location.href = "/prompts/";
+      } else if (e.key === "s") {
+        e.preventDefault();
+        window.location.href = "/stuff/";
+      } else if (e.key === "m") {
+        e.preventDefault();
+        window.location.href = "/me/";
+      } else if (e.key === "g") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+
+    if (e.key === "g") {
+      gPending = true;
+      gTimer = setTimeout(clearGPending, 1000);
+      return;
+    }
+
+    if (e.key === "G") {
+      e.preventDefault();
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      return;
+    }
+
+    if (e.key === "j") {
+      window.scrollBy({ top: 240, behavior: "smooth" });
+      return;
+    }
+
+    if (e.key === "k") {
+      window.scrollBy({ top: -240, behavior: "smooth" });
+      return;
+    }
+
+    if (e.key === "t") {
+      e.preventDefault();
+      switchTheme();
+      return;
+    }
+  });
+}
+
 function initAll() {
   initImageFadeIn();
   initArchiveTags();
   initThemeAndPaletteControls();
   initTocScrollSpy();
+  initKeyboardShortcuts();
 }
 
 if (document.readyState === "loading") {

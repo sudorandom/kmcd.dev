@@ -4,6 +4,26 @@
   <main class="layout-split{{ if not $hasTOC }} no-toc{{ end }}">
     <!-- MAIN ARTICLE -->
     <article class="post-container">
+      {{- with (.GetTerms "series") -}}
+        {{- range first 1 . -}}
+          <a href="{{ .Permalink }}" class="riso-series-sticker">★ {{ .Name }} series</a>
+        {{- end -}}
+      {{- end -}}
+      {{- with .Params.cover -}}
+        {{- with $.Resources.GetMatch . -}}
+          {{- $coverURL := .RelPermalink -}}
+          {{- if ne .MediaType.SubType "svg" -}}
+            {{- with .Fit "1600x900 webp" -}}
+              {{- $coverURL = .RelPermalink -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $pos := $.Params.coverPosition | default "center" -}}
+          {{- if eq $pos "middle" -}}{{- $pos = "center" -}}{{- end -}}
+          <div class="post-cover-banner">
+            <img src="{{ $coverURL }}" alt="" class="post-cover-img" style="object-position: center {{ $pos }};" loading="eager" decoding="async" />
+          </div>
+        {{- end -}}
+      {{- end -}}
       <div class="post-header">
         <div class="post-title">
           <h1 class="post-title-text">{{- with $.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ $.Title | markdownify }}</h1>
@@ -40,16 +60,6 @@
         </div>
       {{ end }}
 
-      {{- with (.GetTerms "series") -}}
-      {{- $series := slice -}}
-      {{- range . -}}
-        {{- $series = $series | append (printf "<a href=\"%s\">%s</a>" .Permalink .Name) -}}
-      {{- end -}}
-      <div class="series-notice">
-        <i>This post is part of the {{ (delimit $series ", " " and ") | safeHTML }} series.</i>
-      </div>
-      {{- end -}}
-
       <div class="blog-content post-content">
         {{ .Content }}
       </div>
@@ -57,42 +67,75 @@
       <hr class="dot-fill" />
 
       <!-- Sharing & Metadata -->
-      <div class="main-box post-footer-box">
-        <h2>Share this post</h2>
-        <p class="post-footer-box-desc">
-          {{- $url := .Permalink -}}
-          {{- if .Params.canonical_url -}}
-              {{- $url = .Params.canonical_url -}}
-          {{- end -}}
-          If you liked this post, please consider sharing it on 
-          <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ .Title | safeHTML }}" target="_blank" rel="noopener">Hacker News</a>, 
-          <a href="https://lobste.rs/stories/new?url={{ $url }}&title={{ .Title | safeHTML }}" target="_blank" rel="noopener">Lobsters</a>, or 
-          <a href="https://bsky.app/intent/compose?text={{ .Title | urlquery }}%20{{ $url }}" target="_blank" rel="noopener">Bluesky</a>. 
-          And follow this blog <a href="/posts/index.xml" target="_blank">with RSS</a>.
-        </p>
+      <div class="main-box post-footer-box post-share-box">
+        {{- $url := .Permalink -}}
+        {{- if .Params.canonical_url -}}
+            {{- $url = .Params.canonical_url -}}
+        {{- end -}}
+        <div class="share-box-header">
+          <span class="share-box-kicker">★ PACKET BROADCAST</span>
+          <h2>Enjoyed this post? Send it across the wire.</h2>
+        </div>
+        <div class="share-btn-grid">
+          <a href="https://news.ycombinator.com/submitlink?u={{ $url }}&t={{ .Title | safeHTML }}" class="riso-share-btn hn-btn" target="_blank" rel="noopener">
+            <i class="fa-brands fa-hacker-news" aria-hidden="true"></i>
+            <span>Hacker News</span>
+          </a>
+          <a href="https://lobste.rs/stories/new?url={{ $url }}&title={{ .Title | safeHTML }}" class="riso-share-btn lobsters-btn" target="_blank" rel="noopener">
+            <i class="fa-solid fa-fire-flame-curved" aria-hidden="true"></i>
+            <span>Lobste.rs</span>
+          </a>
+          <a href="https://bsky.app/intent/compose?text={{ .Title | urlquery }}%20{{ $url }}" class="riso-share-btn bsky-btn" target="_blank" rel="noopener">
+            <i class="fa-brands fa-bluesky" aria-hidden="true"></i>
+            <span>Bluesky</span>
+          </a>
+          <a href="/posts/index.xml" class="riso-share-btn rss-btn" target="_blank">
+            <i class="fa-solid fa-rss" aria-hidden="true"></i>
+            <span>RSS Feed</span>
+          </a>
+        </div>
       </div>
 
       {{- with (.GetTerms "series") -}}
       {{- range . -}}
       <div class="main-box post-footer-box post-series-box">
         {{- $seriesPages := .Pages.ByDate -}}
-        {{- $nextPage := "" -}}
-        {{- $foundCurrent := false -}}
-        {{- range $seriesPages -}}
-          {{- if eq .File.UniqueID $.File.UniqueID -}}
-            {{- $foundCurrent = true -}}
-          {{- else if and $foundCurrent (not $nextPage) -}}
-            {{- $nextPage = . -}}
+        {{- $total := len $seriesPages -}}
+        {{- $currentIdx := -1 -}}
+        {{- range $i, $p := $seriesPages -}}
+          {{- if eq $p.File.UniqueID $.File.UniqueID -}}
+            {{- $currentIdx = $i -}}
           {{- end -}}
         {{- end -}}
-        <h2>Continue the series:&nbsp;<a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h2>
+        <div class="series-box-header">
+          <h2><a href="{{ .Permalink }}">{{ .Name | safeHTML }}</a></h2>
+          {{- if ge $currentIdx 0 }}
+          <span class="series-box-part-pill">Part {{ add $currentIdx 1 }} of {{ $total }}</span>
+          {{- end }}
+        </div>
         <ol class="series-post-list">
-          {{- range $seriesPages -}}
-          <li>
-            {{- if eq .File.UniqueID $.File.UniqueID -}}
-              <b>{{ .Name }}</b>
+          {{- range $i, $p := $seriesPages -}}
+          {{- $isCurrent := eq $i $currentIdx -}}
+          {{- $isPrev := and (gt $currentIdx 0) (eq $i (sub $currentIdx 1)) -}}
+          {{- $isNext := and (ge $currentIdx 0) (eq $i (add $currentIdx 1)) -}}
+          {{- $isPast := and (ge $currentIdx 0) (lt $i $currentIdx) -}}
+          <li class="series-step{{ if $isCurrent }} is-current{{ else if $isNext }} is-next{{ else if $isPrev }} is-prev{{ end }}{{ if $isPast }} is-past{{ end }}">
+            {{- if $isCurrent -}}
+              <div class="series-step-inner">
+                <span class="series-step-num">{{ printf "%02d" (add $i 1) }}</span>
+                <span class="series-step-title">{{ if $p.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end }}{{ $p.Name }}</span>
+                <span class="series-step-badge current-badge">★ HERE</span>
+              </div>
             {{- else -}}
-              <a href="{{ .Permalink }}">{{ .Name }}</a>
+              <a href="{{ $p.Permalink }}" class="series-step-inner">
+                <span class="series-step-num">{{ printf "%02d" (add $i 1) }}</span>
+                <span class="series-step-title">{{ if $p.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end }}{{ $p.Name }}</span>
+                {{- if $isNext -}}
+                  <span class="series-step-badge next-badge">NEXT &rarr;</span>
+                {{- else -}}
+                  <span class="series-step-arrow" aria-hidden="true">&rarr;</span>
+                {{- end -}}
+              </a>
             {{- end -}}
           </li>
           {{- end -}}

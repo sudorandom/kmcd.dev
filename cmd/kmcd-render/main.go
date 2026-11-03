@@ -94,7 +94,7 @@ func renderD2(content string) (string, error) {
 		"d2",
 		"--sketch",
 		"--theme",
-		"201",
+		"200",
 		"--pad",
 		"20",
 		"-",

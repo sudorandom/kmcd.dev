@@ -48,13 +48,21 @@
         {{- $fileExtension = "svg" -}} {{/* Default if no Content-Type header */}}
       {{- end -}}
 
-      {{- $assetPath := printf "d2-diagrams/%s.%s" $uniqueID $fileExtension -}}
+      {{- if eq $fileExtension "svg" -}}
+        {{- $cleanSVG := replaceRE "^<\\?xml[^>]*\\?>" "" $diagramContent -}}
+        {{- $cleanSVG = replaceRE `preserveAspectRatio="xMinYMin meet" viewBox="0 0 ([0-9]+) ([0-9]+)"` `preserveAspectRatio="xMinYMin meet" width="$1" viewBox="0 0 $1 $2"` $cleanSVG -}}
+        <div class="d2-inline-diagram">
+          {{ $cleanSVG | safeHTML }}
+        </div>
+      {{- else -}}
+        {{- $assetPath := printf "d2-diagrams/%s.%s" $uniqueID $fileExtension -}}
 
-      {{- /* Create a new Hugo asset from the fetched diagram content */ -}}
-      {{- $imageAsset := resources.FromString $assetPath $diagramContent -}}
+        {{- /* Create a new Hugo asset from the fetched diagram content */ -}}
+        {{- $imageAsset := resources.FromString $assetPath $diagramContent -}}
 
-      {{- /* Output an <img> tag referencing the new asset */ -}}
-      <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="max-width: 100%; max-height: inherit; width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto;" />
+        {{- /* Output an <img> tag referencing the new asset */ -}}
+        <img src="{{ $imageAsset.RelPermalink }}" alt="D2 Diagram" loading="lazy" style="max-width: 100%; max-height: inherit; width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto;" />
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

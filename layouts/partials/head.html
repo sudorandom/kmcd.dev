@@ -114,7 +114,6 @@
 </script>
 
 {{ partial "jsonld.html" . }}
-{{ template "_internal/twitter_cards.html" . }}
 
 {{ if isset .Site.Taxonomies "series" }}
     {{ partial "opengraph.html" . }}
@@ -167,19 +166,44 @@
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     mermaid.initialize({
         startOnLoad: false,
-        darkMode: false,
-        theme: 'dark',
+        darkMode: true,
+        theme: 'base',
         themeVariables: {
           background: "transparent",
-          mainBkg: "#1f2a35",
-          pie1: "#003f5c",
-          pie2: "#2f4b7c",
-          pie3: "#665191",
-          pie4: "#a05195",
-          pie5: "#d45087",
-          pie6: "#f95d6a",
-          pie7: "#ff7c43",
-          pie8: "#ffa600",
+          fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+          primaryColor: "#313244",
+          primaryTextColor: "#cdd6f4",
+          primaryBorderColor: "#cba6f7",
+          lineColor: "#a6adc8",
+          secondaryColor: "#1e1e2e",
+          tertiaryColor: "#1e1e2e",
+          mainBkg: "#313244",
+          nodeBorder: "#cba6f7",
+          clusterBkg: "#1e1e2e",
+          clusterBorder: "#45475a",
+          titleColor: "#cdd6f4",
+          edgeLabelBackground: "transparent",
+          actorBkg: "#313244",
+          actorBorder: "#cba6f7",
+          actorTextColor: "#cdd6f4",
+          actorLineColor: "#a6adc8",
+          signalColor: "#cdd6f4",
+          signalTextColor: "#cdd6f4",
+          labelBoxBkgColor: "#313244",
+          labelBoxBorderColor: "#cba6f7",
+          labelTextColor: "#cdd6f4",
+          loopTextColor: "#cdd6f4",
+          noteBorderColor: "#f9e2af",
+          noteBkgColor: "#313244",
+          noteTextColor: "#cdd6f4",
+          pie1: "#cba6f7",
+          pie2: "#89b4fa",
+          pie3: "#2dd4bf",
+          pie4: "#f38ba8",
+          pie5: "#fab387",
+          pie6: "#f9e2af",
+          pie7: "#a6e3a1",
+          pie8: "#94e2d5",
         }
     });
     mermaid.run()

@@ -859,6 +859,13 @@ ul.icons {
 .mermaid {
     display: flex;
     justify-content: center;
+    margin: 20px 0;
+    overflow-x: auto;
+
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
 
     // General node styling
     .node rect,
@@ -866,101 +873,166 @@ ul.icons {
     .node polygon,
     .node path,
     .node label-box,
-    g.actor rect {
-        fill: var(--bg-secondary) !important;
-        stroke: var(--accent-primary) !important;
-        stroke-width: 1.5px !important;
+    g.actor rect,
+    rect.actor,
+    .labelBox {
+        fill: #313244 !important;
+        stroke: #cba6f7 !important;
+        stroke-width: 1.75px !important;
 
-        [data-theme=dark] & {
-            fill: var(--bg-secondary) !important;
-            stroke: var(--accent-primary) !important;
+        [data-theme=light] & {
+            fill: #f3e8ff !important;
+            stroke: #6d28d9 !important;
         }
     }
 
-    // Node texts
+    // Node & sequence diagram texts
     .node .label,
     .nodeText,
     .nodeLabel,
     g.actor text,
-    text.actor {
-        color: #222 !important;
-        fill: #222 !important;
-        font-family: inherit !important;
+    text.actor,
+    .actor > tspan,
+    .messageText,
+    .loopText,
+    .loopText > tspan,
+    .labelText,
+    .labelText > tspan {
+        color: #cdd6f4 !important;
+        fill: #cdd6f4 !important;
+        font-family: var(--font-sans) !important;
 
-        [data-theme=dark] & {
-            color: #fff !important;
-            fill: #fff !important;
+        [data-theme=light] & {
+            color: #141a2e !important;
+            fill: #141a2e !important;
         }
     }
 
-    // Edges and Arrows
+    // Edges, lifelines, and arrows
     .edgePath .path,
+    .flowchart-link,
     .signalLine,
-    .signalLine2 {
-        stroke: #999 !important;
-        stroke-width: 1.5px !important;
+    .signalLine2,
+    line.actor-line,
+    path.actor-line,
+    .loopLine {
+        stroke: #98add1 !important;
+        stroke-width: 1.75px !important;
 
-        [data-theme=dark] & {
-            stroke: rgba(255, 255, 255, 0.4) !important;
+        [data-theme=light] & {
+            stroke: #434e70 !important;
         }
     }
 
     // Arrow markers / marker heads
     marker path,
     .marker,
+    #arrowhead path,
     #arrowhead-end path,
     #arrowhead-start path,
     #filled-head path,
-    #sequencenumber path {
-        fill: #999 !important;
-        stroke: #999 !important;
+    #sequencenumber path,
+    #crosshead path {
+        fill: #cba6f7 !important;
+        stroke: #cba6f7 !important;
 
-        [data-theme=dark] & {
-            fill: rgba(255, 255, 255, 0.4) !important;
-            stroke: rgba(255, 255, 255, 0.4) !important;
+        [data-theme=light] & {
+            fill: #6d28d9 !important;
+            stroke: #6d28d9 !important;
         }
     }
 
     // Note styling in sequence diagrams
     .note rect,
     rect.note {
-        fill: #fffbeb !important;
-        stroke: #f59e0b !important;
+        fill: #1e1e2e !important;
+        stroke: #f9e2af !important;
+        stroke-width: 1.5px !important;
 
-        [data-theme=dark] & {
-            fill: #242b35 !important;
-            stroke: rgba(255, 255, 255, 0.2) !important;
+        [data-theme=light] & {
+            fill: #fffbeb !important;
+            stroke: #d97706 !important;
         }
     }
 
     .noteText,
-    text.note {
-        fill: #222 !important;
-        color: #222 !important;
+    text.note,
+    .noteText > tspan {
+        fill: #cdd6f4 !important;
+        color: #cdd6f4 !important;
 
-        [data-theme=dark] & {
-            fill: #fff !important;
-            color: #fff !important;
+        [data-theme=light] & {
+            fill: #141a2e !important;
+            color: #141a2e !important;
         }
     }
 
     // Cluster background (subgraphs)
     .cluster rect {
-        fill: #eef4f4 !important;
-        stroke: rgba(0, 122, 120, 0.3) !important;
+        fill: #1e1e2e !important;
+        stroke: #45475a !important;
+        stroke-width: 1.5px !important;
+        rx: 10px;
 
-        [data-theme=dark] & {
-            fill: #0d1217 !important;
-            stroke: rgba(255, 255, 255, 0.1) !important;
+        [data-theme=light] & {
+            fill: #f6efe0 !important;
+            stroke: #94a3b8 !important;
         }
     }
 
     .cluster-label text,
-    .cluster text {
-        fill: #222 !important;
+    .cluster text,
+    .cluster-label .nodeLabel {
+        fill: #cdd6f4 !important;
+        color: #cdd6f4 !important;
+        font-weight: 700 !important;
 
-        [data-theme=dark] & {
-            fill: #fff !important;
+        [data-theme=light] & {
+            fill: #141a2e !important;
+            color: #141a2e !important;
+        }
+    }
+
+    // Packet diagram (packet-beta) styling
+    rect.packetBlock {
+        fill: #313244 !important;
+        stroke: #cba6f7 !important;
+        stroke-width: 1.5px !important;
+
+        [data-theme=light] & {
+            fill: #f3e8ff !important;
+            stroke: #6d28d9 !important;
+        }
+    }
+
+    text.packetLabel {
+        fill: #cdd6f4 !important;
+        font-family: var(--font-mono) !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+
+        [data-theme=light] & {
+            fill: #141a2e !important;
+        }
+    }
+
+    text.packetByte {
+        fill: #98add1 !important;
+        font-family: var(--font-mono) !important;
+        font-size: 10px !important;
+
+        [data-theme=light] & {
+            fill: #434e70 !important;
+        }
+    }
+
+    text.packetTitle {
+        fill: #cdd6f4 !important;
+        font-family: var(--font-display) !important;
+        font-weight: 700 !important;
+
+        [data-theme=light] & {
+            fill: #141a2e !important;
         }
     }
 }
@@ -968,31 +1040,16 @@ ul.icons {
 // Edge/connection labels styled globally so that Mermaid includes the padding in its bounding-box dimensions calculation
 .edgeLabel {
     padding: 2px 6px !important;
-    border-radius: 2px;
-    background-color: #161e26 !important;
-    color: #b0bac5 !important;
-    font-size: 11px !important;
-    font-weight: normal !important;
+    border-radius: 4px;
+    background-color: #1e1e2e !important;
+    color: #cdd6f4 !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
     display: inline-block !important;
 
-    @media (prefers-color-scheme: light) {
-        background-color: #fafafa !important;
-        color: #55606d !important;
-    }
-
     [data-theme=light] & {
-        background-color: #fafafa !important;
-        color: #55606d !important;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        background-color: #161e26 !important;
-        color: #b0bac5 !important;
-    }
-
-    [data-theme=dark] & {
-        background-color: #161e26 !important;
-        color: #b0bac5 !important;
+        background-color: #f6efe0 !important;
+        color: #141a2e !important;
     }
 }
 
@@ -1035,36 +1092,98 @@ figure img {
 }
 
 .diagram {
-    [data-theme=light] & {
-        background-color: #fafafa;
-        border: 1px solid #ddd;
-    }
-    [data-theme=dark] & {
-        background-color: #2e3440;
-    }
     border-radius: 8px;
     display: inline-block;
     width: 100%;
     max-width: 100%;
 }
 
-.d2-diagram-wrapper {
-    [data-theme=light] & {
-        margin: 4px;
-        background-color: #fafafa;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-    [data-theme=dark] & {
-        background-color: #2e3440;
-        border-radius: 8px;
-    }
+.d2-diagram-wrapper,
+.d2-inline-diagram {
+    margin: 18px auto;
     text-align: center;
+    max-width: 100%;
+
+    > svg {
+        max-width: 100%;
+        height: auto;
+        max-height: inherit;
+        display: block;
+        margin: 0 auto;
+    }
 }
 
 .d2-diagram {
     display: inline-block;
     max-width: 100%;
+}
+
+.svg-diagram-inline > svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+// Theme-aware styling for inline D2 SVG diagrams (Dark & Light Modes)
+svg.d2-svg,
+svg#d2-svg {
+    // Transparent outer canvas background so diagrams sit cleanly on the page card
+    > rect.fill-N7 {
+        fill: transparent !important;
+    }
+
+    // Dark Mode (Catppuccin Mocha / Riso Dark)
+    .fill-N7 { fill: #1e1e2e !important; }
+    .fill-N6, .fill-B6, .fill-AA5, .fill-AB5 { fill: #313244 !important; }
+    .fill-N5, .fill-B5, .fill-AA4, .fill-AB4 { fill: #3b3d54 !important; }
+    .fill-N4, .fill-B4 { fill: #45475a !important; }
+    .fill-N3, .fill-B3 { fill: #98add1 !important; }
+    .fill-N2 { fill: #bac2de !important; }
+    .fill-N1 { fill: #cdd6f4 !important; }
+    .fill-B1, .fill-B2 { fill: #cba6f7 !important; }
+    .fill-AA2 { fill: #89b4fa !important; }
+
+    .stroke-N7 { stroke: #1e1e2e !important; }
+    .stroke-N6, .stroke-B6 { stroke: #45475a !important; }
+    .stroke-N5, .stroke-N4, .stroke-N3, .stroke-B5, .stroke-B4, .stroke-B3 { stroke: #6c7086 !important; }
+    .stroke-N2 { stroke: #bac2de !important; }
+    .stroke-N1 { stroke: #cdd6f4 !important; }
+    .stroke-B1, .stroke-B2 { stroke: #cba6f7 !important; }
+    .stroke-AA2, .stroke-AA4, .stroke-AA5 { stroke: #89b4fa !important; }
+    .stroke-AB4, .stroke-AB5 { stroke: #2dd4bf !important; }
+
+    // Light Mode (Cream Paper & Spot Inks)
+    [data-theme=light] & {
+        > rect.fill-N7 {
+            fill: transparent !important;
+        }
+        .fill-N7 { fill: #f6efe0 !important; }
+        .fill-N6, .fill-B6 { fill: #f3e8ff !important; }
+        .fill-N5, .fill-B5 { fill: #ede9fe !important; }
+        .fill-AA4, .fill-AA5 { fill: #e0f2fe !important; }
+        .fill-AB4, .fill-AB5 { fill: #ccfbf1 !important; }
+        .fill-N4, .fill-B4 { fill: #ddd6fe !important; }
+        .fill-N3, .fill-B3 { fill: #525e82 !important; }
+        .fill-N2 { fill: #434e70 !important; }
+        .fill-N1 { fill: #141a2e !important; }
+        .fill-B1, .fill-B2 { fill: #6d28d9 !important; }
+        .fill-AA2 { fill: #0369a1 !important; }
+
+        .stroke-N7 { stroke: #f6efe0 !important; }
+        .stroke-N6, .stroke-B6 { stroke: #c4b5fd !important; }
+        .stroke-N5, .stroke-N4, .stroke-N3, .stroke-B5, .stroke-B4, .stroke-B3 { stroke: #7c3aed !important; }
+        .stroke-N2 { stroke: #434e70 !important; }
+        .stroke-N1 { stroke: #141a2e !important; }
+        .stroke-B1, .stroke-B2 { stroke: #6d28d9 !important; }
+        .stroke-AA2, .stroke-AA4, .stroke-AA5 { stroke: #0369a1 !important; }
+        .stroke-AB4, .stroke-AB5 { stroke: #0f766e !important; }
+
+        [class*="sketch-overlay-"] {
+            mix-blend-mode: multiply !important;
+            opacity: 0.22 !important;
+        }
+    }
 }
 @import "webmentions";
 @import "theme-system";

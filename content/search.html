@@ -19,6 +19,22 @@ devtoSkip: true
             element: "#search",
             showSubResults: true,
             resetStyles: false,
+            autofocus: true,
         });
+        const focusSearchInput = () => {
+            const input = document.querySelector("#search .pagefind-ui__search-input, #search input[type='text'], #search input");
+            if (input) {
+                input.focus();
+                return true;
+            }
+            return false;
+        };
+        if (!focusSearchInput()) {
+            requestAnimationFrame(() => {
+                if (!focusSearchInput()) {
+                    setTimeout(focusSearchInput, 60);
+                }
+            });
+        }
     });
 </script>

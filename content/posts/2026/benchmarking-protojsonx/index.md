@@ -4,8 +4,8 @@ date: "2026-07-21T15:20:00Z"
 categories: ["article"]
 tags: ["protobuf", "golang", "performance", "json", "protojsonx"]
 description: "I built protojsonx to measure how much of Go’s ProtoJSON overhead comes from runtime reflection."
-cover: "cover.jpg"
-images: ["/posts/benchmarking-protojsonx/cover.jpg"]
+cover: "cover.svg"
+images: ["/posts/benchmarking-protojsonx/cover.svg"]
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

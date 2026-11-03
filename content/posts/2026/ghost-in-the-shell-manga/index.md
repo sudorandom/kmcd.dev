@@ -3,6 +3,7 @@ categories: ["article"]
 tags: ["manga", "anime", "cyberpunk", "scifi"]
 date: "2026-06-18T10:00:00Z"
 description: "A dive into Shirow Masamune's original Ghost in the Shell manga, its intricate world-building, and its lasting impact on sci-fi."
+cover: "cover.svg"
 featuredalt: ""
 featuredpath: "date"
 linktitle: ""

@@ -8,6 +8,7 @@
         <a href="{{ .url }}" target="_blank" rel="noopener">{{ .name | title }}</a>
       {{ end }}
       <a href="{{ "posts/index.xml" | absLangURL }}" target="_blank">RSS Feed</a>
+      <a href="#shortcuts" class="shortcuts-trigger" onclick="if(window.toggleShortcutsModal){window.toggleShortcutsModal();} return false;" title="Keyboard Shortcuts (?)">Shortcuts (?)</a>
       <a href="#top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Top &uarr;</a>
     </div>
   </div>

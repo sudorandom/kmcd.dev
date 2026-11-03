@@ -1,33 +1,56 @@
-{{ $siteImage := (resources.Get "images/site_cover.png").Fit "3600x1890 webp" }}
+{{ $siteImage := (resources.Get "images/site_cover.png").Fit "1200x630 webp" }}
+{{ $displayFont := resources.Get "fonts/BricolageGrotesque-ExtraBold.ttf" }}
+{{ $monoFont := resources.Get "fonts/SpaceMono-Bold.ttf" }}
+{{ $twitterImage := $siteImage.Permalink }}
 {{ if .IsHome }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
 {{ else if (eq .Type "prompts") }}
     {{ $title := printf "Daily Prompt: %s" (dateFormat "2006-01-02" .Date.Local) }}
     {{ $filters := slice
       (images.Process "fill 570x517 Center png q95")
-      (images.Padding 135 30 30  "#1F2A35")
+      (images.Padding 135 30 30 "#141c2e")
       (images.Text $title (dict
-          "size" 45
+          "size" 42
           "x" 40
           "y" 60
-          "font" (resources.GetRemote "https://fonts.gstatic.com/s/orbitron/v35/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_Cmxpg.ttf")))
+          "color" "#5eead4"
+          "font" $displayFont))
         }}
     {{- $promptCover := (partial "prompts/load-cover.html" .).Filter $filters -}}
+    {{ $twitterImage = $promptCover.Permalink }}
     <meta property="og:image" content="{{ $promptCover.Permalink }}"/>
 {{ else }}
     {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- $page := . -}}
 
-    {{/* Build solid dark background images by padding a 1x1 average pixel to the target sizes */}}
-    {{ $bgBase := ($siteImage.Process "fill 1x1 png") }}
-    {{ $rectBg := $bgBase.Filter (images.Padding 280 600 279 599 "#161e26") }}
-    {{ $squareBg := $bgBase.Filter (images.Padding 258 285 258 284 "#161e26") }}
+    {{ $rectBg := resources.Get "images/og_card_base.png" }}
+    {{ $squareBg := resources.Get "images/og_square_base.png" }}
 
-    {{ $font := resources.GetRemote "https://fonts.gstatic.com/s/orbitron/v35/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1ny_Cmxpg.ttf" }}
-    {{ $spaceMonoFont := resources.GetRemote "https://github.com/google/fonts/raw/main/ofl/spacemono/SpaceMono-Regular.ttf" }}
+    {{/* Build a monospace kicker line (Date + Series or Top Tags) */}}
+    {{ $kickerParts := slice }}
+    {{- if not $page.Date.IsZero -}}
+      {{ $kickerParts = $kickerParts | append ($page.Date.Format "2006-01-02") }}
+    {{- end -}}
+    {{- with $page.Params.series -}}
+      {{- range first 1 . -}}
+        {{ $kickerParts = $kickerParts | append (printf "★ %s" (upper .)) }}
+      {{- end -}}
+    {{- else -}}
+      {{- with $page.Params.tags -}}
+        {{ $tagStrs := slice }}
+        {{- range first 3 . -}}
+          {{ $tagStrs = $tagStrs | append (printf "#%s" (upper .)) }}
+        {{- end -}}
+        {{ $kickerParts = $kickerParts | append (delimit $tagStrs "  ") }}
+      {{- end -}}
+    {{- end -}}
+    {{ $kickerText := delimit $kickerParts "   //   " }}
+    {{ if eq $kickerText "" }}
+      {{ $kickerText = "KMCD.DEV   //   ARTICLE" }}
+    {{ end }}
 
-    {{/* Rectangular Image (1200x560) with massive wrapped text */}}
+    {{/* Rectangular Image (1200x630) with wrapped Bricolage Grotesque title */}}
     {{ $words := split $page.Title " " }}
     {{ $maxWordLen := 0 }}
     {{ range $words }}
@@ -41,7 +64,7 @@
     {{ range $words }}
       {{ if eq $currentRectLine "" }}
         {{ $currentRectLine = . }}
-      {{ else if lt (add (len $currentRectLine) (len .)) 22 }}
+      {{ else if lt (add (len $currentRectLine) (len .)) 26 }}
         {{ $currentRectLine = printf "%s %s" $currentRectLine . }}
       {{ else }}
         {{ $rectLines = $rectLines | append $currentRectLine }}
@@ -52,39 +75,43 @@
       {{ $rectLines = $rectLines | append $currentRectLine }}
     {{ end }}
 
-    {{ $rectFontSize := 65 }}
+    {{ $rectFontSize := 60 }}
+    {{ if gt (len $rectLines) 3 }}
+      {{ $rectFontSize = 48 }}
+    {{ end }}
     {{ if gt $maxWordLen 28 }}
-      {{ $rectFontSize = div (mul 65 28) $maxWordLen }}
+      {{ $rectFontSize = div (mul $rectFontSize 28) $maxWordLen }}
     {{ end }}
 
-    {{ $yOffsetRect := 40 }}
+    {{ $yOffsetRect := 160 }}
     {{ if eq (len $rectLines) 1 }}
-      {{ $yOffsetRect = 200 }}
+      {{ $yOffsetRect = 240 }}
     {{ else if eq (len $rectLines) 2 }}
-      {{ $yOffsetRect = 150 }}
+      {{ $yOffsetRect = 205 }}
     {{ else if eq (len $rectLines) 3 }}
-      {{ $yOffsetRect = 110 }}
+      {{ $yOffsetRect = 175 }}
     {{ else }}
-      {{ $yOffsetRect = 70 }}
+      {{ $yOffsetRect = 155 }}
     {{ end }}
 
     {{ $rectFilters := slice }}
+    {{ $rectFilters = $rectFilters | append (images.Text $kickerText (dict
+        "size" 21
+        "x" 90
+        "y" 110
+        "color" "#5eead4"
+        "font" $monoFont)) }}
     {{ range $index, $line := $rectLines }}
-      {{ $y := add $yOffsetRect (mul $index (add $rectFontSize 25)) }}
+      {{ $y := add $yOffsetRect (mul $index (add $rectFontSize 22)) }}
       {{ $rectFilters = $rectFilters | append (images.Text $line (dict
           "size" $rectFontSize
-          "x" 120
+          "x" 90
           "y" $y
-          "color" "#2dd4bf"
-          "font" $font)) }}
+          "color" "#f8fafc"
+          "font" $displayFont)) }}
     {{ end }}
-    {{ $rectFilters = $rectFilters | append (images.Text "kmcd.dev" (dict
-        "size" 28
-        "x" 980
-        "y" 500
-        "color" "#a2a2dd"
-        "font" $spaceMonoFont)) }}
     {{ $socialimg := $rectBg.Filter $rectFilters }}
+    {{ $twitterImage = $socialimg.Permalink }}
     <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
 
     {{/* Square Image (570x517) with wrapped text */}}
@@ -93,7 +120,7 @@
     {{ range $words }}
       {{ if eq $currentSquareLine "" }}
         {{ $currentSquareLine = . }}
-      {{ else if lt (add (len $currentSquareLine) (len .)) 16 }}
+      {{ else if lt (add (len $currentSquareLine) (len .)) 18 }}
         {{ $currentSquareLine = printf "%s %s" $currentSquareLine . }}
       {{ else }}
         {{ $squareLines = $squareLines | append $currentSquareLine }}
@@ -104,41 +131,47 @@
       {{ $squareLines = $squareLines | append $currentSquareLine }}
     {{ end }}
 
-    {{ $squareFontSize := 42 }}
+    {{ $squareFontSize := 40 }}
+    {{ if gt (len $squareLines) 4 }}
+      {{ $squareFontSize = 34 }}
+    {{ end }}
     {{ if gt $maxWordLen 18 }}
-      {{ $squareFontSize = div (mul 42 18) $maxWordLen }}
+      {{ $squareFontSize = div (mul $squareFontSize 18) $maxWordLen }}
     {{ end }}
 
-    {{ $yOffsetSquare := 80 }}
+    {{ $yOffsetSquare := 110 }}
     {{ if eq (len $squareLines) 1 }}
-      {{ $yOffsetSquare = 210 }}
+      {{ $yOffsetSquare = 200 }}
     {{ else if eq (len $squareLines) 2 }}
-      {{ $yOffsetSquare = 160 }}
+      {{ $yOffsetSquare = 165 }}
     {{ else if eq (len $squareLines) 3 }}
-      {{ $yOffsetSquare = 120 }}
+      {{ $yOffsetSquare = 135 }}
     {{ else if eq (len $squareLines) 4 }}
-      {{ $yOffsetSquare = 90 }}
+      {{ $yOffsetSquare = 105 }}
     {{ end }}
 
     {{ $squareFilters := slice }}
     {{ range $index, $line := $squareLines }}
-      {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize 20)) }}
+      {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize 16)) }}
       {{ $squareFilters = $squareFilters | append (images.Text $line (dict
           "size" $squareFontSize
-          "x" 80
+          "x" 50
           "y" $y
-          "color" "#2dd4bf"
-          "font" $font)) }}
+          "color" "#f8fafc"
+          "font" $displayFont)) }}
     {{ end }}
-    {{ $squareFilters = $squareFilters | append (images.Text "kmcd.dev" (dict
-        "size" 20
-        "x" 430
-        "y" 470
-        "color" "#a2a2dd"
-        "font" $spaceMonoFont)) }}
     {{ $squareImg := $squareBg.Filter $squareFilters }}
     <meta property="og:image" content="{{ $squareImg.Permalink }}"/>
 {{ end }}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ $twitterImage }}">
+{{- with or .Title site.Title site.Params.title | plainify }}
+  <meta name="twitter:title" content="{{ . }}">
+{{- end }}
+{{- with or .Description .Summary site.Params.description | plainify | htmlUnescape | chomp }}
+  <meta name="twitter:description" content="{{ . }}">
+{{- end }}
 
 <meta property="og:url" content="{{ .Permalink }}">
 

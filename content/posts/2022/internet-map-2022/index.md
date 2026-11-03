@@ -4,6 +4,7 @@ tags: ["dataviz", "internet-map", "internet", "networking", "fiber-optics", "map
 series: ["Internet Map"]
 date: "2022-02-26"
 description: "I drew a pretty map that shows the underwater cables that carry our data around the world; fiber optic cables, submarine cables"
+cover: "cover.svg"
 images: ["/posts/internet-map-2022/thumbnail.png"]
 featured: "thumbnail.png"
 featuredalt: ""

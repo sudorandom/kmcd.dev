@@ -4,7 +4,7 @@ tags: ["ashburn", "virginia", "data-centers", "infrastructure", "peering", "aws"
 keywords: ["internet capital of the world", "data center alley", "ashburn virginia internet", "us-east-1 map", "mae-east history", "northern virginia fiber map"]
 date: "2026-08-25T10:00:00Z"
 description: "Why a suburb in Northern Virginia rivals the world's largest internet hubs."
-cover: "ashburn-cover.svg"
+cover: "cover.svg"
 images: ["posts/ashburn/cover.svg"]
 featured: false
 linktitle: ""

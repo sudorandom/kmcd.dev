@@ -3,6 +3,7 @@ categories: ["article"]
 tags: ["grpc", "grpc-web", "protobuf", "connectrpc"]
 date: "2026-07-14T10:00:00Z"
 description: "gRPC-Web should have been the pressure that made gRPC simpler, more inspectable, and better suited for the web."
+cover: "cover.svg"
 title: "gRPC-Web Should Have Fixed gRPC"
 slug: "grpc-web-should-have-fixed-grpc"
 type: "posts"
