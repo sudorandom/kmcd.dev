@@ -30,7 +30,12 @@ func handleSVGToPNG(browser playwright.Browser) http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		page, err := browser.NewPage()
+		page, err := browser.NewPage(playwright.BrowserNewPageOptions{
+			Viewport: &playwright.Size{
+				Width:  1200,
+				Height: 630,
+			},
+		})
 		if err != nil {
 			log.Printf("ERROR: Could not create page: %v", err)
 			http.Error(w, "Could not create page", http.StatusInternalServerError)
@@ -38,7 +43,8 @@ func handleSVGToPNG(browser playwright.Browser) http.HandlerFunc {
 		}
 		defer page.Close()
 
-		if err = page.SetContent(string(svgData)); err != nil {
+		htmlContent := `<style>html, body { margin: 0; padding: 0; overflow: hidden; } svg { display: block; width: 1200px; height: 630px; }</style>` + string(svgData)
+		if err = page.SetContent(htmlContent); err != nil {
 			log.Printf("ERROR: Could not set page content: %v", err)
 			http.Error(w, "Could not set page content", http.StatusInternalServerError)
 			return

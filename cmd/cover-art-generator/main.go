@@ -101,6 +101,7 @@ func main() {
 	numShapes := flag.Int("n", 100, "Complexity parameter (kept for CLI compatibility).")
 	mode := flag.Int("m", 0, "Palette override (kept for CLI compatibility).")
 	batch := flag.Bool("batch-regenerate", false, "Regenerate all generated cover.svg files across content/posts.")
+	prompts := flag.Bool("regenerate-prompts", false, "Regenerate all daily prompt cover SVGs in assets/images/prompt_covers.")
 
 	flag.Parse()
 	_ = pngOutput
@@ -108,6 +109,10 @@ func main() {
 
 	if *batch {
 		regenerateAllGeneratedCovers()
+		return
+	}
+	if *prompts {
+		regeneratePromptCovers()
 		return
 	}
 
@@ -821,4 +826,31 @@ func regenerateAllGeneratedCovers() {
 		fmt.Printf("[%02d] Regenerated %-55s (style=%-13s seed=%d)\n", count, svgPath, style, seed)
 	}
 	fmt.Printf("Done! Regenerated %d generated cover.svg files.\n", count)
+}
+
+func regeneratePromptCovers() {
+	styles := []string{"constellation", "flow", "orbital", "bauhaus", "isometric"}
+	outDir := "assets/images/prompt_covers"
+	if err := os.MkdirAll(outDir, 0755); err != nil {
+		fmt.Fprintf(os.Stderr, "mkdir error: %v\n", err)
+		os.Exit(1)
+	}
+
+	for i := 0; i <= 10; i++ {
+		slug := fmt.Sprintf("daily-prompt-cover-%d", i)
+		seed := hashSeed(slug)
+		style := styles[i%len(styles)]
+		palOverride := (i % len(Palettes)) + 1
+		meta := PostMeta{
+			Title: fmt.Sprintf("Daily Prompt %d", i),
+			Slug:  slug,
+		}
+		svgContent := generateArtSVG(style, seed, meta, true, palOverride)
+		svgPath := filepath.Join(outDir, fmt.Sprintf("%d.svg", i))
+		if err := os.WriteFile(svgPath, []byte(svgContent), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing %s: %v\n", svgPath, err)
+			continue
+		}
+		fmt.Printf("[%02d] Regenerated prompt SVG %-45s (style=%-13s seed=%d)\n", i, svgPath, style, seed)
+	}
 }

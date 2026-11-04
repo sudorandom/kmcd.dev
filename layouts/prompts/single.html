@@ -7,9 +7,9 @@
       <div class="post-excerpt">{{ . }}</div>
     {{ end }}
 
-    {{- $cover := (partial "prompts/load-cover.html" .).Fill "1520x400 Center webp q100" -}}
+    {{- $cover := partial "prompts/load-cover.html" . -}}
     <div class="main-wrapper">
-      <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}');min-height: {{ $cover.Height }}px; background-position: center;">
+      <div class="prompt-outer" style="background-image: url('{{ $cover.RelPermalink }}'); min-height: 400px; background-position: center; background-size: cover;">
         <article>
           <div class="prompt-box">
             <h2>{{ .Title }}</h2>

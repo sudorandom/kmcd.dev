@@ -4,21 +4,6 @@
 {{ $twitterImage := $siteImage.Permalink }}
 {{ if .IsHome }}
     <meta property="og:image" content="{{ $siteImage.Permalink }}"/>
-{{ else if (eq .Type "prompts") }}
-    {{ $title := printf "Daily Prompt: %s" (dateFormat "2006-01-02" .Date.Local) }}
-    {{ $filters := slice
-      (images.Process "fill 570x517 Center png q95")
-      (images.Padding 135 30 30 "#141c2e")
-      (images.Text $title (dict
-          "size" 42
-          "x" 40
-          "y" 60
-          "color" "#5eead4"
-          "font" $displayFont))
-        }}
-    {{- $promptCover := (partial "prompts/load-cover.html" .).Filter $filters -}}
-    {{ $twitterImage = $promptCover.Permalink }}
-    <meta property="og:image" content="{{ $promptCover.Permalink }}"/>
 {{ else }}
     {{- with .Date.Local -}}<meta property="article:published_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
     {{- with .Lastmod -}}<meta property="article:modified_time" content="{{ dateFormat "2006-01-02" . }}" />{{ end }}
@@ -32,17 +17,21 @@
     {{- if not $page.Date.IsZero -}}
       {{ $kickerParts = $kickerParts | append ($page.Date.Format "2006-01-02") }}
     {{- end -}}
-    {{- with $page.Params.series -}}
-      {{- range first 1 . -}}
-        {{ $kickerParts = $kickerParts | append (printf "★ %s" (upper .)) }}
-      {{- end -}}
+    {{- if eq .Type "prompts" -}}
+      {{ $kickerParts = $kickerParts | append "DAILY PROMPT   //   #DAILYPROMPT" }}
     {{- else -}}
-      {{- with $page.Params.tags -}}
-        {{ $tagStrs := slice }}
-        {{- range first 3 . -}}
-          {{ $tagStrs = $tagStrs | append (printf "#%s" (upper .)) }}
+      {{- with $page.Params.series -}}
+        {{- range first 1 . -}}
+          {{ $kickerParts = $kickerParts | append (printf "★ %s" (upper .)) }}
         {{- end -}}
-        {{ $kickerParts = $kickerParts | append (delimit $tagStrs "  ") }}
+      {{- else -}}
+        {{- with $page.Params.tags -}}
+          {{ $tagStrs := slice }}
+          {{- range first 3 . -}}
+            {{ $tagStrs = $tagStrs | append (printf "#%s" (upper .)) }}
+          {{- end -}}
+          {{ $kickerParts = $kickerParts | append (delimit $tagStrs "  ") }}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
     {{ $kickerText := delimit $kickerParts "   //   " }}
@@ -59,12 +48,19 @@
       {{ end }}
     {{ end }}
 
+    {{ $rectWrapLimit := 26 }}
+    {{ if gt (len $page.Title) 140 }}
+      {{ $rectWrapLimit = 40 }}
+    {{ else if gt (len $page.Title) 85 }}
+      {{ $rectWrapLimit = 33 }}
+    {{ end }}
+
     {{ $rectLines := slice }}
     {{ $currentRectLine := "" }}
     {{ range $words }}
       {{ if eq $currentRectLine "" }}
         {{ $currentRectLine = . }}
-      {{ else if lt (add (len $currentRectLine) (len .)) 26 }}
+      {{ else if lt (add (len $currentRectLine) (len .)) $rectWrapLimit }}
         {{ $currentRectLine = printf "%s %s" $currentRectLine . }}
       {{ else }}
         {{ $rectLines = $rectLines | append $currentRectLine }}
@@ -76,8 +72,19 @@
     {{ end }}
 
     {{ $rectFontSize := 60 }}
-    {{ if gt (len $rectLines) 3 }}
+    {{ $rectLineGap := 22 }}
+    {{ if gt (len $rectLines) 5 }}
+      {{ $rectFontSize = 34 }}
+      {{ $rectLineGap = 14 }}
+    {{ else if eq (len $rectLines) 5 }}
+      {{ $rectFontSize = 38 }}
+      {{ $rectLineGap = 16 }}
+    {{ else if eq (len $rectLines) 4 }}
+      {{ $rectFontSize = 44 }}
+      {{ $rectLineGap = 18 }}
+    {{ else if gt $rectWrapLimit 26 }}
       {{ $rectFontSize = 48 }}
+      {{ $rectLineGap = 20 }}
     {{ end }}
     {{ if gt $maxWordLen 28 }}
       {{ $rectFontSize = div (mul $rectFontSize 28) $maxWordLen }}
@@ -90,8 +97,10 @@
       {{ $yOffsetRect = 205 }}
     {{ else if eq (len $rectLines) 3 }}
       {{ $yOffsetRect = 175 }}
+    {{ else if eq (len $rectLines) 4 }}
+      {{ $yOffsetRect = 160 }}
     {{ else }}
-      {{ $yOffsetRect = 155 }}
+      {{ $yOffsetRect = 150 }}
     {{ end }}
 
     {{ $rectFilters := slice }}
@@ -102,7 +111,7 @@
         "color" "#5eead4"
         "font" $monoFont)) }}
     {{ range $index, $line := $rectLines }}
-      {{ $y := add $yOffsetRect (mul $index (add $rectFontSize 22)) }}
+      {{ $y := add $yOffsetRect (mul $index (add $rectFontSize $rectLineGap)) }}
       {{ $rectFilters = $rectFilters | append (images.Text $line (dict
           "size" $rectFontSize
           "x" 90
@@ -115,12 +124,19 @@
     <meta property="og:image" content="{{ $socialimg.Permalink }}"/>
 
     {{/* Square Image (570x517) with wrapped text */}}
+    {{ $squareWrapLimit := 18 }}
+    {{ if gt (len $page.Title) 140 }}
+      {{ $squareWrapLimit = 28 }}
+    {{ else if gt (len $page.Title) 85 }}
+      {{ $squareWrapLimit = 23 }}
+    {{ end }}
+
     {{ $squareLines := slice }}
     {{ $currentSquareLine := "" }}
     {{ range $words }}
       {{ if eq $currentSquareLine "" }}
         {{ $currentSquareLine = . }}
-      {{ else if lt (add (len $currentSquareLine) (len .)) 18 }}
+      {{ else if lt (add (len $currentSquareLine) (len .)) $squareWrapLimit }}
         {{ $currentSquareLine = printf "%s %s" $currentSquareLine . }}
       {{ else }}
         {{ $squareLines = $squareLines | append $currentSquareLine }}
@@ -132,8 +148,16 @@
     {{ end }}
 
     {{ $squareFontSize := 40 }}
-    {{ if gt (len $squareLines) 4 }}
-      {{ $squareFontSize = 34 }}
+    {{ $squareLineGap := 16 }}
+    {{ if gt (len $squareLines) 6 }}
+      {{ $squareFontSize = 24 }}
+      {{ $squareLineGap = 10 }}
+    {{ else if gt (len $squareLines) 4 }}
+      {{ $squareFontSize = 28 }}
+      {{ $squareLineGap = 12 }}
+    {{ else if gt $squareWrapLimit 18 }}
+      {{ $squareFontSize = 32 }}
+      {{ $squareLineGap = 14 }}
     {{ end }}
     {{ if gt $maxWordLen 18 }}
       {{ $squareFontSize = div (mul $squareFontSize 18) $maxWordLen }}
@@ -148,11 +172,13 @@
       {{ $yOffsetSquare = 135 }}
     {{ else if eq (len $squareLines) 4 }}
       {{ $yOffsetSquare = 105 }}
+    {{ else }}
+      {{ $yOffsetSquare = 75 }}
     {{ end }}
 
     {{ $squareFilters := slice }}
     {{ range $index, $line := $squareLines }}
-      {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize 16)) }}
+      {{ $y := add $yOffsetSquare (mul $index (add $squareFontSize $squareLineGap)) }}
       {{ $squareFilters = $squareFilters | append (images.Text $line (dict
           "size" $squareFontSize
           "x" 50

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+<defs>
+  <pattern id="bg-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="6" cy="6" r="1.1" fill="#a78bfa" fill-opacity="0.13"/>
+    <circle cx="18" cy="18" r="1.1" fill="#34d399" fill-opacity="0.11"/>
+  </pattern>
+  <pattern id="ht-0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)">
+    <circle cx="5" cy="5" r="2.6" fill="#a78bfa" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#a78bfa" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-1" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)">
+    <circle cx="5" cy="5" r="2.6" fill="#34d399" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(15)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#34d399" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(10)">
+    <circle cx="5" cy="5" r="2.6" fill="#fbbf24" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#fbbf24" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-3" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
+    <circle cx="5" cy="5" r="2.6" fill="#38bdf8" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#38bdf8" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+    <stop offset="55%" stop-color="#0b1518" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#04060c" stop-opacity="0.55"/>
+  </radialGradient>
+</defs>
+<rect width="1200" height="630" fill="#0b1518"/>
+<g opacity="0.22">
+  <line x1="60" y1="0" x2="60" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="120" y1="0" x2="120" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="180" y1="0" x2="180" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="360" y1="0" x2="360" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="420" y1="0" x2="420" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="480" y1="0" x2="480" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="540" y1="0" x2="540" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="660" y1="0" x2="660" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="720" y1="0" x2="720" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="780" y1="0" x2="780" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="840" y1="0" x2="840" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="900" y1="0" x2="900" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="960" y1="0" x2="960" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="1020" y1="0" x2="1020" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="1080" y1="0" x2="1080" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="1140" y1="0" x2="1140" y2="630" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="60" x2="1200" y2="60" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="120" x2="1200" y2="120" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="180" x2="1200" y2="180" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="240" x2="1200" y2="240" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="300" x2="1200" y2="300" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="360" x2="1200" y2="360" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="480" x2="1200" y2="480" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="540" x2="1200" y2="540" stroke="#244752" stroke-width="1"/>
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="#244752" stroke-width="1"/>
+</g>
+<rect width="1200" height="630" fill="url(#bg-dots)"/>
+<g class="ambient-halftones">
+  <circle cx="303.2" cy="371.0" r="184.7" fill="url(#ht-0)"/>
+  <circle cx="378.2" cy="435.8" r="242.4" fill="url(#lines-1)"/>
+  <circle cx="169.9" cy="337.9" r="225.1" fill="url(#ht-2)"/>
+  <g transform="translate(686.1 465.2) rotate(307.9)">
+    <polygon points="0.0,-129.9 112.5,-64.9 112.5,64.9 0.0,129.9 -112.5,64.9 -112.5,-64.9" fill="url(#lines-3)"/>
+  </g>
+</g>
+<g class="art-bauhaus">
+  <line x1="1003.4" y1="362.5" x2="1434.3" y2="793.4" stroke="#a78bfa" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="154.5" y1="129.1" x2="509.3" y2="-225.7" stroke="#34d399" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="1039.3" y1="228.9" x2="652.1" y2="-158.3" stroke="#fbbf24" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="582.5" y1="491.9" x2="285.6" y2="788.8" stroke="#38bdf8" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="648.0" y1="193.9" x2="71.0" y2="193.9" stroke="#a78bfa" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <circle cx="148.8" cy="340.2" r="71.2" fill="#050b0d"/>
+  <circle cx="141.8" cy="333.2" r="71.2" fill="#a78bfa" fill-opacity="0.88"/>
+  <circle cx="166.7" cy="315.4" r="53.4" fill="url(#ht-1)"/>
+  <g transform="translate(282.8 304.8) rotate(100.8)">
+    <path d="M -44.8 0 A 44.8 44.8 0 0 1 44.8 0 Z" fill="#050b0d" transform="translate(6 6)"/>
+    <path d="M -44.8 0 A 44.8 44.8 0 0 1 44.8 0 Z" fill="#34d399" fill-opacity="0.9"/>
+    <circle cx="0" cy="15.7" r="14.3" fill="#fbbf24"/>
+  </g>
+  <g transform="translate(461.3 322.1) rotate(352.0)">
+    <polygon points="6.0,-54.4 58.3,36.2 -46.3,36.2" fill="#050b0d"/>
+    <polygon points="0.0,-60.4 52.3,30.2 -52.3,30.2" fill="#fbbf24"/>
+    <polygon points="0.0,-29.7 25.7,14.9 -25.7,14.9" fill="#0b1518" stroke="#38bdf8" stroke-width="2.5"/>
+  </g>
+  <circle cx="536.3" cy="303.4" r="50.5" fill="none" stroke="#050b0d" stroke-width="14"/>
+  <circle cx="531.3" cy="298.4" r="50.5" fill="none" stroke="#38bdf8" stroke-width="14" stroke-opacity="0.9"/>
+  <polygon points="531.3,272.1 535.2,289.0 549.9,279.8 540.7,294.5 557.6,298.4 540.7,302.2 549.9,317.0 535.2,307.7 531.3,324.7 527.5,307.7 512.7,317.0 522.0,302.2 505.0,298.4 522.0,294.5 512.7,279.8 527.5,289.0" fill="#a78bfa"/>
+  <g transform="translate(644.1 220.6) rotate(28.6)">
+    <rect x="-60.9" y="-20.8" width="133.9" height="53.5" rx="26.8" fill="#050b0d"/>
+    <rect x="-66.9" y="-26.8" width="133.9" height="53.5" rx="26.8" fill="#a78bfa" fill-opacity="0.85"/>
+    <rect x="-66.9" y="-26.8" width="133.9" height="53.5" rx="26.8" fill="url(#lines-0)"/>
+  </g>
+  <circle cx="797.8" cy="164.2" r="54.2" fill="#050b0d"/>
+  <circle cx="790.8" cy="157.2" r="54.2" fill="#34d399" fill-opacity="0.88"/>
+  <circle cx="809.8" cy="143.7" r="40.6" fill="url(#ht-2)"/>
+  <g transform="translate(879.6 460.9) rotate(278.8)">
+    <path d="M -83.4 0 A 83.4 83.4 0 0 1 83.4 0 Z" fill="#050b0d" transform="translate(6 6)"/>
+    <path d="M -83.4 0 A 83.4 83.4 0 0 1 83.4 0 Z" fill="#fbbf24" fill-opacity="0.9"/>
+    <circle cx="0" cy="29.2" r="26.7" fill="#38bdf8"/>
+  </g>
+  <g transform="translate(999.0 365.8) rotate(39.6)">
+    <polygon points="6.0,-78.0 78.8,-36.0 78.8,48.0 6.0,90.0 -66.8,48.0 -66.8,-36.0" fill="#050b0d"/>
+    <polygon points="0.0,-84.0 72.8,-42.0 72.8,42.0 0.0,84.0 -72.8,42.0 -72.8,-42.0" fill="#38bdf8"/>
+    <polygon points="0.0,-41.4 35.8,-20.7 35.8,20.7 0.0,41.4 -35.8,20.7 -35.8,-20.7" fill="#0b1518" stroke="#a78bfa" stroke-width="2.5"/>
+  </g>
+</g>
+<rect width="1200" height="630" fill="url(#vignette)" pointer-events="none"/>
+</svg>
