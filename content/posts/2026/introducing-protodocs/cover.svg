@@ -1,105 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1200" height="630">
-<rect x="0" y="0" width="1200" height="630" fill="#25325d" />
-<g transform="scale(1.000000) translate(0.5 0.5)">
-<ellipse fill="#4b82ff" fill-opacity="0.501961" cx="707" cy="395" rx="206" ry="206" />
-<ellipse fill="#a1c5ab" fill-opacity="0.501961" cx="81" cy="193" rx="118" ry="118" />
-<ellipse fill="#497bff" fill-opacity="0.501961" cx="821" cy="205" rx="128" ry="128" />
-<ellipse fill="#070000" fill-opacity="0.501961" cx="1199" cy="370" rx="305" ry="305" />
-<ellipse fill="#000000" fill-opacity="0.501961" cx="0" cy="482" rx="170" ry="170" />
-<ellipse fill="#355ed8" fill-opacity="0.501961" cx="238" cy="475" rx="93" ry="93" />
-<ellipse fill="#375bd6" fill-opacity="0.501961" cx="672" cy="482" rx="190" ry="190" />
-<ellipse fill="#74b1ff" fill-opacity="0.501961" cx="967" cy="217" rx="39" ry="39" />
-<ellipse fill="#0e0707" fill-opacity="0.501961" cx="444" cy="0" rx="296" ry="296" />
-<ellipse fill="#000000" fill-opacity="0.501961" cx="1083" cy="0" rx="147" ry="147" />
-<ellipse fill="#141400" fill-opacity="0.501961" cx="27" cy="0" rx="124" ry="124" />
-<ellipse fill="#3158ca" fill-opacity="0.501961" cx="346" cy="540" rx="58" ry="58" />
-<ellipse fill="#010000" fill-opacity="0.501961" cx="927" cy="627" rx="98" ry="98" />
-<ellipse fill="#4771fd" fill-opacity="0.501961" cx="571" cy="310" rx="61" ry="61" />
-<ellipse fill="#010000" fill-opacity="0.501961" cx="891" cy="14" rx="63" ry="63" />
-<ellipse fill="#110507" fill-opacity="0.501961" cx="228" cy="276" rx="64" ry="64" />
-<ellipse fill="#3b68ec" fill-opacity="0.501961" cx="188" cy="369" rx="42" ry="42" />
-<ellipse fill="#1d1016" fill-opacity="0.501961" cx="474" cy="346" rx="58" ry="58" />
-<ellipse fill="#080000" fill-opacity="0.501961" cx="769" cy="25" rx="62" ry="62" />
-<ellipse fill="#170b0d" fill-opacity="0.501961" cx="427" cy="448" rx="70" ry="70" />
-<ellipse fill="#030000" fill-opacity="0.501961" cx="73" cy="592" rx="89" ry="89" />
-<ellipse fill="#6090cf" fill-opacity="0.501961" cx="937" cy="143" rx="41" ry="41" />
-<ellipse fill="#190e12" fill-opacity="0.501961" cx="339" cy="350" rx="84" ry="84" />
-<ellipse fill="#040000" fill-opacity="0.501961" cx="411" cy="605" rx="41" ry="41" />
-<ellipse fill="#6ca6ff" fill-opacity="0.501961" cx="1012" cy="240" rx="18" ry="18" />
-<ellipse fill="#22397b" fill-opacity="0.501961" cx="710" cy="629" rx="127" ry="127" />
-<ellipse fill="#5186ff" fill-opacity="0.501961" cx="508" cy="285" rx="19" ry="19" />
-<ellipse fill="#546971" fill-opacity="0.501961" cx="67" cy="127" rx="76" ry="76" />
-<ellipse fill="#4c82ca" fill-opacity="0.501961" cx="976" cy="94" rx="25" ry="25" />
-<ellipse fill="#1e131c" fill-opacity="0.501961" cx="635" cy="201" rx="37" ry="37" />
-<ellipse fill="#456ff3" fill-opacity="0.501961" cx="668" cy="332" rx="100" ry="100" />
-<ellipse fill="#83a3ae" fill-opacity="0.501961" cx="106" cy="252" rx="59" ry="59" />
-<ellipse fill="#3053b6" fill-opacity="0.501961" cx="513" cy="564" rx="56" ry="56" />
-<ellipse fill="#3356c8" fill-opacity="0.501961" cx="894" cy="485" rx="34" ry="34" />
-<ellipse fill="#070406" fill-opacity="0.501961" cx="219" cy="23" rx="88" ry="88" />
-<ellipse fill="#8aabb4" fill-opacity="0.501961" cx="171" cy="188" rx="37" ry="37" />
-<ellipse fill="#000000" fill-opacity="0.501961" cx="59" cy="0" rx="61" ry="61" />
-<ellipse fill="#1f1824" fill-opacity="0.501961" cx="915" cy="338" rx="37" ry="37" />
-<ellipse fill="#090708" fill-opacity="0.501961" cx="1158" cy="629" rx="208" ry="208" />
-<ellipse fill="#0f0709" fill-opacity="0.501961" cx="871" cy="535" rx="26" ry="26" />
-<ellipse fill="#130b0e" fill-opacity="0.501961" cx="105" cy="353" rx="44" ry="44" />
-<ellipse fill="#5985ce" fill-opacity="0.501961" cx="938" cy="203" rx="42" ry="42" />
-<ellipse fill="#3861da" fill-opacity="0.501961" cx="168" cy="326" rx="23" ry="23" />
-<ellipse fill="#607877" fill-opacity="0.501961" cx="121" cy="87" rx="32" ry="32" />
-<ellipse fill="#15101a" fill-opacity="0.501961" cx="996" cy="166" rx="30" ry="30" />
-<ellipse fill="#000000" fill-opacity="0.501961" cx="1136" cy="0" rx="64" ry="64" />
-<ellipse fill="#3c62df" fill-opacity="0.501961" cx="713" cy="189" rx="33" ry="33" />
-<ellipse fill="#6d888a" fill-opacity="0.501961" cx="24" cy="276" rx="35" ry="35" />
-<ellipse fill="#4470ef" fill-opacity="0.501961" cx="552" cy="378" rx="38" ry="38" />
-<ellipse fill="#1b5fa7" fill-opacity="0.501961" cx="536" cy="107" rx="16" ry="16" />
-<ellipse fill="#11090c" fill-opacity="0.501961" cx="431" cy="573" rx="30" ry="30" />
-<ellipse fill="#3658be" fill-opacity="0.501961" cx="322" cy="490" rx="36" ry="36" />
-<ellipse fill="#486faa" fill-opacity="0.501961" cx="842" cy="79" rx="23" ry="23" />
-<ellipse fill="#1a75ce" fill-opacity="0.501961" cx="481" cy="111" rx="12" ry="12" />
-<ellipse fill="#3e67db" fill-opacity="0.501961" cx="515" cy="479" rx="30" ry="30" />
-<ellipse fill="#3251b0" fill-opacity="0.501961" cx="185" cy="417" rx="38" ry="38" />
-<ellipse fill="#171422" fill-opacity="0.501961" cx="225" cy="221" rx="34" ry="34" />
-<ellipse fill="#1b5493" fill-opacity="0.501961" cx="592" cy="104" rx="19" ry="19" />
-<ellipse fill="#201e32" fill-opacity="0.501961" cx="476" cy="397" rx="35" ry="35" />
-<ellipse fill="#4c77de" fill-opacity="0.501961" cx="890" cy="244" rx="33" ry="33" />
-<ellipse fill="#4067ea" fill-opacity="0.501961" cx="853" cy="354" rx="33" ry="33" />
-<ellipse fill="#1e1a2a" fill-opacity="0.501961" cx="953" cy="275" rx="32" ry="32" />
-<ellipse fill="#1975cd" fill-opacity="0.501961" cx="506" cy="109" rx="12" ry="12" />
-<ellipse fill="#2b4594" fill-opacity="0.501961" cx="813" cy="528" rx="42" ry="42" />
-<ellipse fill="#1974cb" fill-opacity="0.501961" cx="452" cy="113" rx="12" ry="12" />
-<ellipse fill="#1873cb" fill-opacity="0.501961" cx="627" cy="100" rx="12" ry="12" />
-<ellipse fill="#1872c9" fill-opacity="0.501961" cx="656" cy="98" rx="12" ry="12" />
-<ellipse fill="#1972c9" fill-opacity="0.501961" cx="428" cy="115" rx="12" ry="12" />
-<ellipse fill="#178efb" fill-opacity="0.501961" cx="562" cy="105" rx="9" ry="9" />
-<ellipse fill="#1770c6" fill-opacity="0.501961" cx="682" cy="97" rx="12" ry="12" />
-<ellipse fill="#1b3276" fill-opacity="0.501961" cx="236" cy="588" rx="81" ry="81" />
-<ellipse fill="#385cc6" fill-opacity="0.501961" cx="234" cy="405" rx="33" ry="33" />
-<ellipse fill="#1767b6" fill-opacity="0.501961" cx="401" cy="115" rx="13" ry="13" />
-<ellipse fill="#166dc1" fill-opacity="0.501961" cx="374" cy="118" rx="12" ry="12" />
-<ellipse fill="#090302" fill-opacity="0.501961" cx="1025" cy="11" rx="56" ry="56" />
-<ellipse fill="#669cf4" fill-opacity="0.501961" cx="1032" cy="251" rx="8" ry="8" />
-<ellipse fill="#156bbd" fill-opacity="0.501961" cx="347" cy="120" rx="12" ry="12" />
-<ellipse fill="#166ec3" fill-opacity="0.501961" cx="707" cy="95" rx="12" ry="12" />
-<ellipse fill="#4471fa" fill-opacity="0.501961" cx="529" cy="288" rx="22" ry="22" />
-<ellipse fill="#3b5fd5" fill-opacity="0.501961" cx="771" cy="254" rx="111" ry="111" />
-<ellipse fill="#0c0718" fill-opacity="0.501961" cx="169" cy="280" rx="16" ry="16" />
-<ellipse fill="#1c1827" fill-opacity="0.501961" cx="510" cy="326" rx="22" ry="22" />
-<ellipse fill="#080100" fill-opacity="0.501961" cx="375" cy="629" rx="28" ry="28" />
-<ellipse fill="#262134" fill-opacity="0.501961" cx="555" cy="233" rx="28" ry="28" />
-<ellipse fill="#1468b9" fill-opacity="0.501961" cx="320" cy="122" rx="12" ry="12" />
-<ellipse fill="#5580d3" fill-opacity="0.501961" cx="994" cy="231" rx="21" ry="21" />
-<ellipse fill="#3053bc" fill-opacity="0.501961" cx="916" cy="523" rx="16" ry="16" />
-<ellipse fill="#3455c4" fill-opacity="0.501961" cx="883" cy="445" rx="30" ry="30" />
-<ellipse fill="#425358" fill-opacity="0.501961" cx="3" cy="118" rx="65" ry="65" />
-<ellipse fill="#0c0d10" fill-opacity="0.501961" cx="808" cy="71" rx="16" ry="16" />
-<ellipse fill="#15101a" fill-opacity="0.501961" cx="450" cy="508" rx="27" ry="27" />
-<ellipse fill="#13111a" fill-opacity="0.501961" cx="1199" cy="258" rx="159" ry="159" />
-<ellipse fill="#100d15" fill-opacity="0.501961" cx="378" cy="39" rx="74" ry="74" />
-<ellipse fill="#4d7fff" fill-opacity="0.501961" cx="488" cy="284" rx="8" ry="8" />
-<ellipse fill="#3966a1" fill-opacity="0.501961" cx="1006" cy="75" rx="12" ry="12" />
-<ellipse fill="#26418e" fill-opacity="0.501961" cx="518" cy="621" rx="72" ry="72" />
-<ellipse fill="#150e14" fill-opacity="0.501961" cx="122" cy="482" rx="34" ry="34" />
-<ellipse fill="#0f0a0d" fill-opacity="0.501961" cx="934" cy="32" rx="43" ry="43" />
-<ellipse fill="#385cc6" fill-opacity="0.501961" cx="272" cy="439" rx="33" ry="33" />
-<ellipse fill="#120f17" fill-opacity="0.501961" cx="35" cy="473" rx="118" ry="118" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+<defs>
+  <pattern id="bg-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+    <circle cx="6" cy="6" r="1.1" fill="#2dd4bf" fill-opacity="0.13"/>
+    <circle cx="18" cy="18" r="1.1" fill="#f472b6" fill-opacity="0.11"/>
+  </pattern>
+  <pattern id="ht-0" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)">
+    <circle cx="5" cy="5" r="2.6" fill="#2dd4bf" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#2dd4bf" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-1" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-5)">
+    <circle cx="5" cy="5" r="2.6" fill="#f472b6" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(15)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#f472b6" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(10)">
+    <circle cx="5" cy="5" r="2.6" fill="#38bdf8" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#38bdf8" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <pattern id="ht-3" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
+    <circle cx="5" cy="5" r="2.6" fill="#c084fc" fill-opacity="0.55"/>
+  </pattern>
+  <pattern id="lines-3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#c084fc" stroke-width="2.2" stroke-opacity="0.45"/>
+  </pattern>
+  <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+    <stop offset="55%" stop-color="#111122" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#04060c" stop-opacity="0.55"/>
+  </radialGradient>
+</defs>
+<rect width="1200" height="630" fill="#111122"/>
+<g opacity="0.22">
+  <line x1="60" y1="0" x2="60" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="120" y1="0" x2="120" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="180" y1="0" x2="180" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="360" y1="0" x2="360" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="420" y1="0" x2="420" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="480" y1="0" x2="480" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="540" y1="0" x2="540" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="660" y1="0" x2="660" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="720" y1="0" x2="720" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="780" y1="0" x2="780" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="840" y1="0" x2="840" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="900" y1="0" x2="900" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="960" y1="0" x2="960" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="1020" y1="0" x2="1020" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="1080" y1="0" x2="1080" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="1140" y1="0" x2="1140" y2="630" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="60" x2="1200" y2="60" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="120" x2="1200" y2="120" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="180" x2="1200" y2="180" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="240" x2="1200" y2="240" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="300" x2="1200" y2="300" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="360" x2="1200" y2="360" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="480" x2="1200" y2="480" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="540" x2="1200" y2="540" stroke="#353566" stroke-width="1"/>
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="#353566" stroke-width="1"/>
 </g>
+<rect width="1200" height="630" fill="url(#bg-dots)"/>
+<g class="ambient-halftones">
+  <g transform="translate(203.7 356.3) rotate(90.6)">
+    <polygon points="0.0,-159.4 138.1,-79.7 138.1,79.7 0.0,159.4 -138.1,79.7 -138.1,-79.7" fill="url(#ht-0)"/>
+  </g>
+  <g transform="translate(1048.3 318.9) rotate(283.0)">
+    <polygon points="0.0,-153.5 132.9,-76.7 132.9,76.7 0.0,153.5 -132.9,76.7 -132.9,-76.7" fill="url(#lines-1)"/>
+  </g>
+  <g transform="translate(981.9 489.9) rotate(29.9)">
+    <polygon points="0.0,-207.6 179.8,-103.8 179.8,103.8 0.0,207.6 -179.8,103.8 -179.8,-103.8" fill="url(#ht-2)"/>
+  </g>
+  <circle cx="488.9" cy="169.5" r="214.0" fill="url(#lines-3)"/>
+</g>
+<g class="art-bauhaus">
+  <line x1="537.6" y1="429.2" x2="947.7" y2="839.2" stroke="#2dd4bf" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="576.6" y1="68.2" x2="576.6" y2="-526.2" stroke="#f472b6" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="754.2" y1="191.0" x2="1024.5" y2="-79.3" stroke="#38bdf8" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="697.8" y1="145.0" x2="697.8" y2="-438.0" stroke="#c084fc" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="366.0" y1="439.5" x2="66.8" y2="439.5" stroke="#2dd4bf" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <line x1="200.7" y1="463.0" x2="-109.4" y2="773.1" stroke="#f472b6" stroke-width="3.5" stroke-opacity="0.55" stroke-linecap="round"/>
+  <circle cx="206.6" cy="464.8" r="90.8" fill="#080812"/>
+  <circle cx="199.6" cy="457.8" r="90.8" fill="#2dd4bf" fill-opacity="0.88"/>
+  <circle cx="231.4" cy="435.1" r="68.1" fill="url(#ht-1)"/>
+  <g transform="translate(298.7 182.6) rotate(185.1)">
+    <path d="M -80.1 0 A 80.1 80.1 0 0 1 80.1 0 Z" fill="#080812" transform="translate(6 6)"/>
+    <path d="M -80.1 0 A 80.1 80.1 0 0 1 80.1 0 Z" fill="#f472b6" fill-opacity="0.9"/>
+    <circle cx="0" cy="28.0" r="25.6" fill="#38bdf8"/>
+  </g>
+  <g transform="translate(402.6 220.2) rotate(322.3)">
+    <polygon points="6.0,-95.4 93.8,56.7 -81.8,56.7" fill="#080812"/>
+    <polygon points="0.0,-101.4 87.8,50.7 -87.8,50.7" fill="#38bdf8"/>
+    <polygon points="0.0,-49.9 43.2,25.0 -43.2,25.0" fill="#111122" stroke="#c084fc" stroke-width="2.5"/>
+  </g>
+  <circle cx="561.9" cy="238.1" r="55.9" fill="none" stroke="#080812" stroke-width="14"/>
+  <circle cx="556.9" cy="233.1" r="55.9" fill="none" stroke="#c084fc" stroke-width="14" stroke-opacity="0.9"/>
+  <polygon points="556.9,204.1 561.2,222.8 577.5,212.6 567.3,228.9 586.0,233.1 567.3,237.4 577.5,253.7 561.2,243.5 556.9,262.2 552.7,243.5 536.4,253.7 546.6,237.4 527.9,233.1 546.6,228.9 536.4,212.6 552.7,222.8" fill="#2dd4bf"/>
+  <g transform="translate(686.0 184.5) rotate(15.1)">
+    <rect x="-89.1" y="-32.0" width="190.2" height="76.1" rx="38.0" fill="#080812"/>
+    <rect x="-95.1" y="-38.0" width="190.2" height="76.1" rx="38.0" fill="#2dd4bf" fill-opacity="0.85"/>
+    <rect x="-95.1" y="-38.0" width="190.2" height="76.1" rx="38.0" fill="url(#lines-0)"/>
+  </g>
+  <circle cx="790.2" cy="278.3" r="86.2" fill="#080812"/>
+  <circle cx="783.2" cy="271.3" r="86.2" fill="#f472b6" fill-opacity="0.88"/>
+  <circle cx="813.4" cy="249.8" r="64.6" fill="url(#ht-2)"/>
+  <g transform="translate(944.3 472.7) rotate(0.1)">
+    <path d="M -94.6 0 A 94.6 94.6 0 0 1 94.6 0 Z" fill="#080812" transform="translate(6 6)"/>
+    <path d="M -94.6 0 A 94.6 94.6 0 0 1 94.6 0 Z" fill="#38bdf8" fill-opacity="0.9"/>
+    <circle cx="0" cy="33.1" r="30.3" fill="#c084fc"/>
+  </g>
+  <g transform="translate(1052.4 373.5) rotate(167.2)">
+    <polygon points="6.0,-83.6 83.6,-38.8 83.6,50.8 6.0,95.6 -71.6,50.8 -71.6,-38.8" fill="#080812"/>
+    <polygon points="0.0,-89.6 77.6,-44.8 77.6,44.8 0.0,89.6 -77.6,44.8 -77.6,-44.8" fill="#c084fc"/>
+    <polygon points="0.0,-44.1 38.2,-22.1 38.2,22.1 0.0,44.1 -38.2,22.1 -38.2,-22.1" fill="#111122" stroke="#2dd4bf" stroke-width="2.5"/>
+  </g>
+</g>
+<rect width="1200" height="630" fill="url(#vignette)" pointer-events="none"/>
 </svg>

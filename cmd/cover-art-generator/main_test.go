@@ -1,22 +1,34 @@
 package main
 
 import (
-	"image"
-	"image/color"
-	"image/draw"
+	"strings"
 	"testing"
 )
 
-func BenchmarkAddVignette(b *testing.B) {
-	// Setup a dummy image similar to production size (1200x630)
-	// Use NRGBA because production code uses imaging.Blur which returns NRGBA.
-	width, height := 1200, 630
-	img := image.NewNRGBA(image.Rect(0, 0, width, height))
-	// Fill with some color
-	draw.Draw(img, img.Bounds(), &image.Uniform{color.RGBA{100, 150, 200, 255}}, image.Point{}, draw.Src)
+func TestGenerateArtSVGStyles(t *testing.T) {
+	styles := []string{"constellation", "flow", "orbital", "bauhaus", "isometric"}
+	meta := PostMeta{
+		Title: "HTTP/3 From Scratch",
+		Slug:  "http3-from-scratch",
+		Tags:  []string{"golang", "http3", "quic"},
+	}
 
+	for i, st := range styles {
+		svg := generateArtSVG(st, int64(1000+i), meta, true, i)
+		if !strings.HasPrefix(svg, "<svg") || !strings.HasSuffix(strings.TrimSpace(svg), "</svg>") {
+			t.Fatalf("style %s produced invalid SVG wrapper", st)
+		}
+	}
+}
+
+func BenchmarkGenerateArtSVG(b *testing.B) {
+	meta := PostMeta{
+		Title: "Benchmarking Protobuf",
+		Slug:  "benchmarking-protojsonx",
+		Tags:  []string{"protobuf", "golang"},
+	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		addVignette(img)
+		_ = generateArtSVG("constellation", int64(i+1), meta, true, 0)
 	}
 }

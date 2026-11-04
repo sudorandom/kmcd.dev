@@ -16,17 +16,16 @@ build-future:
 cover path:
   go run ./cmd/cover-art-generator \
     -o {{path}} \
-    --style=random \
+    --style=auto \
     --network \
-    --seed=$(awk 'BEGIN{srand(); print int(rand()*9999)}') -n 100 -m $(awk 'BEGIN{srand(); print int(rand()*9)}')
+    --seed=$(awk 'BEGIN{srand(); print int(rand()*999999)}') -m $(awk 'BEGIN{srand(); print int(rand()*5)}')
 
 cover-debug path:
   go run ./cmd/cover-art-generator \
     -o {{path}} \
-    -png {{path}}/cover.png \
-    --style=random \
+    --style=auto \
     --network \
-    --seed=$(awk 'BEGIN{srand(); print int(rand()*9999)}') -n 100 -m $(awk 'BEGIN{srand(); print int(rand()*9)}')
+    --seed=$(awk 'BEGIN{srand(); print int(rand()*999999)}') -m $(awk 'BEGIN{srand(); print int(rand()*5)}')
 
 # Converts and scales a .mov file to an animated .webp file
 # Usage: just mov-to-webp video.mov animated.webp

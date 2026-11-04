@@ -10,7 +10,7 @@
             {{ if .IsHome }}
                 {{ $PageContext = .Site }}
             {{ end }}
-            {{ $latestPosts := first 5 (where $PageContext.RegularPages "Type" $contentTypeName) }}
+            {{ $latestPosts := first 3 (where $PageContext.RegularPages "Type" $contentTypeName) }}
             {{ $latestPermalinks := slice }}
             {{ range $latestPosts }}
                 {{ $latestPermalinks = $latestPermalinks | append .Permalink }}
@@ -37,35 +37,67 @@
                     </div>
 
                     <div class="posts-list">
-                        {{ range $latestPosts }}
-                        <div class="post-preview on-list">
+                        {{ range $i, $p := $latestPosts }}
+                        {{- $isLead := eq $i 0 -}}
+                        {{- $coverURL := "" -}}
+                        {{- if $isLead -}}
+                            {{- with $p.Params.cover -}}
+                                {{- with $p.Resources.GetMatch . -}}
+                                    {{- $coverURL = .RelPermalink -}}
+                                    {{- if ne .MediaType.SubType "svg" -}}
+                                        {{- with .Fit "1200x630 webp" -}}
+                                            {{- $coverURL = .RelPermalink -}}
+                                        {{- end -}}
+                                    {{- end -}}
+                                {{- end -}}
+                            {{- end -}}
+                        {{- end -}}
+                        <div class="post-preview on-list{{ if $isLead }} is-lead-post{{ end }}">
+                            {{- if $isLead -}}
+                                <span class="riso-series-sticker riso-newest-sticker">★ NEWEST</span>
+                            {{- else -}}
+                                {{- with ($p.GetTerms "series") -}}
+                                    {{- range first 1 . -}}
+                                        <a href="{{ .Permalink }}" class="riso-series-sticker">★ {{ .LinkTitle }} series</a>
+                                    {{- end -}}
+                                {{- end -}}
+                            {{- end -}}
+                            {{- if and $isLead $coverURL -}}
+                            <a href="{{ $p.Permalink }}" class="post-lead-cover" tabindex="-1" aria-hidden="true">
+                                <img src="{{ $coverURL }}" alt="" loading="eager" decoding="async" />
+                            </a>
+                            {{- end -}}
                             <div class="post-title">
                                 <span class="post-meta">
-                                    {{- with .Date -}}
+                                    {{- with $p.Date -}}
                                     {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
                                     {{- end }}
-                                    &nbsp;&bull;&nbsp; {{ .WordCount }} words
-                                    {{- with .Params.tags -}}
+                                    &nbsp;&bull;&nbsp; {{ $p.ReadingTime }} min read ({{ $p.WordCount }} words)
+                                    {{- with $p.Params.tags -}}
                                         {{ range first 3 . }}
                                         &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
                                         {{ end }}
                                     {{- end -}}
                                 </span>
                                 <h3>
-                                    <a href="{{ .Permalink }}">{{- with .Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ .Title | markdownify }}</a>
+                                    <a href="{{ $p.Permalink }}">{{- with $p.Draft }}<span class="riso-draft-badge">DRAFT</span> {{ end -}}{{ $p.Title | markdownify }}</a>
                                 </h3>
+                                {{- if and $isLead $p.Params.description -}}
+                                <p class="lead-post-deck">{{ $p.Params.description }}</p>
+                                {{- end -}}
                             </div>
                             <div class="post-summary">
-                                <a href="{{ .Permalink }}" class="post-summary-link" tabindex="-1" aria-hidden="true">
+                                <a href="{{ $p.Permalink }}" class="post-summary-link" tabindex="-1" aria-hidden="true">
                                     <span class="post-summary-text">
-                                        {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
+                                        {{- $truncLen := cond $isLead 360 240 -}}
+                                        {{- $summary := $p.Summary | plainify | htmlUnescape | replaceRE "^Introduction\\s+" "" | chomp | truncate $truncLen "..." -}}
                                         {{- $summary = chomp $summary -}}
                                         {{- if not (hasSuffix $summary "...") -}}
                                             {{- $summary = printf "%s..." $summary -}}
                                         {{- end -}}
                                         {{ $summary }}
                                     </span>
-                                    <span class="read-more-link">Click to read more &rarr;</span>
+                                    <span class="read-more-link">{{ if $isLead }}Read latest post &rarr;{{ else }}Read more &rarr;{{ end }}</span>
                                 </a>
                             </div>
                         </div>
@@ -74,76 +106,107 @@
 
                     <div class="main-heading">
                         <div class="posts-header section-title">
-                            <h2><i class="fa-solid fa-explosion"></i> &nbsp;Featured Posts</h2>
+                            <h2><i class="fa-solid fa-explosion"></i> &nbsp;Featured Deep Dives &amp; Series</h2>
                         </div>
                     </div>
 
-                    <div class="posts-list">
+                    <div class="featured-bento-grid">
                         {{ $featuredCandidates := where $PageContext.RegularPages ".Params.featured" true }}
-                        {{ $featuredPosts := where $featuredCandidates "Permalink" "not in" $latestPermalinks }}
-                        {{ range first 3 $featuredPosts }}
-                        <div class="post-preview on-list">
-                            <div class="post-title">
-                                <span class="post-meta">
-                                    {{- with .Date -}}
-                                    {{ .Format ($.Site.Params.DateFormatList | default "2006-01-02") }}
-                                    {{- end }}
-                                    &nbsp;&bull;&nbsp; {{ .WordCount }} words
-                                    {{- with .Params.tags -}}
-                                        {{ range first 3 . }}
-                                        &nbsp;&bull;&nbsp; <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
-                                        {{ end }}
-                                    {{- end -}}
-                                </span>
-                                <h3>
-                                    <a href="{{ .Permalink }}">{{ (or .Params.featuredTitle .Title) | markdownify }}</a>
-                                </h3>
-                            </div>
-                            <div class="post-summary">
-                                <a href="{{ .Permalink }}" class="post-summary-link" tabindex="-1" aria-hidden="true">
-                                    <span class="post-summary-text">
-                                        {{- $summary := .Summary | plainify | htmlUnescape | chomp | truncate 500 "..." -}}
-                                        {{- $summary = chomp $summary -}}
-                                        {{- if not (hasSuffix $summary "...") -}}
-                                            {{- $summary = printf "%s..." $summary -}}
-                                        {{- end -}}
-                                        {{ $summary }}
-                                    </span>
-                                    <span class="read-more-link">Click to read more &rarr;</span>
-                                </a>
-                            </div>
-                        </div>
+                        {{ $featuredFiltered := where $featuredCandidates "Permalink" "not in" $latestPermalinks }}
+                        {{ $featuredPosts := slice }}
+                        {{ $seenSeries := slice }}
+                        {{ range $featuredFiltered }}
+                            {{ $sKey := "" }}
+                            {{ with .Params.series }}
+                                {{ range first 1 . }}
+                                    {{ $sKey = lower . }}
+                                {{ end }}
+                            {{ end }}
+                            {{ if or (eq $sKey "") (not (in $seenSeries $sKey)) }}
+                                {{ $featuredPosts = $featuredPosts | append . }}
+                                {{ if ne $sKey "" }}
+                                    {{ $seenSeries = $seenSeries | append $sKey }}
+                                {{ end }}
+                            {{ end }}
                         {{ end }}
-                        {{- $allPosts := where $PageContext.RegularPages "Type" $contentTypeName -}}
-                        {{- $totalWords := 0 -}}
-                        {{- range $allPosts -}}
-                            {{- $totalWords = add $totalWords .WordCount -}}
+                        {{ range $idx, $fp := first 3 $featuredPosts }}
+                        {{- $isHeroFeature := eq $idx 0 -}}
+                        {{- $fpCover := "" -}}
+                        {{- with $fp.Params.cover -}}
+                            {{- with $fp.Resources.GetMatch . -}}
+                                {{- $fpCover = .RelPermalink -}}
+                                {{- if ne .MediaType.SubType "svg" -}}
+                                    {{- with .Fit "900x540 webp" -}}
+                                        {{- $fpCover = .RelPermalink -}}
+                                    {{- end -}}
+                                {{- end -}}
+                            {{- end -}}
                         {{- end -}}
-                        <div class="archive-cta-card">
-                            <div class="archive-cta-mascot">
-                                {{ partial "toc-mascot.html" . }}
-                            </div>
-                            <div class="archive-cta-body">
-                                <span class="archive-cta-kicker">★ DEEP IN THE STACKS</span>
-                                <h3 class="archive-cta-title">Still scrolling? The rabbit hole goes way deeper.</h3>
-                                <p class="archive-cta-desc">
-                                    There are <strong>{{ len $allPosts }} articles</strong> ({{ lang.FormatNumberCustom 0 $totalWords }} words of networking, protocols, and questionable side-quests) waiting in the archive.
+                        {{- $seriesTerms := $fp.GetTerms "series" -}}
+                        {{- $seriesCount := 0 -}}
+                        {{- $seriesName := "" -}}
+                        {{- $isFirstInSeries := false -}}
+                        {{- range first 1 $seriesTerms -}}
+                            {{- $seriesPages := .Pages.ByDate -}}
+                            {{- $seriesCount = len $seriesPages -}}
+                            {{- $seriesName = .Name -}}
+                            {{- range first 1 $seriesPages -}}
+                                {{- if eq .Permalink $fp.Permalink -}}
+                                    {{- $isFirstInSeries = true -}}
+                                {{- end -}}
+                            {{- end -}}
+                        {{- end -}}
+                        {{- $displayTitle := (or $fp.Params.featuredTitle $fp.Title) | replaceRE "^Series:\\s*" "" -}}
+                        <article class="featured-bento-card{{ if $isHeroFeature }} is-hero-feature{{ end }}">
+                            {{- if $fpCover -}}
+                            <a href="{{ $fp.Permalink }}" class="featured-bento-media" tabindex="-1" aria-hidden="true">
+                                <img src="{{ $fpCover }}" alt="" loading="lazy" decoding="async" />
+                                {{- if gt $seriesCount 1 -}}
+                                <span class="featured-series-badge">★ {{ $seriesCount }}-PART SERIES</span>
+                                {{- else -}}
+                                <span class="featured-series-badge">★ FEATURED</span>
+                                {{- end -}}
+                            </a>
+                            {{- end -}}
+                            <div class="featured-bento-body">
+                                <div class="featured-bento-meta">
+                                    <span>{{ $fp.Date.Format "Jan 2006" }}</span>
+                                    <span>&bull;</span>
+                                    <span>{{ $fp.ReadingTime }} min read</span>
+                                    {{- if and (gt $seriesCount 1) (not $fpCover) -}}
+                                    <span>&bull;</span>
+                                    <span>{{ $seriesCount }} parts</span>
+                                    {{- end -}}
+                                </div>
+                                <h3 class="featured-bento-title">
+                                    <a href="{{ $fp.Permalink }}">{{ $displayTitle | markdownify }}</a>
+                                </h3>
+                                {{- with $fp.Params.description -}}
+                                <p class="featured-bento-deck">{{ . }}</p>
+                                {{- end -}}
+                                <p class="featured-bento-excerpt">
+                                    {{- $fpTrunc := cond $isHeroFeature 210 155 -}}
+                                    {{- $fpSummary := $fp.Summary | plainify | htmlUnescape | replaceRE "^Introduction\\s+" "" | chomp | truncate $fpTrunc "..." -}}
+                                    {{ $fpSummary }}
                                 </p>
-                                <div class="archive-cta-actions">
-                                    <a href="{{ "posts/" | relLangURL }}" class="posts-footer-archive">
-                                        <i class="fa-solid fa-box-archive"></i> Dive into all {{ len $allPosts }} posts &rarr;
-                                    </a>
-                                    <a href="{{ "random/" | relLangURL }}" class="posts-footer-random">
-                                        <i class="fa-solid fa-dice"></i> Let Nibble pick one
+                                <div class="featured-bento-footer">
+                                    <div class="featured-bento-tags">
+                                        {{- range first 2 $fp.Params.tags -}}
+                                        <a href="{{ (urlize (printf "tags/%s" . )) | absLangURL }}/">#{{ . }}</a>
+                                        {{- end -}}
+                                    </div>
+                                    <a href="{{ $fp.Permalink }}" class="featured-bento-cta">
+                                        {{- if and (gt $seriesCount 1) $isFirstInSeries -}}Start Part 1 &rarr;{{- else -}}Read post &rarr;{{- end -}}
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </article>
+                        {{ end }}
                     </div>
                 </div>
 
-                <!-- Right Column (1/3 width): Major Projects -->
-                <aside class="home-projects-col" aria-label="Major Projects">
+                <!-- Major Projects (2x2 Grid) -->
+                <section class="home-projects-col" aria-label="Major Projects">
                     <div class="main-heading">
                         <div class="posts-header section-title">
                             <h2><i class="fa-solid fa-code"></i> &nbsp; Major Projects</h2>
@@ -173,7 +236,33 @@
                     <a href="{{ "stuff/" | relLangURL }}" class="projects-footer-archive">
                         Check out all projects on /stuff/ &rarr;
                     </a>
-                </aside>
+                </section>
+
+                {{- $allPosts := where $PageContext.RegularPages "Type" $contentTypeName -}}
+                {{- $totalWords := 0 -}}
+                {{- range $allPosts -}}
+                    {{- $totalWords = add $totalWords .WordCount -}}
+                {{- end -}}
+                <div class="archive-cta-card">
+                    <div class="archive-cta-mascot">
+                        {{ partial "toc-mascot.html" . }}
+                    </div>
+                    <div class="archive-cta-body">
+                        <span class="archive-cta-kicker">★ THE ARCHIVE</span>
+                        <h3 class="archive-cta-title">Want to read more?</h3>
+                        <p class="archive-cta-desc">
+                            Browse all <strong>{{ len $allPosts }} posts</strong> ({{ lang.FormatNumberCustom 0 $totalWords }} words) in the archive, or let Nibble pick a random one.
+                        </p>
+                        <div class="archive-cta-actions">
+                            <a href="{{ "posts/" | relLangURL }}" class="posts-footer-archive">
+                                <i class="fa-solid fa-box-archive"></i> Browse all {{ len $allPosts }} posts &rarr;
+                            </a>
+                            <a href="{{ "random/" | relLangURL }}" class="posts-footer-random">
+                                <i class="fa-solid fa-dice"></i> Let Nibble pick one
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         {{ end }}
         <!-- End Posts -->
