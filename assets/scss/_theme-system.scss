@@ -729,31 +729,18 @@ aside.tree-nav {
       opacity: 0;
     }
 
-    /* Subtle idle animations */
     .bot-eyes-0,
     .bot-eyes-1,
     .bot-eyes-2 {
       transform-origin: 16px 13.5px;
-      animation: bot-idle-blink 4.6s steps(1, end) infinite;
-    }
-    .bot-led-1 {
-      animation: bot-led-pulse 1.8s steps(2, end) infinite;
-    }
-    .bot-led-2 {
-      animation: bot-led-pulse 1.8s steps(2, end) 0.6s infinite;
-    }
-    .bot-led-3 {
-      animation: bot-led-pulse 1.8s steps(2, end) 1.2s infinite;
     }
     .bot-packets-l {
       opacity: 0.25;
       transition: opacity 0.25s ease;
-      animation: bot-float-l 2.2s steps(2, end) infinite;
     }
     .bot-packets-r {
       opacity: 0.25;
       transition: opacity 0.25s ease;
-      animation: bot-float-r 2.2s steps(2, end) infinite;
     }
   }
 
@@ -778,27 +765,34 @@ aside.tree-nav {
     }
   }
 
-  /* Mood 2 (65% - 90% scrolled): Getting Excited / Typing */
+  /* Mood 2 (65% - 90% scrolled): Getting Excited (static expression) */
   &[data-mood="2"] {
     svg {
       .bot-eyes-0, .bot-mouth-0, .bot-eyes-1, .bot-mouth-1 { opacity: 0; }
       .bot-eyes-2, .bot-mouth-2 { opacity: 1; }
       .bl { opacity: 0.9; }
-      .bot-packets-l, .bot-packets-r {
-        opacity: 0.95;
-        animation-duration: 1s;
-      }
-      .bot-hand-l {
-        animation: bot-type-l 0.28s steps(2, end) infinite;
-      }
-      .bot-hand-r {
-        animation: bot-type-r 0.28s steps(2, end) infinite;
-      }
+      .bot-packets-l, .bot-packets-r { opacity: 0.85; }
     }
   }
 
-  /* Mood 3 (90% - 100% scrolled) or Hover: Overjoyed! */
-  &[data-mood="3"] svg,
+  /* Mood 3 (90% - 100% scrolled): Happy expression without constant movement */
+  &[data-mood="3"] svg {
+    .bot-eyes-0, .bot-eyes-1, .bot-eyes-2,
+    .bot-mouth-0, .bot-mouth-1, .bot-mouth-2 {
+      opacity: 0;
+      animation: none;
+    }
+    .bot-eyes-3,
+    .bot-mouth-3,
+    .bot-heart,
+    .bl,
+    .bot-packets-l,
+    .bot-packets-r {
+      opacity: 1;
+    }
+  }
+
+  /* Hover: Overjoyed & animated! */
   svg:hover {
     .bot-eyes-0, .bot-eyes-1, .bot-eyes-2,
     .bot-mouth-0, .bot-mouth-1, .bot-mouth-2 {
