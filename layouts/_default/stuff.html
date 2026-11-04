@@ -157,6 +157,32 @@
           </div>
         </div>
 
+        <div class="project-card" id="protobuf">
+          <div class="project-card-header">
+            <h3 class="project-card-title"><a href="https://protobuf.com" target="_blank" rel="noopener">protobuf.com</a></h3>
+            <div class="project-card-actions">
+              <a href="/posts/interactive-protobuf/" title="Read Post" aria-label="Read Post about protobuf.com"><i class="fa-solid fa-book"></i> <span>Post</span></a>
+              <a href="https://protobuf.com" target="_blank" rel="noopener" title="Interactive Playground" aria-label="Interactive Playground"><i class="fa-solid fa-globe"></i> <span>Site</span></a>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <div class="project-card-desc">
+              <p>
+                An interactive playground and visual guide for exploring Protocol Buffers, from schema design and validation to binary wire formats and serialization efficiency. Natively powered by Go compilers compiled to WebAssembly.
+              </p>
+            </div>
+            {{ $protobufImg := (resources.Get "images/screenshots/protobuf.png") }}
+            {{ if $protobufImg }}
+            {{ $resizedProtobufImg := $protobufImg.Resize "400x webp" }}
+            <div class="project-card-thumb">
+              <a href="https://protobuf.com" target="_blank" rel="noopener">
+                <img src="{{ $resizedProtobufImg.Permalink }}" alt="Screenshot of protobuf.com" loading="lazy">
+              </a>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+
         <div class="project-card" id="protoc-gen-connect-openapi">
           <div class="project-card-header">
             <h3 class="project-card-title"><a href="https://github.com/sudorandom/protoc-gen-connect-openapi" target="_blank" rel="noopener">protoc-gen-connect-openapi</a></h3>
@@ -363,7 +389,7 @@
                 A set of Python libraries that assist in calling the SoftLayer API. Has a CLI, general API and specialized code to help with more complicated workflows. This became the most popular way to interact with SoftLayer APIs.
               </p>
             </div>
-            {{ $slPyImg := (resources.Get "softlayer-python.webp") }}
+            {{ $slPyImg := (resources.Get "images/screenshots/softlayer-python.png") }}
             {{ if $slPyImg }}
             {{ $resizedSlPyImg := $slPyImg.Resize "400x webp" }}
             <div class="project-card-thumb">
@@ -389,7 +415,7 @@
                 An FTP and SFTP interface for OpenStack Object Storage (swift) built in Twisted Python. I'm unsure how much the project is still used but it was critical for moving a lot of data from legacy systems onto SoftLayer/IBM's Object Storage product.
               </p>
             </div>
-            {{ $swftpImg := (resources.Get "swftp.webp") }}
+            {{ $swftpImg := (resources.Get "images/screenshots/swftp.png") }}
             {{ if $swftpImg }}
             {{ $resizedSwftpImg := $swftpImg.Resize "400x webp" }}
             <div class="project-card-thumb">
@@ -417,6 +443,7 @@
                 <li><a href="#bgp">Let's Learn About BGP</a></li>
                 <li><a href="#fauxrpc">FauxRPC</a></li>
                 <li><a href="#protodocs">ProtoDocs</a></li>
+                <li><a href="#protobuf">protobuf.com</a></li>
                 <li><a href="#protoc-gen-connect-openapi">protoc-gen-connect-openapi</a></li>
                 <li><a href="#kmcd-dev">kmcd.dev</a></li>
                 <li><a href="#phreak">phreak.kmcd.dev</a></li>
