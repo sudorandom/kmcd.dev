@@ -746,10 +746,14 @@ function initMascotScrollMood() {
 
   const farewells = ["Bye! o/", "See ya! o/", "FIN/ACK! o/", "EOF! o/"];
   const greetings = ["Hi again! o/", "SYN/ACK! o/", "Back online!", "Beep! o/"];
+  const playfulTricks = [
+    { id: "flip", trick: "flip", mood: "3", text: "DO A BARREL ROLL!", duration: 750 },
+    { id: "disco", trick: "disco", mood: "3", text: "OVERCLOCKING!!", duration: 1500 },
+    { id: "glitch", trick: "glitch", mood: "2", text: "segfault (core dumped)", duration: 1100 },
+  ];
   const nextTrickThreshold = () => 5 + Math.floor(Math.random() * 6);
   let clicksUntilTrick = nextTrickThreshold();
   let trickPending = false;
-  let previousObservation = null;
 
   mascots.forEach(mascot => {
     let trickTimer = null;
@@ -779,6 +783,7 @@ function initMascotScrollMood() {
         const city = response.headers.get("x-kmcd-city")?.trim();
         const ip = response.headers.get("x-kmcd-ip")?.trim();
         observations = [{ id: "latency", text: `The server answered in ${elapsed} ms. I'm still listening.` }];
+        observations.push({ id: "ping", trick: "jump", mood: "3", text: `PONG! time=${elapsed}ms`, duration: 1400 });
         if (city) observations.push({ id: "city", text: `How are things in ${city}?` });
         if (ip) observations.push({ id: "ip", text: `${ip}. That's you, isn't it?` });
       } catch (err) {
@@ -789,20 +794,23 @@ function initMascotScrollMood() {
 
       // A slow response must not interrupt Nibble's farewell or reveal a hidden panel.
       if (panel.hidden || mascot.getAttribute("data-mood") === "bye") return;
-      const choices = observations.filter(item => item.id !== previousObservation);
-      const pool = choices.length ? choices : observations;
-      const item = pool[Math.floor(Math.random() * pool.length)];
-      previousObservation = item.id;
-      mascot.setAttribute("data-mood", "2");
+      const actions = [...observations, ...playfulTricks];
+      const item = actions[Math.floor(Math.random() * actions.length)];
+      if (item.trick) {
+        void mascot.offsetWidth; // Restart the animation, including after rapid clicks.
+        mascot.setAttribute("data-trick", item.trick);
+      }
+      mascot.setAttribute("data-mood", item.mood || "2");
       speech.textContent = item.text;
       speech.hidden = false;
 
       trickTimer = setTimeout(() => {
+        mascot.removeAttribute("data-trick");
         if (mascot.getAttribute("data-mood") === "bye") return;
         speech.hidden = true;
         mascot.removeAttribute("data-mood");
         updateMood();
-      }, 5500);
+      }, item.duration || 5500);
     });
   });
 
