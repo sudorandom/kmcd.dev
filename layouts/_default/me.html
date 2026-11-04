@@ -340,41 +340,17 @@
           </p>
 
           <div class="me-displate-grid">
-            <!-- Poster 1 -->
-            {{ $p1 := $.Page.Resources.GetMatch "displate_nocountrylines_geo-mercator.webp" }}
-            {{ if $p1 }}
-            {{ $p1r := $p1.Resize "480x webp" }}
-            <a href="https://displate.com/displate/6788735?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
+            {{ with $.Page.Resources.GetMatch "displate_2026_world_map.png" }}
+            {{ $img := .Resize "480x webp" }}
+            <a href="https://displate.com/displate/11263092?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
               <div class="me-displate-media">
                 <span class="me-displate-badge">Metal Poster</span>
-                <img src="{{ $p1r.Permalink }}" 
-                     alt="Map of the Internet (no country lines)" 
+                <img src="{{ $img.Permalink }}"
+                     alt="Map of the Internet"
                      class="me-displate-img" 
-                     width="{{ $p1r.Width }}" 
-                     height="{{ $p1r.Height }}" 
-                     style="aspect-ratio: {{ $p1r.Width }} / {{ $p1r.Height }};"
-                     decoding="async" />
-              </div>
-              <div class="me-displate-footer">
-                <span class="me-displate-title">Map of the Internet (no country lines)</span>
-                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-              </div>
-            </a>
-            {{ end }}
-
-            <!-- Poster 2 -->
-            {{ $p2 := $.Page.Resources.GetMatch "displate_geo-mercator-2.webp" }}
-            {{ if $p2 }}
-            {{ $p2r := $p2.Resize "480x webp" }}
-            <a href="https://displate.com/displate/6785800?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
-              <div class="me-displate-media">
-                <span class="me-displate-badge">Metal Poster</span>
-                <img src="{{ $p2r.Permalink }}" 
-                     alt="Map of the Internet" 
-                     class="me-displate-img" 
-                     width="{{ $p2r.Width }}" 
-                     height="{{ $p2r.Height }}" 
-                     style="aspect-ratio: {{ $p2r.Width }} / {{ $p2r.Height }};"
+                     width="{{ $img.Width }}"
+                     height="{{ $img.Height }}"
+                     style="aspect-ratio: {{ $img.Width }} / {{ $img.Height }};"
                      decoding="async" />
               </div>
               <div class="me-displate-footer">
@@ -384,19 +360,17 @@
             </a>
             {{ end }}
 
-            <!-- Poster 3 -->
-            {{ $p3 := $.Page.Resources.GetMatch "displate_sun-spectrum-visible-fade.webp" }}
-            {{ if $p3 }}
-            {{ $p3r := $p3.Resize "480x webp" }}
+            {{ with $.Page.Resources.GetMatch "displate_sun-spectrum-visible-fade.webp" }}
+            {{ $img := .Resize "480x webp" }}
             <a href="https://displate.com/displate/5622874?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
               <div class="me-displate-media">
                 <span class="me-displate-badge">Metal Poster</span>
-                <img src="{{ $p3r.Permalink }}" 
+                <img src="{{ $img.Permalink }}"
                      alt="Spectrum of the sun" 
                      class="me-displate-img" 
-                     width="{{ $p3r.Width }}" 
-                     height="{{ $p3r.Height }}" 
-                     style="aspect-ratio: {{ $p3r.Width }} / {{ $p3r.Height }};"
+                     width="{{ $img.Width }}"
+                     height="{{ $img.Height }}"
+                     style="aspect-ratio: {{ $img.Width }} / {{ $img.Height }};"
                      decoding="async" />
               </div>
               <div class="me-displate-footer">
@@ -406,49 +380,6 @@
             </a>
             {{ end }}
 
-            <!-- Poster 4 -->
-            {{ $p4 := $.Page.Resources.GetMatch "displate_geo-mercator.webp" }}
-            {{ if $p4 }}
-            {{ $p4r := $p4.Resize "480x webp" }}
-            <a href="https://displate.com/displate/5703123?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
-              <div class="me-displate-media">
-                <span class="me-displate-badge">Metal Poster</span>
-                <img src="{{ $p4r.Permalink }}" 
-                     alt="Map of the Internet (underwater cables)" 
-                     class="me-displate-img" 
-                     width="{{ $p4r.Width }}" 
-                     height="{{ $p4r.Height }}" 
-                     style="aspect-ratio: {{ $p4r.Width }} / {{ $p4r.Height }};"
-                     decoding="async" />
-              </div>
-              <div class="me-displate-footer">
-                <span class="me-displate-title">Map of the Internet (underwater cables)</span>
-                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-              </div>
-            </a>
-            {{ end }}
-
-            <!-- Poster 5 -->
-            {{ $p5 := $.Page.Resources.GetMatch "displate_random-hex.webp" }}
-            {{ if $p5 }}
-            {{ $p5r := $p5.Resize "480x webp" }}
-            <a href="https://displate.com/displate/4635891?art=5dd499109f9ea" target="_blank" rel="noopener" class="me-displate-card">
-              <div class="me-displate-media">
-                <span class="me-displate-badge">Metal Poster</span>
-                <img src="{{ $p5r.Permalink }}" 
-                     alt="Random spelled out in hexadecimal" 
-                     class="me-displate-img" 
-                     width="{{ $p5r.Width }}" 
-                     height="{{ $p5r.Height }}" 
-                     style="aspect-ratio: {{ $p5r.Width }} / {{ $p5r.Height }};"
-                     decoding="async" />
-              </div>
-              <div class="me-displate-footer">
-                <span class="me-displate-title">Random in Hexadecimal</span>
-                <span class="me-displate-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-              </div>
-            </a>
-            {{ end }}
           </div>
         </div>
       </section>

@@ -958,12 +958,17 @@ aside.tree-nav {
   font-size: 11.5px;
   font-weight: 700;
   padding: 3px 10px;
-  border-radius: 999px;
+  border-radius: 12px;
   background: var(--riso-teal);
   color: #0d121f;
   border: 1.5px solid var(--ink-border);
   box-shadow: 2px 2px 0px var(--ink-border);
-  white-space: nowrap;
+  width: max-content;
+  // Preserve CSS min() for the browser instead of invoking LibSass's min().
+  max-width: unquote("min(260px, calc(100vw - 40px))");
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
   pointer-events: none;
 
   &[hidden] {

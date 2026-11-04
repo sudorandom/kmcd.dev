@@ -746,14 +746,10 @@ function initMascotScrollMood() {
 
   const farewells = ["Bye! o/", "See ya! o/", "FIN/ACK! o/", "EOF! o/"];
   const greetings = ["Hi again! o/", "SYN/ACK! o/", "Back online!", "Beep! o/"];
-  const rightClickTricks = [
-    { trick: "jump", mood: "bye", ping: true, duration: 1400 },
-    { trick: "flip", mood: "3", text: "DO A BARREL ROLL!", duration: 750 },
-    { trick: "disco", mood: "3", text: "OVERCLOCKING!!", duration: 1500 },
-    { trick: "glitch", mood: "2", text: "segfault (core dumped)", duration: 1100 },
-    { trick: "jump", mood: "3", text: "418 I'm a teapot", duration: 1200 },
-  ];
-  let trickIndex = 0;
+  const nextTrickThreshold = () => 5 + Math.floor(Math.random() * 6);
+  let clicksUntilTrick = nextTrickThreshold();
+  let trickPending = false;
+  let previousObservation = null;
 
   mascots.forEach(mascot => {
     let trickTimer = null;
@@ -761,52 +757,52 @@ function initMascotScrollMood() {
       e.preventDefault();
       const panel = mascot.closest(".toc-mascot-panel");
       const speech = panel ? panel.querySelector(".nibble-speech") : null;
-      const item = rightClickTricks[trickIndex % rightClickTricks.length];
-      trickIndex++;
+      if (!speech || panel.hidden || mascot.getAttribute("data-mood") === "bye" || trickPending) return;
+      if (--clicksUntilTrick > 0) return;
+      clicksUntilTrick = nextTrickThreshold();
+      trickPending = true;
 
       if (trickTimer) clearTimeout(trickTimer);
       mascot.removeAttribute("data-trick");
-      void mascot.offsetWidth; // restart CSS animation
+      speech.hidden = true;
 
-      if (item.ping) {
-        mascot.setAttribute("data-mood", "2");
-        if (speech) {
-          speech.textContent = "PING...";
-          speech.hidden = false;
-        }
-        const t0 = performance.now();
-        try {
-          await fetch(window.location.pathname, { method: "HEAD", cache: "no-store" });
-          const rtt = (performance.now() - t0).toFixed(1);
-          mascot.setAttribute("data-trick", item.trick);
-          mascot.setAttribute("data-mood", item.mood);
-          if (speech) {
-            speech.textContent = `PONG! time=${rtt}ms`;
-            speech.hidden = false;
-          }
-        } catch (err) {
-          mascot.setAttribute("data-trick", "glitch");
-          mascot.setAttribute("data-mood", "2");
-          if (speech) {
-            speech.textContent = "Destination Unreachable";
-            speech.hidden = false;
-          }
-        }
-      } else {
-        mascot.setAttribute("data-trick", item.trick);
-        mascot.setAttribute("data-mood", item.mood);
-        if (speech) {
-          speech.textContent = item.text;
-          speech.hidden = false;
-        }
+      let observations = [{ id: "offline", text: "Your connection went quiet. Still there?" }];
+      const started = performance.now();
+      try {
+        const response = await fetch("/http/", {
+          method: "HEAD",
+          cache: "no-store",
+          signal: AbortSignal.timeout(5000),
+        });
+        if (!response.ok) throw new Error("Connection check failed");
+        const elapsed = Math.round(performance.now() - started);
+        const city = response.headers.get("x-kmcd-city")?.trim();
+        const ip = response.headers.get("x-kmcd-ip")?.trim();
+        observations = [{ id: "latency", text: `The server answered in ${elapsed} ms. I'm still listening.` }];
+        if (city) observations.push({ id: "city", text: `How are things in ${city}?` });
+        if (ip) observations.push({ id: "ip", text: `${ip}. That's you, isn't it?` });
+      } catch (err) {
+        // Missing edge headers or an unavailable endpoint should never invent personal details.
+      } finally {
+        trickPending = false;
       }
 
+      // A slow response must not interrupt Nibble's farewell or reveal a hidden panel.
+      if (panel.hidden || mascot.getAttribute("data-mood") === "bye") return;
+      const choices = observations.filter(item => item.id !== previousObservation);
+      const pool = choices.length ? choices : observations;
+      const item = pool[Math.floor(Math.random() * pool.length)];
+      previousObservation = item.id;
+      mascot.setAttribute("data-mood", "2");
+      speech.textContent = item.text;
+      speech.hidden = false;
+
       trickTimer = setTimeout(() => {
-        mascot.removeAttribute("data-trick");
-        if (speech) speech.hidden = true;
+        if (mascot.getAttribute("data-mood") === "bye") return;
+        speech.hidden = true;
         mascot.removeAttribute("data-mood");
         updateMood();
-      }, item.duration);
+      }, 5500);
     });
   });
 
