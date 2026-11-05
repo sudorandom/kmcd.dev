@@ -746,6 +746,24 @@ function initMascotScrollMood() {
 
   const farewells = ["Bye! o/", "See ya! o/", "FIN/ACK! o/", "EOF! o/"];
   const greetings = ["Hi again! o/", "SYN/ACK! o/", "Back online!", "Beep! o/"];
+  const interactionCounts = { trips: 0, pokes: 0 };
+  function readInteractionCount(kind) {
+    try {
+      const stored = localStorage.getItem(`kmcd-nibble-${kind}`);
+      const count = Number(stored);
+      if (stored !== null && Number.isSafeInteger(count) && count >= 0) {
+        interactionCounts[kind] = count;
+      }
+    } catch (err) {}
+    return interactionCounts[kind];
+  }
+  function countInteraction(kind) {
+    const count = Math.min(Number.MAX_SAFE_INTEGER, readInteractionCount(kind) + 1);
+    interactionCounts[kind] = count;
+    try {
+      localStorage.setItem(`kmcd-nibble-${kind}`, String(count));
+    } catch (err) {}
+  }
   const playfulTricks = [
     { id: "flip", trick: "flip", mood: "3", text: "DO A BARREL ROLL!", duration: 750 },
     { id: "disco", trick: "disco", mood: "3", text: "OVERCLOCKING!!", duration: 1500 },
@@ -757,8 +775,13 @@ function initMascotScrollMood() {
 
   mascots.forEach(mascot => {
     let trickTimer = null;
+    mascot.querySelector(".toc-mascot-link")?.addEventListener("click", () => {
+      countInteraction("trips");
+    });
     mascot.addEventListener("contextmenu", async (e) => {
       e.preventDefault();
+      // Every poke counts, even while a trick is waiting for its connection check.
+      countInteraction("pokes");
       const panel = mascot.closest(".toc-mascot-panel");
       const speech = panel ? panel.querySelector(".nibble-speech") : null;
       if (!speech || panel.hidden || mascot.getAttribute("data-mood") === "bye" || trickPending) return;
@@ -794,7 +817,12 @@ function initMascotScrollMood() {
 
       // A slow response must not interrupt Nibble's farewell or reveal a hidden panel.
       if (panel.hidden || mascot.getAttribute("data-mood") === "bye") return;
-      const actions = [...observations, ...playfulTricks];
+      const trips = readInteractionCount("trips");
+      const pokes = readInteractionCount("pokes");
+      const actions = [...observations, ...playfulTricks,
+        { id: "trips", trick: "jump", mood: "3", text: `Random trip odometer: ${trips}. Where to next?` },
+        { id: "pokes", trick: "glitch", mood: "2", text: `Poke counter: ${pokes}. Yes, I'm counting. Every. Single. One.` },
+      ];
       const item = actions[Math.floor(Math.random() * actions.length)];
       if (item.trick) {
         void mascot.offsetWidth; // Restart the animation, including after rapid clicks.

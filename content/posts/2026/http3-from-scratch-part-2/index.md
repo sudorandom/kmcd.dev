@@ -18,7 +18,7 @@ series: ["HTTP from Scratch"]
 
 In [Part 1](/posts/http3-from-scratch-part-1/), we opened and closed streams over QUIC, wrote our HTTP/3 variable-length integer (`varint`) framing, and adapted our HTTP/2 HPACK code into a QPACK encoder and decoder.
 
-At the end of Part 1, our test client and server could send `HEADERS` and `DATA` frames over a single QUIC stream. In this post, we'll turn that into a working HTTP/3 server and client that can talk to `curl`, `quic-go`'s `http3` package, and a web browser.
+At the end of Part 1, our test client and server could send `HEADERS` and `DATA` frames over a single QUIC stream, but there's slightly more needed to negotiate using HTTP/3. In this post, we'll turn that foundation into a working HTTP/3 server and client that can talk to `curl`, `quic-go`'s `http3` package, and a web browser.
 
 Before we get to the server loop, there's an obvious question to answer: since web traffic has defaulted to TCP port 443 for decades, how does a browser know when to connect to a server over UDP instead?
 
@@ -26,7 +26,7 @@ Before we get to the server loop, there's an obvious question to answer: since w
 
 With HTTP/2, protocol negotiation was easy because HTTP/1.1 and HTTP/2 both live on top of TCP and TLS. As we saw in [HTTP/2 From Scratch: Part 1](/posts/http2-from-scratch-part-1/), the client passes `NextProtos: []string{"h2", "http/1.1"}` in its TLS `ClientHello` on TCP port 443 and the server picks `h2` during the handshake.
 
-We can't do that for HTTP/3 since QUIC uses UDP instead of TCP, so browsers have two ways to learn that a host supports HTTP/3.
+We can't do that for HTTP/3 since QUIC uses UDP instead of TCP, so browsers have two *other* ways to learn that a host supports HTTP/3.
 
 #### The Alt-Svc Header
 If you scroll back to the `openssl s_client` dump in [HTTP/2 From Scratch: Part 1](/posts/http2-from-scratch-part-1/), you might have noticed this header in the response from `kmcd.dev`:
@@ -35,7 +35,7 @@ If you scroll back to the `openssl s_client` dump in [HTTP/2 From Scratch: Part 
 alt-svc: h3=":443"; ma=86400
 ```
 
-That's [HTTP Alternative Services](https://www.rfc-editor.org/rfc/rfc7838.html). When you visit `kmcd.dev` for the first time over TCP, that header tells your browser that port 443 also speaks `h3` over UDP for the next 86,400 seconds (24 hours), so the browser can switch to QUIC on the next request:
+That's [HTTP Alternative Services](https://www.rfc-editor.org/rfc/rfc7838.html). When you visit `kmcd.dev` for the first time over TCP (either HTTP/1.1 or HTTP/2), that header tells your browser that port 443 also speaks `h3` for the next 86,400 seconds (24 hours), so the browser can switch to QUIC on the next request if it wants:
 
 ```d2
 shape: sequence_diagram
@@ -54,7 +54,7 @@ UDP -> Browser: "200 OK"
 Since TCP and UDP ports are separate, a Go server can listen on TCP `:8443` and UDP `:8443` at the same time in the same binary.
 
 #### DNS HTTPS Records
-Cloudflare also publishes an `HTTPS` DNS record ([RFC 9460](https://www.rfc-editor.org/rfc/rfc9460.html)) for `kmcd.dev`. If you run `dig kmcd.dev HTTPS`, you'll see `alpn="h3,h2"` in the answer. Browsers check for that `HTTPS` record when resolving the domain name, so they can connect to UDP port 443 on the very first request without doing a TCP round trip first:
+There's one more method for negotiating HTTP/3 that doesn't require you to make a full HTTP request. I have configured Cloudflare to also publish an `HTTPS` DNS record ([RFC 9460](https://www.rfc-editor.org/rfc/rfc9460.html)) for `kmcd.dev`. If you run `dig kmcd.dev HTTPS`, you'll see `alpn="h3,h2"` in the answer. Browsers check for that `HTTPS` record when resolving the domain name, so they can connect to UDP port 443 on the very first request without doing a TCP round trip first:
 
 ```d2
 shape: sequence_diagram
@@ -69,24 +69,26 @@ Browser -> UDP: "QUIC + HTTP/3 Request"
 UDP -> Browser: "HTTP/3 Response"
 ```
 
+I personally like this method more, but you may still have to use both methods because different browsers support different negotiation methods.
+
 ### Testing Locally
 
-Pointing Chrome at our own Go server on `localhost:8443` has two catches. On TCP, we can use a self-signed certificate and click past Chrome's warning screen, but Chrome's QUIC client rejects self-signed certs outright. And without a DNS `HTTPS` record or an `Alt-Svc` header for `localhost:8443`, Chrome has no reason to try UDP on that port.
+Pointing Chrome at our own Go server on `localhost:8443` has two issues. On TCP, we can use a self-signed certificate and click past Chrome's warning screen. However, Chrome's QUIC client rejects self-signed certs completely with no way to opt into using the self-signed certificate. And without a DNS `HTTPS` record or an `Alt-Svc` header for `localhost:8443`, Chrome has no reason to try UDP on that port.
 
-To get a certificate that Chrome actually trusts on `localhost`, I added [`mkcert`](https://github.com/FiloSottile/mkcert) to `.mise.toml` and generated a local cert:
+To get a certificate that Chrome actually trusts on `localhost`, I used [`mkcert`](https://github.com/FiloSottile/mkcert) to generate a local cert and install it into the system certificate registery:
 
 ```shell
 $ mkcert -install
 $ mkcert localhost 127.0.0.1
 ```
 
-Testing with `curl` is much simpler since `curl --http3-only -k` still allows self-signed certs over QUIC (note that macOS's built-in `/usr/bin/curl` doesn't have HTTP/3 enabled, so I used the `curl` binary from `mise`):
+Testing with `curl` is much simpler since `curl --http3-only -k` still allows self-signed certs over QUIC (note that macOS's built-in `/usr/bin/curl` doesn't have HTTP/3 enabled, so I used the `curl` binary from `mise` which does):
 
 ```shell
 $ curl --http3-only -k -v https://127.0.0.1:8443/headers
 ```
 
-And to make Chrome talk HTTP/3 directly to `localhost:8443` without running a separate TCP server for `Alt-Svc`, you can pass `--origin-to-force-quic-on`:
+And to make Chrome talk HTTP/3 directly to `localhost:8443` without running a separate TCP server for `Alt-Svc`, you can pass `--origin-to-force-quic-on` when starting Chrome:
 
 ```shell
 $ open -a "Google Chrome" --args \
@@ -116,7 +118,7 @@ Back in [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we sen
 
 {{< image src="h3-server-streams.svg" width="820px" class="center" inline="true" >}}
 
-When I first wrote `sendControlStreamSettings`, I put `defer uni.Close()` at the top of the function out of habit, and `quic-go` immediately dropped the connection with `H3_CLOSED_CRITICAL_STREAM`. Unlike a request stream, the control stream has to stay open for the entire connection because closing it sends a FIN bit that the peer treats as a connection error:
+The control stream has to stay open for the entire connection. Closing it triggers an `H3_CLOSED_CRITICAL_STREAM` connection error, so `sendControlStreamSettings` leaves it open after writing the settings:
 
 {{< image src="control-stream-meme.jpg" width="480px" class="center" >}}
 
@@ -228,7 +230,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 }
 ```
 
-We reuse `h3BodyReader` for `resp.Body` too. Just like the bug we hit in the HTTP/2 client, we can't `defer conn.Close()` inside `Do` because the caller hasn't read the response body yet. Instead, we pass `closer: conn` into `h3BodyReader` so the QUIC connection closes when the caller calls `resp.Body.Close()`.
+We reuse `h3BodyReader` for `resp.Body` too. The connection needs to stay open after `Do` returns so the caller can read the response body. We pass `closer: conn` into `h3BodyReader` so the QUIC connection closes when the caller calls `resp.Body.Close()`.
 
 ### Running It
 

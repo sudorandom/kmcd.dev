@@ -216,7 +216,6 @@ go 1.25.5
 require golang.org/x/net v0.55.0
 ```
 
-When I pointed `main.go` at `https://kmcd.dev/` for the first time, the QUIC handshake succeeded and the HTML body came back right away, but the response headers included `Purpose: cloudflare` and no `Server` header at all. It turned out I had placed `x-frame-options` at index 62 of the QPACK static table instead of index 97, shifting entries 62 through 98 off by one. Fixing the table order decoded `Server: cloudflare` and `Alt-Svc` into their proper names.
 
 Here is `main.go`, which fetches a URL over HTTP/3 using our custom QUIC transport and prints the response headers along with the first 200 bytes of the body:
 
