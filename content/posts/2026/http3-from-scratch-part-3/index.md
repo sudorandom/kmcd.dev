@@ -216,17 +216,17 @@ Now `quic-go` is completely gone from `go.mod`! The only thing left in `go.mod` 
 
 ```shell
 $ go run .
-URL:          [https://kmcd.dev/](https://kmcd.dev/)
+URL:          https://kmcd.dev/
 Proto:        HTTP/3.0
 Status:       200 OK
 Server:       cloudflare
 Content-Type: text/html; charset=utf-8
 Alt-Svc:      h3=":443"; ma=86400
-Body Length:  28672 bytes
-Body Preview: <!doctype html><html lang=en><head><meta name=generator content="Hugo 0.152.2"><meta charset=UTF-8><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=viewport content="width=device-width,in
+Body Length:  26408 bytes
+Body Preview: <!doctype html><html lang=en itemscope itemtype=https://schema.org/Blog><head><meta name=generator content="Hugo 0.152.2"><meta charset=UTF-8><meta http-equiv=X-UA-Compatible content="ie=edge"><meta n
 
-$ go run . [https://cloudflare-quic.com/](https://cloudflare-quic.com/)
-URL:          [https://cloudflare-quic.com/](https://cloudflare-quic.com/)
+$ go run . https://cloudflare-quic.com/
+URL:          https://cloudflare-quic.com
 Proto:        HTTP/3.0
 Status:       200 OK
 Server:       cloudflare
@@ -234,7 +234,7 @@ Content-Type: text/html
 Alt-Svc:      h3=":443"; ma=86400
 Body Length:  125959 bytes
 Body Preview: <!DOCTYPE html>
-<html lang="en" itemscope="" itemtype="[http://schema.org/Article](http://schema.org/Article)"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en" itemscope="" itemtype="http://schema.org/Article"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>QUIC | Cloudflare</title>
     <me
 ```
