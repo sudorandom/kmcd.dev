@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/tls"
@@ -72,9 +73,7 @@ func (s *quicStream) pushFrame(offset uint64, data []byte, fin bool) {
 	defer s.mu.Unlock()
 
 	if len(data) > 0 {
-		copied := make([]byte, len(data))
-		copy(copied, data)
-		s.chunks[offset] = copied
+		s.chunks[offset] = bytes.Clone(data)
 	}
 	if fin {
 		s.finReceived = true
@@ -90,11 +89,9 @@ func (s *quicStream) Read(p []byte) (int, error) {
 	for {
 		if chunk, ok := s.chunks[s.readOffset]; ok {
 			n := copy(p, chunk)
-			if n == len(chunk) {
-				delete(s.chunks, s.readOffset)
-			} else {
+			delete(s.chunks, s.readOffset)
+			if n < len(chunk) {
 				s.chunks[s.readOffset+uint64(n)] = chunk[n:]
-				delete(s.chunks, s.readOffset)
 			}
 			s.readOffset += uint64(n)
 			return n, nil
@@ -184,8 +181,8 @@ func newQUICConn(udpConn net.PacketConn, remoteAddr net.Addr, localCID, remoteCI
 	c := &quicConn{
 		udpConn:      udpConn,
 		remoteAddr:   remoteAddr,
-		localConnID:  append([]byte(nil), localCID...),
-		remoteConnID: append([]byte(nil), remoteCID...),
+		localConnID:  bytes.Clone(localCID),
+		remoteConnID: bytes.Clone(remoteCID),
 		isServer:     isServer,
 		tlsConn:      tlsConn,
 		streams:      make(map[uint64]*quicStream),
@@ -232,8 +229,8 @@ func (c *quicConn) getReadKeys(isLong bool, longType uint8) (*packetKeys, uint64
 func (c *quicConn) sendPacketAtLevel(level int, frames []QUICFrame) error {
 	c.mu.Lock()
 	keys := c.writeKeys[level]
-	dcid := append([]byte(nil), c.remoteConnID...)
-	scid := append([]byte(nil), c.localConnID...)
+	dcid := bytes.Clone(c.remoteConnID)
+	scid := bytes.Clone(c.localConnID)
 	c.mu.Unlock()
 	if keys == nil {
 		return errors.New("missing write keys for level")
@@ -317,7 +314,7 @@ func (c *quicConn) drainTLSEvents() error {
 				err := c.sendPacketAtLevel(idx, []QUICFrame{{
 					Type:         QUICFrameCrypto,
 					CryptoOffset: offset,
-					CryptoData:   append([]byte(nil), chunk...),
+					CryptoData:   bytes.Clone(chunk),
 				}})
 				if err != nil {
 					return err
@@ -337,13 +334,33 @@ func (c *quicConn) drainTLSEvents() error {
 	}
 }
 
+func (c *quicConn) getOrCreateStream(streamID uint64) *quicStream {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	st, exists := c.streams[streamID]
+	if !exists {
+		st = newQUICStream(streamID, c)
+		c.streams[streamID] = st
+		isPeerInitiated := (streamID&StreamIDServerInitiated != 0) != c.isServer
+		if isPeerInitiated {
+			if streamID&StreamIDUnidirectional != 0 {
+				c.acceptUniCh <- st
+			} else {
+				c.acceptBidiCh <- st
+			}
+		}
+	}
+	return st
+}
+
 func (c *quicConn) handlePacket(pkt Packet) {
 	level := 2
 	tlsLevel := tls.QUICEncryptionLevelApplication
 	if pkt.IsLongHeader {
 		if len(pkt.SrcConnID) > 0 {
 			c.mu.Lock()
-			c.remoteConnID = append([]byte(nil), pkt.SrcConnID...)
+			c.remoteConnID = bytes.Clone(pkt.SrcConnID)
 			c.mu.Unlock()
 		}
 		if pkt.LongType == PacketTypeInitial {
@@ -377,7 +394,7 @@ func (c *quicConn) handlePacket(pkt Packet) {
 		case QUICFrameCrypto:
 			shouldAck = true
 			c.mu.Lock()
-			c.cryptoReadChunks[level][f.CryptoOffset] = append([]byte(nil), f.CryptoData...)
+			c.cryptoReadChunks[level][f.CryptoOffset] = bytes.Clone(f.CryptoData)
 			var contiguous []byte
 			for {
 				chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
@@ -397,22 +414,7 @@ func (c *quicConn) handlePacket(pkt Packet) {
 
 		case QUICFrameStreamBase:
 			shouldAck = true
-			c.mu.Lock()
-			st, exists := c.streams[f.StreamID]
-			if !exists {
-				st = newQUICStream(f.StreamID, c)
-				c.streams[f.StreamID] = st
-				isPeerInitiated := (f.StreamID&StreamIDServerInitiated != 0) != c.isServer
-				if isPeerInitiated {
-					if f.StreamID&StreamIDUnidirectional != 0 {
-						c.acceptUniCh <- st
-					} else {
-						c.acceptBidiCh <- st
-					}
-				}
-			}
-			c.mu.Unlock()
-			st.pushFrame(f.Offset, f.Data, f.Fin)
+			c.getOrCreateStream(f.StreamID).pushFrame(f.Offset, f.Data, f.Fin)
 
 		case QUICFrameConnectionClose:
 			c.cancel()
@@ -540,11 +542,11 @@ func (l *quicListener) readLoop() {
 		if conn == nil && len(datagram) > 6 && datagram[0]&0x80 != 0 {
 			dcidLen := int(datagram[5])
 			if len(datagram) >= 6+dcidLen+1 {
-				initialDCID := append([]byte(nil), datagram[6:6+dcidLen]...)
+				initialDCID := bytes.Clone(datagram[6 : 6+dcidLen])
 				scidLen := int(datagram[6+dcidLen])
 				var clientSCID []byte
 				if len(datagram) >= 7+dcidLen+scidLen {
-					clientSCID = append([]byte(nil), datagram[7+dcidLen:7+dcidLen+scidLen]...)
+					clientSCID = bytes.Clone(datagram[7+dcidLen : 7+dcidLen+scidLen])
 				}
 				serverCID := randomConnID()
 				srvTLS := l.tlsConfig.Clone()
