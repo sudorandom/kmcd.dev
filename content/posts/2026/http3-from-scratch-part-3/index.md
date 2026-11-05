@@ -125,7 +125,7 @@ func derivePacketKeys(suite uint16, secret []byte) (*packetKeys, error) {
 
 To encrypt a packet in `protectPacket`, we XOR the 12-byte `iv` with the packet number (`makeNonce`) and pass the unencrypted header as Additional Authenticated Data (AAD) into `aead.Seal` so the header cannot be tampered with in transit (then `headerProtectionMask` encrypts a 16-byte sample of the ciphertext with `hpKey` to mask the packet number on the wire).
 
-For the very first packet (padded out to 1,200 bytes under [RFC 9000 Section 14.1](https://www.rfc-editor.org/rfc/rfc9000.html#name-initial-datagram-size)), `deriveInitialKeys` hashes the client's Destination Connection ID with the 20-byte salt from [RFC 9001 Section 5.2](https://www.rfc-editor.org/rfc/rfc9001.html#name-initial-secrets). Inside these packets, the client and server exchange public keys as part of the TLS handshake (`drainTLSEvents` polls `c.tlsConn.NextEvent()` to write `CRYPTO` frames and install the resulting keys). Each side uses its own private key and the other side's public key to derive a shared secret, which is used to generate keys for protecting subsequent traffic.
+Both sides derive an initial key from the client's random Destination Connection ID and a hardcoded 20-byte salt defined in [RFC 9001 Section 5.2](https://www.rfc-editor.org/rfc/rfc9001.html#name-initial-secrets). Inside these packets, the client and server exchange public keys as part of the TLS handshake. Each side uses its own private key and the other side's public key to derive a shared secret, which is used to generate keys for protecting subsequent traffic.
 
 ### Building Streams
 
@@ -148,22 +148,8 @@ func (c *quicConn) handlePacket(pkt Packet) {
 
         case QUICFrameCrypto:
             shouldAck = true
-            c.mu.Lock()
-            c.cryptoReadChunks[level][f.CryptoOffset] = bytes.Clone(f.CryptoData)
-            var contiguous []byte
-            for {
-                chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
-                if !ok {
-                    break
-                }
-                delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
-                c.cryptoReadOffset[level] += uint64(len(chunk))
-                contiguous = append(contiguous, chunk...)
-            }
-            c.mu.Unlock()
-
-            if len(contiguous) > 0 && c.tlsConn != nil {
-                _ = c.tlsConn.HandleData(tlsLevel, contiguous)
+            if data := c.readCrypto(level, f.CryptoOffset, f.CryptoData); len(data) > 0 {
+                _ = c.tlsConn.HandleData(tlsLevel, data)
                 _ = c.drainTLSEvents()
             }
 
@@ -182,7 +168,7 @@ func (c *quicConn) handlePacket(pkt Packet) {
 }
 ```
 
-When our HTTP/3 parser calls `Read` on a `quicStream`, we check `s.chunks` at `s.readOffset` (if offset 6 arrives before offset 0, `s.chunks[0]` won't exist yet, so `Read` blocks on `s.cond.Wait()` while other streams on the connection keep running):
+Each stream in `quic_conn.go` implements Go's `io.Reader` and `io.Writer` interfaces. When our HTTP/3 parser calls `Read`, we look in `s.chunks` for data starting at `s.readOffset`. If offset 6 arrives before offset 0, `s.chunks[0]` won't exist yet, so `Read` waits on `s.cond.Wait()` until offset 0 shows up. Other streams on the connection have their own `quicStream` state and keep running without waiting:
 
 ```go
 func (s *quicStream) pushFrame(offset uint64, data []byte, fin bool) {
@@ -226,18 +212,10 @@ func (s *quicStream) Read(p []byte) (int, error) {
 
 ### The Result
 
-Now `quic-go` is completely gone from `go.mod`! The only thing left in `go.mod` is `golang.org/x/net`, which we brought in back in [HTTP/2 From Scratch: Part 4](https://www.google.com/search?q=/posts/http2-from-scratch-part-4/) for its HPACK/QPACK Huffman table implementation.
+Now `quic-go` is completely gone from `go.mod`! The only thing left in `go.mod` is `golang.org/x/net`, which we brought in back in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/) for its HPACK/QPACK Huffman table.
 
 ```shell
-\$ go test -v ./...
-=== RUN   TestOutOfOrderStreamReassembly
---- PASS: TestOutOfOrderStreamReassembly (0.00s)
-=== RUN   TestEndToEndHTTP3OverQUIC
---- PASS: TestEndToEndHTTP3OverQUIC (0.01s)
-PASS
-ok      http3-part-3    0.861s
-
-\$ go run .
+$ go run .
 URL:          [https://kmcd.dev/](https://kmcd.dev/)
 Proto:        HTTP/3.0
 Status:       200 OK
@@ -247,7 +225,7 @@ Alt-Svc:      h3=":443"; ma=86400
 Body Length:  28672 bytes
 Body Preview: <!doctype html><html lang=en><head><meta name=generator content="Hugo 0.152.2"><meta charset=UTF-8><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=viewport content="width=device-width,in
 
-\$ go run . [https://cloudflare-quic.com/](https://cloudflare-quic.com/)
+$ go run . [https://cloudflare-quic.com/](https://cloudflare-quic.com/)
 URL:          [https://cloudflare-quic.com/](https://cloudflare-quic.com/)
 Proto:        HTTP/3.0
 Status:       200 OK
@@ -263,8 +241,8 @@ Body Preview: <!DOCTYPE html>
 
 ### Wrapping Up
 
-Before you get any ideas: this is a terrible QUIC implementation. Remember at the beginning of the post when I talked about how QUIC avoids stalling other streams when a packet is lost? If a packet actually gets dropped with our code, we don't retransmit it. That stream just sits in `s.cond.Wait()` until the `10*time.Second` context timeout in `main.go` happens. We also have zero congestion control, we ignore flow-control limits after advertising 1 MB in `marshalTransportParams`, and our `ACK` frames only report `LargestAcked` instead of tracking ranges. We implemented just enough to convince Cloudflare to hand over the contents of `kmcd.dev`.
+Before you get any ideas: this is a terrible QUIC implementation. Remember at the beginning of the post when I talked about how QUIC avoids stalling other streams when a packet is lost? If a packet actually gets dropped, our code never retransmits it (that stream just sits in `s.cond.Wait()` until the 10-second context timeout in `main.go` fires), and we never bother enforcing the 1 MB flow-control window we advertised in `marshalTransportParams`. We implemented just enough to convince Cloudflare to hand over the contents of `kmcd.dev`.
 
-Still, we went all the way from a one-line `GET /` over TCP in [HTTP/0.9](https://www.google.com/search?q=/posts/http0.9-from-scratch/) through [HTTP/1.0](https://www.google.com/search?q=/posts/http1.0-from-scratch/), [HTTP/1.1](https://www.google.com/search?q=/posts/http1.1-from-scratch/), [HTTP/2](https://www.google.com/search?q=/posts/http2-from-scratch-part-1/), and now **HTTP/3** over raw UDP sockets, which brings us to the end of the "HTTP from Scratch" series.
+Still, we went all the way from a one-line `GET /` over TCP in [HTTP/0.9](/posts/http0.9-from-scratch/) through [HTTP/1.0](/posts/http1.0-from-scratch/), [HTTP/1.1](/posts/http1.1-from-scratch/), [HTTP/2](/posts/http2-from-scratch-part-1/), and now **HTTP/3** over raw UDP sockets, which brings us to the end of the "HTTP from Scratch" series.
 
 See all of the code mentioned in this article in [http3-from-scratch-part-3/go](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/http3-from-scratch-part-3/go).

@@ -503,6 +503,24 @@ func (c *quicConn) CloseWithError(code uint64, desc string) error {
 	return nil
 }
 
+func (c *quicConn) readCrypto(level int, offset uint64, data []byte) []byte {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	c.cryptoReadChunks[level][offset] = bytes.Clone(data)
+	var contiguous []byte
+	for {
+		chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
+		if !ok {
+			break
+		}
+		delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
+		c.cryptoReadOffset[level] += uint64(len(chunk))
+		contiguous = append(contiguous, chunk...)
+	}
+	return contiguous
+}
+
 type quicListener struct {
 	udpConn   net.PacketConn
 	tlsConfig *tls.Config
