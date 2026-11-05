@@ -354,6 +354,24 @@ func (c *quicConn) getOrCreateStream(streamID uint64) *quicStream {
 	return st
 }
 
+func (c *quicConn) readCrypto(level int, offset uint64, data []byte) []byte {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	c.cryptoReadChunks[level][offset] = bytes.Clone(data)
+	var contiguous []byte
+	for {
+		chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
+		if !ok {
+			break
+		}
+		delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
+		c.cryptoReadOffset[level] += uint64(len(chunk))
+		contiguous = append(contiguous, chunk...)
+	}
+	return contiguous
+}
+
 func (c *quicConn) handlePacket(pkt Packet) {
 	level := 2
 	tlsLevel := tls.QUICEncryptionLevelApplication
@@ -393,22 +411,8 @@ func (c *quicConn) handlePacket(pkt Packet) {
 
 		case QUICFrameCrypto:
 			shouldAck = true
-			c.mu.Lock()
-			c.cryptoReadChunks[level][f.CryptoOffset] = bytes.Clone(f.CryptoData)
-			var contiguous []byte
-			for {
-				chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
-				if !ok {
-					break
-				}
-				delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
-				c.cryptoReadOffset[level] += uint64(len(chunk))
-				contiguous = append(contiguous, chunk...)
-			}
-			c.mu.Unlock()
-
-			if len(contiguous) > 0 && c.tlsConn != nil {
-				_ = c.tlsConn.HandleData(tlsLevel, contiguous)
+			if data := c.readCrypto(level, f.CryptoOffset, f.CryptoData); len(data) > 0 && c.tlsConn != nil {
+				_ = c.tlsConn.HandleData(tlsLevel, data)
 				_ = c.drainTLSEvents()
 			}
 
@@ -501,24 +505,6 @@ func (c *quicConn) CloseWithError(code uint64, desc string) error {
 		return c.udpConn.Close()
 	}
 	return nil
-}
-
-func (c *quicConn) readCrypto(level int, offset uint64, data []byte) []byte {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-	c.cryptoReadChunks[level][offset] = bytes.Clone(data)
-	var contiguous []byte
-	for {
-		chunk, ok := c.cryptoReadChunks[level][c.cryptoReadOffset[level]]
-		if !ok {
-			break
-		}
-		delete(c.cryptoReadChunks[level], c.cryptoReadOffset[level])
-		c.cryptoReadOffset[level] += uint64(len(chunk))
-		contiguous = append(contiguous, chunk...)
-	}
-	return contiguous
 }
 
 type quicListener struct {
