@@ -22,21 +22,21 @@ In this post, we'll remove `quic-go`, build a minimal QUIC layer directly on top
 
 ### Why UDP?
 
-At the end of [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/), I talked about why HTTP/2 only solved head-of-line blocking at the application layer. Since HTTP/2 multiplexes all of its streams over a single TCP connection, it still inherits TCP's strict sequential packet ordering. If a single TCP packet is lost on Stream 0, the operating system holds back data for Stream 4 in the kernel's TCP receive buffer until that lost packet is retransmitted:
+At the end of [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/), I talked about why HTTP/2 only solved head-of-line blocking at the application layer. Since HTTP/2 multiplexes all of its streams over a single TCP connection, it still inherits TCP's strict sequential packet ordering. Drop a single TCP packet on Stream 0, and the OS sits on data for Stream 4 in the kernel's TCP receive buffer while waiting for the retransmit:
 
 {{< image src="holb.png" width="420px" class="center" >}}
 
-QUIC ([RFC 9000](https://www.rfc-editor.org/rfc/rfc9000.html), which is a pretty sweet RFC number) fixes this by moving off TCP entirely and running over UDP (`net.ListenPacket("udp", addr)`).
+QUIC ([RFC 9000](https://www.rfc-editor.org/rfc/rfc9000.html), which is a pretty sweet RFC number) ditches TCP altogether and runs straight over UDP (`net.ListenPacket("udp", addr)`).
 
 ### Inside a Packet
 
 What's inside a QUIC UDP datagram?
 
-When we read a datagram from `net.PacketConn`, we check the highest bit (`0x80`) of the first byte to see which of the two [RFC 9000 packet headers](https://www.rfc-editor.org/rfc/rfc9000.html#name-packet-formats) we're looking at (`1` for the Long Header used during the handshake, or `0` for the compact Short Header used once 1-RTT data starts flowing):
+Look at the highest bit (`0x80`) of the first byte we read from `net.PacketConn` to see which of the two [RFC 9000 packet headers](https://www.rfc-editor.org/rfc/rfc9000.html#name-packet-formats) is on the wire (`1` for a handshake Long Header, `0` for a 1-RTT Short Header):
 
 {{< image src="quic-packets.svg" width="820px" class="center" inline="true" >}}
 
-Inside the decrypted payload of either packet is a slice of [QUIC frames](https://www.rfc-editor.org/rfc/rfc9000.html#name-frame-types-and-formats). Here is how we model packets and frames in `quic_frame.go`:
+Here is how we model those packet headers and their decrypted [QUIC frames](https://www.rfc-editor.org/rfc/rfc9000.html#name-frame-types-and-formats) in `quic_frame.go`:
 
 ```go
 type Packet struct {
@@ -94,9 +94,9 @@ Look at the Stream ID field in the diagram above too. Remember in Part 1 and Par
 
 If we want to talk to `https://kmcd.dev/` over UDP, we can't send plaintext packets. Every QUIC packet on the wire, including the very first packet, is encrypted under [RFC 9001](https://www.rfc-editor.org/rfc/rfc9001.html).
 
-In the HTTP/2 posts, we passed a TCP `net.Conn` to `tls.Client` and let Go's `crypto/tls` package handle the handshake and record encryption. With UDP, we don't have a stream connection to hand to `tls.Client`; QUIC transports the raw TLS 1.3 handshake records inside `CRYPTO` frames (which I wrote about in [gRPC Over HTTP/3](/posts/grpc-over-http3/)) and encrypts each UDP packet itself.
+In the HTTP/2 posts, we just handed a TCP `net.Conn` to `tls.Client` and let `crypto/tls` do the rest. With UDP there *is* no `net.Conn` to pass in, so we use Go's `tls.QUICClient` and `tls.QUICServer` instead and carry the TLS 1.3 handshake bytes ourselves inside `CRYPTO` frames (which I wrote about in [gRPC Over HTTP/3](/posts/grpc-over-http3/)).
 
-Go's `crypto/tls` package exposes `tls.QUICClient` and `tls.QUICServer` for this exact job. The cipher suite tells it which hash and AES key size to use; the labels (`quic key`, `quic iv`, and `quic hp`) keep each value separate, even though they come from the same secret:
+As the handshake steps through each encryption level, `crypto/tls` hands us a secret and a cipher suite. In `derivePacketKeys`, the cipher suite picks the hash and AES key size, while the `"quic key"`, `"quic iv"`, and `"quic hp"` labels derive three separate values from that one secret:
 
 ```go
 func derivePacketKeys(suite uint16, secret []byte) (*packetKeys, error) {
@@ -123,9 +123,9 @@ func derivePacketKeys(suite uint16, secret []byte) (*packetKeys, error) {
 }
 ```
 
-To encrypt a packet in `protectPacket`, we XOR the 12-byte `iv` with the packet number (`makeNonce`) and pass the unencrypted header as Additional Authenticated Data (AAD) into `aead.Seal` so the header cannot be tampered with in transit (then `headerProtectionMask` encrypts a 16-byte sample of the ciphertext with `hpKey` to mask the packet number on the wire).
+When `protectPacket` sends a packet out, it XORs that 12-byte `iv` with the packet number in `makeNonce`, runs `aead.Seal` over the frames (passing the unencrypted header in as the `additionalData` parameter), and calls `headerProtectionMask` with `hpKey` to mask the packet number in the header.
 
-Both sides derive an initial key from the client's random Destination Connection ID and a hardcoded 20-byte salt defined in [RFC 9001 Section 5.2](https://www.rfc-editor.org/rfc/rfc9001.html#name-initial-secrets). Inside these packets, the client and server exchange public keys as part of the TLS handshake. Each side uses its own private key and the other side's public key to derive a shared secret, which is used to generate keys for protecting subsequent traffic.
+Wait: how do we get a `secret` for the very first packet before the TLS handshake has even started? Both sides feed the client's random Destination Connection ID and a hardcoded 20-byte salt from [RFC 9001 Section 5.2](https://www.rfc-editor.org/rfc/rfc9001.html#name-initial-secrets) into `derivePacketKeys` so they can read and write those initial `CRYPTO` frames.
 
 ### Building Streams
 
@@ -168,7 +168,7 @@ func (c *quicConn) handlePacket(pkt Packet) {
 }
 ```
 
-Each stream in `quic_conn.go` implements Go's `io.Reader` and `io.Writer` interfaces. When our HTTP/3 parser calls `Read`, we look in `s.chunks` for data starting at `s.readOffset`. If offset 6 arrives before offset 0, `s.chunks[0]` won't exist yet, so `Read` waits on `s.cond.Wait()` until offset 0 shows up. Other streams on the connection have their own `quicStream` state and keep running without waiting:
+Each stream in `quic_conn.go` implements Go's `io.Reader` and `io.Writer` interfaces, storing incoming bytes in an `s.chunks` map by offset until our HTTP/3 parser calls `Read` at `s.readOffset`. If offset 6 shows up before offset 0, `Read` parks on `s.cond.Wait()` until offset 0 arrives, while other streams on the connection have their own `quicStream` state and keep running without waiting:
 
 ```go
 func (s *quicStream) pushFrame(offset uint64, data []byte, fin bool) {
@@ -241,7 +241,7 @@ Body Preview: <!DOCTYPE html>
 
 ### Wrapping Up
 
-Before you get any ideas: this is a terrible QUIC implementation. Remember at the beginning of the post when I talked about how QUIC avoids stalling other streams when a packet is lost? If a packet actually gets dropped, our code never retransmits it (that stream just sits in `s.cond.Wait()` until the 10-second context timeout in `main.go` fires), and we never bother enforcing the 1 MB flow-control window we advertised in `marshalTransportParams`. We implemented just enough to convince Cloudflare to hand over the contents of `kmcd.dev`.
+Before you get any ideas: this is a terrible QUIC implementation. Remember at the beginning of the post when I talked about how QUIC avoids stalling other streams when a packet is lost? Well, our code doesn't actually retransmit lost packets; if a packet drops on the wire, that stream just hangs in `s.cond.Wait()` until the 10-second context timeout in `main.go` kills the connection. We also advertise a 1 MB flow-control window in `marshalTransportParams` without ever checking it. We implemented just enough to convince Cloudflare to hand over the contents of `kmcd.dev`.
 
 Still, we went all the way from a one-line `GET /` over TCP in [HTTP/0.9](/posts/http0.9-from-scratch/) through [HTTP/1.0](/posts/http1.0-from-scratch/), [HTTP/1.1](/posts/http1.1-from-scratch/), [HTTP/2](/posts/http2-from-scratch-part-1/), and now **HTTP/3** over raw UDP sockets, which brings us to the end of the "HTTP from Scratch" series.
 
