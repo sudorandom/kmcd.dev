@@ -24,11 +24,11 @@ HTTP/3 doesn't use TCP. It runs over QUIC, which is built on UDP and implements 
 
 Instead, we're going to start at the top using [`quic-go`](https://github.com/quic-go/quic-go) for the QUIC streams in Part 1 and Part 2 while we build our HTTP/3 framing, QPACK encoder/decoder, server, and client. Once our HTTP/3 implementation works against `curl` and browsers, we'll come back in Part 3, remove `quic-go`, and write a basic QUIC layer over UDP sockets.
 
-All of the code for this post is in Go (using [`mise`](/posts/mise-en-place/) to manage the Go version) and is linked on GitHub at the bottom of the page.
+All of the code for this post is in Go and is linked on GitHub at the bottom of the page.
 
 ### Sending Bytes Over QUIC
 
-If you've written TCP servers in Go with the `net` package, `quic-go`'s API takes a minute to get used to. `net.Listener.Accept()` gives you a `net.Conn` that you can read from and write to directly. `quic.Listener.Accept()` gives you a `quic.Conn`, which doesn't have `Read` or `Write` methods at all. Because a single QUIC connection carries multiple streams, you have to call `AcceptStream` on the connection before you get something that looks like a `net.Conn`:
+Okay, let's get some bytes moving. Before we build HTTP/3, we'll give QUIC a quick test drive with an echo server. It is going to be the foundation of everything we build here, after all. Accept a connection, accept a stream, and send back whatever comes in:
 
 ```go
 conn, _ := listener.Accept(ctx)
@@ -54,7 +54,7 @@ reply, _ := io.ReadAll(stream)
 
 Notice that the client calls `stream.Close()` *before* calling `io.ReadAll(stream)`. In `quic-go`, closing a stream only closes our write side (sending a FIN bit on that stream), so we can still read the server's response afterward. Because QUIC streams already have their own FIN bit, HTTP/3 frames don't need an `END_STREAM` flag like HTTP/2 had.
 
-I also ran into the same bug here that I hit with `defer conn.Close()` in [HTTP/2 From Scratch: Part 4](/posts/http2-from-scratch-part-4/). In my first draft of the echo server, I deferred `conn.CloseWithError(0, "done")` at the top of the handler. When the handler returned, `CloseWithError` immediately sent a connection-close packet and killed the connection before the client finished reading the response. Instead, the server should only close the stream and wait on `<-conn.Context().Done()` until the client disconnects.
+The server also needs to leave the connection open long enough for the client to read the reply. Calling `conn.CloseWithError` right after writing can cut that short. For this echo server, we close the stream and wait on `<-conn.Context().Done()` until the client disconnects.
 
 ### Reusing HTTP/2 Framing
 
@@ -62,7 +62,7 @@ When you open [RFC 9114 (HTTP/3)](https://www.rfc-editor.org/rfc/rfc9114.html), 
 
 {{< image src="h3-unmasking.jpg" width="420px" class="center" >}}
 
-In [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we built a parser for HTTP/2's 9-byte frame header (Length, Type, Flags, and Stream ID). Why did HTTP/2 need a Stream ID and Flags on every frame? Because all of those frames were multiplexed over a single TCP connection, so HTTP/2 had to track its own stream IDs and end-of-stream or end-of-headers flags. In HTTP/3, each request gets its own QUIC stream and QPACK header blocks aren't split across continuation frames. As a result, HTTP/3 drops Stream ID and Flags from the frame header completely, leaving only **Type** and **Length**:
+In [HTTP/2 From Scratch: Part 2](/posts/http2-from-scratch-part-2/), we built a parser for HTTP/2's 9-byte frame header (Length, Type, Flags, and Stream ID). All of those frames shared a single TCP connection, so HTTP/2 had to keep track of the streams itself. In HTTP/3, each request gets its own QUIC stream. With QUIC handling more of the bookkeeping, our frame header gets a lot smaller: just **Type** and **Length**:
 
 {{< image src="h2-vs-h3-frame.svg" width="800px" class="center" inline="true" >}}
 
@@ -84,7 +84,7 @@ type Frame struct {
 
 Several frame types from HTTP/2 (`PRIORITY`, `RST_STREAM`, `PUSH_PROMISE`, and `PING`) are gone here. Stream resets and pings moved into QUIC itself, and priority frames and Server Push were removed.
 
-The main difference in the wire format is that Type and Length use [QUIC variable-length integers](https://www.rfc-editor.org/rfc/rfc9000.html#name-variable-length-integer-enc) instead of fixed-width integers. If you've used the varint tool on [protobuf.com](https://protobuf.com), you might remember that Protobuf varints use the most significant bit of each byte as a continuation flag. Instead of checking a continuation bit on every byte, a QUIC varint uses the top two bits of the first byte to encode whether the integer is 1, 2, 4, or 8 bytes long.
+The main difference in the wire format is that Type and Length use [QUIC variable-length integers](https://www.rfc-editor.org/rfc/rfc9000.html#name-variable-length-integer-enc) instead of fixed-width integers. In [gRPC From Scratch: Part 3](/posts/grpc-from-scratch-part-3/#big-numbers), we covered Protobuf varints, which use the most significant bit of each byte as a continuation flag. Instead of checking a continuation bit on every byte, a QUIC varint uses the top two bits of the first byte to encode whether the integer is 1, 2, 4, or 8 bytes long. This approach ends up being faster to process than the protobuf version.
 
 {{< image src="quic-varint.svg" width="800px" class="center" inline="true" >}}
 
@@ -140,13 +140,27 @@ The issue is HPACK's dynamic table. In HTTP/2, every `HEADERS` frame that insert
 
 With QUIC, packets on different streams can arrive out of order. If a packet on Stream 0 gets dropped on the network while a packet on Stream 4 arrives, QUIC can deliver Stream 4 right away. But if Stream 4's headers referenced a dynamic table entry that was supposed to be created by Stream 0's lost packet, the decoder wouldn't be able to read Stream 4 until Stream 0 was retransmitted. We'd be right back to head-of-line blocking.
 
-To get around this, HTTP/3 uses QPACK ([RFC 9204](https://www.rfc-editor.org/rfc/rfc9204.html)). In QPACK, any dynamic table updates happen on separate unidirectional streams instead of inside the request streams, and every HEADERS frame starts with a 2-byte prefix (Required Insert Count and Delta Base). The static table is also bigger than HPACK's (99 entries starting at index 0, compared to 61 entries starting at index 1 in HPACK) and includes common headers like `content-type: application/json` and `:status: 200`.
+To get around this, HTTP/3 uses QPACK ([RFC 9204](https://www.rfc-editor.org/rfc/rfc9204.html)). In QPACK, any dynamic table updates happen on separate unidirectional streams instead of inside the request streams, and every HEADERS frame starts with a 2-byte prefix (Required Insert Count and Delta Base). The static table is also bigger than HPACK's (99 entries starting at index 0, compared to 61 entries starting at index 1 in HPACK) and adds full name/value pairs like `content-type: application/json`.
 
 {{< image src="qpack-wire.svg" width="800px" class="center" inline="true" >}}
 
-If we don't use the dynamic table and only encode headers using the 99-entry static table and string literals, we don't have to open the encoder/decoder streams at all, and the 2-byte prefix at the beginning of every HEADERS frame is just two zero bytes. [RFC 9204 Section 4.1](https://www.rfc-editor.org/rfc/rfc9204.html#section-4.1) also keeps the same integer encoding and Huffman table (`golang.org/x/net/http2/hpack`) that HPACK used, so we can reuse those helpers from our HTTP/2 package and just change the bitmasks on the first byte of each field line:
+We'll keep our implementation simple and encode headers using only the static table and string literals. With no dynamic table to synchronize, we can skip the encoder/decoder streams and set the header block prefix to two zero bytes.
+
+We also get to reuse some code! QPACK keeps HPACK's integer encoding and Huffman table ([RFC 9204 Section 4.1](https://www.rfc-editor.org/rfc/rfc9204.html#section-4.1)), so we can bring over those helpers from our HTTP/2 package, including Huffman decoding from `golang.org/x/net/http2/hpack`. We just need to adjust the bitmasks that identify each kind of field line:
 
 ```go
+const (
+	maskQPACKIndexed     = 0x80
+	flagQPACKIndexedStat = 0x40
+
+	maskQPACKLiteralNameRef     = 0xc0
+	patternQPACKLiteralNameRef  = 0x40
+	flagQPACKLiteralNameRefStat = 0x10
+
+	maskQPACKLiteral    = 0xe0
+	patternQPACKLiteral = 0x20
+)
+
 func (d *QPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
 	r := bytes.NewReader(payload)
 	_, _ = decodeInt(0, r, 8)
@@ -156,16 +170,16 @@ func (d *QPACKDecoder) Decode(payload []byte) ([]HeaderField, error) {
 	for r.Len() > 0 {
 		b, _ := r.ReadByte()
 		switch {
-		case b&0xc0 == 0xc0:
+		case b&(maskQPACKIndexed|flagQPACKIndexedStat) == maskQPACKIndexed|flagQPACKIndexedStat:
 			index, _ := decodeInt(b, r, 6)
 			headers = append(headers, QPACKStaticTable[index])
 
-		case b&0xd0 == 0x50:
+		case b&(maskQPACKLiteralNameRef|flagQPACKLiteralNameRefStat) == patternQPACKLiteralNameRef|flagQPACKLiteralNameRefStat:
 			index, _ := decodeInt(b, r, 4)
 			val, _ := decodeString(r)
 			headers = append(headers, HeaderField{Name: QPACKStaticTable[index].Name, Value: val})
 
-		case b&0xe0 == 0x20:
+		case b&maskQPACKLiteral == patternQPACKLiteral:
 			name, _ := decodeNameString(b, r)
 			val, _ := decodeString(r)
 			headers = append(headers, HeaderField{Name: name, Value: val})
@@ -227,9 +241,9 @@ Are we going to implement HTTP trailers in our from-scratch server and client?
 
 {{< image src="trailers.png" width="420px" class="center" >}}
 
-**Hard pass. We're not implementing those.**
+**Nah. I'm not implementing trailers in this walkthrough.**
 
-If you really want to see how trailers work in HTTP/3, you can reference my PRs to `quic-go` ([#4581](https://github.com/quic-go/quic-go/pull/4581), [#4630](https://github.com/quic-go/quic-go/pull/4630), [#4639](https://github.com/quic-go/quic-go/pull/4639), [#4656](https://github.com/quic-go/quic-go/pull/4656)) where I added trailer support to the `quic-go` HTTP/3 implementation, or read my [gRPC Over HTTP/3](/posts/grpc-over-http3/) and [gRPC Over HTTP/3: Followup](/posts/grpc-over-http3-followup/) articles. Here, if a second `HEADERS` frame shows up after `DATA`, we'll simply ignore it.
+If you really want to see how trailers work in HTTP/3, you can reference my PRs to `quic-go` ([#4581](https://github.com/quic-go/quic-go/pull/4581), [#4630](https://github.com/quic-go/quic-go/pull/4630), [#4639](https://github.com/quic-go/quic-go/pull/4639), [#4656](https://github.com/quic-go/quic-go/pull/4656)) where I added trailer support to the `quic-go` HTTP/3 implementation, or read my [gRPC Over HTTP/3](/posts/grpc-over-http3/) and [gRPC Over HTTP/3: Followup](/posts/grpc-over-http3-followup/) articles. If a second `HEADERS` frame shows up after `DATA`, we're just going to ignore it.
 
 ### Running the Demo
 
