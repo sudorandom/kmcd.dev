@@ -20,7 +20,7 @@
 
 ## Interactive Projects & Visualizations
 - [Live Internet Map](https://livemap.kmcd.dev): Real-time BGP routing updates visualization.
-- [Internet Infrastructure Map](https://map.kmcd.dev): Interactive map of submarine fiber optic cables and IXPs from 1989 to 2025.
+- [Internet Infrastructure Map](https://map.kmcd.dev): Interactive map of submarine fiber optic cables and IXPs from 1858 to 2025.
 - [Let's Learn About BGP](https://bgp.kmcd.dev): Interactive guide on BGP routing and RPKI security test.
 - [FauxRPC](https://fauxrpc.com): Fake gRPC/gRPC-Web/Connect/REST server directly from Protobuf definitions.
 - [WordSeq](https://wordseq.com): Daily word puzzle game.

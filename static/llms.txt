@@ -8,7 +8,7 @@ This is the personal blog of Kevin McDonald. Kevin is a Software Engineer who wo
 
 ### Ongoing Projects
 - [Live Internet Map](https://livemap.kmcd.dev): A real-time, cyberpunk-inspired visualization of the Border Gateway Protocol (BGP). Tracks global routing updates per second, translating network churn into color-coded pulses and live dashboards.
-- [Internet Infrastructure Map](https://map.kmcd.dev): A fully interactive, animated map of the internet's physical backbone (submarine fiber optic cables and Internet Exchange Points) from 1989 to 2025.
+- [Internet Infrastructure Map](https://map.kmcd.dev): A fully interactive, animated map of the internet's physical backbone (submarine fiber optic cables and Internet Exchange Points) from 1858 to 2025.
 - [Let's Learn About BGP](https://bgp.kmcd.dev): An interactive, web-based explainer on the Border Gateway Protocol (BGP), featuring diagrams, route visualizations, and an ISP RPKI validation security test.
 - [FauxRPC](https://fauxrpc.com): A tool and doc site to easily run a fake gRPC/gRPC-Web/Connect/REST server directly from protobuf definitions. GitHub: [sudorandom/fauxrpc](https://github.com/sudorandom/fauxrpc).
 - [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi): A Protobuf plugin that generates OpenAPI specifications matching Connect RPC.
