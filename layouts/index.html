@@ -215,7 +215,7 @@
                     <div class="projects-wrapper">
                         {{ $projects := slice 
                             (dict "title" "Internet Maps" "tag" "DATAVIZ" "tagClass" "tag-sunflower" "url" "https://map.kmcd.dev" "desc" "A collection of projects visualizing and explaining the global routing and physical infrastructure of the Internet: <a href=\"https://map.kmcd.dev\" target=\"_blank\" rel=\"noopener\">map.kmcd.dev</a> (cables & peering map), <a href=\"https://livemap.kmcd.dev\" target=\"_blank\" rel=\"noopener\">livemap.kmcd.dev</a> (real-time routing updates stream), and <a href=\"https://bgp.kmcd.dev\" target=\"_blank\" rel=\"noopener\">bgp.kmcd.dev</a> (interactive BGP explainer)." "post" "posts/2026/internet-map-2026/index.md" "cover" "cover.svg")
-                            (dict "title" "protoc-gen-connect-openapi" "tag" "OPENAPI + CONNECT" "tagClass" "tag-teal" "url" "https://github.com/sudorandom/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
+                            (dict "title" "protoc-gen-connect-openapi" "tag" "OPENAPI + CONNECT" "tagClass" "tag-teal" "url" "https://github.com/connectrpc/protoc-gen-connect-openapi" "desc" "A protoc plugin that generates OpenAPI 3 definitions from Connect and gRPC service definitions, enabling seamless integration with OpenAPI-based tools." "post" "posts/2024/protoc-gen-connect-openapi/index.md" "cover" "cover.jpg")
                             (dict "title" "fauxrpc" "tag" "PROTOBUF + GO" "tagClass" "tag-coral" "url" "https://fauxrpc.com" "desc" "A tool that generates fake gRPC and Connect servers based on your Protobuf definitions. It produces realistic, randomized data that adheres to your service's constraints." "post" "posts/2024/fauxrpc/index.md" "cover" "cover.jpg")
                             (dict "title" "ProtoDocs" "tag" "API DOCS" "tagClass" "tag-sunflower" "url" "https://protodocs.dev/" "desc" "A protobuf-first documentation browser for APIs that deserve better than ugly generated docs." "post" "posts/2026/introducing-protodocs/index.md" "cover" "cover.svg")
                         }}
@@ -233,8 +233,8 @@
                             </div>
                         {{ end }}
                     </div>
-                    <a href="{{ "stuff/" | relLangURL }}" class="projects-footer-archive">
-                        Check out all projects on /stuff/ &rarr;
+                    <a href="{{ "projects/" | relLangURL }}" class="projects-footer-archive">
+                        Check out all projects on /projects/ &rarr;
                     </a>
                 </section>
 

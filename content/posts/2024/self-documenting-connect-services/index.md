@@ -16,11 +16,11 @@ canonical_url: https://kmcd.dev/posts/self-documenting-connect-services/
 mastodonID: "113197627641199319"
 ---
 
-As some of you may know, I've created a plugin for protoc called [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). This plugin converts protobuf files into [OpenAPI specifications](https://swagger.io/specification/) for [the Connect protocol](https://connectrpc.com/docs/protocol/). This protocol is very similar to gRPC but for unary RPCs it follows many more traditions that you'd expect from an HTTP-based API, like using HTTP status codes appropriately, using the normal `Content-Encoding` header to specify compression and avoiding putting extra framing inside of the body. Because of this, we can document it more readily with other specifications like OpenAPI.
+As some of you may know, I've created a plugin for protoc called [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi). This plugin converts protobuf files into [OpenAPI specifications](https://swagger.io/specification/) for [the Connect protocol](https://connectrpc.com/docs/protocol/). This protocol is very similar to gRPC but for unary RPCs it follows many more traditions that you'd expect from an HTTP-based API, like using HTTP status codes appropriately, using the normal `Content-Encoding` header to specify compression and avoiding putting extra framing inside of the body. Because of this, we can document it more readily with other specifications like OpenAPI.
 
-For more on the plugin itself, refer to [my older post](/posts/protoc-gen-connect-openapi/) that introduces protoc-gen-connect-openapi or [the github repo](https://github.com/sudorandom/protoc-gen-connect-openapi) which has some more updates.
+For more on the plugin itself, refer to [my older post](/posts/protoc-gen-connect-openapi/) that introduces protoc-gen-connect-openapi or [the github repo](https://github.com/connectrpc/protoc-gen-connect-openapi) which has some more updates.
 
-This post is about a new way to use this functionality, from [a Go library](https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi/converter). This Go API provides a simpler interface to generate OpenAPI from protobuf descriptors. You see, protoc plugins accept a `*pluginpb.CodeGeneratorRequest` and return a `*pluginpb.CodeGeneratorResponse`. The request type, in particular, is hard to use from Go. You have to encode every option you want to use into a single string. This is fine for a CLI but it's not very friendly for a Go library. But now that I made this library it is much easier to generate OpenAPI specs anywhere you run Go. Let's look at some examples.
+This post is about a new way to use this functionality, from [a Go library](https://pkg.go.dev/connectrpc.com/protoc-gen-connect-openapi/converter). This Go API provides a simpler interface to generate OpenAPI from protobuf descriptors. You see, protoc plugins accept a `*pluginpb.CodeGeneratorRequest` and return a `*pluginpb.CodeGeneratorResponse`. The request type, in particular, is hard to use from Go. You have to encode every option you want to use into a single string. This is fine for a CLI but it's not very friendly for a Go library. But now that I made this library it is much easier to generate OpenAPI specs anywhere you run Go. Let's look at some examples.
 
 ## Generating OpenAPI
 First, let's see how we can use this plugin to generate OpenAPI YAML from your protobuf definitions:
@@ -32,7 +32,7 @@ openapiBody, _ := converter.GenerateSingle(
 openapi: 3.1.0
 info:
   title: OpenAPI Documentation of gRPC Services
-  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi).
+  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi).
   version: 0.1.2
 `)))
 fmt.Println(string(openapiBody))
@@ -43,7 +43,7 @@ With a few short lines, you now have OpenAPI YAML representation of your Connect
 openapi: 3.1.0
 info:
   title: OpenAPI Documentation of gRPC Services
-  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi).
+  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi).
 paths:
   /connectrpc.eliza.v1.ElizaService/Say:
     post:
@@ -210,7 +210,7 @@ func main() {
 openapi: 3.1.0
 info:
   title: OpenAPI Documentation of gRPC Services
-  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi).
+  description: This is documentation that was generated from [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi).
 `)))
 	if err != nil {
 		log.Fatalf("err: %s", err)
@@ -250,7 +250,7 @@ To see the demo for yourself, [click here!](/posts/self-documenting-connect-serv
 
 In this example, we're using the [@stoplight/elements](https://www.npmjs.com/package/@stoplight/elements) library to render the OpenAPI documentation. The `tmplElements` template embeds the generated OpenAPI YAML (Base64 encoded) into an HTML page, providing a user-friendly interface to explore your API's endpoints, request/response structures, and more. Note that we're using base64 so that none of the YAML characters accidentally escape the javascript string and mess everything up for us. You can also have the script load the OpenAPI spec from a URL, which is what [many of the examples show](https://github.com/stoplightio/elements?tab=readme-ov-file#web-component).
 
-You may also notice some additional options in this example, like `converter.WithContentTypes()`, `converter.WithStreaming(true)` and `converter.WithAllowGET(true)`. These give you more control over content types, whether you want OpenAPI for streaming calls (which may be complicated to support for OpenAPI) and whether you want to generate documentation for GET requests, that Connect supports if you can set the `idempotency_level` option to `NO_SIDE_EFFECTS`. For more information on GET requests and a comprehensive list of available options, refer to the [the Connect documentation](https://connectrpc.com/docs/go/get-requests-and-caching/) and the [protoc-gen-connect-openapi Go documentation](https://pkg.go.dev/github.com/sudorandom/protoc-gen-connect-openapi/converter), respectively.
+You may also notice some additional options in this example, like `converter.WithContentTypes()`, `converter.WithStreaming(true)` and `converter.WithAllowGET(true)`. These give you more control over content types, whether you want OpenAPI for streaming calls (which may be complicated to support for OpenAPI) and whether you want to generate documentation for GET requests, that Connect supports if you can set the `idempotency_level` option to `NO_SIDE_EFFECTS`. For more information on GET requests and a comprehensive list of available options, refer to the [the Connect documentation](https://connectrpc.com/docs/go/get-requests-and-caching/) and the [protoc-gen-connect-openapi Go documentation](https://pkg.go.dev/connectrpc.com/protoc-gen-connect-openapi/converter), respectively.
 
 ## Benefits of Self-Documenting Services
 Clear and interactive documentation makes it easier for developers to understand and integrate with your APIs. This reduces the friction between teams and gives you something to point to in case there are questions about the API. Not everyone is fluent in reading protobuf, but HTTP documentation is much friendlier.

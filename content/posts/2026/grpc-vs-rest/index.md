@@ -120,7 +120,7 @@ curl "https://demo.connectrpc.com/connectrpc.eliza.v1.ElizaService/Say?message=%
 
 The payload lives in the URL (as JSON or base64-encoded Protobuf), which means standard web caching actually works. Return a standard [`Cache-Control`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) header, and any standard CDN or browser cache will respect it.
 
-You also aren't locked into Protobuf on the client side. Tools like [`protoc-gen-connect-openapi`](https://github.com/sudorandom/protoc-gen-connect-openapi), which I created, can generate an OpenAPI spec from your proto definitions. If another team needs OpenAPI specs for their tooling, you can export them without rebuilding your backend architecture around them.
+You also aren't locked into Protobuf on the client side. Tools like [`protoc-gen-connect-openapi`](https://github.com/connectrpc/protoc-gen-connect-openapi), which I created, can generate an OpenAPI spec from your proto definitions. If another team needs OpenAPI specs for their tooling, you can export them without rebuilding your backend architecture around them.
 
 ## Use ConnectRPC
 

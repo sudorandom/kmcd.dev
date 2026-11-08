@@ -45,7 +45,7 @@ service GreetService {
 }
 ```
 
-The `buf.validate.field` annotations are from protovalidate. The section `(buf.validate.field).string = {min_len: 3, max_len: 20}` ensures that the `name` field is between 3 and 20 characters. `(buf.validate.field).string.example = "Hello, user!"` is declaring what an example response might look like. This mostly serves as documentation but it also influences other tools, including [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi) and, now, FauxRPC! We'll see how FauxRPC uses both of these constraints in a second. First, let's start up the FauxRPC server.
+The `buf.validate.field` annotations are from protovalidate. The section `(buf.validate.field).string = {min_len: 3, max_len: 20}` ensures that the `name` field is between 3 and 20 characters. `(buf.validate.field).string.example = "Hello, user!"` is declaring what an example response might look like. This mostly serves as documentation but it also influences other tools, including [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi) and, now, FauxRPC! We'll see how FauxRPC uses both of these constraints in a second. First, let's start up the FauxRPC server.
 
 To use protovalidate with FauxRPC, we need to leverage another tool that's extremely helpful for working with protobuf definitions. This is because we used protovalidate, a dependency. Usually dependencies are hard to deal with in protobuf because the default protobuf tooling just doesn't manage dependencies at all. However, the [Buf CLI](https://buf.build/product/cli) and the [BSR](https://buf.build/product/bsr) can help us here.
 

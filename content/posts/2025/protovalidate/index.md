@@ -264,7 +264,7 @@ As you can see, this validation ensures the data conforms to our defined rules.
 You've probably realized by now that I'm a big fan of protovalidate. So it's no surprise for you to know that I've used it in both of my larger personal projects recently:
 
 ### protoc-gen-connect-openapi
-[`protoc-gen-connect-openapi`](https://github.com/sudorandom/protoc-gen-connect-openapi) generates OpenAPI specifications for ConnectRPC servers. This uses protovalidate rules to further annotate the OpenAPI spec.
+[`protoc-gen-connect-openapi`](https://github.com/connectrpc/protoc-gen-connect-openapi) generates OpenAPI specifications for ConnectRPC servers. This uses protovalidate rules to further annotate the OpenAPI spec.
 
 ### FauxRPC
 [`FauxRPC`](https://fauxrpc.com/) is my project that is a self-mocking protobuf driven server that supports gRPC/gRPC-Web/ConnectRPC/REST. Not only will it enforce protovalidate annotations on requests made to it but it also uses these annotations to generate more realistic mock data automatically. I feel like this really shows off the power of contract-driven APIs. I actually generated the examples above using FauxRPC!

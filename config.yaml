@@ -95,9 +95,9 @@ menu:
       name: "prompts"
       url: "/prompts/"
       weight: 2
-    - identifier: "stuff"
-      name: "stuff"
-      url: "/stuff/"
+    - identifier: "projects"
+      name: "projects"
+      url: "/projects/"
       weight: 3
     - identifier: "me"
       name: "me"

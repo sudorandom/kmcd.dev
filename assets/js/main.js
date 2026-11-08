@@ -498,7 +498,7 @@ function initKeyboardShortcuts() {
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>h</kbd></dt><dd>Go to Home</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>p</kbd></dt><dd>Go to Posts</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>d</kbd></dt><dd>Go to Daily Prompts</dd></div>
-              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>s</kbd></dt><dd>Go to Stuff</dd></div>
+              <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>s</kbd></dt><dd>Go to Projects</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>m</kbd></dt><dd>Go to About Me</dd></div>
               <div><dt><kbd>g</kbd> <span class="kbd-then">+</span> <kbd>r</kbd></dt><dd>Go to Random Page</dd></div>
             </dl>
@@ -664,7 +664,7 @@ function initKeyboardShortcuts() {
         window.location.href = "/prompts/";
       } else if (k === "s") {
         e.preventDefault();
-        window.location.href = "/stuff/";
+        window.location.href = "/projects/";
       } else if (k === "m") {
         e.preventDefault();
         window.location.href = "/me/";

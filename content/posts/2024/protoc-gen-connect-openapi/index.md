@@ -50,12 +50,12 @@ If you mark the endpoint as `idempotency_level=NO_SIDE_EFFECTS` then you can als
 < {"greeting": "Hello, Buf!"}
 ```
 
-It's that... simple? Elegant? No? If you're not sold on ConnectRPC now then this may not be the post for you because the rest will talk about my new tool created for ConnectRPC; **[protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi)**.
+It's that... simple? Elegant? No? If you're not sold on ConnectRPC now then this may not be the post for you because the rest will talk about my new tool created for ConnectRPC; **[protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi)**.
 
 ## Introducing protoc-gen-connect-openapi
-[protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi) generates OpenAPI v3.1 files from protobuf files that match the API that the [Connect protocol](https://connectrpc.com/docs/protocol) exposes.
+[protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi) generates OpenAPI v3.1 files from protobuf files that match the API that the [Connect protocol](https://connectrpc.com/docs/protocol) exposes.
 
-We can document the Connect API as if it's a real JSON/HTTP API... because it is, and the gRPC "flavor" isn't so noticable due to Connect. With [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi) you can declare your API using protobuf, serve it using gRPC/gRPC-WEb/Connect and fully document it without the API consumers ever knowing what protobuf is or how to read it. To me, this is the best of all worlds.
+We can document the Connect API as if it's a real JSON/HTTP API... because it is, and the gRPC "flavor" isn't so noticable due to Connect. With [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi) you can declare your API using protobuf, serve it using gRPC/gRPC-WEb/Connect and fully document it without the API consumers ever knowing what protobuf is or how to read it. To me, this is the best of all worlds.
 
 So, specifically, what good are OpenAPI files generated for Connect? What does that do? Well, first of all, it allows you to generate documentation with tools like [redocly](https://github.com/Redocly/redocly-cli) or [elements](https://github.com/stoplightio/elements).
 
@@ -77,4 +77,4 @@ click openapi-generator "https://github.com/OpenAPITools/openapi-generator" _bla
 
 In summary, I hope this tool will extend the contract-based usage of protobuf along with ConnectRPC's RPC-based API into further places with more documentation, more code generation, and additional validation.
 
-For more information, check out the [protoc-gen-connect-openapi repo on Github](https://github.com/sudorandom/protoc-gen-connect-openapi).
+For more information, check out the [protoc-gen-connect-openapi repo on Github](https://github.com/connectrpc/protoc-gen-connect-openapi).

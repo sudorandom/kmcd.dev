@@ -15,7 +15,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/joining-buf/
 ---
 
-I've started working at [Buf Technologies](https://buf.build/)! This will come as no surprise to those who have been following me for a while. I've been writing about schema-first development, have made tools to enable protobuf-driven development ([FauxRPC](https://fauxrpc.com/) and [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi)), and I've been a big fan and user of the ConnectRPC stack for a long time.
+I've started working at [Buf Technologies](https://buf.build/)! This will come as no surprise to those who have been following me for a while. I've been writing about schema-first development, have made tools to enable protobuf-driven development ([FauxRPC](https://fauxrpc.com/) and [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi)), and I've been a big fan and user of the ConnectRPC stack for a long time.
 
 I joined Buf to work in developer relations. This is a change from what I have been doing. I've usually been making in-house tooling and API services, and writing was related to side projects. I started writing this blog as a hobby and as a vehicle to develop my skills (both in writing and as a SWE). For a long time, I felt writing was a weak area of mine. I previously shied away from it because I figured I had nothing useful to say. I think that used to be true, but over the years, I have gained enough real experience to add some genuine flavor to my ideas here.
 

@@ -18,7 +18,7 @@ canonical_url: https://kmcd.dev/posts/introducing-protodocs/
 
 Most tools force an awkward compromise. Some produce complete output that is hard to read. Others look polished only after custom templates, glue code, and project-specific maintenance. The fallback is to share the `.proto` files directly, which works for people already deep in protobuf but is rough for everyone else.
 
-That frustration is why I originally built [protoc-gen-connect-openapi](https://github.com/sudorandom/protoc-gen-connect-openapi). The OpenAPI ecosystem has tools like Redocly and Swagger UI, and they make good-looking, browsable API sites easy to publish. Translating [Connect APIs](https://connectrpc.com) into OpenAPI made sense at the time, and it still works well. But it also means starting with protobuf, converting to another schema format, and then documenting that result.
+That frustration is why I originally built [protoc-gen-connect-openapi](https://github.com/connectrpc/protoc-gen-connect-openapi). The OpenAPI ecosystem has tools like Redocly and Swagger UI, and they make good-looking, browsable API sites easy to publish. Translating [Connect APIs](https://connectrpc.com) into OpenAPI made sense at the time, and it still works well. But it also means starting with protobuf, converting to another schema format, and then documenting that result.
 
 I wanted the shorter path: start from protobuf, keep the schema visible, and still end up with something polished enough to publish.
 
