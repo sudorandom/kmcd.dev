@@ -15,7 +15,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/http-query/
 ---
 
-You're likely familiar with the HTTP methods, **GET** and **POST**, the workhorses of HTTP. These have both worked surprisingly well and have provided well-defined caching behavior for over a quarter of a century. However, neither of these solves the problem of complex request parameters without completely throwing out the caching semantics of `GET`. This is where a concept like a **QUERY** method comes in, and it's not just a thought experiment; it's an area actively being [explored by the IETF HTTP Working Group](https://httpwg.org/http-extensions/draft-ietf-httpbis-safe-method-w-body.html).
+You're likely familiar with the HTTP methods, **GET** and **POST**, the workhorses of HTTP. These have both worked surprisingly well and have provided well-defined caching behavior for over a quarter of a century. However, neither of these solves the problem of complex request parameters without completely throwing out the caching semantics of `GET`. This is where a concept like a **QUERY** method comes in, and it's not just a thought experiment; it's an area actively being [explored by the IETF HTTP Working Group](https://www.ietf.org/archive/id/draft-ietf-httpbis-safe-method-w-body-14.html).
 
 ### But, why?
 
@@ -29,7 +29,7 @@ This often leads developers to use **POST** for what are semantically read-only 
 
 While using POST works, it's a compromise. POST traditionally implies an action that might change state on the server, which means intermediaries (read: caches) and even client-side logic might treat these "query-via-POST" requests with undue caution, forgoing caching or automatic retries that would be safe for a truly read-only operation.
 
-This is precisely the problem that a dedicated safe method with a request body aims to solve. The IETF HTTP Working Group is discussing such a method in a draft titled ["A Safe HTTP Method with a Request Content"](https://httpwg.org/http-extensions/draft-ietf-httpbis-safe-method-w-body.html). As the draft states:
+This is precisely the problem that a dedicated safe method with a request body aims to solve. The IETF HTTP Working Group is discussing such a method in a draft titled ["A Safe HTTP Method with a Request Content"](https://www.ietf.org/archive/id/draft-ietf-httpbis-safe-method-w-body-14.html). As the draft states:
 
 > The QUERY method provides a solution that spans the gap between the use of GET and POST. As with POST, the input to the query operation is passed along within the content of the request rather than as part of the request URI. Unlike POST, however, the method is explicitly safe and idempotent, allowing functions like caching and automatic retries to operate.
 

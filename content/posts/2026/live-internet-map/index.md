@@ -205,7 +205,7 @@ I caught a great example of this while watching the stream. A Finnish fiber prov
 
 This creates a localized flurry of activity. Some router somewhere was probably misconfigured and couldn’t make up its mind about how to summarize its own network. Every time it changed its mind, even by a single bit, it had to update every other router on Earth. Standard monitoring tools usually miss these "attribute flaps" because the network stays perfectly reachable. But on the map, they paint a very clear picture: a constant, rhythmic heartbeat of orange "bad behavior" pulses.
 
-I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/debug-prefix/main.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at `AS43016`:
+I built [a tool](https://github.com/sudorandom/bgp-stream/blob/main/cmd/bgp-cli/debug_prefix.go) to debug noisy prefixes like this. It aggregates BGP update stats and tries to diagnose the root cause, such as path oscillation, a flapping link, or heavy Anycast routing. Here is the output for our problem child over at `AS43016`:
 
 ```shell
 $ just debug-prefix 195.155.146.0/24

@@ -27,7 +27,7 @@ Because of these reasons, I decided to explore some alternatives to grpc-go and 
 
 * **[grpc-go](https://github.com/grpc/grpc-go):** The official library from Google. See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/grpc-go/main.go).
 * **[grpc-go-servehttp](https://pkg.go.dev/google.golang.org/grpc#Server.ServeHTTP):** A variant of `grpc-go` that allows using the standard Go HTTP server. This is useful when you want to add extra HTTP routes alongside the gRPC ones without having to manage another HTTP server instance on a different port. See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/grpc-go-servehttp/main.go).
-* **[connectrpc](https://github.com/connectrpc/connect-go):** A third-party gRPC library that supports the Go HTTP server [(and gRPC-Web and the Connect protocol)](https://connectrpc.com/docs/multi-protocol/). I wrote about this [previously](/posts/connectrpc). See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/connectrpc/main.go).
+* **[connectrpc](https://github.com/connectrpc/connect-go):** A third-party gRPC library that supports the Go HTTP server [(and gRPC-Web and the Connect protocol)](https://connectrpc.com/docs/multi-protocol/). I wrote about this [previously](/posts/connectrpc/). See my implementation [here](https://github.com/sudorandom/go-grpc-bench/blob/v0.0.1/cmd/connectrpc/main.go).
 
 Before diving into writing my own benchmarks, I wanted to see what exists today:
 - The gRPC authors have published their own **[benchmark results](https://grpc.io/docs/guides/benchmarking/)**. In these results, it looks like grpc-go is among the top performers.

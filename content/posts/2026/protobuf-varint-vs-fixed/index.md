@@ -76,7 +76,7 @@ The tests evaluate three Go parsing implementations:
 
 1. The standard `google.golang.org/protobuf` runtime using `proto.Marshal` and `proto.Unmarshal`
 2. Generated marshal and unmarshal code from PlanetScale's [`vtprotobuf`](https://github.com/planetscale/vtprotobuf) plugin
-3. Descriptor-based dynamic parsing using [`hyperpb`](https://github.com/bufbuild/hyperpb) with a reusable `hyperpb.Shared` memory arena
+3. Descriptor-based dynamic parsing using [`hyperpb`](https://github.com/bufbuild/hyperpb-go) with a reusable `hyperpb.Shared` memory arena
 
 Note that `hyperpb` is not a direct drop-in replacement for standard struct unmarshaling. It evaluates how a specialized dynamic parser with zero-allocation memory arenas handles the wire formats, highlighting how parser architecture interacts with payload size.
 

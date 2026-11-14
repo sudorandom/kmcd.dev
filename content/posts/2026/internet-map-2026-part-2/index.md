@@ -12,7 +12,7 @@ linktitle: ""
 title: "Visualizing the Internet (2026) - Part 2"
 slug: "internet-map-2026-part-2"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/internet-map-2026-part-2
+canonical_url: https://kmcd.dev/posts/internet-map-2026-part-2/
 ---
 
 In my [February post](/posts/internet-map-2026/) about the [Internet Infrastructure Map](https://map.kmcd.dev), I ended with "See You Next Year." I usually only touch the map once a year when I pull new data and write up an annual update. This year I kept tinkering with it anyway, and enough has changed that it didn't feel right waiting until next February. You can check out the current version at **[map.kmcd.dev](https://map.kmcd.dev)**.

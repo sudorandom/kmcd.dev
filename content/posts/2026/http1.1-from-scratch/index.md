@@ -17,7 +17,7 @@ canonical_url: https://kmcd.dev/posts/http1.1-from-scratch/
 draft: false
 ---
 
-HTTP/1.1 has become synonymous with "HTTP/1" because it made several steps towards enabling the scale that the web was starting to experience in the late 1990s. It took the foundational concepts we explored in [HTTP/0.9](/posts/http0.9-from-scratch) and [HTTP/1.0](/posts/http1.0-from-scratch) and made several advancements and adjustments that enable the web to scale for almost two decades.
+HTTP/1.1 has become synonymous with "HTTP/1" because it made several steps towards enabling the scale that the web was starting to experience in the late 1990s. It took the foundational concepts we explored in [HTTP/0.9](/posts/http0.9-from-scratch/) and [HTTP/1.0](/posts/http1.0-from-scratch/) and made several advancements and adjustments that enable the web to scale for almost two decades.
 
 While newer protocols like `HTTP/2` and `HTTP/3` have since arrived with their own improvements, HTTP/1.1 remains a non-negotiable requirement... well, almost. There are a few who believe that it is time to [kill HTTP/1.1](https://http1mustdie.com/) and some believe it would immediately [reduce bot traffic](https://markmcb.com/web/selectively_disabling_http_1/). It has historically been the default transport for the web and the protocol that servers and clients fall back on. Its simplicity and power are why, even now, a massive portion of internet traffic flows over HTTP/1.1.
 
@@ -107,7 +107,7 @@ If the server is willing to accept the request, it responds with `HTTP/1.1 100 C
 
 ## Building a Simple HTTP/1.1 Server in Go
 
-Now for the fun part. Let's build a server that understands these new features. We'll be pulling from the complete server code found here: {{< github-link file="go/server/main.go" >}}.
+Now for the fun part. Let's build a server that understands these new features. We'll be pulling from the complete server code found here: {{< github-link file="go/main.go" >}}.
 
 ### Handling Persistent Connections
 

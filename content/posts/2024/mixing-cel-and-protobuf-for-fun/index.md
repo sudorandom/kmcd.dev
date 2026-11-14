@@ -28,7 +28,7 @@ This is where [**FauxRPC**](https://fauxrpc.com/) steps in, offering a streamlin
 
 ## The Pet Store Example
 
-For the example, we are using [an example protobuf file from vanguard-go](https://github.com/connectrpc/vanguard-go/blob/main/internal/examples/pets/internal/proto/io/swagger/petstore/v2/pets.proto) for this demonstration.
+For the example, we are using [an example protobuf file from vanguard-go](https://github.com/connectrpc/vanguard-go/blob/v0.3.0/internal/examples/pets/internal/proto/io/swagger/petstore/v2/pets.proto) for this demonstration.
 
 ### Creating a basic stub
 

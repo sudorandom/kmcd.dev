@@ -13,7 +13,7 @@ linktitle: ""
 title: "Visualizing the Internet (2025)"
 slug: "internet-map-2025"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/internet-map-2025
+canonical_url: https://kmcd.dev/posts/internet-map-2025/
 ---
 
 For the past couple of years, I've been creating visualizations of the internet's physical infrastructure. This project pieces together data from a few sources, and for me, seeing this data visualized together is compelling. These maps show the undersea fiber optic cables that form the backbone of global connectivity and the Internet Exchange Points (IXPs) where networks meet. This year, I'm thrilled to announce a major evolution of the project. Instead of static images and pre-rendered videos, the Internet Map is now a fully interactive, animated map that you can see online.

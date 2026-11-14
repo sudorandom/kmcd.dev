@@ -20,7 +20,7 @@ mastodonID: "113469426378097476"
 
 ## How it works
 
-First, define your validation rules using protovalidate's constraint annotations within your Protobuf definitions. For guidance, you should reference [the protovalidate documentation](https://github.com/bufbuild/protovalidate/blob/main/docs/README.md). Fauxrpc will take care of the rest, automatically validating each request against these rules. If a request fails validation, a detailed error message will be returned, guiding you toward quickly fixing the issue.
+First, define your validation rules using protovalidate's constraint annotations within your Protobuf definitions. For guidance, you should reference [the protovalidate documentation](https://github.com/bufbuild/protovalidate/blob/main/README.md). Fauxrpc will take care of the rest, automatically validating each request against these rules. If a request fails validation, a detailed error message will be returned, guiding you toward quickly fixing the issue.
 
 For this example, we're going to use a simple service where you can call with a name and it will return a greeting. Here's what that would look like in protobuf:
 

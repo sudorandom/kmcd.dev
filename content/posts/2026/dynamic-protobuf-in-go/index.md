@@ -19,7 +19,7 @@ Most Go Protobuf services get to cheat: their schemas are known at build time. [
 
 That flexibility pushed the request path toward Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. `dynamicpb` is flexible, but it pays for that flexibility with extra allocations, descriptor lookups, and reflection-heavy access paths.
 
-Buf introduced [`hyperpb`](https://github.com/bufbuild/hyperpb), a dynamic Protobuf parser that compiles descriptors into optimized parser bytecode at runtime. I wanted to see whether it could make FauxRPC's read path faster without giving up runtime-loaded schemas.
+Buf introduced [`hyperpb`](https://github.com/bufbuild/hyperpb-go), a dynamic Protobuf parser that compiles descriptors into optimized parser bytecode at runtime. I wanted to see whether it could make FauxRPC's read path faster without giving up runtime-loaded schemas.
 
 The short version: yes, with caveats. `hyperpb` is read-only, so FauxRPC still uses `dynamicpb` to build mock responses. But for parsing incoming requests, the performance difference was large enough to be worth the split.
 
@@ -140,10 +140,10 @@ I benchmarked three dynamic parsing strategies against statically generated Go P
 | Variant | Description |
 | :--- | :--- |
 | **dynamicpb** | Evaluates dynamic descriptor parsing and reflection-based Protobuf handling using Go's standard [`dynamicpb`](https://pkg.go.dev/google.golang.org/protobuf/types/dynamicpb) package. |
-| **hyperpb** | Evaluates dynamic parsing using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb) library. |
+| **hyperpb** | Evaluates dynamic parsing using Buf's table-driven [`hyperpb`](https://github.com/bufbuild/hyperpb-go) library. |
 | **hyperpb + Shared** | Evaluates dynamic parsing using `hyperpb` paired with a reusable `hyperpb.Shared` memory arena to recycle allocations. |
 | **Concrete (proto)** | Statically compiled Go Protobuf code (provided as a baseline comparison). |
-| **Concrete (vtproto)** | Statically compiled, reflection-free PlanetScale [`vtproto`](https://github.com/planetscale/vtproto) code (provided as a baseline comparison). |
+| **Concrete (vtproto)** | Statically compiled, reflection-free PlanetScale [`vtproto`](https://github.com/planetscale/vtprotobuf) code (provided as a baseline comparison). |
 
 The benchmarks evaluate performance across three payload scales:
 - **Small**: A flat message with 4 primitive fields (ID, status, age, score).

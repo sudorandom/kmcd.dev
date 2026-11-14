@@ -11,7 +11,7 @@ linktitle: ""
 title: "The Gravity of Ashburn, Virginia"
 slug: "ashburn"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/ashburn
+canonical_url: https://kmcd.dev/posts/ashburn/
 ---
 
 Where is the center of the internet? There is no single correct answer. You could measure submarine cables, network interconnection, cloud capacity, traffic, or the number of people online, and each would produce a different map.

@@ -10,7 +10,7 @@ linktitle: ""
 title: "Living Closer to the Internet"
 slug: "living-closer-to-the-internet"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/living-closer-to-the-internet
+canonical_url: https://kmcd.dev/posts/living-closer-to-the-internet/
 ---
 
 In my [recent update to the Internet Map](/posts/internet-map-2026-part-2/), I expanded the BGP layer on **[map.kmcd.dev](https://map.kmcd.dev)** to show all attributed IP address space globally instead of just the largest hubs.

@@ -14,7 +14,11 @@
 {{ end }}
 
 <meta name="keywords" content="{{ .Site.Params.keywords }}{{ with .Params.tags }}{{ range . }}, {{ . }}{{ end }}{{ end }}{{ with .Params.keywords }}{{ range . }}, {{ . }}{{ end }}{{ end }}" />
+{{ if .Params.noindex }}
+<meta name="robots" content="noindex, nofollow" />
+{{ else }}
 <meta name="robots" content="index, archive" />
+{{ end }}
 <meta name="theme-color" content="{{ .Site.Params.themeColor }}" />
 <link rel="canonical" href="{{ or .Params.canonical_url .Permalink }}" />
 

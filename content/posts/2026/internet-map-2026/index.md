@@ -12,7 +12,7 @@ linktitle: ""
 title: "Visualizing the Internet (2026)"
 slug: "internet-map-2026"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/internet-map-2026
+canonical_url: https://kmcd.dev/posts/internet-map-2026/
 ---
 
 For the past few years, I’ve been trying to make the physical reality of the Internet visible with my [Internet Infrastructure Map](https://map.kmcd.dev). This map shows the network of undersea fiber-optic cables along with peering bandwidth, grouped by city. I update the map annually, but I don’t want to just pull the latest data and call it a day. In this post I discuss how the map evolved this year and what I did to make it happen, but you can skip to the good part by viewing it here: **[map.kmcd.dev](https://map.kmcd.dev)**.

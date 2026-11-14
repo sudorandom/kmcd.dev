@@ -10,7 +10,7 @@ linktitle: ""
 title: "The Physical Internet: From Copper to Glass"
 slug: "from-copper-to-glass"
 type: "posts"
-canonical_url: https://kmcd.dev/posts/from-copper-to-glass
+canonical_url: https://kmcd.dev/posts/from-copper-to-glass/
 ---
 
 I originally built the [Internet Infrastructure Map](https://map.kmcd.dev) because I thought undersea fiber-optic cables were interesting. Since then, I've been slowly piecing the history of the global Internet together. After adding historical fiber cables, I started backfilling old telegraph and coaxial cables. Then I finally added radio systems to the map, stopping short of the monumental task of mapping satellites. I also built a new page at **[map.kmcd.dev/learn/](https://map.kmcd.dev/learn/)** to walk through the technological history that led to our modern internet.

@@ -18,7 +18,7 @@ mastodonID: "112952960792401128"
 ---
 
 ## Introduction
-In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch), a protocol that served as the web's initial foundation. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today. HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
+In our previous exploration, we delved into the simplicity of [HTTP/0.9](/posts/http0.9-from-scratch/), a protocol that served as the web's initial foundation. However, as the internet evolved, so did its needs. Enter HTTP/1.0, a landmark version released in 1996 that laid the groundwork for the web we know today. HTTP/1.0 was a game-changer, introducing features that revolutionized web communication:
 
 - **Headers:** Metadata that added context and control to requests and responses ([RFC 1945 4.2](https://datatracker.ietf.org/doc/html/rfc1945#section-4.2)).
 - **Methods:** A diverse set of actions (POST, HEAD, PUT, DELETE, etc.) beyond just retrieving documents. The web was no longer read-only. ([RFC 1945 8](https://datatracker.ietf.org/doc/html/rfc1945#section-8)).
