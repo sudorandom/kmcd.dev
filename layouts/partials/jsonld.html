@@ -96,6 +96,31 @@
 
 {{- /* Page / Post Specific Schema */ -}}
 {{- if .IsHome -}}
+  {{- $allPosts := (where site.RegularPages "Type" "posts").ByDate -}}
+  {{- $datePublished := "" -}}
+  {{- $dateModified := "" -}}
+  {{- $images := slice -}}
+  {{- $blogPosts := slice -}}
+  {{- if gt (len $allPosts) 0 -}}
+    {{- $firstPost := index $allPosts 0 -}}
+    {{- $lastPost := index $allPosts (sub (len $allPosts) 1) -}}
+    {{- $datePublished = $firstPost.Date.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- $dateModified = $lastPost.Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- range first 10 $allPosts.Reverse -}}
+      {{- $blogPosts = $blogPosts | append (dict
+        "@type" "BlogPosting"
+        "@id" .Permalink
+        "headline" .Title
+        "name" .Title
+        "url" .Permalink
+        "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with resources.Get "images/site_cover.png" -}}
+    {{- $images = $images | append .Permalink -}}
+  {{- end -}}
+
   {{- $homePage := dict
     "@type" "Blog"
     "@id" (printf "%s/#blog" $baseUrl)
@@ -106,10 +131,27 @@
     "author" (dict "@id" (printf "%s/#author" $baseUrl))
     "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
     "inLanguage" (or site.Language.LanguageCode "en")
+    "blogPost" $blogPosts
   -}}
-  {{- $graph = $graph | append $homePage -}}
+  {{- $homeArticle := dict
+    "@type" "Article"
+    "@id" (printf "%s/#article" $baseUrl)
+    "isPartOf" (dict "@id" (printf "%s/#blog" $baseUrl))
+    "headline" site.Title
+    "name" site.Title
+    "description" $siteDescription
+    "url" (printf "%s/" $baseUrl)
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" (printf "%s/" $baseUrl))
+    "datePublished" $datePublished
+    "dateModified" $dateModified
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "image" $images
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $homePage $homeArticle -}}
 
-{{- else if and .IsPage (eq .Type "posts") -}}
+{{- else if and .IsPage (or (eq .Type "posts") (eq .Layout "http")) -}}
   {{- $pageDescription := or .Description .Summary (printf "%s by %s" .Title $authorName) | plainify | htmlUnescape | chomp -}}
   {{- $images := slice -}}
   {{- with .Params.cover -}}
@@ -146,12 +188,19 @@
 
   {{- $datePublished := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
   {{- with .PublishDate -}}
-    {{- $datePublished = .Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- if not .IsZero -}}
+      {{- $datePublished = .Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- end -}}
   {{- end -}}
   {{- $dateModified := .Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
 
+  {{- $articleType := "BlogPosting" -}}
+  {{- if eq .Layout "http" -}}
+    {{- $articleType = "Article" -}}
+  {{- end -}}
+
   {{- $blogPost := dict
-    "@type" "BlogPosting"
+    "@type" $articleType
     "@id" .Permalink
     "isPartOf" (dict "@type" "Blog" "@id" (printf "%s/#blog" $baseUrl) "name" site.Title)
     "headline" .Title
@@ -224,6 +273,47 @@
   -}}
   {{- $graph = $graph | append $profilePage -}}
 
+{{- else if and .IsPage (eq .Layout "banners") -}}
+  {{- $pageDescription := or .Description .Params.subtitle (.Summary | plainify) $siteDescription | plainify | htmlUnescape | chomp -}}
+  {{- $posts := where site.RegularPages "Section" "posts" -}}
+  {{- $bannerItems := slice -}}
+  {{- $pos := 0 -}}
+  {{- range $posts -}}
+    {{- $cover := .Resources.Get (or .Params.Cover .Params.Featured) -}}
+    {{- if $cover -}}
+      {{- $pos = add $pos 1 -}}
+      {{- $bannerItems = $bannerItems | append (dict
+        "@type" "ListItem"
+        "position" $pos
+        "name" .Title
+        "url" .Permalink
+        "image" $cover.Permalink
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $itemList := dict
+    "@type" "ItemList"
+    "@id" (printf "%s#itemlist" .Permalink)
+    "name" .Title
+    "description" $pageDescription
+    "url" .Permalink
+    "numberOfItems" (len $bannerItems)
+    "itemListElement" $bannerItems
+  -}}
+  {{- $bannersPage := dict
+    "@type" "CollectionPage"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Title
+    "description" $pageDescription
+    "isPartOf" (dict "@id" (printf "%s/#website" $baseUrl))
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "mainEntity" (dict "@id" (printf "%s#itemlist" .Permalink))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $bannersPage $itemList -}}
+
 {{- else if .IsPage -}}
   {{- $pageDescription := or .Description .Summary $siteDescription | plainify | htmlUnescape | chomp -}}
   {{- $genericPage := dict
@@ -239,6 +329,31 @@
   {{- $graph = $graph | append $genericPage -}}
 
 {{- else if and .IsSection (eq .Section "posts") -}}
+  {{- $allPosts := (where site.RegularPages "Type" "posts").ByDate -}}
+  {{- $datePublished := "" -}}
+  {{- $dateModified := "" -}}
+  {{- $images := slice -}}
+  {{- $blogPosts := slice -}}
+  {{- if gt (len $allPosts) 0 -}}
+    {{- $firstPost := index $allPosts 0 -}}
+    {{- $lastPost := index $allPosts (sub (len $allPosts) 1) -}}
+    {{- $datePublished = $firstPost.Date.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- $dateModified = $lastPost.Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- range first 10 $allPosts.Reverse -}}
+      {{- $blogPosts = $blogPosts | append (dict
+        "@type" "BlogPosting"
+        "@id" .Permalink
+        "headline" .Title
+        "name" .Title
+        "url" .Permalink
+        "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with resources.Get "images/site_cover.png" -}}
+    {{- $images = $images | append .Permalink -}}
+  {{- end -}}
+
   {{- $blogSection := dict
     "@type" "Blog"
     "@id" .Permalink
@@ -249,8 +364,94 @@
     "author" (dict "@id" (printf "%s/#author" $baseUrl))
     "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
     "inLanguage" (or site.Language.LanguageCode "en")
+    "blogPost" $blogPosts
   -}}
-  {{- $graph = $graph | append $blogSection -}}
+  {{- $blogArticle := dict
+    "@type" "Article"
+    "@id" (printf "%s#article" .Permalink)
+    "isPartOf" (dict "@id" .Permalink)
+    "headline" .Title
+    "name" .Title
+    "description" (or .Description $siteDescription)
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "CollectionPage" "@id" .Permalink)
+    "datePublished" $datePublished
+    "dateModified" $dateModified
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "image" $images
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+  {{- $graph = $graph | append $blogSection $blogArticle -}}
+
+{{- else if eq .Type "series" -}}
+  {{- $cleanTitle := .Title | plainify | htmlUnescape | chomp -}}
+  {{- $pageDescription := or .Description .Params.subtitle (.Summary | plainify) (printf "Posts in the %s series by %s" $cleanTitle $authorName) | plainify | htmlUnescape | chomp -}}
+  {{- $images := slice -}}
+  {{- $datePublished := "" -}}
+  {{- $dateModified := "" -}}
+  {{- $hasPart := slice -}}
+
+  {{- if and (eq .Kind "term") (gt (len .Pages) 0) -}}
+    {{- $sorted := .Pages.ByDate -}}
+    {{- $firstPost := index $sorted 0 -}}
+    {{- $lastPost := index $sorted (sub (len $sorted) 1) -}}
+    {{- $datePublished = $firstPost.Date.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- $dateModified = $lastPost.Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- with $lastPost.Params.cover -}}
+      {{- $coverRes := $lastPost.Resources.GetMatch . -}}
+      {{- if $coverRes -}}
+        {{- $images = $images | append $coverRes.Permalink -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range $sorted -}}
+      {{- $hasPart = $hasPart | append (dict
+        "@type" "BlogPosting"
+        "@id" .Permalink
+        "headline" .Title
+        "name" .Title
+        "url" .Permalink
+        "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      ) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $allPosts := (where site.RegularPages "Type" "posts").ByDate -}}
+    {{- if gt (len $allPosts) 0 -}}
+      {{- $datePublished = (index $allPosts 0).Date.Format "2006-01-02T15:04:05Z07:00" -}}
+      {{- $dateModified = (index $allPosts (sub (len $allPosts) 1)).Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if eq (len $images) 0 -}}
+    {{- with resources.Get "images/site_cover.png" -}}
+      {{- $images = $images | append .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $seriesArticle := dict
+    "@type" "Article"
+    "@id" .Permalink
+    "isPartOf" (dict "@type" "Blog" "@id" (printf "%s/#blog" $baseUrl) "name" site.Title)
+    "headline" $cleanTitle
+    "name" $cleanTitle
+    "description" $pageDescription
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "CollectionPage" "@id" .Permalink)
+    "datePublished" $datePublished
+    "dateModified" $dateModified
+    "author" (dict "@id" (printf "%s/#author" $baseUrl))
+    "publisher" (dict "@id" (printf "%s/#author" $baseUrl))
+    "inLanguage" (or site.Language.LanguageCode "en")
+  -}}
+
+  {{- if gt (len $images) 0 -}}
+    {{- $seriesArticle = merge $seriesArticle (dict "image" $images) -}}
+  {{- end -}}
+  {{- if gt (len $hasPart) 0 -}}
+    {{- $seriesArticle = merge $seriesArticle (dict "hasPart" $hasPart) -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $seriesArticle -}}
 
 {{- else -}}
   {{- /* Section, Taxonomy, or Term List Page */ -}}

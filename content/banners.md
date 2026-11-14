@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "Cover images and banners used across all posts on kmcd.dev."
 title: "Banners"
 titleIcon: "fa-image"
 subtitle: "Cover images used in all of my posts"

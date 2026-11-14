@@ -3,6 +3,8 @@
     {{- $schemaType = "https://schema.org/Blog" -}}
 {{- else if and .IsPage (or (eq .Type "posts") (eq .Type "prompts")) -}}
     {{- $schemaType = "https://schema.org/BlogPosting" -}}
+{{- else if or (and .IsPage (eq .Layout "http")) (eq .Type "series") -}}
+    {{- $schemaType = "https://schema.org/Article" -}}
 {{- else if and .IsPage (or (eq .Slug "me") (eq .Layout "me")) -}}
     {{- $schemaType = "https://schema.org/ProfilePage" -}}
 {{- end -}}

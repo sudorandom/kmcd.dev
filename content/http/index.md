@@ -3,6 +3,8 @@ description: "What version of HTTP are you connecting with?"
 linktitle: ""
 title: "What version of HTTP are you connecting with?"
 titleIcon: "fa-globe"
+date: "2024-07-26T10:16:20+02:00"
+lastmod: "2026-11-04T10:57:00+01:00"
 cover: "cover.jpg"
 subtitle: ""
 devtoSkip: false
