@@ -711,6 +711,7 @@ function initKeyboardShortcuts() {
 function initMascotScrollMood() {
   const mascots = Array.from(document.querySelectorAll(".toc-mascot"));
   const panels = Array.from(document.querySelectorAll("[data-nibble-panel]"));
+  const followPanels = Array.from(document.querySelectorAll("[data-nibble-follow-panel]"));
   const restoreBars = Array.from(document.querySelectorAll("[data-nibble-restore-bar]"));
   const restoreBtns = Array.from(document.querySelectorAll(".nibble-restore-btn, [data-nibble-restore]"));
 
@@ -727,19 +728,44 @@ function initMascotScrollMood() {
         btn.hidden = !isHidden;
       }
     });
+    if (isHidden) {
+      followPanels.forEach(fp => {
+        fp.hidden = true;
+      });
+    }
   }
 
   syncRestoreButtons();
+
+  const isPostPage =
+    Boolean(document.querySelector(".post-share-box")) ||
+    /^\/posts\/.+/.test(window.location.pathname);
 
   function updateMood() {
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
     const mood = progress >= 0.88 ? "3" : progress >= 0.58 ? "2" : progress >= 0.25 ? "1" : "0";
+    const isAtBottom = mood === "3";
 
     mascots.forEach(el => {
-      if (el.getAttribute("data-mood") === "bye") return;
-      if (el.getAttribute("data-mood") !== mood) {
-        el.setAttribute("data-mood", mood);
+      const wrap = el.closest(".toc-mascot-wrap");
+      const panel = el.closest(".toc-mascot-panel");
+      const followPanel = wrap ? wrap.querySelector("[data-nibble-follow-panel]") : null;
+
+      if (el.getAttribute("data-mood") !== "bye") {
+        if (el.getAttribute("data-mood") !== mood) {
+          el.setAttribute("data-mood", mood);
+        }
+      }
+
+      if (followPanel) {
+        const showFollow =
+          isPostPage &&
+          Boolean(el.closest("aside.tree-nav")) &&
+          isAtBottom &&
+          Boolean(panel && !panel.hidden) &&
+          el.getAttribute("data-mood") !== "bye";
+        followPanel.hidden = !showFollow;
       }
     });
   }
@@ -853,6 +879,10 @@ function initMascotScrollMood() {
       const mascot = panel.querySelector(".toc-mascot");
       const speech = panel.querySelector(".nibble-speech");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      followPanels.forEach(fp => {
+        fp.hidden = true;
+      });
 
       if (mascot) {
         mascot.setAttribute("data-mood", "bye");
