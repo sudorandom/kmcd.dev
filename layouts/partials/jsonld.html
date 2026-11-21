@@ -16,9 +16,14 @@
   "@type" "Person"
   "@id" (printf "%s/#author" $baseUrl)
   "name" $authorName
+  "alternateName" "sudorandom"
   "url" $authorUrl
   "sameAs" $sameAs
 -}}
+{{- with resources.Get "images/me.png" -}}
+  {{- $authorImg := .Resize "600x webp" -}}
+  {{- $author = merge $author (dict "image" $authorImg.Permalink) -}}
+{{- end -}}
 
 {{- $website := dict
   "@type" "WebSite"
@@ -271,6 +276,9 @@
     "mainEntity" (dict "@id" (printf "%s/#author" $baseUrl))
     "inLanguage" (or site.Language.LanguageCode "en")
   -}}
+  {{- if not .Lastmod.IsZero -}}
+    {{- $profilePage = merge $profilePage (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")) -}}
+  {{- end -}}
   {{- $graph = $graph | append $profilePage -}}
 
 {{- else if and .IsPage (eq .Layout "banners") -}}
