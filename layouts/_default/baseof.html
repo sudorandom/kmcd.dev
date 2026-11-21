@@ -5,7 +5,7 @@
     </head>
 
     {{ block "body" . }}
-        <body class="page-{{ .Type }}">
+        <body class="page-{{ .Type }}{{ if .IsHome }} is-home{{ end }}">
     {{ end }}
         <a href="#main-content" class="skip-link">Skip to main content</a>
 

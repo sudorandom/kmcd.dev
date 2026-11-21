@@ -165,7 +165,7 @@ html {
 }
 
 [id] {
-  scroll-margin-top: 80px;
+  scroll-margin-top: 92px;
 }
 
 html, body {
@@ -258,17 +258,33 @@ h1.page-title,
    -------------------------------------------------------------------------- */
 
 header.site-header {
-  margin-top: 26px;
+  --header-motion: 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  margin-top: 14px;
   margin-bottom: 44px;
   border-bottom: none;
-  padding: 0 24px;
+  padding: 12px 24px 0;
+  height: 90px;
+  box-sizing: border-box;
   width: 100%;
   background: transparent;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform var(--header-motion);
+}
+
+header.site-header[data-hidden] {
+  transform: translateY(-100%);
 }
 
 .site-header .header-inner {
+  pointer-events: auto;
+  box-sizing: border-box;
+  width: 100%;
   max-width: 1152px;
   margin: 0 auto;
   padding: 16px 26px;
@@ -281,7 +297,34 @@ header.site-header {
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  transition: box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+  transition:
+    max-width var(--header-motion),
+    padding var(--header-motion),
+    border-radius var(--header-motion),
+    background-color var(--header-motion),
+    border-color var(--header-motion),
+    box-shadow var(--header-motion),
+    gap var(--header-motion);
+}
+
+header.site-header[data-scrolled] .header-inner {
+  padding: 7px 16px;
+  gap: 12px;
+  border-radius: 14px;
+  border-color: color-mix(in srgb, var(--ink-border) 82%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32), 3px 3px 0px #2b2450;
+}
+
+body.is-home header.site-header[data-scrolled] .header-inner {
+  max-width: 920px;
+}
+
+[data-theme="light"] header.site-header[data-scrolled] .header-inner {
+  background: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
+  box-shadow: 0 12px 28px rgba(20, 26, 46, 0.14), 3px 3px 0px var(--riso-coral);
 }
 
 .site-brand {
@@ -310,7 +353,12 @@ header.site-header {
     font-size: 20px;
     letter-spacing: -0.02em;
     line-height: 1.1;
-    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+      padding var(--header-motion),
+      font-size var(--header-motion),
+      border-radius var(--header-motion),
+      box-shadow var(--header-motion);
   }
 
   &:hover .riso-logo-stamp {
@@ -324,10 +372,21 @@ header.site-header {
   }
 }
 
+header.site-header[data-scrolled] .site-brand .riso-logo-stamp {
+  padding: 4px 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 0px #163b4a;
+}
+
 [data-theme="light"] .site-brand .riso-logo-stamp {
   background: var(--riso-coral);
   color: #fffdf9;
   border-color: var(--ink-border);
+}
+
+[data-theme="light"] header.site-header[data-scrolled] .site-brand .riso-logo-stamp {
+  box-shadow: 2px 2px 0px #1b2238;
 }
 
 .site-nav .nav-links {
@@ -337,6 +396,7 @@ header.site-header {
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  transition: gap var(--header-motion);
 
   li {
     margin: 0 !important;
@@ -353,7 +413,14 @@ header.site-header {
     border-radius: 999px;
     border: 2px solid transparent;
     display: inline-block;
-    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      font-size var(--header-motion),
+      padding var(--header-motion);
 
     &:hover {
       color: var(--text-contrast) !important;
@@ -374,6 +441,15 @@ header.site-header {
   }
 }
 
+header.site-header[data-scrolled] .site-nav .nav-links {
+  gap: 4px;
+
+  a {
+    font-size: 14px;
+    padding: 4px 11px;
+  }
+}
+
 [data-theme="light"] .site-nav .nav-links a.active,
 [data-theme="light"] .site-nav .nav-links a.active:hover {
   background: var(--riso-teal) !important;
@@ -387,6 +463,7 @@ header.site-header {
   align-items: center;
   gap: 14px;
   font-size: 13px;
+  transition: gap var(--header-motion);
 
   .social-links {
     display: flex;
@@ -395,6 +472,7 @@ header.site-header {
     color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: 12.5px;
+    transition: gap var(--header-motion), font-size var(--header-motion);
 
     a {
       color: var(--text-secondary);
@@ -409,6 +487,15 @@ header.site-header {
     .action-sep {
       color: var(--border-secondary);
     }
+  }
+}
+
+header.site-header[data-scrolled] .header-actions {
+  gap: 10px;
+
+  .social-links {
+    gap: 8px;
+    font-size: 12px;
   }
 }
 
@@ -427,7 +514,14 @@ header.site-header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.18s ease !important;
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.18s ease,
+    height var(--header-motion),
+    width var(--header-motion),
+    min-width var(--header-motion),
+    border-radius var(--header-motion) !important;
 
   &:hover {
     transform: translate(-1px, -1px) rotate(3deg) !important;
@@ -443,6 +537,33 @@ header.site-header {
     width: 17px !important;
     height: 17px !important;
     stroke: #67e8f9 !important;
+    transition: width var(--header-motion), height var(--header-motion);
+  }
+}
+
+header.site-header[data-scrolled] .riso-theme-btn {
+  height: 30px !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  border-radius: 8px !important;
+
+  svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header.site-header,
+  .site-header .header-inner,
+  .site-brand .riso-logo-stamp,
+  .site-nav .nav-links,
+  .site-nav .nav-links a,
+  .header-actions,
+  .header-actions .social-links,
+  .riso-theme-btn,
+  .riso-theme-btn svg {
+    transition: none !important;
   }
 }
 
@@ -552,8 +673,8 @@ aside.tree-nav {
   width: 256px;
   flex-shrink: 0;
   position: sticky;
-  top: 24px;
-  max-height: calc(100vh - 48px);
+  top: 78px;
+  max-height: calc(100vh - 96px);
   overflow-y: auto;
   font-size: 13.5px;
   line-height: 1.5;
@@ -574,7 +695,7 @@ aside.tree-nav {
   }
 
   .tree-nav-card {
-    max-height: calc(100vh - 265px);
+    max-height: calc(100vh - 315px);
     overflow-y: auto;
     background: var(--bg-secondary);
     border: 2px solid var(--ink-border);
@@ -584,7 +705,7 @@ aside.tree-nav {
   }
 
   &:has(.nibble-follow-panel:not([hidden])) .tree-nav-card {
-    max-height: calc(100vh - 355px);
+    max-height: calc(100vh - 405px);
   }
 
   .toc-mascot-panel {
@@ -1922,10 +2043,20 @@ footer.site-footer {
     padding-left: 0 !important;
   }
 
+  header.site-header {
+    height: auto;
+  }
+
   .site-header .header-inner {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+
+  header.site-header[data-scrolled] .header-inner {
+    max-width: 100%;
+    padding: 8px 14px;
+    gap: 8px;
   }
 
   .site-brand {
@@ -1946,6 +2077,12 @@ footer.site-footer {
 }
 
 @media (max-width: 684px) {
+  header.site-header {
+    margin-top: 8px;
+    margin-bottom: 28px;
+    padding-top: 8px;
+  }
+
   header.site-header,
   .content.container,
   .site-main.container {
@@ -1958,6 +2095,11 @@ footer.site-footer {
     gap: 10px;
   }
 
+  header.site-header[data-scrolled] .header-inner {
+    padding: 7px 12px;
+    gap: 6px;
+  }
+
   .site-nav .nav-links {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -1966,6 +2108,15 @@ footer.site-footer {
     a {
       font-size: 13.5px;
       padding: 5px 6px;
+    }
+  }
+
+  header.site-header[data-scrolled] .site-nav .nav-links {
+    gap: 2px;
+
+    a {
+      font-size: 13px;
+      padding: 3px 6px;
     }
   }
 
@@ -2442,7 +2593,7 @@ article.post-container.stuff-container {
   margin-bottom: 8px;
 
   .featured-bento-card {
-    scroll-margin-top: 28px;
+    scroll-margin-top: 88px;
   }
 
   .featured-bento-excerpt {

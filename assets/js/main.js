@@ -957,7 +957,66 @@ function initMascotScrollMood() {
   updateMood();
 }
 
+function initStickyHeader() {
+  const header = document.querySelector("header.site-header");
+  if (!header) return;
+
+  const footer = document.querySelector("footer.site-footer");
+  let footerVisible = false;
+  let isScrolled = false;
+  let ticking = false;
+
+  function update() {
+    const y = window.scrollY;
+    const nextScrolled = isScrolled ? y > 6 : y > 16;
+    if (nextScrolled !== isScrolled) {
+      isScrolled = nextScrolled;
+      if (isScrolled) {
+        header.setAttribute("data-scrolled", "");
+      } else {
+        header.removeAttribute("data-scrolled");
+      }
+    }
+
+    const shouldHide =
+      footerVisible && y > 64 && !header.contains(document.activeElement);
+    if (shouldHide) {
+      header.setAttribute("data-hidden", "");
+      header.inert = true;
+    } else {
+      header.removeAttribute("data-hidden");
+      header.inert = false;
+    }
+  }
+
+  function scheduleUpdate() {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  if (footer && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        footerVisible = Boolean(entries[0] && entries[0].isIntersecting);
+        scheduleUpdate();
+      },
+      { threshold: 0 }
+    );
+    observer.observe(footer);
+  }
+
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", scheduleUpdate, { passive: true });
+  update();
+}
+
 function initAll() {
+  initStickyHeader();
   initImageFadeIn();
   initArchiveTags();
   initThemeAndPaletteControls();
