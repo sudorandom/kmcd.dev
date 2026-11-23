@@ -25,7 +25,7 @@ OmniBuf is a self-describing binary wire format built to work with `.proto` sche
 - **Smoother on-ramp:** Annotated structs with matching field numbers and types use the same OmniBuf wire format as generated code, so you can start with native types and move to `.proto` files later (or not!).
 
 {{< diagram >}}
-{{< figure src="overview.svg" alt="Diagram showing peer.proto branching to Protobuf, JSON, and OmniBuf encodings alongside native language files pointing directly to OmniBuf" caption="OmniBuf works both as an alternate encoding for `.proto` schemas and directly on native types across 11 languages." loading="lazy" >}}
+{{< figure src="overview.svg" alt="Diagram showing peer.proto branching to Protobuf, JSON, and OmniBuf encodings alongside native language files pointing directly to OmniBuf" caption="OmniBuf works both as an alternate encoding for `.proto` schemas and directly on native types across 12 languages." loading="lazy" >}}
 {{< /diagram >}}
 
 ## Partial Reads and Splicing
@@ -183,13 +183,14 @@ Other formats still beat OmniBuf in a few areas. On the `PeerUpdate` fixture, Pr
 
 ## Languages and Tooling
 
-There are first-party runtimes and plugins for Buf and protoc across 11 languages, all verified against the same [conformance suite](https://omnibuf.com/spec#sec-11-2) so behavior stays consistent across ecosystems:
+There are first-party runtimes and plugins for Buf and protoc across 12 languages, all verified against the same [conformance suite](https://omnibuf.com/spec#sec-11-2) so behavior stays consistent across ecosystems:
 
 - [Go](https://omnibuf.com/go)
 - [TypeScript / JS](https://omnibuf.com/es)
 - [Rust](https://omnibuf.com/rs)
 - [Python](https://omnibuf.com/py)
 - [C++](https://omnibuf.com/cpp)
+- [C99 / Embedded (Nano)](https://omnibuf.com/nano/): zero-allocation runtime for microcontrollers
 - [Java](https://omnibuf.com/java)
 - [C# / .NET](https://omnibuf.com/cs)
 - [Swift](https://omnibuf.com/swift)
