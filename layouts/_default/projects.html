@@ -34,21 +34,21 @@
             {{ if $omnibufImg }}
             <a href="https://omnibuf.com" target="_blank" rel="noopener" class="featured-bento-media" tabindex="-1" aria-hidden="true">
               <img src="{{ $omnibufImg.RelPermalink }}" alt="Diagram of OmniBuf encoding for .proto schemas and native language structs" loading="lazy" decoding="async" />
-              <span class="featured-series-badge">★ WIRE FORMAT</span>
+              <span class="featured-series-badge">★ BINARY ENCODING</span>
             </a>
             {{ end }}
             <div class="featured-bento-body">
               <div class="featured-bento-meta">
                 <span>omnibuf.com</span>
                 <span>&bull;</span>
-                <span>11 Languages</span>
+                <span>Binary Encoding</span>
               </div>
               <h3 class="featured-bento-title">
                 <a href="https://omnibuf.com" target="_blank" rel="noopener">OmniBuf</a>
               </h3>
-              <p class="featured-bento-deck">A fast, self-describing binary wire format for Protocol Buffers and native types.</p>
+              <p class="featured-bento-deck">A faster, self-describing binary encoding for Protobuf schemas and native types.</p>
               <p class="featured-bento-excerpt">
-                Keep <code>.proto</code> schemas, gRPC, and Connect while swapping out the binary wire format underneath for prefix-varints, 16 explicit wire types, cheap partial reads, and plain-struct support across 11 languages.
+                A binary encoding built as an evolution of Protobuf. It supports both annotated structs/classes and <code>.proto</code> files for Connect and gRPC on the same wire format, and raw payloads are parsable without a schema.
               </p>
               <div class="featured-bento-footer">
                 <div class="featured-bento-tags">
