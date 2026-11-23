@@ -13,18 +13,16 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/omnibuf/
 ---
 
-Protobuf's binary format is old. As a result, it has some warts: Decoding is slow partially because of byte-by-byte varints. Raw payloads are opaque enough that building inspection tools is difficult even for a binary format. Language runtimes behave differently and have wildly different performance characteristics. Add that to the fact that Protobuf requires buying into a lot of the toolchain up front without a smooth onramp.
+After my [gRPC From Scratch](/series/grpc-from-scratch/) series, I realized how simple the Protobuf binary encoding actually is. My [benchmarks comparing varints and fixed-size integers in Go](/posts/protobuf-varint-vs-fixed/) got me experimenting with the binary encoding. I wanted to see what Protobuf would look like with different tradeoffs, more modern encoding techniques, and the ability to blind-decode message values. What if we kept `.proto` files and services, but swapped out the binary wire format underneath? That experiment turned into an encoding that I call **[OmniBuf](https://omnibuf.com)**.
 
-Protocol Buffers, AKA Protobuf, actually refers to two things: the schema language (where you have `.proto` files defining messages, field numbers, and services) and the binary wire format. Both have their warts and issues but today we need to focus on the wire format, mostly. It's also important to note that Protobuf already has alternate, officially supported, encodings. ProtoJSON defines a standard way to represent Protobuf messages as JSON. ProtoText does the same but in a different human-readable format.
+Protobuf's schema language and wire format are separate. A `.proto` file defines messages and services, while an encoding determines how message values are stored or sent. Protobuf already supports other encodings, including ProtoJSON and Text Format.
 
-After my [gRPC From Scratch](/series/grpc-from-scratch/) series, I internalized how dead simple the Protobuf binary encoding actually is. I also [benchmarked varints against fixed-size integers in Go](/posts/protobuf-varint-vs-fixed/), which clearly showed that Protobuf-flavored varints weren't the most performant datatype. After toying around with the binary encoding, I wanted to see what Protobuf would look like with different tradeoffs, more modern encoding techniques and the ability to blind-decode message values. What if we kept `.proto` files and services, but swapped out the binary wire format underneath? That experiment turned into an encoding that I call **[OmniBuf](https://omnibuf.com)**.
+OmniBuf is a self-describing binary wire format built to work with `.proto` schemas, gRPC, and Connect, as well as plain native types in code. You can keep your `.proto` schemas and service definitions, though using OmniBuf for RPCs requires registering an OmniBuf codec on both the client and server. It keeps what makes Protobuf good for schema evolution, while changing the wire encoding to make a few different tradeoffs:
 
-OmniBuf is a self-describing binary wire format built to work with `.proto` schemas, gRPC, and Connect, as well as plain native types in code. It keeps what makes Protobuf good for schema evolution, while changing the wire encoding to address these four pain points:
-
-- **Faster on modern CPUs:** Replaces the slow byte-by-byte LEB128 varints with branchless [prefix-varints](https://omnibuf.com/how-it-works#prefix-varints), encodes nested messages in a [single forward pass](https://omnibuf.com/how-it-works#single-pass), writes primitive arrays contiguously and encodes [maps natively](https://omnibuf.com/how-it-works#native-maps).
-- **Blind-decodable without a schema:** Expands the wire format to [16 explicit types](https://omnibuf.com/how-it-works#wire-types) (plus optional [Field #0 field names](https://omnibuf.com/how-it-works#field-0-names)), so a CLI, proxy, or debugger can inspect a raw `.obuf` payload and get exact types without the original Protobuf schema or guessing like protoscope does.
-- **Cheap partial reads and edits:** If you just want to read and write a field or two, you can now [skip full message decoding](https://omnibuf.com/how-it-works#skip-fields) to read a single field and you can splice an updated value back in much faster than decoding the full message.
-- **Smoother onramp and consistent runtimes:** Annotated structs with field-number tags can emit the exact same bytes as `.proto` codegen, so you can start with native types and graduate to fully-fledged `.proto` files later (or not!)
+- **Faster on modern CPUs:** Replaces byte-by-byte LEB128 varints with [prefix-varints](https://omnibuf.com/how-it-works#prefix-varints) whose encoded length can be determined from the first byte, encodes nested messages in a [single forward pass](https://omnibuf.com/how-it-works#single-pass), and encodes arrays and [maps natively](https://omnibuf.com/how-it-works#native-maps) as length-prefixed containers.
+- **Blind-decodable without a schema:** Expands the wire format to [16 explicit types](https://omnibuf.com/how-it-works#wire-types) (plus optional [Field #0 field names](https://omnibuf.com/how-it-works#field-0-names)), so a CLI, proxy, or debugger can inspect a raw `.obuf` payload and distinguish strings, bytes, numbers, booleans, arrays, maps, and nested messages without the original Protobuf schema or guessing like protoscope does.
+- **Cheap partial reads and edits:** If you just want to read and write a field or two, you can [skip full message decoding](https://omnibuf.com/how-it-works#skip-fields) to read a single field and splice an updated value back in much faster than decoding the full message.
+- **Smoother on-ramp:** Annotated structs with matching field numbers and types use the same OmniBuf wire format as generated code, so you can start with native types and move to `.proto` files later (or not!).
 
 {{< diagram >}}
 {{< figure src="overview.svg" alt="Diagram showing peer.proto branching to Protobuf, JSON, and OmniBuf encodings alongside native language files pointing directly to OmniBuf" caption="OmniBuf works both as an alternate encoding for `.proto` schemas and directly on native types across 11 languages." loading="lazy" >}}
@@ -32,9 +30,9 @@ OmniBuf is a self-describing binary wire format built to work with `.proto` sche
 
 ## Partial Reads and Splicing
 
-In Protobuf, skipping ahead to a later field essentially means parsing all varint continuation bits one byte at a time and since varints are often used as numeric values, you also have to parse those as well to know when they end and the next field begins. There's a neat trick that you can do if you have a byte prefix for every field. Suddenly, you can skip over fields that you don't care about. You can append fields to the end of the message without any extra work. In OmniBuf, the reader hops directly from [field to field](https://omnibuf.com/how-it-works#skip-fields):
+Protobuf already lets you skip length-delimited fields like strings, bytes, and nested messages once you read their length. Integer varints take more work because you have to scan continuation bits one byte at a time to find where each number ends, and maps or non-packed repeated fields are split across separate tagged entries. OmniBuf puts an integer's encoded width in its first byte and wraps whole arrays and maps as length-prefixed containers, so the reader hops directly from [field to field](https://omnibuf.com/how-it-works#skip-fields):
 
-{{< diagram caption="Skipping fields on the wire: Protobuf checks continuation bits byte by byte, while OmniBuf jumps straight past containers using their header lengths." >}}
+{{< diagram caption="Skipping varint tags and values on the wire: Protobuf checks continuation bits byte by byte, while OmniBuf reads the width from the first byte and jumps straight ahead." >}}
 {{< image src="skip-fields.svg" class="center" inline="true" >}}
 {{< /diagram >}}
 
@@ -50,27 +48,29 @@ pkt = view.MarshalAppend(nil)
 
 ## Plain Structs
 
-I want to address an elephant in the room when talking about Protobuf. It's weird. You're defining types in a specialized language and need tooling to generate types in the language that you actually want to use. I can understand how that will turn people off from the format altogether. I feel like there's a step in-between that would allow you to use the serialization format but not require the song and dance of Protobuf code generation.
+I want to address an elephant in the room when talking about Protobuf. It's weird. You're defining types in a specialized language and need tooling to generate types in the language that you actually want to use. I can understand how that will turn people off from the format altogether. I wanted a way to use the format without the song and dance of Protobuf code generation.
 
 With OmniBuf, you can use language features like [Go struct tags](https://omnibuf.com/go#struct-tags) (`omnibuf:"1"`), Rust derive macros, and [TypeScript defineMessage](https://omnibuf.com/es#define-message) definitions to emit the exact same messages as `.proto` generated code. The idea is that you can start with types that are native to your language of choice and then move to `.proto` files later with no change to the data on the wire:
 
 ```go
 // From .proto
-pkt, _ := omnibuf.Marshal(&pb.Node{Id: 1, City: "FRA"})
+protoPkt, _ := omnibuf.Marshal(&pb.Node{Id: 1, City: "FRA"})
 
 // From a plain Go struct
 type Node struct {
     ID   uint32 `omnibuf:"1"`
     City string `omnibuf:"2"`
 }
-pkt, _ := omnibuf.Marshal(&Node{ID: 1, City: "FRA"})
+structPkt, _ := omnibuf.Marshal(&Node{ID: 1, City: "FRA"})
 ```
 
-This gives you an on-ramp to OmniBuf without having to buy into the schema-first design philosophy. I deeply think that schema-first design is worth it, but I don't want that to get in the way of using a more efficient message format.
+This gives you an on-ramp to OmniBuf without having to buy into the schema-first design philosophy. I think schema-first design is worth it, but I don't want that to get in the way of using a more efficient message format.
 
 ## Benchmarks and Tradeoffs
 
-Okay, so how fast is OmniBuf, really? I've talked about the few tricks I've used to make it more efficient but I'm genuinely surprised at how effective it has been to improve the encoding and decoding speed. From my benchmarks, it quite often comes out ahead of all of the formats that I've tested.
+Okay, so how fast is OmniBuf, really? I expected these changes to help. I didn't expect gains this large.
+
+These charts compare OmniBuf's generated codecs with Protobuf implementations in 11 languages, using an 11-field `PeerUpdate` message on an Apple M1 Pro. The Protobuf baselines include `google.golang.org/protobuf` in Go, `prost` in Rust, and `protobuf-java` in Java. Full methodology, library versions, and non-codegen struct benchmarks are on the [benchmark page](https://omnibuf.com/benchmarks).
 
 {{< tabs >}}
   {{< tab name="Full Decode (vs Protobuf)" >}}
@@ -179,13 +179,11 @@ Okay, so how fast is OmniBuf, really? I've talked about the few tricks I've used
   {{< /tab >}}
 {{< /tabs >}}
 
-See the [benchmark page](https://omnibuf.com/benchmarks) for all of the benchmarks.
-
-Other formats still beat OmniBuf in a few areas. Protobuf is slightly smaller on dense messages. FlatBuffers and Cap'n Proto are faster at reading a single field from large messages by using offset tables. JSON loses on every aspect except being readable. It's the only format of the list that can be read without assistance.
+Other formats still beat OmniBuf in a few areas. On the `PeerUpdate` fixture, Protobuf produces 341 bytes to OmniBuf's 366 bytes. OmniBuf is also still early and experimental compared to Protobuf's two decades in production. FlatBuffers and Cap'n Proto are faster at reading a single field from large messages by using offset tables. JSON loses on every benchmarked metric here (encode speed, decode speed, and payload size), though it is still the only format on the list you can read directly as text.
 
 ## Languages and Tooling
 
-There are first-party runtimes and buf / protoc plugins for 11 languages:
+There are first-party runtimes and plugins for Buf and protoc across 11 languages, all verified against the same [conformance suite](https://omnibuf.com/spec#sec-11-2) so behavior stays consistent across ecosystems:
 
 - [Go](https://omnibuf.com/go)
 - [TypeScript / JS](https://omnibuf.com/es)
@@ -199,7 +197,19 @@ There are first-party runtimes and buf / protoc plugins for 11 languages:
 - [PHP](https://omnibuf.com/php)
 - [Elixir](https://omnibuf.com/elixir)
 
-I also made a [CLI](https://omnibuf.com/cli) to convert OmniBuf messages to and from JSON. You can also run jq queries against the binary messages.
+I also made a [CLI](https://omnibuf.com/cli) to convert OmniBuf messages to and from JSON, and to inspect raw `.obuf` payloads without a schema. Because the wire types don't collide, blind-decoding a packet gives you typed values instead of protoscope's guesses:
+
+```bash
+# Blind-decoding a raw packet with no .proto file:
+$ omnibuf -c packet.obuf
+{"field_1": true, "field_2": -2, "field_3": "FRA", "field_4": [10, 20]}
+
+# With optional Field #0 metadata enabled:
+$ omnibuf -c packet-field0.obuf
+{"active": true, "delta": -2, "city": "FRA", "peers": [10, 20]}
+```
+
+You can also pipe JSON in or run jq queries directly against binary messages:
 
 ```bash
 brew install omnibuf/tap/omnibuf
