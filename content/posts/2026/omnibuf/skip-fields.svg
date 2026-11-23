@@ -1,0 +1,178 @@
+<svg class="ob-skip-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 390" role="img" aria-label="Comparison of Protobuf byte-by-byte varint bouncing versus OmniBuf header hopping" font-family="var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <style>
+    .ob-skip-diagram {
+      --ob-ink: #f0f6ff;
+      --ob-stroke: #475c8a;
+      --ob-proto: #ff6b4a;
+      --ob-accent: #2dd4bf;
+      --ob-tag-bg: #1e2c4a;
+      --ob-tag-fg: #f0f6ff;
+      --ob-val-bg: #162036;
+      --ob-val-fg: #d9e4f5;
+      --ob-skip-bg: #111829;
+      --ob-skip-fg: #7f93b8;
+      --ob-muted: #98add1;
+      --ob-dot-bg: #141c2e;
+      --ob-target-fg: #0d121f;
+      --ob-divider: rgba(240, 246, 255, 0.16);
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .ob-skip-diagram {
+        --ob-ink: #111111;
+        --ob-stroke: #111111;
+        --ob-proto: #ff4f18;
+        --ob-accent: #d4ff33;
+        --ob-tag-bg: #111111;
+        --ob-tag-fg: #faf8f2;
+        --ob-val-bg: #e5e0d5;
+        --ob-val-fg: #111111;
+        --ob-skip-bg: #efece4;
+        --ob-skip-fg: #666666;
+        --ob-muted: #555555;
+        --ob-dot-bg: #faf8f2;
+        --ob-target-fg: #111111;
+        --ob-divider: rgba(17, 17, 17, 0.15);
+      }
+    }
+    [data-theme="light"] .ob-skip-diagram {
+      --ob-ink: #111111;
+      --ob-stroke: #111111;
+      --ob-proto: #ff4f18;
+      --ob-accent: #d4ff33;
+      --ob-tag-bg: #111111;
+      --ob-tag-fg: #faf8f2;
+      --ob-val-bg: #e5e0d5;
+      --ob-val-fg: #111111;
+      --ob-skip-bg: #efece4;
+      --ob-skip-fg: #666666;
+      --ob-muted: #555555;
+      --ob-dot-bg: #faf8f2;
+      --ob-target-fg: #111111;
+      --ob-divider: rgba(17, 17, 17, 0.15);
+    }
+  </style>
+  <defs>
+    <marker id="hop-proto" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--ob-proto)"/>
+    </marker>
+    <marker id="hop-omni" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--ob-ink)"/>
+    </marker>
+  </defs>
+
+  <!-- TRACK 1: PROTOBUF (8 Byte-by-Byte Bounces) -->
+  <text x="20" y="26" fill="var(--ob-proto)" font-size="13.5" font-weight="700">PROTOBUF: Bounces on every varint byte to check continuation bits (8 stops)</text>
+
+  <path d="M 62 91 Q 98 52 131 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 148 91 Q 184 52 217 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 234 91 Q 270 52 303 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 320 91 Q 356 52 389 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 406 91 Q 442 52 475 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 492 91 Q 528 52 561 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 578 91 Q 614 52 647 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+  <path d="M 664 91 Q 700 52 733 89" fill="none" stroke="var(--ob-proto)" stroke-width="2.5" marker-end="url(#hop-proto)"/>
+
+  <circle cx="55" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="141" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="227" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="313" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="399" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="485" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="571" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="657" cy="95" r="4" fill="var(--ob-dot-bg)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="743" cy="95" r="4" fill="var(--ob-accent)" stroke="var(--ob-ink)" stroke-width="2"/>
+
+  <rect x="16" y="102" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="55" y="125" fill="var(--ob-tag-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Tag B1</text>
+  <text x="55" y="143" fill="var(--ob-proto)" font-size="10.5" font-weight="600" text-anchor="middle">more? 1</text>
+
+  <rect x="102" y="102" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="141" y="125" fill="var(--ob-tag-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Tag B2</text>
+  <text x="141" y="143" fill="var(--ob-accent)" font-size="10.5" font-weight="600" text-anchor="middle">end: 0</text>
+
+  <rect x="188" y="102" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="227" y="125" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Int B1</text>
+  <text x="227" y="143" fill="var(--ob-proto)" font-size="10.5" font-weight="700" text-anchor="middle">more? 1</text>
+
+  <rect x="274" y="102" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="313" y="125" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Int B2</text>
+  <text x="313" y="143" fill="var(--ob-proto)" font-size="10.5" font-weight="700" text-anchor="middle">more? 1</text>
+
+  <rect x="360" y="102" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="399" y="125" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Int B3</text>
+  <text x="399" y="143" fill="var(--ob-proto)" font-size="10.5" font-weight="700" text-anchor="middle">more? 1</text>
+
+  <rect x="446" y="102" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="485" y="125" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Int B4</text>
+  <text x="485" y="143" fill="var(--ob-val-fg)" font-size="10.5" font-weight="600" text-anchor="middle">end: 0</text>
+
+  <rect x="532" y="102" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="571" y="125" fill="var(--ob-tag-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Tag</text>
+  <text x="571" y="143" fill="var(--ob-tag-fg)" font-size="10.5" text-anchor="middle">bool</text>
+
+  <rect x="618" y="102" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="657" y="125" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Bool</text>
+  <text x="657" y="143" fill="var(--ob-val-fg)" font-size="10.5" text-anchor="middle">1 byte</text>
+
+  <rect x="704" y="102" width="140" height="52" rx="5" fill="var(--ob-accent)" stroke="var(--ob-stroke)" stroke-width="2.5"/>
+  <text x="774" y="125" fill="var(--ob-target-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Target: city</text>
+  <text x="774" y="143" fill="var(--ob-target-fg)" font-size="10.5" font-weight="600" text-anchor="middle">8 stops</text>
+
+  <text x="98" y="174" fill="var(--ob-muted)" font-size="11.5" font-weight="600" text-anchor="middle">2-Byte Varint Tag</text>
+  <text x="356" y="174" fill="var(--ob-muted)" font-size="11.5" font-weight="600" text-anchor="middle">4-Byte Varint Integer</text>
+  <text x="614" y="174" fill="var(--ob-muted)" font-size="11.5" font-weight="600" text-anchor="middle">2-Byte Bool</text>
+
+  <line x1="16" y1="200" x2="844" y2="200" stroke="var(--ob-divider)" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- TRACK 2: OMNIBUF (3 Direct Header Jumps) -->
+  <text x="20" y="234" fill="var(--ob-ink)" font-size="13.5" font-weight="700">OMNIBUF: Leaps whole tags &amp; values in one jump (3 stops)</text>
+
+  <path d="M 63 298 Q 141 245 216 296" fill="none" stroke="var(--ob-ink)" stroke-width="3" marker-end="url(#hop-omni)"/>
+  <rect x="88" y="248" width="104" height="20" rx="4" fill="var(--ob-accent)" stroke="var(--ob-stroke)" stroke-width="1.5"/>
+  <text x="140" y="262" fill="var(--ob-target-fg)" font-size="10.5" font-weight="700" text-anchor="middle">Jump +2B Tag</text>
+
+  <path d="M 236 298 Q 399 235 559 296" fill="none" stroke="var(--ob-ink)" stroke-width="3" marker-end="url(#hop-omni)"/>
+  <rect x="338" y="244" width="122" height="20" rx="4" fill="var(--ob-accent)" stroke="var(--ob-stroke)" stroke-width="1.5"/>
+  <text x="399" y="258" fill="var(--ob-target-fg)" font-size="10.5" font-weight="700" text-anchor="middle">Skip +4B Value</text>
+
+  <path d="M 579 298 Q 614 256 646 296" fill="none" stroke="var(--ob-ink)" stroke-width="3" marker-end="url(#hop-omni)"/>
+  <rect x="570" y="250" width="86" height="20" rx="4" fill="var(--ob-accent)" stroke="var(--ob-stroke)" stroke-width="1.5"/>
+  <text x="613" y="264" fill="var(--ob-target-fg)" font-size="10.5" font-weight="700" text-anchor="middle">Jump +1B</text>
+
+  <circle cx="55" cy="303" r="4.5" fill="var(--ob-accent)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="227" cy="303" r="4.5" fill="var(--ob-accent)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="571" cy="303" r="4.5" fill="var(--ob-accent)" stroke="var(--ob-ink)" stroke-width="2"/>
+  <circle cx="657" cy="303" r="4.5" fill="var(--ob-accent)" stroke="var(--ob-ink)" stroke-width="2"/>
+
+  <rect x="16" y="310" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="55" y="333" fill="var(--ob-tag-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Tag B1</text>
+  <text x="55" y="351" fill="var(--ob-accent)" font-size="10.5" font-weight="700" text-anchor="middle">len = 2B</text>
+
+  <rect x="102" y="310" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" fill-opacity="0.55" stroke="var(--ob-stroke)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="141" y="333" fill="var(--ob-tag-fg)" font-size="12.5" font-weight="600" text-anchor="middle">Tag B2</text>
+  <text x="141" y="351" fill="var(--ob-tag-fg)" font-size="10" text-anchor="middle">1 load</text>
+
+  <rect x="188" y="310" width="78" height="52" rx="5" fill="var(--ob-val-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="227" y="333" fill="var(--ob-val-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Int B1</text>
+  <text x="227" y="351" fill="var(--ob-val-fg)" font-size="10.5" font-weight="700" text-anchor="middle">len = 4B</text>
+
+  <rect x="274" y="310" width="78" height="52" rx="5" fill="var(--ob-skip-bg)" stroke="var(--ob-stroke)" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="313" y="333" fill="var(--ob-skip-fg)" font-size="12.5" text-anchor="middle">Int B2</text>
+  <text x="313" y="351" fill="var(--ob-skip-fg)" font-size="10" text-anchor="middle">skipped</text>
+
+  <rect x="360" y="310" width="78" height="52" rx="5" fill="var(--ob-skip-bg)" stroke="var(--ob-stroke)" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="399" y="333" fill="var(--ob-skip-fg)" font-size="12.5" text-anchor="middle">Int B3</text>
+  <text x="399" y="351" fill="var(--ob-skip-fg)" font-size="10" text-anchor="middle">skipped</text>
+
+  <rect x="446" y="310" width="78" height="52" rx="5" fill="var(--ob-skip-bg)" stroke="var(--ob-stroke)" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="485" y="333" fill="var(--ob-skip-fg)" font-size="12.5" text-anchor="middle">Int B4</text>
+  <text x="485" y="351" fill="var(--ob-skip-fg)" font-size="10" text-anchor="middle">skipped</text>
+
+  <rect x="532" y="310" width="78" height="52" rx="5" fill="var(--ob-tag-bg)" stroke="var(--ob-stroke)" stroke-width="2"/>
+  <text x="571" y="333" fill="var(--ob-tag-fg)" font-size="12" font-weight="700" text-anchor="middle">Tag=True</text>
+  <text x="571" y="351" fill="var(--ob-accent)" font-size="10" font-weight="700" text-anchor="middle">0 val bytes</text>
+
+  <rect x="618" y="310" width="140" height="52" rx="5" fill="var(--ob-accent)" stroke="var(--ob-stroke)" stroke-width="2.5"/>
+  <text x="688" y="333" fill="var(--ob-target-fg)" font-size="12.5" font-weight="700" text-anchor="middle">Target: city</text>
+  <text x="688" y="351" fill="var(--ob-target-fg)" font-size="10.5" font-weight="600" text-anchor="middle">3 jumps</text>
+</svg>

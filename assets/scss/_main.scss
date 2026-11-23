@@ -631,6 +631,11 @@ ul.icons li a:active {
   overflow: auto;
   background: #1f2a35;
   border: 1px solid rgba(255, 255, 255, 0.08);
+
+  [data-theme="light"] & {
+    background: var(--code-bg, #f6efe0);
+    border-color: var(--border-secondary, #d5c8b0);
+  }
 }
 
 .chart-wrapper {

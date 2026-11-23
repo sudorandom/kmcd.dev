@@ -22,9 +22,16 @@ document.head.appendChild(script);
 });
 window.activeCharts = window.activeCharts || [];
 function getThemeColors() {
+const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+if (isLight) {
 return {
-text: '#ffffff',
-grid: 'rgba(255, 255, 255, 0.1)'
+text: '#141a2e',
+grid: 'rgba(20, 26, 46, 0.12)'
+};
+}
+return {
+text: '#f0f6ff',
+grid: 'rgba(255, 255, 255, 0.12)'
 };
 }
 function applyThemeToOptions(options, colors) {
@@ -36,15 +43,19 @@ options.plugins.title.color = colors.text;
 if (!options.plugins.legend) options.plugins.legend = {};
 if (!options.plugins.legend.labels) options.plugins.legend.labels = {};
 options.plugins.legend.labels.color = colors.text;
-if (options.scales) {
+if (!options.scales) options.scales = {};
+if (!options.scales.x) options.scales.x = {};
+if (!options.scales.y) options.scales.y = {};
 for (const scaleId in options.scales) {
 const scale = options.scales[scaleId];
 if (scale && typeof scale === 'object') {
 if (!scale.ticks) scale.ticks = {};
 scale.ticks.color = colors.text;
+if (scale.title) {
+scale.title.color = colors.text;
+}
 if (!scale.grid) scale.grid = {};
 scale.grid.color = colors.grid;
-}
 }
 }
 }
@@ -107,7 +118,7 @@ ctx.parentElement.style.height = chartHeight + 'px';
 }
 adjustHeight();
 window.addEventListener('resize', adjustHeight);
-if (chartConfig.options && chartConfig.options.plugins && chartConfig.options.plugins.legend && chartConfig.options.plugins.legend.customLegend) { const customItems = chartConfig.options.plugins.legend.customLegend; chartConfig.options.plugins.legend.labels = chartConfig.options.plugins.legend.labels || {}; chartConfig.options.plugins.legend.labels.generateLabels = function(chart) { return customItems.map(function(item) { return { text: item.text, fillStyle: item.color, strokeStyle: item.color, lineWidth: 1, hidden: false, fontColor: '#ffffff', color: '#ffffff' }; }); }; chartConfig.options.plugins.legend.onClick = function() {}; }
+if (chartConfig.options && chartConfig.options.plugins && chartConfig.options.plugins.legend && chartConfig.options.plugins.legend.customLegend) { const customItems = chartConfig.options.plugins.legend.customLegend; chartConfig.options.plugins.legend.labels = chartConfig.options.plugins.legend.labels || {}; chartConfig.options.plugins.legend.labels.generateLabels = function(chart) { const c = getThemeColors().text; return customItems.map(function(item) { return { text: item.text, fillStyle: item.color, strokeStyle: item.color, lineWidth: 1, hidden: false, fontColor: c, color: c }; }); }; chartConfig.options.plugins.legend.onClick = function() {}; }
 const colors = getThemeColors();
 applyThemeToOptions(chartConfig.options, colors);
 const customLabelPlugin = {
@@ -117,13 +128,14 @@ if (chart.config.type !== 'bar') return;
 const ctx = chart.ctx;
 const canvasEl = chart.canvas;
 const unit = canvasEl.getAttribute('data-unit');
+const labelColor = getThemeColors().text;
 chart.data.datasets.forEach(function(dataset, datasetIndex) {
 const meta = chart.getDatasetMeta(datasetIndex);
 meta.data.forEach(function(bar, index) {
 const value = dataset.data[index];
 if (value === undefined || value === null) return;
 if (bar && typeof bar.x === 'number' && chart.isDatasetVisible(datasetIndex)) {
-ctx.fillStyle = '#ffffff';
+ctx.fillStyle = labelColor;
 ctx.textAlign = 'left';
 ctx.textBaseline = 'middle';
 const isMobile = window.innerWidth >= 600 ? false : true;
