@@ -1,0 +1,25 @@
+{{- if .Get "src" -}}
+    {{- $image := ($.Page.Resources.GetMatch (.Get "src")) -}}
+    {{- if $image -}}
+        {{- $should_skip_fit := or (eq $image.MediaType.SubType "svg") (eq $image.MediaType.SubType "gif") (eq (.Get "animate") "true") -}}
+        {{- if not $should_skip_fit -}}
+            {{- $image = $image.Fit (or (.Get "fit") "2000x1600 webp") -}}
+        {{- end -}}
+        {{- $isSVG := eq $image.MediaType.SubType "svg" -}}
+        {{- $imgWidth := .Get "width" -}}
+        {{- $imgHeight := .Get "height" -}}
+        {{- if and (not $isSVG) (not $imgWidth) -}}
+            {{- $imgWidth = $image.Width -}}
+        {{- end -}}
+        {{- if and (not $isSVG) (not $imgHeight) -}}
+            {{- $imgHeight = $image.Height -}}
+        {{- end -}}
+        <img src="{{ $image.Permalink }}"
+             alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify | plainify }}{{ end }}"
+             {{- with $imgWidth }} width="{{ . }}"{{ end -}}
+             {{- with $imgHeight }} height="{{ . }}"{{ end -}}
+        />
+    {{- else -}}
+        {{- warnf "Image not found: %s in %s" (.Get "src") $.Page.File.Path -}}
+    {{- end -}}
+{{- end -}}

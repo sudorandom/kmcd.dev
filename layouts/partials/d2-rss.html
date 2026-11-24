@@ -1,0 +1,36 @@
+{{- $inner := trim .inner "\n\r" -}}
+{{- $position := .position -}}
+{{- $apiEndpoint := "http://127.0.0.1:7001/render" -}}
+{{- $opts := dict "method" "post" "body" $inner -}}
+
+{{- $tryWrappedResult := try (resources.GetRemote $apiEndpoint $opts) -}}
+
+{{- if $tryWrappedResult.Err -}}
+  {{- errorf "D2 RSS render: error fetching remote diagram from %s: %s. Position: %s" $apiEndpoint $tryWrappedResult.Err $position -}}
+{{- else -}}
+  {{- $fetchedResource := $tryWrappedResult.Value -}}
+  {{- if not $fetchedResource -}}
+    {{- errorf "D2 RSS render: GetRemote for %s returned nil resource. Position: %s" $apiEndpoint $position -}}
+  {{- else -}}
+    {{- $diagramContent := $fetchedResource.Content -}}
+    {{- if eq (len (trim $diagramContent " \n\r\t")) 0 -}}
+      {{- errorf "D2 RSS render: API at %s returned empty content. Position: %s" $apiEndpoint $position -}}
+    {{- else -}}
+      {{- $uniqueID := $inner | sha256 -}}
+      {{- $fileExtension := "" -}}
+      {{- with $fetchedResource.MediaType -}}
+        {{- $fileExtension = .SubType -}}
+        {{- if eq $fileExtension "svg+xml" -}}{{- $fileExtension = "svg" -}}{{- end -}}
+        {{- $knownExtensions := slice "svg" "png" "jpeg" "jpg" "gif" "webp" -}}
+        {{- if not (in $knownExtensions $fileExtension) -}}
+          {{- $fileExtension = "svg" -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $fileExtension = "svg" -}}
+      {{- end -}}
+      {{- $assetPath := printf "d2-diagrams/%s.%s" $uniqueID $fileExtension -}}
+      {{- $imageAsset := resources.FromString $assetPath $diagramContent -}}
+      <img src="{{ $imageAsset.Permalink }}" alt="D2 Diagram" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

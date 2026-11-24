@@ -1,0 +1,3 @@
+<div class="d2-diagram-wrapper">
+  {{- partial "d2-rss.html" (dict "inner" .Inner "position" .Position) -}}
+</div>

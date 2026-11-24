@@ -15,7 +15,7 @@
         {{ with .OutputFormats.Get "RSS" -}}
             {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
         {{ end -}}
-        {{ range .Pages }}
+        {{ range first 10 .Pages }}
         <item>
             <title>{{ .Title }}</title>
             <link>{{ if .Params.Url }}{{.Params.Url}}{{else}}{{.Permalink}}{{end}}</link>
@@ -37,6 +37,18 @@
             {{ $content := .Content -}}
             {{- /* Remove specific CSS tab-size properties */ -}}
             {{- $content = replaceRE "-moz-tab-size:\\d;-o-tab-size:\\d;tab-size:\\d;?" "" $content -}}
+            {{- /* Strip inline script tags */ -}}
+            {{- $content = replaceRE "(?is)<script\\b[^>]*>.*?</script>" "" $content -}}
+            {{- /* Externalize any remaining inline SVGs */ -}}
+            {{- range (findRE "(?is)<svg\\b[^>]*>.*?</svg>" $content) -}}
+                {{- $svgContent := . -}}
+                {{- if not (in $svgContent "xmlns=") -}}
+                    {{- $svgContent = replaceRE "^<svg" `<svg xmlns="http://www.w3.org/2000/svg"` $svgContent -}}
+                {{- end -}}
+                {{- $svgAsset := resources.FromString (printf "rss-svgs/%s.svg" ($svgContent | sha256)) $svgContent -}}
+                {{- $imgTag := printf `<img src="%s" alt="Diagram" style="max-width: 100%%; height: auto;" />` $svgAsset.Permalink -}}
+                {{- $content = replace $content . $imgTag -}}
+            {{- end -}}
             {{- /* Replace ]]> within content to prevent premature CDATA termination */ -}}
             {{- $content = replace $content "]]>" "]]&gt;" -}}
             <content:encoded>{{ printf `<![CDATA[%s]]>` $content | safeHTML | chomp }}</content:encoded>
