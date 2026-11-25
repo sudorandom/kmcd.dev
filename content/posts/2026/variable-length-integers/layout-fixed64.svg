@@ -1,0 +1,26 @@
+<svg class="vint-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 76" role="img" aria-label="Fixed64 little-endian encoding of 300 in 8 bytes" font-family="var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <style>
+    .vint-mini { --vi-ink: #f0f6ff; --vi-muted: #98add1; --vi-stroke: #475c8a; --vi-data-bg: #1b2844; --vi-data-fg: #e6eefc; }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .vint-mini { --vi-ink: #111111; --vi-muted: #555555; --vi-stroke: #222222; --vi-data-bg: #ebe6db; --vi-data-fg: #111111; } }
+    [data-theme="light"] .vint-mini { --vi-ink: #111111; --vi-muted: #555555; --vi-stroke: #222222; --vi-data-bg: #ebe6db; --vi-data-fg: #111111; }
+  </style>
+  <text x="12" y="16" fill="var(--vi-muted)" font-size="10.5" font-weight="600">Bytes 0..7 (little-endian)</text>
+  <rect x="12" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="34" y="44" fill="var(--vi-data-fg)" font-size="11.5" font-weight="700" text-anchor="middle">0x2c</text>
+  <rect x="60" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="82" y="44" fill="var(--vi-data-fg)" font-size="11.5" font-weight="700" text-anchor="middle">0x01</text>
+  <rect x="108" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="130" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+  <rect x="156" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="178" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+  <rect x="204" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="226" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+  <rect x="252" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="274" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+  <rect x="300" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="322" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+  <rect x="348" y="24" width="44" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="370" y="44" fill="var(--vi-muted)" font-size="11.5" text-anchor="middle">0x00</text>
+
+  <text x="412" y="44" fill="var(--vi-ink)" font-size="12" font-weight="700">= 300 (8 bytes)</text>
+</svg>

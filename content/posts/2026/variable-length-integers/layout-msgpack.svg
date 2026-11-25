@@ -1,0 +1,23 @@
+<svg class="vint-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 76" role="img" aria-label="MessagePack encoding of 300 in 3 bytes" font-family="var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <style>
+    .vint-mini { --vi-ink: #f0f6ff; --vi-muted: #98add1; --vi-stroke: #475c8a; --vi-meta-bg: #ff6b4a; --vi-meta-fg: #0d121f; --vi-data-bg: #1b2844; --vi-data-fg: #e6eefc; }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .vint-mini { --vi-ink: #111111; --vi-muted: #555555; --vi-stroke: #222222; --vi-meta-bg: #ff5722; --vi-meta-fg: #ffffff; --vi-data-bg: #ebe6db; --vi-data-fg: #111111; } }
+    [data-theme="light"] .vint-mini { --vi-ink: #111111; --vi-muted: #555555; --vi-stroke: #222222; --vi-meta-bg: #ff5722; --vi-meta-fg: #ffffff; --vi-data-bg: #ebe6db; --vi-data-fg: #111111; }
+  </style>
+  <text x="12" y="16" fill="var(--vi-muted)" font-size="10.5" font-weight="600">Byte 0</text>
+  <rect x="12" y="24" width="76" height="32" rx="4" fill="var(--vi-meta-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="50" y="44" fill="var(--vi-meta-fg)" font-size="12" font-weight="700" text-anchor="middle">0xcd</text>
+  <text x="50" y="70" fill="var(--vi-muted)" font-size="9.5" text-anchor="middle">uint16 tag</text>
+
+  <text x="104" y="16" fill="var(--vi-muted)" font-size="10.5" font-weight="600">Byte 1</text>
+  <rect x="104" y="24" width="114" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="161" y="44" fill="var(--vi-data-fg)" font-size="12" font-weight="600" text-anchor="middle">00000001</text>
+  <text x="161" y="70" fill="var(--vi-muted)" font-size="9.5" text-anchor="middle">high byte</text>
+
+  <text x="234" y="16" fill="var(--vi-muted)" font-size="10.5" font-weight="600">Byte 2</text>
+  <rect x="234" y="24" width="114" height="32" rx="4" fill="var(--vi-data-bg)" stroke="var(--vi-stroke)" stroke-width="1.5"/>
+  <text x="291" y="44" fill="var(--vi-data-fg)" font-size="12" font-weight="600" text-anchor="middle">00101100</text>
+  <text x="291" y="70" fill="var(--vi-muted)" font-size="9.5" text-anchor="middle">low byte</text>
+
+  <text x="380" y="44" fill="var(--vi-ink)" font-size="12" font-weight="700">= 300 (3 bytes)</text>
+</svg>
