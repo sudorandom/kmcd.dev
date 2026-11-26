@@ -14,7 +14,7 @@ devtoSkip: true
 canonical_url: https://kmcd.dev/posts/protobuf-maps-are-secretly-lists/
 ---
 
-You may not know this, but the Protobuf binary encoding doesn't actually support maps. Well, it does, kind of, through a hack one layer up. Maps were added well after Protobuf was established, alongside proto3. To avoid changing the wire format, Protobuf libraries convert `map<K, V>` into a repeated message with a `key` field and a `value` field. So this:
+You may not know this, but the Protobuf binary encoding doesn't actually support maps. Well, it does, kind of, through a hack one layer up. Maps were added well after Protobuf was established, alongside proto3. To avoid changing the wire format, Protobuf libraries [convert `map<K, V>` into a repeated message](https://protobuf.dev/programming-guides/proto3/#backwards) with a `key` field and a `value` field. So this:
 
 ```protobuf
 message LatencyTable {

@@ -1,21 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" width="760" height="280" role="img" aria-label="Proportional byte layout of a 5-entry map in Protobuf versus OmniBuf">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" width="760" height="352" role="img" aria-label="Proportional byte layout of a 5-entry map in Protobuf versus OmniBuf, showing the per-entry framing bytes in Protobuf and the single 5-byte map header in OmniBuf">
   <style>
     .bg { fill: #0f141e; }
     .heading { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #f1f5f9; }
+    .meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 600; fill: #94a3b8; text-anchor: end; }
+    .meta-proto { fill: #fca5a5; }
+    .meta-omni { fill: #5eead4; }
     .legend { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .note { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #94a3b8; }
     .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; font-weight: 600; text-anchor: middle; }
+    .sub { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9.5px; font-weight: 500; text-anchor: middle; fill: #fca5a5; opacity: 0.9; }
     .frame { fill: #7f1d1d; stroke: #ef4444; stroke-width: 1; rx: 3; }
+    .frame-detail { fill: #451010; stroke: #ef4444; stroke-width: 1; rx: 3; }
     .frame-txt { fill: #fecaca; }
     .key { fill: #0c4a6e; stroke: #38bdf8; stroke-width: 1; rx: 3; }
     .key-txt { fill: #e0f2fe; }
     .val { fill: #14532d; stroke: #4ade80; stroke-width: 1; rx: 3; }
     .val-txt { fill: #dcfce7; }
-    .sep { stroke: #1e293b; stroke-width: 1; }
+    .sep { stroke: #1e293b; stroke-width: 1.5; }
+    .guide { fill: none; stroke: #ef4444; stroke-width: 1.25; stroke-opacity: 0.7; }
+    .fan { fill: rgba(239, 68, 68, 0.10); stroke: none; }
   </style>
 
-  <rect width="760" height="280" class="bg" rx="10" />
+  <rect width="760" height="352" class="bg" rx="10" />
 
-  <!-- Minimal legend -->
+  <!-- Legend -->
   <g transform="translate(24, 18)">
     <rect x="0" y="0" width="12" height="12" class="frame" />
     <text x="18" y="10" class="legend">Framing</text>
@@ -25,10 +33,11 @@
     <text x="174" y="10" class="legend">Value</text>
   </g>
 
-  <!-- Protobuf: 15px per byte -> 46B total (5 rows, aligned cleanly) -->
+  <!-- Protobuf: 46B total (20B map framing) -->
   <text x="24" y="56" class="heading">Protobuf</text>
+  <text x="736" y="56" class="meta meta-proto">46B total (20B framing)</text>
   <g transform="translate(24, 66)">
-    <!-- Entry 1: 3B frame, 4B key, 1B frame, 1B val (9B) -->
+    <!-- Entry 1 -->
     <rect x="0" y="0" width="44" height="24" class="frame" /><text x="22" y="16" class="lbl frame-txt">3B</text>
     <rect x="46" y="0" width="60" height="24" class="key" /><text x="76" y="16" class="lbl key-txt">"fra"</text>
     <rect x="108" y="0" width="24" height="24" class="frame" /><text x="120" y="16" class="lbl frame-txt">1B</text>
@@ -52,33 +61,86 @@
     <rect x="612" y="0" width="24" height="24" class="frame" /><text x="624" y="16" class="lbl frame-txt">1B</text>
     <rect x="638" y="0" width="26" height="24" class="val" /><text x="651" y="16" class="lbl val-txt">95</text>
 
-    <!-- Entry 5 (wraps cleanly to second line) -->
+    <!-- Entry 5 -->
     <rect x="0" y="32" width="44" height="24" class="frame" /><text x="22" y="48" class="lbl frame-txt">3B</text>
     <rect x="46" y="32" width="60" height="24" class="key" /><text x="76" y="48" class="lbl key-txt">"syd"</text>
     <rect x="108" y="32" width="24" height="24" class="frame" /><text x="120" y="48" class="lbl frame-txt">1B</text>
     <rect x="134" y="32" width="38" height="24" class="val" /><text x="153" y="48" class="lbl val-txt">142</text>
+
+    <!-- Callout connectors for Entry 5's 3B (bracket spanning all 3 bytes) and 1B framing -->
+    <path d="M 22 56 L 22 72 M 2 76 L 2 72 L 254 72 L 254 76" class="guide" />
+    <path d="M 120 56 L 120 64 L 318 64 L 318 80" class="guide" />
+
+    <!-- Expanded 3B framing breakdown -->
+    <rect x="0" y="80" width="84" height="36" class="frame-detail" />
+    <text x="42" y="96" class="lbl frame-txt">entry tag</text>
+    <text x="42" y="109" class="sub">#1 LEN</text>
+
+    <rect x="86" y="80" width="84" height="36" class="frame-detail" />
+    <text x="128" y="96" class="lbl frame-txt">entry len</text>
+    <text x="128" y="109" class="sub">7-8B</text>
+
+    <rect x="172" y="80" width="84" height="36" class="frame-detail" />
+    <text x="214" y="96" class="lbl frame-txt">key tag</text>
+    <text x="214" y="109" class="sub">#1 LEN</text>
+
+    <!-- Expanded 1B framing breakdown -->
+    <rect x="276" y="80" width="84" height="36" class="frame-detail" />
+    <text x="318" y="96" class="lbl frame-txt">val tag</text>
+    <text x="318" y="109" class="sub">#2 VARINT</text>
+
+    <text x="376" y="102" class="note">Each map entry has 4B of overhead</text>
   </g>
 
-  <line x1="24" y1="146" x2="736" y2="146" class="sep" />
+  <line x1="24" y1="204" x2="736" y2="204" class="sep" />
 
-  <!-- OmniBuf: 1 single 5B header + 5 packed key/value pairs -->
-  <text x="24" y="176" class="heading">OmniBuf</text>
-  <g transform="translate(24, 186)">
-    <rect x="0" y="0" width="80" height="24" class="frame" /><text x="40" y="16" class="lbl frame-txt">5B header</text>
+  <!-- OmniBuf: 31B total (1 single 5B header + 5 packed key/value pairs) -->
+  <text x="24" y="232" class="heading">OmniBuf</text>
+  <text x="736" y="232" class="meta meta-omni">31B total (5B framing)</text>
+  <g transform="translate(24, 242)">
+    <rect x="0" y="0" width="78" height="24" class="frame" /><text x="39" y="16" class="lbl frame-txt">5B header</text>
 
-    <rect x="88" y="0" width="64" height="24" class="key" /><text x="120" y="16" class="lbl key-txt">"fra"</text>
-    <rect x="154" y="0" width="26" height="24" class="val" /><text x="167" y="16" class="lbl val-txt">12</text>
+    <rect x="86" y="0" width="60" height="24" class="key" /><text x="116" y="16" class="lbl key-txt">"fra"</text>
+    <rect x="148" y="0" width="26" height="24" class="val" /><text x="161" y="16" class="lbl val-txt">12</text>
 
-    <rect x="188" y="0" width="64" height="24" class="key" /><text x="220" y="16" class="lbl key-txt">"ams"</text>
-    <rect x="254" y="0" width="26" height="24" class="val" /><text x="267" y="16" class="lbl val-txt">8</text>
+    <rect x="182" y="0" width="60" height="24" class="key" /><text x="212" y="16" class="lbl key-txt">"ams"</text>
+    <rect x="244" y="0" width="26" height="24" class="val" /><text x="257" y="16" class="lbl val-txt">8</text>
 
-    <rect x="288" y="0" width="64" height="24" class="key" /><text x="320" y="16" class="lbl key-txt">"iad"</text>
-    <rect x="354" y="0" width="26" height="24" class="val" /><text x="367" y="16" class="lbl val-txt">24</text>
+    <rect x="278" y="0" width="60" height="24" class="key" /><text x="308" y="16" class="lbl key-txt">"iad"</text>
+    <rect x="340" y="0" width="26" height="24" class="val" /><text x="353" y="16" class="lbl val-txt">24</text>
 
-    <rect x="388" y="0" width="64" height="24" class="key" /><text x="420" y="16" class="lbl key-txt">"nrt"</text>
-    <rect x="454" y="0" width="26" height="24" class="val" /><text x="467" y="16" class="lbl val-txt">95</text>
+    <rect x="374" y="0" width="60" height="24" class="key" /><text x="404" y="16" class="lbl key-txt">"nrt"</text>
+    <rect x="436" y="0" width="26" height="24" class="val" /><text x="449" y="16" class="lbl val-txt">95</text>
 
-    <rect x="488" y="0" width="64" height="24" class="key" /><text x="520" y="16" class="lbl key-txt">"syd"</text>
-    <rect x="554" y="0" width="38" height="24" class="val" /><text x="573" y="16" class="lbl val-txt">142</text>
+    <rect x="470" y="0" width="60" height="24" class="key" /><text x="500" y="16" class="lbl key-txt">"syd"</text>
+    <rect x="532" y="0" width="38" height="24" class="val" /><text x="551" y="16" class="lbl val-txt">142</text>
+
+    <!-- Zoom fan from 5B header into 5 individual bytes -->
+    <polygon points="0,25 78,25 428,46 0,46" class="fan" />
+    <path d="M 0 25 L 0 46" class="guide" />
+    <path d="M 78 25 L 428 46" class="guide" />
+
+    <!-- Expanded 5B OmniBuf map header -->
+    <rect x="0" y="46" width="84" height="36" class="frame-detail" />
+    <text x="42" y="62" class="lbl frame-txt">field tag</text>
+    <text x="42" y="75" class="sub">#1 map</text>
+
+    <rect x="86" y="46" width="84" height="36" class="frame-detail" />
+    <text x="128" y="62" class="lbl frame-txt">byte len</text>
+    <text x="128" y="75" class="sub">29B</text>
+
+    <rect x="172" y="46" width="84" height="36" class="frame-detail" />
+    <text x="214" y="62" class="lbl frame-txt">key type</text>
+    <text x="214" y="75" class="sub">string</text>
+
+    <rect x="258" y="46" width="84" height="36" class="frame-detail" />
+    <text x="300" y="62" class="lbl frame-txt">val type</text>
+    <text x="300" y="75" class="sub">uint</text>
+
+    <rect x="344" y="46" width="84" height="36" class="frame-detail" />
+    <text x="386" y="62" class="lbl frame-txt">count</text>
+    <text x="386" y="75" class="sub">5</text>
+
+    <text x="444" y="68" class="note">written once</text>
   </g>
 </svg>

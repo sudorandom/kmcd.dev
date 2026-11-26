@@ -1114,17 +1114,6 @@ The same thing happens with LEB128 and OmniBuf on `Skewed`. LEB128 grew by 14 by
 
 I'm still happy with my choice of varint encoding for OmniBuf. And after running these benchmarks, I'd be much more inclined to use fixed-width integers for large arrays of numbers.
 
-For anyone else designing a binary format, here's how I'd choose between them:
-
-| Encoding | Reason to choose it |
-| :--- | :--- |
-| **LEB128** | Compact across most integer sizes and supported everywhere |
-| **QUIC** | Simple width detection when 62 bits is enough and small values stay under 64 |
-| **OmniBuf** | Standard 1/2/4/8-byte reads, full 64-bit support, 1-byte `0..127` range |
-| **Prefix-9** | Compact across 1–9 bytes and relatively insensitive to input ordering (with an optional 1-byte fast path) |
-| **MsgPack** | Self-describing integer types |
-| **Fixed64** | Cheap bulk copying, constant-time indexing, and smallest wire size for full 64-bit random values |
-
 All benchmark code, compression tests, and round-trip tests are [on GitHub](https://github.com/sudorandom/kmcd.dev/tree/main/content/posts/2026/variable-length-integers/benchmarks) alongside this post.
 
 Prefix-varints are just one of the wire-format decisions I made for [OmniBuf](/posts/omnibuf/). There are some equally interesting tradeoffs in how it encodes collections, nested messages, and wire types. I'll cover those in future posts.
