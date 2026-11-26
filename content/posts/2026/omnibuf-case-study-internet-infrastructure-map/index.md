@@ -3,7 +3,7 @@ categories: ["article", "project", "dataviz"]
 tags: ["protobuf", "omnibuf", "performance", "javascript", "dataviz", "internet-map", "cloudflare"]
 keywords: ["omnibuf", "binary serialization", "protobuf alternative", "submarine cable map", "geojson optimization", "browser deserialization"]
 series: ["Internet Map"]
-date: "2026-11-14T10:00:00Z"
+date: "2026-12-08T10:00:00Z"
 description: "Switching map.kmcd.dev from GeoJSON to OmniBuf significantly reduced memory and processing time."
 cover: "cover.svg"
 images: ["/posts/omnibuf-case-study-internet-infrastructure-map/cover.svg"]
@@ -13,7 +13,6 @@ slug: "omnibuf-case-study-internet-infrastructure-map"
 type: "posts"
 devtoSkip: true
 canonical_url: https://kmcd.dev/posts/omnibuf-case-study-internet-infrastructure-map/
-draft: true
 ---
 
 If you've been following along, I've been improving the **[Internet infrastructure map](https://map.kmcd.dev)** quite a lot lately. I've added significantly more data to it and the loading times increased significantly. I was eager to improve these times because it was impacting search indexing and I knew that there was some portion of users that would immediately close a tab if it takes too long to load. Also, the required memory also shot up to over 11MB. That's a lot to ask for a single browser tab. So I set out to fix the problem, reaching for a technology that I knew well, Protobuf. But Protobuf wasn't the hero in this story.
