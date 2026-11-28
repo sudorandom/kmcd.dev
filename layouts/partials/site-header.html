@@ -34,7 +34,34 @@
       <div class="social-links hide-on-phone">
         <a href="https://github.com/sudorandom" target="_blank" rel="noopener" title="GitHub">github</a>
         <span class="action-sep">|</span>
-        <a href="https://bsky.app/profile/kmcd.dev" target="_blank" rel="noopener" title="Bluesky">bluesky</a>
+        <div class="social-dropdown" data-social-dropdown>
+          <button type="button" class="social-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="header-social-menu" title="Social media links">
+            <span>social</span>
+            <i class="fa-solid fa-chevron-down social-dropdown-caret" aria-hidden="true"></i>
+          </button>
+          <div class="social-dropdown-menu" id="header-social-menu" role="menu" aria-label="Social media links" inert>
+            <a href="https://linkedin.com/in/sudorandom" target="_blank" rel="me noopener" class="social-dropdown-item" role="menuitem">
+              <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+              <span class="social-dropdown-label">linkedin</span>
+              <span class="social-dropdown-handle">in/sudorandom</span>
+            </a>
+            <a href="https://bsky.app/profile/kmcd.dev" target="_blank" rel="me noopener" class="social-dropdown-item" role="menuitem">
+              <i class="fa-brands fa-bluesky" aria-hidden="true"></i>
+              <span class="social-dropdown-label">bluesky</span>
+              <span class="social-dropdown-handle">@kmcd.dev</span>
+            </a>
+            <a href="https://infosec.exchange/@sudorandom" target="_blank" rel="me noopener" class="social-dropdown-item" role="menuitem">
+              <i class="fa-brands fa-mastodon" aria-hidden="true"></i>
+              <span class="social-dropdown-label">mastodon</span>
+              <span class="social-dropdown-handle">@sudorandom</span>
+            </a>
+            <a href="https://x.com/sudorandom" target="_blank" rel="me noopener" class="social-dropdown-item" role="menuitem">
+              <i class="fa-brands fa-twitter" aria-hidden="true"></i>
+              <span class="social-dropdown-label">twitter</span>
+              <span class="social-dropdown-handle">@sudorandom</span>
+            </a>
+          </div>
+        </div>
         <span class="action-sep">|</span>
         <a href="{{ "posts/index.xml" | absLangURL }}" target="_blank" title="RSS Feed">rss</a>
       </div>

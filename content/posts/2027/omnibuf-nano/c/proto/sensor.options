@@ -1,0 +1,6 @@
+# Static bounds for protoc-gen-omnibuf-nano
+sensor.TelemetryFrame.node_name        max_size:24
+sensor.TelemetryFrame.readings         max_count:4
+sensor.TelemetryFrame.firmware_sha     max_size:8 fixed_length:true
+sensor.TelemetryFrame.calibration      max_count:4
+sensor.TelemetryFrame.calibration.key  max_size:12

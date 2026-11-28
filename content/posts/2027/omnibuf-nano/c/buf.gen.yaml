@@ -1,0 +1,6 @@
+version: v2
+plugins:
+  - local: protoc-gen-omnibuf-nano
+    out: gen
+    opt:
+      - options_path=proto

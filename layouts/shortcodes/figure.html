@@ -1,4 +1,13 @@
-<figure{{ with .Get "class" }} class="md__image {{ . }}"{{ end }}>
+{{- $widthParam := .Get "width" -}}
+{{- $figureStyle := "" -}}
+{{- if $widthParam -}}
+    {{- if hasSuffix $widthParam "%" -}}
+        {{- $figureStyle = printf "max-width: %s;" $widthParam -}}
+    {{- else -}}
+        {{- $figureStyle = printf "max-width: %spx;" (replace $widthParam "px" "") -}}
+    {{- end -}}
+{{- end -}}
+<figure{{ with .Get "class" }} class="md__image {{ . }}"{{ end }}{{ with $figureStyle }} style="{{ . | safeCSS }}"{{ end }}>
     {{- $src := .Get "src" -}}
     {{- if .Get "link" -}}
         <a href="{{ .Page.Permalink }}{{ .Get "link" }}"
@@ -33,8 +42,15 @@
         {{ else }}
             {{ $resizeString := "" }}
             {{ with .Get "width" }}
-                {{ $cleanedWidth := replace . "px" "" }}
-                {{ $resizeString = printf "%sx" $cleanedWidth }}
+                {{ if hasSuffix . "%" }}
+                    {{ $resizeString = "1200x" }}
+                {{ else }}
+                    {{ $targetPx := mul (replace . "px" "" | int) 2 }}
+                    {{ if gt $targetPx $original.Width }}
+                        {{ $targetPx = $original.Width }}
+                    {{ end }}
+                    {{ $resizeString = printf "%dx" $targetPx }}
+                {{ end }}
             {{ else }}
                 {{ $resizeString = "1200x" }}
             {{ end }}
@@ -49,13 +65,15 @@
         {{ $imgHeight = $image.Height }}
     {{ end }}
     {{ with .Get "width" }}
-        {{ $cleanedWidth := replace . "px" "" | int }}
-        {{ if and $imgWidth $imgHeight }}
-            {{ $imgHeight = div (mul $cleanedWidth $imgHeight) $imgWidth }}
-        {{ else if and (not $isSVG) (not $animate) }}
-            {{ $imgHeight = div (mul $cleanedWidth 630) 1200 }}
+        {{ if not (hasSuffix . "%") }}
+            {{ $cleanedWidth := replace . "px" "" | int }}
+            {{ if and $imgWidth $imgHeight }}
+                {{ $imgHeight = div (mul $cleanedWidth $imgHeight) $imgWidth }}
+            {{ else if and (not $isSVG) (not $animate) }}
+                {{ $imgHeight = div (mul $cleanedWidth 630) 1200 }}
+            {{ end }}
+            {{ $imgWidth = $cleanedWidth }}
         {{ end }}
-        {{ $imgWidth = $cleanedWidth }}
     {{ end }}
 
     {{ $finalSrc := "" }}

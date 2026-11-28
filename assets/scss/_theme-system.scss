@@ -474,7 +474,7 @@ header.site-header[data-scrolled] .site-nav .nav-links {
     font-size: 12.5px;
     transition: gap var(--header-motion), font-size var(--header-motion);
 
-    a {
+    > a {
       color: var(--text-secondary);
       text-decoration: none;
       font-weight: 700;
@@ -484,10 +484,137 @@ header.site-header[data-scrolled] .site-nav .nav-links {
         color: var(--accent-primary);
       }
     }
+
     .action-sep {
       color: var(--border-secondary);
     }
+
+    .social-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .social-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      background: transparent !important;
+      border: 0;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 700;
+      line-height: inherit;
+      cursor: pointer;
+      transition: color 0.15s ease;
+
+      &:hover,
+      &:focus-visible,
+      &[aria-expanded="true"] {
+        color: var(--accent-primary);
+        opacity: 1;
+      }
+
+      .social-dropdown-caret {
+        font-size: 9px;
+        transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    }
+
+    .social-dropdown[data-open] .social-dropdown-caret {
+      transform: rotate(180deg);
+    }
+
+    .social-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: -24px;
+      min-width: 236px;
+      padding: 6px;
+      background: var(--bg-secondary);
+      border: 2.5px solid var(--ink-border);
+      border-radius: 14px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28), var(--riso-shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-6px) scale(0.98);
+      transform-origin: top right;
+      transition:
+        opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.18s;
+    }
+
+    .social-dropdown[data-open] .social-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .social-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 11px;
+      border-radius: 9px;
+      border: 1.5px solid transparent;
+      color: var(--text-contrast);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+
+      i {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        color: var(--accent-primary);
+        flex-shrink: 0;
+      }
+
+      .social-dropdown-label {
+        color: var(--text-contrast);
+      }
+
+      .social-dropdown-handle {
+        margin-left: auto;
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--text-secondary);
+      }
+
+      &:hover,
+      &:focus-visible {
+        background: var(--badge-bg);
+        border-color: var(--ink-border);
+        transform: translateX(2px);
+
+        .social-dropdown-label {
+          color: var(--accent-primary);
+        }
+      }
+    }
   }
+}
+
+[data-theme="light"] .header-actions .social-links .social-dropdown-menu {
+  box-shadow: 0 12px 24px rgba(20, 26, 46, 0.14), 4px 4px 0px var(--riso-coral);
 }
 
 header.site-header[data-scrolled] .header-actions {
@@ -496,6 +623,10 @@ header.site-header[data-scrolled] .header-actions {
   .social-links {
     gap: 8px;
     font-size: 12px;
+
+    .social-dropdown-menu {
+      top: calc(100% + 12px);
+    }
   }
 }
 
@@ -561,6 +692,9 @@ header.site-header[data-scrolled] .riso-theme-btn {
   .site-nav .nav-links a,
   .header-actions,
   .header-actions .social-links,
+  .header-actions .social-links .social-dropdown-caret,
+  .header-actions .social-links .social-dropdown-menu,
+  .header-actions .social-links .social-dropdown-item,
   .riso-theme-btn,
   .riso-theme-btn svg {
     transition: none !important;

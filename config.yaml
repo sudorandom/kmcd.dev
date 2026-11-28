@@ -52,6 +52,8 @@ params:
       url: "https://bsky.app/profile/kmcd.dev"
     - name: "linkedin"
       url: "https://linkedin.com/in/sudorandom"
+    - name: "twitter"
+      url: "https://x.com/sudorandom"
     - name: "github"
       url: "https://github.com/sudorandom"
 

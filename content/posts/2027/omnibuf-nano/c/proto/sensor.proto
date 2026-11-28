@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package sensor;
+
+enum AlertLevel {
+  ALERT_LEVEL_OK = 0;
+  ALERT_LEVEL_WARN = 1;
+  ALERT_LEVEL_CRITICAL = 2;
+}
+
+message Reading {
+  int32 celsius_x100 = 1;
+  uint32 humidity_pct = 2;
+  uint32 pressure_pa = 3;
+}
+
+message TelemetryFrame {
+  uint32 device_id = 1;
+  string node_name = 2;
+  uint32 battery_mv = 3;
+  AlertLevel alert = 4;
+  repeated Reading readings = 5;
+  bytes firmware_sha = 6;
+  map<string, int32> calibration = 7;
+}

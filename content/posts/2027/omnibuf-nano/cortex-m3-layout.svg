@@ -1,0 +1,97 @@
+<svg class="ob-nano-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" role="img" aria-label="Cortex-M3 QEMU setup: Flash holds the 7.9 KB runtime and 216 B descriptors, SRAM holds the 164 B stack struct with 0 B heap, UART0 prints logs to the terminal, and UART1 writes an 82-byte telemetry.obuf file decoded by the omnibuf CLI">
+  <style>
+    .ob-nano-diagram {
+      font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+      --n-ink: #f0f6ff;
+      --n-muted: #98add1;
+      --n-stroke: #475c8a;
+      --n-flash: #2dd4bf;
+      --n-ram: #f59e0b;
+      --n-uart: #ff6b4a;
+      --n-box-bg: #162036;
+      --n-chip-bg: #0f172a;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) .ob-nano-diagram {
+        --n-ink: #111111;
+        --n-muted: #525252;
+        --n-stroke: #1f2937;
+        --n-flash: #0f766e;
+        --n-ram: #b45309;
+        --n-uart: #d63b09;
+        --n-box-bg: #faf8f2;
+        --n-chip-bg: #f4f1ea;
+      }
+    }
+    [data-theme="light"] .ob-nano-diagram {
+      --n-ink: #111111;
+      --n-muted: #525252;
+      --n-stroke: #1f2937;
+      --n-flash: #0f766e;
+      --n-ram: #b45309;
+      --n-uart: #d63b09;
+      --n-box-bg: #faf8f2;
+      --n-chip-bg: #f4f1ea;
+    }
+    .hd   { font-size: 13px; font-weight: 700; fill: var(--n-ink); }
+    .lbl  { font-size: 12px; font-weight: 600; fill: var(--n-ink); }
+    .sub  { font-size: 11px; fill: var(--n-muted); }
+    .tagf { font-size: 11px; font-weight: 700; fill: var(--n-flash); }
+    .tagr { font-size: 11px; font-weight: 700; fill: var(--n-ram); }
+    .tagu { font-size: 11px; font-weight: 700; fill: var(--n-uart); }
+  </style>
+
+  <defs>
+    <marker id="arr-u" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="var(--n-uart)" />
+    </marker>
+    <marker id="arr-m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="var(--n-muted)" />
+    </marker>
+  </defs>
+
+  <!-- Cortex-M3 container -->
+  <rect x="12" y="14" width="336" height="192" rx="10" fill="var(--n-chip-bg)" stroke="var(--n-stroke)" stroke-width="1.5" />
+  <text x="28" y="38" class="hd">Cortex-M3 (QEMU)</text>
+
+  <!-- Flash -->
+  <rect x="28" y="54" width="146" height="134" rx="7" fill="var(--n-box-bg)" stroke="var(--n-flash)" stroke-width="1.5" />
+  <text x="42" y="76" class="tagf">FLASH</text>
+  <text x="42" y="106" class="lbl">runtime</text>
+  <text x="42" y="122" class="sub">7.9 KB</text>
+  <text x="42" y="152" class="lbl">descriptors</text>
+  <text x="42" y="168" class="sub">216 B</text>
+
+  <!-- SRAM -->
+  <rect x="188" y="54" width="144" height="134" rx="7" fill="var(--n-box-bg)" stroke="var(--n-ram)" stroke-width="1.5" />
+  <text x="202" y="76" class="tagr">SRAM</text>
+  <text x="202" y="106" class="lbl">stack struct</text>
+  <text x="202" y="122" class="sub">164 B</text>
+  <text x="202" y="152" class="lbl">heap</text>
+  <text x="202" y="168" class="sub">0 B</text>
+
+  <!-- Arrows -->
+  <line x1="348" y1="74" x2="436" y2="74" stroke="var(--n-muted)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arr-m)" />
+  <text x="392" y="65" text-anchor="middle" class="sub">UART0</text>
+
+  <line x1="348" y1="154" x2="436" y2="154" stroke="var(--n-uart)" stroke-width="2" marker-end="url(#arr-u)" />
+  <text x="392" y="145" text-anchor="middle" class="tagu">UART1</text>
+
+  <!-- Terminal -->
+  <rect x="444" y="46" width="142" height="56" rx="8" fill="var(--n-box-bg)" stroke="var(--n-stroke)" stroke-width="1.5" />
+  <text x="515" y="70" text-anchor="middle" class="lbl">Terminal</text>
+  <text x="515" y="88" text-anchor="middle" class="sub">text logs</text>
+
+  <!-- telemetry.obuf -->
+  <rect x="444" y="126" width="142" height="56" rx="8" fill="var(--n-box-bg)" stroke="var(--n-uart)" stroke-width="1.5" />
+  <text x="515" y="150" text-anchor="middle" class="lbl">telemetry.obuf</text>
+  <text x="515" y="168" text-anchor="middle" class="sub">82 B raw</text>
+
+  <!-- Arrow to omnibuf CLI -->
+  <line x1="586" y1="154" x2="626" y2="154" stroke="var(--n-uart)" stroke-width="2" marker-end="url(#arr-u)" />
+
+  <!-- omnibuf CLI -->
+  <rect x="634" y="126" width="114" height="56" rx="8" fill="var(--n-box-bg)" stroke="var(--n-flash)" stroke-width="1.5" />
+  <text x="691" y="150" text-anchor="middle" class="lbl">omnibuf</text>
+  <text x="691" y="168" text-anchor="middle" class="sub">JSON</text>
+</svg>
